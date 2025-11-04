@@ -43,18 +43,14 @@ const description = "Browse all our knitting machine questions and answers, orga
 
 <BaseLayout {title} {description}>
   <div class="page-container">
-    <!-- Structured Intro Panel -->
-    <div class="intro-panel fade-in">
+    <!-- Compact Header: Icon + Text + Search/Sort -->
+    <div class="header-panel fade-in">
       <img src="https://knitbymachine.com/assets/icons/asknanswer-icon.svg" alt="Ask 'n Answer" class="intro-icon">
       <div class="intro-content">
         <p class="intro-tagline">Troubleshoot, learn, and master your knitting machine — one question at a time.</p>
         <p class="intro-subtitle">Because understanding your machine shouldn't be a mystery. You're not alone — every knitter has questions, and every question leads to a new "aha" moment.</p>
       </div>
-    </div>
-
-    <!-- Framed Search Area -->
-    <div class="search-section fade-in">
-      <div class="search-frame">
+      <div class="controls-wrapper">
         <div class="search-wrapper">
           <input 
             type="text" 
@@ -74,6 +70,9 @@ const description = "Browse all our knitting machine questions and answers, orga
         </div>
       </div>
     </div>
+
+    <!-- Subtle Divider -->
+    <hr class="header-divider">
 
     <!-- Catalogue Content -->
     <div id="catalogueContent" class="catalogue-content" data-entries={JSON.stringify(entries)}>
