@@ -1,6 +1,6 @@
 [build]
   # Copy Astro package.json before building
-  command = "cp astro-package.json package.json && npm install && npm run build"
+  command = "cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build"
   publish = "dist"
 
 [build.environment]
