@@ -1,0 +1,76 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import askData from "../../data/asknanswer.json";
+import "../../styles/ana.css";
+
+/* ===== Dynamic Paths for Each Ask ’n Answer ===== */
+export function getStaticPaths() {
+  return askData.map((item) => ({
+    params: { slug: item.id },
+    props: { item }
+  }));
+}
+
+/* ===== Load Specific Item ===== */
+const { item } = Astro.props;
+---
+
+<BaseLayout title={`${item.question} | Ask ’n Answer`} description={item.answer.slice(0, 150)}>
+  <Header />
+
+  <!-- ===== Ask ’n Answer Header Section ===== -->
+  <section class="ana-page-header">
+    <!-- Inline SVG Icon -->
+    <svg class="ana-header-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 130">
+      <style>
+        .bubble-back { fill: #C1C9AE; filter: drop-shadow(0 3px 6px rgba(0,0,0,0.15)); }
+        .bubble-front { fill: #A0A98A; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.2)); }
+        .thought { fill: #B7C0A4; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12)); }
+      </style>
+      <circle class="thought" cx="32" cy="74" r="8"/>
+      <circle class="thought" cx="48" cy="60" r="10"/>
+      <rect class="bubble-back" x="60" y="38" rx="18" ry="18" width="120" height="44" />
+      <path class="bubble-front" d="M90 65h100a8 8 0 0 1 8 8v30a8 8 0 0 1-8 8h-70l-12 12v-12H90a8 8 0 0 1-8-8V73a8 8 0 0 1 8-8z"/>
+    </svg>
+
+    <!-- Header Text -->
+    <div class="ana-header-text">
+      <h1>Ask ’n Answer</h1>
+      <p class="ana-subtitle">Quick tips from Knit by Machine</p>
+    </div>
+  </section>
+
+  <!-- ===== Gradient Divider ===== -->
+  <div class="ana-divider"></div>
+
+  <!-- ===== Main Content ===== -->
+  <main class="ana-container">
+    <!-- Question Bubble -->
+    <div class="ana-bubble question-bubble">
+      <h2>{item.question}</h2>
+    </div>
+
+    <!-- Answer Bubble -->
+    <div class="ana-bubble answer-bubble">
+      <p>{item.answer}</p>
+
+      {item.video && (
+        <div class="ana-video">
+          <iframe
+            src={item.video}
+            width="100%"
+            height="360"
+            frameborder="0"
+            allow="autoplay; fullscreen"
+            allowfullscreen
+            style="border-radius:10px; margin-top:20px;"
+          ></iframe>
+        </div>
+      )}
+    </div>
+  </main>
+
+  <Footer />
+</BaseLayout>

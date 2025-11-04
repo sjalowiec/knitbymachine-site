@@ -1,0 +1,35 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import WIZARDS from "../../data/wizards.json";
+
+export async function getStaticPaths() {
+  return Object.keys(WIZARDS).map((slug) => ({
+    params: { slug },
+    props: WIZARDS[slug],
+  }));
+}
+
+const { name, hero, description, video, cta } = Astro.props;
+---
+
+<BaseLayout title={name}>
+  <h2>{name}</h2>
+  {hero && <p><strong>{hero}</strong></p>}
+  <p>{description}</p>
+
+  {video && (
+    <iframe
+      src={video}
+      width="640"
+      height="360"
+      frameborder="0"
+      allowfullscreen
+    ></iframe>
+  )}
+
+  {cta && (
+    <p style="margin-top:1.5em;">
+      <a href={cta} class="button">Use this tool &gt;</a>
+    </p>
+  )}
+</BaseLayout>
