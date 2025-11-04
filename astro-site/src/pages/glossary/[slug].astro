@@ -1,0 +1,376 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/layout.astro";
+import groq from "groq";
+import { sanity } from "../../lib/sanity";
+import PortableBody from "../../components/PortableBody.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+
+interface Props { params: { slug: string } }
+
+const { slug } = Astro.params as Props["params"];
+
+const q = groq`*[_type == "term" && slug.current == $slug][0]{
+  _id, title,
+  excerpt,
+  "definition": definition,               // full Portable Text (rich)
+  "definitionText": pt::text(definition), // fallback plain text
+  "imageUrl": coalesce(media.asset->url, image.asset->url),
+  imageAlt,
+  aliases,
+  tips,                                   // array<string> (optional)
+  notes,                                  // array<string> (optional)
+  videoUrl,                               // YT/Vimeo/MP4
+  relatedLinks[]{ label, url, kind },     // kind: "tutorial" | "reference" | "shop"
+  "related": related[]->{title, "slug": slug.current}
+}`;
+
+const term = await sanity.fetch(q, { slug });
+
+if (!term) {
+  return Astro.redirect("/glossary");
+}
+
+function hrefGlossary() {
+  const ref = Astro.request.headers.get("referer") || "";
+  return ref.includes("/glossary") ? ref : "/glossary";
+}
+
+// Convert common watch links to embeddable URLs
+function toEmbedUrl(url?: string) {
+  if (!url) return "";
+  try {
+    const u = new URL(url);
+    const host = u.hostname.replace(/^www\./, "");
+    if (host === "youtube.com") {
+      // https://www.youtube.com/watch?v=ID  ->  /embed/ID
+      const id = u.searchParams.get("v");
+      return id ? `https://www.youtube.com/embed/${id}` : url;
+    }
+    if (host === "youtu.be") {
+      // https://youtu.be/ID -> /embed/ID
+      const id = u.pathname.substring(1);
+      return id ? `https://www.youtube.com/embed/${id}` : url;
+    }
+    if (host === "vimeo.com") {
+      // https://vimeo.com/ID -> player.vimeo.com/video/ID
+      const id = u.pathname.split("/").filter(Boolean)[0];
+      return id ? `https://player.vimeo.com/video/${id}` : url;
+    }
+    return url;
+  } catch {
+    return url;
+  }
+}
+
+const embedUrl = toEmbedUrl(term.videoUrl);
+---
+
+<Fragment slot="head">
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  />
+</Fragment>
+<BaseLayout>
+  <div class="detail-wrap container">
+
+    <!-- Top crumb + title -->
+    <div class="topbar">
+      <a class="crumb" href={hrefGlossary()}>← Back to Glossary</a>
+      <h1 class="term-title">{term.title}</h1>
+      {term.excerpt && <p class="term-sub">{term.excerpt}</p>}
+    </div>
+
+    <div class="detail-grid">
+
+      <!-- Sticky Local Nav -->
+      <nav class="localnav" aria-label="Section navigation">
+        <a href="#overview" class="lnk active">Overview</a>
+        <a href="#howto" class="lnk">How to</a>
+        {term.videoUrl && <a href="#video" class="lnk">Video</a>}
+        {(term.relatedLinks?.length ?? 0) > 0 && <a href="#links" class="lnk">Links</a>}
+        {(term.related?.length ?? 0) > 0 && <a href="#related" class="lnk">Related</a>}
+        <a href="#cta" class="btn-primary">Practice this</a>
+      </nav>
+
+      <!-- Main Content -->
+      <main class="detail">
+        <!-- Overview -->
+        <section id="overview" class="section">
+          {term.imageUrl && (
+            <div class="lead-media">
+              <img src={term.imageUrl} alt={term.imageAlt || term.title} loading="lazy" />
+            </div>
+          )}
+
+          <div class="lead-copy">
+            {term.definition ? (
+              <PortableBody value={term.definition} />
+            ) : term.definitionText ? (
+              <p class="lead">{term.definitionText}</p>
+            ) : (
+              <p class="lead">No definition available yet.</p>
+            )}
+
+            {term.aliases?.length ? (
+              <div class="chips">
+                {term.aliases.map((a:string) => <span class="chip">{a}</span>)}
+              </div>
+            ) : null}
+          </div>
+        </section>
+        <!-- How-to / Tips (accordion) -->
+        <section id="howto" class="section">
+          <h2 class="h2">How it’s used</h2>
+
+          <details class="acc" open={Boolean(term.tips?.length)}>
+            <summary>Tips & troubleshooting</summary>
+            {term.tips?.length ? (
+              <ul class="bullets">
+                {term.tips.map((t:string) => <li>{t}</li>)}
+              </ul>
+            ) : <p class="muted">Add tips in Sanity to show them here.</p>}
+          </details>
+
+          <details class="acc" open={Boolean(term.notes?.length)}>
+            <summary>Notes & variations</summary>
+            {term.notes?.length ? (
+              <ul class="bullets">
+                {term.notes.map((n:string) => <li>{n}</li>)}
+              </ul>
+            ) : <p class="muted">Add notes in Sanity to show them here.</p>}
+          </details>
+        </section>
+
+        <!-- Video -->
+        {term.videoUrl && (
+          <section id="video" class="section">
+            <h2 class="h2">Walkthrough Video</h2>
+            <div class="video">
+              {(embedUrl && (embedUrl.includes("youtube.com/embed") || embedUrl.includes("player.vimeo.com"))) ? (
+                <iframe src={embedUrl} title={`Video: ${term.title}`} loading="lazy" allowfullscreen></iframe>
+              ) : (
+                <video src={term.videoUrl} controls preload="metadata"></video>
+              )}
+            </div>
+          </section>
+        )}
+
+        <!-- Links -->
+        {(term.relatedLinks?.length ?? 0) > 0 && (
+          <section id="links" class="section">
+            <h2 class="h2">Helpful links</h2>
+            <ul class="linklist">
+              {term.relatedLinks.map((l:{label:string,url:string,kind?:string}) => (
+                <li>
+                  <a href={l.url} target="_blank" rel="noopener">
+                    <span class={`badge ${l.kind || "reference"}`}>{l.kind || "reference"}</span>
+                    {l.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- Related terms -->
+        {(term.related?.length ?? 0) > 0 && (
+          <section id="related" class="section">
+            <h2 class="h2">Related terms</h2>
+            <ul class="related">
+              {term.related.map((r:{title:string,slug:string}) => (
+                <li><a href={`/glossary/${r.slug}`}>{r.title}</a></li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        <!-- CTA -->
+        <section id="cta" class="section cta">
+          <div class="cta-card">
+            <h3 class="cta-title">Ready to try “{term.title}”?</h3>
+            <p class="cta-text">Open the practice wizard and work this technique step-by-step.</p>
+            <a class="btn-primary" href="/tools" aria-label={`Practice ${term.title}`}>Open Practice Wizard →</a>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // Simple local-nav active state on scroll
+    document.addEventListener("DOMContentLoaded", () => {
+      const links = [...document.querySelectorAll(".localnav .lnk")];
+      const ids = links.map(a => document.querySelector(a.getAttribute("href")));
+      const observer = new IntersectionObserver((entries) => {
+        const vis = entries.filter(e => e.isIntersecting).sort((a,b)=>b.intersectionRatio-a.intersectionRatio)[0];
+        if (!vis) return;
+        const id = "#" + vis.target.id;
+        links.forEach(a => a.classList.toggle("active", a.getAttribute("href") === id));
+      }, { rootMargin: "-30% 0px -60% 0px", threshold: [0, 0.3, 1] });
+      ids.forEach(el => el && observer.observe(el));
+    });
+  </script>
+
+  <style>
+    :root{
+      --kbm-green:#50692C;
+      --kbm-green-600:#3f5323;
+      --kbm-text:#1f2937;
+      --kbm-muted:#6b7280;
+      --kbm-border:#e2e6df;
+      --kbm-radius:16px;
+    }
+
+    .container{max-width:min(1100px,96vw);margin:0 auto;padding:0 20px;}
+    .detail-wrap{padding-top:16px;}
+
+    .topbar{margin-bottom:1rem;}
+    .crumb{color:var(--kbm-green);text-decoration:none;font-weight:600;}
+    .crumb:hover{text-decoration:underline;}
+    .term-title{margin:.25rem 0 0;color:var(--kbm-text);font-weight:800;}
+    .term-sub{color:var(--kbm-muted);max-width:70ch;margin:.35rem 0 0;}
+
+    /* Grid: sticky nav + content */
+    .detail-grid{
+      display:grid;
+      grid-template-columns: 220px 1fr;
+      gap: 1.5rem;
+      align-items:start;
+      margin-top:1rem;
+    }
+
+    .localnav{
+      position:sticky; top:80px;
+      display:flex; flex-direction:column; gap:.5rem;
+      border-right:1px solid var(--kbm-border);
+      padding-right:1rem;
+    }
+    .localnav .lnk{
+      color:var(--kbm-text);
+      text-decoration:none;
+      padding:.35rem .5rem;
+      border-radius:8px;
+    }
+    .localnav .lnk.active{
+      background:#f4f6f1;
+      color:var(--kbm-green);
+      font-weight:700;
+    }
+    .btn-primary{
+      display:inline-block;
+      background:var(--kbm-green); color:#fff;
+      padding:.55rem .9rem; border-radius:10px;
+      text-decoration:none; font-weight:700;
+      margin-top:.5rem;
+    }
+    .btn-primary:hover{background:var(--kbm-green-600);}
+
+    .detail{padding-left:.25rem;}
+
+    .section{margin:1rem 0 1.25rem;}
+    .h2{margin:0 0 .5rem; font-size:1.25rem; font-weight:800; color:var(--kbm-text);}
+
+    .lead-media img{
+      width:100%; height:auto; border-radius:12px; border:1px solid var(--kbm-border);
+      display:block; background:#fafaf8;
+    }
+    .lead-copy .lead{margin:.75rem 0; color:#374151;}
+    .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.5rem;}
+    .chip{background:#f0f3ea;border:1px solid var(--kbm-border);color:#3f5323;
+      padding:.25rem .5rem;border-radius:999px;font-weight:600;font-size:.9rem;}
+
+    .acc{background:#fff;border:1px solid var(--kbm-border);border-radius:12px;padding:.5rem .75rem;margin:.5rem 0;}
+    .acc>summary{cursor:pointer;font-weight:700;color:var(--kbm-text);padding:.25rem 0;}
+    .acc[open]>summary{color:var(--kbm-green);}
+    .bullets{margin:.5rem 0 .25rem .9rem;}
+
+    .video{aspect-ratio:16/9; width:100%; border-radius:12px; overflow:hidden; border:1px solid var(--kbm-border); background:#000;}
+    .video iframe,.video video{width:100%; height:100%; display:block;}
+
+    .linklist{list-style:none; padding:0; margin:0; display:grid; gap:.5rem;}
+    .linklist a{display:inline-flex;align-items:center;gap:.5rem;text-decoration:none;color:var(--kbm-text);padding:.4rem .5rem;border-radius:8px;}
+    .linklist a:hover{background:#f6f7f3;}
+    .badge{display:inline-block;padding:.15rem .45rem;border-radius:6px;font-size:.75rem;font-weight:700;}
+    .badge.reference{background:#eef3e6;color:#3f5323;}
+    .badge.tutorial{background:#e6f0fb;color:#1d4ed8;}
+    .badge.shop{background:#fff0e6;color:#b45309;}
+
+    .related{display:grid; grid-template-columns: repeat(auto-fit,minmax(180px,1fr)); gap:.5rem; list-style:none; padding:0; margin:0;}
+    .related a{text-decoration:none;color:var(--kbm-green);font-weight:700;}
+    .related a:hover{text-decoration:underline;}
+
+    .cta{margin-top:1.25rem;}
+    .cta-card{
+      background:linear-gradient(180deg,#f6f8f2,#f0f4ea);
+      border:1px solid var(--kbm-border); border-radius:16px; padding:1rem;
+      display:flex; flex-direction:column; gap:.5rem;
+    }
+    .cta-title{margin:0; color:var(--kbm-text);}
+    .cta-text{margin:0; color:#374151;}
+
+    /* Portable Text styles */
+    .pt-h2 { font-size: 1.25rem; font-weight: 800; margin: 0.75rem 0 0.35rem; color: var(--kbm-text); }
+    .pt-h3 { font-size: 1.1rem; font-weight: 800; margin: 0.6rem 0 0.25rem; color: var(--kbm-text); }
+    .pt-p { margin: 0.5rem 0; color: #374151; line-height: 1.65; }
+    .pt-strong { font-weight: 800; }
+    .pt-em { font-style: italic; }
+    .pt-ul, .pt-ol { margin: 0.5rem 0 0.75rem 1.25rem; }
+    .pt-li { margin: 0.25rem 0; }
+    .pt-link { color: var(--kbm-green); text-decoration: none; font-weight: 700; }
+    .pt-link:hover { text-decoration: underline; }
+    .pt-quote {
+      margin: 0.75rem 0;
+      padding: 0.6rem 0.9rem;
+      border-left: 4px solid var(--kbm-green);
+      background: #f6f8f2;
+      border-radius: 8px;
+    }
+    .pt-figure { margin: 0.75rem 0; }
+    .pt-figure img {
+      width: 100%; height: auto; display: block;
+      border-radius: 12px; border: 1px solid var(--kbm-border); background: #fafaf8;
+    }
+    .pt-figure figcaption {
+      font-size: 0.9rem; color: var(--kbm-muted); margin-top: 0.35rem;
+      text-align: center;
+    }
+    .pt-code {
+      margin: 0.75rem 0; padding: 0.75rem 0.9rem;
+      background: #111827; color: #e5e7eb; border-radius: 10px; overflow: auto;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px){
+      .detail-grid{grid-template-columns: 1fr;}
+      .localnav{position:static; border-right:0; padding-right:0; flex-direction:row; flex-wrap:wrap; gap:.35rem;}
+      .localnav .lnk{padding:.35rem .6rem; border:1px solid var(--kbm-border);}
+      .detail{padding-left:0;}
+    }
+    /* Detail page spacing fixes */
+.detail { padding-top: 0; }
+
+/* Tighten the very first section */
+.detail > .section:first-of-type { 
+  margin-top: 0.25rem;        /* was ~1rem+ */
+}
+
+/* If there’s no hero image, don’t reserve height */
+.lead-media:empty { display: none; }
+.lead-media img { display: block; margin: 0; }
+
+/* Safety: if any wrapper ends up empty, hide it */
+.section:empty { display: none; }
+
+/* Optional: reduce gap between title/subhead and grid */
+.topbar { margin-bottom: 0.5rem; }
+.term-sub { margin-top: 0.25rem; }
+
+/* Local nav column stays; right column aligns to top */
+.detail-grid { align-items: start; }
+
+  </style>
+</BaseLayout>
