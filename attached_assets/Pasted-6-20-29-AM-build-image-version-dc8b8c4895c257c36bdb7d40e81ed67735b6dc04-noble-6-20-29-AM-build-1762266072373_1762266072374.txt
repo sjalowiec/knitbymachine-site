@@ -1,0 +1,54 @@
+6:20:29 AM: build-image version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04 (noble)
+6:20:29 AM: buildbot version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04
+6:20:29 AM: Fetching cached dependencies
+6:20:29 AM: Starting to download cache of 249.4MB (Last modified: 2025-11-04 13:35:55 +0000 UTC)
+6:20:30 AM: Finished downloading cache in 382ms
+6:20:30 AM: Starting to extract cache
+6:20:33 AM: Finished extracting cache in 3.559s
+6:20:33 AM: Finished fetching cache in 3.994s
+6:20:33 AM: Starting to prepare the repo for build
+6:20:34 AM: Preparing Git Reference refs/heads/main
+6:20:35 AM: Custom build command detected. Proceeding with the specified command: 'cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build'
+6:20:35 AM: Starting to install dependencies
+6:20:35 AM: Started restoring cached python cache
+6:20:35 AM: Finished restoring cached python cache
+6:20:35 AM: Started restoring cached ruby cache
+6:20:36 AM: Finished restoring cached ruby cache
+6:20:36 AM: Started restoring cached go cache
+6:20:36 AM: Finished restoring cached go cache
+6:20:37 AM: v22.21.1 is already installed.
+6:20:37 AM: Now using node v22.21.1 (npm v10.9.4)
+6:20:37 AM: Enabling Node.js Corepack
+6:20:37 AM: Started restoring cached build plugins
+6:20:37 AM: Finished restoring cached build plugins
+6:20:38 AM: Successfully installed dependencies
+6:20:38 AM: Starting build script
+6:20:38 AM: Detected 1 framework(s)
+6:20:38 AM: "astro" at version "unknown"
+6:20:38 AM: Section completed: initializing
+6:20:39 AM: ​
+6:20:39 AM: Netlify Build                                                 
+6:20:39 AM: ────────────────────────────────────────────────────────────────
+6:20:39 AM: ​
+6:20:39 AM: ❯ Version
+6:20:39 AM:   @netlify/build 35.3.0
+6:20:39 AM: ​
+6:20:39 AM: ❯ Flags
+6:20:39 AM:   accountId: 68c6b7a4e040822e80335f8f
+6:20:39 AM:   baseRelDir: true
+6:20:39 AM:   buildId: 690a0b9bbfe62400088aa284
+6:20:39 AM:   deployId: 690a0b9bbfe62400088aa286
+6:20:40 AM: ​
+6:20:40 AM: ❯ Current directory
+6:20:40 AM:   /opt/build/repo
+6:20:40 AM: ​
+6:20:40 AM: ❯ Config file
+6:20:40 AM:   /opt/build/repo/netlify.toml
+6:20:40 AM: ​
+6:20:40 AM: ❯ Context
+6:20:40 AM:   production
+6:20:40 AM: ​
+6:20:40 AM: build.command from netlify.toml                               
+6:20:40 AM: ────────────────────────────────────────────────────────────────
+6:20:40 AM: ​
+6:20:40 AM: $ cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build
