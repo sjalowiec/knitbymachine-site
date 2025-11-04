@@ -1,0 +1,193 @@
+---
+/* src/components/Footer.astro */
+---
+<style is:global>
+/* ========== FOOTER STYLES ========== */
+footer {
+  background-color: #e8ece3;          /* soft neutral green-gray background */
+  color: #3b4b2f;                     /* dark olive text for good contrast */
+  font-family: "Poppins", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  padding: 30px 0 10px;
+  border-top: 3px solid #6a8141;      /* matches header accent green */
+}
+
+/* Footer container alignment */
+footer .container {
+  max-width: 1200px;                  
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 40px;
+}
+
+/* Footer columns */
+footer .footer-column {
+  flex: 1 1 200px;
+  min-width: 180px;
+}
+
+/* Headings */
+footer h4 {
+  font-weight: 700;
+  font-size: 16px;
+  color: #384b25;
+  margin-bottom: 8px;
+}
+
+/* Paragraph text */
+footer p {
+  margin: 0 0 8px;
+}
+
+/* Links */
+footer a {
+  color: #3b4b2f;
+  text-decoration: none;
+  display: block;
+  margin-bottom: 4px;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+footer a:hover {
+  color: #6a8141;
+  text-decoration: underline;
+}
+
+/* Footer bottom section */
+footer .footer-bottom {
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #4a5a35;
+  border-top: 1px solid #c3c9b9;
+  margin-top: 25px;
+  padding-top: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Legal links row */
+footer .legal-links {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+footer .legal-links a {
+  color: #4a5a35;
+  text-decoration: none;
+  font-size: 14px;
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+/* Underline hover effect */
+footer .legal-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0%;
+  height: 1px;
+  background-color: #6a8141;
+  transition: width 0.3s ease;
+}
+
+footer .legal-links a:hover {
+  color: #6a8141;
+}
+
+footer .legal-links a:hover::after {
+  width: 100%;
+}
+
+/* Responsive adjustments */
+@media (max-width: 767px) {
+  footer .container {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 20px;
+  }
+
+  footer .footer-column {
+    flex: 1 1 100%;
+    margin-bottom: 15px;
+  }
+
+  footer h4 {
+    margin-top: 10px;
+  }
+
+  footer .footer-bottom {
+    gap: 4px;
+  }
+
+  footer .legal-links {
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+
+  footer .legal-links a {
+    display: inline-block;
+  }
+}
+
+/* Hide footer when printing */
+@media print {
+  footer {
+    display: none !important;
+  }
+}
+</style>
+
+<footer aria-label="Site footer">
+  <div class="container">
+    <div class="footer-column">
+      <h4>Knit by Machine</h4>
+      <p>Machine knitting made easier with tools, patterns, and instruction.</p>
+    </div>
+    <div class="footer-column">
+      <h4>What's Inside</h4>
+      <a href="/patterns-draft">Patterns</a>
+      <a href="/workshops">Workshops</a>
+      <a href="/help-hub">Help Hub</a>
+    </div>
+    <div class="footer-column">
+      <h4>Resources</h4>
+      <a href="/sizing-charts">Sizing Charts</a>
+      <a href="/machine-history">Machine History</a>
+      <a href="/calculators">Calculators</a>
+    </div>
+    <div class="footer-column">
+      <h4>Connect</h4>
+      <a href="/contact-us">Contact Us</a>
+      <a href="/about-us">About</a>
+      <a href="/membership">Membership</a>
+      <a href="/testimonials">Testimonials</a>
+      <a href="/share-feedback">Share Feedback</a>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© <span id="year">{new Date().getFullYear()}</span> Knit by Machine</div>
+    <div class="legal-links">
+      <a href="/privacy-policy">Privacy Policy</a>
+      <span>|</span>
+      <a href="/terms-of-use">Terms of Use</a>
+      <span>|</span>
+      <a href="/refund-policy">Refund Policy</a>
+    </div>
+  </div>
+</footer>

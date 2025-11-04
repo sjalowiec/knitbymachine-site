@@ -1,0 +1,19 @@
+{
+  "title": "FK-Test-ANA-mq8H",
+  "slug": "f",
+  "category": "Ask 'n Answer (ANA)",
+  "tags": [],
+  "isMemberOnly": false,
+  "videoUrl": "",
+  "imageUrl": "https://example.com/images/dropped-stitch.jpg",
+  "imageAlt": "",
+  "wizardUrl": "",
+  "metaTitle": "",
+  "metaDescription": "",
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "body": "Testing foreign key constraints",
+  "isDraft": false,
+  "publishedDate": "2025-11-03",
+  "pendingPublish": false
+}

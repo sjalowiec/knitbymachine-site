@@ -1,0 +1,82 @@
+{
+  "boat-neck-sweater": {
+    "name": "Boat Neck Sweater",
+    "hero": "Knit a timeless boat neck sweater — perfectly sized for you.",
+    "description": "Create your own boat neck sweater — sleeveless or with sleeves of any length. Enter your gauge, adjust sizing, and knit it in any yarn or stitch pattern.",
+    "video": "https://player.vimeo.com/video/151858524",
+    "cta": "https://wizards.knitbymachine.com/boat-neck",
+    "category": "pattern"
+  },
+  "diy-blanket": {
+    "name": "DIY Blanket",
+    "hero": "Design the perfect blanket — any yarn, any size, any machine",
+    "description": "Design your own blanket for any yarn, any machine, any gauge. Choose a standard size or set your own — includes a built-in yarn estimator.",
+    "video": "https://player.vimeo.com/video/151858524",
+    "cta": "https://wizards.knitbymachine.com/blanket",
+    "category": "pattern"
+  },
+  "gauge-calculator": {
+    "name": "Gauge Calculator",
+    "hero": "Get your gauge right — no math, no mistakes.",
+    "description": "Accurate gauge means accurate fit. Measure your swatch, enter the numbers, and instantly get your stitch and row gauge in inches or centimeters.",
+    "video": "https://player.vimeo.com/video/151858524",
+    "cta": "https://wizards.knitbymachine.com/gauge-calculator",
+    "category": "tool"
+  },
+  "gauge-conversion-calculator": {
+    "name": "Gauge Conversion Calculator",
+    "hero": "Adjust any pattern to your yarn or tension — no math, no guesswork.",
+    "description": "Convert any pattern to match your gauge. Enter the pattern’s gauge and your own, and this tool instantly recalculates your stitch and row counts—no math required.",
+    "video": "https://player.vimeo.com/video/151858524",
+    "cta": "https://wizards.knitbymachine.com/gauge-conversion",
+    "category": "tool"
+  },
+  "neckline-shaping-practice-2": {
+    "name": "Neckline Shaping Practice",
+    "hero": "Unsure about necklines? Try it here first.",
+    "description": "Build your neckline-shaping skills. This tool creates stitch and row numbers for a small practice piece so you can refine your technique before starting a full sweater.",
+    "video": "https://player.vimeo.com/video/151858524",
+    "cta": "https://wizards.knitbymachine.com/neckline-shaping",
+    "category": "practice"
+  },
+  "neckline-and-shoulder-shaping": {
+    "name": "Neckline and Shoulder Shaping",
+    "hero": "Master the trickiest shaping combo: neckline and shoulder.",
+    "description": "A hands-on way to practice shaping the neckline and shoulder together for a better-fitting sweater. Enter your gauge to create a simple, skill-building sample.",
+    "video": "https://player.vimeo.com/video/151858524",
+    "cta": "https://wizards.knitbymachine.com/neckline-shaping",
+    "category": "practice"
+  },
+  "gauge-difference": {
+    "name": "What a Difference a Stitch Makes",
+    "hero": "A tiny change in gauge can make a big difference. See how your project grows (or shrinks) — one stitch at a time.",
+    "description": "Compare two gauges and see how even one stitch can change your project’s size.",
+    "video": "",
+    "cta": "https://wizards.knitbymachine.com/gauge-difference",
+    "category": "tool"
+  },
+  "test-pattern": {
+    "name": "test-pattern",
+    "hero": "here essag here",
+    "description": "short desc",
+    "video": "",
+    "cta": "https://wizards.knitbymachine.com/",
+    "category": "pattern"
+  },
+  "test-practice": {
+    "name": "test-practice",
+    "hero": "here message here",
+    "description": "afdd d",
+    "video": "",
+    "cta": "https://wizards.knitbymachine.com/",
+    "category": "practice"
+  },
+  "magic-formula-measurement": {
+    "name": "Magic Formula by Measurement",
+    "hero": "Shape your knitting using real measurements instead of stitch counts.",
+    "description": "Enter your starting and ending widths, your row length, and gauge to instantly see your shaping instructions. Perfect for knitters who think in inches and centimeters.",
+    "video": "",
+    "cta": "https://wizards.knitbymachine.com/magic-formula-measurement",
+    "category": "tool"
+  }
+}

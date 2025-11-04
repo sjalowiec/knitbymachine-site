@@ -1,0 +1,301 @@
+---
+export const prerender = false;
+
+import Layout from "../../layouts/layout.astro";
+
+const { slug } = Astro.params;
+
+const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
+const REPO_OWNER = 'sjalowiec';
+const REPO_NAME = 'knitbymachine';
+const CONTENT_PATH = 'src/content/ana';
+
+async function getANAEntry(slug: string) {
+  try {
+    const response = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}/${slug}.json`,
+      {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'knitbymachine-astro'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    const content = atob(data.content);
+    const jsonData = JSON.parse(content);
+
+    // Filter out drafts and pending publish entries
+    if (jsonData.isDraft || jsonData.pendingPublish) {
+      return null;
+    }
+
+    return {
+      data: jsonData,
+      slug: slug
+    };
+  } catch (error) {
+    console.error('Error fetching ANA entry:', error);
+    return null;
+  }
+}
+
+const entry = await getANAEntry(slug);
+
+if (!entry) {
+  return Astro.redirect('/404');
+}
+---
+
+<Layout>
+  <div class="ana-container">
+    <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
+
+    <div class="page-header">
+      <div class="header-content">
+        <div class="header-left">
+          <img src="/assets/icons/asknanswer-icon.svg" alt="Ask 'n Answer" class="header-icon" />
+        </div>
+        <div class="header-right">
+          <h2 class="header-tagline">Practical Help for<br/>Every Machine Knitter</h2>
+        </div>
+      </div>
+      <div class="header-divider"></div>
+    </div>
+
+    <div class="content-wrapper">
+      <div class="bubbles-column">
+        <article class="ana-item">
+          <div class="bubble-wrapper question-wrapper">
+            <div class="thought-bubble question-bubble">
+              <p>{entry.data.title}</p>
+            </div>
+          </div>
+
+          <div class="bubble-wrapper answer-wrapper">
+            <div class="speech-bubble answer-bubble">
+              <div class="bubble-content" set:html={entry.data.body}></div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="gif-sidebar">
+        <div class="gif-container">
+          <img 
+            src="https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExcXB3Y3N5aGw3YnZuZDN6ZWR6eGRyZ3k5eDZkemN0ZHRveGNuY2V5ZyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/3o7btPCcdNniyf0ArS/giphy.gif" 
+            alt="Knitting animation" 
+            class="sidebar-gif"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .ana-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    margin: 0 0 1.5rem 0;
+    color: #52682D;
+    font-size: 0.95rem;
+    font-weight: 500;
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .back-link:hover {
+    border-bottom: 1px solid #C7D8A4;
+    color: #3E5524;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .header-icon {
+    width: 180px;
+    height: 180px;
+  }
+
+  .header-tagline {
+    color: #52682D;
+    font-size: 1.5rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .header-divider {
+    height: 2px;
+    background-color: #52682D;
+  }
+
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .bubbles-column {
+    min-width: 0;
+  }
+
+  .ana-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .bubble-wrapper {
+    display: flex;
+    max-width: 600px;
+  }
+
+  .question-wrapper {
+    justify-content: flex-start;
+  }
+
+  .answer-wrapper {
+    justify-content: flex-end;
+    margin-left: auto;
+  }
+
+  .thought-bubble {
+    position: relative;
+    background-color: #ffffff;
+    color: #52682D;
+    border: 1px solid #c7d8a4;
+    padding: 1.5rem 2rem;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.1);
+  }
+
+  .thought-bubble::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    bottom: 20px;
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 50%;
+  }
+
+  .thought-bubble::after {
+    content: '';
+    position: absolute;
+    left: -24px;
+    bottom: 12px;
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 50%;
+  }
+
+  .speech-bubble {
+    position: relative;
+    background-color: #52682D;
+    color: white;
+    padding: 1.5rem 2rem;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.2);
+  }
+
+  .speech-bubble::before {
+    content: '';
+    position: absolute;
+    right: -10px;
+    bottom: 20px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid #52682D;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
+
+  .bubble-content {
+    color: white;
+  }
+
+  .bubble-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .bubble-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .gif-sidebar {
+    position: sticky;
+    top: 2rem;
+  }
+
+  .gif-container {
+    background-color: #f3f7ec;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.1);
+  }
+
+  .sidebar-gif {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  } 
+
+  @media (max-width: 768px) {
+    .back-link {
+      display: block;
+      text-align: center;
+    }
+
+    .content-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .gif-sidebar {
+      position: static;
+      order: -1;
+    }
+
+    .header-icon {
+      width: 120px;
+      height: 120px;
+    }
+
+    .header-tagline {
+      font-size: 1.2rem;
+    }
+
+    .bubble-wrapper {
+      max-width: 100%;
+    }
+  }
+</style>

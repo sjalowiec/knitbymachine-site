@@ -1,0 +1,67 @@
+:root {
+  --kbm-green: #52682d;
+  --kbm-green-2: #738c52;
+  --kbm-bg: #e9ece7;
+  --page-bg: #f7f8f7;
+  --ring: #e5e8e0;
+  --font: "Poppins", system-ui, Arial, sans-serif;
+
+  /* Layout spacing */
+  --header-height: 6rem; /* used to offset fixed header */
+  --max-content-width: 1100px;
+
+  /* Typography scaling */
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-xxl: 2.25rem;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--kbm-green);
+  background: var(--page-bg);
+  line-height: 1.5;
+}
+
+/* Global layout container */
+main {
+  padding-top: var(--header-height); /* ensures header doesn't overlap content */
+  max-width: var(--max-content-width);
+  margin: 0 auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font);
+  color: var(--kbm-green);
+  margin-top: 0;
+}
+
+h1 {
+  font-size: var(--text-xxl);
+  font-weight: 600;
+}
+
+h2 {
+  font-size: var(--text-xl);
+  font-weight: 600;
+}
+
+p {
+  font-size: var(--text-base);
+  margin-bottom: 1rem;
+}
+
+/* Mobile typography scaling */
+@media (max-width: 768px) {
+  :root {
+    --header-height: 8rem;
+    --text-base: 0.95rem;
+    --text-xl: 1.25rem;
+    --text-xxl: 1.75rem;
+  }
+}

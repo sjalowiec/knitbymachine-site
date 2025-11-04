@@ -1,0 +1,19 @@
+{
+  "title": "Test Entry for Batching System",
+  "slug": "test-entry-for-batching-system",
+  "category": "Ask 'n Answer (ANA)",
+  "tags": [],
+  "isMemberOnly": false,
+  "videoUrl": "",
+  "imageUrl": "",
+  "imageAlt": "",
+  "wizardUrl": "",
+  "metaTitle": "",
+  "metaDescription": "",
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "body": "This is a test answer to verify the batching system works correctly.",
+  "isDraft": false,
+  "publishedDate": "2025-11-03",
+  "pendingPublish": false
+}

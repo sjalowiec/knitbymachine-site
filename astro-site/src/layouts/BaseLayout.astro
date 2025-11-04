@@ -1,0 +1,60 @@
+---
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = "Knit by Machine", description = "Machine knitting tools and patterns" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+
+    <!-- Fonts & icons -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Shadows+Into+Light+Two&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      @media print {
+        /* Hide header and footer when printing */
+        .kbm-header-wrap,
+        footer {
+          display: none !important;
+        }
+        
+        /* Optimize main content for printing */
+        main {
+          padding: 0;
+        }
+        
+        /* Remove page margins for print */
+        body {
+          margin: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <Header />
+
+    <main>
+      <slot /> <!-- Page content goes here -->
+    </main>
+
+    <Footer />
+  </body>
+</html>

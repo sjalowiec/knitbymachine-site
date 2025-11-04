@@ -1,0 +1,77 @@
+---
+// Reusable Action Bar component for wizards
+// Fixed floating buttons in bottom-right corner (Start Over, Print)
+---
+
+<div id="action-bar" class="wizard-action-bar no-print" style="display: none;">
+  <button class="wizard-action-btn" id="start-over-btn" data-testid="button-start-over">
+    <i class="fas fa-redo"></i> Start Over
+  </button>
+  <button class="wizard-action-btn" id="print-btn" data-testid="button-print" style="display: none;">
+    <i class="fas fa-print"></i> Print
+  </button>
+</div>
+
+<style>
+.wizard-action-bar {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  pointer-events: none;
+}
+
+.wizard-action-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--kbm-green);
+  color: white;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-size: 0.95rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  pointer-events: auto;
+  min-width: 160px;
+}
+
+.wizard-action-btn:hover {
+  background: #6E8B3D;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(82, 104, 45, 0.35);
+}
+
+.wizard-action-btn:active {
+  transform: translateY(0);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .wizard-action-bar {
+    bottom: 15px;
+    right: 15px;
+    gap: 0.6rem;
+  }
+  
+  .wizard-action-btn {
+    min-width: 140px;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.9rem;
+  }
+}
+</style>
