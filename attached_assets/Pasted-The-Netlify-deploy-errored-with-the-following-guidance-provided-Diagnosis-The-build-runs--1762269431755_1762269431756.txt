@@ -1,0 +1,73 @@
+The Netlify deploy errored, with the following guidance provided:
+
+Diagnosis  
+- The build runs `npm run build`, but npm cannot find `/package.json`, so the command fails with `ENOENT` ([lines 45-49](#L45-L49)). This indicates the Netlify build is executing in a directory that does not contain a `package.json`.
+
+Solution  
+1. In your repository, confirm where `package.json` actually lives (e.g., root, `app/`, `frontend/`, etc.).  
+2. Update Netlify to run the build from that directory: either  
+   - Set the “Base directory” in the Netlify UI to the folder containing `package.json`, or  
+   - Add a `netlify.toml` with the correct base/command, for example (adjust the folder names to match your project):  
+     ```toml
+     [build]
+       base = "frontend"
+       command = "npm run build"
+       publish = "frontend/dist"
+     ```  
+3. If the file truly is missing, add/commit the `package.json` to the repo so the build can install dependencies and run the script.
+
+The relevant error logs are:
+
+Line 0: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 1: build-image version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04 (noble)
+Line 2: buildbot version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04
+Line 3: Building without cache
+Line 4: Starting to prepare the repo for build
+Line 5: No cached dependencies found. Cloning fresh repo
+Line 6: git clone --filter=blob:none https://github.com/sjalowiec/knitbymachine-site
+Line 7: Preparing Git Reference refs/heads/main
+Line 8: Starting to install dependencies
+Line 9: v22.21.1 is already installed.
+Line 10: Now using node v22.21.1 (npm v10.9.4)
+Line 35: [36m[1m❯ Config file[22m[39m
+Line 36:   No config file was defined: using default values.
+Line 37: [36m[1m​[22m[39m
+Line 38: [36m[1m❯ Context[22m[39m
+Line 39:   production
+Line 40: [96m[1m​[22m[39m
+Line 41: [96m[1mBuild command from Netlify app                                [22m[39m
+Line 42: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 43: ​
+Line 44: [36m$ npm run build[39m
+Line 45: npm error code ENOENT
+Line 46: npm error syscall open
+Line 47: npm error path /opt/build/repo/package.json
+Line 48: npm error errno -2
+Line 49: npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/opt/build/repo/package.json'
+Line 50: npm error enoent This is related to npm not being able to find a file.
+Line 51: npm error enoent
+Line 52: npm error A complete log of this run can be found in: /opt/buildhome/.npm/_logs/2025-11-04T15_15_59_620Z-debug-0.log
+Line 53: [91m[1m​[22m[39m
+Line 54: [91m[1m"build.command" failed                                        [22m[39m
+Line 55: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 56: ​
+Line 57:   [31m[1mError message[22m[39m
+Line 58:   Command failed with exit code 254: npm run build
+Line 59: ​
+Line 60:   [31m[1mError location[22m[39m
+Line 61:   In Build command from Netlify app:
+Line 62:   npm run build
+Line 63: ​
+Line 64:   [31m[1mResolved config[22m[39m
+Line 65:   build:
+Line 66:     command: npm run build
+Line 67:     commandOrigin: ui
+Line 68:     environment:
+Line 69:       - GITHUB_CLIENT_ID
+Line 70:       - GITHUB_CLIENT_SECRET
+Line 71:       - GITHUB_TOKEN
+Line 72:     publish: /opt/build/repo/dist
+Line 73:     publishOrigin: ui
+Line 74: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 75: Failing build: Failed to build site
+Line 76: Finished processing build request in 6.879s
