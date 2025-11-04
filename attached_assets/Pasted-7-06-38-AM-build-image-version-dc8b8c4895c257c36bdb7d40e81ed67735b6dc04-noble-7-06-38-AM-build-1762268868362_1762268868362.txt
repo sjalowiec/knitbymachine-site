@@ -1,0 +1,118 @@
+7:06:38 AM: build-image version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04 (noble)
+7:06:38 AM: buildbot version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04
+7:06:38 AM: Building without cache
+7:06:38 AM: Starting to prepare the repo for build
+7:06:38 AM: No cached dependencies found. Cloning fresh repo
+7:06:38 AM: git clone --filter=blob:none https://github.com/sjalowiec/knitbymachine-site
+7:06:38 AM: Preparing Git Reference refs/heads/main
+7:06:39 AM: Custom build command detected. Proceeding with the specified command: 'cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build'
+7:06:40 AM: Starting to install dependencies
+7:06:41 AM: v22.21.1 is already installed.
+7:06:42 AM: Now using node v22.21.1 (npm v10.9.4)
+7:06:42 AM: Enabling Node.js Corepack
+7:06:42 AM: Started restoring cached build plugins
+7:06:42 AM: Finished restoring cached build plugins
+7:06:42 AM: Successfully installed dependencies
+7:06:42 AM: Starting build script
+7:06:42 AM: Detected 1 framework(s)
+7:06:42 AM: "astro" at version "unknown"
+7:06:42 AM: Section completed: initializing
+7:06:44 AM: ​
+7:06:44 AM: Netlify Build                                                 
+7:06:44 AM: ────────────────────────────────────────────────────────────────
+7:06:44 AM: ​
+7:06:44 AM: ❯ Version
+7:06:44 AM:   @netlify/build 35.3.0
+7:06:44 AM: ​
+7:06:44 AM: ❯ Flags
+7:06:44 AM:   accountId: 68c6b7a4e040822e80335f8f
+7:06:44 AM:   baseRelDir: true
+7:06:44 AM:   buildId: 690a167cfd52230699cf5942
+7:06:44 AM:   deployId: 690a167cfd52230699cf5944
+7:06:44 AM: ​
+7:06:44 AM: ❯ Current directory
+7:06:44 AM:   /opt/build/repo
+7:06:44 AM: ​
+7:06:44 AM: ❯ Config file
+7:06:44 AM:   /opt/build/repo/netlify.toml
+7:06:44 AM: ​
+7:06:44 AM: ❯ Context
+7:06:44 AM:   production
+7:06:44 AM: ​
+7:06:44 AM: build.command from netlify.toml                               
+7:06:44 AM: ────────────────────────────────────────────────────────────────
+7:06:44 AM: ​
+7:06:44 AM: $ cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build
+7:07:02 AM: npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+7:07:02 AM: added 741 packages, and audited 743 packages in 18s
+7:07:02 AM: 232 packages are looking for funding
+7:07:02 AM:   run `npm fund` for details
+7:07:02 AM: found 0 vulnerabilities
+7:07:02 AM: > knitbymachine-website@1.0.0 build
+7:07:02 AM: > astro build
+7:07:03 AM: 15:07:03 [@astrojs/netlify] Enabling sessions with Netlify Blobs
+7:07:03 AM: Auto-generating collections for folders in "src/content/" that are not defined as collections.
+7:07:03 AM: This is deprecated, so you should define these collections yourself in "src/content.config.ts".
+7:07:03 AM: The following collections have been auto-generated: ana
+7:07:03 AM: 15:07:03 [content] Syncing content
+7:07:03 AM: 15:07:03 [content] Synced content
+7:07:03 AM: 15:07:03 [types] Generated 170ms
+7:07:03 AM: 15:07:03 [build] output: "server"
+7:07:03 AM: 15:07:03 [build] mode: "server"
+7:07:03 AM: 15:07:03 [build] directory: /opt/build/repo/dist/
+7:07:03 AM: 15:07:03 [build] adapter: @astrojs/netlify
+7:07:03 AM: 15:07:03 [build] Collecting build info...
+7:07:03 AM: 15:07:03 [build] ✓ Completed in 192ms.
+7:07:03 AM: 15:07:03 [build] Building server entrypoints...
+7:07:04 AM: 15:07:04 [ERROR] [vite] ✗ Build failed in 522ms
+7:07:04 AM: [astro:build] Failed to load PostCSS config (searchPath: /opt/build/repo): [Error] Loading PostCSS Plugin failed: Cannot find module 'tailwindcss'
+7:07:04 AM: Require stack:
+7:07:04 AM: - /opt/build/repo/postcss.config.js
+7:07:04 AM: (@/opt/build/repo/postcss.config.js)
+7:07:04 AM: Error: Loading PostCSS Plugin failed: Cannot find module 'tailwindcss'
+7:07:04 AM: Require stack:
+7:07:04 AM: - /opt/build/repo/postcss.config.js
+7:07:04 AM: (@/opt/build/repo/postcss.config.js)
+7:07:04 AM:     at load (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:11776:11)
+7:07:04 AM:     at async Promise.all (index 0)
+7:07:04 AM:     at async plugins (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:11805:12)
+7:07:04 AM:     at async processResult (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:11876:14)
+7:07:04 AM: file: /opt/build/repo/src/pages/ana-catalog.astro:97:0
+7:07:04 AM:   Location:
+7:07:04 AM:     /opt/build/repo/src/pages/ana-catalog.astro:97:0
+7:07:04 AM:   Stack trace:
+7:07:04 AM:     at load (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:11776:11)
+7:07:04 AM:     at async plugins (file:///opt/build/repo/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:11805:12)
+7:07:04 AM:     at enhanceCSSError (file:///opt/build/repo/node_modules/astro/dist/core/compile/style.js:73:10)
+7:07:04 AM: ​
+7:07:04 AM: "build.command" failed                                        
+7:07:04 AM: ────────────────────────────────────────────────────────────────
+7:07:04 AM: ​
+7:07:04 AM:   Error message
+7:07:04 AM:   Command failed with exit code 1: cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build (https://ntl.fyi/exit-code-1)
+7:07:04 AM: ​
+7:07:04 AM:   Error location
+7:07:04 AM:   In build.command from netlify.toml:
+7:07:04 AM:   cp astro-package.json package.json && npm install --legacy-peer-deps && npm run build
+7:07:04 AM: ​
+7:07:04 AM:   Resolved config
+7:07:04 AM:   build:
+7:07:04 AM:     command: cp astro-package.json package.json && npm install --legacy-peer-deps &&
+7:07:04 AM:       npm run build
+7:07:04 AM:     commandOrigin: config
+7:07:04 AM:     environment:
+7:07:04 AM:       - GITHUB_CLIENT_ID
+7:07:04 AM:       - GITHUB_CLIENT_SECRET
+7:07:04 AM:       - GITHUB_TOKEN
+7:07:04 AM:       - NODE_VERSION
+7:07:04 AM:     publish: /opt/build/repo/dist
+7:07:04 AM:     publishOrigin: config
+7:07:04 AM:   redirects:
+7:07:04 AM:     - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+7:07:04 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+7:07:05 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+7:07:05 AM: Failing build: Failed to build site
+7:07:05 AM: Finished processing build request in 26.844s
