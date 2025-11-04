@@ -9,6 +9,9 @@ drizzle.config.ts
 vite.config.ts
 vite.config.ts.*
 
+# BUT allow Astro package.json for Netlify
+!astro-package.json
+
 # Dependencies & Build
 node_modules
 dist

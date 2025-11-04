@@ -1,0 +1,12 @@
+[build]
+  # Copy Astro package.json before building
+  command = "cp astro-package.json package.json && npm install && npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
