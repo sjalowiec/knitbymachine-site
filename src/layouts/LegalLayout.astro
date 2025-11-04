@@ -1,0 +1,94 @@
+---
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+
+const { title = "Page", updated } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>{title} | Knit by Machine</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <style is:global>
+      :root{
+        --kbm-green:#52682d;
+        --kbm-green-2:#738c52;
+        --kbm-bg:#e9ece7;
+        --page-bg:#f7f8f7;
+        --ring:#e5e8e0;
+        --kbm-header-offset: 120px;
+      }
+      body{
+        margin:0;
+        color:#1f2937;
+        background:var(--page-bg);
+        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+        line-height:1.65;
+      }
+      .kbm-legal-wrap{
+        max-width: 860px;
+        padding: calc(var(--kbm-header-offset, 120px) + 24px) 20px 80px;
+        margin: 0 auto;
+      }
+      .kbm-breadcrumb{
+        font-size:.9rem;
+        margin-bottom: 1rem;
+        color:#6b7280;
+      }
+      .kbm-legal h1{
+        font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+        line-height:1.2;
+        margin: 0 0 .75rem 0;
+        letter-spacing: .2px;
+      }
+      .kbm-legal .meta{
+        color:#6b7280;
+        font-size:.95rem;
+        margin-bottom: 2rem;
+      }
+      .kbm-legal h2{
+        font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+        margin: 2rem 0 .5rem;
+      }
+      .kbm-legal h3{
+        font-size:1.1rem;
+        margin: 1.25rem 0 .25rem;
+      }
+      .kbm-legal p{ margin: .75rem 0; }
+      .kbm-legal ul, .kbm-legal ol{
+        padding-left: 1.2rem;
+        margin: .5rem 0 1rem;
+      }
+      .kbm-legal a{ color: var(--kbm-green); text-decoration: underline; }
+      .kbm-card{
+        background:#fff; border:1px solid #e5e7eb;
+        border-radius:16px; padding:24px 22px;
+        box-shadow: 0 4px 10px rgba(0,0,0,.06);
+      }
+      .kbm-toc{
+        background:#fff; border:1px solid #e5e7eb;
+        border-radius:12px; padding:14px 16px; margin: 0 0 24px 0;
+      }
+      .kbm-toc details summary{ cursor:pointer; font-weight:600; }
+      .kbm-toc nav a{ display:block; padding:6px 0; text-decoration:none; }
+      .kbm-note{
+        background: #f3f4f6; border-left: 4px solid var(--kbm-green);
+        padding: 12px 14px; border-radius: 8px; margin: 16px 0;
+        font-size:.95rem;
+      }
+    </style>
+  </head>
+  <body>
+    <Header />
+    <main class="kbm-legal-wrap">
+      <div class="kbm-legal">
+        <div class="kbm-breadcrumb">Knit by Machine ▸ {title}</div>
+        <h1>{title}</h1>
+        {updated && <div class="meta">Last updated: {updated}</div>}
+        <slot />
+      </div>
+    </main>
+    <Footer />
+  </body>
+</html>
