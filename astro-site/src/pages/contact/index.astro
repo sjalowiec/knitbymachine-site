@@ -1,196 +1,176 @@
 ---
+import Layout from "../../layouts/layout.astro";
 const supportEmail = "sue@knitbymachine.com";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Contact Us | Knit by Machine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      :root {
-        --kbm-green: #52682d;
-        --kbm-green-2: #738c52;
-        --page-bg: #f7f8f7;
-      }
+<Layout>
+  <style>
+    main {
+      max-width: 900px;
+      padding: 60px 20px;
+      margin: 0 auto;
+    }
 
-      body {
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        line-height: 1.6;
-        margin: 0;
-        background: var(--page-bg);
-        color: #1f2937;
-        font-size: 1rem;
-      }
+    h1 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #2C3A57;
+      margin-bottom: 1rem;
+    }
 
-      main {
-        max-width: 900px;
-        padding: 60px 20px;
-        margin: 0 auto;
-      }
+    h2 {
+      font-size: 1.5rem;
+      color: var(--kbm-green);
+      margin-bottom: 0.5rem;
+    }
 
-      h1 {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #2C3A57;
-        margin-bottom: 1rem;
-      }
+    .intro-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
 
-      h2 {
-        font-size: 1.5rem;
-        color: var(--kbm-green);
-        margin-bottom: 0.5rem;
-      }
+    .intro-icon img {
+      width: 100%;
+      max-width: 120px;
+      display: block;
+    }
 
-      .intro-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1.5rem;
-        align-items: flex-start;
-        margin-bottom: 1rem;
-      }
+    .direct-email {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
 
-      .intro-icon img {
-        width: 100%;
-        max-width: 120px;
-        display: block;
-      }
+    .direct-email a {
+      color: #2C3A57;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-weight: 500;
+    }
 
-      .direct-email {
-        margin-top: 1rem;
-        font-size: 0.95rem;
-      }
+    .contact-wrap {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 2rem 1rem 3rem;
+      text-align: left;
+    }
 
-      .direct-email a {
-        color: #2C3A57;
-        text-decoration: underline;
-        text-underline-offset: 2px;
-        font-weight: 500;
-      }
+    /* ===== ActiveCampaign form cleanup ===== */
+    #_form_3_ {
+      max-width: 640px;
+      margin: 1.5rem auto;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid #e5e8e0;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+      padding: 2rem;
+    }
 
-      .contact-wrap {
-        max-width: 680px;
-        margin: 0 auto;
-        padding: 2rem 1rem 3rem;
-        text-align: left;
-      }
+    #_form_3_ input,
+    #_form_3_ textarea {
+      font-size: 1rem;
+      border-radius: 6px;
+    }
 
-      /* ===== ActiveCampaign form cleanup ===== */
-      #_form_3_ {
-        max-width: 640px;
-        margin: 1.5rem auto;
-        background: #fff;
-        border-radius: 12px;
-        border: 1px solid #e5e8e0;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        padding: 2rem;
-      }
+    #_form_3_ ._submit {
+      background-color: var(--kbm-green) !important;
+      color: #fff !important;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      padding: 0.75rem 1.25rem;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    }
 
-      #_form_3_ input,
-      #_form_3_ textarea {
-        font-size: 1rem;
-        border-radius: 6px;
-      }
+    #_form_3_ ._submit:hover {
+      background-color: var(--kbm-green-2) !important;
+    }
 
-      #_form_3_ ._submit {
-        background-color: var(--kbm-green) !important;
-        color: #fff !important;
-        font-weight: 600;
-        border: none;
-        border-radius: 8px;
-        padding: 0.75rem 1.25rem;
-        font-size: 1rem;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-      }
+    /* ===== Thank-You Styling with Envelope Image ===== */
+    #_form_3_ ._form-thank-you {
+      display: none !important;
+      background: #f6f8f5;
+      border: 2px solid var(--kbm-green);
+      border-radius: 12px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: #2C3A57;
+      font-size: 1.1rem;
+      font-weight: 500;
+      line-height: 1.6;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
 
-      #_form_3_ ._submit:hover {
-        background-color: var(--kbm-green-2) !important;
-      }
+    /* Show after submit */
+    #_form_3_ ._form-thank-you[style*="display: block"] {
+      display: block !important;
+      animation: fadeInUp 0.6s ease both;
+      position: relative;
+    }
 
-      /* ===== Thank-you message styling ===== */
-     /* ===== Thank-You Styling with Envelope Image ===== */
-#_form_3_ ._form-thank-you {
-  display: none !important;
-  background: #f6f8f5;
-  border: 2px solid var(--kbm-green);
-  border-radius: 12px;
-  padding: 2rem 1.5rem;
-  text-align: center;
-  color: #2C3A57;
-  font-size: 1.1rem;
-  font-weight: 500;
-  line-height: 1.6;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
-}
+    /* Add your envelope image above the text */
+    #_form_3_ ._form-thank-you[style*="display: block"]::before {
+      content: "";
+      display: block;
+      width: 72px;
+      height: 72px;
+      margin: 0 auto 1rem;
+      background-image: url("/envelope.png");
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: center;
+      opacity: 0.9;
+    }
 
-/* Show after submit */
-#_form_3_ ._form-thank-you[style*="display: block"] {
-  display: block !important;
-  animation: fadeInUp 0.6s ease both;
-  position: relative;
-}
+    /* Fallback message if AC doesn't inject text */
+    #_form_3_ ._form-thank-you[style*="display: block"]:empty::after {
+      content: "Thanks — your message has been sent. A real person at Knit by Machine will reply within 1–2 business days.";
+      white-space: pre-line;
+      display: block;
+      margin-top: 0.25rem;
+    }
 
-/* Add your envelope image above the text */
-#_form_3_ ._form-thank-you[style*="display: block"]::before {
-  content: "";
-  display: block;
-  width: 72px;
-  height: 72px;
-  margin: 0 auto 1rem;
-  background-image: url("/envelope.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  opacity: 0.9;
-}
+    /* Clean ActiveCampaign footer */
+    #_form_3_ ._form-branding {
+      text-align: center !important;
+      font-size: 0.8rem !important;
+      color: #6b7280 !important;
+      margin-top: 1.5rem !important;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      padding-top: 0.75rem;
+    }
 
-/* Fallback message if AC doesn’t inject text */
-#_form_3_ ._form-thank-you[style*="display: block"]:empty::after {
-  content: "Thanks — your message has been sent. A real person at Knit by Machine will reply within 1–2 business days.";
-  white-space: pre-line;
-  display: block;
-  margin-top: 0.25rem;
-}
+    /* Subtle fade-in animation */
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 
-/* Clean ActiveCampaign footer */
-#_form_3_ ._form-branding {
-  text-align: center !important;
-  font-size: 0.8rem !important;
-  color: #6b7280 !important;
-  margin-top: 1.5rem !important;
-  border-top: 1px solid rgba(0,0,0,0.08);
-  padding-top: 0.75rem;
-}
-
-/* Subtle fade-in animation */
-@keyframes fadeInUp {
-  from { opacity: 0; transform: translateY(16px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-    </style>
-  </head>
-
-  <body>
-    <main>
-      <h1>Contact Us</h1>
-      <div class="intro-row">
-        <div class="intro-icon">
-          <img src="/envelope.png" alt="Envelope icon" />
-        </div>
-        <div class="intro-copy">
-          <p>We’d love to hear from you! Whether you have a question about Knit by Machine, need help with your membership, or just want to say hello, you can reach us using the form below.</p>
-          <p>We try to respond within 1–2 business days.</p>
-          <div class="direct-email">
-            Prefer email? Reach us directly at
-            <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
-          </div>
-        </div>
+  <h1>Contact Us</h1>
+  <div class="intro-row">
+    <div class="intro-icon">
+      <img src="/envelope.png" alt="Envelope icon" />
+    </div>
+    <div class="intro-copy">
+      <p>We'd love to hear from you! Whether you have a question about Knit by Machine, need help with your membership, or just want to say hello, you can reach us using the form below.</p>
+      <p>We try to respond within 1–2 business days.</p>
+      <div class="direct-email">
+        Prefer email? Reach us directly at
+        <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
       </div>
+    </div>
+  </div>
 
-      <section class="contact-wrap">
-        <h2>Send a message</h2>
+  <section class="contact-wrap">
+    <h2>Send a message</h2>
+    <p>Use this form to contact Knit by Machine support. A real person will read it and reply.</p>
+
+    <style>@import url(https://fonts.bunny.net/css?family=ibm-plex-sans:400,600);</style>
         <p>Use this form to contact Knit by Machine support. A real person will read it and reply.</p>
 
         <style>@import url(https://fonts.bunny.net/css?family=ibm-plex-sans:400,600);</style>
@@ -840,3 +820,4 @@ window._load_script = function(url, callback, isSubmit) {
     </main>
   </body>
 </html>
+</Layout>
