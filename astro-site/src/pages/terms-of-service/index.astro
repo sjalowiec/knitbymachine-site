@@ -1,207 +1,186 @@
 ---
+import Layout from "../../layouts/layout.astro";
 const updated = "October 3, 2025";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>Terms of Service | Knit by Machine</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <style>
-      :root {
-        --kbm-green: #52682d;
-        --kbm-green-2: #738c52;
-        --page-bg: #f7f8f7;
+<Layout>
+  <style>
+    main {
+      max-width: 860px;
+      padding: 80px 20px;
+      margin: 0 auto;
+    }
+    .kbm-breadcrumb {
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+      color: #6b7280;
+    }
+    .kbm-legal h1 {
+      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      line-height: 1.2;
+      margin: 0 0 0.75rem 0;
+    }
+    .meta {
+      color: #6b7280;
+      font-size: 0.95rem;
+      margin-bottom: 2rem;
+    }
+    .kbm-card {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 24px 22px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
+    }
+    .kbm-toc {
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 0 0 24px 0;
+    }
+    .kbm-toc-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 10px;
+    }
+    .kbm-toc a {
+      display: block;
+      padding: 6px 8px;
+      border-radius: 6px;
+      color: #1f2937;
+      text-decoration: none;
+      font-size: 0.94rem;
+      transition: background 0.15s ease;
+    }
+    .kbm-toc a:hover {
+      background: #f3f4f6;
+      color: var(--kbm-green);
+    }
+    h2 {
+      margin-top: 2rem;
+      font-size: 1.5rem;
+    }
+    p,
+    ul {
+      margin: 1rem 0;
+      color: #374151;
+    }
+    ul {
+      padding-left: 1.5rem;
+    }
+    li {
+      margin: 0.5rem 0;
+    }
+    .print-btn {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--kbm-green);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 54px;
+      height: 54px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-size: 1.5rem;
+      transition: background 0.2s ease;
+      z-index: 999;
+    }
+    .print-btn:hover {
+      background: var(--kbm-green-2);
+    }
+    @media print {
+      .print-btn {
+        display: none;
       }
-      body {
-        font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-        line-height: 1.65;
-        margin: 0;
-        background: var(--page-bg);
-        color: #1f2937;
-      }
-      main {
-        max-width: 860px;
-        padding: 80px 20px;
-        margin: 0 auto;
-      }
-      .kbm-breadcrumb {
-        font-size: 0.9rem;
-        margin-bottom: 1rem;
-        color: #6b7280;
-      }
-      .kbm-legal h1 {
-        font-size: clamp(1.8rem, 3.5vw, 2.4rem);
-        line-height: 1.2;
-        margin: 0 0 0.75rem 0;
-      }
-      .meta {
-        color: #6b7280;
-        font-size: 0.95rem;
-        margin-bottom: 2rem;
-      }
-      .kbm-card {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 24px 22px;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06);
-      }
-      .kbm-toc {
-        background: #fff;
-        border: 1px solid #e5e7eb;
-        border-radius: 12px;
-        padding: 14px 16px;
-        margin: 0 0 24px 0;
-      }
-      .kbm-toc details summary {
-        cursor: pointer;
-        font-weight: 600;
-      }
-      .kbm-toc nav a {
-        display: block;
-        padding: 6px 0;
-        text-decoration: none;
-        color: var(--kbm-green);
-      }
-      .kbm-toc nav a:hover {
-        text-decoration: underline;
-      }
+    }
+  </style>
 
-      /* Back-to-top button */
-      #kbm-top {
-        position: fixed;
-        bottom: 30px;
-        right: 30px;
-        width: 46px;
-        height: 46px;
-        border: none;
-        border-radius: 50%;
-        background: var(--kbm-green);
-        color: #fff;
-        font-size: 1.5rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
-        opacity: 0;
-        visibility: hidden;
-        transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.2s ease;
-        z-index: 9999;
-      }
-      #kbm-top.show {
-        opacity: 1;
-        visibility: visible;
-      }
-      #kbm-top:hover {
-        background: var(--kbm-green-2);
-        transform: translateY(-3px);
-      }
-    </style>
-  </head>
+  <p class="kbm-breadcrumb">
+    <a href="/" style="color:#6b7280; text-decoration:none">Home</a> / Terms of Service
+  </p>
 
-  <body>
-    <main>
-      <div class="kbm-legal">
-        <div class="kbm-breadcrumb">Knit by Machine ▸ Terms of Service</div>
-        <h1>Terms of Service</h1>
-        <div class="meta">Last updated: {updated}</div>
+  <div class="kbm-legal">
+    <h1>Terms of Service</h1>
+    <p class="meta">Last updated: {updated}</p>
 
-        <aside class="kbm-toc">
-          <details open>
-            <summary>On this page</summary>
-            <nav>
-              <a href="#eligibility">1. Eligibility</a>
-              <a href="#use-of-services">2. Use of Services</a>
-              <a href="#accounts">3. Accounts</a>
-              <a href="#payments">4. Memberships, Purchases, and Payments</a>
-              <a href="#ip">5. Intellectual Property</a>
-              <a href="#user-content">6. User Content</a>
-              <a href="#warranty">7. Disclaimer of Warranties</a>
-              <a href="#liability">8. Limitation of Liability</a>
-              <a href="#changes">9. Changes to These Terms</a>
-              <a href="#termination">10. Termination</a>
-              <a href="#law">11. Governing Law</a>
-              <a href="#contact">12. Contact Us</a>
-            </nav>
-          </details>
-        </aside>
+    <div class="kbm-toc">
+      <div class="kbm-toc-title">Jump to section</div>
+      <a href="#acceptance">Acceptance of Terms</a>
+      <a href="#use-license">Use License</a>
+      <a href="#prohibited">Prohibited Uses</a>
+      <a href="#intellectual">Intellectual Property</a>
+      <a href="#liability">Limitation of Liability</a>
+      <a href="#changes">Changes to Terms</a>
+      <a href="#contact">Contact Us</a>
+    </div>
 
-        <section class="kbm-card">
-          <h2 id="eligibility">1. Eligibility</h2>
-          <p>You must be at least 18 years old (or the age of majority in your jurisdiction) to use our Services. By using our site, you confirm that you meet this requirement.</p>
+    <div class="kbm-card">
+      <p>
+        Welcome to <strong>Knit by Machine</strong>. By using our website and
+        services, you agree to these Terms of Service. Please read them carefully.
+      </p>
 
-          <h2 id="use-of-services">2. Use of Services</h2>
-          <p>You may use our Services for personal, non-commercial purposes only, unless we give written permission otherwise. You agree not to misuse our Services, including attempting to interfere with their operation, accessing them using automated means, or using them in a way that violates any laws.</p>
+      <h2 id="acceptance">1. Acceptance of Terms</h2>
+      <p>
+        By accessing or using our website, you agree to be bound by these Terms of
+        Service and all applicable laws and regulations.
+      </p>
 
-          <h2 id="accounts">3. Accounts</h2>
-          <p>Some Services may require creating an account. You are responsible for:</p>
-          <ul>
-            <li>Keeping your login details secure</li>
-            <li>All activities that occur under your account</li>
-            <li>Not sharing your account with others without our permission</li>
-          </ul>
-          <p>We may suspend or terminate accounts that violate these Terms.</p>
+      <h2 id="use-license">2. Use License</h2>
+      <p>
+        Permission is granted to temporarily download one copy of the materials on
+        Knit by Machine's website for personal, non-commercial use only. This is the
+        grant of a license, not a transfer of title.
+      </p>
+      <p>Under this license you may not:</p>
+      <ul>
+        <li>Modify or copy the materials;</li>
+        <li>Use the materials for any commercial purpose or for any public display;</li>
+        <li>Attempt to reverse engineer any software contained on Knit by Machine's website;</li>
+        <li>Remove any copyright or other proprietary notations from the materials.</li>
+      </ul>
 
-          <h2 id="payments">4. Memberships, Purchases, and Payments</h2>
-          <p>If you purchase a membership, course, pattern, or other digital product:</p>
-          <ul>
-            <li>All prices are shown in USD and subject to change</li>
-            <li>Payments are processed through secure third-party providers</li>
-            <li>Memberships are billed according to the plan you choose</li>
-            <li>Refunds are subject to our Refund Policy</li>
-          </ul>
+      <h2 id="prohibited">3. Prohibited Uses</h2>
+      <p>You may not use our website:</p>
+      <ul>
+        <li>In any way that violates any applicable law or regulation;</li>
+        <li>To transmit, or procure the sending of, any advertising or promotional material;</li>
+        <li>To impersonate or attempt to impersonate Knit by Machine or another user.</li>
+      </ul>
 
-          <h2 id="ip">5. Intellectual Property</h2>
-          <p>All content on our site—including patterns, videos, images, text, and tools—is owned by us or our licensors and is protected by copyright and other laws. Limited personal use is permitted for your own knitting and learning. You may not copy, redistribute, or create derivative works without our written consent.</p>
+      <h2 id="intellectual">4. Intellectual Property</h2>
+      <p>
+        All content, including but not limited to text, graphics, logos, and images,
+        is the property of Knit by Machine and is protected by copyright and other
+        intellectual property laws.
+      </p>
 
-          <h2 id="user-content">6. User Content</h2>
-          <p>If you submit comments, project photos, or other content:</p>
-          <ul>
-            <li>You retain ownership of your content</li>
-            <li>You grant us a non-exclusive, royalty-free license to display and share your content in connection with the Services</li>
-            <li>You agree not to submit anything unlawful, harmful, or infringing</li>
-          </ul>
+      <h2 id="liability">5. Limitation of Liability</h2>
+      <p>
+        In no event shall Knit by Machine or its suppliers be liable for any damages
+        (including, without limitation, damages for loss of data or profit) arising
+        out of the use or inability to use the materials on our website.
+      </p>
 
-          <h2 id="warranty">7. Disclaimer of Warranties</h2>
-          <p>Our Services are provided “as is” and “as available.” We do not guarantee that the Services will be error-free, uninterrupted, or suitable for every purpose. Use is at your own risk.</p>
+      <h2 id="changes">6. Changes to Terms</h2>
+      <p>
+        We may revise these Terms of Service at any time without notice. By using
+        this website you agree to be bound by the current version of these Terms of
+        Service.
+      </p>
 
-          <h2 id="liability">8. Limitation of Liability</h2>
-          <p>To the fullest extent allowed by law, we are not liable for any indirect, incidental, or consequential damages resulting from your use of the Services.</p>
+      <h2 id="contact">7. Contact Us</h2>
+      <p>
+        If you have any questions about these Terms of Service, please contact us at <a href="mailto:contact@knitbymachine.com">contact@knitbymachine.com</a>.
+      </p>
+    </div>
+  </div>
 
-          <h2 id="changes">9. Changes to These Terms</h2>
-          <p>We may update these Terms from time to time. The “Effective Date” above will reflect the latest version. Continued use of our Services after changes means you accept the updated Terms.</p>
-
-          <h2 id="termination">10. Termination</h2>
-          <p>We may suspend or terminate your access to the Services at any time, without notice, if we believe you have violated these Terms.</p>
-
-          <h2 id="law">11. Governing Law</h2>
-          <p>These Terms are governed by the laws of the State of California, United States, without regard to its conflict of law provisions.</p>
-
-          <h2 id="contact">12. Contact Us</h2>
-          <p>If you have questions about these Terms, please contact us at:</p>
-          <p><a href="mailto:contact@KnitbyMachine.com">contact@KnitbyMachine.com</a></p>
-        </section>
-      </div>
-
-      <button id="kbm-top" aria-label="Back to top">↑</button>
-
-      <script>
-        const topBtn = document.getElementById("kbm-top");
-
-        window.addEventListener("scroll", () => {
-          if (window.scrollY > 200) {
-            topBtn.classList.add("show");
-          } else {
-            topBtn.classList.remove("show");
-          }
-        });
-
-        topBtn.addEventListener("click", () => {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        });
-      </script>
-    </main>
-  </body>
-</html>
+  <button class="print-btn" onclick="window.print()" aria-label="Print this page">🖨</button>
+</Layout>
