@@ -1,0 +1,288 @@
+---
+export const prerender = false;
+
+import "../../styles/global.css";
+import { sanity } from "../../lib/sanity";
+import type { GlossaryTerm } from "../../types/sanity";
+
+const url = new URL(Astro.request.url);
+const searchQuery = url.searchParams.get("q") || "";
+const letterFilter = url.searchParams.get("letter") || "";
+
+const groqQuery = `*[_type == "term" && status == "published"]{
+  _id,
+  _createdAt,
+  _updatedAt,
+  title,
+  "slug": slug.current,
+  excerpt,
+  "definition": pt::text(definition),
+  "image": media.asset->url,
+  imageAlt,
+  relatedLinks[]{
+    label,
+    url,
+    kind
+  },
+  aliases,
+  "related": related[]->{title, "slug": slug.current}
+} | order(title asc)`;
+
+const allTerms: GlossaryTerm[] = await sanity.fetch(groqQuery);
+let terms = [...allTerms];
+
+if (searchQuery) {
+  const query = searchQuery.toLowerCase();
+  terms = terms.filter(
+    (term) => {
+      const definitionText = term.definition?.toLowerCase() || '';
+      const aliasesText = term.aliases?.join(' ').toLowerCase() || '';
+      return (
+        term.title.toLowerCase().includes(query) ||
+        definitionText.includes(query) ||
+        term.excerpt?.toLowerCase().includes(query) ||
+        aliasesText.includes(query)
+      );
+    }
+  );
+}
+
+if (letterFilter) {
+  terms = terms.filter((term) =>
+    term.title.toLowerCase().startsWith(letterFilter.toLowerCase())
+  );
+}
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+const lettersWithTerms = new Set(
+  allTerms.map(term => term.title.charAt(0).toUpperCase())
+);
+
+function buildGlossaryUrl(params: { q?: string; letter?: string }): string {
+  const urlParams = new URLSearchParams();
+  if (params.q) urlParams.set('q', params.q);
+  if (params.letter) urlParams.set('letter', params.letter);
+  const queryString = urlParams.toString();
+  return queryString ? `/glossary?${queryString}` : '/glossary';
+}
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Machine Knitting Terms Glossary</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <div class="container">
+      <div class="header-row">
+        <h1>Machine Knitting Terms Glossary</h1>
+        <div class="header-search">
+          <form method="get" action="/glossary">
+            <input
+              type="text"
+              name="q"
+              placeholder="Search Terms Glossary"
+              value={searchQuery}
+              class="kbm-search-input"
+            />
+            <button type="submit" class="kbm-search-btn" aria-label="Search">
+              <i class="fa fa-search"></i>
+            </button>
+            <input type="hidden" name="letter" value={letterFilter} />
+          </form>
+        </div>
+      </div>
+      
+      <p class="description">
+        Unlock the secrets of machine knitting patterns with this comprehensive glossary. 
+        It's your key to understanding the abbreviations and terms used in patterns and vintage publications.
+      </p>
+      
+      <div class="alphabet-filter">
+        <div class="alphabet">
+          <a
+            href={buildGlossaryUrl({ q: searchQuery || undefined })}
+            class={!letterFilter ? "active" : ""}
+          >
+            All
+          </a>
+          {
+            alphabet.map((letter) => {
+              const hasTerms = lettersWithTerms.has(letter);
+              return (
+                <a
+                  href={buildGlossaryUrl({ q: searchQuery || undefined, letter })}
+                  class={`${letterFilter === letter ? "active" : ""} ${!hasTerms ? "disabled" : ""}`}
+                >
+                  {letter}
+                </a>
+              );
+            })
+          }
+        </div>
+      </div>
+      
+      {
+        terms.length > 0 ? (
+          <div class="card-grid">
+            {terms.map((term) => {
+              const imageUrl = term.image || null;
+              
+              const definitionText = term.definition || term.excerpt || 'No definition available';
+
+              const firstLetter = term.title.charAt(0).toUpperCase();
+              const altText = term.imageAlt || term.title;
+
+              return (
+                <div class="flip-card" data-card-id={term._id}>
+                  <div class="flip-card-inner">
+                    <div class="flip-card-front">
+                      <div class="card-body">
+                        <h2 class="card-title">{term.title}</h2>
+                        {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
+                        <p class="card-definition">{definitionText}</p>
+                        <div class="card-hint">Hover / tap for details</div>
+                      </div>
+                    </div>
+                    <div class="flip-card-back">
+                      <div class="card-back-content">
+                        {imageUrl ? (
+                          <img 
+                            data-gif-src={imageUrl}
+                            alt={altText}
+                            class="card-back-image" 
+                            data-term-slug={term.slug}
+                          />
+                        ) : (
+                          <div 
+                            class="card-back-image-placeholder"
+                            data-term-slug={term.slug}
+                          >
+                            {firstLetter}
+                          </div>
+                        )}
+
+                        <div class="card-meta">
+                          <a href={`/glossary/${term.slug}`} class="seo-link">
+                            View full page →
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="no-results">
+            <h2>No terms found</h2>
+            <p>Try adjusting your search or filters.</p>
+          </div>
+        )
+      }
+    </div>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', () => {
+        const cards = document.querySelectorAll('.flip-card');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let currentlyFlippedCard = null;
+
+        function loadGIF(card) {
+          const img = card.querySelector('.card-back-image[data-gif-src]');
+          if (!img) return;
+          
+          const gifSrc = img.getAttribute('data-gif-src');
+          if (!gifSrc) return;
+          
+          if (prefersReducedMotion) {
+            const staticSrc = gifSrc.includes('?') 
+              ? `${gifSrc}&fm=jpg` 
+              : `${gifSrc}?fm=jpg`;
+            
+            if (!img.src || img.src !== staticSrc) {
+              img.src = staticSrc;
+            }
+            return;
+          }
+          
+          if (!img.src || img.src !== gifSrc) {
+            img.src = gifSrc;
+          }
+        }
+
+        function unloadGIF(card) {
+          const img = card.querySelector('.card-back-image[data-gif-src]');
+          if (!img) return;
+          
+          img.removeAttribute('src');
+        }
+
+        cards.forEach(card => {
+          const front = card.querySelector('.flip-card-front');
+          const back = card.querySelector('.flip-card-back');
+          const backImage = back.querySelector('.card-back-image, .card-back-image-placeholder');
+          const seoLink = back.querySelector('.seo-link');
+          
+          front.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+              currentlyFlippedCard.classList.remove('flipped');
+              unloadGIF(currentlyFlippedCard);
+            }
+            
+            card.classList.add('flipped');
+            currentlyFlippedCard = card;
+            
+            loadGIF(card);
+          });
+          
+          if (backImage) {
+            backImage.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const slug = backImage.getAttribute('data-term-slug');
+              if (slug) {
+                window.location.href = `/glossary/${slug}`;
+              }
+            });
+          }
+          
+          if (seoLink) {
+            seoLink.addEventListener('click', (e) => {
+              e.stopPropagation();
+            });
+          }
+          
+          back.addEventListener('click', (e) => {
+            e.stopPropagation();
+          });
+        });
+
+        if (!window.matchMedia('(max-width: 768px)').matches) {
+          cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+              if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+                currentlyFlippedCard.classList.remove('flipped');
+                unloadGIF(currentlyFlippedCard);
+              }
+              
+              currentlyFlippedCard = card;
+              loadGIF(card);
+            });
+            
+            card.addEventListener('mouseleave', () => {
+              unloadGIF(card);
+              currentlyFlippedCard = null;
+            });
+          });
+        }
+      });
+    </script>
+  </body>
+</html>
