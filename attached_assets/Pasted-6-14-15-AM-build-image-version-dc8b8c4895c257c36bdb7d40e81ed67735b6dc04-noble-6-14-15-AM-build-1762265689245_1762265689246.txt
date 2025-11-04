@@ -1,0 +1,106 @@
+6:14:15 AM: build-image version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04 (noble)
+6:14:15 AM: buildbot version: dc8b8c4895c257c36bdb7d40e81ed67735b6dc04
+6:14:15 AM: Fetching cached dependencies
+6:14:15 AM: Starting to download cache of 249.4MB (Last modified: 2025-11-04 13:35:55 +0000 UTC)
+6:14:16 AM: Finished downloading cache in 495ms
+6:14:16 AM: Starting to extract cache
+6:14:18 AM: Finished extracting cache in 2.566s
+6:14:18 AM: Finished fetching cache in 3.132s
+6:14:18 AM: Starting to prepare the repo for build
+6:14:18 AM: Preparing Git Reference refs/heads/main
+6:14:19 AM: Custom build command detected. Proceeding with the specified command: 'cp astro-package.json package.json && npm install && npm run build'
+6:14:20 AM: Starting to install dependencies
+6:14:20 AM: Started restoring cached python cache
+6:14:20 AM: Finished restoring cached python cache
+6:14:20 AM: Started restoring cached ruby cache
+6:14:20 AM: Finished restoring cached ruby cache
+6:14:21 AM: Started restoring cached go cache
+6:14:21 AM: Finished restoring cached go cache
+6:14:22 AM: v22.21.1 is already installed.
+6:14:22 AM: Now using node v22.21.1 (npm v10.9.4)
+6:14:22 AM: Enabling Node.js Corepack
+6:14:22 AM: Started restoring cached build plugins
+6:14:22 AM: Finished restoring cached build plugins
+6:14:22 AM: Successfully installed dependencies
+6:14:22 AM: Starting build script
+6:14:23 AM: Detected 1 framework(s)
+6:14:23 AM: "astro" at version "unknown"
+6:14:23 AM: Section completed: initializing
+6:14:24 AM: ​
+6:14:24 AM: Netlify Build                                                 
+6:14:24 AM: ────────────────────────────────────────────────────────────────
+6:14:24 AM: ​
+6:14:24 AM: ❯ Version
+6:14:24 AM:   @netlify/build 35.3.0
+6:14:24 AM: ​
+6:14:24 AM: ❯ Flags
+6:14:24 AM:   accountId: 68c6b7a4e040822e80335f8f
+6:14:24 AM:   baseRelDir: true
+6:14:24 AM:   buildId: 690a0a3477e61d00093e9d2f
+6:14:24 AM:   deployId: 690a0a3477e61d00093e9d31
+6:14:24 AM: ​
+6:14:24 AM: ❯ Current directory
+6:14:24 AM:   /opt/build/repo
+6:14:24 AM: ​
+6:14:24 AM: ❯ Config file
+6:14:24 AM:   /opt/build/repo/netlify.toml
+6:14:24 AM: ​
+6:14:24 AM: ❯ Context
+6:14:24 AM:   production
+6:14:24 AM: ​
+6:14:24 AM: build.command from netlify.toml                               
+6:14:24 AM: ────────────────────────────────────────────────────────────────
+6:14:24 AM: ​
+6:14:24 AM: $ cp astro-package.json package.json && npm install && npm run build
+6:14:26 AM: Failed during stage 'building site': Build script returned non-zero exit code: 2 (https://ntl.fyi/exit-code-2)
+6:14:26 AM: npm error code ERESOLVE
+6:14:26 AM: npm error ERESOLVE unable to resolve dependency tree
+6:14:26 AM: npm error
+6:14:26 AM: npm error While resolving: knitbymachine-website@1.0.0
+6:14:26 AM: npm error Found: astro@5.15.3
+6:14:26 AM: npm error node_modules/astro
+6:14:26 AM: npm error   astro@"^5.0.5" from the root project
+6:14:26 AM: npm error
+6:14:26 AM: npm error Could not resolve dependency:
+6:14:26 AM: npm error peer astro@"^4.2.0" from @astrojs/netlify@5.5.4
+6:14:26 AM: npm error node_modules/@astrojs/netlify
+6:14:26 AM: npm error   @astrojs/netlify@"^5.5.4" from the root project
+6:14:26 AM: npm error
+6:14:26 AM: npm error Fix the upstream dependency conflict, or retry
+6:14:26 AM: npm error this command with --force or --legacy-peer-deps
+6:14:26 AM: npm error to accept an incorrect (and potentially broken) dependency resolution.
+6:14:26 AM: npm error
+6:14:26 AM: npm error
+6:14:26 AM: npm error For a full report see:
+6:14:26 AM: npm error /opt/buildhome/.npm/_logs/2025-11-04T14_14_25_074Z-eresolve-report.txt
+6:14:26 AM: npm error A complete log of this run can be found in: /opt/buildhome/.npm/_logs/2025-11-04T14_14_25_074Z-debug-0.log
+6:14:26 AM: ​
+6:14:26 AM: "build.command" failed                                        
+6:14:26 AM: ────────────────────────────────────────────────────────────────
+6:14:26 AM: ​
+6:14:26 AM:   Error message
+6:14:26 AM:   Command failed with exit code 1: cp astro-package.json package.json && npm install && npm run build (https://ntl.fyi/exit-code-1)
+6:14:26 AM: ​
+6:14:26 AM:   Error location
+6:14:26 AM:   In build.command from netlify.toml:
+6:14:26 AM:   cp astro-package.json package.json && npm install && npm run build
+6:14:26 AM: ​
+6:14:26 AM:   Resolved config
+6:14:26 AM:   build:
+6:14:26 AM:     command: cp astro-package.json package.json && npm install && npm run build
+6:14:26 AM:     commandOrigin: config
+6:14:26 AM:     environment:
+6:14:26 AM:       - GITHUB_CLIENT_ID
+6:14:26 AM:       - GITHUB_CLIENT_SECRET
+6:14:26 AM:       - GITHUB_TOKEN
+6:14:26 AM:       - NODE_VERSION
+6:14:26 AM:     publish: /opt/build/repo/dist
+6:14:26 AM:     publishOrigin: config
+6:14:26 AM:   redirects:
+6:14:26 AM:     - from: /*
+      status: 200
+      to: /index.html
+  redirectsOrigin: config
+6:14:26 AM: Build failed due to a user error: Build script returned non-zero exit code: 2
+6:14:26 AM: Failing build: Failed to build site
+6:14:26 AM: Finished processing build request in 11.524s
