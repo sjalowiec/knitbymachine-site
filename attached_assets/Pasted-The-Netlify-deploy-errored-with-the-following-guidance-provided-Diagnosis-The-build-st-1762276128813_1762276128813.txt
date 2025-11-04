@@ -1,0 +1,62 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis**  
+- The build stops when Vite reports an unresolved asset: [line 85](#L85) shows the Vite build error, and [lines 87-90](#L87-L90) explain that `/envelope.png` could not be resolved during the build. This missing asset causes the build to exit with code 1.
+
+**Solution**  
+1. Check the repository for the referenced image. Ensure that `envelope.png` actually exists and has been committed to the project (for Astro, static assets should live in `astro-site/public/`).  
+2. If the file exists, confirm the path used in the Astro/HTML template matches its location—for example, if the file is under `public/images/envelope.png`, reference it as `/images/envelope.png`.  
+3. If the file was intentionally removed, update or remove the `<img>` (or CSS background) reference so it points to a valid asset.
+
+The relevant error logs are:
+
+Line 72: [2m17:07:50[22m [34m[build][39m output: [34m"server"[39m
+Line 73: [2m17:07:50[22m [34m[build][39m mode: [34m"server"[39m
+Line 74: [2m17:07:50[22m [34m[build][39m directory: [34m/opt/build/repo/astro-site/dist/[39m
+Line 75: [2m17:07:50[22m [34m[build][39m adapter: [32m@astrojs/netlify[39m
+Line 76: [2m17:07:50[22m [34m[build][39m Collecting build info...
+Line 77: [2m17:07:50[22m [34m[build][39m [32m✓ Completed in 345ms.[39m
+Line 78: [2m17:07:50[22m [34m[build][39m Building server entrypoints...
+Line 79: [1m[33mwarn[39m[22m - The `content` option in your Tailwind CSS configuration is missing or empty.
+Line 80: [1m[33mwarn[39m[22m - Configure your content sources or your generated CSS will be missing styles.
+Line 81: [1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+Line 82: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 83: [33m[1m17:07:51[22m [WARN] [router][39m getStaticPaths() ignored in dynamic page [1m/src/pages/wizards/[slug].astro[22m. A
+Line 84: [33m[1m17:07:51[22m [WARN] [router][39m getStaticPaths() ignored in dynamic page [1m/src/pages/help/[slug].astro[22m. Add 
+Line 85: [31m[1m17:07:51[22m [ERROR] [vite][39m [31m✗[39m Build failed in 1.04s
+Line 86: [33m[1m17:07:51[22m [WARN] [vite][39m
+Line 87: /envelope.png referenced in /envelope.png didn't resolve at build time, it will remain unchanged to be resolved at runtime
+[vite
+Line 88: This is most likely unintended because it can break your application at runtime.
+Line 89: If you do want to externalize this module explicitly add it to
+Line 90: `build.rollupOptions.external`
+Line 91:   [1mStack trace:[22m
+Line 92: [2m    at viteLog (file:///opt/build/repo/astro-site/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46374:15)
+Line 93:     at onLog (file:///opt/build/repo/astro-site/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46072:7)
+Line 94:     at Object.logger [as onLog] (file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:22823:9)
+Line 95:     at file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:21525:26[22m
+Line 96: [91m[1m​[22m[39m
+Line 97: [91m[1m"build.command" failed                                        [22m[39m
+Line 98: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 99: ​
+Line 100:   [31m[1mError message[22m[39m
+Line 101:   Command failed with exit code 1: npm run build
+Line 102: ​
+Line 103:   [31m[1mError location[22m[39m
+Line 104:   In Build command from Netlify app:
+Line 105:   npm run build
+Line 106: ​
+Line 107:   [31m[1mResolved config[22m[39m
+Line 108:   build:
+Line 109:     base: /opt/build/repo/astro-site
+Line 110:     command: npm run build
+Line 111:     commandOrigin: ui
+Line 112:     environment:
+Line 113:       - GITHUB_CLIENT_ID
+Line 114:       - GITHUB_CLIENT_SECRET
+Line 115:       - GITHUB_TOKEN
+Line 116:     publish: /opt/build/repo/astro-site/dist
+Line 117:     publishOrigin: ui
+Line 118: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 119: Failing build: Failed to build site
+Line 120: Finished processing build request in 24.051s
