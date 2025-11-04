@@ -1,0 +1,55 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis**
+
+- Netlify runs `npm run build`, but the repository root lacks `package.json`, causing npm to fail to start the build ([lines 44-49](#L44-L49)).
+
+**Solution**
+
+- Make sure the project’s `package.json` (and any associated lock file) is committed to the repository root so Netlify can find the build script. If the Node project lives in a subdirectory (e.g., `app/` or `site/`), either move the `package.json` to the root or configure Netlify’s “Base directory” setting to that folder so `npm run build` executes where the file lives.
+- If this site is purely static HTML/CSS with no build step, remove the `npm run build` command in the Netlify UI and set the publish directory to the folder holding the static assets (for example `public/` or `dist/`), allowing Netlify to deploy the files directly.
+
+The relevant error logs are:
+
+Line 34: [36m[1m❯ Config file[22m[39m
+Line 35:   No config file was defined: using default values.
+Line 36: [36m[1m​[22m[39m
+Line 37: [36m[1m❯ Context[22m[39m
+Line 38:   production
+Line 39: [96m[1m​[22m[39m
+Line 40: [96m[1mBuild command from Netlify app                                [22m[39m
+Line 41: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 42: ​
+Line 43: [36m$ npm run build[39m
+Line 44: npm error code ENOENT
+Line 45: npm error syscall open
+Line 46: npm error path /opt/build/repo/package.json
+Line 47: npm error errno -2
+Line 48: npm error enoent Could not read package.json: Error: ENOENT: no such file or directory, open '/opt/build/repo/package.json'
+Line 49: npm error enoent This is related to npm not being able to find a file.
+Line 50: npm error enoent
+Line 51: npm error A complete log of this run can be found in: /opt/buildhome/.npm/_logs/2025-11-04T15_22_04_746Z-debug-0.log
+Line 52: [91m[1m​[22m[39m
+Line 53: [91m[1m"build.command" failed                                        [22m[39m
+Line 54: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 55: ​
+Line 56:   [31m[1mError message[22m[39m
+Line 57:   Command failed with exit code 254: npm run build
+Line 58: ​
+Line 59:   [31m[1mError location[22m[39m
+Line 60:   In Build command from Netlify app:
+Line 61:   npm run build
+Line 62: ​
+Line 63:   [31m[1mResolved config[22m[39m
+Line 64:   build:
+Line 65:     command: npm run build
+Line 66:     commandOrigin: ui
+Line 67:     environment:
+Line 68:       - GITHUB_CLIENT_ID
+Line 69:       - GITHUB_CLIENT_SECRET
+Line 70:       - GITHUB_TOKEN
+Line 71:     publish: /opt/build/repo/dist
+Line 72:     publishOrigin: ui
+Line 73: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 74: Failing build: Failed to build site
+Line 75: Finished processing build request in 12.208s
