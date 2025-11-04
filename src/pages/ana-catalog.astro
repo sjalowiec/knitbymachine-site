@@ -101,17 +101,18 @@ const description = "Browse all our knitting machine questions and answers, orga
     padding: 4.5rem 1.5rem 3rem;
   }
 
-  /* Structured Intro Panel */
-  .intro-panel {
+  /* Compact Header Panel */
+  .header-panel {
     background-color: #ffffff;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
-    padding: 3rem;
-    margin-bottom: 3rem;
+    padding: 1.8rem 2.5rem;
+    margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
-    gap: 2.5rem;
-    max-width: 900px;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    max-width: 1400px;
     margin-left: auto;
     margin-right: auto;
   }
@@ -124,13 +125,14 @@ const description = "Browse all our knitting machine questions and answers, orga
 
   .intro-content {
     flex: 1;
+    min-width: 300px;
   }
 
   .intro-tagline {
     color: #52682D;
     font-size: 1.25rem;
     line-height: 1.5;
-    margin: 0 0 1rem 0;
+    margin: 0 0 0.75rem 0;
     opacity: 0.85;
   }
 
@@ -140,39 +142,27 @@ const description = "Browse all our knitting machine questions and answers, orga
     line-height: 1.6;
     margin: 0;
     opacity: 0.7;
+    max-width: 580px;
   }
 
-  /* Framed Search Area */
-  .search-section {
-    margin-bottom: 3rem;
-  }
-
-  .search-frame {
-    background: linear-gradient(135deg, #eef4e5 0%, #f5f9ef 100%);
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+  /* Search and Sort Controls */
+  .controls-wrapper {
     display: flex;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    max-width: 1100px;
-    margin: 0 auto;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 280px;
   }
 
   .search-wrapper {
-    flex: 1;
-    min-width: 280px;
-    max-width: 500px;
+    width: 100%;
   }
 
   .search-input {
     width: 100%;
-    padding: 1rem 1.5rem;
+    padding: 0.875rem 1.25rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
-    font-size: 1.05rem;
+    font-size: 1rem;
     background-color: white;
     transition: all 0.3s ease;
   }
@@ -186,29 +176,40 @@ const description = "Browse all our knitting machine questions and answers, orga
   .sort-wrapper {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
   }
 
   .sort-label {
     color: #52682D;
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 0.9rem;
+    white-space: nowrap;
   }
 
   .sort-select {
-    padding: 0.875rem 1.25rem;
+    padding: 0.75rem 1rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     background-color: white;
     cursor: pointer;
     transition: all 0.3s ease;
+    flex: 1;
   }
 
   .sort-select:focus {
     outline: none;
     border-color: #52682D;
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+  }
+
+  /* Header Divider */
+  .header-divider {
+    border: none;
+    height: 1px;
+    background-color: #a9b88f;
+    width: 90%;
+    margin: 1.5rem auto 3rem;
   }
 
   /* Catalogue Content */
@@ -460,10 +461,6 @@ const description = "Browse all our knitting machine questions and answers, orga
     animation: fadeInUp 0.6s ease-out forwards;
   }
 
-  .search-section {
-    animation-delay: 0.2s;
-  }
-
   @keyframes fadeInUp {
     from {
       opacity: 0;
@@ -497,30 +494,34 @@ const description = "Browse all our knitting machine questions and answers, orga
       padding: 2rem 1rem;
     }
 
-    .intro-panel {
+    .header-panel {
       flex-direction: column;
       text-align: center;
-      padding: 2rem 1.5rem;
-      gap: 1.5rem;
+      padding: 1.5rem;
+      gap: 1.25rem;
     }
 
     .intro-icon {
-      width: 100px;
-      height: 100px;
+      width: 120px;
+      height: 120px;
     }
 
-    .intro-title {
-      font-size: 2rem;
+    .intro-content {
+      min-width: unset;
     }
 
     .intro-tagline {
       font-size: 1.1rem;
     }
 
-    .search-frame {
-      flex-direction: column;
-      padding: 1.5rem;
-      gap: 1rem;
+    .intro-subtitle {
+      font-size: 0.95rem;
+      max-width: 100%;
+    }
+
+    .controls-wrapper {
+      width: 100%;
+      min-width: unset;
     }
 
     .search-wrapper,
