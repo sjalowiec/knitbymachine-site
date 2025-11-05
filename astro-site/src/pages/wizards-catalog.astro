@@ -66,7 +66,7 @@ const description = "Browse all our knitting calculators and interactive tools t
         </div>
         <div class="category-filters">
           <button class="filter-icon active" data-category="all" aria-label="Show all wizards" title="All Wizards">
-            <span class="filter-text">All</span>
+            <img src="/images/all-wizards.png" alt="All" />
           </button>
           <button class="filter-icon" data-category="Pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
             <img src="/images/pattern_icon.png" alt="Pattern" />
@@ -193,8 +193,8 @@ const description = "Browse all our knitting calculators and interactive tools t
   }
 
   .filter-icon {
-    background: white;
-    border: 2px solid #c7d8a4;
+    background: transparent;
+    border: none;
     border-radius: 12px;
     padding: 0.5rem;
     cursor: pointer;
@@ -211,34 +211,22 @@ const description = "Browse all our knitting calculators and interactive tools t
     height: 40px;
     object-fit: contain;
     display: block;
-  }
-
-  .filter-icon .filter-text {
-    color: #52682D;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-align: center;
-    line-height: 1.2;
+    transition: all 0.3s ease;
   }
 
   .filter-icon:hover {
-    border-color: #52682D;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(82, 104, 45, 0.15);
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(82, 104, 45, 0.25));
   }
 
   .filter-icon.active {
     border: 3px solid #52682D;
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.2), 0 4px 12px rgba(82, 104, 45, 0.3);
+    background: white;
   }
 
   .filter-icon.active img {
     filter: none;
-  }
-
-  .filter-icon.active .filter-text {
-    color: #52682D;
-    font-weight: 700;
   }
 
 
