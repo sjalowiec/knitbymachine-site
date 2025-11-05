@@ -64,13 +64,22 @@ const description = "Browse all our knitting calculators and interactive tools t
             aria-label="Search wizards"
           >
         </div>
-        <div class="sort-wrapper">
-          <label for="sortSelect" class="sort-label">Sort by:</label>
-          <select id="sortSelect" class="sort-select" aria-label="Sort order">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="alphabetical">Alphabetical</option>
-          </select>
+        <div class="category-filters">
+          <button class="filter-icon active" data-category="all" aria-label="Show all wizards" title="All Wizards">
+            <span class="filter-text">All</span>
+          </button>
+          <button class="filter-icon" data-category="Pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
+            <img src="/images/pattern-icon.png" alt="Pattern" />
+          </button>
+          <button class="filter-icon" data-category="Tools" aria-label="Filter by Tools" title="Tools Wizards">
+            <img src="/images/tools-icon.png" alt="Tools" />
+          </button>
+          <button class="filter-icon" data-category="Practice" aria-label="Filter by Practice" title="Practice Wizards">
+            <img src="/images/practice-icon.png" alt="Practice" />
+          </button>
+          <button class="filter-icon" data-category="Smart Guides" aria-label="Filter by Smart Guides" title="Smart Guides">
+            <span class="filter-text">Smart Guides</span>
+          </button>
         </div>
       </div>
     </div>
@@ -146,12 +155,12 @@ const description = "Browse all our knitting calculators and interactive tools t
     max-width: 580px;
   }
 
-  /* Search and Sort Controls */
+  /* Search and Category Filter Controls */
   .controls-wrapper {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    min-width: 280px;
+    max-width: 340px;
   }
 
   .search-wrapper {
@@ -174,34 +183,61 @@ const description = "Browse all our knitting calculators and interactive tools t
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
   }
 
-  .sort-wrapper {
+  /* Category Filter Icons */
+  .category-filters {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    justify-content: center;
   }
 
-  .sort-label {
-    color: #52682D;
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  .sort-select {
-    padding: 0.75rem 1rem;
+  .filter-icon {
+    background: white;
     border: 2px solid #c7d8a4;
-    border-radius: 50px;
-    font-size: 0.95rem;
-    background-color: white;
+    border-radius: 12px;
+    padding: 0.5rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 56px;
+    min-height: 56px;
   }
 
-  .sort-select:focus {
-    outline: none;
+  .filter-icon img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+  }
+
+  .filter-icon .filter-text {
+    color: #52682D;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  .filter-icon:hover {
     border-color: #52682D;
-    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(82, 104, 45, 0.15);
+  }
+
+  .filter-icon.active {
+    background-color: #52682D;
+    border-color: #52682D;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.3);
+  }
+
+  .filter-icon.active img {
+    filter: brightness(0) invert(1);
+  }
+
+  .filter-icon.active .filter-text {
+    color: white;
   }
 
 
@@ -487,7 +523,7 @@ const description = "Browse all our knitting calculators and interactive tools t
 <script>
   let allEntries = [];
   let displayedEntries = [];
-  let currentSort = 'newest';
+  let currentCategory = 'all';
 
   function sortEntries(entries, sortBy) {
     const sorted = [...entries];
@@ -541,7 +577,14 @@ const description = "Browse all our knitting calculators and interactive tools t
 
   function renderCatalogue(entries) {
     const container = document.getElementById('catalogueContent');
-    const sortedEntries = sortEntries(entries, currentSort);
+    
+    // Filter by category if one is selected
+    let filteredEntries = entries;
+    if (currentCategory !== 'all') {
+      filteredEntries = entries.filter(entry => entry.category === currentCategory);
+    }
+    
+    const sortedEntries = sortEntries(filteredEntries, 'alphabetical');
     const grouped = groupByCategory(sortedEntries);
     const categories = Object.keys(grouped).sort();
 
@@ -673,17 +716,22 @@ const description = "Browse all our knitting calculators and interactive tools t
     
     if (entriesData) {
       allEntries = JSON.parse(entriesData);
+      displayedEntries = allEntries;
       
       // Check for category filter in URL
       const urlParams = new URLSearchParams(window.location.search);
       const categoryFilter = urlParams.get('category');
       
       if (categoryFilter) {
-        displayedEntries = allEntries.filter(entry => 
-          entry.category && entry.category.toLowerCase() === categoryFilter.toLowerCase()
-        );
-      } else {
-        displayedEntries = allEntries;
+        currentCategory = categoryFilter;
+        
+        // Update active state on filter buttons
+        document.querySelectorAll('.filter-icon').forEach(btn => {
+          btn.classList.remove('active');
+          if (btn.dataset.category === categoryFilter) {
+            btn.classList.add('active');
+          }
+        });
       }
       
       renderCatalogue(displayedEntries);
@@ -696,13 +744,28 @@ const description = "Browse all our knitting calculators and interactive tools t
     filterCatalogue(e.target.value);
   });
 
-  document.getElementById('sortSelect')?.addEventListener('change', (e) => {
-    currentSort = e.target.value;
-    renderCatalogue(displayedEntries);
-    const searchTerm = document.getElementById('searchInput').value;
-    if (searchTerm) {
-      filterCatalogue(searchTerm);
-    }
+  // Category filter buttons
+  document.querySelectorAll('.filter-icon').forEach(button => {
+    button.addEventListener('click', () => {
+      const category = button.dataset.category;
+      
+      // Update active state
+      document.querySelectorAll('.filter-icon').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      button.classList.add('active');
+      
+      // Update current category and re-render
+      currentCategory = category;
+      displayedEntries = allEntries;
+      renderCatalogue(displayedEntries);
+      
+      // Re-apply search if there's a search term
+      const searchTerm = document.getElementById('searchInput').value;
+      if (searchTerm) {
+        filterCatalogue(searchTerm);
+      }
+    });
   });
 
   init();
