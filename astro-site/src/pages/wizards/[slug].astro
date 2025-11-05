@@ -135,25 +135,18 @@ const { title, hero, description, videoUrl, accessLevel, price, relatedAnas, rel
   }
 
   .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
+    display: inline-block;
     margin-bottom: 2rem;
-    padding: 0.75rem 1.5rem;
-    background-color: #52682D;
-    color: white;
-    font-size: 1rem;
-    font-weight: 600;
+    color: #52682D;
+    font-size: 0.95rem;
     text-decoration: none;
-    border-radius: 50px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.2);
+    opacity: 0.8;
+    transition: opacity 0.2s ease;
   }
 
   .back-link:hover {
-    background-color: #3E5524;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.3);
+    opacity: 1;
+    text-decoration: underline;
   }
 
   .wizard-header {
