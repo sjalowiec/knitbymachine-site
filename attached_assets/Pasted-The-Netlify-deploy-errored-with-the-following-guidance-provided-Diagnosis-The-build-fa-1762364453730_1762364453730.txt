@@ -1,0 +1,58 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis**
+
+- The build fails because Astro rejects the dynamic route file `astro-site/src/pages/wizards/[wizard-slug].astro`: the parameter name contains a hyphen, which violates Astro’s requirement that fragment names match the regex `/^[a-zA-Z0-9_$]+$/` ([line 68](#L68)).
+
+**Solution**
+
+1. Rename the file to use a valid parameter name, e.g. `src/pages/wizards/[wizardSlug].astro`.
+2. Update every reference to the route (imports, links such as `<a href={`/wizards/${wizard-slug}`}>`, and any code that reads `Astro.params["wizard-slug"]`) to use the new parameter name, e.g. `Astro.params.wizardSlug`.
+3. Commit the renamed file so Git preserves the change, then redeploy.
+
+The relevant error logs are:
+
+Line 56:   production
+Line 57: [96m[1m​[22m[39m
+Line 58: [96m[1mBuild command from Netlify app                                [22m[39m
+Line 59: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 60: ​
+Line 61: [36m$ npm run build[39m
+Line 62: > knitbymachine-website@1.0.0 prebuild
+Line 63: > rm -rf .netlify/.astro node_modules/.astro
+Line 64: > knitbymachine-website@1.0.0 build
+Line 65: > astro build
+Line 66: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 67: [2m17:38:20[22m [34m[@astrojs/netlify][39m Enabling sessions with Netlify Blobs
+Line 68: Invalid route src/pages/wizards/[wizard-slug].astro — parameter name must match /^[a-zA-Z0-9_$]+$/
+Line 69:   [1mStack trace:[22m
+Line 70: [2m    at file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:36:13
+Line 71:     at getParts (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:31:35)
+Line 72:     at walk (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:144:9)
+Line 73:     at createRoutesList (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:308:27)
+Line 74:     at async AstroBuilder.run (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/build/index.js:186:23)[22m
+Line 75: [91m[1m​[22m[39m
+Line 76: [91m[1m"build.command" failed                                        [22m[39m
+Line 77: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 78: ​
+Line 79:   [31m[1mError message[22m[39m
+Line 80:   Command failed with exit code 1: npm run build
+Line 81: ​
+Line 82:   [31m[1mError location[22m[39m
+Line 83:   In Build command from Netlify app:
+Line 84:   npm run build
+Line 85: ​
+Line 86:   [31m[1mResolved config[22m[39m
+Line 87:   build:
+Line 88:     base: /opt/build/repo/astro-site
+Line 89:     command: npm run build
+Line 90:     commandOrigin: ui
+Line 91:     environment:
+Line 92:       - GITHUB_CLIENT_ID
+Line 93:       - GITHUB_CLIENT_SECRET
+Line 94:       - GITHUB_TOKEN
+Line 95:     publish: /opt/build/repo/astro-site/dist
+Line 96:     publishOrigin: ui
+Line 97: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 98: Failing build: Failed to build site
+Line 99: Finished processing build request in 13.611s
