@@ -489,6 +489,7 @@ const description = "Browse all our knitting calculators and interactive tools t
 
 <script>
   let allEntries = [];
+  let displayedEntries = [];
   let currentSort = 'newest';
 
   function sortEntries(entries, sortBy) {
@@ -675,7 +676,20 @@ const description = "Browse all our knitting calculators and interactive tools t
     
     if (entriesData) {
       allEntries = JSON.parse(entriesData);
-      renderCatalogue(allEntries);
+      
+      // Check for category filter in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const categoryFilter = urlParams.get('category');
+      
+      if (categoryFilter) {
+        displayedEntries = allEntries.filter(entry => 
+          entry.category && entry.category.toLowerCase() === categoryFilter.toLowerCase()
+        );
+      } else {
+        displayedEntries = allEntries;
+      }
+      
+      renderCatalogue(displayedEntries);
     }
 
     initializeScrollToTop();
@@ -687,7 +701,7 @@ const description = "Browse all our knitting calculators and interactive tools t
 
   document.getElementById('sortSelect')?.addEventListener('change', (e) => {
     currentSort = e.target.value;
-    renderCatalogue(allEntries);
+    renderCatalogue(displayedEntries);
     const searchTerm = document.getElementById('searchInput').value;
     if (searchTerm) {
       filterCatalogue(searchTerm);
