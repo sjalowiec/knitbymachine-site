@@ -21,6 +21,7 @@ try {
           title: data.title,
           slug: data.slug,
           hero: data.hero || '',
+          description: data.description || '',
           category: data.category || 'Uncategorized',
           tags: data.tags || [],
           accessLevel: data.accessLevel || 'free',
@@ -571,7 +572,7 @@ const description = "Browse all our knitting calculators and interactive tools t
                   data-title="${entry.title.toLowerCase()}"
                   data-tags="${entry.tags.join(' ').toLowerCase()}">
                   <h3 class="wizard-card-title">${entry.title}</h3>
-                  ${entry.hero ? `<p class="wizard-card-description">${entry.hero}</p>` : ''}
+                  ${entry.description ? `<p class="wizard-card-description">${entry.description}</p>` : ''}
                   ${entry.accessLevel !== 'free' ? `<span class="wizard-card-badge ${badgeClass}">${badgeText}</span>` : ''}
                 </a>
               `;
