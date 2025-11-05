@@ -52,12 +52,16 @@ if (!entry) {
   return Astro.redirect('/404');
 }
 
-const { title, hero, description, videoUrl, accessLevel, price, relatedAnas, relatedWorkshops } = entry.data;
+const { title, hero, description, videoUrl, accessLevel, price, relatedAnas, relatedWorkshops, imageUrl, imageAlt, schemaMarkup } = entry.data;
 ---
 
 <BaseLayout title={title}>
+  {schemaMarkup && (
+    <script type="application/ld+json" set:html={JSON.stringify(schemaMarkup)} slot="head"></script>
+  )}
+  
   <div class="wizard-container">
-    <a href="/wizards" class="back-link">← Back to Wizards</a>
+    <a href="/wizards-catalog" class="back-link">← Back to Wizards</a>
     
     <div class="wizard-header">
       <h1>{title}</h1>
@@ -71,6 +75,16 @@ const { title, hero, description, videoUrl, accessLevel, price, relatedAnas, rel
         </div>
       )}
     </div>
+
+    {imageUrl && (
+      <div class="hero-image-container">
+        <img 
+          src={imageUrl} 
+          alt={imageAlt || title}
+          class="hero-image"
+        />
+      </div>
+    )}
 
     <div class="wizard-content">
       {description && <div class="description" set:html={description}></div>}
@@ -181,6 +195,19 @@ const { title, hero, description, videoUrl, accessLevel, price, relatedAnas, rel
   .badge-bundle {
     background-color: #C7D8A4;
     color: #52682D;
+  }
+
+  .hero-image-container {
+    margin: 2rem 0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.15);
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+    display: block;
   }
 
   .wizard-content {
