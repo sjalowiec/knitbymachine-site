@@ -58,15 +58,10 @@ if (!entry) {
     <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
 
     <div class="page-header">
-      <div class="header-content">
-        <div class="header-left">
-          <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="header-icon" />
-        </div>
-        <div class="header-right">
-          <h2 class="header-tagline">Practical Help for<br/>Every Machine Knitter</h2>
-        </div>
+      <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="header-icon" />
+      <div class="header-text">
+        <p class="header-tagline">Every machine knitter hits a snag now and then. Here's how to get back on track.</p>
       </div>
-      <div class="header-divider"></div>
     </div>
 
     <div class="content-wrapper">
@@ -107,47 +102,54 @@ if (!entry) {
   }
 
   .back-link {
-    display: inline-block;
-    margin: 0 0 1.5rem 0;
-    color: #52682D;
-    font-size: 0.95rem;
-    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
+    padding: 0.75rem 1.5rem;
+    background-color: #52682D;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
     text-decoration: none;
-    border-bottom: 1px solid transparent;
-    transition: all 0.2s ease-in-out;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.2);
   }
 
   .back-link:hover {
-    border-bottom: 1px solid #C7D8A4;
-    color: #3E5524;
+    background-color: #3E5524;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.3);
   }
 
   .page-header {
-    margin-bottom: 3rem;
-  }
-
-  .header-content {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+    padding: 1.8rem 2.5rem;
+    margin-bottom: 2rem;
     display: flex;
     align-items: center;
-    gap: 2rem;
-    margin-bottom: 2rem;
+    gap: 1.5rem;
   }
 
   .header-icon {
-    width: 180px;
-    height: 180px;
+    width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+  }
+
+  .header-text {
+    flex: 1;
   }
 
   .header-tagline {
     color: #52682D;
-    font-size: 1.5rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-
-  .header-divider {
-    height: 2px;
-    background-color: #52682D;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.85;
   }
 
   .content-wrapper {
