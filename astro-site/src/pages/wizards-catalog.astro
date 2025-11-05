@@ -69,16 +69,16 @@ const description = "Browse all our knitting calculators and interactive tools t
             <span class="filter-text">All</span>
           </button>
           <button class="filter-icon" data-category="Pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
-            <img src="/images/pattern-icon.png" alt="Pattern" />
+            <img src="/images/pattern_icon.png" alt="Pattern" />
           </button>
           <button class="filter-icon" data-category="Tools" aria-label="Filter by Tools" title="Tools Wizards">
-            <img src="/images/tools-icon.png" alt="Tools" />
+            <img src="/images/tools_icon.png" alt="Tools" />
           </button>
           <button class="filter-icon" data-category="Practice" aria-label="Filter by Practice" title="Practice Wizards">
             <img src="/images/practice-icon.png" alt="Practice" />
           </button>
           <button class="filter-icon" data-category="Smart Guides" aria-label="Filter by Smart Guides" title="Smart Guides">
-            <span class="filter-text">Smart Guides</span>
+            <img src="/images/guide_icon.png" alt="Smart Guides" />
           </button>
         </div>
       </div>
@@ -580,14 +580,16 @@ const description = "Browse all our knitting calculators and interactive tools t
   function getCategoryIcon(category) {
     const categoryLower = category.toLowerCase();
     if (categoryLower.includes('pattern')) {
-      return '/images/pattern-icon.png';
+      return '/images/pattern_icon.png';
     } else if (categoryLower.includes('practice')) {
       return '/images/practice-icon.png';
     } else if (categoryLower.includes('calculator') || categoryLower.includes('tool')) {
-      return '/images/tools-icon.png';
+      return '/images/tools_icon.png';
+    } else if (categoryLower.includes('guide') || categoryLower.includes('smart')) {
+      return '/images/guide_icon.png';
     }
     // Default to tools icon
-    return '/images/tools-icon.png';
+    return '/images/tools_icon.png';
   }
 
   function renderCatalogue(entries) {
