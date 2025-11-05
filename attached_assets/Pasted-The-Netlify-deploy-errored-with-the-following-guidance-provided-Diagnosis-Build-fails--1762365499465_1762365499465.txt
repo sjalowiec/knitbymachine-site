@@ -1,0 +1,79 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis**
+
+- Build fails during `astro build` because the dynamic route file `src/pages/wizards/[wizard-slug].astro` uses an invalid parameter name containing a hyphen. Astro requires route parameter names to match `/^[a-zA-Z0-9_$]+$/`.
+
+**Solution**
+
+1. Rename the file to use a valid parameter name, for example `src/pages/wizards/[wizardSlug].astro`.
+2. Update any imports or references that point to the old filename.
+3. Inside the component (and in any code that consumes the params), update the destructured parameter to `wizardSlug` to keep everything consistent.
+4. Commit the changes and re-deploy.
+
+The relevant error logs are:
+
+Line 10: Now using node v22.21.1 (npm v10.9.4)
+Line 11: Enabling Node.js Corepack
+Line 12: Started restoring cached build plugins
+Line 13: Finished restoring cached build plugins
+Line 14: Started restoring cached corepack dependencies
+Line 15: Finished restoring cached corepack dependencies
+Line 16: No npm workspaces detected
+Line 17: Started restoring cached node modules
+Line 18: Finished restoring cached node modules
+Line 19: Installing npm packages using npm version 10.9.4
+Line 20: npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+Line 21: added 788 packages in 35s
+Line 22: npm packages installed
+Line 23: Successfully installed dependencies
+Line 24: Starting build script
+Line 25: Detected 1 framework(s)
+Line 26: "astro" at version "5.15.3"
+Line 27: Section completed: initializing
+Line 28: [96m[1m​[22m[39m
+Line 29: [96m[1mNetlify Build                                                 [22m[39m
+Line 30: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 49: [96m[1m​[22m[39m
+Line 50: [96m[1mBuild command from Netlify app                                [22m[39m
+Line 51: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 52: ​
+Line 53: [36m$ npm run build[39m
+Line 54: > knitbymachine-website@1.0.0 prebuild
+Line 55: > rm -rf .netlify/.astro node_modules/.astro
+Line 56: > knitbymachine-website@1.0.0 build
+Line 57: > astro build
+Line 58: [2m17:55:27[22m [34m[@astrojs/netlify][39m Enabling sessions with Netlify Blobs
+Line 59: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 60: Invalid route src/pages/wizards/[wizard-slug].astro — parameter name must match /^[a-zA-Z0-9_$]+$/
+Line 61:   [1mStack trace:[22m
+Line 62: [2m    at file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:36:13
+Line 63:     at getParts (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:31:35)
+Line 64:     at walk (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:144:9)
+Line 65:     at createRoutesList (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/routing/manifest/create.js:308:27)
+Line 66:     at async AstroBuilder.run (file:///opt/build/repo/astro-site/node_modules/astro/dist/core/build/index.js:186:23)[22m
+Line 67: [91m[1m​[22m[39m
+Line 68: [91m[1m"build.command" failed                                        [22m[39m
+Line 69: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 70: ​
+Line 71:   [31m[1mError message[22m[39m
+Line 72:   Command failed with exit code 1: npm run build
+Line 73: ​
+Line 74:   [31m[1mError location[22m[39m
+Line 75:   In Build command from Netlify app:
+Line 76:   npm run build
+Line 77: ​
+Line 78:   [31m[1mResolved config[22m[39m
+Line 79:   build:
+Line 80:     base: /opt/build/repo/astro-site
+Line 81:     command: npm run build
+Line 82:     commandOrigin: ui
+Line 83:     environment:
+Line 84:       - GITHUB_CLIENT_ID
+Line 85:       - GITHUB_CLIENT_SECRET
+Line 86:       - GITHUB_TOKEN
+Line 87:     publish: /opt/build/repo/astro-site/dist
+Line 88:     publishOrigin: ui
+Line 89: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 90: Failing build: Failed to build site
+Line 91: Finished processing build request in 44.771s
