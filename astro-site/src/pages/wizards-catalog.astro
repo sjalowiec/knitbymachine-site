@@ -542,6 +542,19 @@ const description = "Browse all our knitting calculators and interactive tools t
     return grouped;
   }
 
+  function getCategoryIcon(category) {
+    const categoryLower = category.toLowerCase();
+    if (categoryLower.includes('pattern')) {
+      return '/images/pattern-icon.png';
+    } else if (categoryLower.includes('practice')) {
+      return '/images/practice-icon.png';
+    } else if (categoryLower.includes('calculator') || categoryLower.includes('tool')) {
+      return '/images/tools-icon.png';
+    }
+    // Default to tools icon
+    return '/images/tools-icon.png';
+  }
+
   function renderCatalogue(entries) {
     const container = document.getElementById('catalogueContent');
     const sortedEntries = sortEntries(entries, currentSort);
