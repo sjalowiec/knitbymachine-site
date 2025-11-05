@@ -56,6 +56,17 @@ p {
   margin-bottom: 1rem;
 }
 
+/* Universal divider styling */
+.kbm-divider {
+  border: 0;
+  height: 2px;
+  width: 80%;
+  margin: 40px auto;
+  background: linear-gradient(to right, transparent, #52682D, transparent);
+  opacity: 0.8;
+  border-radius: 2px;
+}
+
 /* Mobile typography scaling */
 @media (max-width: 768px) {
   :root {
