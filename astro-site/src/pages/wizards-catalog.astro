@@ -599,7 +599,16 @@ const description = "Browse all our knitting calculators and interactive tools t
     // Filter by category if one is selected
     let filteredEntries = entries;
     if (currentCategory !== 'all') {
-      filteredEntries = entries.filter(entry => entry.category === currentCategory);
+      filteredEntries = entries.filter(entry => {
+        const entryCategory = (entry.category || '').toLowerCase();
+        const selectedCategory = currentCategory.toLowerCase();
+        
+        // Match if the entry category contains the selected category
+        // This handles cases like "Tools" matching "Calculator Tools" or just "Tools"
+        return entryCategory.includes(selectedCategory) || 
+               selectedCategory.includes(entryCategory) ||
+               entry.category === currentCategory;
+      });
     }
     
     const sortedEntries = sortEntries(filteredEntries, 'alphabetical');
