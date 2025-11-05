@@ -228,6 +228,9 @@ const description = "Browse all our knitting calculators and interactive tools t
     margin: 0 0 0.5rem 0;
     padding-bottom: 0.75rem;
     position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
   }
 
   :global(.section-title::after) {
@@ -239,6 +242,13 @@ const description = "Browse all our knitting calculators and interactive tools t
     height: 3px;
     background-color: #52682D;
     border-radius: 2px;
+  }
+
+  :global(.category-icon) {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
   }
 
   /* Section Rhythm and Balance */
@@ -570,10 +580,14 @@ const description = "Browse all our knitting calculators and interactive tools t
 
     categories.forEach(category => {
       const categoryEntries = grouped[category];
+      const categoryIcon = getCategoryIcon(category);
 
       html += `
         <div class="category-section" data-category="${category}">
-          <h2 class="section-title">${category}</h2>
+          <h2 class="section-title">
+            <img src="${categoryIcon}" alt="${category}" class="category-icon" />
+            <span>${category}</span>
+          </h2>
           <div class="wizards-grid">
             ${categoryEntries.map(entry => {
               const badgeClass = `badge-${entry.accessLevel}`;
