@@ -537,10 +537,12 @@ const description = "Unlock the secrets of machine knitting patterns with this c
             if (currentlyFlippedCard && currentlyFlippedCard !== card) {
               currentlyFlippedCard.classList.remove('flipped');
             }
+            card.classList.add('flipped');
             currentlyFlippedCard = card;
           });
           
           card.addEventListener('mouseleave', () => {
+            card.classList.remove('flipped');
             currentlyFlippedCard = null;
           });
         });
