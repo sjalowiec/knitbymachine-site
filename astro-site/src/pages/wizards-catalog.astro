@@ -274,8 +274,8 @@ const description = "Browse all our knitting calculators and interactive tools t
     background-color: #ffffff;
     color: #52682D;
     border: 2px solid #c7d8a4;
-    padding: 1.5rem;
-    border-radius: 12px;
+    padding: 2rem;
+    border-radius: 16px;
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -284,7 +284,7 @@ const description = "Browse all our knitting calculators and interactive tools t
     transform: translateY(20px);
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
   }
 
   :global(.wizard-card.animate-in) {
@@ -293,25 +293,39 @@ const description = "Browse all our knitting calculators and interactive tools t
   }
 
   :global(.wizard-card:hover) {
-    background-color: #eef4e5;
-    transform: translateY(-4px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    background-color: #f6f8f2;
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(82, 104, 45, 0.15);
     border-color: #52682D;
   }
 
-  :global(.wizard-card-title) {
-    font-size: 1.3rem;
-    font-weight: 600;
+  :global(.wizard-card-icon) {
+    width: 48px;
+    height: 48px;
+    background-color: #eef4e5;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     color: #52682D;
-    margin: 0;
+    font-size: 24px;
+    flex-shrink: 0;
   }
 
-  :global(.wizard-card-hero) {
-    font-size: 0.95rem;
+  :global(.wizard-card-title) {
+    font-size: 1.4rem;
+    font-weight: 700;
     color: #52682D;
-    opacity: 0.8;
-    font-style: italic;
     margin: 0;
+    line-height: 1.3;
+  }
+
+  :global(.wizard-card-description) {
+    font-size: 1rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+    flex-grow: 1;
   }
 
   :global(.wizard-card-badge) {
@@ -559,8 +573,21 @@ const description = "Browse all our knitting calculators and interactive tools t
                   class="wizard-card"
                   data-title="${entry.title.toLowerCase()}"
                   data-tags="${entry.tags.join(' ').toLowerCase()}">
+                  <div class="wizard-card-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M15 4V2"/>
+                      <path d="M15 16v-2"/>
+                      <path d="M8 9h2"/>
+                      <path d="M20 9h2"/>
+                      <path d="M17.8 11.8 19 13"/>
+                      <path d="M15 9h0"/>
+                      <path d="M17.8 6.2 19 5"/>
+                      <path d="m3 21 9-9"/>
+                      <path d="M12.2 6.2 11 5"/>
+                    </svg>
+                  </div>
                   <h3 class="wizard-card-title">${entry.title}</h3>
-                  ${entry.hero ? `<p class="wizard-card-hero">${entry.hero}</p>` : ''}
+                  ${entry.hero ? `<p class="wizard-card-description">${entry.hero}</p>` : ''}
                   ${entry.accessLevel !== 'free' ? `<span class="wizard-card-badge ${badgeClass}">${badgeText}</span>` : ''}
                 </a>
               `;
