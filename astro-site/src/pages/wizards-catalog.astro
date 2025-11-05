@@ -169,12 +169,13 @@ const description = "Browse all our knitting calculators and interactive tools t
 
   .search-input {
     width: 100%;
-    padding: 0.875rem 1.25rem;
+    padding: 0.875rem 1.5rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
     font-size: 1rem;
     background-color: white;
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
 
   .search-input:focus {
@@ -227,17 +228,17 @@ const description = "Browse all our knitting calculators and interactive tools t
   }
 
   .filter-icon.active {
-    background-color: #52682D;
-    border-color: #52682D;
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.3);
+    border: 3px solid #52682D;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.2), 0 4px 12px rgba(82, 104, 45, 0.3);
   }
 
   .filter-icon.active img {
-    filter: brightness(0) invert(1);
+    filter: none;
   }
 
   .filter-icon.active .filter-text {
-    color: white;
+    color: #52682D;
+    font-weight: 700;
   }
 
 
