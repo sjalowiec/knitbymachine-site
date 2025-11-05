@@ -1,0 +1,193 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Smart Guides - Coming Soon";
+const description = "Interactive smart guides to help you master machine knitting techniques step-by-step.";
+---
+
+<BaseLayout {title} {description}>
+  <div class="coming-soon-container">
+    <div class="coming-soon-content">
+      <div class="icon-container">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feature-icon">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+          <path d="M2 17l10 5 10-5"></path>
+          <path d="M2 12l10 5 10-5"></path>
+        </svg>
+      </div>
+      
+      <h1>Smart Guides</h1>
+      <p class="subtitle">Coming Soon</p>
+      
+      <div class="description">
+        <p>We're working on something special! Smart Guides will offer interactive, step-by-step guidance for mastering machine knitting techniques.</p>
+        <p>Each guide will adapt to your skill level and walk you through complex processes with clear instructions, helpful tips, and visual aids.</p>
+      </div>
+
+      <div class="features-list">
+        <div class="feature-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-icon">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Step-by-step instructions</span>
+        </div>
+        <div class="feature-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-icon">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Personalized learning paths</span>
+        </div>
+        <div class="feature-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-icon">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Visual demonstrations</span>
+        </div>
+        <div class="feature-item">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="check-icon">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+          <span>Progress tracking</span>
+        </div>
+      </div>
+
+      <a href="/wizards-catalog" class="back-button">← Explore Other Wizards</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .coming-soon-container {
+    min-height: calc(100vh - var(--header-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1.5rem;
+    background: linear-gradient(135deg, #f9fdf5 0%, #ffffff 100%);
+  }
+
+  .coming-soon-content {
+    max-width: 600px;
+    text-align: center;
+    background: white;
+    padding: 3rem 2.5rem;
+    border-radius: 20px;
+    box-shadow: 0 10px 40px rgba(82, 104, 45, 0.1);
+  }
+
+  .icon-container {
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-icon {
+    width: 80px;
+    height: 80px;
+    color: #52682D;
+    opacity: 0.8;
+  }
+
+  h1 {
+    color: #52682D;
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .subtitle {
+    color: #8BA556;
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 2rem;
+  }
+
+  .description {
+    margin-bottom: 2.5rem;
+  }
+
+  .description p {
+    color: #52682D;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+    opacity: 0.85;
+  }
+
+  .features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+    text-align: left;
+  }
+
+  .feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    background: #f9fdf5;
+    border-radius: 8px;
+    transition: transform 0.2s ease;
+  }
+
+  .feature-item:hover {
+    transform: translateX(5px);
+  }
+
+  .check-icon {
+    width: 20px;
+    height: 20px;
+    color: #52682D;
+    flex-shrink: 0;
+  }
+
+  .feature-item span {
+    color: #52682D;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .back-button {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    background: #52682D;
+    color: white;
+    text-decoration: none;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.2);
+  }
+
+  .back-button:hover {
+    background: #3e5023;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .coming-soon-content {
+      padding: 2rem 1.5rem;
+    }
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    .subtitle {
+      font-size: 1rem;
+    }
+
+    .description p {
+      font-size: 1rem;
+    }
+
+    .feature-icon {
+      width: 60px;
+      height: 60px;
+    }
+  }
+</style>
