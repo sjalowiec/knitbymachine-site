@@ -146,7 +146,6 @@ import Footer from "../components/footer.astro";
     .button-icon {
       width: 30px;
       height: 30px;
-      filter: brightness(0) saturate(100%) invert(34%) sepia(19%) saturate(1571%) hue-rotate(52deg) brightness(95%) contrast(89%);
       transition: filter 0.2s ease;
     }
 
@@ -158,7 +157,7 @@ import Footer from "../components/footer.astro";
 
     .project-pills button:hover .button-icon,
     .dropdown > button:hover .button-icon {
-      filter: brightness(0) saturate(100%) invert(100%);
+      filter: brightness(0) invert(1);
     }
 
     .project-pills button.active,
@@ -169,7 +168,7 @@ import Footer from "../components/footer.astro";
 
     .project-pills button.active .button-icon,
     .dropdown > button.active .button-icon {
-      filter: brightness(0) saturate(100%) invert(100%);
+      filter: brightness(0) invert(1);
     }
 
     .dropdown {
