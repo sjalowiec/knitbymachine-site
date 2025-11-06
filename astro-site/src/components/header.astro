@@ -282,19 +282,23 @@
   }
 
   .kbm-menu .dd-panel {
-    position: static;
+    position: static !important;
+    left: auto !important;
+    right: auto !important;
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: none;
+    transform: none !important;
     box-shadow: none;
     border: none;
     border-left: 3px solid var(--kbm-green);
-    margin-left: 16px;
+    margin-left: 0;
     margin-top: 8px;
-    padding-left: 12px;
+    padding-left: 20px;
     background: transparent;
     display: none;
+    width: 100%;
+    max-width: 100%;
   }
 
   .kbm-menu .dd.open > .dd-panel {
@@ -307,11 +311,12 @@
 
   .kbm-menu .dd-panel a {
     display: block;
-    padding: 10px 12px;
+    padding: 10px 16px;
     font-size: 1rem;
     color: var(--kbm-green);
     white-space: normal;
     word-wrap: break-word;
+    overflow-wrap: break-word;
   }
 
   .kbm-search-wrap {
