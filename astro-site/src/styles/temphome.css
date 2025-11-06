@@ -6,7 +6,7 @@
   align-items: center;
   justify-content: flex-start;
   text-align: center;
-  padding-top: 4rem; /* smaller since global padding now handles header offset */
+  padding-top: 11rem; /* Increased to clear fixed header with search bar */
   padding-bottom: 4rem;
   background: var(--page-bg)
     url("https://cdn.prod.website-files.com/68c84aa7b083bfab49868c0f/68e0312f48dce3446dea6c2f_b387cc34911130626ffc86cd928201b2_kin_machine5_600.jpeg")
