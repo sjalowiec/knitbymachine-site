@@ -1,0 +1,63 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import "../styles/global.css";
+import "../styles/sizing-chart.css";
+---
+
+<BaseLayout 
+  title="Knitting Sizing Charts | Knit by Machine"
+  description="Choose from sweater, hat, mitten, and sock sizing charts for machine knitting. Switch between inches and centimeters and explore measurements tailored to knitters.">
+
+  <Header />
+
+  <main class="page-content sizing-chart-page">
+
+    <div class="sizing-header">
+      <h1>Choose a Sizing Chart</h1>
+    </div>
+
+    <p class="sizing-intro">
+      Quickly find standard measurements for your machine-knit projects.
+    </p>
+
+    <!-- Combined buttons + toggle -->
+    <div class="project-controls">
+      <div class="project-pills">
+        <div class="dropdown">
+  <button class="active" data-type="sweaters_misses">Sweaters ▾</button>
+  <div class="dropdown-content">
+    <button data-type="sweaters_men">Men</button>
+    <button data-type="sweaters_misses">Misses</button>
+    <button data-type="sweaters_plus">Plus</button>
+    <button data-type="sweaters_kids">Kids</button>
+    <button data-type="sweaters_baby">Baby</button>
+  </div>
+</div>
+        <button data-type="hats">Hats</button>
+        <button data-type="mittens">Mittens</button>
+        <button data-type="socks">Socks</button>
+        <button data-type="blankets">Blankets</button>
+        <button data-type="pillows">Pillows</button>
+        <button data-type="xmas_stockings">Christmas Stockings</button>
+      </div>
+
+      <!-- Toggle aligned right -->
+      <div class="unit-toggle-wrapper">
+        <span class="unit-label">in</span>
+        <label class="switch">
+          <input type="checkbox" id="unitToggle">
+          <span class="slider round"></span>
+        </label>
+        <span class="unit-label">cm</span>
+      </div>
+    </div>
+
+    <div id="sizingGrid" class="sizing-grid"></div>
+    <p id="errorMsg" class="error-message" style="display:none;">Error loading data.</p>
+
+  </main>
+
+  <script src="/src/scripts/sizing-chart.js" is:inline></script>
+</BaseLayout>
