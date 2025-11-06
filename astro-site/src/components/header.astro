@@ -231,16 +231,6 @@
 
 /* ===== RESPONSIVE ===== */
 @media (max-width: 1024px) {
-  .kbm-menu {
-    gap: 24px;
-  }
-  
-  .kbm-menu > li > a {
-    font-size: 1rem;
-  }
-}
-
-@media (max-width: 768px) {
   .kbm-hamburger {
     display: flex;
   }
@@ -312,6 +302,10 @@
 }
 
 @media (max-width: 600px) {
+  .kbm-container {
+    padding: 0 16px;
+  }
+
   .kbm-logo-text {
     font-size: 1.6rem;
   }
@@ -328,6 +322,20 @@
 
   .kbm-search-btn {
     padding: 10px 18px;
+  }
+}
+
+@media (max-width: 400px) {
+  .kbm-container {
+    padding: 0 12px;
+  }
+
+  .kbm-logo-text {
+    font-size: 1.4rem;
+  }
+
+  .kbm-topbar {
+    gap: 12px;
   }
 }
 
