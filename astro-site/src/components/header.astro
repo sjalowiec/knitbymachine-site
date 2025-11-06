@@ -1,5 +1,5 @@
 ---
-/* src/components/Header.astro - Updated Design */
+/* Centered Logo Header for Knit by Machine */
 ---
 <style is:global>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
@@ -29,52 +29,49 @@
   padding: 0 20px;
 }
 
-/* ===== TOPBAR ===== */
-.kbm-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  padding: 16px 0;
+/* ===== CENTERED LOGO ===== */
+.kbm-logo-section {
+  text-align: center;
+  padding: 20px 0 16px;
+  border-bottom: 1px solid var(--ring);
 }
 
-/* ===== LOGO ===== */
 .kbm-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
   text-decoration: none;
   color: var(--kbm-green);
-  display: flex;
-  align-items: center;
-  gap: 16px;
 }
 
 .kbm-logo-img {
-  width: 60px;
-  height: 60px;
+  width: 50px;
+  height: 50px;
   flex-shrink: 0;
 }
 
 .kbm-logo-text {
   font-family: "Poppins", sans-serif;
-  font-size: 2.5rem;
+  font-size: 2rem;
   font-weight: 700;
   letter-spacing: -0.5px;
   line-height: 1;
   color: var(--kbm-green);
 }
 
-/* ===== NAV ===== */
-.kbm-nav {
-  position: relative;
-  z-index: 1100;
-  flex: 1;
+/* ===== NAVIGATION ROW ===== */
+.kbm-nav-row {
+  padding: 14px 0;
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
 }
 
 .kbm-menu {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 40px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -85,12 +82,13 @@
   color: var(--kbm-green);
   text-decoration: none;
   font-weight: 600;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   padding: 8px 0;
   display: inline-flex;
   align-items: center;
   gap: 4px;
   transition: color 0.2s ease;
+  white-space: nowrap;
 }
 
 .kbm-menu > li > a:hover {
@@ -98,8 +96,44 @@
 }
 
 .caret {
-  font-size: 1.4em;
+  font-size: 1.2em;
   margin-left: 2px;
+}
+
+/* ===== SEARCH BAR ===== */
+.kbm-search-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  background: white;
+  border: 1px solid var(--ring);
+  border-radius: 24px;
+  overflow: hidden;
+  min-width: 280px;
+}
+
+.kbm-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  font-family: "Poppins", sans-serif;
+  background: transparent;
+}
+
+.kbm-search-btn {
+  background: var(--kbm-green);
+  color: white;
+  border: none;
+  padding: 8px 20px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s ease;
+}
+
+.kbm-search-btn:hover {
+  background: var(--kbm-green-hover);
 }
 
 /* ===== DROPDOWNS ===== */
@@ -109,9 +143,9 @@
 
 .dd-panel {
   position: absolute;
-  top: calc(100% + 8px);
-  left: 0;
-  transform: translateY(8px) scale(0.98);
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px) scale(0.98);
   min-width: 200px;
   background: #ffffff;
   border: 1px solid var(--ring);
@@ -125,19 +159,12 @@
   z-index: 1200;
 }
 
-/* Position last two dropdowns from the right to prevent overflow */
-.kbm-menu > li:nth-last-child(1) .dd-panel,
-.kbm-menu > li:nth-last-child(2) .dd-panel {
-  left: auto;
-  right: 0;
-}
-
 .dd.open > .dd-panel,
 .dd:hover > .dd-panel {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateY(0) scale(1);
+  transform: translateX(-50%) translateY(0) scale(1);
 }
 
 .dd-panel li {
@@ -149,63 +176,20 @@
   padding: 10px 16px;
   color: var(--kbm-green);
   text-decoration: none;
-  font-weight: 500;
   font-size: 0.95rem;
-  transition: background 0.2s ease;
+  transition: background 0.15s ease;
 }
 
 .dd-panel a:hover {
-  background: rgba(82, 104, 45, .08);
-}
-
-/* ===== SEARCH BAR ===== */
-.kbm-searchbar {
   background: var(--kbm-bg);
-  padding: 12px 0 16px;
 }
 
-.kbm-search-wrap {
-  display: flex;
-  align-items: stretch;
-  width: 100%;
-  max-width: 900px;
-  margin: 0 auto;
-}
-
-.kbm-search-input {
-  flex: 1;
-  padding: 12px 18px;
-  font-size: 1rem;
-  font-family: "Poppins", sans-serif;
-  border: 2px solid #d0d0d0;
-  border-right: none;
-  border-radius: 8px 0 0 8px;
-  background: #ffffff;
-}
-
-.kbm-search-input:focus {
-  outline: none;
-  border-color: var(--kbm-green);
-}
-
-.kbm-search-btn {
-  background: var(--kbm-green);
-  color: #fff;
-  border: none;
-  padding: 12px 24px;
-  border-radius: 0 8px 8px 0;
-  cursor: pointer;
-  font-size: 1.1rem;
-  transition: background 0.2s ease;
-}
-
-.kbm-search-btn:hover {
-  background: var(--kbm-green-hover);
-}
-
-/* ===== HAMBURGER MENU ===== */
+/* ===== HAMBURGER MENU (MOBILE) ===== */
 .kbm-hamburger {
   display: none;
+  position: absolute;
+  top: 24px;
+  right: 20px;
   flex-direction: column;
   gap: 5px;
   background: none;
@@ -235,22 +219,26 @@
   transform: rotate(-45deg) translate(8px, -8px);
 }
 
-/* ===== RESPONSIVE ===== */
+/* ===== MOBILE RESPONSIVE ===== */
 @media (max-width: 1024px) {
   .kbm-hamburger {
     display: flex;
   }
 
+  .kbm-logo-section {
+    padding: 16px 0;
+  }
+
   .kbm-logo-text {
-    font-size: 2rem;
+    font-size: 1.8rem;
   }
 
   .kbm-logo-img {
-    width: 50px;
-    height: 50px;
+    width: 45px;
+    height: 45px;
   }
 
-  .kbm-nav {
+  .kbm-nav-row {
     position: fixed;
     top: 0;
     right: -100%;
@@ -261,10 +249,14 @@
     box-shadow: -4px 0 12px rgba(0, 0, 0, .1);
     transition: right 0.3s ease;
     overflow-y: auto;
-    padding-top: 80px;
+    padding: 80px 20px 20px;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    z-index: 1200;
   }
 
-  .kbm-nav.mobile-open {
+  .kbm-nav-row.mobile-open {
     right: 0;
   }
 
@@ -272,54 +264,54 @@
     flex-direction: column;
     align-items: stretch;
     gap: 0;
-    padding: 20px;
+    margin-bottom: 24px;
+  }
+
+  .kbm-menu > li {
+    border-bottom: 1px solid var(--ring);
+  }
+
+  .kbm-menu > li:last-child {
+    border-bottom: none;
   }
 
   .kbm-menu > li > a {
-    padding: 14px 16px;
+    padding: 16px 0;
     display: block;
     font-size: 1.1rem;
   }
 
+  .kbm-search-wrap {
+    width: 100%;
+    min-width: auto;
+  }
+
+  /* Mobile dropdowns - full width, no absolute positioning */
   .kbm-menu .dd-panel {
     position: static !important;
-    left: auto !important;
-    right: auto !important;
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
     transform: none !important;
     box-shadow: none;
     border: none;
-    margin-left: 0;
-    margin-top: 8px;
-    padding-left: 20px;
     background: transparent;
+    margin: 8px 0 0 20px;
+    padding: 0;
     display: none;
-    width: 100%;
-    max-width: 100%;
   }
 
   .kbm-menu .dd.open > .dd-panel {
     display: block;
+    opacity: 1;
+    visibility: visible;
   }
 
   .kbm-menu .dd-panel li {
-    margin: 0;
+    border-left: 3px solid var(--kbm-green);
+    padding-left: 12px;
   }
 
   .kbm-menu .dd-panel a {
-    display: block;
-    padding: 10px 16px;
+    padding: 10px 0;
     font-size: 1rem;
-    color: var(--kbm-green);
-    white-space: normal;
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-  }
-
-  .kbm-search-wrap {
-    max-width: 100%;
   }
 }
 
@@ -333,46 +325,13 @@
   }
 
   .kbm-logo-img {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 40px;
   }
 
-  .kbm-search-input {
-    padding: 10px 14px;
-    font-size: 0.95rem;
-  }
-
-  .kbm-search-btn {
-    padding: 10px 18px;
-  }
-
-  .kbm-searchbar {
-    padding-left: 16px;
-    padding-right: 16px;
-  }
-
-  .kbm-search-wrap {
-    max-width: 100%;
-    margin: 0 auto;
-  }
-}
-
-@media (max-width: 400px) {
-  .kbm-container {
-    padding: 0 12px;
-  }
-
-  .kbm-logo-text {
-    font-size: 1.4rem;
-  }
-
-  .kbm-topbar {
-    gap: 12px;
-  }
-
-  .kbm-searchbar {
-    padding-left: 12px;
-    padding-right: 12px;
+  .kbm-hamburger {
+    top: 20px;
+    right: 16px;
   }
 }
 
@@ -385,57 +344,54 @@
 </style>
 
 <section class="kbm-header-wrap">
-  <header class="kbm-header">
-    <div class="kbm-container kbm-topbar">
-      <a href="/" class="kbm-logo">
-        <img src="/images/kbm_logo.svg" alt="Knit by Machine Logo" class="kbm-logo-img" />
-        <div class="kbm-logo-text">Knit by Machine</div>
-      </a>
+  <header>
+    <div class="kbm-container">
+      <!-- Centered Logo Section -->
+      <div class="kbm-logo-section">
+        <a href="/" class="kbm-logo">
+          <img src="/favicon.svg" alt="Knit by Machine" class="kbm-logo-img" />
+          <span class="kbm-logo-text">Knit by Machine</span>
+        </a>
+      </div>
 
-      <!-- Hamburger button for mobile -->
+      <!-- Hamburger menu (mobile only) -->
       <button class="kbm-hamburger" aria-label="Toggle menu" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
       </button>
 
-      <nav class="kbm-nav" aria-label="Primary">
+      <!-- Navigation Row -->
+      <div class="kbm-nav-row">
         <ul class="kbm-menu">
           <li class="dd">
-            <a href="/wizards-catalog">Patterns <span class="caret">▾</span></a>
+            <a href="#" data-testid="nav-patterns">Patterns <span class="caret">▾</span></a>
             <ul class="dd-panel">
-              <li><a href="/wizards-catalog?category=Pattern">Pattern</a></li>
-              <li><a href="/wizards-catalog?category=Tools">Tools</a></li>
-              <li><a href="/wizards-catalog?category=Practice">Practice</a></li>
-              <li><a href="/smart-guides-coming-soon">Smart Guides</a></li>
+              <li><a href="/patterns?type=pattern" data-testid="nav-patterns-pattern">Pattern</a></li>
+              <li><a href="/wizards-catalog?category=Tools" data-testid="nav-patterns-tools">Tools</a></li>
+              <li><a href="/wizards-catalog?category=Practice" data-testid="nav-patterns-practice">Practice</a></li>
+              <li><a href="/smart-guides-coming-soon" data-testid="nav-patterns-guides">Smart Guides</a></li>
             </ul>
           </li>
-          <li><a href="/workshops">Workshops</a></li>
+          <li><a href="/workshops" data-testid="nav-workshops">Workshops</a></li>
           <li class="dd">
-            <a href="#">Resources <span class="caret">▾</span></a>
+            <a href="#" data-testid="nav-help-hub">Help Hub <span class="caret">▾</span></a>
             <ul class="dd-panel">
-              <li><a href="/ana-catalog">Ask 'n Answer</a></li>
-              <li><a href="/glossary">Glossary</a></li>
-              <li><a href="/sizing-charts">Sizing Charts</a></li>
-              <li><a href="/machine-history">Machine History</a></li>
-            </ul>
-          </li>
-          <li class="dd">
-            <a href="#">About <span class="caret">▾</span></a>
-            <ul class="dd-panel">
-              <li><a href="/about">About Us</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/membership">Membership</a></li>
+              <li><a href="/ana-catalog" data-testid="nav-help-ana">Ask 'n Answer</a></li>
+              <li><a href="/glossary" data-testid="nav-help-glossary">Glossary</a></li>
+              <li><a href="/sizing-charts" data-testid="nav-help-sizing">Sizing Charts</a></li>
+              <li><a href="/machine-history" data-testid="nav-help-history">Machine History</a></li>
+              <li><a href="/about" data-testid="nav-help-about">About</a></li>
+              <li><a href="/contact" data-testid="nav-help-contact">Contact</a></li>
             </ul>
           </li>
         </ul>
-      </nav>
-    </div>
 
-    <div class="kbm-searchbar">
-      <div class="kbm-container kbm-search-wrap">
-        <input class="kbm-search-input" type="search" placeholder="Search..." aria-label="Search" />
-        <button class="kbm-search-btn" aria-label="Submit search"><i class="fas fa-search"></i></button>
+        <!-- Search Bar -->
+        <div class="kbm-search-wrap">
+          <input class="kbm-search-input" type="search" placeholder="Search..." aria-label="Search" data-testid="input-search" />
+          <button class="kbm-search-btn" aria-label="Submit search" data-testid="button-search"><i class="fas fa-search"></i></button>
+        </div>
       </div>
     </div>
   </header>
@@ -444,8 +400,12 @@
 <script is:inline>
   (() => {
     const dds = document.querySelectorAll('.kbm-menu .dd');
-    const isTouchLike =
-      matchMedia('(hover: none), (pointer: coarse)').matches || window.innerWidth <= 1024;
+    const hamburger = document.querySelector('.kbm-hamburger');
+    const navRow = document.querySelector('.kbm-nav-row');
+    
+    let currentMode = null;
+    let clickHandlers = new Map();
+    let outsideClickHandler = null;
 
     function closeAll(except) {
       dds.forEach(li => {
@@ -453,37 +413,79 @@
       });
     }
 
+    function isTouchMode() {
+      return matchMedia('(hover: none), (pointer: coarse)').matches || window.innerWidth <= 1024;
+    }
+
+    function setupDropdownBehavior() {
+      const touchMode = isTouchMode();
+      
+      // Only update if mode has changed
+      if (currentMode === touchMode) return;
+      currentMode = touchMode;
+
+      // Remove old click handlers if switching from touch to desktop
+      if (!touchMode && clickHandlers.size > 0) {
+        clickHandlers.forEach((handler, element) => {
+          element.removeEventListener('click', handler);
+        });
+        clickHandlers.clear();
+        
+        if (outsideClickHandler) {
+          document.removeEventListener('click', outsideClickHandler);
+          outsideClickHandler = null;
+        }
+      }
+
+      // Setup touch/mobile click behavior
+      if (touchMode) {
+        dds.forEach(li => {
+          const trigger = li.querySelector(':scope > a');
+          const handler = (e) => {
+            e.preventDefault();
+            const nowOpen = li.classList.toggle('open');
+            if (nowOpen) closeAll(li);
+          };
+          trigger.addEventListener('click', handler);
+          clickHandlers.set(trigger, handler);
+        });
+        
+        outsideClickHandler = (e) => {
+          if (!e.target.closest('.kbm-nav-row')) closeAll();
+        };
+        document.addEventListener('click', outsideClickHandler);
+      }
+    }
+
+    // Desktop hover behavior (always active, but only works when not in touch mode)
     dds.forEach(li => {
       li.addEventListener('mouseenter', () => {
-        clearTimeout(li._closeTimeout);
-        li.classList.add('open');
+        if (!isTouchMode()) {
+          clearTimeout(li._closeTimeout);
+          li.classList.add('open');
+        }
       });
       li.addEventListener('mouseleave', () => {
-        li._closeTimeout = setTimeout(() => li.classList.remove('open'), 250);
+        if (!isTouchMode()) {
+          li._closeTimeout = setTimeout(() => li.classList.remove('open'), 250);
+        }
       });
     });
 
-    if (isTouchLike) {
-      dds.forEach(li => {
-        const trigger = li.querySelector(':scope > a');
-        trigger.addEventListener('click', e => {
-          e.preventDefault();
-          const nowOpen = li.classList.toggle('open');
-          if (nowOpen) closeAll(li);
-        });
-      });
-      document.addEventListener('click', e => {
-        if (!e.target.closest('.kbm-nav')) closeAll();
-      });
-    }
+    // Initial setup
+    setupDropdownBehavior();
+
+    // Re-check on resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(setupDropdownBehavior, 150);
+    });
 
     // Hamburger menu toggle
-    const hamburger = document.querySelector('.kbm-hamburger');
-    const nav = document.querySelector('.kbm-nav');
-    
-    if (hamburger && nav) {
+    if (hamburger && navRow) {
       hamburger.addEventListener('click', () => {
-        const isOpen = nav.classList.toggle('mobile-open');
+        const isOpen = navRow.classList.toggle('mobile-open');
         hamburger.classList.toggle('active');
         hamburger.setAttribute('aria-expanded', isOpen);
         
@@ -491,18 +493,21 @@
           document.body.style.overflow = 'hidden';
         } else {
           document.body.style.overflow = '';
+          closeAll();
         }
       });
 
+      // Close menu when clicking outside
       document.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768 && 
-            !nav.contains(e.target) && 
+        if (window.innerWidth <= 1024 && 
+            !navRow.contains(e.target) && 
             !hamburger.contains(e.target) && 
-            nav.classList.contains('mobile-open')) {
-          nav.classList.remove('mobile-open');
+            navRow.classList.contains('mobile-open')) {
+          navRow.classList.remove('mobile-open');
           hamburger.classList.remove('active');
           hamburger.setAttribute('aria-expanded', 'false');
           document.body.style.overflow = '';
+          closeAll();
         }
       });
     }
