@@ -138,6 +138,16 @@ import Footer from "../components/footer.astro";
       cursor: pointer;
       transition: all 0.2s ease;
       font-family: "Poppins", sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .button-icon {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) saturate(100%) invert(34%) sepia(19%) saturate(1571%) hue-rotate(52deg) brightness(95%) contrast(89%);
+      transition: filter 0.2s ease;
     }
 
     .project-pills button:hover,
@@ -146,10 +156,20 @@ import Footer from "../components/footer.astro";
       color: white;
     }
 
+    .project-pills button:hover .button-icon,
+    .dropdown > button:hover .button-icon {
+      filter: brightness(0) saturate(100%) invert(100%);
+    }
+
     .project-pills button.active,
     .dropdown > button.active {
       background: var(--kbm-green);
       color: white;
+    }
+
+    .project-pills button.active .button-icon,
+    .dropdown > button.active .button-icon {
+      filter: brightness(0) saturate(100%) invert(100%);
     }
 
     .dropdown {
