@@ -14,13 +14,23 @@ import Footer from "../components/footer.astro";
 
     <div class="sizing-header">
       <h1>Choose a Sizing Chart</h1>
+      
+      <!-- Unit toggle next to title -->
+      <div class="unit-toggle-wrapper">
+        <span class="unit-label">in</span>
+        <label class="switch">
+          <input type="checkbox" id="unitToggle">
+          <span class="slider round"></span>
+        </label>
+        <span class="unit-label">cm</span>
+      </div>
     </div>
 
     <p class="sizing-intro">
       Quickly find standard measurements for your machine-knit projects.
     </p>
 
-    <!-- Combined buttons + toggle -->
+    <!-- Project selection buttons -->
     <div class="project-controls">
       <div class="project-pills">
         <div class="dropdown">
@@ -61,16 +71,6 @@ import Footer from "../components/footer.astro";
           Christmas Stockings
         </button>
       </div>
-
-      <!-- Toggle aligned right -->
-      <div class="unit-toggle-wrapper">
-        <span class="unit-label">in</span>
-        <label class="switch">
-          <input type="checkbox" id="unitToggle">
-          <span class="slider round"></span>
-        </label>
-        <span class="unit-label">cm</span>
-      </div>
     </div>
 
     <div id="sizingGrid" class="sizing-grid"></div>
@@ -92,8 +92,11 @@ import Footer from "../components/footer.astro";
     }
 
     .sizing-header {
-      text-align: center;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       margin-bottom: 16px;
+      gap: 20px;
     }
 
     .sizing-header h1 {
@@ -111,19 +114,14 @@ import Footer from "../components/footer.astro";
     }
 
     .project-controls {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 20px;
       margin-bottom: 32px;
-      flex-wrap: wrap;
     }
 
     .project-pills {
       display: flex;
       gap: 12px;
       flex-wrap: wrap;
-      flex: 1;
+      justify-content: center;
     }
 
     .project-pills button,
