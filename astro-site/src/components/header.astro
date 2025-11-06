@@ -110,8 +110,8 @@
 .dd-panel {
   position: absolute;
   top: calc(100% + 8px);
-  left: 50%;
-  transform: translateX(-50%) translateY(8px) scale(0.98);
+  left: 0;
+  transform: translateY(8px) scale(0.98);
   min-width: 200px;
   background: #ffffff;
   border: 1px solid var(--ring);
@@ -125,12 +125,19 @@
   z-index: 1200;
 }
 
+/* Position last two dropdowns from the right to prevent overflow */
+.kbm-menu > li:nth-last-child(1) .dd-panel,
+.kbm-menu > li:nth-last-child(2) .dd-panel {
+  left: auto;
+  right: 0;
+}
+
 .dd.open > .dd-panel,
 .dd:hover > .dd-panel {
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  transform: translateX(-50%) translateY(0) scale(1);
+  transform: translateY(0) scale(1);
 }
 
 .dd-panel li {
@@ -247,7 +254,8 @@
     position: fixed;
     top: 0;
     right: -100%;
-    width: 280px;
+    width: 320px;
+    max-width: 85vw;
     height: 100vh;
     background: var(--kbm-bg);
     box-shadow: -4px 0 12px rgba(0, 0, 0, .1);
@@ -302,6 +310,8 @@
     padding: 10px 12px;
     font-size: 1rem;
     color: var(--kbm-green);
+    white-space: normal;
+    word-wrap: break-word;
   }
 
   .kbm-search-wrap {
