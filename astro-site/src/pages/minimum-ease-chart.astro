@@ -1,0 +1,463 @@
+---
+import Layout from "../layouts/layout.astro";
+import Header from "../components/header.astro";
+---
+
+<Layout 
+  title="Minimum Ease Comparison Chart | Knit by Machine"
+  description="Compare minimum recommended ease for different types of garments. Ease is the extra room added to body measurements for movement and comfort.">
+
+  <Header />
+
+  <main class="page-content ease-chart-page">
+
+    <div class="ease-wrapper">
+      
+      <!-- INTRO SECTION -->
+      <div class="ease-intro">
+        <h2>Minimum Ease Comparison Chart</h2>
+        <p class="ease-summary">
+          This chart compares the <strong>minimum recommended ease</strong> for different types of garments.
+          Ease is the extra room added to your body measurements to allow for movement and comfort.
+          The amount of ease you choose depends on garment style, fabric, and your personal fit preference.
+        </p>
+        <p class="ease-note">
+          <strong>NOTE:</strong> Larger figures will be more comfortable with more than the minimum amount of ease.<br>
+          Copyright © 2008 by the Association of Sewing and Design Professionals, Inc.
+          <a href="https://sewingprofessionals.com/" target="_blank">https://sewingprofessionals.com/</a> reproduced with permission.
+        </p>
+      </div>
+
+      <!-- TAB BUTTONS + TOGGLE -->
+      <div class="ease-tabs">
+        <button class="ease-tab active" data-tab="blouse">Blouse / Dress</button>
+        <button class="ease-tab" data-tab="jacket">Jacket</button>
+        <button class="ease-tab" data-tab="coat">Coat</button>
+        <button class="ease-tab" data-tab="skirt">Skirt / Pants</button>
+        
+        <div class="ease-toggle">
+          <label class="switch">
+            <input type="checkbox" id="unitToggle">
+            <span class="slider"></span>
+          </label>
+          <span class="unit-label">in / cm</span>
+        </div>
+      </div>
+
+      <!-- BLOUSE / DRESS -->
+      <div class="ease-tab-content active" id="blouse">
+        <h3>Ease — Blouse / Dress</h3>
+        <table class="ease-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Description</th>
+              <th>Blouse / Dress</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="numb">1</span></td><td>Neck</td><td>0.5–1"</td></tr>
+            <tr><td><span class="numb">2</span></td><td>High Bust or Chest</td><td>2.5–4"</td></tr>
+            <tr><td><span class="numb">3</span></td><td>Bust, Fullest Part</td><td>2.5–4"</td></tr>
+            <tr><td><span class="numb">4</span></td><td>Waist</td><td>0.5–1"</td></tr>
+            <tr><td><span class="numb">5</span></td><td>Hips, Fullest Part</td><td>1.5–3"</td></tr>
+            <tr><td><span class="numb">6</span></td><td>Shoulder to Waist, Back</td><td>0.25–0.5"</td></tr>
+            <tr><td><span class="numb">7</span></td><td>Shoulder to Waist, Front</td><td>0.25–0.5"</td></tr>
+            <tr><td><span class="numb">8</span></td><td>Waist to Hip</td><td>0"</td></tr>
+            <tr><td><span class="numb">9</span></td><td>Sleeve Length, Underarm Seam</td><td>0.5–1"</td></tr>
+            <tr><td><span class="numb">10</span></td><td>Shoulder Length</td><td>0.25–0.5"</td></tr>
+            <tr><td><span class="numb">11</span></td><td>Underarm (Bicep)</td><td>1.5–3"</td></tr>
+            <tr><td><span class="numb">12</span></td><td>Elbow</td><td>0.75–2"</td></tr>
+            <tr><td><span class="numb">13</span></td><td>Wrist</td><td>0.5–1"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- JACKET -->
+      <div class="ease-tab-content" id="jacket">
+        <h3>Ease — Jacket</h3>
+        <table class="ease-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Description</th>
+              <th>Jacket (Unlined)</th>
+              <th>Jacket (Lined)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="numb">1</span></td><td>Neck</td><td>0.75–1.25"</td><td>1–1.5"</td></tr>
+            <tr><td><span class="numb">2</span></td><td>High Bust or Chest</td><td>3.5–5"</td><td>4–5.5"</td></tr>
+            <tr><td><span class="numb">3</span></td><td>Bust, Fullest Part</td><td>3.5–5"</td><td>4–5.5"</td></tr>
+            <tr><td><span class="numb">4</span></td><td>Waist</td><td>2.5–4"</td><td>3–4.5"</td></tr>
+            <tr><td><span class="numb">5</span></td><td>Hips, Fullest Part</td><td>2.5–4"</td><td>3–4.5"</td></tr>
+            <tr><td><span class="numb">6</span></td><td>Shoulder to Waist, Back</td><td>0.25–0.75"</td><td>0.5–1"</td></tr>
+            <tr><td><span class="numb">7</span></td><td>Shoulder to Waist, Front</td><td>0.25–0.75"</td><td>0.5–1"</td></tr>
+            <tr><td><span class="numb">8</span></td><td>Waist to Hip</td><td>0"</td><td>0"</td></tr>
+            <tr><td><span class="numb">9</span></td><td>Sleeve Length, Underarm Seam</td><td>0.5–1"</td><td>0.75–1.25"</td></tr>
+            <tr><td><span class="numb">10</span></td><td>Shoulder Length</td><td>0.5–0.75"</td><td>0.75–1"</td></tr>
+            <tr><td><span class="numb">11</span></td><td>Underarm (Bicep)</td><td>3–4.5"</td><td>3.5–5"</td></tr>
+            <tr><td><span class="numb">12</span></td><td>Elbow</td><td>1.25–2.5"</td><td>1.75–3"</td></tr>
+            <tr><td><span class="numb">13</span></td><td>Wrist</td><td>1.25–2"</td><td>1.5–2.5"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- COAT -->
+      <div class="ease-tab-content" id="coat">
+        <h3>Ease — Coat</h3>
+        <table class="ease-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Description</th>
+              <th>Coat (Unlined)</th>
+              <th>Coat (Lined)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="numb">1</span></td><td>Neck</td><td>1.25–1.75"</td><td>1.5–2"</td></tr>
+            <tr><td><span class="numb">2</span></td><td>High Bust or Chest</td><td>4.5–6.5"</td><td>5–7"</td></tr>
+            <tr><td><span class="numb">3</span></td><td>Bust, Fullest Part</td><td>4.5–6.5"</td><td>5–7"</td></tr>
+            <tr><td><span class="numb">4</span></td><td>Waist</td><td>4.5–6.5"</td><td>5–7"</td></tr>
+            <tr><td><span class="numb">5</span></td><td>Hips, Fullest Part</td><td>4.5–6.5"</td><td>5–7"</td></tr>
+            <tr><td><span class="numb">6</span></td><td>Shoulder to Waist, Back</td><td>0.75–1.25"</td><td>1–1.5"</td></tr>
+            <tr><td><span class="numb">7</span></td><td>Shoulder to Waist, Front</td><td>0.75–1.25"</td><td>1–1.5"</td></tr>
+            <tr><td><span class="numb">8</span></td><td>Waist to Hip</td><td>0"</td><td>0"</td></tr>
+            <tr><td><span class="numb">9</span></td><td>Sleeve Length, Underarm Seam</td><td>0.75–1.25"</td><td>1–1.5"</td></tr>
+            <tr><td><span class="numb">10</span></td><td>Shoulder Length</td><td>1–1.25"</td><td>1.25–1.5"</td></tr>
+            <tr><td><span class="numb">11</span></td><td>Underarm (Bicep)</td><td>4–5.5"</td><td>4.5–6"</td></tr>
+            <tr><td><span class="numb">12</span></td><td>Elbow</td><td>2–3.5"</td><td>2.5–4"</td></tr>
+            <tr><td><span class="numb">13</span></td><td>Wrist</td><td>2–3"</td><td>2.5–3.5"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- SKIRT / PANTS -->
+      <div class="ease-tab-content" id="skirt">
+        <h3>Ease — Skirt / Pants</h3>
+        <table class="ease-table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Description</th>
+              <th>Skirt</th>
+              <th>Pants</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><span class="numb">1</span></td><td>Waist</td><td>0.5–1"</td><td>0.75–1.25"</td></tr>
+            <tr><td><span class="numb">2</span></td><td>Hips, Fullest Part</td><td>1.5–3"</td><td>1.5–3"</td></tr>
+            <tr><td><span class="numb">3</span></td><td>Waist to Hip</td><td>0"</td><td>0"</td></tr>
+            <tr><td><span class="numb">4</span></td><td>Thigh</td><td>—</td><td>1.5–3"</td></tr>
+            <tr><td><span class="numb">5</span></td><td>Knee</td><td>—</td><td>1–2"</td></tr>
+            <tr><td><span class="numb">6</span></td><td>Calf</td><td>—</td><td>1–2"</td></tr>
+            <tr><td><span class="numb">7</span></td><td>Ankle</td><td>—</td><td>1–1.5"</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+  </main>
+
+  <style is:inline>
+    :root {
+      --kbm-green: #52682D;
+      --kbm-green-2: #738C52;
+    }
+
+    .page-content {
+      max-width: 1100px;
+      margin: 140px auto 60px;
+      padding: 0 20px;
+    }
+
+    .ease-chart-page {
+      font-family: "Poppins", sans-serif;
+    }
+
+    .ease-wrapper {
+      font-family: inherit;
+      color: #333;
+      padding-top: 40px;
+    }
+
+    .ease-intro {
+      margin-bottom: 40px;
+      text-align: left;
+    }
+
+    .ease-intro h2 {
+      font-size: 2.5rem;
+      color: var(--kbm-green);
+      font-weight: 700;
+      margin-bottom: 10px;
+      border-bottom: 2px solid var(--kbm-green);
+      display: inline-block;
+      padding-bottom: 4px;
+    }
+
+    .ease-summary {
+      font-size: 1.1rem;
+      margin-top: 16px;
+      margin-bottom: 20px;
+      line-height: 1.6;
+      color: #444;
+    }
+
+    .ease-note {
+      font-size: 0.95rem;
+      background: #f5f5f5;
+      border-left: 4px solid var(--kbm-green);
+      padding: 12px 16px;
+      border-radius: 4px;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    .ease-note a {
+      color: var(--kbm-green);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .ease-note a:hover {
+      text-decoration: underline;
+    }
+
+    .ease-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 24px;
+      align-items: center;
+    }
+
+    .ease-tab {
+      padding: 10px 16px;
+      border: 2px solid var(--kbm-green);
+      background: white;
+      color: var(--kbm-green);
+      font-weight: 600;
+      border-radius: 24px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: "Poppins", sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .ease-tab.active,
+    .ease-tab:hover {
+      background: var(--kbm-green);
+      color: white;
+    }
+
+    .ease-toggle {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .unit-label {
+      font-weight: 600;
+      color: var(--kbm-green);
+      font-size: 0.95rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--kbm-green);
+      transition: 0.3s;
+      border-radius: 26px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+
+    .ease-tab-content {
+      display: none;
+    }
+
+    .ease-tab-content.active {
+      display: block;
+    }
+
+    .ease-tab-content h3 {
+      font-size: 1.6rem;
+      color: var(--kbm-green);
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+
+    .ease-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .ease-table thead {
+      background: #E8EDE2;
+      color: var(--kbm-green);
+    }
+
+    .ease-table th {
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .ease-table th:first-child {
+      width: 60px;
+      text-align: center;
+    }
+
+    .ease-table td {
+      padding: 10px 16px;
+      border-bottom: 1px solid #e8e8e8;
+      font-size: 0.9rem;
+    }
+
+    .ease-table td:first-child {
+      text-align: center;
+    }
+
+    .ease-table tbody tr:nth-child(even) {
+      background-color: #f8f8f8;
+    }
+
+    .ease-table tbody tr:nth-child(odd) {
+      background-color: white;
+    }
+
+    .ease-table tbody tr:hover {
+      background-color: #f0f4ed;
+    }
+
+    .ease-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .numb {
+      display: inline-block;
+      background: var(--kbm-green);
+      color: white;
+      width: 24px;
+      height: 24px;
+      line-height: 24px;
+      text-align: center;
+      border-radius: 50%;
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    @media (max-width: 768px) {
+      .ease-intro h2 {
+        font-size: 2rem;
+      }
+
+      .ease-tabs {
+        justify-content: flex-start;
+      }
+
+      .ease-toggle {
+        margin-left: 0;
+        width: 100%;
+        margin-top: 8px;
+      }
+
+      .ease-table {
+        font-size: 0.85rem;
+      }
+
+      .ease-table th,
+      .ease-table td {
+        padding: 8px 10px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+
+  <script is:inline>
+    window.addEventListener("DOMContentLoaded", () => {
+      const tabs = document.querySelectorAll(".ease-tab");
+      const contents = document.querySelectorAll(".ease-tab-content");
+      const toggle = document.getElementById("unitToggle");
+
+      // Tab switching
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((t) => t.classList.remove("active"));
+          contents.forEach((c) => c.classList.remove("active"));
+          tab.classList.add("active");
+          const target = document.getElementById(tab.dataset.tab);
+          if (target) target.classList.add("active");
+        });
+      });
+
+      // Unit conversion
+      if (toggle) {
+        toggle.addEventListener("change", function () {
+          const isCM = this.checked;
+          const cells = document.querySelectorAll(
+            ".ease-table td:last-child, .ease-table td:nth-child(3), .ease-table td:nth-child(4)"
+          );
+          
+          cells.forEach((cell) => {
+            if (isCM) {
+              // Convert to cm
+              cell.textContent = cell.textContent.replace(
+                /(\d*\.?\d+)"/g,
+                (match, num) => {
+                  const cm = Math.round(parseFloat(num) * 2.54);
+                  return cm + " cm";
+                }
+              );
+            } else {
+              // Reload to get back to inches
+              location.reload();
+            }
+          });
+        });
+      }
+    });
+  </script>
+
+</Layout>
