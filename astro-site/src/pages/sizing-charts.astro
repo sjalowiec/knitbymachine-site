@@ -422,7 +422,8 @@ import Footer from "../components/footer.astro";
 
       let html = '<table><thead><tr>';
       headers.forEach(header => {
-        html += `<th>${formatLabel(header)}</th>`;
+        const displayHeader = header === 'Size' ? header : formatLabel(header, currentType);
+        html += `<th>${displayHeader}</th>`;
       });
       html += '</tr></thead><tbody>';
 
