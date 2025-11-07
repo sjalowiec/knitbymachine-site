@@ -373,8 +373,26 @@ import Footer from "../components/footer.astro";
       return (inches * 2.54).toFixed(1);
     }
 
+    // Custom header mappings for specific chart types
+    const customHeaders = {
+      mittens: {
+        'cuff_circumference': 'Cuff<br>Circ.',
+        'cuff_length': 'Cuff<br>Length',
+        'hand_circumference': 'Hand<br>Circ.',
+        'hand_length': 'Hand<br>Length',
+        'thumb_length': 'Thumb<br>Length',
+        'thumb_opening': 'Thumb<br>Opening'
+      }
+    };
+
     // Format label for display
-    function formatLabel(key) {
+    function formatLabel(key, chartType = null) {
+      // Check if there's a custom header for this chart type and key
+      if (chartType && customHeaders[chartType] && customHeaders[chartType][key]) {
+        return customHeaders[chartType][key];
+      }
+      
+      // Default formatting
       return key
         .split('_')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
