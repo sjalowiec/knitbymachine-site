@@ -32,19 +32,10 @@ import Header from "../components/header.astro";
     <!-- Project selection buttons -->
     <div class="project-controls">
       <div class="project-pills">
-        <div class="dropdown">
-          <button class="active" data-type="sweaters_misses">
-            <img src="/images/sweater.svg" alt="" class="button-icon" />
-            Sweaters <span class="dropdown-caret">▾</span>
-          </button>
-          <div class="dropdown-content">
-            <button data-type="sweaters_men">Men</button>
-            <button data-type="sweaters_misses">Misses</button>
-            <button data-type="sweaters_plus">Plus</button>
-            <button data-type="sweaters_kids">Kids</button>
-            <button data-type="sweaters_baby">Baby</button>
-          </div>
-        </div>
+        <button data-type="sweaters_misses">
+          <img src="/images/sweater.svg" alt="" class="button-icon" />
+          Sweaters
+        </button>
         <button data-type="hats">
           <img src="/images/hat.svg" alt="" class="button-icon" />
           Hats
@@ -128,8 +119,7 @@ import Header from "../components/header.astro";
       justify-content: center;
     }
 
-    .project-pills button,
-    .dropdown > button {
+    .project-pills button {
       background: white;
       border: 2px solid var(--kbm-green);
       color: var(--kbm-green);
@@ -151,72 +141,22 @@ import Header from "../components/header.astro";
       transition: filter 0.2s ease;
     }
 
-    .dropdown-caret {
-      font-size: 1.5em;
-      line-height: 1;
-    }
-
-    .project-pills button:hover,
-    .dropdown > button:hover {
+    .project-pills button:hover {
       background: var(--kbm-green);
       color: white;
     }
 
-    .project-pills button:hover .button-icon,
-    .dropdown > button:hover .button-icon {
+    .project-pills button:hover .button-icon {
       filter: brightness(0) invert(1);
     }
 
-    .project-pills button.active,
-    .dropdown > button.active {
+    .project-pills button.active {
       background: var(--kbm-green);
       color: white;
     }
 
-    .project-pills button.active .button-icon,
-    .dropdown > button.active .button-icon {
+    .project-pills button.active .button-icon {
       filter: brightness(0) invert(1);
-    }
-
-    .dropdown {
-      position: relative;
-      display: inline-block;
-    }
-
-    .dropdown-content {
-      display: none;
-      position: absolute;
-      background-color: white;
-      min-width: 160px;
-      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
-      z-index: 1;
-      border-radius: 8px;
-      overflow: hidden;
-      top: 100%;
-      margin-top: 4px;
-    }
-
-    .dropdown-content button {
-      color: var(--kbm-green);
-      padding: 12px 16px;
-      text-decoration: none;
-      display: block;
-      width: 100%;
-      text-align: left;
-      border: none;
-      border-radius: 0;
-      background: white;
-      font-size: 0.9rem;
-    }
-
-    .dropdown-content button:hover {
-      background-color: #f1f1f1;
-      color: var(--kbm-green);
-    }
-
-    .dropdown:hover .dropdown-content,
-    .dropdown > button:focus + .dropdown-content {
-      display: block;
     }
 
     .unit-toggle-wrapper {
@@ -301,6 +241,74 @@ import Header from "../components/header.astro";
     .chart-header img {
       width: 42px;
       height: 42px;
+    }
+
+    .chart-header-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .chart-header-dropdown-button {
+      background: none;
+      border: none;
+      color: #738C52;
+      font-size: 1.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      padding: 0;
+      font-family: "Poppins", sans-serif;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .chart-header-dropdown-button:hover {
+      color: var(--kbm-green);
+    }
+
+    .chart-header-dropdown-caret {
+      font-size: 0.8em;
+    }
+
+    .chart-header-dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 180px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+      z-index: 100;
+      border-radius: 8px;
+      overflow: hidden;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      margin-top: 8px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .chart-header-dropdown-content button {
+      color: var(--kbm-green);
+      padding: 12px 20px;
+      text-decoration: none;
+      display: block;
+      width: 100%;
+      text-align: left;
+      border: none;
+      background: white;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      font-family: "Poppins", sans-serif;
+      transition: background-color 0.2s ease;
+    }
+
+    .chart-header-dropdown-content button:hover {
+      background-color: #f0f4ed;
+    }
+
+    .chart-header-dropdown:hover .chart-header-dropdown-content {
+      display: block;
     }
 
     .sizing-grid {
@@ -496,12 +504,52 @@ import Header from "../components/header.astro";
       const metadata = CHART_METADATA[currentType];
       
       if (metadata) {
-        chartHeader.innerHTML = `
-          <h2 id="${metadata.hash}">
-            <img src="${metadata.icon}" alt="" />
-            ${metadata.label}
-          </h2>
-        `;
+        // Check if this is a sweater chart - if so, add dropdown
+        if (currentType.startsWith('sweaters_')) {
+          const subCategory = currentType.replace('sweaters_', '');
+          const formattedSubCategory = formatLabel(subCategory);
+          
+          chartHeader.innerHTML = `
+            <h2 id="${metadata.hash}">
+              <img src="${metadata.icon}" alt="" />
+              Sweaters – 
+              <div class="chart-header-dropdown">
+                <button class="chart-header-dropdown-button">
+                  ${formattedSubCategory} <span class="chart-header-dropdown-caret">▾</span>
+                </button>
+                <div class="chart-header-dropdown-content">
+                  <button data-type="sweaters_men">Men</button>
+                  <button data-type="sweaters_misses">Misses</button>
+                  <button data-type="sweaters_plus">Plus</button>
+                  <button data-type="sweaters_kids">Kids</button>
+                  <button data-type="sweaters_baby">Baby</button>
+                </div>
+              </div>
+            </h2>
+          `;
+          
+          // Add click handlers to dropdown items
+          chartHeader.querySelectorAll('.chart-header-dropdown-content button').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.stopPropagation();
+              const type = btn.dataset.type;
+              if (type) {
+                currentType = type;
+                loadData(currentType);
+                updateActiveStates(currentType);
+                updateURL(currentType);
+              }
+            });
+          });
+        } else {
+          // Non-sweater charts - simple header
+          chartHeader.innerHTML = `
+            <h2 id="${metadata.hash}">
+              <img src="${metadata.icon}" alt="" />
+              ${metadata.label}
+            </h2>
+          `;
+        }
       }
     }
 
@@ -606,34 +654,33 @@ import Header from "../components/header.astro";
       return null;
     }
 
-    // Update active button states and dropdown label
+    // Update URL hash
+    function updateURL(type) {
+      const metadata = CHART_METADATA[type];
+      if (metadata) {
+        history.replaceState(null, '', `#${metadata.hash}`);
+      }
+    }
+
+    // Update active button states
     function updateActiveStates(type) {
       // Remove active from all buttons
-      document.querySelectorAll('.project-pills button, .dropdown > button').forEach(btn => {
+      document.querySelectorAll('.project-pills button').forEach(btn => {
         btn.classList.remove('active');
       });
       
-      const dropdownButton = document.querySelector('.dropdown > button');
-      
-      // Set active on dropdown button if it's a sweater type
+      // Find the button to activate based on the type
+      let buttonSelector;
       if (type.startsWith('sweaters_')) {
-        dropdownButton.classList.add('active');
-        // Update dropdown label while preserving the icon
-        dropdownButton.innerHTML = `
-          <img src="/images/sweater.svg" alt="" class="button-icon" />
-          Sweaters (${formatLabel(type.replace('sweaters_', ''))}) <span class="dropdown-caret">▾</span>
-        `;
+        // For any sweater type, activate the main Sweaters button
+        buttonSelector = 'button[data-type="sweaters_misses"]';
       } else {
-        // Reset dropdown to default text with icon
-        dropdownButton.innerHTML = `
-          <img src="/images/sweater.svg" alt="" class="button-icon" />
-          Sweaters <span class="dropdown-caret">▾</span>
-        `;
-        // Set active on the clicked button
-        const activeButton = document.querySelector(`button[data-type="${type}"]`);
-        if (activeButton && !activeButton.closest('.dropdown-content')) {
-          activeButton.classList.add('active');
-        }
+        buttonSelector = `button[data-type="${type}"]`;
+      }
+      
+      const activeButton = document.querySelector(buttonSelector);
+      if (activeButton) {
+        activeButton.classList.add('active');
       }
     }
 
@@ -649,24 +696,16 @@ import Header from "../components/header.astro";
       loadData(currentType);
       updateActiveStates(currentType);
 
-      // Handle button clicks
-      document.querySelectorAll('.project-pills button, .dropdown-content button').forEach(button => {
+      // Handle button clicks (only top navigation pills)
+      document.querySelectorAll('.project-pills button').forEach(button => {
         button.addEventListener('click', (e) => {
           e.stopPropagation();
           const type = button.dataset.type;
           
           if (type) {
             currentType = type;
-            
-            // Update URL hash
-            const metadata = CHART_METADATA[type];
-            if (metadata) {
-              history.replaceState(null, '', `#${metadata.hash}`);
-            }
-            
-            // Update active states
+            updateURL(type);
             updateActiveStates(type);
-            
             loadData(type);
           }
         });
