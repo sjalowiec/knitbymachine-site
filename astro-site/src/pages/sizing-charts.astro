@@ -323,6 +323,8 @@ import Header from "../components/header.astro";
       box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
       border-radius: 10px;
       overflow: hidden;
+      font-size: 0.95em;
+      line-height: 1.5;
     }
 
     .sizing-grid th {
@@ -529,7 +531,7 @@ import Header from "../components/header.astro";
       data.forEach(row => {
         html += '<tr>';
         const displayLabel = row.extended_label || row.label || row.size;
-        html += `<td><strong>${displayLabel}</strong></td>`;
+        html += `<td>${displayLabel}</td>`;
         
         Array.from(allKeys).forEach(key => {
           let value = row[key];
