@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "prebuild": "rm -rf .netlify/.astro node_modules/.astro",
+    "prebuild": "rm -rf .netlify .astro dist node_modules/.astro node_modules/.vite",
     "build": "astro build",
     "preview": "astro preview"
   },
