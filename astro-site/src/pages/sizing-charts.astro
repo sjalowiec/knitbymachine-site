@@ -29,6 +29,10 @@ import Header from "../components/header.astro";
       Quickly find standard measurements for your machine-knit projects.
     </p>
 
+    <p class="related-link">
+      <a href="/minimum-ease-chart">Minimum ease suggestions</a>.
+    </p>
+
     <!-- Project selection buttons -->
     <div class="project-controls">
       <div class="project-pills">
@@ -106,6 +110,25 @@ import Header from "../components/header.astro";
       font-size: 1.1rem;
       color: #666;
       margin-bottom: 32px;
+    }
+
+    .related-link {
+      font-size: 0.95em;
+      margin-top: -10px;
+      margin-bottom: 20px;
+      color: #52682D;
+      text-align: center;
+    }
+
+    .related-link a {
+      color: #738C52;
+      font-weight: 600;
+      text-decoration: underline;
+    }
+
+    .related-link a:hover {
+      text-decoration: none;
+      color: #52682D;
     }
 
     .project-controls {
