@@ -282,37 +282,50 @@ import Footer from "../components/footer.astro";
       width: 100%;
       border-collapse: collapse;
       background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      border-radius: 8px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+      border-radius: 10px;
       overflow: hidden;
     }
 
     .sizing-grid th {
-      background: var(--kbm-green);
+      background: #52682D;
       color: white;
-      padding: 14px;
+      padding: 12px 14px;
       text-align: left;
       font-weight: 600;
       font-size: 0.95rem;
-      border-bottom: 2px solid rgba(255,255,255,0.2);
+      font-family: "Poppins", sans-serif;
+    }
+
+    .sizing-grid th:not(:first-child) {
+      text-align: center;
     }
 
     .sizing-grid td {
-      padding: 12px 14px;
-      border-bottom: 1px solid #f0f0f0;
+      padding: 10px 14px;
+      border-bottom: 1px solid #e8e8e8;
       font-size: 0.9rem;
+      font-family: "Poppins", sans-serif;
     }
 
     .sizing-grid td:not(:first-child) {
       text-align: center;
     }
 
-    .sizing-grid tr:last-child td {
-      border-bottom: none;
+    .sizing-grid tbody tr:nth-child(even) {
+      background-color: #f8f8f8;
     }
 
-    .sizing-grid tr:hover {
-      background-color: #f8f8f8;
+    .sizing-grid tbody tr:nth-child(odd) {
+      background-color: white;
+    }
+
+    .sizing-grid tbody tr:hover {
+      background-color: #f0f4ed;
+    }
+
+    .sizing-grid tr:last-child td {
+      border-bottom: none;
     }
 
     .error-message {
