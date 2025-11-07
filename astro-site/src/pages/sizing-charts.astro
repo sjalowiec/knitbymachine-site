@@ -1,7 +1,6 @@
 ---
 import Layout from "../layouts/layout.astro";
 import Header from "../components/header.astro";
-import Footer from "../components/footer.astro";
 ---
 
 <Layout 
@@ -80,8 +79,6 @@ import Footer from "../components/footer.astro";
     <p id="errorMsg" class="error-message" style="display:none;">Error loading data.</p>
 
   </main>
-
-  <Footer />
 
   <style is:inline>
     :root {
@@ -329,8 +326,8 @@ import Footer from "../components/footer.astro";
     }
 
     .sizing-grid th {
-      background: #738C52;
-      color: white;
+      background: #E8EDE2;
+      color: #52682D;
       padding: 12px 14px;
       text-align: left;
       font-weight: 600;
@@ -448,7 +445,7 @@ import Footer from "../components/footer.astro";
 
     // Convert inches to centimeters
     function toCm(inches) {
-      return (inches * 2.54).toFixed(1);
+      return Math.round(inches * 2.54);
     }
 
     // Custom header mappings for specific chart types
