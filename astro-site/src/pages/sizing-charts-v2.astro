@@ -83,7 +83,7 @@ import Footer from "../components/footer.astro";
 
   <Footer />
 
-  <style>
+  <style is:inline>
     :root {
       --kbm-green: #52682D;
     }
@@ -393,7 +393,7 @@ import Footer from "../components/footer.astro";
     }
   </style>
 
-  <script>
+  <script is:inline>
     // Sizing chart data URLs - using local files
     const DATA_URLS = {
       sweaters_men: '/data/sizing_sweaters_men.json',
