@@ -350,6 +350,25 @@ import Header from "../components/header.astro";
       font-weight: 600;
     }
 
+    .ease-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 24px;
+      align-items: flex-start;
+    }
+
+    .ease-col {
+      flex: 1 1 360px;
+    }
+
+    .ease-col img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
     .ease-table {
       width: 100%;
       border-collapse: collapse;
@@ -429,6 +448,14 @@ import Header from "../components/header.astro";
         margin-left: 0;
         width: 100%;
         margin-top: 8px;
+      }
+
+      .ease-row {
+        flex-direction: column-reverse;
+      }
+
+      .ease-col {
+        flex: 1 1 100%;
       }
 
       .ease-table {
