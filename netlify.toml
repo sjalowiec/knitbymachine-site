@@ -1,7 +1,7 @@
 [build]
   base = "astro-site"
-  command = "cd astro-site && npm run build"
-  publish = "astro-site/dist"
+  command = "npm run build"
+  publish = "dist"
   
 [build.environment]
   NODE_VERSION = "20"
