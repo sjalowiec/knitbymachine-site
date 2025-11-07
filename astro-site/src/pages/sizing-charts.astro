@@ -83,7 +83,11 @@ import Footer from "../components/footer.astro";
 
   <Footer />
 
-  <style>
+  <style is:inline>
+    :root {
+      --kbm-green: #52682D;
+    }
+
     .page-content {
       max-width: 1400px;
       margin: 140px auto 60px;
@@ -293,13 +297,26 @@ import Footer from "../components/footer.astro";
     }
 
     .chart-header img {
-      width: 30px;
-      height: 30px;
+      width: 42px;
+      height: 42px;
     }
 
     .sizing-grid {
       overflow-x: auto;
       margin-top: 24px;
+      opacity: 0;
+      animation: fadeIn 0.3s ease-in forwards;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .sizing-grid table {
@@ -312,7 +329,7 @@ import Footer from "../components/footer.astro";
     }
 
     .sizing-grid th {
-      background: #52682D;
+      background: #738C52;
       color: white;
       padding: 12px 14px;
       text-align: left;
@@ -364,6 +381,11 @@ import Footer from "../components/footer.astro";
         font-size: 2rem;
       }
 
+      .chart-header h2 {
+        justify-content: center;
+        text-align: center;
+      }
+
       .project-controls {
         flex-direction: column;
         align-items: stretch;
@@ -378,19 +400,19 @@ import Footer from "../components/footer.astro";
       }
 
       .sizing-grid {
-        font-size: 0.85rem;
+        font-size: 0.9em;
       }
 
       .sizing-grid th,
       .sizing-grid td {
         padding: 10px 8px;
-        font-size: 0.85rem;
+        font-size: 0.9em;
       }
     }
   </style>
 
-  <script>
-    // Sizing chart data URLs - now using local files
+  <script is:inline>
+    // Sizing chart data URLs - using local files
     const DATA_URLS = {
       sweaters_men: '/data/sizing_sweaters_men.json',
       sweaters_misses: '/data/sizing_sweaters_misses.json',
@@ -473,6 +495,12 @@ import Footer from "../components/footer.astro";
     // Render the sizing table
     function renderTable(data) {
       const grid = document.getElementById('sizingGrid');
+      
+      // Reset animation by removing and re-adding it
+      grid.style.animation = 'none';
+      setTimeout(() => {
+        grid.style.animation = '';
+      }, 10);
       
       // Update the chart header
       updateChartHeader();
@@ -558,6 +586,37 @@ import Footer from "../components/footer.astro";
       return null;
     }
 
+    // Update active button states and dropdown label
+    function updateActiveStates(type) {
+      // Remove active from all buttons
+      document.querySelectorAll('.project-pills button, .dropdown > button').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      
+      const dropdownButton = document.querySelector('.dropdown > button');
+      
+      // Set active on dropdown button if it's a sweater type
+      if (type.startsWith('sweaters_')) {
+        dropdownButton.classList.add('active');
+        // Update dropdown label while preserving the icon
+        dropdownButton.innerHTML = `
+          <img src="/images/sweater.svg" alt="" class="button-icon" />
+          Sweaters (${formatLabel(type.replace('sweaters_', ''))}) ▾
+        `;
+      } else {
+        // Reset dropdown to default text with icon
+        dropdownButton.innerHTML = `
+          <img src="/images/sweater.svg" alt="" class="button-icon" />
+          Sweaters ▾
+        `;
+        // Set active on the clicked button
+        const activeButton = document.querySelector(`button[data-type="${type}"]`);
+        if (activeButton && !activeButton.closest('.dropdown-content')) {
+          activeButton.classList.add('active');
+        }
+      }
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
       // Check if URL has a hash and load that chart
@@ -566,8 +625,9 @@ import Footer from "../components/footer.astro";
         currentType = hashType;
       }
       
-      // Load initial data
+      // Load initial data and sync UI
       loadData(currentType);
+      updateActiveStates(currentType);
 
       // Handle button clicks
       document.querySelectorAll('.project-pills button, .dropdown-content button').forEach(button => {
@@ -585,17 +645,7 @@ import Footer from "../components/footer.astro";
             }
             
             // Update active states
-            document.querySelectorAll('.project-pills button, .dropdown > button').forEach(btn => {
-              btn.classList.remove('active');
-            });
-            
-            // Set active on dropdown button if it's a sweater type
-            if (type.startsWith('sweaters_')) {
-              document.querySelector('.dropdown > button').classList.add('active');
-              document.querySelector('.dropdown > button').textContent = `Sweaters (${formatLabel(type.replace('sweaters_', ''))}) ▾`;
-            } else {
-              button.classList.add('active');
-            }
+            updateActiveStates(type);
             
             loadData(type);
           }
@@ -613,6 +663,7 @@ import Footer from "../components/footer.astro";
         const newType = getTypeFromHash();
         if (newType && newType !== currentType) {
           currentType = newType;
+          updateActiveStates(newType);
           loadData(currentType);
         }
       });
