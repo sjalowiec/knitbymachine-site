@@ -268,7 +268,7 @@ import Header from "../components/header.astro";
     }
 
     .chart-header-dropdown-caret {
-      font-size: 0.8em;
+      font-size: 1.2em;
     }
 
     .chart-header-dropdown-content {
@@ -307,7 +307,7 @@ import Header from "../components/header.astro";
       background-color: #f0f4ed;
     }
 
-    .chart-header-dropdown:hover .chart-header-dropdown-content {
+    .chart-header-dropdown.open .chart-header-dropdown-content {
       display: block;
     }
 
@@ -528,12 +528,29 @@ import Header from "../components/header.astro";
             </h2>
           `;
           
+          const dropdown = chartHeader.querySelector('.chart-header-dropdown');
+          const dropdownButton = chartHeader.querySelector('.chart-header-dropdown-button');
+          
+          // Toggle dropdown on button click
+          dropdownButton.addEventListener('click', (e) => {
+            e.stopPropagation();
+            dropdown.classList.toggle('open');
+          });
+          
+          // Close dropdown when clicking outside
+          document.addEventListener('click', (e) => {
+            if (!dropdown.contains(e.target)) {
+              dropdown.classList.remove('open');
+            }
+          });
+          
           // Add click handlers to dropdown items
           chartHeader.querySelectorAll('.chart-header-dropdown-content button').forEach(btn => {
             btn.addEventListener('click', (e) => {
               e.stopPropagation();
               const type = btn.dataset.type;
               if (type) {
+                dropdown.classList.remove('open');
                 currentType = type;
                 loadData(currentType);
                 updateActiveStates(currentType);
