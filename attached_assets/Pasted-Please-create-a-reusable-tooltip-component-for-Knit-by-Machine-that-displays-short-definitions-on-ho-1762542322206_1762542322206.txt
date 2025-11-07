@@ -1,0 +1,86 @@
+Please create a reusable tooltip component for Knit by Machine that displays short definitions on hover or focus.
+
+It should:
+
+Use a small circular “i” indicator beside a word.
+
+Show a styled tooltip with text from data-tip.
+
+Work without JavaScript.
+
+Use brand colors (#52682D for dark green, #738C52 for lighter green).
+
+Be accessible (focusable and readable by screen readers).
+
+Have soft, modern styling with rounded corners and subtle transitions.
+
+Use this structure and styling:
+
+<!-- Example usage -->
+<p>
+  In knitting, <span class="kbm-tooltip" data-tip="Ease is the extra room added to a garment for comfort or style.">Ease</span> affects the finished fit of your sweater.
+</p>
+
+/* === Knit by Machine Tooltip Component === */
+
+.kbm-tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: help;
+  color: #52682D;
+  font-weight: 600;
+  text-decoration: underline dotted #738C52;
+  text-underline-offset: 3px;
+}
+
+/* Tooltip text box */
+.kbm-tooltip::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: 140%;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background-color: #52682D;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  line-height: 1.3;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  z-index: 20;
+}
+
+/* Tooltip pointer */
+.kbm-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: 130%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: #52682D transparent transparent transparent;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+/* Show on hover/focus */
+.kbm-tooltip:hover::after,
+.kbm-tooltip:hover::before,
+.kbm-tooltip:focus::after,
+.kbm-tooltip:focus::before {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-2px);
+}
+
+/* Accessibility */
+.kbm-tooltip {
+  outline: none;
+}
+.kbm-tooltip:focus {
+  box-shadow: 0 0 0 2px #E8EDE2;
+}
