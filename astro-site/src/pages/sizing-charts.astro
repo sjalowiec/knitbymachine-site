@@ -13,7 +13,7 @@ import Footer from "../components/footer.astro";
   <main class="page-content sizing-chart-page">
 
     <div class="sizing-header">
-      <h1>Choose a Sizing Chart</h1>
+      <h1>Standard Sizing Chart</h1>
       
       <!-- Unit toggle next to title -->
       <div class="unit-toggle-wrapper">
@@ -72,6 +72,9 @@ import Footer from "../components/footer.astro";
         </button>
       </div>
     </div>
+
+    <!-- Dynamic chart header with icon -->
+    <div id="chartHeader" class="chart-header"></div>
 
     <div id="sizingGrid" class="sizing-grid"></div>
     <p id="errorMsg" class="error-message" style="display:none;">Error loading data.</p>
@@ -273,6 +276,27 @@ import Footer from "../components/footer.astro";
       border-radius: 50%;
     }
 
+    .chart-header {
+      margin: 32px 0 16px;
+      text-align: center;
+    }
+
+    .chart-header h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: #52682D;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 0;
+    }
+
+    .chart-header img {
+      width: 40px;
+      height: 40px;
+    }
+
     .sizing-grid {
       overflow-x: auto;
       margin-top: 24px;
@@ -381,6 +405,21 @@ import Footer from "../components/footer.astro";
       xmas_stockings: 'https://sizing-data.netlify.app/sizing_xmas_stockings.json'
     };
 
+    // Chart metadata for titles and icons
+    const CHART_METADATA = {
+      sweaters_men: { label: 'Sweaters - Men', icon: '/images/sweater.svg', hash: 'sweaters-men-chart' },
+      sweaters_misses: { label: 'Sweaters - Misses', icon: '/images/sweater.svg', hash: 'sweaters-misses-chart' },
+      sweaters_plus: { label: 'Sweaters - Plus', icon: '/images/sweater.svg', hash: 'sweaters-plus-chart' },
+      sweaters_kids: { label: 'Sweaters - Kids', icon: '/images/sweater.svg', hash: 'sweaters-kids-chart' },
+      sweaters_baby: { label: 'Sweaters - Baby', icon: '/images/sweater.svg', hash: 'sweaters-baby-chart' },
+      hats: { label: 'Hats Sizing Chart', icon: '/images/hat.svg', hash: 'hats-chart' },
+      mittens: { label: 'Mittens Sizing Chart', icon: '/images/mitten.svg', hash: 'mittens-chart' },
+      socks: { label: 'Socks Sizing Chart', icon: '/images/sock.svg', hash: 'socks-chart' },
+      blankets: { label: 'Blankets Sizing Chart', icon: '/images/blanket.svg', hash: 'blankets-chart' },
+      pillows: { label: 'Pillows Sizing Chart', icon: '/images/pillow.svg', hash: 'pillows-chart' },
+      xmas_stockings: { label: 'Christmas Stockings Sizing Chart', icon: '/images/stocking.svg', hash: 'xmas-stockings-chart' }
+    };
+
     let currentData = [];
     let currentType = 'sweaters_misses';
     let isMetric = false;
@@ -416,9 +455,27 @@ import Footer from "../components/footer.astro";
         .join(' ');
     }
 
+    // Update the chart header with icon and title
+    function updateChartHeader() {
+      const chartHeader = document.getElementById('chartHeader');
+      const metadata = CHART_METADATA[currentType];
+      
+      if (metadata) {
+        chartHeader.innerHTML = `
+          <h2 id="${metadata.hash}">
+            <img src="${metadata.icon}" alt="" />
+            ${metadata.label}
+          </h2>
+        `;
+      }
+    }
+
     // Render the sizing table
     function renderTable(data) {
       const grid = document.getElementById('sizingGrid');
+      
+      // Update the chart header
+      updateChartHeader();
       
       if (!data || data.length === 0) {
         grid.innerHTML = '<p style="text-align: center; padding: 40px;">No data available for this category.</p>';
@@ -487,8 +544,28 @@ import Footer from "../components/footer.astro";
       }
     }
 
+    // Get chart type from hash
+    function getTypeFromHash() {
+      const hash = location.hash.substring(1); // Remove the #
+      if (!hash) return null;
+      
+      // Find the chart type that matches this hash
+      for (const [type, metadata] of Object.entries(CHART_METADATA)) {
+        if (metadata.hash === hash) {
+          return type;
+        }
+      }
+      return null;
+    }
+
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
+      // Check if URL has a hash and load that chart
+      const hashType = getTypeFromHash();
+      if (hashType) {
+        currentType = hashType;
+      }
+      
       // Load initial data
       loadData(currentType);
 
@@ -500,6 +577,12 @@ import Footer from "../components/footer.astro";
           
           if (type) {
             currentType = type;
+            
+            // Update URL hash
+            const metadata = CHART_METADATA[type];
+            if (metadata) {
+              history.replaceState(null, '', `#${metadata.hash}`);
+            }
             
             // Update active states
             document.querySelectorAll('.project-pills button, .dropdown > button').forEach(btn => {
@@ -523,6 +606,15 @@ import Footer from "../components/footer.astro";
       document.getElementById('unitToggle').addEventListener('change', (e) => {
         isMetric = e.target.checked;
         renderTable(currentData);
+      });
+
+      // Listen for hash changes (if user manually changes URL)
+      window.addEventListener('hashchange', () => {
+        const newType = getTypeFromHash();
+        if (newType && newType !== currentType) {
+          currentType = newType;
+          loadData(currentType);
+        }
       });
     });
   </script>
