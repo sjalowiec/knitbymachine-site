@@ -35,7 +35,7 @@ import Header from "../components/header.astro";
         <div class="dropdown">
           <button class="active" data-type="sweaters_misses">
             <img src="/images/sweater.svg" alt="" class="button-icon" />
-            Sweaters ▾
+            Sweaters <span class="dropdown-caret">▾</span>
           </button>
           <div class="dropdown-content">
             <button data-type="sweaters_men">Men</button>
@@ -149,6 +149,11 @@ import Header from "../components/header.astro";
       width: 30px;
       height: 30px;
       transition: filter 0.2s ease;
+    }
+
+    .dropdown-caret {
+      font-size: 1.5em;
+      line-height: 1;
     }
 
     .project-pills button:hover,
@@ -450,6 +455,15 @@ import Header from "../components/header.astro";
       return Math.round(inches * 2.54);
     }
 
+    // Columns to exclude from sweater charts
+    const EXCLUDED_COLUMNS = {
+      sweaters_men: ['head_circumference', 'head circumference', 'foot_circumference', 'foot circumference', 'foot_length', 'sleeve_cap', 'raglan_depth', 'raglan_sleeve_top', 'waist', 'garment_back_length', 'hip', 'sleeve_length'],
+      sweaters_misses: ['head_circumference', 'head circumference', 'foot_circumference', 'foot circumference', 'foot_length', 'sleeve_cap', 'raglan_depth', 'raglan_sleeve_top', 'waist', 'garment_back_length', 'hip', 'sleeve_length'],
+      sweaters_plus: ['head_circumference', 'head circumference', 'foot_circumference', 'foot circumference', 'foot_length', 'sleeve_cap', 'raglan_depth', 'raglan_sleeve_top', 'waist', 'garment_back_length', 'hip', 'sleeve_length'],
+      sweaters_kids: ['head_circumference', 'head circumference', 'foot_circumference', 'foot circumference', 'foot_length', 'sleeve_cap', 'raglan_depth', 'raglan_sleeve_top', 'waist', 'garment_back_length', 'hip', 'sleeve_length'],
+      sweaters_baby: ['head_circumference', 'head circumference', 'foot_circumference', 'foot circumference', 'foot_length', 'sleeve_cap', 'raglan_depth', 'raglan_sleeve_top', 'waist', 'garment_back_length', 'hip', 'sleeve_length']
+    };
+
     // Custom header mappings for specific chart types
     const customHeaders = {
       mittens: {
@@ -509,11 +523,12 @@ import Header from "../components/header.astro";
         return;
       }
 
-      // Get all unique keys from the data
+      // Get all unique keys from the data, excluding unwanted columns
+      const excludedCols = EXCLUDED_COLUMNS[currentType] || [];
       const allKeys = new Set();
       data.forEach(item => {
         Object.keys(item).forEach(key => {
-          if (key !== 'size' && key !== 'label' && key !== 'extended_label' && key !== '' && key !== '__1') {
+          if (key !== 'size' && key !== 'label' && key !== 'extended_label' && key !== '' && key !== '__1' && !excludedCols.includes(key)) {
             allKeys.add(key);
           }
         });
@@ -530,7 +545,13 @@ import Header from "../components/header.astro";
 
       data.forEach(row => {
         html += '<tr>';
-        const displayLabel = row.extended_label || row.label || row.size;
+        // For sweater charts, use simple "Size X" format; otherwise use extended label
+        let displayLabel;
+        if (currentType.startsWith('sweaters_')) {
+          displayLabel = `Size ${row.size}`;
+        } else {
+          displayLabel = row.extended_label || row.label || row.size;
+        }
         html += `<td>${displayLabel}</td>`;
         
         Array.from(allKeys).forEach(key => {
@@ -600,13 +621,13 @@ import Header from "../components/header.astro";
         // Update dropdown label while preserving the icon
         dropdownButton.innerHTML = `
           <img src="/images/sweater.svg" alt="" class="button-icon" />
-          Sweaters (${formatLabel(type.replace('sweaters_', ''))}) ▾
+          Sweaters (${formatLabel(type.replace('sweaters_', ''))}) <span class="dropdown-caret">▾</span>
         `;
       } else {
         // Reset dropdown to default text with icon
         dropdownButton.innerHTML = `
           <img src="/images/sweater.svg" alt="" class="button-icon" />
-          Sweaters ▾
+          Sweaters <span class="dropdown-caret">▾</span>
         `;
         // Set active on the clicked button
         const activeButton = document.querySelector(`button[data-type="${type}"]`);
