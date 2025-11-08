@@ -7,6 +7,6 @@ if [ ! -d "node_modules" ]; then
   npm install
 fi
 
-# Run Astro dev server
-echo "Starting Astro dev server..."
-npm run dev
+# Run Astro dev server on port 5000 for Replit
+echo "Starting Astro dev server on port 5000..."
+npm run dev -- --host 0.0.0.0 --port 5000
