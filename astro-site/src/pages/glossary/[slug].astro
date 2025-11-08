@@ -43,7 +43,22 @@ async function getGlossaryTerm(slug: string) {
       return null;
     }
 
-    return entry;
+    // Map JSON fields to template-expected fields
+    return {
+      title: entry.term,
+      slug: entry.slug,
+      excerpt: entry.tooltip,
+      definition: entry.description,
+      example: entry.example,
+      image: entry.imageFilename ? `/images/${entry.imageFilename}` : null,
+      imageAlt: entry.imageAlt,
+      categories: entry.categories,
+      tags: entry.tags,
+      abbreviation: entry.abbreviation,
+      videoUrl: entry.videoUrl || null,
+      isDraft: entry.isDraft,
+      publishedDate: entry.publishedDate
+    };
   } catch (error) {
     console.error('Error fetching glossary term:', error);
     return null;
