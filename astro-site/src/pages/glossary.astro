@@ -18,8 +18,9 @@ try {
       _id: data.slug,
       title: data.term,
       slug: data.slug,
-      excerpt: data.tooltip || data.description.substring(0, 100),
+      excerpt: data.tooltip || '',
       definition: data.description,
+      example: data.example || '',
       image: data.imageFilename ? `/images/glossary/${data.imageFilename}` : null,
       imageAlt: data.imageAlt,
       aliases: [],
@@ -178,7 +179,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     .flip-card {
       perspective: 1000px;
-      height: 280px;
+      height: 300px;
       cursor: pointer;
     }
 
@@ -186,7 +187,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       position: relative;
       width: 100%;
       height: 100%;
-      transition: transform 0.6s;
+      transition: transform 0.45s ease;
       transform-style: preserve-3d;
     }
 
@@ -201,7 +202,8 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       height: 100%;
       backface-visibility: hidden;
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
     .flip-card-front {
@@ -209,108 +211,120 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       border: 1px solid #e2e6df;
       display: flex;
       flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
     }
 
-    .card-body {
-      padding: 1.5rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
+    .flip-card-front:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
     .card-title {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       color: var(--kbm-green);
-      margin: 0 0 0.5rem 0;
+      margin: 0 0 0.75rem 0;
+      line-height: 1.2;
     }
 
     .card-excerpt {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: #6b7280;
-      margin: 0 0 0.75rem 0;
+      margin: 0;
       font-style: italic;
-    }
-
-    .card-definition {
-      font-size: 0.95rem;
-      color: #374151;
-      line-height: 1.6;
-      flex: 1;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 4;
-      -webkit-box-orient: vertical;
-    }
-
-    .card-hint {
-      font-size: 0.85rem;
-      color: #9ca3af;
-      text-align: center;
-      margin-top: 0.75rem;
-      padding-top: 0.75rem;
-      border-top: 1px solid #e5e7eb;
+      line-height: 1.5;
     }
 
     .flip-card-back {
-      background: linear-gradient(135deg, var(--kbm-green) 0%, var(--kbm-green-2) 100%);
+      background: #ffffff;
+      border: 1px solid #e2e6df;
       transform: rotateY(180deg);
       display: flex;
       flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 1.5rem;
+      padding: 1.75rem;
+      overflow-y: auto;
     }
 
     .card-back-content {
       width: 100%;
-      height: 100%;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
       gap: 1rem;
     }
 
+    .card-back-image-container {
+      width: 70%;
+      margin: 0 auto 1rem;
+      padding: 15px;
+      background: #F6F7F5;
+      border: 1px solid #e2e6df;
+      border-radius: 8px;
+    }
+
     .card-back-image {
-      max-width: 100%;
-      max-height: 60%;
-      object-fit: contain;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.1);
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 4px;
     }
 
-    .card-back-image-placeholder {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 4rem;
+    .card-back-title {
+      font-size: 1.25rem;
       font-weight: 800;
-      color: rgba(255, 255, 255, 0.8);
-      border: 3px solid rgba(255, 255, 255, 0.4);
+      color: var(--kbm-green);
+      margin: 0 0 0.75rem 0;
+      line-height: 1.2;
     }
 
-    .card-meta {
-      text-align: center;
+    .card-back-definition {
+      font-size: 1rem;
+      color: #374151;
+      line-height: 1.6;
+      margin-bottom: 0.75rem;
     }
 
-    .seo-link {
+    .card-back-example {
+      background: #f9fafb;
+      border-left: 3px solid var(--kbm-green);
+      padding: 0.75rem 1rem;
+      border-radius: 6px;
+      margin-bottom: 1rem;
+    }
+
+    .card-back-example-label {
+      font-weight: 700;
+      color: var(--kbm-green);
+      font-size: 0.85rem;
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .card-back-example-text {
+      font-size: 0.95rem;
+      color: #374151;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .card-back-link {
       color: #fff;
+      background: var(--kbm-green);
       text-decoration: none;
       font-weight: 600;
       padding: 0.75rem 1.5rem;
-      background: rgba(255, 255, 255, 0.2);
       border-radius: 10px;
       display: inline-block;
+      text-align: center;
       transition: background 0.2s ease;
+      margin-top: auto;
     }
 
-    .seo-link:hover {
-      background: rgba(255, 255, 255, 0.3);
+    .card-back-link:hover {
+      background: var(--kbm-green-2);
     }
 
     .no-results {
@@ -339,6 +353,18 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       color: #991b1b;
     }
 
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
     @media (max-width: 768px) {
       .header-row {
         flex-direction: column;
@@ -364,7 +390,11 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       }
 
       .flip-card {
-        height: 260px;
+        height: 280px;
+      }
+
+      .card-back-image-container {
+        width: 85%;
       }
     }
   </style>
@@ -425,39 +455,37 @@ const description = "Unlock the secrets of machine knitting patterns with this c
             const altText = term.imageAlt || term.title;
 
             return (
-              <div class="flip-card" data-card-id={term._id} data-title={term.title.toLowerCase()}>
+              <div class="flip-card" data-card-id={term._id} data-title={term.title.toLowerCase()} role="article" tabindex="0" aria-label={`Glossary term: ${term.title}`}>
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
-                    <div class="card-body">
-                      <h2 class="card-title">{term.title}</h2>
-                      {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
-                      <p class="card-definition">{definitionText}</p>
-                      <div class="card-hint">Click or hover for details</div>
-                    </div>
+                    <h2 class="card-title">{term.title}</h2>
+                    {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
                   </div>
                   <div class="flip-card-back">
                     <div class="card-back-content">
-                      {term.image ? (
-                        <img 
-                          src={term.image}
-                          alt={altText}
-                          class="card-back-image" 
-                          data-term-slug={term.slug}
-                        />
-                      ) : (
-                        <div 
-                          class="card-back-image-placeholder"
-                          data-term-slug={term.slug}
-                        >
-                          {firstLetter}
+                      {term.image && (
+                        <div class="card-back-image-container">
+                          <img 
+                            src={term.image}
+                            alt={altText}
+                            class="card-back-image"
+                          />
+                        </div>
+                      )}
+                      
+                      <h3 class="card-back-title">{term.title}</h3>
+                      <p class="card-back-definition">{definitionText}</p>
+                      
+                      {term.example && (
+                        <div class="card-back-example">
+                          <div class="card-back-example-label">Example:</div>
+                          <p class="card-back-example-text">{term.example}</p>
                         </div>
                       )}
 
-                      <div class="card-meta">
-                        <a href={`/glossary/${term.slug}`} class="seo-link">
-                          View full page →
-                        </a>
-                      </div>
+                      <a href={`/glossary/${term.slug}`} class="card-back-link">
+                        View full page →
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -490,9 +518,9 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       cards.forEach(card => {
         const front = card.querySelector('.flip-card-front');
         const back = card.querySelector('.flip-card-back');
-        const backImage = back.querySelector('.card-back-image, .card-back-image-placeholder');
-        const seoLink = back.querySelector('.seo-link');
+        const backLink = back.querySelector('.card-back-link');
         
+        // Click to flip
         front.addEventListener('click', (e) => {
           e.stopPropagation();
           
@@ -504,25 +532,36 @@ const description = "Unlock the secrets of machine knitting patterns with this c
           currentlyFlippedCard = card;
         });
         
-        if (backImage) {
-          backImage.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const slug = backImage.getAttribute('data-term-slug');
-            if (slug) {
-              window.location.href = `/glossary/${slug}`;
+        // Keyboard accessibility
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            
+            if (card.classList.contains('flipped')) {
+              // If already flipped, navigate to detail page
+              if (backLink) {
+                backLink.click();
+              }
+            } else {
+              // Flip the card
+              if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+                currentlyFlippedCard.classList.remove('flipped');
+              }
+              card.classList.add('flipped');
+              currentlyFlippedCard = card;
             }
-          });
-        }
+          } else if (e.key === 'Escape' && card.classList.contains('flipped')) {
+            card.classList.remove('flipped');
+            currentlyFlippedCard = null;
+          }
+        });
         
-        if (seoLink) {
-          seoLink.addEventListener('click', (e) => {
+        // Prevent link click from flipping
+        if (backLink) {
+          backLink.addEventListener('click', (e) => {
             e.stopPropagation();
           });
         }
-        
-        back.addEventListener('click', (e) => {
-          e.stopPropagation();
-        });
       });
 
       // Desktop hover
