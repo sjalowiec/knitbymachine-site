@@ -54,27 +54,41 @@ if (!entry) {
 <Layout>
   <style>
     .glossary-entry {
-      max-width: 800px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 120px 20px 60px;
     }
 
-    .term-title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      color: #1f2937;
-      margin: 0 0 0.5rem;
-    }
-
-    .term-tooltip {
-      font-size: 1.1rem;
-      color: #6b7280;
-      margin: 0 0 2rem;
-      font-style: italic;
-    }
-
-    .glossary-content {
+    .back-link {
+      display: inline-block;
+      color: var(--kbm-green);
+      text-decoration: none;
+      font-weight: 600;
       margin-bottom: 2rem;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .two-column-layout {
+      display: grid;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .two-column-layout.has-image {
+      grid-template-columns: 400px 1fr;
+    }
+
+    .two-column-layout.no-image {
+      grid-template-columns: 1fr;
+      max-width: 800px;
+    }
+
+    .image-column {
+      position: sticky;
+      top: 120px;
     }
 
     .glossary-image {
@@ -82,7 +96,25 @@ if (!entry) {
       height: auto;
       border-radius: 12px;
       border: 1px solid #e2e6df;
-      margin-bottom: 1.5rem;
+    }
+
+    .content-column {
+      min-width: 0;
+    }
+
+    .term-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      color: #1f2937;
+      margin: 0 0 0.75rem;
+      line-height: 1.2;
+    }
+
+    .term-tooltip {
+      font-size: 1.2rem;
+      color: #6b7280;
+      margin: 0 0 1.5rem;
+      font-style: italic;
     }
 
     .term-description {
@@ -136,7 +168,8 @@ if (!entry) {
       background: #000;
     }
 
-    .video-player iframe {
+    .video-player iframe,
+    .video-player video {
       width: 100%;
       height: 100%;
       border-radius: 8px;
@@ -168,86 +201,115 @@ if (!entry) {
       background: #3f5323;
     }
 
-    .back-link {
-      display: inline-block;
-      color: var(--kbm-green);
-      text-decoration: none;
-      font-weight: 600;
-      margin-bottom: 1rem;
-    }
+    @media (max-width: 900px) {
+      .two-column-layout.has-image,
+      .two-column-layout.no-image {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
 
-    .back-link:hover {
-      text-decoration: underline;
+      .image-column {
+        position: relative;
+        top: 0;
+      }
+
+      .term-title {
+        font-size: 2rem;
+      }
+
+      .term-tooltip {
+        font-size: 1rem;
+      }
     }
   </style>
 
   <div class="glossary-entry">
     <a href="/glossary" class="back-link">← Back to Glossary</a>
     
-    <h1 class="term-title">{entry.term}</h1>
-    {entry.tooltip && <p class="term-tooltip">{entry.tooltip}</p>}
-
-    <div class="glossary-content">
+    <div class={`two-column-layout ${entry.imageFilename ? 'has-image' : 'no-image'}`}>
       {entry.imageFilename && (
-        <img
-          src={`/images/glossary/${entry.imageFilename}`}
-          alt={entry.imageAlt || entry.term}
-          class="glossary-image"
-        />
-      )}
-
-      <p class="term-description">{entry.description}</p>
-
-      {entry.example && (
-        <div class="term-example">
-          <div class="term-example-label">Example:</div>
-          <div class="term-example-text">{entry.example}</div>
+        <div class="image-column">
+          <img
+            src={`/images/glossary/${entry.imageFilename}`}
+            alt={entry.imageAlt || entry.term}
+            class="glossary-image"
+          />
         </div>
       )}
-    </div>
 
-    {entry.isMemberOnly && entry.videoUrl && (
-      <>
-        <div class="member-only" data-member="true" style="display:none;">
-          <h3>Watch it in action</h3>
-          <div class="video-player">
-            {entry.videoUrl.includes('youtube.com') || entry.videoUrl.includes('youtu.be') ? (
-              <iframe 
-                src={entry.videoUrl.includes('youtube.com/embed') ? entry.videoUrl : entry.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
-                title={`Video: ${entry.term}`}
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen
-              ></iframe>
-            ) : (
-              <video controls src={entry.videoUrl}></video>
-            )}
+      <div class="content-column">
+        <h1 class="term-title">{entry.term}</h1>
+        {entry.tooltip && <p class="term-tooltip"><em>{entry.tooltip}</em></p>}
+
+        <p class="term-description">{entry.description}</p>
+
+        {entry.example && (
+          <div class="term-example">
+            <div class="term-example-label">Example:</div>
+            <div class="term-example-text">{entry.example}</div>
           </div>
-        </div>
+        )}
 
-        <div class="non-member-cta" data-member="false">
-          <p>This video is available for members only.</p>
-          <a href="/subscribe" class="btn-primary">Join Now</a>
-        </div>
-      </>
-    )}
+        {entry.videoUrl && (
+          <>
+            {entry.isMemberOnly ? (
+              <>
+                <div class="member-only" data-member="true" style="display:none;">
+                  <h3>Watch it in action</h3>
+                  <div class="video-player">
+                    {entry.videoUrl.includes('youtube.com') || entry.videoUrl.includes('youtu.be') ? (
+                      <iframe 
+                        src={entry.videoUrl.includes('youtube.com/embed') ? entry.videoUrl : entry.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                        title={`Video: ${entry.term}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                    ) : entry.videoUrl.includes('vimeo.com') ? (
+                      <iframe 
+                        src={entry.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')}
+                        title={`Video: ${entry.term}`}
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                      ></iframe>
+                    ) : (
+                      <video controls src={entry.videoUrl}></video>
+                    )}
+                  </div>
+                </div>
 
-    {!entry.isMemberOnly && entry.videoUrl && (
-      <div class="member-only">
-        <h3>Watch it in action</h3>
-        <div class="video-player">
-          {entry.videoUrl.includes('youtube.com') || entry.videoUrl.includes('youtu.be') ? (
-            <iframe 
-              src={entry.videoUrl.includes('youtube.com/embed') ? entry.videoUrl : entry.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
-              title={`Video: ${entry.term}`}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          ) : (
-            <video controls src={entry.videoUrl}></video>
-          )}
-        </div>
+                <div class="non-member-cta" data-member="false">
+                  <p>This video is available for members only.</p>
+                  <a href="/subscribe" class="btn-primary">Join Now</a>
+                </div>
+              </>
+            ) : (
+              <div class="member-only">
+                <h3>Watch it in action</h3>
+                <div class="video-player">
+                  {entry.videoUrl.includes('youtube.com') || entry.videoUrl.includes('youtu.be') ? (
+                    <iframe 
+                      src={entry.videoUrl.includes('youtube.com/embed') ? entry.videoUrl : entry.videoUrl.replace('watch?v=', 'embed/').replace('youtu.be/', 'youtube.com/embed/')}
+                      title={`Video: ${entry.term}`}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  ) : entry.videoUrl.includes('vimeo.com') ? (
+                    <iframe 
+                      src={entry.videoUrl.replace('vimeo.com/', 'player.vimeo.com/video/')}
+                      title={`Video: ${entry.term}`}
+                      allow="autoplay; fullscreen; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  ) : (
+                    <video controls src={entry.videoUrl}></video>
+                  )}
+                </div>
+              </div>
+            )}
+          </>
+        )}
       </div>
-    )}
+    </div>
   </div>
 
   <script>
