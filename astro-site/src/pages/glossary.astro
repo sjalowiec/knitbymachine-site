@@ -6,7 +6,7 @@ let allTerms = [];
 let errorMessage = '';
 
 try {
-  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine/contents/astro-site/src/content/glossary/glossary-complete.json');
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine/contents/astro-site/src/content/glossary-complete.json');
   
   if (response.ok) {
     const fileData = await response.json();
