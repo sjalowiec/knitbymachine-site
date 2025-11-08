@@ -8,7 +8,7 @@ const { slug } = Astro.params;
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
 const REPO_OWNER = 'sjalowiec';
 const REPO_NAME = 'knitbymachine';
-const CONTENT_PATH = 'src/content/glossary';
+const CONTENT_PATH = 'astro-site/src/content/glossary';
 
 async function getGlossaryTerm(slug: string) {
   try {
