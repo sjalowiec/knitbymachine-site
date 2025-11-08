@@ -66,6 +66,18 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       margin-bottom: 1rem;
     }
 
+    .header-title {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .header-logo {
+      width: 70px;
+      height: 70px;
+      flex-shrink: 0;
+    }
+
     h1 {
       font-size: clamp(1.8rem, 4vw, 2.5rem);
       font-weight: 800;
@@ -401,7 +413,10 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
   <div class="container">
     <div class="header-row">
-      <h1>{title}</h1>
+      <div class="header-title">
+        <img src="/images/glossary-logo.png" alt="Glossary logo" class="header-logo" />
+        <h1>{title}</h1>
+      </div>
       <div class="header-search">
         <form method="get" action="/glossary" id="searchForm">
           <input
