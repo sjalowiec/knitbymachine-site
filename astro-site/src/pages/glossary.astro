@@ -261,6 +261,8 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       display: flex;
       flex-direction: column;
       padding: 1rem 1.25rem;
+      text-decoration: none;
+      cursor: pointer;
     }
 
     .card-back-content {
@@ -461,7 +463,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
                     {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
                     <p class="card-hint">Tap for details</p>
                   </div>
-                  <div class="flip-card-back">
+                  <a href={`/glossary/${term.slug}`} class="flip-card-back">
                     <div class="card-back-content">
                       <h3 class="card-back-title">{term.title}</h3>
                       
@@ -475,11 +477,11 @@ const description = "Unlock the secrets of machine knitting patterns with this c
                         </div>
                       )}
 
-                      <a href={`/glossary/${term.slug}`} class="card-back-link">
-                        Learn more
-                      </a>
+                      <span class="card-back-link">
+                        → Learn more
+                      </span>
                     </div>
-                  </div>
+                  </a>
                 </div>
               </div>
             );
@@ -510,7 +512,6 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       cards.forEach(card => {
         const front = card.querySelector('.flip-card-front');
         const back = card.querySelector('.flip-card-back');
-        const backLink = back.querySelector('.card-back-link');
         
         // Click to flip
         front.addEventListener('click', (e) => {
@@ -531,8 +532,8 @@ const description = "Unlock the secrets of machine knitting patterns with this c
             
             if (card.classList.contains('flipped')) {
               // If already flipped, navigate to detail page
-              if (backLink) {
-                backLink.click();
+              if (back) {
+                back.click();
               }
             } else {
               // Flip the card
@@ -547,13 +548,6 @@ const description = "Unlock the secrets of machine knitting patterns with this c
             currentlyFlippedCard = null;
           }
         });
-        
-        // Prevent link click from flipping
-        if (backLink) {
-          backLink.addEventListener('click', (e) => {
-            e.stopPropagation();
-          });
-        }
       });
 
       // Desktop hover
