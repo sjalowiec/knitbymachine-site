@@ -14,9 +14,9 @@
       "sizing",
       "comfort"
     ],
-    "imageFilename": "ease-diagram.jpg",
+    "imageFilename": "gauge-swatch.webp",
     "gifFilename": "",
-    "imageAlt": "Diagram showing positive and negative ease on a sweater",
+    "imageAlt": "Close-up of a knitted gauge swatch with measuring tape",
     "schemaMarkup": "",
     "active": true,
     "slug": "ease",
@@ -44,9 +44,9 @@
       "tension",
       "sizing"
     ],
-    "imageFilename": "",
+    "imageFilename": "gauge-swatch.webp",
     "gifFilename": "",
-    "imageAlt": "",
+    "imageAlt": "Close-up of a knitted gauge swatch with measuring tape",
     "schemaMarkup": "",
     "active": true,
     "slug": "gauge",
@@ -58,32 +58,5 @@
     "isMemberOnly": false,
     "isDraft": false,
     "publishedDate": "2024-11-07"
-  },
-  {
-    "term": "new entry",
-    "abbreviation": "lk; lsdfj l",
-    "description": ";a fj ;kj;l kfdj;",
-    "tooltip": "; lkajdf ;lkj; kj;",
-    "example": " ;laksdfjl;j l;j fd",
-    "categories": [
-      "Techniques",
-      "Stitches"
-    ],
-    "letter": "N",
-    "tags": [
-      "fdf"
-    ],
-    "imageFilename": "gauge-swatch.jpg",
-    "gifFilename": "",
-    "imageAlt": "",
-    "schemaMarkup": "{\"@context\":\"https://schema.org\",\"@type\":\"DefinedTerm\",\"name\":\"new entry\",\"description\":\";a fj ;kj;l kfdj;\"}",
-    "slug": "new-entry",
-    "anaId": "",
-    "workshopId": "",
-    "promoText": "",
-    "videoUrl": "",
-    "isMemberOnly": false,
-    "isDraft": false,
-    "publishedDate": "2025-11-08"
   }
 ]
