@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary Manager - Knit by Machine</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .header {
+            max-width: 1400px;
+            margin: 0 auto 20px;
+            background: white;
+            padding: 20px 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .header h1 {
+            color: #333;
+            font-size: 24px;
+        }
+        
+        .header-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .panel h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 18px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .required { color: #e74c3c; }
+        
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        input:focus, textarea:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-info {
+            background: #2196F3;
+            color: white;
+        }
+        
+        .btn-info:hover {
+            background: #0b7dda;
+        }
+        
+        .btn-danger {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #da190b;
+        }
+        
+        .btn-warning {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .btn-warning:hover {
+            background: #e68900;
+        }
+        
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .entry-list {
+            max-height: 600px;
+            overflow-y: auto;
+        }
+        
+        .entry-item {
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 15px;
+            transition: background 0.2s;
+        }
+        
+        .entry-item.draft {
+            background: #fff9e6;
+            border-color: #ffd54f;
+        }
+        
+        .entry-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .entry-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 4px;
+            flex-wrap: wrap;
+        }
+        
+        .entry-term {
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-badge.draft {
+            background: #ff9800;
+            color: white;
+        }
+        
+        .status-badge.published {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .entry-desc {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .entry-actions {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        .entry-count {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .entry-item {
+                flex-direction: column;
+            }
+            
+            .entry-actions {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📚 Glossary Manager</h1>
+        <div class="header-buttons">
+            <button class="btn-info" onclick="openGitHub()">📂 Open GitHub Folder</button>
+            <input type="file" id="loadFile" accept=".json" class="hidden">
+            <button class="btn-secondary" onclick="document.getElementById('loadFile').click()">📁 Load Existing File</button>
+            <button class="btn-primary" onclick="saveCompleteFile()">💾 Save Complete File</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <!-- Form Panel -->
+        <div class="panel">
+            <h2 id="formTitle">Add New Entry</h2>
+            
+            <form id="glossaryForm">
+                <input type="hidden" id="editIndex" value="">
+                
+                <div class="form-group">
+                    <label>Term <span class="required">*</span></label>
+                    <input type="text" id="term" required>
+                    <div class="help-text">The knitting term or phrase</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Abbreviation</label>
+                    <input type="text" id="abbreviation">
+                    <div class="help-text">Common abbreviation (e.g., "K" for "Knit")</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description <span class="required">*</span></label>
+                    <textarea id="description" rows="4" required></textarea>
+                    <div class="help-text">Concise definition of the term</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tooltip</label>
+                    <input type="text" id="tooltip">
+                    <div class="help-text">Short 8-12 word definition for inline tooltips</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Example</label>
+                    <textarea id="example" rows="3"></textarea>
+                    <div class="help-text">Example usage or pattern reference</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Categories</label>
+                    <select id="categories" multiple size="7">
+                        <option value="Techniques">Techniques</option>
+                        <option value="Stitches">Stitches</option>
+                        <option value="Tools">Tools</option>
+                        <option value="Materials">Materials</option>
+                        <option value="Measurements">Measurements</option>
+                        <option value="Garment Parts">Garment Parts</option>
+                        <option value="Abbreviations">Abbreviations</option>
+                    </select>
+                    <div class="help-text">Hold Ctrl/Cmd to select multiple</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tags</label>
+                    <input type="text" id="tags">
+                    <div class="help-text">Comma-separated (e.g., "fit, sizing")</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Image Filename</label>
+                    <input type="text" id="imageFilename">
+                    <div class="help-text">Just the filename (e.g., "ease.jpg")</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>GIF Filename</label>
+                    <input type="text" id="gifFilename">
+                </div>
+                
+                <div class="form-group">
+                    <label>Image Alt Text</label>
+                    <input type="text" id="imageAlt">
+                </div>
+                
+                <div class="form-group">
+                    <label>ANA ID</label>
+                    <input type="text" id="anaId">
+                </div>
+                
+                <div class="form-group">
+                    <label>Workshop ID</label>
+                    <input type="text" id="workshopId">
+                </div>
+                
+                <div class="form-group">
+                    <label>Promo Text</label>
+                    <textarea id="promoText" rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="isDraft" checked>
+                        <label for="isDraft">Is Draft (hidden from public site)</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Published Date</label>
+                    <input type="date" id="publishedDate">
+                    <div class="help-text">Leave blank if not yet published</div>
+                </div>
+                
+                <div class="button-group">
+                    <button type="submit" class="btn-primary" id="submitBtn">➕ Add Entry</button>
+                    <button type="button" class="btn-secondary" onclick="cancelEdit()">🔄 Clear Form</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Entries List Panel -->
+        <div class="panel">
+            <h2>All Entries</h2>
+            <div class="entry-count" id="entryCount">0 entries</div>
+            <div class="entry-list" id="entryList">
+                <p style="color: #999; text-align: center; padding: 40px 0;">No entries yet. Add your first term!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let entries = [];
+        let editingIndex = -1;
+        
+        function generateSlug(text) {
+            return text.toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+        }
+        
+        function generateSchemaMarkup(term, description) {
+            return JSON.stringify({
+                "@context": "https://schema.org",
+                "@type": "DefinedTerm",
+                "name": term,
+                "description": description
+            });
+        }
+        
+        function getFormData() {
+            const categoriesSelect = document.getElementById('categories');
+            const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(opt => opt.value);
+            const tagsInput = document.getElementById('tags').value;
+            const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+            const term = document.getElementById('term').value;
+            const description = document.getElementById('description').value;
+            
+            return {
+                term: term,
+                abbreviation: document.getElementById('abbreviation').value || "",
+                description: description,
+                tooltip: document.getElementById('tooltip').value || "",
+                example: document.getElementById('example').value || "",
+                categories: selectedCategories,
+                letter: term.charAt(0).toUpperCase(),
+                tags: tags,
+                imageFilename: document.getElementById('imageFilename').value || "",
+                gifFilename: document.getElementById('gifFilename').value || "",
+                imageAlt: document.getElementById('imageAlt').value || "",
+                schemaMarkup: generateSchemaMarkup(term, description),
+                slug: generateSlug(term),
+                anaId: document.getElementById('anaId').value || "",
+                workshopId: document.getElementById('workshopId').value || "",
+                promoText: document.getElementById('promoText').value || "",
+                isDraft: document.getElementById('isDraft').checked,
+                publishedDate: document.getElementById('publishedDate').value || ""
+            };
+        }
+        
+        function setFormData(data) {
+            document.getElementById('term').value = data.term || '';
+            document.getElementById('abbreviation').value = data.abbreviation || '';
+            document.getElementById('description').value = data.description || '';
+            document.getElementById('tooltip').value = data.tooltip || '';
+            document.getElementById('example').value = data.example || '';
+            document.getElementById('tags').value = (data.tags || []).join(', ');
+            document.getElementById('imageFilename').value = data.imageFilename || '';
+            document.getElementById('gifFilename').value = data.gifFilename || '';
+            document.getElementById('imageAlt').value = data.imageAlt || '';
+            document.getElementById('anaId').value = data.anaId || '';
+            document.getElementById('workshopId').value = data.workshopId || '';
+            document.getElementById('promoText').value = data.promoText || '';
+            document.getElementById('isDraft').checked = data.isDraft !== false;
+            document.getElementById('publishedDate').value = data.publishedDate || '';
+            
+            const categoriesSelect = document.getElementById('categories');
+            Array.from(categoriesSelect.options).forEach(option => {
+                option.selected = (data.categories || []).includes(option.value);
+            });
+        }
+        
+        function toggleDraft(index) {
+            entries[index].isDraft = !entries[index].isDraft;
+            renderEntries();
+        }
+        
+        function renderEntries() {
+            const listEl = document.getElementById('entryList');
+            const countEl = document.getElementById('entryCount');
+            
+            const draftCount = entries.filter(e => e.isDraft).length;
+            const publishedCount = entries.length - draftCount;
+            
+            countEl.innerHTML = `${entries.length} ${entries.length === 1 ? 'entry' : 'entries'} 
+                <span style="color: #666; font-weight: normal;">
+                    (${publishedCount} published, ${draftCount} draft)
+                </span>`;
+            
+            if (entries.length === 0) {
+                listEl.innerHTML = '<p style="color: #999; text-align: center; padding: 40px 0;">No entries yet. Add your first term!</p>';
+                return;
+            }
+            
+            listEl.innerHTML = entries.map((entry, index) => `
+                <div class="entry-item ${entry.isDraft ? 'draft' : ''}">
+                    <div class="entry-info">
+                        <div class="entry-header">
+                            <span class="entry-term">${entry.term}${entry.abbreviation ? ` (${entry.abbreviation})` : ''}</span>
+                            <span class="status-badge ${entry.isDraft ? 'draft' : 'published'}">
+                                ${entry.isDraft ? 'Draft' : 'Published'}
+                            </span>
+                        </div>
+                        <div class="entry-desc">${entry.description.substring(0, 100)}${entry.description.length > 100 ? '...' : ''}</div>
+                    </div>
+                    <div class="entry-actions">
+                        <button class="btn-warning btn-sm" onclick="toggleDraft(${index})" title="${entry.isDraft ? 'Mark as Published' : 'Mark as Draft'}">
+                            ${entry.isDraft ? '📤 Publish' : '📥 Draft'}
+                        </button>
+                        <button class="btn-info btn-sm" onclick="editEntry(${index})">✏️ Edit</button>
+                        <button class="btn-danger btn-sm" onclick="deleteEntry(${index})">🗑️</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function editEntry(index) {
+            editingIndex = index;
+            setFormData(entries[index]);
+            document.getElementById('formTitle').textContent = 'Edit Entry';
+            document.getElementById('submitBtn').textContent = '💾 Update Entry';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        function deleteEntry(index) {
+            if (confirm(`Delete "${entries[index].term}"?`)) {
+                entries.splice(index, 1);
+                renderEntries();
+            }
+        }
+        
+        function cancelEdit() {
+            editingIndex = -1;
+            document.getElementById('glossaryForm').reset();
+            document.getElementById('isDraft').checked = true;
+            document.getElementById('formTitle').textContent = 'Add New Entry';
+            document.getElementById('submitBtn').textContent = '➕ Add Entry';
+        }
+        
+        document.getElementById('glossaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const data = getFormData();
+            
+            if (editingIndex >= 0) {
+                entries[editingIndex] = data;
+                alert('✅ Entry updated!');
+            } else {
+                entries.push(data);
+                alert('✅ Entry added!');
+            }
+            
+            renderEntries();
+            cancelEdit();
+        });
+        
+        document.getElementById('loadFile').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                try {
+                    entries = JSON.parse(event.target.result);
+                    renderEntries();
+                    alert(`✅ Loaded ${entries.length} entries`);
+                } catch (error) {
+                    alert('❌ Error loading file: ' + error.message);
+                }
+            };
+            reader.readAsText(file);
+        });
+        
+        function saveCompleteFile() {
+            if (entries.length === 0) {
+                alert('No entries to save!');
+                return;
+            }
+            
+            const jsonString = JSON.stringify(entries, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'glossary-complete.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            const draftCount = entries.filter(e => e.isDraft).length;
+            const publishedCount = entries.length - draftCount;
+            
+            alert(`✅ Saved ${entries.length} entries to glossary-complete.json\n\n${publishedCount} will appear on your website\n${draftCount} are drafts (hidden)\n\nNext steps:\n1. Click "📂 Open GitHub Folder"\n2. Upload this file\n3. Commit changes\n4. Netlify will auto-deploy!`);
+        }
+        
+        function openGitHub() {
+            window.open('https://github.com/sjalowiec/knitbymachine/tree/main/astro-site/src/content/glossary', '_blank');
+        }
+    </script>
+</body>
+</html>
