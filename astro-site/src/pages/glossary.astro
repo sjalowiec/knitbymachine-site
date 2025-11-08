@@ -191,7 +191,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     .flip-card {
       perspective: 1000px;
-      height: 300px;
+      height: 240px;
       cursor: pointer;
     }
 
@@ -245,9 +245,16 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     .card-excerpt {
       font-size: 1rem;
       color: #6b7280;
-      margin: 0;
+      margin: 0 0 1rem 0;
       font-style: italic;
       line-height: 1.5;
+    }
+
+    .card-hint {
+      font-size: 0.85rem;
+      color: #9ca3af;
+      margin-top: auto;
+      padding-top: 1rem;
     }
 
     .flip-card-back {
@@ -262,18 +269,33 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     .card-back-content {
       width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
       gap: 1rem;
+    }
+
+    .card-back-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--kbm-green);
+      margin: 0;
+      line-height: 1.2;
+      text-align: center;
     }
 
     .card-back-image-container {
       width: 70%;
-      margin: 0 auto 1rem;
       padding: 15px;
       background: #F6F7F5;
       border: 1px solid #e2e6df;
       border-radius: 8px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .card-back-image {
@@ -281,45 +303,6 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       height: auto;
       display: block;
       border-radius: 4px;
-    }
-
-    .card-back-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      color: var(--kbm-green);
-      margin: 0 0 0.75rem 0;
-      line-height: 1.2;
-    }
-
-    .card-back-definition {
-      font-size: 1rem;
-      color: #374151;
-      line-height: 1.6;
-      margin-bottom: 0.75rem;
-    }
-
-    .card-back-example {
-      background: #f9fafb;
-      border-left: 3px solid var(--kbm-green);
-      padding: 0.75rem 1rem;
-      border-radius: 6px;
-      margin-bottom: 1rem;
-    }
-
-    .card-back-example-label {
-      font-weight: 700;
-      color: var(--kbm-green);
-      font-size: 0.85rem;
-      margin-bottom: 0.35rem;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .card-back-example-text {
-      font-size: 0.95rem;
-      color: #374151;
-      line-height: 1.5;
-      margin: 0;
     }
 
     .card-back-link {
@@ -332,7 +315,8 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       display: inline-block;
       text-align: center;
       transition: background 0.2s ease;
-      margin-top: auto;
+      width: 100%;
+      max-width: 200px;
     }
 
     .card-back-link:hover {
@@ -402,7 +386,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       }
 
       .flip-card {
-        height: 280px;
+        height: 240px;
       }
 
       .card-back-image-container {
@@ -475,9 +459,12 @@ const description = "Unlock the secrets of machine knitting patterns with this c
                   <div class="flip-card-front">
                     <h2 class="card-title">{term.title}</h2>
                     {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
+                    <p class="card-hint">Tap for details</p>
                   </div>
                   <div class="flip-card-back">
                     <div class="card-back-content">
+                      <h3 class="card-back-title">{term.title}</h3>
+                      
                       {term.image && (
                         <div class="card-back-image-container">
                           <img 
@@ -485,16 +472,6 @@ const description = "Unlock the secrets of machine knitting patterns with this c
                             alt={altText}
                             class="card-back-image"
                           />
-                        </div>
-                      )}
-                      
-                      <h3 class="card-back-title">{term.title}</h3>
-                      <p class="card-back-definition">{definitionText}</p>
-                      
-                      {term.example && (
-                        <div class="card-back-example">
-                          <div class="card-back-example-label">Example:</div>
-                          <p class="card-back-example-text">{term.example}</p>
                         </div>
                       )}
 
