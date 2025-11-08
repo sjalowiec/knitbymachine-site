@@ -185,13 +185,13 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.2rem;
+      gap: 1.5rem;
       margin-bottom: 3rem;
     }
 
     .flip-card {
       perspective: 1000px;
-      height: 220px;
+      height: 200px;
       cursor: pointer;
     }
 
@@ -273,21 +273,23 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       flex-direction: column;
       justify-content: space-between;
       align-items: center;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .card-back-title {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: var(--kbm-green);
       margin: 0;
       line-height: 1.2;
       text-align: center;
+      padding: 0 0.5rem;
+      flex-shrink: 0;
     }
 
     .card-back-image-container {
-      width: 50%;
-      padding: 10px;
+      width: 55%;
+      padding: 0.5rem;
       background: #F6F7F5;
       border: 1px solid #e2e6df;
       border-radius: 8px;
@@ -295,7 +297,8 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       display: flex;
       align-items: center;
       justify-content: center;
-      max-height: 100px;
+      max-height: 85px;
+      overflow: hidden;
     }
 
     .card-back-image {
@@ -386,12 +389,12 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       }
 
       .flip-card {
-        height: 220px;
+        height: 200px;
       }
 
       .card-back-image-container {
         width: 60%;
-        max-height: 90px;
+        max-height: 80px;
       }
     }
   </style>
