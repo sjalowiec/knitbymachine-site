@@ -316,20 +316,20 @@
                 </div>
                 
                 <div class="form-group">
-                    <label>Tooltip</label>
-                    <input type="text" id="tooltip">
+                    <label>Tooltip <span class="required">*</span></label>
+                    <input type="text" id="tooltip" required>
                     <div class="help-text">Short 8-12 word definition for inline tooltips</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Example</label>
-                    <textarea id="example" rows="3"></textarea>
+                    <label>Example <span class="required">*</span></label>
+                    <textarea id="example" rows="3" required></textarea>
                     <div class="help-text">Example usage or pattern reference</div>
                 </div>
                 
                 <div class="form-group">
-                    <label>Categories</label>
-                    <select id="categories" multiple size="7">
+                    <label>Categories <span class="required">*</span></label>
+                    <select id="categories" multiple size="7" required>
                         <option value="Techniques">Techniques</option>
                         <option value="Stitches">Stitches</option>
                         <option value="Tools">Tools</option>
@@ -544,12 +544,21 @@
             editingIndex = -1;
             document.getElementById('glossaryForm').reset();
             document.getElementById('isDraft').checked = true;
+            setDefaultDate();
             document.getElementById('formTitle').textContent = 'Add New Entry';
             document.getElementById('submitBtn').textContent = '➕ Add Entry';
         }
         
         document.getElementById('glossaryForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            
+            // Validate categories
+            const categoriesSelect = document.getElementById('categories');
+            if (categoriesSelect.selectedOptions.length === 0) {
+                alert('⚠️ Please select at least one category');
+                categoriesSelect.focus();
+                return;
+            }
             
             const data = getFormData();
             
@@ -609,6 +618,17 @@
         function openGitHub() {
             window.open('https://github.com/sjalowiec/knitbymachine/tree/main/astro-site/src/content', '_blank');
         }
+        
+        // Set default published date to today
+        function setDefaultDate() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('publishedDate').value = today;
+        }
+        
+        // Initialize on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            setDefaultDate();
+        });
     </script>
 </body>
 </html>
