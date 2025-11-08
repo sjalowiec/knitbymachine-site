@@ -379,6 +379,20 @@
                 </div>
                 
                 <div class="form-group">
+                    <label>Video URL</label>
+                    <input type="text" id="videoUrl">
+                    <div class="help-text">YouTube, Vimeo, or direct video URL</div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="isMemberOnly">
+                        <label for="isMemberOnly">Member-Only Video</label>
+                    </div>
+                    <div class="help-text">Check if video should be restricted to members</div>
+                </div>
+                
+                <div class="form-group">
                     <div class="checkbox-group">
                         <input type="checkbox" id="isDraft" checked>
                         <label for="isDraft">Is Draft (hidden from public site)</label>
@@ -454,6 +468,8 @@
                 anaId: document.getElementById('anaId').value || "",
                 workshopId: document.getElementById('workshopId').value || "",
                 promoText: document.getElementById('promoText').value || "",
+                videoUrl: document.getElementById('videoUrl').value || "",
+                isMemberOnly: document.getElementById('isMemberOnly').checked,
                 isDraft: document.getElementById('isDraft').checked,
                 publishedDate: document.getElementById('publishedDate').value || ""
             };
@@ -472,6 +488,8 @@
             document.getElementById('anaId').value = data.anaId || '';
             document.getElementById('workshopId').value = data.workshopId || '';
             document.getElementById('promoText').value = data.promoText || '';
+            document.getElementById('videoUrl').value = data.videoUrl || '';
+            document.getElementById('isMemberOnly').checked = data.isMemberOnly === true;
             document.getElementById('isDraft').checked = data.isDraft !== false;
             document.getElementById('publishedDate').value = data.publishedDate || '';
             

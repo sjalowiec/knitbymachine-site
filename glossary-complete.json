@@ -24,6 +24,8 @@
     "anaIds": [],
     "workshopIds": [],
     "promoText": "",
+    "videoUrl": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "isMemberOnly": true,
     "isDraft": false,
     "publishedDate": "2024-11-07"
   },
@@ -52,6 +54,8 @@
     "anaIds": [],
     "workshopIds": [],
     "promoText": "",
+    "videoUrl": "",
+    "isMemberOnly": false,
     "isDraft": false,
     "publishedDate": "2024-11-07"
   },
@@ -77,6 +81,8 @@
     "anaId": "",
     "workshopId": "",
     "promoText": "",
+    "videoUrl": "",
+    "isMemberOnly": false,
     "isDraft": false,
     "publishedDate": "2025-11-08"
   }
