@@ -625,9 +625,31 @@
             document.getElementById('publishedDate').value = today;
         }
         
+        // Automatically load existing file from GitHub
+        async function autoLoadFromGitHub() {
+            const url = 'https://raw.githubusercontent.com/sjalowiec/knitbymachine/main/astro-site/src/content/glossary-complete.json';
+            
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const data = await response.json();
+                    entries = data;
+                    renderEntries();
+                    console.log(`✅ Auto-loaded ${entries.length} entries from GitHub`);
+                } else if (response.status === 404) {
+                    console.log('No existing glossary file found on GitHub - starting fresh');
+                } else {
+                    console.log('Could not auto-load file - you can manually upload one');
+                }
+            } catch (error) {
+                console.log('Could not auto-load file - you can manually upload one');
+            }
+        }
+        
         // Initialize on page load
         window.addEventListener('DOMContentLoaded', function() {
             setDefaultDate();
+            autoLoadFromGitHub();
         });
     </script>
 </body>
