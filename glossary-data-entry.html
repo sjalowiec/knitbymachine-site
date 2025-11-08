@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glossary Entry Form - Knit by Machine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .panel {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 14px;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        input[type="text"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .checkbox-group input[type="checkbox"] {
+            width: auto;
+        }
+        
+        .help-text {
+            font-size: 12px;
+            color: #666;
+            margin-top: 4px;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .btn-primary {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #45a049;
+        }
+        
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .preview-title {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+        
+        pre {
+            background: #f8f8f8;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 13px;
+            line-height: 1.5;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .filename-display {
+            background: #e8f5e9;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 13px;
+            color: #2e7d32;
+        }
+        
+        @media (max-width: 1024px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Form Panel -->
+        <div class="panel">
+            <h1>Glossary Entry Form</h1>
+            <p class="subtitle">Fill out the form to create a JSON file for your glossary</p>
+            
+            <form id="glossaryForm">
+                <!-- Basic Info -->
+                <div class="form-group">
+                    <label>Term <span class="required">*</span></label>
+                    <input type="text" id="term" required>
+                    <div class="help-text">The knitting term or phrase</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Abbreviation</label>
+                    <input type="text" id="abbreviation">
+                    <div class="help-text">Common abbreviation (e.g., "K" for "Knit")</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Letter <span class="required">*</span></label>
+                    <input type="text" id="letter" maxlength="1" required>
+                    <div class="help-text">Single letter for alphabetical organization (A-Z)</div>
+                </div>
+                
+                <!-- Content -->
+                <div class="form-group">
+                    <label>Description <span class="required">*</span></label>
+                    <textarea id="description" rows="4" required></textarea>
+                    <div class="help-text">Concise definition of the term</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tooltip</label>
+                    <input type="text" id="tooltip">
+                    <div class="help-text">Short 8-12 word definition for inline tooltips on the website</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Example</label>
+                    <textarea id="example" rows="3"></textarea>
+                    <div class="help-text">Example usage or pattern reference</div>
+                </div>
+                
+                <!-- Categories -->
+                <div class="form-group">
+                    <label>Categories</label>
+                    <select id="categories" multiple size="7">
+                        <option value="Techniques">Techniques</option>
+                        <option value="Stitches">Stitches</option>
+                        <option value="Tools">Tools</option>
+                        <option value="Materials">Materials</option>
+                        <option value="Measurements">Measurements</option>
+                        <option value="Garment Parts">Garment Parts</option>
+                        <option value="Abbreviations">Abbreviations</option>
+                    </select>
+                    <div class="help-text">Hold Ctrl/Cmd to select multiple categories</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Tags</label>
+                    <input type="text" id="tags">
+                    <div class="help-text">Comma-separated tags (e.g., "fit, sizing, comfort")</div>
+                </div>
+                
+                <!-- Media -->
+                <div class="form-group">
+                    <label>Image Filename</label>
+                    <input type="text" id="imageFilename">
+                    <div class="help-text">Just the filename (e.g., "ease-diagram.jpg")</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>GIF Filename</label>
+                    <input type="text" id="gifFilename">
+                    <div class="help-text">Animated GIF filename if applicable</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Image Alt Text</label>
+                    <input type="text" id="imageAlt">
+                    <div class="help-text">Description of the image for accessibility</div>
+                </div>
+                
+                <!-- Schema -->
+                <div class="form-group">
+                    <label>Schema Markup</label>
+                    <textarea id="schemaMarkup" rows="3"></textarea>
+                    <div class="help-text">JSON-LD schema markup (optional, advanced)</div>
+                </div>
+                
+                <!-- Related Content -->
+                <div class="form-group">
+                    <label>ANA ID</label>
+                    <input type="text" id="anaId">
+                    <div class="help-text">Link to related Ask 'n Answer entry</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Workshop ID</label>
+                    <input type="text" id="workshopId">
+                    <div class="help-text">Link to related workshop</div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Promo Text</label>
+                    <textarea id="promoText" rows="2"></textarea>
+                    <div class="help-text">Promotional text for related content</div>
+                </div>
+                
+                <!-- Status -->
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="active" checked>
+                        <label for="active">Active</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="isDraft" checked>
+                        <label for="isDraft">Is Draft</label>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Published Date</label>
+                    <input type="date" id="publishedDate">
+                    <div class="help-text">Leave blank if not yet published</div>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="button-group">
+                    <button type="submit" class="btn-primary">💾 Save JSON File</button>
+                    <button type="button" class="btn-secondary" onclick="resetForm()">🔄 Clear Form</button>
+                </div>
+            </form>
+        </div>
+        
+        <!-- Preview Panel -->
+        <div class="panel">
+            <h2 class="preview-title">📄 JSON Preview</h2>
+            <div id="filenameDisplay" class="filename-display">Filename: (fill in term to see)</div>
+            <pre id="jsonPreview">{
+  "term": "",
+  "abbreviation": "",
+  "description": "",
+  "tooltip": "",
+  "example": "",
+  "categories": [],
+  "letter": "",
+  "tags": [],
+  "imageFilename": "",
+  "gifFilename": "",
+  "imageAlt": "",
+  "schemaMarkup": "",
+  "active": true,
+  "slug": "",
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "isDraft": true,
+  "publishedDate": ""
+}</pre>
+        </div>
+    </div>
+
+    <script>
+        // Generate slug from term
+        function generateSlug(text) {
+            return text
+                .toLowerCase()
+                .replace(/[^\w\s-]/g, '')
+                .replace(/\s+/g, '-')
+                .replace(/-+/g, '-')
+                .trim();
+        }
+        
+        // Update preview
+        function updatePreview() {
+            const term = document.getElementById('term').value;
+            const slug = generateSlug(term);
+            
+            // Get selected categories
+            const categoriesSelect = document.getElementById('categories');
+            const selectedCategories = Array.from(categoriesSelect.selectedOptions).map(opt => opt.value);
+            
+            // Parse tags
+            const tagsInput = document.getElementById('tags').value;
+            const tags = tagsInput ? tagsInput.split(',').map(t => t.trim()).filter(t => t) : [];
+            
+            const data = {
+                term: term,
+                abbreviation: document.getElementById('abbreviation').value || "",
+                description: document.getElementById('description').value || "",
+                tooltip: document.getElementById('tooltip').value || "",
+                example: document.getElementById('example').value || "",
+                categories: selectedCategories,
+                letter: document.getElementById('letter').value.toUpperCase() || "",
+                tags: tags,
+                imageFilename: document.getElementById('imageFilename').value || "",
+                gifFilename: document.getElementById('gifFilename').value || "",
+                imageAlt: document.getElementById('imageAlt').value || "",
+                schemaMarkup: document.getElementById('schemaMarkup').value || "",
+                active: document.getElementById('active').checked,
+                slug: slug,
+                anaId: document.getElementById('anaId').value || "",
+                workshopId: document.getElementById('workshopId').value || "",
+                promoText: document.getElementById('promoText').value || "",
+                isDraft: document.getElementById('isDraft').checked,
+                publishedDate: document.getElementById('publishedDate').value || ""
+            };
+            
+            document.getElementById('jsonPreview').textContent = JSON.stringify(data, null, 2);
+            
+            const filename = slug ? `${slug}.json` : '(fill in term to see)';
+            document.getElementById('filenameDisplay').textContent = `Filename: ${filename}`;
+        }
+        
+        // Listen to all form changes
+        document.getElementById('glossaryForm').addEventListener('input', updatePreview);
+        document.getElementById('glossaryForm').addEventListener('change', updatePreview);
+        
+        // Handle form submission
+        document.getElementById('glossaryForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const term = document.getElementById('term').value;
+            if (!term) {
+                alert('Please enter a term!');
+                return;
+            }
+            
+            const slug = generateSlug(term);
+            const jsonString = document.getElementById('jsonPreview').textContent;
+            
+            // Create and download file
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${slug}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            
+            alert(`✅ JSON file downloaded: ${slug}.json\n\nCopy this file to:\nastro-site/src/content/glossary/`);
+        });
+        
+        // Reset form
+        function resetForm() {
+            if (confirm('Clear all fields?')) {
+                document.getElementById('glossaryForm').reset();
+                updatePreview();
+            }
+        }
+        
+        // Auto-fill letter from term
+        document.getElementById('term').addEventListener('input', function() {
+            const term = this.value;
+            if (term && !document.getElementById('letter').value) {
+                document.getElementById('letter').value = term.charAt(0).toUpperCase();
+            }
+        });
+        
+        // Initial preview
+        updatePreview();
+    </script>
+</body>
+</html>
