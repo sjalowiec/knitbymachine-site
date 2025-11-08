@@ -20,7 +20,7 @@ try {
       slug: data.slug,
       excerpt: data.tooltip || data.description.substring(0, 100),
       definition: data.description,
-      image: data.imageFilename ? `/images/${data.imageFilename}` : null,
+      image: data.imageFilename ? `/images/glossary/${data.imageFilename}` : null,
       imageAlt: data.imageAlt,
       aliases: [],
       isDraft: data.isDraft,

@@ -289,6 +289,34 @@
         </div>
     </div>
     
+    <!-- Instructions Panel -->
+    <div style="max-width: 1400px; margin: 0 auto 20px; background: #e8f5e9; padding: 20px 30px; border-radius: 8px; border-left: 4px solid #4CAF50;">
+        <h3 style="margin: 0 0 12px 0; color: #2e7d32; font-size: 16px;">How to Publish Glossary Entries</h3>
+        <ol style="margin: 0; padding-left: 20px; color: #1b5e20; line-height: 1.8;">
+            <li><strong>Add/Edit entries</strong> in the form below (they auto-load from GitHub)</li>
+            <li><strong>Upload images</strong> to GitHub:
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                    <li>Go to: <a href="https://github.com/sjalowiec/knitbymachine/tree/main/astro-site/public/images" target="_blank" style="color: #1565c0; text-decoration: underline;">astro-site/public/images</a></li>
+                    <li>Create a folder called <code style="background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 3px;">glossary</code> (if it doesn't exist)</li>
+                    <li>Click "Add file" → "Upload files" → Drag your .webp/.jpg images</li>
+                    <li>Name them exactly as shown in "Image Filename" field (e.g., <code style="background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 3px;">gauge-swatch.webp</code>)</li>
+                </ul>
+            </li>
+            <li><strong>Save JSON file</strong> using the "Save Complete File" button above</li>
+            <li><strong>Upload JSON</strong> to GitHub:
+                <ul style="margin: 8px 0; padding-left: 20px;">
+                    <li>Go to: <a href="https://github.com/sjalowiec/knitbymachine/tree/main/astro-site/src/content" target="_blank" style="color: #1565c0; text-decoration: underline;">astro-site/src/content</a></li>
+                    <li>Click on <code style="background: rgba(0,0,0,0.1); padding: 2px 6px; border-radius: 3px;">glossary-complete.json</code></li>
+                    <li>Click "Edit" (pencil icon) → Paste your saved JSON → Commit changes</li>
+                </ul>
+            </li>
+            <li><strong>Done!</strong> Netlify automatically deploys your changes in ~2 minutes</li>
+        </ol>
+        <p style="margin: 12px 0 0 0; padding: 12px; background: rgba(255,255,255,0.6); border-radius: 6px; font-size: 13px; color: #2e7d32;">
+            <strong>Tip:</strong> Keep this page open while you work. It automatically loads your latest entries from GitHub each time you refresh!
+        </p>
+    </div>
+    
     <div class="container">
         <!-- Form Panel -->
         <div class="panel">
@@ -350,7 +378,7 @@
                 <div class="form-group">
                     <label>Image Filename</label>
                     <input type="text" id="imageFilename">
-                    <div class="help-text">Just the filename (e.g., "ease.jpg")</div>
+                    <div class="help-text">Just the filename (e.g., "gauge-swatch.webp") - upload to /images/glossary/ folder</div>
                 </div>
                 
                 <div class="form-group">
