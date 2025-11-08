@@ -13,7 +13,7 @@ const CONTENT_PATH = 'astro-site/src/content/glossary';
 async function getGlossaryTerm(slug: string) {
   try {
     const response = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}/${slug}.json`,
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}/glossary-complete.json`,
       {
         headers: {
           'Authorization': `token ${GITHUB_TOKEN}`,
@@ -29,14 +29,21 @@ async function getGlossaryTerm(slug: string) {
 
     const data = await response.json();
     const content = atob(data.content);
-    const jsonData = JSON.parse(content);
+    const allEntries = JSON.parse(content);
 
-    // Filter out drafts and pending publish entries
-    if (jsonData.isDraft || jsonData.pendingPublish) {
+    // Find the entry with matching slug
+    const entry = allEntries.find(e => e.slug === slug);
+
+    if (!entry) {
       return null;
     }
 
-    return jsonData;
+    // Filter out drafts and pending publish entries
+    if (entry.isDraft || entry.pendingPublish) {
+      return null;
+    }
+
+    return entry;
   } catch (error) {
     console.error('Error fetching glossary term:', error);
     return null;
