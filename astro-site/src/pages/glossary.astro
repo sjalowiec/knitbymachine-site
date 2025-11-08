@@ -6,32 +6,27 @@ let allTerms = [];
 let errorMessage = '';
 
 try {
-  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine/contents/astro-site/src/content/glossary');
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine/contents/astro-site/src/content/glossary/glossary-complete.json');
   
   if (response.ok) {
-    const files = await response.json();
+    const fileData = await response.json();
+    const fileResponse = await fetch(fileData.download_url);
+    const allEntries = await fileResponse.json();
     
-    // Fetch each JSON file's content
-    const termPromises = files
-      .filter(file => file.name.endsWith('.json'))
-      .map(async (file) => {
-        const fileResponse = await fetch(file.download_url);
-        const data = await fileResponse.json();
-        return {
-          _id: data.slug,
-          title: data.title,
-          slug: data.slug,
-          excerpt: data.excerpt,
-          definition: data.definition,
-          image: data.image,
-          imageAlt: data.imageAlt,
-          aliases: data.aliases || [],
-          isDraft: data.isDraft,
-          pendingPublish: data.pendingPublish,
-        };
-      });
+    // Map entries to the format expected by the template
+    const fetchedTerms = allEntries.map(data => ({
+      _id: data.slug,
+      title: data.term,
+      slug: data.slug,
+      excerpt: data.tooltip || data.description.substring(0, 100),
+      definition: data.description,
+      image: data.imageFilename,
+      imageAlt: data.imageAlt,
+      aliases: [],
+      isDraft: data.isDraft,
+      pendingPublish: data.pendingPublish || false,
+    }));
     
-    const fetchedTerms = await Promise.all(termPromises);
     // Filter out drafts and pending publish entries, sort alphabetically
     allTerms = fetchedTerms
       .filter(term => !term.isDraft && !term.pendingPublish)
