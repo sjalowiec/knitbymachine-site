@@ -603,11 +603,11 @@
             const draftCount = entries.filter(e => e.isDraft).length;
             const publishedCount = entries.length - draftCount;
             
-            alert(`✅ Saved ${entries.length} entries to glossary-complete.json\n\n${publishedCount} will appear on your website\n${draftCount} are drafts (hidden)\n\nNext steps:\n1. Click "📂 Open GitHub Folder"\n2. Upload this file\n3. Commit changes\n4. Netlify will auto-deploy!`);
+            alert(`✅ Saved ${entries.length} entries to glossary-complete.json\n\n${publishedCount} will appear on your website\n${draftCount} are drafts (hidden)\n\nNext steps:\n1. Click "📂 Open GitHub Folder"\n2. Click "Add file" → "Upload files"\n3. Upload glossary-complete.json\n4. Commit changes\n5. Netlify will auto-deploy!`);
         }
         
         function openGitHub() {
-            window.open('https://github.com/sjalowiec/knitbymachine/tree/main/astro-site/src/content/glossary', '_blank');
+            window.open('https://github.com/sjalowiec/knitbymachine/tree/main/astro-site/src/content', '_blank');
         }
     </script>
 </body>
