@@ -23,7 +23,7 @@
     "anaId": "",
     "workshopId": "",
     "promoText": "",
-    "isDraft": false,
+    "isDraft": true,
     "publishedDate": "2024-11-07"
   },
   {
@@ -44,13 +44,64 @@
     ],
     "imageFilename": "gauge-swatch.webp",
     "gifFilename": "",
-    "imageAlt": "Close-up of a knitted gauge swatch with measuring tape",
+    "imageAlt": "",
     "schemaMarkup": "{\"@context\":\"https://schema.org\",\"@type\":\"DefinedTerm\",\"name\":\"Gauge\",\"description\":\"The number of stitches and rows per inch in your knitting, determined by your needle size, yarn weight, and knitting tension. Gauge must match the pattern's specifications for the finished garment to fit properly.\"}",
     "slug": "gauge",
     "anaId": "",
     "workshopId": "",
     "promoText": "",
-    "isDraft": false,
+    "isDraft": true,
     "publishedDate": "2024-11-07"
+  },
+  {
+    "term": "new term",
+    "abbreviation": "new",
+    "description": "lkjlfk lkjl uaoi al fj;lkja; fi",
+    "tooltip": ";lkafj d;ja;iwue;oir;i",
+    "example": ";alkf j;i uewpiokl;lkj;",
+    "categories": [
+      "Techniques",
+      "Stitches"
+    ],
+    "letter": "N",
+    "tags": [
+      "cast on",
+      "maintenance"
+    ],
+    "imageFilename": "gauge-swatch.webp",
+    "gifFilename": "",
+    "imageAlt": "",
+    "schemaMarkup": "{\"@context\":\"https://schema.org\",\"@type\":\"DefinedTerm\",\"name\":\"new term\",\"description\":\"lkjlfk lkjl uaoi al fj;lkja; fi\"}",
+    "slug": "new-term",
+    "anaId": "",
+    "workshopId": "",
+    "promoText": "",
+    "isDraft": true,
+    "publishedDate": "2025-11-07"
+  },
+  {
+    "term": "antoher term",
+    "abbreviation": "akldf;j lkj ",
+    "description": " ;lakfj d;kj a;f",
+    "tooltip": ";k ajf;lkj; lkj;",
+    "example": " ;lakfj ;ljk;lk j",
+    "categories": [
+      "Measurements",
+      "Garment Parts"
+    ],
+    "letter": "A",
+    "tags": [
+      "df f"
+    ],
+    "imageFilename": "gauge-swatch.webp",
+    "gifFilename": "",
+    "imageAlt": "",
+    "schemaMarkup": "{\"@context\":\"https://schema.org\",\"@type\":\"DefinedTerm\",\"name\":\"antoher term\",\"description\":\" ;lakfj d;kj a;f\"}",
+    "slug": "antoher-term",
+    "anaId": "",
+    "workshopId": "",
+    "promoText": "",
+    "isDraft": true,
+    "publishedDate": "2025-11-08"
   }
 ]
