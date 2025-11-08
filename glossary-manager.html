@@ -518,7 +518,7 @@
             document.getElementById('promoText').value = data.promoText || '';
             document.getElementById('videoUrl').value = data.videoUrl || '';
             document.getElementById('isMemberOnly').checked = data.isMemberOnly === true;
-            document.getElementById('isDraft').checked = data.isDraft !== false;
+            document.getElementById('isDraft').checked = data.isDraft === true;
             document.getElementById('publishedDate').value = data.publishedDate || '';
             
             const categoriesSelect = document.getElementById('categories');
