@@ -71,6 +71,7 @@ const description = "Browse all our knitting calculators and interactive tools t
 
       <!-- Row 3: Category Filter Icons (horizontal scroll on mobile) -->
       <div class="category-filters-row">
+        <p class="categories-guide-text">Explore the categories below to find what you need.</p>
         <div class="category-filters">
           <button class="filter-icon active" data-category="all" aria-label="Show all wizards" title="All Wizards">
             <img src="/images/all-wizards.png" alt="All" />
@@ -197,35 +198,44 @@ const description = "Browse all our knitting calculators and interactive tools t
   /* Row 3: Category Icons (horizontal scroll on mobile) */
   .category-filters-row {
     width: 100%;
+  }
+
+  .categories-guide-text {
+    text-align: center;
+    color: #738c52;
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin: 0 0 1rem 0;
+  }
+
+  .category-filters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 0.5rem 0;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: #e5e8e0 #f7f8f7;
   }
 
-  .category-filters-row::-webkit-scrollbar {
+  .category-filters::-webkit-scrollbar {
     height: 8px;
   }
 
-  .category-filters-row::-webkit-scrollbar-track {
+  .category-filters::-webkit-scrollbar-track {
     background: #f7f8f7;
     border-radius: 4px;
   }
 
-  .category-filters-row::-webkit-scrollbar-thumb {
+  .category-filters::-webkit-scrollbar-thumb {
     background: #e5e8e0;
     border-radius: 4px;
   }
 
-  .category-filters-row::-webkit-scrollbar-thumb:hover {
+  .category-filters::-webkit-scrollbar-thumb:hover {
     background: #52682D;
-  }
-
-  .category-filters {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 0.5rem 0;
   }
 
   .filter-icon {
