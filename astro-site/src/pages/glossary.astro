@@ -19,20 +19,24 @@ try {
           const fileResponse = await fetch(file.download_url);
           const data = await fileResponse.json();
           
+          // Handle both old format (title) and new format (term)
+          const termName = data.term || data.title;
+          const definition = data.description || data.definition;
+          
           // Validate required fields
-          if (!data.term || !data.slug || !data.description) {
+          if (!termName || !data.slug || !definition) {
             console.warn(`Skipping invalid glossary entry in ${file.name}: missing required fields`);
             return null;
           }
           
           return {
             _id: data.slug,
-            title: data.term,
+            title: termName,
             slug: data.slug,
-            excerpt: data.tooltip || '',
-            definition: data.description,
+            excerpt: data.tooltip || data.excerpt || '',
+            definition: definition,
             example: data.example || '',
-            image: data.imageFilename ? `/images/glossary/${data.imageFilename}` : null,
+            image: data.imageFilename || data.image ? `/images/glossary/${data.imageFilename || data.image}` : null,
             imageAlt: data.imageAlt || '',
             aliases: [],
             isDraft: data.isDraft || false,
