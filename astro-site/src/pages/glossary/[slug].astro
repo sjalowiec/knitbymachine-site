@@ -13,7 +13,7 @@ const CONTENT_PATH = 'astro-site/src/content';
 async function getGlossaryTerm(slug: string) {
   try {
     const response = await fetch(
-      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}/glossary-complete.json`,
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/src/content/glossary/${slug}.json`,
       {
         headers: {
           'Authorization': `token ${GITHUB_TOKEN}`,
@@ -24,20 +24,38 @@ async function getGlossaryTerm(slug: string) {
     );
 
     if (!response.ok) {
+      console.error(`Failed to fetch glossary term: ${slug}`, response.status);
       return null;
     }
 
     const data = await response.json();
     const content = atob(data.content);
-    const allEntries = JSON.parse(content);
+    const entry = JSON.parse(content);
 
-    const entry = allEntries.find(e => e.slug === slug);
-
-    if (!entry || entry.isDraft || entry.pendingPublish) {
+    // Filter out drafts and pending publish entries
+    if (entry.isDraft || entry.pendingPublish) {
       return null;
     }
 
-    return entry;
+    // Handle both old format (title/definition/image) and new format (term/description/imageFilename)
+    return {
+      slug: entry.slug,
+      term: entry.term || entry.title,
+      abbreviation: entry.abbreviation || '',
+      description: entry.description || entry.definition,
+      tooltip: entry.tooltip || entry.excerpt || '',
+      example: entry.example || '',
+      categories: entry.categories || [],
+      letter: entry.letter || '',
+      imageFilename: entry.imageFilename || entry.image || '',
+      imageAlt: entry.imageAlt || '',
+      gifFilename: entry.gifFilename || '',
+      videoUrl: entry.videoUrl || '',
+      isMemberOnly: entry.isMemberOnly || false,
+      schemaMarkup: entry.schemaMarkup || null,
+      relatedTerms: entry.relatedTerms || [],
+      tags: entry.tags || [],
+    };
   } catch (error) {
     console.error('Error fetching glossary term:', error);
     return null;
