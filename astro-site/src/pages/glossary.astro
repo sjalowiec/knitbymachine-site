@@ -15,29 +15,41 @@ try {
     const termPromises = files
       .filter(file => file.name.endsWith('.json'))
       .map(async (file) => {
-        const fileResponse = await fetch(file.download_url);
-        const data = await fileResponse.json();
-        return {
-          _id: data.slug,
-          title: data.term,
-          slug: data.slug,
-          excerpt: data.tooltip || '',
-          definition: data.description,
-          example: data.example || '',
-          image: data.imageFilename ? `/images/glossary/${data.imageFilename}` : null,
-          imageAlt: data.imageAlt,
-          aliases: [],
-          isDraft: data.isDraft,
-          pendingPublish: data.pendingPublish || false,
-        };
+        try {
+          const fileResponse = await fetch(file.download_url);
+          const data = await fileResponse.json();
+          
+          // Validate required fields
+          if (!data.term || !data.slug || !data.description) {
+            console.warn(`Skipping invalid glossary entry in ${file.name}: missing required fields`);
+            return null;
+          }
+          
+          return {
+            _id: data.slug,
+            title: data.term,
+            slug: data.slug,
+            excerpt: data.tooltip || '',
+            definition: data.description,
+            example: data.example || '',
+            image: data.imageFilename ? `/images/glossary/${data.imageFilename}` : null,
+            imageAlt: data.imageAlt || '',
+            aliases: [],
+            isDraft: data.isDraft || false,
+            pendingPublish: data.pendingPublish || false,
+          };
+        } catch (error) {
+          console.error(`Error fetching glossary file ${file.name}:`, error);
+          return null;
+        }
       });
     
     const fetchedTerms = await Promise.all(termPromises);
     
-    // Filter out drafts and pending publish entries, sort alphabetically
+    // Filter out null entries, drafts, and pending publish entries, then sort alphabetically
     allTerms = fetchedTerms
-      .filter(term => !term.isDraft && !term.pendingPublish)
-      .sort((a, b) => a.title.localeCompare(b.title));
+      .filter(term => term !== null && !term.isDraft && !term.pendingPublish)
+      .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
   }
 } catch (error) {
   console.error('Error fetching glossary terms:', error);
