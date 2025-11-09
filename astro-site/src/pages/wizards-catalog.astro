@@ -85,9 +85,9 @@ const description = "Browse all our knitting calculators and interactive tools t
           <button class="filter-icon" data-category="Skill Builders" aria-label="Filter by Skill Builders" title="Skill Builders">
             <img src="/images/practice-icon.png" alt="Skill Builders" />
           </button>
-          <button class="filter-icon" data-category="Smart Guides" aria-label="Filter by Smart Guides" title="Smart Guides">
+          <a href="/smart-guides-coming-soon" class="filter-icon filter-icon-link" aria-label="Smart Guides Coming Soon" title="Smart Guides - Coming Soon">
             <img src="/images/guide_icon.png" alt="Smart Guides" />
-          </button>
+          </a>
         </div>
       </div>
     </div>
@@ -268,6 +268,10 @@ const description = "Browse all our knitting calculators and interactive tools t
     border-color: #52682D;
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.15);
     background: #f7f8f7;
+  }
+
+  .filter-icon-link {
+    text-decoration: none;
   }
 
   /* Mobile Responsive */
