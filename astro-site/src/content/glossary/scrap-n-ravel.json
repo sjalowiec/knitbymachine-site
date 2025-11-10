@@ -19,7 +19,9 @@
   "anaId": "",
   "workshopId": "",
   "promoText": "",
-  "relatedTerms": [],
+  "relatedTerms": [
+    "provisional-cast-on"
+  ],
   "tags": [
     "beginner"
   ],
