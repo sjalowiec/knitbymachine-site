@@ -1,0 +1,28 @@
+{
+  "term": "Tension",
+  "slug": "tension",
+  "abbreviation": " ",
+  "description": "Tension refers to how tightly or loosely the yarn is knitted. It directly affects gauge, fabric feel, and fit.\n\nOn a knitting machine, tension is adjusted by the tension dial on the carriage. A lower number produces tighter knitting (smaller stitches), while a higher number produces looser knitting (larger stitches).\n\nEven slight changes in yarn thickness, fiber, or weather conditions can affect tension—so always knit and measure a swatch before starting your project.",
+  "tooltip": "How tight or loose the knitting is, adjusted by the tension dial on the machine.",
+  "example": "Try knitting a swatch at tension 6, then at tension 7 to see the difference in stitch size.",
+  "categories": [
+    "Techniques",
+    "Measurements & Fit"
+  ],
+  "letter": "T",
+  "imageFilename": "1762808464743-tension.svg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [],
+  "isDraft": true,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
