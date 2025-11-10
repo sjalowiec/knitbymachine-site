@@ -1,6 +1,19 @@
 ---
 import Layout from "../layouts/layout.astro";
 
+// Helper to normalize image paths - handles full URLs, paths, and bare filenames
+function normalizeGlossaryImagePath(imageValue: string | null | undefined): string | null {
+  if (!imageValue) return null;
+  
+  // If it's already a full URL or absolute path, return as-is
+  if (imageValue.startsWith('http://') || imageValue.startsWith('https://') || imageValue.startsWith('/')) {
+    return imageValue;
+  }
+  
+  // Otherwise, it's just a filename - prepend the glossary images directory
+  return `/images/glossary/${imageValue}`;
+}
+
 // Fetch glossary terms from individual JSON files in GitHub at build time
 let allTerms = [];
 let errorMessage = '';
@@ -36,7 +49,7 @@ try {
             excerpt: data.tooltip || data.excerpt || '',
             definition: definition,
             example: data.example || '',
-            image: data.imageFilename || data.image ? `/images/glossary/${data.imageFilename || data.image}` : null,
+            image: normalizeGlossaryImagePath(data.imageFilename || data.image),
             imageAlt: data.imageAlt || '',
             aliases: [],
             isDraft: data.isDraft || false,

@@ -10,6 +10,19 @@ const REPO_OWNER = 'sjalowiec';
 const REPO_NAME = 'knitbymachine';
 const CONTENT_PATH = 'astro-site/src/content';
 
+// Helper to normalize image paths - handles full URLs, paths, and bare filenames
+function normalizeGlossaryImagePath(imageValue: string | null | undefined): string | null {
+  if (!imageValue) return null;
+  
+  // If it's already a full URL or absolute path, return as-is
+  if (imageValue.startsWith('http://') || imageValue.startsWith('https://') || imageValue.startsWith('/')) {
+    return imageValue;
+  }
+  
+  // Otherwise, it's just a filename - prepend the glossary images directory
+  return `/images/glossary/${imageValue}`;
+}
+
 async function getGlossaryTerm(slug: string) {
   try {
     const headers: Record<string, string> = {
@@ -50,7 +63,7 @@ async function getGlossaryTerm(slug: string) {
       example: entry.example || '',
       categories: entry.categories || [],
       letter: entry.letter || '',
-      imageFilename: entry.imageFilename || entry.image || '',
+      imageFilename: normalizeGlossaryImagePath(entry.imageFilename || entry.image),
       imageAlt: entry.imageAlt || '',
       gifFilename: entry.gifFilename || '',
       videoUrl: entry.videoUrl || '',
@@ -251,7 +264,7 @@ if (!entry) {
       {entry.imageFilename && (
         <div class="image-column">
           <img
-            src={`/images/glossary/${entry.imageFilename}`}
+            src={entry.imageFilename}
             alt={entry.imageAlt || entry.term}
             class="glossary-image"
           />
