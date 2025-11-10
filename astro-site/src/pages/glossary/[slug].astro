@@ -179,6 +179,46 @@ if (!entry) {
       white-space: pre-line;
     }
 
+    .related-terms {
+      margin: 1.5rem 0;
+      padding: 0;
+    }
+
+    .related-terms-label {
+      font-weight: 700;
+      color: #1f2937;
+      margin-bottom: 0.75rem;
+      font-size: 1.1rem;
+    }
+
+    .related-terms-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .related-term-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+      color: var(--kbm-green);
+      font-weight: 600;
+      font-size: 1rem;
+      transition: opacity 0.2s;
+    }
+
+    .related-term-link:hover {
+      opacity: 0.7;
+    }
+
+    .related-term-icon {
+      width: 20px;
+      height: 20px;
+      flex-shrink: 0;
+    }
+
     .member-only,
     .non-member-cta {
       margin-top: 2rem;
@@ -283,6 +323,24 @@ if (!entry) {
           <div class="term-example">
             <div class="term-example-label">Example:</div>
             <div class="term-example-text">{entry.example}</div>
+          </div>
+        )}
+
+        {entry.relatedTerms && entry.relatedTerms.length > 0 && (
+          <div class="related-terms">
+            <div class="related-terms-label">Related terms:</div>
+            <div class="related-terms-list">
+              {entry.relatedTerms.map((termSlug: string) => (
+                <a href={`/glossary/${termSlug}`} class="related-term-link">
+                  <img 
+                    src="https://knitbymachine.com/images/glossary/glossary_logo.svg" 
+                    alt=""
+                    class="related-term-icon"
+                  />
+                  {termSlug}
+                </a>
+              ))}
+            </div>
           </div>
         )}
 
