@@ -1,0 +1,29 @@
+{
+  "term": "Tension Dial",
+  "slug": "tension-dial",
+  "abbreviation": " ",
+  "description": "The tension dial controls how much yarn is fed into each stitch, affecting stitch size and overall fabric tension.\n\nFound on the knitting machine carriage, the dial adjusts the tightness or looseness of the stitches:\n\nLower numbers = tighter knitting (smaller stitches)\n\nHigher numbers = looser knitting (larger stitches)\n\nMost machines use a range of 0–10. Your ideal setting depends on the yarn, stitch pattern, and desired fabric feel. Always record the dial setting when knitting a swatch so you can duplicate your results later.",
+  "tooltip": "Controls how much yarn is used for each stitch—affects fabric tightness and gauge.",
+  "example": "Set the tension dial to 6 for smooth stockinette, then try 8 for a softer, looser fabric.",
+  "categories": [
+    "Machine Parts & Accessories"
+  ],
+  "letter": "T",
+  "imageFilename": "1762808624279-tension-dial.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "tension"
+  ],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
