@@ -1,0 +1,27 @@
+{
+  "term": "Gauge",
+  "slug": "gauge",
+  "abbreviation": "",
+  "description": "Gauge is a measure of the number of stitches and rows in a specific area.\n\nIt’s commonly measured as:\n• Stitches and rows per inch, or\n• Stitches and rows per 4\" (10 cm)\n\nThe term gauge can also refer to the pitch of a knitting machine—the distance between needles. For example, a machine with needles spaced 4.5 mm apart is referred to as a standard gauge machine.",
+  "tooltip": "Number of stitches and rows per inch (or per 4\" or 10cm)",
+  "example": "",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "G",
+  "imageFilename": "1762796370895-gauge-swatch.svg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": false
+}
