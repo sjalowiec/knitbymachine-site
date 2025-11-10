@@ -1,0 +1,27 @@
+{
+  "term": "Decrease",
+  "slug": "decrease",
+  "abbreviation": "dec",
+  "description": "Reduce the number of needles in work, usually by doubling up stitches. Unless you only want to knit blankets or scarves, increasing and decreasing is top on your list of skills to master.<br>\n\nThere are a number of ways for machine knitters to decrease. For basic shaping like sleeves, transferring stitches along the edge of the knitting is the most common method.",
+  "tooltip": "Reduce the number of needles in work by transferring stitches.",
+  "example": "Decrease 1 stitch every other row 10 times",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "D",
+  "imageFilename": "1762796160414-decrease.svg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": false
+}
