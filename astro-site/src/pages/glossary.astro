@@ -120,6 +120,48 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       margin: 0;
     }
 
+    .header-search {
+      flex: 1;
+      max-width: 400px;
+      min-width: 250px;
+    }
+
+    .header-search form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .kbm-search-input {
+      flex: 1;
+      padding: 0.75rem 1rem;
+      border: 1px solid #e2e6df;
+      border-radius: 10px;
+      font-size: clamp(1.25rem, 2.5vw, 1.4rem);
+      background: #fff;
+      min-height: 44px;
+    }
+
+    .kbm-search-input:focus {
+      outline: none;
+      border-color: var(--kbm-green);
+      box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+    }
+
+    .kbm-search-btn {
+      padding: 0.75rem 1.25rem;
+      background: var(--kbm-green);
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: clamp(1.25rem, 2.5vw, 1.4rem);
+      transition: background 0.2s ease;
+      min-height: 44px;
+    }
+
+    .kbm-search-btn:hover {
+      background: var(--kbm-green-2);
+    }
 
     .description {
       font-size: clamp(1.3rem, 2.5vw, 1.3rem);
@@ -364,6 +406,10 @@ const description = "Unlock the secrets of machine knitting patterns with this c
         align-items: stretch;
       }
 
+      .header-search {
+        max-width: none;
+      }
+
       .alphabet {
         gap: 0.35rem;
       }
@@ -399,6 +445,20 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       <div class="header-title">
         <img src="/images/glossary/glossary_logo.svg" alt="Glossary logo" class="header-logo" />
         <h1>{title}</h1>
+      </div>
+      <div class="header-search">
+        <form method="get" action="/glossary" id="searchForm">
+          <input
+            type="text"
+            name="q"
+            placeholder="Search terms..."
+            class="kbm-search-input"
+            id="searchInput"
+          />
+          <button type="submit" class="kbm-search-btn" aria-label="Search">
+            <i class="fa fa-search"></i>
+          </button>
+        </form>
       </div>
     </div>
     
