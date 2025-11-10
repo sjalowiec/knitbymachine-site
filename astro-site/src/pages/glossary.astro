@@ -171,6 +171,9 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     }
 
     .alphabet-filter {
+      position: sticky;
+      top: 80px;
+      z-index: 100;
       margin-bottom: 2rem;
       padding: 1.25rem;
       background: #fff;
@@ -426,8 +429,13 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       }
 
       .card-back-image-container {
-        width: 60%;
-        max-height: 70px;
+        width: 100%;
+        flex: 1;
+      }
+      
+      .card-back-image {
+        max-width: 100%;
+        max-height: 100%;
       }
     }
   </style>
