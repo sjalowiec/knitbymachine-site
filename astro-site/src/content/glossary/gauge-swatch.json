@@ -1,0 +1,27 @@
+{
+  "term": "Gauge Swatch",
+  "slug": "gauge-swatch",
+  "abbreviation": "",
+  "description": "A swatch is a small sample of knitting used to measure gauge and test fabric characteristics before starting a project.\n\nMachine knitters use swatches to check:\n• Stitch and row gauge\n• Yarn behavior (shrinkage, drape, or stretch)\n• Tension settings and finishing effects\n\nAlways record your stitch and row counts, the tension dial setting, and any notes about the yarn. A properly measured and labeled swatch helps ensure your finished project matches the intended size and fit.",
+  "tooltip": "A small sample of knitting used to measure gauge and test fabric before starting a project.",
+  "example": "Knit a 60-stitch by 80-row swatch at tension 6 to measure your gauge before casting on the full piece.",
+  "categories": [
+    "General Terms"
+  ],
+  "letter": "G",
+  "imageFilename": "1762809736870-swatch.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
