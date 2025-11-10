@@ -249,7 +249,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       border: 1px solid #e2e6df;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: space-between;
       align-items: center;
       text-align: center;
       padding: 1rem 1.25rem;
@@ -483,8 +483,10 @@ const description = "Unlock the secrets of machine knitting patterns with this c
               <div class="flip-card" data-card-id={term._id} data-title={term.title.toLowerCase()} role="article" tabindex="0" aria-label={`Glossary term: ${term.title}`}>
                 <div class="flip-card-inner">
                   <div class="flip-card-front">
-                    <h2 class="card-title">{term.title}</h2>
-                    {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
+                    <div>
+                      <h2 class="card-title">{term.title}</h2>
+                      {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
+                    </div>
                     <p class="card-hint">Tap for details</p>
                   </div>
                   <a href={`/glossary/${term.slug}`} class="flip-card-back">
