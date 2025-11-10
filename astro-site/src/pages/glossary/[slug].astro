@@ -78,19 +78,23 @@ async function getGlossaryTerm(slug: string) {
   }
 }
 
-async function getRelatedTermsData(relatedSlugs: string[]) {
-  const relatedTerms = [];
-  for (const relatedSlug of relatedSlugs) {
-    const term = await getGlossaryTerm(relatedSlug);
-    if (term) {
-      relatedTerms.push({ slug: term.slug, term: term.term });
-    }
-  }
-  return relatedTerms;
+async function getRelatedTermsData(relatedSlugs: string[], currentSlug: string) {
+  // Filter out self-references and duplicates
+  const uniqueSlugs = [...new Set(relatedSlugs.filter(s => s !== currentSlug))];
+  
+  // Fetch all related terms in parallel
+  const results = await Promise.all(
+    uniqueSlugs.map(relatedSlug => getGlossaryTerm(relatedSlug))
+  );
+  
+  // Filter out null results (missing or draft entries)
+  return results
+    .filter(term => term !== null)
+    .map(term => ({ slug: term!.slug, term: term!.term }));
 }
 
 const entry = await getGlossaryTerm(slug);
-const relatedTermsData = entry?.relatedTerms ? await getRelatedTermsData(entry.relatedTerms) : [];
+const relatedTermsData = entry?.relatedTerms ? await getRelatedTermsData(entry.relatedTerms, slug) : [];
 
 if (!entry) {
   return Astro.redirect('/glossary');
@@ -345,7 +349,7 @@ if (!entry) {
               {relatedTermsData.map((relatedTerm: any) => (
                 <a href={`/glossary/${relatedTerm.slug}`} class="related-term-link">
                   <img 
-                    src="https://knitbymachine.com/images/glossary/glossary_logo.svg" 
+                    src="/images/glossary/glossary_logo.svg" 
                     alt=""
                     class="related-term-icon"
                   />
