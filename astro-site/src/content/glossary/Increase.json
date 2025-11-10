@@ -1,8 +1,8 @@
 {
-  "term": "increase",
+  "term": "Increase",
   "slug": "Increase",
   "abbreviation": "inc",
-  "description": "In machine knitting, an increase (abbreviated INC) means adding stitches to the work to shape or widen the fabric. There are several ways to increase, and mastering multiple methods helps achieve smooth shaping and professional results.",
+  "description": "In machine knitting, an increase (abbreviated INC) means adding stitches to the work to shape or make your knitting wider.\n\n There are several ways to increase, and mastering multiple methods helps achieve smooth shaping and professional results.",
   "tooltip": "Adds stitches to shape or widen your knitting.",
   "example": "Increase one stitch at each end of every 4th row 10 times to shape the sleeve.",
   "categories": [
