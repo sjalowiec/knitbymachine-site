@@ -20,7 +20,9 @@
   "anaId": "",
   "workshopId": "",
   "promoText": "Understanding increases gives you control over shaping and helps every project fit and drape beautifully.\n",
-  "relatedTerms": [],
+  "relatedTerms": [
+    "decrease"
+  ],
   "tags": [
     "shaping"
   ],
