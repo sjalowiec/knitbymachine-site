@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Increase Skill Builder | Knit by Machine</title>
+<style>
+  body {font-family:"Open Sans",sans-serif;background:#fff;color:#333;margin:0;padding:0;line-height:1.6;}
+  h1,h2,h3{font-weight:600;margin-top:0;}
+  .container{max-width:900px;margin:40px auto;padding:0 20px;}
+  .hero{text-align:center;margin-bottom:40px;}
+  .hero h1{color:#52682D;font-size:2em;margin-bottom:10px;}
+  .hero p{font-size:1.1em;}
+  .tabs{display:flex;flex-wrap:wrap;justify-content:space-between;gap:10px;margin-bottom:30px;}
+  .tab-btn{flex:1;text-align:center;padding:10px;border:2px solid #738C52;border-radius:8px;cursor:pointer;transition:.2s;background:#f9f9f9;}
+  .tab-btn.active,.tab-btn:hover{background:#738C52;color:#fff;}
+  .tab-content{display:none;border:1px solid #ddd;border-radius:8px;padding:20px;}
+  .tab-content.active{display:block;animation:fadeIn .3s ease-in;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .gif-placeholder{width:100%;height:180px;background:#eee;border-radius:8px;margin-bottom:15px;
+                   display:flex;align-items:center;justify-content:center;color:#999;font-style:italic;}
+  button.mark-tried{background:#738C52;color:#fff;border:none;padding:8px 16px;border-radius:6px;cursor:pointer;}
+  button.mark-tried.done{background:#52682D;}
+  textarea{width:100%;min-height:100px;padding:10px;border:1px solid #ccc;border-radius:8px;}
+  .reflection,.connections{margin-top:40px;}
+  a.btn-link{display:inline-block;background:#738C52;color:#fff;text-decoration:none;
+             padding:10px 20px;border-radius:6px;margin-right:10px;}
+  a.btn-link:hover{background:#52682D;}
+  .handwriting{font-family:"Shadows Into Light Two",cursive;font-size:1.3em;color:#738C52;}
+</style>
+</head>
+<body>
+  <div class="container">
+    <!-- Hero / Goal -->
+    <section class="hero">
+      <h1>Increase Skill Builder</h1>
+      <p>Explore four ways to add stitches and shape your knitting. Each one gives a different look—let’s find your favorite.</p>
+      <p class="handwriting">You’ll gain confidence with every swatch!</p>
+    </section>
+
+    <!-- Try It Tabs -->
+    <div class="tabs">
+      <div class="tab-btn active" data-tab="1">Transfer</div>
+      <div class="tab-btn" data-tab="2">Lifted Bar</div>
+      <div class="tab-btn" data-tab="3">Full-Fashioned</div>
+      <div class="tab-btn" data-tab="4">Needle-Out</div>
+    </div>
+
+    <div id="tab-1" class="tab-content active">
+      <div class="gif-placeholder">GIF: Increase by transferring a stitch</div>
+      <p>Work 10 rows. On the next row, transfer one stitch outward to create a clean diagonal line.</p>
+      <button class="mark-tried" data-id="1">Mark as Tried</button>
+    </div>
+    <div id="tab-2" class="tab-content">
+      <div class="gif-placeholder">GIF: Lifted bar increase</div>
+      <p>Pick up the horizontal bar between two stitches and place it on an empty needle to form a new stitch.</p>
+      <button class="mark-tried" data-id="2">Mark as Tried</button>
+    </div>
+    <div id="tab-3" class="tab-content">
+      <div class="gif-placeholder">GIF: Full-fashioned increase</div>
+      <p>Move one stitch outward and reform the adjacent stitch to keep the edge tidy.</p>
+      <button class="mark-tried" data-id="3">Mark as Tried</button>
+    </div>
+    <div id="tab-4" class="tab-content">
+      <div class="gif-placeholder">GIF: Needle-out increase</div>
+      <p>Simply pull an empty needle into working position to create a new stitch at the edge.</p>
+      <button class="mark-tried" data-id="4">Mark as Tried</button>
+    </div>
+
+    <!-- Observation -->
+    <div class="reflection">
+      <h2>Observe & Record</h2>
+      <p>What did you notice? Which method gave the cleanest line or blended best into stockinette?</p>
+      <textarea id="notes" placeholder="Type your notes here..."></textarea>
+    </div>
+
+    <!-- Connections -->
+    <div class="connections">
+      <h2>Next Steps</h2>
+      <p>Keep building on what you just learned:</p>
+      <a href="#" class="btn-link">Read the Glossary Entry</a>
+      <a href="#" class="btn-link">Try the Decrease Skill Builder</a>
+      <a href="#" class="btn-link">Explore the Magic Formula Wizard</a>
+    </div>
+  </div>
+
+<script>
+  const tabs=document.querySelectorAll('.tab-btn');
+  const contents=document.querySelectorAll('.tab-content');
+  const triedButtons=document.querySelectorAll('.mark-tried');
+  const notes=document.getElementById('notes');
+
+  // restore state
+  document.addEventListener('DOMContentLoaded',()=>{
+    triedButtons.forEach(btn=>{
+      const id=btn.dataset.id;
+      if(localStorage.getItem('increase_tried_'+id)==='true'){
+        btn.classList.add('done');
+        btn.textContent='Tried ✅';
+      }
+    });
+    const savedNotes=localStorage.getItem('increase_notes');
+    if(savedNotes) notes.value=savedNotes;
+  });
+
+  // tab switching
+  tabs.forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      tabs.forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const target=tab.dataset.tab;
+      contents.forEach(c=>c.classList.remove('active'));
+      document.getElementById('tab-'+target).classList.add('active');
+    });
+  });
+
+  // mark as tried
+  triedButtons.forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      btn.classList.toggle('done');
+      const done=btn.classList.contains('done');
+      btn.textContent=done?'Tried ✅':'Mark as Tried';
+      localStorage.setItem('increase_tried_'+btn.dataset.id,done);
+    });
+  });
+
+  // save notes
+  notes.addEventListener('input',()=>localStorage.setItem('increase_notes',notes.value));
+</script>
+</body>
+</html>
