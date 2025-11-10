@@ -19,9 +19,11 @@
   "anaId": "",
   "workshopId": "",
   "promoText": "",
-  "relatedTerms": [],
+  "relatedTerms": [
+    "Increase"
+  ],
   "tags": [],
   "isDraft": false,
   "publishedDate": "2025-11-10",
-  "pendingPublish": false
+  "pendingPublish": true
 }
