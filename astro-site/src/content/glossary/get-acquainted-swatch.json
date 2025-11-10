@@ -1,0 +1,27 @@
+{
+  "term": "Get Acquainted Swatch",
+  "slug": "get-acquainted-swatch",
+  "abbreviation": " ",
+  "description": "Also known as a tension test strip, this is a single piece of knitting that includes several tension settings. It’s used to quickly compare fabric feel, drape, and gauge without knitting multiple swatches.\n\nKnit a few rows at one tension, change the tension dial setting, and knit a few more rows—label each section as you go. This quick test helps you choose the best tension for your yarn and project before knitting a full swatch.",
+  "tooltip": "A test strip with multiple tension settings to compare fabric feel and gauge.",
+  "example": "Knit 20 rows each at tensions 6, 7, and 8 to decide which setting produces the best fabric.",
+  "categories": [
+    "General Terms"
+  ],
+  "letter": "G",
+  "imageFilename": "1762811180828-get-acquainted-swatch.svg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
