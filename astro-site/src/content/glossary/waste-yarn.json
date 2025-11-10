@@ -1,0 +1,29 @@
+{
+  "term": "Waste Yarn",
+  "slug": "waste-yarn",
+  "abbreviation": "",
+  "description": "Waste yarn (also called scrap yarn) is used at the beginning or between sections of knitting that will later be removed.\n\nMachine knitters use waste yarn to:\n• Cast on before the main yarn\n• Knit test rows before shaping\n• Separate pieces of knitting\n• Protect garment yarn from the cast-on comb or weights\n\nChoose a smooth, contrasting yarn that’s easy to see and remove. It’s often paired with a ravel cord or used in the scrap ’n ravel cast-on.",
+  "tooltip": "Temporary yarn used before or between knitting sections—removed later.",
+  "example": "When ending a knitted piece, leave live stitches by knitting a few rows of waste yarn.",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "W",
+  "imageFilename": "1762819027106-waste-yarn-11.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [
+    "calculator"
+  ],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
