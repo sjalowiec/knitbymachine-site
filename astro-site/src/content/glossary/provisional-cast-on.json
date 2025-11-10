@@ -1,0 +1,29 @@
+{
+  "term": "Provisional Cast on",
+  "slug": "provisional-cast-on",
+  "abbreviation": " ",
+  "description": "A temporary cast-on that allows live stitches to be picked up and worked later. It’s often used when both edges of the knitting will be joined or finished in a special way.\n\nIn machine knitting, the scrap ’n ravel method serves the same purpose—creating a removable starting edge with scrap yarn and a ravel cord.\n\nThis method is useful for hems, collars, or bands where stitches will later be knitted in the opposite direction or grafted.",
+  "tooltip": "A temporary cast-on that lets you pick up live stitches later.",
+  "example": "Use a provisional cast-on for a scarf that will be grafted end to end.",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "P",
+  "imageFilename": "1762816949264-scrap-n-ravel.svg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "scrap-n-ravel"
+  ],
+  "tags": [],
+  "isDraft": true,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
