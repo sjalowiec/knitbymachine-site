@@ -6,7 +6,8 @@
   "tooltip": "Adds stitches to shape or widen your knitting.",
   "example": "Increase one stitch at each end of every 4th row 10 times to shape the sleeve.",
   "categories": [
-    "Techniques"
+    "Techniques",
+    "Abbreviations"
   ],
   "letter": "I",
   "imageFilename": "1762795360363-increase.svg",
@@ -20,7 +21,9 @@
   "workshopId": "",
   "promoText": "Understanding increases gives you control over shaping and helps every project fit and drape beautifully.\n",
   "relatedTerms": [],
-  "tags": [],
+  "tags": [
+    "shaping"
+  ],
   "isDraft": false,
   "publishedDate": "2025-11-10",
   "pendingPublish": false
