@@ -72,11 +72,13 @@ body{font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,A
     <div>
       <div class="sticky-actions">
         <div class="btn-group">
+          <button class="btn primary" id="createBtn" style="background:#28a745;border-color:#28a745">✓ Create Skill Builder</button>
           <button class="btn primary" id="previewBtn">Update Preview</button>
           <button class="btn primary" id="exportBtn">Export JSON</button>
           <button class="btn secondary" id="importBtn">Import JSON</button>
         </div>
         <input type="file" id="importFile" accept=".json" style="display:none">
+        <div id="statusMessage" style="margin-top:12px;padding:10px;border-radius:8px;display:none"></div>
       </div>
 
       <div class="admin-panel">
@@ -547,6 +549,69 @@ body{font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,A
     document.getElementById('importFile').click();
   }
 
+  async function createSkillBuilder() {
+    const data = gatherFormData();
+    const createBtn = document.getElementById('createBtn');
+    const statusMessage = document.getElementById('statusMessage');
+    
+    // Validate required fields
+    if (!data.id || !data.title || !data.intro) {
+      showStatus('Please fill in ID, Title, and Introduction', 'error');
+      return;
+    }
+    
+    if (data.steps.length === 0) {
+      showStatus('Please add at least one step', 'error');
+      return;
+    }
+    
+    // Disable button and show loading
+    createBtn.disabled = true;
+    createBtn.textContent = 'Creating...';
+    
+    try {
+      const response = await fetch('/api/skillbuilders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      });
+      
+      const result = await response.json();
+      
+      if (response.ok) {
+        showStatus(`✓ ${result.message}`, 'success');
+        // Show link to the new skill builder
+        setTimeout(() => {
+          statusMessage.innerHTML = `<strong>✓ Created!</strong> <a href="${result.url}" target="_blank" style="color:#007bff;text-decoration:underline">Open ${data.title}</a>`;
+        }, 1500);
+      } else {
+        showStatus(`Error: ${result.error}`, 'error');
+      }
+    } catch (error) {
+      showStatus(`Network error: ${error.message}`, 'error');
+    } finally {
+      createBtn.disabled = false;
+      createBtn.textContent = '✓ Create Skill Builder';
+    }
+  }
+  
+  function showStatus(message, type) {
+    const statusMessage = document.getElementById('statusMessage');
+    statusMessage.textContent = message;
+    statusMessage.style.display = 'block';
+    statusMessage.style.background = type === 'success' ? '#d4edda' : '#f8d7da';
+    statusMessage.style.color = type === 'success' ? '#155724' : '#721c24';
+    statusMessage.style.border = `1px solid ${type === 'success' ? '#c3e6cb' : '#f5c6cb'}`;
+    
+    if (type === 'success') {
+      setTimeout(() => {
+        statusMessage.style.display = 'none';
+      }, 8000);
+    }
+  }
+
   function escapeHtml(text) {
     const div = document.createElement('div');
     div.textContent = text || '';
@@ -554,6 +619,7 @@ body{font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,A
   }
 
   // Event listeners
+  document.getElementById('createBtn').addEventListener('click', createSkillBuilder);
   document.getElementById('previewBtn').addEventListener('click', updatePreview);
   document.getElementById('exportBtn').addEventListener('click', exportJSON);
   document.getElementById('importBtn').addEventListener('click', importJSON);
