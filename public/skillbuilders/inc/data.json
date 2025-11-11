@@ -1,7 +1,7 @@
 {
   "id": "inc",
   "title": "Increase Skill Builder",
-  "intro": "Increases add shape and style to your knitting.\nThey’re used for sleeves, necklines, darts, or simply as design details.\nIn this Skill Builder, you’ll explore three ways to add stitches — each with a different look and purpose",
+  "intro": "Increases add shape and style to your knitting.\nThey’re used for sleeves, necklines, waist shaping, or simply as design details.\nIn this Skill Builder, you’ll explore three ways to add stitches — each with a different look and purpose",
   "tagline": "Shape your fabric your way — practical or decorative, it’s your choice",
   "memberOnly": false,
   "preChecklist": [
@@ -28,15 +28,19 @@
       "mediaFile": ""
     },
     {
-      "title": "step 3",
+      "title": "eyelet Increase",
       "duration": "",
-      "description": "fdfdf",
+      "description": "Decorative increase adding eyelets",
       "tips": [],
-      "mediaType": "placeholder",
+      "mediaType": "video",
       "mediaFile": ""
     }
   ],
-  "reflectionPrompts": [],
+  "reflectionPrompts": [
+    "Basic Increase",
+    "automatic increase",
+    " eyelet increase"
+  ],
   "reactions": [
     {
       "id": "one",
