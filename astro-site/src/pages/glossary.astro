@@ -172,12 +172,13 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     .alphabet-filter {
       position: sticky;
-      top: var(--header-height);
-      background: var(--page-bg);
-      z-index: 10;
-      padding: 1rem 0;
+      top: calc(var(--header-height) + 0.5rem);
+      background: #fff;
+      z-index: 100;
+      padding: 1.25rem;
       margin-bottom: 2rem;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
 
     .alphabet {
@@ -401,7 +402,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     @media (max-width: 768px) {
       .alphabet-filter {
-        top: var(--header-height);
+        top: calc(var(--header-height) + 0.5rem);
       }
 
       .header-row {
