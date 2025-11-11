@@ -1,0 +1,95 @@
+{
+  "id": "increase",
+  "title": "Increase Skill Builder",
+  "intro": "Practice four ways to add stitches. Watch a tiny clip, try it on your machine, then mark it done. You are building confidence one swatch at a time.",
+  "tagline": "You will learn more by doing than by watching.",
+  "memberOnly": true,
+  "preChecklist": [
+    "Yarn ready",
+    "Cast-on comb",
+    "Tension set",
+    "Notebook nearby"
+  ],
+  "checklistInstructions": [
+    "Cast on 20 sts with waste yarn, change to main yarn, knit 10 rows.",
+    "Set a consistent tension. Note it in your notebook.",
+    "Work each increase method for at least 20 rows to see the line.",
+    "Label each swatch. Take a photo if you can."
+  ],
+  "steps": [
+    {
+      "title": "Transfer (edge increase)",
+      "duration": "~10 sec",
+      "description": "Work 10 rows. Transfer one stitch outward to an empty needle to add a stitch while keeping a clean edge.",
+      "tips": [
+        "Use a 1-prong tool so the edge stays tidy.",
+        "Move the stitch away from the edge before knitting the next row."
+      ],
+      "mediaType": "placeholder",
+      "mediaFile": ""
+    },
+    {
+      "title": "Lifted bar",
+      "duration": "~10 sec",
+      "description": "Pick up the horizontal bar between stitches and place it on an empty needle to form a new stitch.",
+      "tips": [
+        "Keep even tension when placing the bar so you avoid a hole.",
+        "Try one needle in from the edge for a cleaner line."
+      ],
+      "mediaType": "placeholder",
+      "mediaFile": ""
+    },
+    {
+      "title": "Full-fashioned",
+      "duration": "~10 sec",
+      "description": "Move one stitch outward and reform the adjacent stitch to keep the edge tidy and decorative.",
+      "tips": [
+        "Use matching transfers on both sides for symmetry.",
+        "Perfect for visible shaping lines."
+      ],
+      "mediaType": "placeholder",
+      "mediaFile": ""
+    },
+    {
+      "title": "Needle-out (edge)",
+      "duration": "~10 sec",
+      "description": "Pull an empty needle into work at the edge to add a stitch. Quick and useful for swatching.",
+      "tips": [
+        "Mind the running yarn to avoid a loose loop.",
+        "Block your swatch to compare lines fairly."
+      ],
+      "mediaType": "placeholder",
+      "mediaFile": ""
+    }
+  ],
+  "reflectionPrompts": [
+    "What did you notice?",
+    "Which method do you prefer for edges vs center shaping?"
+  ],
+  "reactions": [
+    { "id": "clean-line", "emoji": "👍", "label": "Clean line" },
+    { "id": "blend", "emoji": "🎯", "label": "Blends best" },
+    { "id": "holes", "emoji": "🕳️", "label": "Holey" },
+    { "id": "tension", "emoji": "⚖️", "label": "Tension tricky" }
+  ],
+  "nextSteps": [
+    {
+      "title": "Decrease Skill Builder",
+      "description": "Mirror this practice with four decrease methods.",
+      "link": "#",
+      "buttonText": "Open"
+    },
+    {
+      "title": "Magic Formula Wizard",
+      "description": "Plan shaping rows that match your gauge.",
+      "link": "#",
+      "buttonText": "Try the wizard"
+    },
+    {
+      "title": "Glossary: Increase",
+      "description": "Short definitions and visuals for quick recall.",
+      "link": "#",
+      "buttonText": "View entry"
+    }
+  ]
+}
