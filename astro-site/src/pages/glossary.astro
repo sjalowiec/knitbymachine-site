@@ -172,11 +172,12 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     .alphabet-filter {
       position: sticky;
-      top: calc(var(--header-height) + 0.5rem);
+      top: var(--header-height);
       background: #fff;
       z-index: 100;
       padding: 1.25rem;
-      margin-bottom: 2rem;
+      margin: 0 auto 2rem auto;
+      max-width: 1200px;
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
     }
@@ -402,7 +403,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
 
     @media (max-width: 768px) {
       .alphabet-filter {
-        top: calc(var(--header-height) + 0.5rem);
+        top: var(--header-height);
       }
 
       .header-row {
@@ -469,25 +470,27 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     <p class="description">
       {description}
     </p>
-    
-    <div class="alphabet-filter">
-      <div class="alphabet">
-        <a href="/glossary" class="active" id="filterAll">All</a>
-        {alphabet.map((letter) => {
-          const hasTerms = lettersWithTerms.has(letter);
-          return (
-            <a
-              href={`#${letter}`}
-              class={!hasTerms ? "disabled" : ""}
-              data-letter={letter}
-            >
-              {letter}
-            </a>
-          );
-        })}
-      </div>
+  </div>
+  
+  <div class="alphabet-filter">
+    <div class="alphabet">
+      <a href="/glossary" class="active" id="filterAll">All</a>
+      {alphabet.map((letter) => {
+        const hasTerms = lettersWithTerms.has(letter);
+        return (
+          <a
+            href={`#${letter}`}
+            class={!hasTerms ? "disabled" : ""}
+            data-letter={letter}
+          >
+            {letter}
+          </a>
+        );
+      })}
     </div>
-    
+  </div>
+  
+  <div class="container">
     {errorMessage ? (
       <div class="error">
         <p><strong>Error loading glossary terms</strong></p>
