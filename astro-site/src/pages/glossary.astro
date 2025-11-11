@@ -97,7 +97,8 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       justify-content: space-between;
       gap: 1.5rem;
       flex-wrap: wrap;
-      margin-bottom: 1rem;
+      padding-top: 2rem;
+      margin-bottom: 1.5rem;
     }
 
     .header-title {
@@ -172,12 +173,11 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     .alphabet-filter {
       position: sticky;
       top: var(--header-height);
-      z-index: 100;
+      background: var(--page-bg);
+      z-index: 10;
+      padding: 1rem 0;
       margin-bottom: 2rem;
-      padding: 1.25rem;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .alphabet {
@@ -400,6 +400,10 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     }
 
     @media (max-width: 768px) {
+      .alphabet-filter {
+        top: var(--header-height);
+      }
+
       .header-row {
         flex-direction: column;
         align-items: stretch;
