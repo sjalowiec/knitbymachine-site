@@ -9,7 +9,7 @@
     "Machine Parts & Accessories"
   ],
   "letter": "T",
-  "imageFilename": "1762808624279-tension-dial.webp",
+  "imageFilename": "1762867209909-tension-dial.webp",
   "imageAlt": "",
   "gifFilename": "",
   "videoUrl": "",
@@ -25,5 +25,5 @@
   "tags": [],
   "isDraft": false,
   "publishedDate": "2025-11-10",
-  "pendingPublish": false
+  "pendingPublish": true
 }
