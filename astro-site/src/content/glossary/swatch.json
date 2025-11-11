@@ -9,7 +9,7 @@
     "General Terms"
   ],
   "letter": "S",
-  "imageFilename": "1762809566797-swatch.webp",
+  "imageFilename": "1762868603291-swatch.svg",
   "imageAlt": "",
   "gifFilename": "",
   "videoUrl": "",
@@ -23,5 +23,5 @@
   "tags": [],
   "isDraft": false,
   "publishedDate": "2025-11-10",
-  "pendingPublish": false
+  "pendingPublish": true
 }
