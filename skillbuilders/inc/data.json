@@ -1,0 +1,56 @@
+{
+  "id": "inc",
+  "title": "Increase Skill Builder",
+  "intro": "Increases add shape and style to your knitting.\nThey’re used for sleeves, necklines, darts, or simply as design details.\nIn this Skill Builder, you’ll explore three ways to add stitches — each with a different look and purpose",
+  "tagline": "Shape your fabric your way — practical or decorative, it’s your choice",
+  "memberOnly": false,
+  "preChecklist": [
+    "Casting on and knitting a small swatch",
+    "Using your transfer tools or latch tool",
+    "Working with yarn suitable for your machine"
+  ],
+  "checklistInstructions": [],
+  "steps": [
+    {
+      "title": "Basic Increase",
+      "duration": "",
+      "description": "pick up from the row below",
+      "tips": [],
+      "mediaType": "placeholder",
+      "mediaFile": ""
+    }
+  ],
+  "reflectionPrompts": [],
+  "reactions": [
+    {
+      "id": "one",
+      "emoji": "afd",
+      "label": "one"
+    },
+    {
+      "id": "two",
+      "emoji": "👎afd",
+      "label": "two"
+    }
+  ],
+  "nextSteps": [
+    {
+      "title": "decrease builder",
+      "description": "",
+      "link": "#",
+      "buttonText": "View"
+    },
+    {
+      "title": "antotehr tep",
+      "description": "",
+      "link": "#",
+      "buttonText": "View"
+    },
+    {
+      "title": "3rd step",
+      "description": "",
+      "link": "#",
+      "buttonText": "View"
+    }
+  ]
+}
