@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Skill Builder | Knit by Machine</title>
+<style>
+  :root{
+    --kbm-green:#52682D;
+    --kbm-olive:#738C52;
+    --kbm-gray:#f6f7f8;
+    --kbm-dark:#333;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  body{font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:#fff;color:var(--kbm-dark);margin:0}
+  a{color:var(--kbm-olive);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .container{max-width:980px;margin:0 auto;padding:24px}
+  .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;margin:18px 0 8px}
+  .hero .title{padding:20px;border-radius:var(--radius);background:linear-gradient(180deg,#fff,var(--kbm-gray));border:1px solid #e7e9eb}
+  .hero h1{margin:0 0 6px;color:var(--kbm-green);font-weight:700;letter-spacing:.2px}
+  .hero p{margin:6px 0 0;font-size:1.05rem}
+  .tagline{font-family:"Shadows Into Light Two",cursive;font-size:1.25rem;color:var(--kbm-olive)}
+  .hero .card{border:1px solid #e7e9eb;border-radius:var(--radius);padding:14px;background:#fff}
+  .hero .card h3{margin:0 0 10px;color:var(--kbm-green)}
+  .checklist{display:flex;flex-wrap:wrap;gap:10px}
+  .check-pill{display:flex;gap:8px;align-items:center;padding:10px 12px;border:1px dashed #ccd1d5;border-radius:999px;background:#fff;cursor:pointer}
+  .check-pill input{accent-color:var(--kbm-olive)}
+
+  /* Progress header */
+  .progress-wrap{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:22px 0}
+  .progress-bar{flex:1;height:10px;background:#ebedf0;border-radius:999px;overflow:hidden}
+  .progress-bar > span{display:block;height:100%;background:var(--kbm-olive);width:0}
+  .progress-stat{min-width:170px;text-align:right;color:#586069;font-size:.95rem}
+
+  /* Steps */
+  .steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+  .step{border:1px solid #e7e9eb;border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;position:relative}
+  .step header{padding:12px 14px;border-bottom:1px solid #eef0f2;display:flex;justify-content:space-between;align-items:center}
+  .step header h3{margin:0;color:var(--kbm-green);font-size:1.05rem}
+  .badge{font-size:.72rem;background:var(--kbm-gray);color:#556; padding:4px 8px;border-radius:999px;border:1px solid #e0e3e6}
+  .media{aspect-ratio:16/9;background:#e9ecef;display:grid;place-items:center;color:#8a8f95;font-style:italic}
+  .media video,.media img{width:100%;height:100%;object-fit:cover}
+  .step .body{padding:12px 14px 6px}
+  .step .body p{margin:0 0 8px}
+  .actions{display:flex;gap:8px;padding:10px 14px 14px}
+  .btn{border:1px solid #d5dadf;background:#fff;border-radius:10px;padding:8px 12px;font-weight:600;cursor:pointer}
+  .btn.primary{background:var(--kbm-olive);color:#fff;border-color:var(--kbm-olive)}
+  .btn.ghost{background:#fff;color:var(--kbm-olive);border-color:var(--kbm-olive)}
+  .btn[aria-pressed="true"].primary{background:var(--kbm-green);border-color:var(--kbm-green)}
+
+  /* Tips accordion inside cards */
+  details.tip{border-top:1px dashed #e6eaee;margin:0}
+  details.tip summary{list-style:none;padding:10px 14px;cursor:pointer;color:#607080}
+  details.tip[open] summary{color:#2b3b2b}
+  .tip .tip-body{padding:0 14px 12px;color:#485560}
+
+  /* Reflection */
+  .reflect{margin:26px 0;border:1px solid #e7e9eb;border-radius:var(--radius);overflow:hidden;background:#fff}
+  .reflect header{background:var(--kbm-gray);padding:12px 16px;border-bottom:1px solid #e1e4e8;color:#2b3b2b}
+  .reflect .inner{padding:14px}
+  textarea{width:100%;min-height:120px;border:1px solid #d8dde3;border-radius:10px;padding:10px;resize:vertical}
+  .reactions{display:flex;gap:8px;margin:10px 0}
+  .react{border:1px solid #d5dadf;background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer}
+  .react[aria-pressed="true"]{background:#eef6ee;border-color:#bcd8bc}
+
+  /* Connections */
+  .connections{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:28px 0}
+  .card{border:1px solid #e7e9eb;border-radius:var(--radius);background:#fff;overflow:hidden}
+  .card .thumb{height:120px;background:#eef2e8}
+  .card .pad{padding:12px}
+  .card h4{margin:0 0 6px;color:var(--kbm-green)}
+
+  /* Floating Next button */
+  .float-next{position:fixed;right:18px;bottom:18px;z-index:9}
+  .float-next .btn{box-shadow:0 6px 18px rgba(0,0,0,.12)}
+
+  /* Confetti */
+  .confetti{pointer-events:none;position:fixed;inset:0;display:none}
+  .confetti.on{display:block}
+
+  /* Modal */
+  .modal{position:fixed;inset:0;display:none;place-items:center;background:rgba(0,0,0,.4);padding:20px}
+  .modal .sheet{max-width:560px;width:100%;background:#fff;border-radius:16px;overflow:hidden;border:1px solid #e7e9eb}
+  .modal header{padding:14px 16px;border-bottom:1px solid #e7e9eb;color:var(--kbm-green);font-weight:700}
+  .modal .body{padding:14px 16px}
+  .modal .foot{padding:12px 16px;border-top:1px solid #e7e9eb;display:flex;justify-content:flex-end;gap:8px}
+
+  /* Member label (optional) */
+  .member-only{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;background:#fff5e6;border:1px solid #ffd9a6;color:#a56b00;font-size:.78rem}
+
+  @media (max-width:840px){
+    .hero{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+  <canvas class="confetti" id="confetti"></canvas>
+  <div class="container">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="sb-title">
+      <div class="title">
+        <h1 id="sb-title">Increase Skill Builder</h1>
+        <p>Practice four ways to add stitches. Watch a tiny clip, try it on your machine, then mark it done. You are building confidence one swatch at a time.</p>
+        <p class="tagline">You will learn more by doing than by watching.</p>
+        <div style="margin-top:8px">
+          <span class="member-only" aria-label="Members only feature" title="Members only">🔒 Member benefit: saves your progress</span>
+        </div>
+      </div>
+      <div class="card" aria-labelledby="prep-title">
+        <h3 id="prep-title">Before you start</h3>
+        <div class="checklist">
+          <label class="check-pill"><input type="checkbox" data-prep="yarn"> Yarn ready</label>
+          <label class="check-pill"><input type="checkbox" data-prep="swatch"> Cast-on comb</label>
+          <label class="check-pill"><input type="checkbox" data-prep="tension"> Tension set</label>
+          <label class="check-pill"><input type="checkbox" data-prep="camera"> Notebook nearby</label>
+        </div>
+        <div style="margin-top:10px"><button class="btn ghost" id="openChecklist">Open checklist</button></div>
+      </div>
+    </section>
+
+    <!-- PROGRESS -->
+    <div class="progress-wrap" aria-live="polite">
+      <div class="progress-bar" aria-label="Progress"><span id="bar"></span></div>
+      <div class="progress-stat"><strong id="doneCount">0</strong>/4 tried · Keep going</div>
+    </div>
+
+    <!-- STEPS -->
+    <section class="steps" aria-label="Try it steps">
+      <!-- Step 1 -->
+      <article class="step" data-step="1">
+        <header>
+          <h3>Transfer (edge increase)</h3>
+          <span class="badge">~10 sec</span>
+        </header>
+        <div class="media" aria-label="Short demo">
+          <!-- replace with <video> or <img> -->
+          GIF / Short clip
+        </div>
+        <div class="body">
+          <p>Work 10 rows. Transfer one stitch outward to an empty needle to add a stitch while keeping a clean edge.</p>
+        </div>
+        <details class="tip">
+          <summary>Show tips</summary>
+          <div class="tip-body">
+            <ul>
+              <li>Use a 1-prong tool so the edge stays tidy.</li>
+              <li>Move the stitch away from the edge before knitting the next row.</li>
+            </ul>
+          </div>
+        </details>
+        <div class="actions">
+          <button class="btn ghost" data-action="notes">Add note</button>
+          <button class="btn primary" data-action="mark" aria-pressed="false">Mark tried</button>
+        </div>
+      </article>
+
+      <!-- Step 2 -->
+      <article class="step" data-step="2">
+        <header>
+          <h3>Lifted bar</h3>
+          <span class="badge">~10 sec</span>
+        </header>
+        <div class="media">GIF / Short clip</div>
+        <div class="body">
+          <p>Pick up the horizontal bar between stitches and place it on an empty needle to form a new stitch.</p>
+        </div>
+        <details class="tip">
+          <summary>Show tips</summary>
+          <div class="tip-body">
+            <ul>
+              <li>Keep even tension when placing the bar so you avoid a hole.</li>
+              <li>Try one needle in from the edge for a cleaner line.</li>
+            </ul>
+          </div>
+        </details>
+        <div class="actions">
+          <button class="btn ghost" data-action="notes">Add note</button>
+          <button class="btn primary" data-action="mark" aria-pressed="false">Mark tried</button>
+        </div>
+      </article>
+
+      <!-- Step 3 -->
+      <article class="step" data-step="3">
+        <header>
+          <h3>Full-fashioned</h3>
+          <span class="badge">~10 sec</span>
+        </header>
+        <div class="media">GIF / Short clip</div>
+        <div class="body">
+          <p>Move one stitch outward and reform the adjacent stitch to keep the edge tidy and decorative.</p>
+        </div>
+        <details class="tip">
+          <summary>Show tips</summary>
+          <div class="tip-body">
+            <ul>
+              <li>Use matching transfers on both sides for symmetry.</li>
+              <li>Perfect for visible shaping lines.</li>
+            </ul>
+          </div>
+        </details>
+        <div class="actions">
+          <button class="btn ghost" data-action="notes">Add note</button>
+          <button class="btn primary" data-action="mark" aria-pressed="false">Mark tried</button>
+        </div>
+      </article>
+
+      <!-- Step 4 -->
+      <article class="step" data-step="4">
+        <header>
+          <h3>Needle-out (edge)</h3>
+          <span class="badge">~10 sec</span>
+        </header>
+        <div class="media">GIF / Short clip</div>
+        <div class="body">
+          <p>Pull an empty needle into work at the edge to add a stitch. Quick and useful for swatching.</p>
+        </div>
+        <details class="tip">
+          <summary>Show tips</summary>
+          <div class="tip-body">
+            <ul>
+              <li>Mind the running yarn to avoid a loose loop.</li>
+              <li>Block your swatch to compare lines fairly.</li>
+            </ul>
+          </div>
+        </details>
+        <div class="actions">
+          <button class="btn ghost" data-action="notes">Add note</button>
+          <button class="btn primary" data-action="mark" aria-pressed="false">Mark tried</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- REFLECTION -->
+    <section class="reflect" aria-labelledby="reflect-title">
+      <header><h2 id="reflect-title" style="margin:0">Observe and record</h2></header>
+      <div class="inner">
+        <div class="reactions" role="group" aria-label="Quick reactions">
+          <button class="react" data-react="clean-line" aria-pressed="false">👍 Clean line</button>
+          <button class="react" data-react="blend" aria-pressed="false">🎯 Blends best</button>
+          <button class="react" data-react="holes" aria-pressed="false">🕳️ Holey</button>
+          <button class="react" data-react="tension" aria-pressed="false">⚖️ Tension tricky</button>
+        </div>
+        <textarea id="notes" placeholder="What did you notice? Which method do you prefer for edges vs center shaping?"></textarea>
+      </div>
+    </section>
+
+    <!-- CONNECTIONS / NEXT -->
+    <section aria-labelledby="next-title">
+      <h2 id="next-title" style="color:var(--kbm-green)">Next steps</h2>
+      <div class="connections">
+        <article class="card">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="pad">
+            <h4>Decrease Skill Builder</h4>
+            <p>Mirror this practice with four decrease methods.</p>
+            <p><a class="btn" href="#">Open</a></p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="pad">
+            <h4>Magic Formula Wizard</h4>
+            <p>Plan shaping rows that match your gauge.</p>
+            <p><a class="btn" href="#">Try the wizard</a></p>
+          </div>
+        </article>
+        <article class="card">
+          <div class="thumb" aria-hidden="true"></div>
+          <div class="pad">
+            <h4>Glossary: Increase</h4>
+            <p>Short definitions and visuals for quick recall.</p>
+            <p><a class="btn" href="#">View entry</a></p>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+
+  <!-- Floating next action -->
+  <div class="float-next"><button class="btn primary" id="nextAction">Show next method</button></div>
+
+  <!-- Checklist Modal -->
+  <div class="modal" id="checkModal" role="dialog" aria-modal="true" aria-labelledby="checkTitle">
+    <div class="sheet">
+      <header id="checkTitle">Quick start checklist</header>
+      <div class="body">
+        <ol style="margin:0 0 10px 18px">
+          <li>Cast on 20 sts with waste yarn, change to main yarn, knit 10 rows.</li>
+          <li>Set a consistent tension. Note it in your notebook.</li>
+          <li>Work each increase method for at least 20 rows to see the line.</li>
+          <li>Label each swatch. Take a photo if you can.</li>
+        </ol>
+      </div>
+      <div class="foot">
+        <button class="btn" id="closeChecklist">Close</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  const LS_KEY_PREFIX = 'kbm_sb_increase_';
+  const stepButtons = document.querySelectorAll('[data-action="mark"]');
+  const bar = document.getElementById('bar');
+  const doneCount = document.getElementById('doneCount');
+  const notes = document.getElementById('notes');
+  const reacts = document.querySelectorAll('.react');
+  const nextBtn = document.getElementById('nextAction');
+  const confetti = document.getElementById('confetti');
+  const openChecklist = document.getElementById('openChecklist');
+  const closeChecklist = document.getElementById('closeChecklist');
+  const checkModal = document.getElementById('checkModal');
+
+  // restore
+  document.addEventListener('DOMContentLoaded', () => {
+    stepButtons.forEach(btn => {
+      const step = btn.closest('.step').dataset.step;
+      const val = localStorage.getItem(LS_KEY_PREFIX + 'step_' + step);
+      if(val === 'true'){ btn.setAttribute('aria-pressed','true'); btn.textContent = 'Tried'; btn.classList.add('done'); }
+    });
+    const saved = localStorage.getItem(LS_KEY_PREFIX + 'notes');
+    if(saved) notes.value = saved;
+    reacts.forEach(r => {
+      const key = LS_KEY_PREFIX + 'react_' + r.dataset.react;
+      if(localStorage.getItem(key)==='true'){ r.setAttribute('aria-pressed','true'); }
+    });
+    updateProgress();
+  });
+
+  // mark tried toggle
+  stepButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const step = btn.closest('.step').dataset.step;
+      const pressed = btn.getAttribute('aria-pressed') === 'true';
+      btn.setAttribute('aria-pressed', String(!pressed));
+      btn.textContent = !pressed ? 'Tried' : 'Mark tried';
+      localStorage.setItem(LS_KEY_PREFIX + 'step_' + step, String(!pressed));
+      updateProgress();
+    });
+  });
+
+  // notes save
+  notes.addEventListener('input', () => {
+    localStorage.setItem(LS_KEY_PREFIX + 'notes', notes.value);
+  });
+
+  // reactions
+  reacts.forEach(r => r.addEventListener('click', () => {
+    const pressed = r.getAttribute('aria-pressed') === 'true';
+    r.setAttribute('aria-pressed', String(!pressed));
+    localStorage.setItem(LS_KEY_PREFIX + 'react_' + r.dataset.react, String(!pressed));
+  }));
+
+  // show next method: focus next card not tried
+  nextBtn.addEventListener('click', () => {
+    const steps = Array.from(document.querySelectorAll('.step'));
+    const next = steps.find(s => localStorage.getItem(LS_KEY_PREFIX + 'step_' + s.dataset.step) !== 'true');
+    if(next){
+      next.scrollIntoView({behavior:'smooth',block:'center'});
+      next.querySelector('[data-action="mark"]').focus();
+    } else {
+      blastConfetti();
+    }
+  });
+
+  // checklist modal
+  openChecklist.addEventListener('click', () => checkModal.style.display = 'grid');
+  closeChecklist.addEventListener('click', () => checkModal.style.display = 'none');
+  checkModal.addEventListener('click', (e) => { if(e.target === checkModal) checkModal.style.display = 'none'; });
+
+  function updateProgress(){
+    const total = document.querySelectorAll('.step').length;
+    const done = Array.from(document.querySelectorAll('.step')).filter(s => localStorage.getItem(LS_KEY_PREFIX + 'step_' + s.dataset.step) === 'true').length;
+    const pct = Math.round((done/total)*100);
+    bar.style.width = pct + '%';
+    doneCount.textContent = String(done);
+    if(done === total){ blastConfetti(); }
+  }
+
+  // Minimal confetti (no libs)
+  function blastConfetti(){
+    const ctx = confetti.getContext('2d');
+    confetti.width = innerWidth; confetti.height = innerHeight;
+    confetti.classList.add('on');
+    const pieces = Array.from({length:140}).map(()=>({
+      x: Math.random()*confetti.width,
+      y: -20 - Math.random()*80,
+      r: 6+Math.random()*6,
+      vx: -2+Math.random()*4,
+      vy: 2+Math.random()*3,
+      a: Math.random()*Math.PI
+    }));
+    let t = 0; const dur = 1400; const start = performance.now();
+    (function frame(now){
+      t = now - start; ctx.clearRect(0,0,confetti.width,confetti.height);
+      pieces.forEach(p=>{ p.x+=p.vx; p.y+=p.vy; p.a+=0.05; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.a); ctx.fillStyle = (Math.random()>.5)? '#9cc29b' : '#cfe3c8'; ctx.fillRect(-p.r/2,-p.r/2,p.r,p.r); ctx.restore(); });
+      if(t < dur){ requestAnimationFrame(frame); } else { confetti.classList.remove('on'); ctx.clearRect(0,0,confetti.width,confetti.height); }
+    })(start);
+  }
+})();
+</script>
+</body>
+</html>
