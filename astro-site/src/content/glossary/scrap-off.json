@@ -1,0 +1,29 @@
+{
+  "term": "Scrap Off",
+  "slug": "scrap-off",
+  "abbreviation": " ",
+  "description": "A quick way to remove knitting from the machine using waste yarn. Knit several rows with waste yarn at the end of a piece to hold stitches safely until they’re rehung, grafted, or finished later.\n\nThis method keeps the stitches live and prevents unraveling—making it useful for testing, joining sections, or storing unfinished pieces.\n\nScrapping off is faster and less permanent than binding off, and it’s often combined with a ravel cord for easy removal.",
+  "tooltip": "Remove knitting from the machine using waste yarn to hold live stitches.",
+  "example": "Scrap off with contrasting yarn to save the stitches for later finishing.",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "S",
+  "imageFilename": "1762819231301-waste-yarn-11.webp",
+  "imageAlt": "Scrapping off knitting with waste yarn to hold live stitches safely",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "waste-yarn"
+  ],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-10",
+  "pendingPublish": true
+}
