@@ -1,0 +1,150 @@
+I want to build a Skill Builder system for my site Knit by Machine using pure HTML, CSS, and vanilla JavaScript — no frameworks or Bootstrap.
+
+I already have a complete HTML/CSS/JS prototype (below).
+Use that file as the template for how each Skill Builder should look and function.
+
+🔧 What I want Replit to create:
+1. File Structure
+/public/
+  /skillbuilders/
+    increase.html
+    increase.json
+  /media/skillbuilders/increase/
+    (GIFs or short clips)
+/admin/
+  skillbuilder-admin.html
+/js/
+  skillbuilder.js
+
+2. Purpose
+
+I want to separate content (in JSON) from the template layout so new Skill Builders can be created easily.
+
+Each Skill Builder page (like increase.html) should load its data dynamically from a JSON file.
+
+The admin page (skillbuilder-admin.html) will let me enter data in form fields, preview the result, and export a JSON file.
+
+🧱 Front-End Template (use my provided HTML)
+
+Keep my design, layout, colors, and CSS rules exactly as written.
+
+Add minimal JavaScript that:
+
+Loads JSON (e.g., /public/skillbuilders/increase.json) and fills in:
+
+Title
+
+Intro text
+
+Tagline
+
+Checklist items
+
+Steps (title, duration, description, tips, media)
+
+Reflection prompts
+
+Related “Next Steps” cards
+
+Saves user progress (steps tried, notes, reactions) to localStorage using the Skill Builder ID as a prefix.
+
+Keeps all interactivity (checklist modal, “Mark tried,” progress bar, reactions, confetti).
+
+🧩 JSON Schema
+{
+  "id": "increase",
+  "title": "Increase Skill Builder",
+  "intro": "Practice four ways to add stitches...",
+  "tagline": "You will learn more by doing than by watching.",
+  "preChecklist": ["Yarn ready", "Cast-on comb", "Tension set", "Notebook nearby"],
+  "steps": [
+    {
+      "title": "Transfer (edge increase)",
+      "duration": "~10 sec",
+      "description": "Work 10 rows. Transfer one stitch outward to an empty needle to add a stitch while keeping a clean edge.",
+      "tips": ["Use a 1-prong tool so the edge stays tidy.", "Move the stitch away from the edge before knitting the next row."],
+      "mediaType": "gif",
+      "mediaFile": "increase-transfer.gif"
+    }
+  ],
+  "reflectionPrompts": ["What did you notice?", "Which method do you prefer for edges vs center shaping?"],
+  "nextSteps": [
+    {"title": "Decrease Skill Builder", "link": "#"},
+    {"title": "Magic Formula Wizard", "link": "#"},
+    {"title": "Glossary: Increase", "link": "#"}
+  ]
+}
+
+🧮 Admin Page Requirements (skillbuilder-admin.html)
+
+Pure HTML/CSS/JS form (no Bootstrap).
+
+Form fields for each JSON property:
+
+Text inputs: id, title, intro, tagline
+
+Checklist (array builder)
+
+Steps (repeater fields with “Add Step,” “Add Tip”)
+
+Reflection prompts
+
+Next Steps (title + link)
+
+Buttons:
+
+Preview → renders the Skill Builder in a live preview area using the template layout.
+
+Export JSON → generates a downloadable .json file.
+
+Optional: “Import JSON” → load an existing file for editing.
+
+Style it to match my existing KBM color palette:
+
+Green: #52682D
+
+Olive: #738C52
+
+Gray: #f6f7f8
+
+Rounded corners: 14px
+
+🧰 Shared JS File (skillbuilder.js)
+
+Functions to:
+
+Load and render Skill Builder data.
+
+Save/restore localStorage values.
+
+Handle checklist modal and progress updates.
+
+Run confetti animation (use my existing function).
+
+✅ Goals
+
+Allow me to create new Skill Builders by filling out a form (admin page) and exporting JSON.
+
+Each Skill Builder HTML file will automatically render from its corresponding JSON.
+
+The look and interactivity should match the prototype exactly.
+
+No frameworks or external libraries — only my CSS and vanilla JS.
+
+🧾 Notes for Replit
+
+Keep HTML readable and semantic (use <section>, <article>, <details>).
+
+Use consistent ARIA labeling and focus order.
+
+Include comments in JS for clarity.
+
+Don’t include <head> tags or meta content in generated fragments — I’ll integrate those later into my Astro project.
+
+The final deliverable:
+
+A working example Skill Builder (increase.html + increase.json)
+
+A fully functional admin editor (skillbuilder-admin.html)
+
+A shared JS utility (skillbuilder.js)
