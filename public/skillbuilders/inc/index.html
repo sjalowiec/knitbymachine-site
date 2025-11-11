@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Skill Builder | Knit by Machine</title>
+<title>Increase Skill Builder | Knit by Machine</title>
 <style>
   :root{
     --kbm-green:#52682D;
@@ -17,6 +17,8 @@
   a{color:var(--kbm-olive);text-decoration:none}
   a:hover{text-decoration:underline}
   .container{max-width:980px;margin:0 auto;padding:24px}
+
+  /* Hero */
   .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:20px;align-items:center;margin:18px 0 8px}
   .hero .title{padding:20px;border-radius:var(--radius);background:linear-gradient(180deg,#fff,var(--kbm-gray));border:1px solid #e7e9eb}
   .hero h1{margin:0 0 6px;color:var(--kbm-green);font-weight:700;letter-spacing:.2px}
@@ -39,7 +41,7 @@
   .step{border:1px solid #e7e9eb;border-radius:var(--radius);background:#fff;display:flex;flex-direction:column;overflow:hidden;position:relative}
   .step header{padding:12px 14px;border-bottom:1px solid #eef0f2;display:flex;justify-content:space-between;align-items:center}
   .step header h3{margin:0;color:var(--kbm-green);font-size:1.05rem}
-  .badge{font-size:.72rem;background:var(--kbm-gray);color:#556; padding:4px 8px;border-radius:999px;border:1px solid #e0e3e6}
+  .badge{font-size:.72rem;background:var(--kbm-gray);color:#556;padding:4px 8px;border-radius:999px;border:1px solid #e0e3e6}
   .media{aspect-ratio:16/9;background:#e9ecef;display:grid;place-items:center;color:#8a8f95;font-style:italic}
   .media video,.media img{width:100%;height:100%;object-fit:cover}
   .step .body{padding:12px 14px 6px}
@@ -61,7 +63,7 @@
   .reflect header{background:var(--kbm-gray);padding:12px 16px;border-bottom:1px solid #e1e4e8;color:#2b3b2b}
   .reflect .inner{padding:14px}
   textarea{width:100%;min-height:120px;border:1px solid #d8dde3;border-radius:10px;padding:10px;resize:vertical}
-  .reactions{display:flex;gap:8px;margin:10px 0}
+  .reactions{display:flex;gap:8px;margin:10px 0;flex-wrap:wrap}
   .react{border:1px solid #d5dadf;background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer}
   .react[aria-pressed="true"]{background:#eef6ee;border-color:#bcd8bc}
 
@@ -90,87 +92,230 @@
   /* Member label (optional) */
   .member-only{display:inline-flex;align-items:center;gap:6px;padding:4px 8px;border-radius:999px;background:#fff5e6;border:1px solid #ffd9a6;color:#a56b00;font-size:.78rem}
 
-  @media (max-width:840px){
-    .hero{grid-template-columns:1fr}
-  }
+  @media (max-width:840px){.hero{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
   <canvas class="confetti" id="confetti"></canvas>
   <div class="container">
+
     <!-- HERO -->
-    <section class="hero" aria-labelledby="sb-title">
+    <section class="hero">
       <div class="title">
-        <h1 id="sb-title">Loading...</h1>
-        <p id="sb-intro"></p>
-        <p class="tagline" id="sb-tagline"></p>
-        <div style="margin-top:8px">
-          <span class="member-only" id="member-badge" aria-label="Members only feature" title="Members only">🔒 Member benefit: saves your progress</span>
-        </div>
+        <h1>Increase Skill Builder</h1>
+        <p>Increases add shape and style to your knitting.
+They’re used for sleeves, necklines, darts, or simply as design details.
+In this Skill Builder, you’ll explore three ways to add stitches — each with a different look and purpose</p>
+        <p class="tagline">Shape your fabric your way — practical or decorative, it’s your choice</p>
+        
       </div>
-      <div class="card" aria-labelledby="prep-title">
-        <h3 id="prep-title">Before you start</h3>
-        <div class="checklist" id="checklist-items">
-          <!-- Dynamically populated -->
+      <div class="card">
+        <h3>Before you start</h3>
+        <div class="checklist">
+          <label class="check-pill"><input type="checkbox"> Casting on and knitting a small swatch</label>
+          <label class="check-pill"><input type="checkbox"> Using your transfer tools or latch tool</label>
+          <label class="check-pill"><input type="checkbox"> Working with yarn suitable for your machine</label>
         </div>
-        <div style="margin-top:10px"><button class="btn ghost" id="openChecklist">Open checklist</button></div>
+        
       </div>
     </section>
 
     <!-- PROGRESS -->
-    <div class="progress-wrap" aria-live="polite">
-      <div class="progress-bar" aria-label="Progress"><span id="bar"></span></div>
-      <div class="progress-stat" id="progress-stat"><strong id="doneCount">0</strong>/0 tried · Keep going</div>
+    <div class="progress-wrap">
+      <div class="progress-bar"><span id="bar"></span></div>
+      <div class="progress-stat"><strong id="doneCount">0</strong>/1 tried · Keep going</div>
     </div>
 
     <!-- STEPS -->
-    <section class="steps" id="steps-container" aria-label="Try it steps">
-      <!-- Dynamically populated -->
+    <section class="steps">
+      
+      <article class="step" data-step="1">
+        <header>
+          <h3>Basic Increase</h3>
+          
+        </header>
+        <div class="media">GIF / Short clip</div>
+        <div class="body">
+          <p>pick up from the row below</p>
+        </div>
+        
+        <div class="actions">
+          <button class="btn ghost" data-action="notes">Add note</button>
+          <button class="btn primary" data-action="mark" aria-pressed="false">Mark tried</button>
+        </div>
+      </article>
     </section>
 
     <!-- REFLECTION -->
-    <section class="reflect" aria-labelledby="reflect-title">
-      <header><h2 id="reflect-title" style="margin:0">Observe and record</h2></header>
+    <section class="reflect">
+      <header><h2 style="margin:0">Observe and Record</h2></header>
       <div class="inner">
-        <div class="reactions" id="reactions-container" role="group" aria-label="Quick reactions">
-          <!-- Dynamically populated -->
+        <div class="reactions">
+          <button class="react" data-react="one" aria-pressed="false">afd one</button>
+          <button class="react" data-react="two" aria-pressed="false">👎afd two</button>
         </div>
-        <textarea id="notes" placeholder="What did you notice?"></textarea>
+        <textarea id="notes" placeholder="What did you notice? Which method do you prefer?"></textarea>
       </div>
     </section>
 
-    <!-- CONNECTIONS / NEXT -->
-    <section aria-labelledby="next-title">
-      <h2 id="next-title" style="color:var(--kbm-green)">Next steps</h2>
-      <div class="connections" id="next-steps-container">
-        <!-- Dynamically populated -->
+    <!-- CONNECTIONS -->
+    <section>
+      <h2 style="color:var(--kbm-green)">Next Steps</h2>
+      <div class="connections">
+        
+        <article class="card">
+          <div class="thumb"></div>
+          <div class="pad">
+            <h4>decrease builder</h4>
+            
+            <p><a class="btn" href="#">View</a></p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"></div>
+          <div class="pad">
+            <h4>antotehr tep</h4>
+            
+            <p><a class="btn" href="#">View</a></p>
+          </div>
+        </article>
+
+        <article class="card">
+          <div class="thumb"></div>
+          <div class="pad">
+            <h4>3rd step</h4>
+            
+            <p><a class="btn" href="#">View</a></p>
+          </div>
+        </article>
       </div>
     </section>
   </div>
 
-  <!-- Floating next action -->
-  <div class="float-next"><button class="btn primary" id="nextAction">Show next method</button></div>
+  <!-- Floating Next -->
+  <div class="float-next"><button class="btn primary" id="nextAction">Show next step</button></div>
 
-  <!-- Checklist Modal -->
-  <div class="modal" id="checkModal" role="dialog" aria-modal="true" aria-labelledby="checkTitle">
-    <div class="sheet">
-      <header id="checkTitle">Quick start checklist</header>
-      <div class="body" id="checklist-instructions">
-        <!-- Dynamically populated -->
-      </div>
-      <div class="foot">
-        <button class="btn" id="closeChecklist">Close</button>
-      </div>
-    </div>
-  </div>
+  
 
-  <!-- Load the skill builder JavaScript -->
-  <script src="../../js/skillbuilder.js"></script>
-  <script>
-    // Initialize the skill builder with data.json
-    document.addEventListener('DOMContentLoaded', () => {
-      SkillBuilder.init('data.json');
+<script>
+(function(){
+  const prefix = 'kbm_sb_inc_';
+  const btns = document.querySelectorAll('[data-action="mark"]');
+  const bar = document.getElementById('bar');
+  const doneCount = document.getElementById('doneCount');
+  const notes = document.getElementById('notes');
+  const reacts = document.querySelectorAll('.react');
+  const nextBtn = document.getElementById('nextAction');
+  const confetti = document.getElementById('confetti');
+  const openChecklist = document.getElementById('openChecklist');
+  const closeChecklist = document.getElementById('closeChecklist');
+  const checkModal = document.getElementById('checkModal');
+
+  document.addEventListener('DOMContentLoaded', restore);
+  btns.forEach(btn => btn.addEventListener('click', toggleTried));
+  notes.addEventListener('input', () => localStorage.setItem(prefix+'notes', notes.value));
+  reacts.forEach(r => r.addEventListener('click', toggleReaction));
+  nextBtn.addEventListener('click', scrollNext);
+  if(openChecklist) openChecklist.addEventListener('click', () => checkModal.style.display='grid');
+  if(closeChecklist) closeChecklist.addEventListener('click', () => checkModal.style.display='none');
+  if(checkModal) checkModal.addEventListener('click', e => {if(e.target===checkModal) checkModal.style.display='none'});
+
+  function toggleTried(e){
+    const btn = e.target;
+    const step = btn.closest('.step').dataset.step;
+    const pressed = btn.getAttribute('aria-pressed')==='true';
+    btn.setAttribute('aria-pressed',!pressed);
+    btn.textContent=!pressed?'Tried':'Mark tried';
+    localStorage.setItem(prefix+'step_'+step,!pressed);
+    updateProgress();
+    if(!pressed && allDone()) celebrate();
+  }
+
+  function toggleReaction(e){
+    const btn = e.target;
+    const react = btn.dataset.react;
+    const pressed = btn.getAttribute('aria-pressed')==='true';
+    btn.setAttribute('aria-pressed',!pressed);
+    localStorage.setItem(prefix+'react_'+react,!pressed);
+  }
+
+  function updateProgress(){
+    const total = btns.length;
+    let done = 0;
+    btns.forEach(btn => {if(btn.getAttribute('aria-pressed')==='true') done++});
+    bar.style.width = (done/total*100)+'%';
+    doneCount.textContent = done;
+  }
+
+  function allDone(){
+    return Array.from(btns).every(b => b.getAttribute('aria-pressed')==='true');
+  }
+
+  function restore(){
+    btns.forEach(btn => {
+      const step = btn.closest('.step').dataset.step;
+      const saved = localStorage.getItem(prefix+'step_'+step)==='true';
+      if(saved){
+        btn.setAttribute('aria-pressed','true');
+        btn.textContent='Tried';
+      }
     });
-  </script>
+    reacts.forEach(btn => {
+      const react = btn.dataset.react;
+      const saved = localStorage.getItem(prefix+'react_'+react)==='true';
+      if(saved) btn.setAttribute('aria-pressed','true');
+    });
+    const savedNotes = localStorage.getItem(prefix+'notes');
+    if(savedNotes) notes.value=savedNotes;
+    updateProgress();
+  }
+
+  function scrollNext(){
+    const firstUntried = Array.from(btns).find(b => b.getAttribute('aria-pressed')!=='true');
+    if(firstUntried){
+      firstUntried.closest('.step').scrollIntoView({behavior:'smooth',block:'center'});
+    }else{
+      document.querySelector('.reflect').scrollIntoView({behavior:'smooth'});
+    }
+  }
+
+  function celebrate(){
+    confetti.classList.add('on');
+    drawConfetti();
+    setTimeout(() => confetti.classList.remove('on'),3000);
+  }
+
+  function drawConfetti(){
+    const c = confetti;
+    const ctx = c.getContext('2d');
+    c.width = window.innerWidth;
+    c.height = window.innerHeight;
+    const pieces = [];
+    for(let i=0;i<100;i++){
+      pieces.push({
+        x:Math.random()*c.width,
+        y:Math.random()*c.height-c.height,
+        w:Math.random()*8+4,
+        h:Math.random()*4+2,
+        vx:(Math.random()-.5)*2,
+        vy:Math.random()*3+2,
+        color:'hsl('+(Math.random()*360)+',70%,60%)'
+      });
+    }
+    function render(){
+      ctx.clearRect(0,0,c.width,c.height);
+      pieces.forEach(p => {
+        ctx.fillStyle=p.color;
+        ctx.fillRect(p.x,p.y,p.w,p.h);
+        p.x+=p.vx;
+        p.y+=p.vy;
+        if(p.y<c.height) requestAnimationFrame(render);
+      });
+    }
+    render();
+  }
+})();
+</script>
 </body>
 </html>
