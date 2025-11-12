@@ -1,0 +1,395 @@
+---
+import { Octokit } from '@octokit/rest';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+// Fetch the skill builder JSON from GitHub
+const octokit = new Octokit({
+  auth: import.meta.env.GITHUB_TOKEN
+});
+
+let skillBuilder = null;
+let error = null;
+
+try {
+  const { data } = await octokit.repos.getContent({
+    owner: 'sjalowiec',
+    repo: 'knitbymachine',
+    path: `skillbuilders/${slug}/data.json`,
+  });
+
+  if ('content' in data) {
+    const content = Buffer.from(data.content, 'base64').toString('utf-8');
+    skillBuilder = JSON.parse(content);
+  }
+} catch (e) {
+  error = 'Skill Builder not found';
+  console.error('Error fetching skill builder:', e);
+}
+
+if (!skillBuilder) {
+  return Astro.redirect('/404');
+}
+
+const { title, description, tagline, prepChecklist = [], modules = [], reflection } = skillBuilder;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{title} | Skill Builder | Knit by Machine</title>
+<meta name="description" content={description}>
+<style>
+:root{
+  --kbm-green:#52682D;
+  --kbm-olive:#738C52;
+  --kbm-gray:#f6f7f8;
+}
+body{
+  margin:0;
+  font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:#333;
+  background:#fff;
+  overflow-x:hidden;
+}
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:40px 20px;
+}
+h1,h2,h3{
+  color:var(--kbm-green);
+  margin-top:0;
+}
+.btn-nav{
+  border:1px solid var(--kbm-olive);
+  background:#fff;
+  color:var(--kbm-olive);
+  border-radius:8px;
+  padding:8px 16px;
+  cursor:pointer;
+  transition:background .2s;
+  font-family:inherit;
+  font-size:1rem;
+}
+.btn-nav:hover{
+  background:#eef3e4;
+}
+.btn-nav:disabled{
+  opacity:0.5;
+  cursor:not-allowed;
+}
+section{
+  border:1px solid #e1e4e8;
+  border-radius:14px;
+  background:#fff;
+  padding:24px;
+  margin:20px 0;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+  transform-origin:left center;
+  transform-style:preserve-3d;
+  transition:transform .6s ease,opacity .6s ease;
+}
+section.hidden{
+  opacity:0;
+  transform:rotateY(-90deg);
+  pointer-events:none;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+section.active{
+  opacity:1;
+  transform:rotateY(0deg);
+  position:relative;
+}
+
+.prep-checklist{
+  background:#f6f7f8;
+  border-left:4px solid var(--kbm-green);
+  padding:16px;
+  border-radius:8px;
+  margin:16px 0;
+}
+.prep-checklist ul{
+  margin:8px 0;
+  padding-left:24px;
+}
+.prep-checklist li{
+  margin:6px 0;
+  color:#555;
+}
+
+.media-container{
+  margin:16px 0;
+}
+.media-container video,
+.media-container iframe{
+  max-width:100%;
+  border-radius:8px;
+}
+
+/* Micro Interaction */
+.micro-section{
+  margin-top:20px;
+  padding-top:20px;
+  border-top:2px solid #e1e4e8;
+}
+.micro-question{
+  font-weight:600;
+  color:var(--kbm-green);
+  margin-bottom:10px;
+}
+.micro-buttons{
+  display:flex;
+  gap:10px;
+  margin:14px 0;
+  flex-wrap:wrap;
+}
+.micro-btn{
+  border:1px solid var(--kbm-olive);
+  background:#f8faf6;
+  color:#333;
+  border-radius:8px;
+  padding:8px 14px;
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+  font-family:inherit;
+  font-size:0.95rem;
+}
+.micro-btn:hover{
+  background:#e6eddc;
+  transform:translateY(-1px);
+}
+.response{
+  min-height:40px;
+  margin-top:10px;
+}
+.micro-tip{
+  border-left:4px solid var(--kbm-green);
+  background:#f6f7f8;
+  padding:10px 14px;
+  border-radius:4px;
+  animation:fadeIn .5s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Navigation area */
+.nav-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+  gap:16px;
+}
+.progress{
+  font-size:.9rem;
+  color:#555;
+  text-align:center;
+}
+
+.tagline{
+  font-style:italic;
+  color:var(--kbm-olive);
+  font-size:1.1rem;
+  margin:12px 0;
+}
+
+.reflection-textarea{
+  width:100%;
+  min-height:120px;
+  border:2px solid #e1e4e8;
+  border-radius:10px;
+  padding:12px;
+  font-family:inherit;
+  font-size:1rem;
+  resize:vertical;
+}
+.reflection-textarea:focus{
+  outline:none;
+  border-color:var(--kbm-green);
+}
+
+@media (max-width: 640px) {
+  .container{
+    padding:20px 12px;
+  }
+  .nav-top{
+    flex-wrap:wrap;
+  }
+  .btn-nav{
+    font-size:0.9rem;
+    padding:6px 12px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navigation -->
+  <div class="nav-top">
+    <button class="btn-nav" id="prevBtn" data-testid="button-prev">← Previous</button>
+    <div class="progress" id="progressText" data-testid="text-progress">Step 1 of {modules.length + 2}</div>
+    <button class="btn-nav" id="nextBtn" data-testid="button-next">Next →</button>
+  </div>
+
+  <!-- Intro Section -->
+  <section class="active" id="section0" data-testid="section-intro">
+    <h1>{title}</h1>
+    {tagline && <p class="tagline">{tagline}</p>}
+    <p>{description}</p>
+    
+    {prepChecklist.length > 0 && (
+      <div class="prep-checklist">
+        <h3>Before You Begin</h3>
+        <ul>
+          {prepChecklist.map((item) => (
+            <li>{item}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+  </section>
+
+  <!-- Module Sections -->
+  {modules.map((module, index) => (
+    <section class="hidden" id={`section${index + 1}`} data-testid={`section-module-${index}`}>
+      <h2>{module.title}</h2>
+      <div set:html={module.htmlDescription} />
+
+      {module.media && (
+        <div class="media-container">
+          {module.media.includes('youtube.com') || module.media.includes('vimeo.com') ? (
+            <iframe
+              src={module.media}
+              width="560"
+              height="315"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen
+            ></iframe>
+          ) : module.media.endsWith('.mp4') || module.media.endsWith('.webm') ? (
+            <video controls>
+              <source src={module.media} type={module.media.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}>
+              Your browser does not support the video tag.
+            </video>
+          ) : (
+            <img src={module.media} alt={module.title} style="max-width:100%;border-radius:8px;">
+          )}
+        </div>
+      )}
+
+      {module.microQuestion && (
+        <div class="micro-section">
+          <div class="micro-question">{module.microQuestion}</div>
+          <div class="micro-buttons" data-module={index}>
+            <button class="micro-btn" data-response="yes" data-testid={`button-micro-yes-${index}`}>Yes ✓</button>
+            <button class="micro-btn" data-response="no" data-testid={`button-micro-no-${index}`}>No ✗</button>
+          </div>
+          <div class="response" id={`resp${index}`}></div>
+        </div>
+      )}
+    </section>
+  ))}
+
+  <!-- Reflection Section -->
+  {reflection && reflection.question && (
+    <section class="hidden" id={`section${modules.length + 1}`} data-testid="section-reflection">
+      <h2>Reflection</h2>
+      <p>{reflection.question}</p>
+      
+      <div class="micro-section">
+        <div class="micro-buttons" data-reflection="true">
+          <button class="micro-btn" data-response="yes" data-testid="button-reflection-yes">Yes ✓</button>
+          <button class="micro-btn" data-response="no" data-testid="button-reflection-no">No ✗</button>
+        </div>
+        <div class="response" id="respReflection"></div>
+      </div>
+
+      <p style="margin-top:24px;color:#666;font-size:0.95rem;">
+        Want to share your experience? Join the discussion below!
+      </p>
+    </section>
+  )}
+</div>
+
+<script define:vars={{ modules, reflection }}>
+const sections = Array.from(document.querySelectorAll("section"));
+let current = 0;
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const progress = document.getElementById("progressText");
+
+function showSection(i) {
+  sections.forEach((s, idx) => {
+    s.classList.toggle("active", idx === i);
+    s.classList.toggle("hidden", idx !== i);
+  });
+  progress.textContent = `Step ${i + 1} of ${sections.length}`;
+  prevBtn.disabled = (i === 0);
+  nextBtn.textContent = i === sections.length - 1 ? "Finish" : "Next →";
+}
+
+prevBtn.addEventListener("click", () => {
+  if (current > 0) {
+    current--;
+    showSection(current);
+  }
+});
+
+nextBtn.addEventListener("click", () => {
+  if (current < sections.length - 1) {
+    current++;
+    showSection(current);
+  } else {
+    alert("Great job! You've completed this Skill Builder.");
+  }
+});
+
+showSection(current);
+
+// Micro interactions for modules
+modules.forEach((module, index) => {
+  const buttons = document.querySelectorAll(`[data-module="${index}"] .micro-btn`);
+  const responseDiv = document.getElementById(`resp${index}`);
+  
+  buttons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const responseType = btn.dataset.response;
+      const responseText = module.microResponses[responseType];
+      
+      if (responseText) {
+        responseDiv.innerHTML = `<div class='micro-tip'>${responseText}</div>`;
+      }
+    });
+  });
+});
+
+// Reflection micro interaction
+if (reflection && reflection.question) {
+  const reflectionButtons = document.querySelectorAll('[data-reflection="true"] .micro-btn');
+  const reflectionResponseDiv = document.getElementById('respReflection');
+  
+  reflectionButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const responseType = btn.dataset.response;
+      const responseText = reflection.responses[responseType];
+      
+      if (responseText) {
+        reflectionResponseDiv.innerHTML = `<div class='micro-tip'>${responseText}</div>`;
+      }
+    });
+  });
+}
+</script>
+
+</body>
+</html>
