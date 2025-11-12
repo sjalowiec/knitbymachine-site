@@ -1,0 +1,479 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Fetch Skill Builders from GitHub at build time
+let builders = [];
+let errorMessage = '';
+
+try {
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/skillbuilders');
+  
+  if (response.ok) {
+    const directories = await response.json();
+    
+    // Fetch each data.json file's content
+    const builderPromises = directories
+      .filter(dir => dir.type === 'dir')
+      .map(async (dir) => {
+        try {
+          const fileResponse = await fetch(`https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/skillbuilders/${dir.name}/data.json`);
+          const fileData = await fileResponse.json();
+          const content = Buffer.from(fileData.content, 'base64').toString('utf-8');
+          const data = JSON.parse(content);
+          return {
+            id: dir.name,
+            title: data.title,
+            description: data.description,
+            tagline: data.tagline,
+            moduleCount: data.modules?.length || 0,
+            prepCount: data.prepChecklist?.length || 0,
+            isDraft: data.isDraft,
+            pendingPublish: data.pendingPublish,
+            publishedDate: data.publishedDate,
+          };
+        } catch (e) {
+          console.error(`Error fetching skill builder ${dir.name}:`, e);
+          return null;
+        }
+      });
+    
+    const allBuilders = await Promise.all(builderPromises);
+    // Filter out drafts, pending publish entries, and nulls
+    builders = allBuilders.filter(builder => builder && !builder.isDraft && !builder.pendingPublish);
+  }
+} catch (error) {
+  console.error('Error fetching skill builders:', error);
+  errorMessage = error.message;
+}
+
+const title = "Skill Builders";
+const description = "Interactive step-by-step journeys to master knitting machine techniques. Learn at your own pace with hands-on practice.";
+---
+
+<BaseLayout {title} {description}>
+  <div class="page-container">
+    <!-- Header -->
+    <div class="header-panel fade-in">
+      <div class="intro-icon">🛠️</div>
+      <div class="intro-content">
+        <h1 class="intro-title">Skill Builders</h1>
+        <p class="intro-tagline">Master your machine one skill at a time.</p>
+        <p class="intro-subtitle">Step-by-step interactive journeys designed to build your confidence and expertise with hands-on practice.</p>
+      </div>
+      <div class="controls-wrapper">
+        <div class="search-wrapper">
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Search skill builders..."
+            aria-label="Search skill builders"
+          >
+        </div>
+        <div class="sort-wrapper">
+          <label for="sortSelect" class="sort-label">Sort by:</label>
+          <select id="sortSelect" class="sort-select" aria-label="Sort order">
+            <option value="newest">Newest</option>
+            <option value="oldest">Oldest</option>
+            <option value="alphabetical">Alphabetical</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Catalogue Content -->
+    <div id="catalogueContent" class="catalogue-content" data-builders={JSON.stringify(builders)}>
+      {errorMessage && (
+        <div class="error">
+          <p><strong>Error loading skill builders</strong></p>
+          <p>Unable to fetch skill builders. Please try again later.</p>
+          <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
+        </div>
+      )}
+    </div>
+  </div>
+
+  <!-- Scroll to Top Button -->
+  <button id="scrollToTop" class="scroll-to-top" aria-label="Scroll to top">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
+    </svg>
+  </button>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 4.5rem 1.5rem 3rem;
+  }
+
+  /* Header Panel */
+  .header-panel {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+    padding: 1.8rem 2.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .intro-icon {
+    font-size: 120px;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+
+  .intro-content {
+    flex: 1;
+    min-width: 300px;
+  }
+
+  .intro-title {
+    color: #52682D;
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 700;
+  }
+
+  .intro-tagline {
+    color: #52682D;
+    font-size: 1.25rem;
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+    opacity: 0.85;
+  }
+
+  .intro-subtitle {
+    color: #52682D;
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.7;
+    max-width: 580px;
+  }
+
+  /* Search and Sort Controls */
+  .controls-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    min-width: 280px;
+  }
+
+  .search-wrapper {
+    width: 100%;
+  }
+
+  .search-input {
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    border: 2px solid #c7d8a4;
+    border-radius: 50px;
+    font-size: 1rem;
+    background-color: white;
+    transition: all 0.3s ease;
+  }
+
+  .search-input:focus {
+    outline: none;
+    border-color: #52682D;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+  }
+
+  .sort-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sort-label {
+    color: #52682D;
+    font-weight: 600;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .sort-select {
+    padding: 0.75rem 1rem;
+    border: 2px solid #c7d8a4;
+    border-radius: 50px;
+    font-size: 0.95rem;
+    background-color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    flex: 1;
+  }
+
+  .sort-select:focus {
+    outline: none;
+    border-color: #52682D;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+  }
+
+  /* Catalogue Content */
+  .catalogue-content {
+    position: relative;
+  }
+
+  /* Skill Builder Cards */
+  :global(.builder-grid) {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  :global(.builder-card) {
+    background: white;
+    border: 2px solid #e6eddc;
+    border-radius: 14px;
+    padding: 1.75rem;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.08);
+  }
+
+  :global(.builder-card:hover) {
+    border-color: #738C52;
+    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.15);
+    transform: translateY(-3px);
+  }
+
+  :global(.builder-title) {
+    color: #52682D;
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    text-decoration: none;
+    display: block;
+  }
+
+  :global(.builder-title:hover) {
+    color: #738C52;
+  }
+
+  :global(.builder-tagline) {
+    font-style: italic;
+    color: #738C52;
+    font-size: 0.95rem;
+    margin: 0 0 0.75rem 0;
+  }
+
+  :global(.builder-description) {
+    color: #555;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    flex-grow: 1;
+  }
+
+  :global(.builder-meta) {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: #666;
+    padding-top: 1rem;
+    border-top: 1px solid #e6eddc;
+  }
+
+  :global(.builder-meta-item) {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  /* Error State */
+  .error {
+    background-color: #fef2f2;
+    border: 2px solid #fca5a5;
+    border-radius: 12px;
+    padding: 2rem;
+    text-align: center;
+    color: #991b1b;
+  }
+
+  /* Empty State */
+  :global(.empty-state) {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #666;
+  }
+
+  :global(.empty-state h3) {
+    color: #52682D;
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Scroll to Top */
+  .scroll-to-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-color: #52682D;
+    color: white;
+    border: none;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .scroll-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .scroll-to-top:hover {
+    background-color: #738C52;
+    transform: translateY(-3px);
+  }
+
+  .scroll-to-top svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  /* Animation */
+  .fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .header-panel {
+      flex-direction: column;
+      align-items: flex-start;
+      padding: 1.5rem;
+    }
+
+    .intro-icon {
+      font-size: 80px;
+    }
+
+    .intro-title {
+      font-size: 1.75rem;
+    }
+
+    .controls-wrapper {
+      width: 100%;
+    }
+
+    :global(.builder-grid) {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<script>
+  const buildersData = JSON.parse(document.getElementById('catalogueContent').dataset.builders || '[]');
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+  const catalogueContent = document.getElementById('catalogueContent');
+
+  let currentBuilders = [...buildersData];
+
+  function renderBuilders(builders) {
+    if (builders.length === 0) {
+      catalogueContent.innerHTML = `
+        <div class="empty-state">
+          <h3>No skill builders found</h3>
+          <p>Try adjusting your search or check back later for new content.</p>
+        </div>
+      `;
+      return;
+    }
+
+    const grid = document.createElement('div');
+    grid.className = 'builder-grid';
+
+    builders.forEach(builder => {
+      const card = document.createElement('div');
+      card.className = 'builder-card';
+      
+      card.innerHTML = `
+        <a href="/skillbuilder/${builder.id}" class="builder-title">${builder.title}</a>
+        ${builder.tagline ? `<p class="builder-tagline">${builder.tagline}</p>` : ''}
+        <p class="builder-description">${builder.description}</p>
+        <div class="builder-meta">
+          <span class="builder-meta-item">📚 ${builder.moduleCount} ${builder.moduleCount === 1 ? 'module' : 'modules'}</span>
+          ${builder.prepCount > 0 ? `<span class="builder-meta-item">✓ ${builder.prepCount} prep ${builder.prepCount === 1 ? 'item' : 'items'}</span>` : ''}
+        </div>
+      `;
+      
+      grid.appendChild(card);
+    });
+
+    catalogueContent.innerHTML = '';
+    catalogueContent.appendChild(grid);
+  }
+
+  function filterAndSort() {
+    const searchTerm = searchInput.value.toLowerCase();
+    const sortValue = sortSelect.value;
+
+    let filtered = buildersData.filter(builder => 
+      builder.title.toLowerCase().includes(searchTerm) ||
+      builder.description.toLowerCase().includes(searchTerm) ||
+      (builder.tagline && builder.tagline.toLowerCase().includes(searchTerm))
+    );
+
+    if (sortValue === 'alphabetical') {
+      filtered.sort((a, b) => a.title.localeCompare(b.title));
+    } else if (sortValue === 'newest') {
+      filtered.sort((a, b) => new Date(b.publishedDate || 0) - new Date(a.publishedDate || 0));
+    } else if (sortValue === 'oldest') {
+      filtered.sort((a, b) => new Date(a.publishedDate || 0) - new Date(b.publishedDate || 0));
+    }
+
+    currentBuilders = filtered;
+    renderBuilders(filtered);
+  }
+
+  searchInput.addEventListener('input', filterAndSort);
+  sortSelect.addEventListener('change', filterAndSort);
+
+  // Scroll to top button
+  const scrollToTopBtn = document.getElementById('scrollToTop');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollToTopBtn.classList.add('visible');
+    } else {
+      scrollToTopBtn.classList.remove('visible');
+    }
+  });
+
+  scrollToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Initial render
+  renderBuilders(currentBuilders);
+</script>
+</BaseLayout>
