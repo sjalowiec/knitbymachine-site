@@ -1,0 +1,50 @@
+{
+  "title": "E-Wrap Cast-On",
+  "description": "Master the E-wrap cast-on technique and understand when and why to use it. This journey-style skill builder helps you practice the technique and develop confidence through hands-on exercises.",
+  "tagline": "You'll learn more by doing than by watching!",
+  "prepChecklist": [
+    "Machine set up and ready to knit",
+    "Yarn threaded and tension adjusted",
+    "Waste yarn for practice swatches",
+    "Latch tool nearby for comparison"
+  ],
+  "modules": [
+    {
+      "title": "Module 1: Cast On",
+      "htmlDescription": "<p>Start your swatch with the E-wrap cast-on. Work 10–15 rows in stocking stitch.</p><p><strong>Watch the technique:</strong> Notice how the yarn wraps around each needle, creating the foundation row.</p>",
+      "media": "",
+      "microQuestion": "Have you completed your first E-wrap cast-on swatch?",
+      "microResponses": {
+        "yes": "<strong>Great!</strong> Now knit a few more rows and watch how the edge behaves.",
+        "no": "<strong>No problem.</strong> Take your time and try the technique. Remember, the wrap should be snug but not too tight."
+      }
+    },
+    {
+      "title": "Module 2: Observe Your Edge",
+      "htmlDescription": "<p>Compare the edge of your E-wrap cast-on to a latch-tool cast-on. Notice any difference in elasticity or appearance.</p><p><strong>Key observations:</strong></p><ul><li>Check the edge stretch</li><li>Look at the consistency of loops</li><li>Feel the fabric drape</li></ul>",
+      "media": "",
+      "microQuestion": "How does your E-wrap edge look?",
+      "microResponses": {
+        "yes": "✨ <strong>Beautiful consistency!</strong> Keep your tension just like that.",
+        "no": "🧶 <strong>Tension matters.</strong> Try adjusting your tension dial slightly and re-try a small section. If it's too loose, lower the tension number. If too tight, increase it."
+      }
+    },
+    {
+      "title": "Module 3: When Would You Use This?",
+      "htmlDescription": "<p>Think about projects where this method makes sense. The E-wrap cast-on is ideal for:</p><ul><li><strong>Hems:</strong> Creates a soft, stretchy edge</li><li><strong>Decorative edges:</strong> Gives a clean, professional look</li><li><strong>Provisional starts:</strong> Perfect for temporary edges that will be picked up later</li></ul>",
+      "media": "",
+      "microQuestion": "Can you think of a project where you'd use the E-wrap cast-on?",
+      "microResponses": {
+        "yes": "<strong>Perfect!</strong> The E-wrap is versatile and works great for many applications. Keep this technique in your toolkit.",
+        "no": "<strong>That's okay!</strong> As you knit more projects, you'll discover which cast-on methods work best for different situations. The E-wrap is especially good for garment hems and edges that need stretch."
+      }
+    }
+  ],
+  "reflection": {
+    "question": "Did you discover something new about the E-wrap cast-on? Was it faster, neater, or stretchier than other methods you've tried?",
+    "responses": {
+      "yes": "<strong>Wonderful!</strong> Learning through hands-on practice helps you build skills that stick. Keep experimenting with different cast-on methods to expand your knitting toolkit.",
+      "no": "<strong>That's part of learning!</strong> Sometimes techniques take a few tries before they click. Consider trying this skill builder again, or ask questions in the community discussion below."
+    }
+  }
+}
