@@ -29,7 +29,8 @@ try {
   console.error('Error fetching skill builder:', e);
 }
 
-if (!skillBuilder) {
+// Filter out drafts and pending publish entries
+if (!skillBuilder || skillBuilder.isDraft === true || skillBuilder.pendingPublish === true) {
   return Astro.redirect('/404');
 }
 
