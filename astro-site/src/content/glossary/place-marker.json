@@ -1,0 +1,32 @@
+{
+  "term": "Place Marker",
+  "slug": "place-marker",
+  "abbreviation": "pm",
+  "description": "Use a contrasting loop of yarn on the edge needle to mark a specific row or point in your knitting. Place markers help match pieces for seaming, measure rows for gauge, or identify a section in progress.",
+  "tooltip": "Mark a row or section with a contrasting loop of yarn",
+  "example": "Hang a loop of contrasting yarn at the start of your sleeve shaping to mark the first decrease row.",
+  "categories": [
+    "Techniques",
+    "General Terms"
+  ],
+  "letter": "P",
+  "imageFilename": "1762969766758-place-marker.jpg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "Tension-swatch"
+  ],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": true,
+  "publishedDate": "2025-11-12",
+  "pendingPublish": true
+}
