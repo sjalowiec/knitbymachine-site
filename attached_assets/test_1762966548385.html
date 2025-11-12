@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Skill Builder | E-Wrap Cast-On</title>
+<style>
+:root{
+  --kbm-green:#52682D;
+  --kbm-olive:#738C52;
+  --kbm-gray:#f6f7f8;
+}
+body{
+  margin:0;
+  font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+  color:#333;
+  background:#fff;
+  overflow-x:hidden;
+}
+.container{
+  max-width:900px;
+  margin:0 auto;
+  padding:40px 20px;
+}
+h1,h2,h3{
+  color:var(--kbm-green);
+  margin-top:0;
+}
+.btn-nav{
+  border:1px solid var(--kbm-olive);
+  background:#fff;
+  color:var(--kbm-olive);
+  border-radius:8px;
+  padding:8px 16px;
+  cursor:pointer;
+  transition:background .2s;
+}
+.btn-nav:hover{
+  background:#eef3e4;
+}
+section{
+  border:1px solid #e1e4e8;
+  border-radius:14px;
+  background:#fff;
+  padding:24px;
+  margin:20px 0;
+  box-shadow:0 2px 10px rgba(0,0,0,.05);
+  transform-origin:left center;
+  transform-style:preserve-3d;
+  transition:transform .6s ease,opacity .6s ease;
+}
+section.hidden{
+  opacity:0;
+  transform:rotateY(-90deg);
+  pointer-events:none;
+  position:absolute;
+  top:0;
+  width:100%;
+}
+section.active{
+  opacity:1;
+  transform:rotateY(0deg);
+  position:relative;
+}
+
+/* Micro Interaction */
+.micro-buttons{
+  display:flex;
+  gap:10px;
+  margin:14px 0;
+}
+.micro-btn{
+  border:1px solid var(--kbm-olive);
+  background:#f8faf6;
+  color:#333;
+  border-radius:8px;
+  padding:8px 14px;
+  cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.micro-btn:hover{
+  background:#e6eddc;
+  transform:translateY(-1px);
+}
+.response{
+  min-height:40px;
+  margin-top:10px;
+}
+.micro-tip{
+  border-left:4px solid var(--kbm-green);
+  background:#f6f7f8;
+  padding:10px 14px;
+  border-radius:4px;
+  animation:fadeIn .5s ease;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(0)}
+}
+
+/* Navigation area */
+.nav-top{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+.progress{
+  font-size:.9rem;
+  color:#555;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Navigation -->
+  <div class="nav-top">
+    <button class="btn-nav" id="prevBtn">← Previous</button>
+    <div class="progress" id="progressText">Step 1 of 4</div>
+    <button class="btn-nav" id="nextBtn">Next →</button>
+  </div>
+
+  <!-- Intro -->
+  <section class="active" id="section0">
+    <h1>E-Wrap Cast-On Skill Builder</h1>
+    <p>This Skill Builder helps you practice the E-wrap cast-on and understand when and why to use it.  
+    Each step gives you a short demo and a quick self-check to build confidence.</p>
+    <p style="font-style:italic;color:var(--kbm-olive);">You’ll learn more by doing than by watching!</p>
+  </section>
+
+  <!-- Exercise 1 -->
+  <section class="hidden" id="section1">
+    <h2>Exercise 1: Cast On</h2>
+    <p>Start your swatch with the E-wrap cast-on. Work 10–15 rows in stocking stitch.</p>
+
+    <div class="micro-buttons">
+      <button class="micro-btn" data-result="yes">Yes ✅</button>
+      <button class="micro-btn" data-result="no">Not yet ❌</button>
+      <button class="micro-btn" data-result="again">Show me again 🔁</button>
+    </div>
+    <div class="response" id="resp1"></div>
+  </section>
+
+  <!-- Exercise 2 -->
+  <section class="hidden" id="section2">
+    <h2>Exercise 2: Observe Your Edge</h2>
+    <p>Compare the edge of your E-wrap cast-on to a latch-tool cast-on. Notice any difference in elasticity or appearance.</p>
+
+    <div class="micro-buttons">
+      <button class="micro-btn" data-result="even">Nice and even</button>
+      <button class="micro-btn" data-result="loose">A bit loose</button>
+      <button class="micro-btn" data-result="tight">Too tight</button>
+    </div>
+    <div class="response" id="resp2"></div>
+  </section>
+
+  <!-- Exercise 3 -->
+  <section class="hidden" id="section3">
+    <h2>Exercise 3: When Would You Use This?</h2>
+    <p>Think about projects where this method makes sense.</p>
+    <div class="micro-buttons">
+      <button class="micro-btn" data-result="hems">Hems</button>
+      <button class="micro-btn" data-result="edges">Decorative edges</button>
+      <button class="micro-btn" data-result="provisional">Provisional starts</button>
+    </div>
+    <div class="response" id="resp3"></div>
+  </section>
+
+  <!-- Reflection -->
+  <section class="hidden" id="section4">
+    <h2>Your Findings</h2>
+    <p>Take a moment to note what you discovered about the E-wrap cast-on.  
+    Was it faster, neater, or stretchier than other methods?</p>
+    <textarea style="width:100%;min-height:120px;border:1px solid #ccc;border-radius:10px;padding:10px;"></textarea>
+    <p style="margin-top:20px;">Want to share your results or questions? Open the discussion panel (Hyvor Talk will appear here later).</p>
+  </section>
+</div>
+
+<script>
+const sections = Array.from(document.querySelectorAll("section"));
+let current = 0;
+const prevBtn=document.getElementById("prevBtn");
+const nextBtn=document.getElementById("nextBtn");
+const progress=document.getElementById("progressText");
+
+function showSection(i){
+  sections.forEach((s,idx)=>{
+    s.classList.toggle("active",idx===i);
+    s.classList.toggle("hidden",idx!==i);
+  });
+  progress.textContent=`Step ${i+1} of ${sections.length}`;
+  prevBtn.disabled=(i===0);
+  nextBtn.textContent=i===sections.length-1?"Finish":"Next →";
+}
+prevBtn.addEventListener("click",()=>{
+  if(current>0){current--;showSection(current);}
+});
+nextBtn.addEventListener("click",()=>{
+  if(current<sections.length-1){current++;showSection(current);}
+  else alert("Great job! You've completed this Skill Builder.");
+});
+showSection(current);
+
+// micro interactions
+function micro(id,responses){
+  const box=document.getElementById(id);
+  box.parentElement.querySelectorAll(".micro-btn").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      const out=box;
+      const key=btn.dataset.result;
+      out.innerHTML=`<div class='micro-tip'>${responses[key]||""}</div>`;
+    });
+  });
+}
+micro("resp1",{
+  yes:"<strong>Great!</strong> Now knit a few more rows and watch how the edge behaves.",
+  no:"<strong>No problem.</strong> Review the demo first.",
+  again:"<strong>Replay the clip.</strong> Notice how the yarn twists around each needle."
+});
+micro("resp2",{
+  even:"✨ Beautiful consistency! Keep your tension just like that.",
+  loose:"🧶 Lower your tension dial slightly and re-try a small section.",
+  tight:"⚖️ Loosen the tension one number and check again."
+});
+micro("resp3",{
+  hems:"Perfect for soft, stretchy hems.",
+  edges:"Nice! It gives a clean decorative edge.",
+  provisional:"Good thinking — a flexible start for temporary edges."
+});
+</script>
+</body>
+</html>
