@@ -16,7 +16,7 @@ let error = null;
 try {
   const { data } = await octokit.repos.getContent({
     owner: 'sjalowiec',
-    repo: 'knitbymachine',
+    repo: 'knitbymachine-site',
     path: `skillbuilders/${slug}/data.json`,
   });
 
