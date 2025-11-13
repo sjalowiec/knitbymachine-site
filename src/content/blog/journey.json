@@ -1,0 +1,17 @@
+{
+  "title": "Join me on the journey",
+  "author": "Sue",
+  "category": "Basics & Setup",
+  "tags": [
+    "advanced"
+  ],
+  "excerpt": "this is teh breif sullary",
+  "imageUrl": "1763047305435-stitch-pattern.png",
+  "imageAlt": "alt text",
+  "metaTitle": "meta title",
+  "metaDescription": " meta description",
+  "body": "this is my content\n<br>\n<b>this is bold</b>\n<ul>\n<li>lkjsfldkjl </li>\n<li>lkjl; lj</li>\n</ul>",
+  "isDraft": false,
+  "publishedDate": "2025-11-13",
+  "pendingPublish": true
+}
