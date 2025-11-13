@@ -1,0 +1,223 @@
+---
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+
+// Fetch blog posts from GitHub content/blog directory
+let blogPosts = [];
+let errorMessage = '';
+
+try {
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/astro-site/src/content/blog');
+  
+  if (response.ok) {
+    const files = await response.json();
+    
+    // Fetch each JSON file's content
+    const postPromises = files
+      .filter(file => file.name.endsWith('.json'))
+      .map(async (file) => {
+        try {
+          const fileResponse = await fetch(file.download_url);
+          const data = await fileResponse.json();
+          
+          // Skip drafts and pending publish
+          if (data.isDraft || data.pendingPublish) {
+            return null;
+          }
+          
+          return {
+            slug: data.slug,
+            title: data.title,
+            date: data.publishedDate || data.date,
+            description: data.excerpt || data.description || '',
+            author: data.author || 'Sue Jalowiec',
+          };
+        } catch (error) {
+          console.error(`Error fetching blog post ${file.name}:`, error);
+          return null;
+        }
+      });
+    
+    const fetchedPosts = await Promise.all(postPromises);
+    
+    // Filter out null entries and sort by date (newest first)
+    blogPosts = fetchedPosts
+      .filter(post => post !== null)
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  }
+} catch (error) {
+  console.error('Error fetching blog posts:', error);
+  errorMessage = error.message;
+}
+
+const pageTitle = "KBM Blog";
+const pageDescription = "Tips, tutorials, and insights on machine knitting from Sue Jalowiec";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle} | Knit by Machine</title>
+    <meta name="description" content={pageDescription} />
+  </head>
+  <body>
+    <Header />
+    
+    <main class="blog-list">
+      <div class="blog-container">
+        <header class="blog-header">
+          <h1 class="blog-title">{pageTitle}</h1>
+          <p class="blog-subtitle">{pageDescription}</p>
+        </header>
+
+        {errorMessage ? (
+          <div class="error-message">
+            <p>Unable to load blog posts at this time. Please try again later.</p>
+          </div>
+        ) : blogPosts.length === 0 ? (
+          <div class="empty-state">
+            <p>No blog posts available yet. Check back soon!</p>
+          </div>
+        ) : (
+          <div class="posts-grid">
+            {blogPosts.map((post) => (
+              <article class="post-card">
+                <div class="post-content">
+                  <time class="post-date" datetime={post.date}>
+                    {new Date(post.date).toLocaleDateString('en-US', { 
+                      year: 'numeric', 
+                      month: 'long', 
+                      day: 'numeric' 
+                    })}
+                  </time>
+                  <h2 class="post-title">
+                    <a href={`/blog/${post.slug}`}>{post.title}</a>
+                  </h2>
+                  {post.description && (
+                    <p class="post-description">{post.description}</p>
+                  )}
+                  <a href={`/blog/${post.slug}`} class="read-more">
+                    Read More →
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .blog-list {
+    min-height: 60vh;
+    padding-top: 140px;
+    background: #f7f8f7;
+  }
+
+  .blog-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .blog-header {
+    text-align: center;
+    margin-bottom: 4rem;
+  }
+
+  .blog-title {
+    font-size: clamp(2.5rem, 5vw, 3.5rem);
+    font-weight: 700;
+    color: #52682d;
+    margin-bottom: 1rem;
+  }
+
+  .blog-subtitle {
+    font-size: 1.125rem;
+    color: #5a6b47;
+    line-height: 1.6;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .post-card {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .post-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .post-date {
+    display: block;
+    font-size: 0.875rem;
+    color: #718355;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .post-title a {
+    color: #2d3a1f;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .post-title a:hover {
+    color: #52682d;
+  }
+
+  .post-description {
+    color: #4a5a3a;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    font-size: 1.0625rem;
+  }
+
+  .read-more {
+    color: #52682d;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: 1rem;
+  }
+
+  .read-more:hover {
+    color: #445626;
+    text-decoration: underline;
+  }
+
+  .empty-state,
+  .error-message {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: #5a6b47;
+    font-size: 1.125rem;
+  }
+
+  .error-message {
+    background: #fff3cd;
+    border-radius: 8px;
+    padding: 2rem;
+  }
+</style>
