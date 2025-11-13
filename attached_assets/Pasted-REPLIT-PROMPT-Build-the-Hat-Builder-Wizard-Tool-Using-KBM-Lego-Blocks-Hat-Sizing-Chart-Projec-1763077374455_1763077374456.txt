@@ -1,0 +1,269 @@
+REPLIT PROMPT — Build the “Hat Builder” Wizard Tool Using KBM Lego-Blocks + Hat Sizing Chart
+
+Project Name: hat-builder
+Tech Stack:
+
+HTML, CSS, JavaScript
+
+No frameworks
+
+JSON-driven data
+
+Custom CSS in styles/hat-builder.css
+
+Import and use all existing KBM Lego-Blocks
+
+Include <!-- header-placeholder --> and <!-- footer-placeholder -->
+
+CRITICAL — USE MY KBM LEGO-BLOCKS
+
+Replit must not recreate any shared UI elements.
+Replit must import and use my existing Lego-Blocks for:
+
+Shared Components
+
+in/cm toggle (global unit-conversion component)
+
+input rows (lego-input-row)
+
+spacing classes (mb-2, mt-3, kbm-card, kbm-soft-box)
+
+pattern output block (white card, preformatted steps, headings)
+
+diagram container
+
+button styles (primary, secondary, outline)
+
+wizard progress bar (step circles + connectors)
+
+header/footer injection system
+
+Replit must import these directly.
+Replit must NOT approximate or recreate them.
+
+NEW — REQUIRED: USE MY HAT SIZING CHART
+
+Replit must also import and use the existing Hat Sizing Chart stored in the shared KBM data directory.
+
+The sizing chart includes:
+
+head circumference ranges
+
+recommended negative ease
+
+suggested finished hat widths
+
+typical heights (beanie, watch cap, slouchy, relaxed)
+
+default baby/child/adult sizing groups
+
+Replit must:
+
+Load the hat-sizing JSON file (you already have it in the shared data folder).
+
+Use it to:
+
+auto-suggest size options (Toddler, Child, Adult S, Adult M, Adult L)
+
+prefill head circumference if the user selects a size
+
+override height defaults if the chart gives more specific values
+
+Allow users to:
+
+choose a “standard size”
+or
+
+enter their exact head measurement
+
+Apply negative ease from the chart (not hardcoded) if available.
+
+Use chart values whenever possible before falling back to defaults.
+
+Replit must clearly incorporate the hat sizing chart into calculations.
+
+GOAL
+
+Build a complete Hat Builder Wizard that:
+
+Walks knitters through direction, brim, crown, fit
+
+Collects gauge + head measurement (with in/cm toggle)
+
+Allows the user to choose standard size or custom measurement
+
+Uses the hat-sizing chart wherever appropriate
+
+Performs calculations using provided formulas
+
+Generates a clean, printable custom hat pattern
+
+Uses all Lego-Blocks for consistent KBM design
+
+FILES TO CREATE
+
+Replit must create these:
+
+index.html
+
+styles/hat-builder.css
+
+scripts/hat-builder.js
+
+data/options.json
+
+data/questions.json
+
+data/pattern-templates.json
+
+Folder: diagrams/
+
+And — import the shared hat-sizing chart (do not recreate it)
+
+index.html REQUIREMENTS
+
+Index must include:
+
+<!-- header-placeholder -->
+
+Wizard container
+
+Step progress bar using Lego-Block
+
+Step content injected from JSON
+
+in/cm toggle (lego-block)
+
+Standard-size selector block (using hat sizing chart)
+
+Input rows for custom measurement
+
+Next / Back buttons (KBM button classes)
+
+Final pattern output block
+
+Print + Restart buttons
+
+No hardcoded questions in HTML.
+Everything must be rendered from JSON or shared components.
+
+JSON REQUIREMENTS
+options.json
+
+Same as previous version: directions, brims, crowns, fits.
+
+questions.json
+
+Add one more step at the beginning:
+
+Step 0: Choose Hat Size
+
+Options loaded from the hat sizing chart (Toddler, Child, Adult S, Adult M, Adult L)
+
+Button: “Or enter custom measurement instead”
+
+If user selects a standard size:
+
+Replit must prefill headCirc = chart value
+
+Hide custom input
+
+Store the chart's recommended hat height if available
+
+Continue with the previous steps afterward.
+
+pattern-templates.json
+
+Replit must scaffold the placeholders but leave actual patterns empty.
+
+LOGIC REQUIREMENTS
+Load Data
+
+Replit must load:
+
+options.json
+
+questions.json
+
+pattern-templates.json
+
+THE HAT SIZING CHART JSON
+
+Unit Handling
+
+Use the KBM global in/cm toggle Lego-Block.
+
+Internal math must always use inches
+
+Display both units
+
+Convert automatically
+
+Sizing Logic (MUST INCLUDE)
+
+If user selects a standard size:
+
+headCirc = hatSizeChart[selected].headCircumference;
+negativeEase = hatSizeChart[selected].negativeEase;
+targetWidth = headCirc * negativeEase;
+
+
+If custom:
+
+headCirc = userInput;
+negativeEase = 0.90; // fallback ONLY if chart doesn't provide
+targetWidth = headCirc * negativeEase;
+
+Math Formulas
+
+Replit must include:
+
+castOnSts = Math.round(targetWidth * stGauge);
+
+hatHeight = // use chart height if available; else use defaults:
+{
+  beanie: 7,
+  watchcap: 8.5,
+  slouch: 10,
+  relaxed: 9
+};
+
+brimRows = brimType === "rib"
+  ? Math.round(rowGauge * 2)
+  : Math.round(rowGauge * 1.5);
+
+crownStart = hatHeight[fit] - (brimRows / rowGauge);
+
+numberOfWedges = crownStyle.includes("wedge")
+  ? parseInt(crownStyle.split("-")[1])
+  : 1;
+
+stitchesPerWedge = Math.floor(castOnSts / numberOfWedges);
+
+Pattern Assembly
+
+Use templates + placeholders exactly as before.
+
+CSS REQUIREMENTS
+
+In styles/hat-builder.css, Replit must:
+
+Keep minimal local styles
+
+Use KBM green #52682d
+
+Do not duplicate Lego-Blocks
+
+Ensure wizard layout looks consistent with all other KBM wizards
+
+DELIVERABLE
+
+Replit must return:
+
+✓ Fully functional multi-step Hat Builder Wizard
+✓ Using all KBM Lego-Blocks
+✓ Fully integrated with the Hat Sizing Chart
+✓ JSON-driven questions + templates
+✓ in/cm toggle working
+✓ Accurate math + chart logic
+✓ Clean, printer-friendly pattern output
