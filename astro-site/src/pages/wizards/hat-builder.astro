@@ -1,0 +1,905 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
+---
+
+<BaseLayout 
+  title="Hat Builder | Knit by Machine" 
+  description="Design your perfect custom hat with precise sizing, brim options, and crown shaping. Get complete knitting instructions with an illustrated diagram.">
+
+<style>
+.wizard-page {
+  padding-top: 120px;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.page-header {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.page-header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .page-header-title {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.page-header h1 {
+  color: var(--kbm-green);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.video-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: #e5e7eb;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.2s;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.video-button:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wizard-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem 120px 1rem;
+}
+
+.calculator-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-title {
+  color: var(--kbm-green);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #eef0ea;
+}
+
+.units-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 4px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.unit-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.unit-btn.active {
+  background: var(--kbm-green);
+  color: white;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input-group input, 
+.input-group select {
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--kbm-green);
+  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #52682D;
+}
+
+.checkbox-group label {
+  cursor: pointer;
+  font-weight: 600;
+  color: #374151;
+}
+
+.info-box {
+  background: rgba(82, 104, 45, 0.1);
+  border-left: 4px solid var(--kbm-green);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.results-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #eef0ea;
+}
+
+.pattern-card {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.pattern-card h3 {
+  color: var(--kbm-green);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.pattern-card h4 {
+  color: #374151;
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.75rem;
+  font-weight: 700;
+}
+
+.pattern-card p {
+  margin: 0.5rem 0;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.pattern-card strong {
+  color: #1f2937;
+}
+
+.highlight-box {
+  background: rgba(82, 104, 45, 0.15);
+  border-left: 4px solid var(--kbm-green);
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.diagram-container {
+  text-align: center;
+  margin: 2rem 0;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.diagram-container h3 {
+  color: var(--kbm-green);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.diagram-container svg {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+}
+
+.print-footer {
+  display: none;
+}
+
+.back-link {
+  display: inline-block;
+  color: #52682D;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #3d4e21;
+  text-decoration: underline;
+}
+
+@media print {
+  * {
+    background: white !important;
+    background-color: white !important;
+  }
+  
+  body {
+    background: white !important;
+  }
+  
+  .no-print {
+    display: none !important;
+  }
+  
+  .wizard-page {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    background: white !important;
+  }
+  
+  .page-header, .video-button {
+    display: none;
+  }
+  
+  .units-toggle,
+  .section-title,
+  .input-grid,
+  .input-group,
+  .checkbox-group,
+  .info-box {
+    display: none !important;
+  }
+  
+  .results-section {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    background: white !important;
+  }
+  
+  .calculator-card,
+  .pattern-card,
+  .wizard-container {
+    box-shadow: none !important;
+    padding: 1rem;
+    background: white !important;
+    border: none !important;
+  }
+  
+  .highlight-box {
+    background: white !important;
+    border-left: 2px solid #333 !important;
+    padding: 0.5rem !important;
+  }
+  
+  .diagram-container,
+  .diagram-container svg {
+    display: block !important;
+    page-break-inside: avoid;
+    background: white !important;
+  }
+  
+  .print-footer {
+    display: block !important;
+    text-align: center;
+    font-family: "Poppins", Arial, sans-serif;
+    font-size: 10pt;
+    color: #666;
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #ddd;
+    background: white !important;
+  }
+}
+</style>
+
+<div class="wizard-page">
+  <div style="max-width: 800px; margin: 0 auto; padding: 0 1rem;">
+    <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
+  </div>
+
+  <div class="page-header no-print">
+    <div class="page-header-title">
+      <h1>Hat Builder</h1>
+      <button class="video-button" onclick="alert('Video tutorial coming soon!')">
+        <i class="fas fa-play-circle"></i> Watch Tutorial
+      </button>
+    </div>
+    <p>
+      Design the perfect custom hat with precise sizing, brim options, and crown shaping. Get complete knitting instructions with an illustrated diagram.
+    </p>
+  </div>
+  
+  <div class="wizard-container">
+    <div class="calculator-card">
+      <!-- Units Toggle -->
+      <div class="units-toggle">
+        <button class="unit-btn active" id="btn-inches" data-testid="button-inches">Inches</button>
+        <button class="unit-btn" id="btn-cm" data-testid="button-cm">Centimeters</button>
+      </div>
+
+      <!-- Size Selection -->
+      <h3 class="section-title">Hat Size</h3>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="use-custom" data-testid="checkbox-custom-size">
+        <label for="use-custom">Use Custom Head Circumference</label>
+      </div>
+
+      <div id="standard-size" style="display: block;">
+        <div class="input-group">
+          <label for="hat-size">Select Standard Size</label>
+          <select id="hat-size" data-testid="select-hat-size">
+            <option value="">Choose a size...</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="custom-size" style="display: none;">
+        <div class="input-group">
+          <label for="custom-circumference">Head Circumference</label>
+          <input 
+            type="number" 
+            id="custom-circumference" 
+            step="0.25" 
+            placeholder="Enter head circumference"
+            data-testid="input-custom-circumference"
+          />
+        </div>
+      </div>
+
+      <!-- Direction -->
+      <h3 class="section-title">Knitting Direction</h3>
+      <div class="input-group">
+        <label for="direction">Direction</label>
+        <select id="direction" data-testid="select-direction">
+          <option value="round">In the Round (circular)</option>
+          <option value="flat">Flat (back and forth)</option>
+        </select>
+      </div>
+
+      <!-- Brim Style -->
+      <h3 class="section-title">Brim Style</h3>
+      <div class="input-group">
+        <label for="brim">Brim Type</label>
+        <select id="brim" data-testid="select-brim">
+          <option value="rib">Ribbed (1x1 or 2x2)</option>
+          <option value="roll">Rolled Edge</option>
+          <option value="fold">Fold-Up Brim</option>
+        </select>
+      </div>
+
+      <!-- Crown Shaping -->
+      <h3 class="section-title">Crown Shaping</h3>
+      <div class="input-group">
+        <label for="crown">Crown Style</label>
+        <select id="crown" data-testid="select-crown">
+          <option value="gathered">Gathered (cinched top)</option>
+          <option value="wedge-4">4-Wedge Decreases</option>
+          <option value="wedge-6">6-Wedge Decreases</option>
+          <option value="spiral">Spiral Decreases</option>
+        </select>
+      </div>
+
+      <!-- Fit Type -->
+      <h3 class="section-title">Hat Fit</h3>
+      <div class="input-group">
+        <label for="fit">Fit Style</label>
+        <select id="fit" data-testid="select-fit">
+          <option value="beanie">Beanie (snug, 7")</option>
+          <option value="watchcap">Watch Cap (medium, 8.5")</option>
+          <option value="slouchy">Slouchy (loose, 10")</option>
+          <option value="relaxed">Relaxed (casual, 9")</option>
+        </select>
+      </div>
+
+      <!-- Gauge -->
+      <h3 class="section-title">Your Gauge</h3>
+      <div class="input-grid">
+        <div class="input-group">
+          <label for="stitch-gauge">Stitch Gauge</label>
+          <input 
+            type="number" 
+            id="stitch-gauge" 
+            step="0.1" 
+            placeholder="stitches per 4&quot;"
+            data-testid="input-stitch-gauge"
+          />
+        </div>
+        <div class="input-group">
+          <label for="row-gauge">Row Gauge</label>
+          <input 
+            type="number" 
+            id="row-gauge" 
+            step="0.1" 
+            placeholder="rows per 4&quot;"
+            data-testid="input-row-gauge"
+          />
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div id="results" style="display: none;">
+        <ActionBar />
+        
+        <div class="results-section">
+          <div class="pattern-card">
+            <div id="pattern-content">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+
+          <div class="diagram-container">
+            <h3>Hat Dimensions</h3>
+            <div id="diagram-content">
+              <!-- Will be populated by JavaScript -->
+            </div>
+          </div>
+          
+          <div id="print-footer" class="print-footer" style="display: none;">
+            Generated by knitbymachine.com - Hat Builder
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', async function() {
+  console.log('Hat Builder initializing...');
+  
+  // State
+  let hatSizingData = [];
+  let currentUnit = localStorage.getItem('hat-unit') || 'inches';
+  
+  // DOM Elements
+  const btnInches = document.getElementById('btn-inches');
+  const btnCm = document.getElementById('btn-cm');
+  const useCustomCheckbox = document.getElementById('use-custom');
+  const standardSizeDiv = document.getElementById('standard-size');
+  const customSizeDiv = document.getElementById('custom-size');
+  const hatSizeSelect = document.getElementById('hat-size');
+  const customCircInput = document.getElementById('custom-circumference');
+  const directionSelect = document.getElementById('direction');
+  const brimSelect = document.getElementById('brim');
+  const crownSelect = document.getElementById('crown');
+  const fitSelect = document.getElementById('fit');
+  const stitchGaugeInput = document.getElementById('stitch-gauge');
+  const rowGaugeInput = document.getElementById('row-gauge');
+  const resultsDiv = document.getElementById('results');
+  const patternContent = document.getElementById('pattern-content');
+  const diagramContent = document.getElementById('diagram-content');
+  const actionBar = document.getElementById('action-bar');
+  const printBtn = document.getElementById('print-btn');
+  const startOverBtn = document.getElementById('start-over-btn');
+  
+  // Load hat sizing data
+  try {
+    const response = await fetch('/data/sizing_hats.json');
+    hatSizingData = await response.json();
+    console.log('Loaded hat sizing data:', hatSizingData.length, 'sizes');
+    
+    // Populate size dropdown
+    hatSizingData.forEach(size => {
+      const option = document.createElement('option');
+      option.value = size.size;
+      option.textContent = size.extended_label;
+      hatSizeSelect.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Failed to load hat sizing data:', error);
+  }
+  
+  // Unit Toggle
+  function updateUnitToggle() {
+    if (currentUnit === 'inches') {
+      btnInches.classList.add('active');
+      btnCm.classList.remove('active');
+    } else {
+      btnCm.classList.add('active');
+      btnInches.classList.remove('active');
+    }
+    updatePlaceholders();
+  }
+  
+  function updatePlaceholders() {
+    if (currentUnit === 'inches') {
+      stitchGaugeInput.placeholder = 'stitches per 4"';
+      rowGaugeInput.placeholder = 'rows per 4"';
+      customCircInput.placeholder = 'Enter head circumference (inches)';
+    } else {
+      stitchGaugeInput.placeholder = 'stitches per 10cm';
+      rowGaugeInput.placeholder = 'rows per 10cm';
+      customCircInput.placeholder = 'Enter head circumference (cm)';
+    }
+  }
+  
+  btnInches.addEventListener('click', () => {
+    currentUnit = 'inches';
+    localStorage.setItem('hat-unit', currentUnit);
+    updateUnitToggle();
+    if (resultsDiv.style.display === 'block') calculate();
+  });
+  
+  btnCm.addEventListener('click', () => {
+    currentUnit = 'cm';
+    localStorage.setItem('hat-unit', currentUnit);
+    updateUnitToggle();
+    if (resultsDiv.style.display === 'block') calculate();
+  });
+  
+  updateUnitToggle();
+  
+  // Custom Size Toggle
+  useCustomCheckbox.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      standardSizeDiv.style.display = 'none';
+      customSizeDiv.style.display = 'block';
+      hatSizeSelect.value = '';
+    } else {
+      standardSizeDiv.style.display = 'block';
+      customSizeDiv.style.display = 'none';
+      customCircInput.value = '';
+    }
+  });
+  
+  // Auto-calculate on input change
+  const inputs = [hatSizeSelect, customCircInput, directionSelect, brimSelect, crownSelect, fitSelect, stitchGaugeInput, rowGaugeInput];
+  inputs.forEach(input => {
+    input.addEventListener('change', calculate);
+    input.addEventListener('input', calculate);
+  });
+  
+  // Action Bar Buttons
+  printBtn.addEventListener('click', () => {
+    window.print();
+  });
+  
+  startOverBtn.addEventListener('click', () => {
+    // Reset all inputs
+    hatSizeSelect.value = '';
+    customCircInput.value = '';
+    useCustomCheckbox.checked = false;
+    standardSizeDiv.style.display = 'block';
+    customSizeDiv.style.display = 'none';
+    directionSelect.value = 'round';
+    brimSelect.value = 'rib';
+    crownSelect.value = 'gathered';
+    fitSelect.value = 'beanie';
+    stitchGaugeInput.value = '';
+    rowGaugeInput.value = '';
+    resultsDiv.style.display = 'none';
+    actionBar.style.display = 'none';
+  });
+  
+  // Calculate Function
+  function calculate() {
+    // Get head circumference
+    let headCirc = 0;
+    let depth = 7; // default beanie depth
+    
+    if (useCustomCheckbox.checked) {
+      headCirc = parseFloat(customCircInput.value) || 0;
+    } else {
+      const selectedSize = hatSizingData.find(s => s.size === hatSizeSelect.value);
+      if (selectedSize) {
+        headCirc = selectedSize.circumference;
+        depth = selectedSize.depth;
+      }
+    }
+    
+    // Get other inputs
+    const direction = directionSelect.value;
+    const brim = brimSelect.value;
+    const crown = crownSelect.value;
+    const fit = fitSelect.value;
+    const stitchGauge = parseFloat(stitchGaugeInput.value) || 0;
+    const rowGauge = parseFloat(rowGaugeInput.value) || 0;
+    
+    // Validate
+    if (!headCirc || !stitchGauge || !rowGauge) {
+      return; // Not ready yet
+    }
+    
+    // Convert to inches for calculations
+    const isInches = currentUnit === 'inches';
+    const headCircInches = isInches ? headCirc : headCirc / 2.54;
+    const stGaugePerInch = isInches ? stitchGauge / 4 : (stitchGauge / 10) * 2.54;
+    const rowGaugePerInch = isInches ? rowGauge / 4 : (rowGauge / 10) * 2.54;
+    
+    // Calculations
+    const negativeEase = 0.90;
+    const targetWidth = headCircInches * negativeEase;
+    const castOnSts = Math.round(targetWidth * stGaugePerInch);
+    
+    // Hat heights
+    const fitHeights = {
+      beanie: depth || 7,
+      watchcap: 8.5,
+      slouchy: 10,
+      relaxed: 9
+    };
+    const hatHeight = fitHeights[fit];
+    
+    // Brim calculations
+    const brimDepths = {
+      rib: 2,
+      roll: 1.5,
+      fold: 3
+    };
+    const brimDepth = brimDepths[brim];
+    const brimRows = Math.round(brimDepth * rowGaugePerInch);
+    
+    // Crown calculations
+    const crownStart = hatHeight - brimDepth;
+    const crownRows = Math.round((hatHeight - crownStart) * rowGaugePerInch);
+    
+    // Generate pattern
+    generatePattern({
+      headCircInches,
+      targetWidth,
+      castOnSts,
+      hatHeight,
+      brimDepth,
+      brimRows,
+      crownStart,
+      crownRows,
+      direction,
+      brim,
+      crown,
+      fit,
+      stGaugePerInch,
+      rowGaugePerInch,
+      isInches
+    });
+    
+    // Show results
+    resultsDiv.style.display = 'block';
+    actionBar.style.display = 'flex';
+    printBtn.style.display = 'block';
+  }
+  
+  function generatePattern(calc) {
+    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, direction, brim, crown, fit, stGaugePerInch, rowGaugePerInch, isInches } = calc;
+    
+    // Convert display values
+    const displayHeadCirc = isInches ? headCircInches.toFixed(1) : (headCircInches * 2.54).toFixed(1);
+    const displayWidth = isInches ? targetWidth.toFixed(1) : (targetWidth * 2.54).toFixed(1);
+    const displayHeight = isInches ? hatHeight.toFixed(1) : (hatHeight * 2.54).toFixed(1);
+    const displayBrimDepth = isInches ? brimDepth.toFixed(1) : (brimDepth * 2.54).toFixed(1);
+    const unit = isInches ? 'inches' : 'cm';
+    
+    // Brim instructions
+    const brimInstructions = {
+      rib: 'Work in 1x1 or 2x2 ribbing (knit 1, purl 1, or knit 2, purl 2 across all stitches).',
+      roll: 'Work in stockinette stitch. The edge will naturally roll.',
+      fold: 'Work in stockinette stitch for a fold-up brim. Fold up when wearing.'
+    };
+    
+    // Crown shaping
+    const bodyRows = Math.round((crownStart - brimDepth) * rowGaugePerInch);
+    let crownInstructions = '';
+    
+    if (crown === 'gathered') {
+      crownInstructions = `
+        <p><strong>Gathered Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Cut yarn leaving a 20" tail. Thread through all ${castOnSts} stitches, pull tight to gather, and secure.</p>
+      `;
+    } else if (crown === 'wedge-4') {
+      const stsPerWedge = Math.floor(castOnSts / 4);
+      const decreaseRounds = Math.ceil(stsPerWedge / 2);
+      crownInstructions = `
+        <p><strong>4-Wedge Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Place 4 markers evenly around hat (every ${stsPerWedge} stitches).</p>
+        <p>Decrease Round: *Knit to 2 stitches before marker, k2tog, slip marker*. Repeat around all 4 markers.</p>
+        <p>Repeat decrease round every other row ${decreaseRounds} times until 8-12 stitches remain.</p>
+        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
+      `;
+    } else if (crown === 'wedge-6') {
+      const stsPerWedge = Math.floor(castOnSts / 6);
+      const decreaseRounds = Math.ceil(stsPerWedge / 2);
+      crownInstructions = `
+        <p><strong>6-Wedge Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Place 6 markers evenly around hat (every ${stsPerWedge} stitches).</p>
+        <p>Decrease Round: *Knit to 2 stitches before marker, k2tog, slip marker*. Repeat around all 6 markers.</p>
+        <p>Repeat decrease round every other row ${decreaseRounds} times until 12-18 stitches remain.</p>
+        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
+      `;
+    } else if (crown === 'spiral') {
+      const decreaseInterval = Math.floor(castOnSts / 8);
+      crownInstructions = `
+        <p><strong>Spiral Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Decrease Round: *K${decreaseInterval - 2}, k2tog*. Repeat around.</p>
+        <p>Knit 2 rounds even.</p>
+        <p>Next Decrease: *K${decreaseInterval - 3}, k2tog*. Repeat around.</p>
+        <p>Continue decreasing every 3rd round, working 1 less stitch between decreases, until 8-12 stitches remain.</p>
+        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
+      `;
+    }
+    
+    // Direction note
+    const directionNote = direction === 'flat' 
+      ? '<p><strong>Note:</strong> Since knitting flat, remember to purl wrong-side rows for stockinette stitch. Seam the hat when finished.</p>'
+      : '<p><strong>Note:</strong> Knitting in the round - no seaming required!</p>';
+    
+    // Pattern HTML
+    patternContent.innerHTML = `
+      <h3>Your Custom Hat Pattern</h3>
+      
+      <div class="highlight-box">
+        <p><strong>Finished Measurements:</strong></p>
+        <p>Head Circumference: ${displayHeadCirc} ${unit} → Hat Width: ${displayWidth} ${unit} (with negative ease)</p>
+        <p>Total Height: ${displayHeight} ${unit} | Brim Depth: ${displayBrimDepth} ${unit}</p>
+      </div>
+      
+      <h4>Materials</h4>
+      <p>• Yarn of your choice</p>
+      <p>• Needles appropriate for your gauge</p>
+      <p>• Stitch markers (for wedge crowns)</p>
+      <p>• Tapestry needle</p>
+      
+      <h4>Gauge</h4>
+      <p>${calc.stGaugePerInch.toFixed(1)} stitches per inch | ${calc.rowGaugePerInch.toFixed(1)} rows per inch</p>
+      
+      <h4>Cast-On</h4>
+      <p>Cast on <strong>${castOnSts} stitches</strong> ${direction === 'round' ? 'in the round' : 'and work flat'}.</p>
+      ${directionNote}
+      
+      <h4>Brim (${displayBrimDepth} ${unit})</h4>
+      <p>Work ${brimRows} rows:</p>
+      <p>${brimInstructions[brim]}</p>
+      
+      <h4>Body</h4>
+      <p>Switch to stockinette stitch and continue for body of hat.</p>
+      
+      <h4>Crown Shaping</h4>
+      ${crownInstructions}
+      
+      <h4>Finishing</h4>
+      <p>Weave in all ends. ${direction === 'flat' ? 'Seam the hat using mattress stitch or your preferred method.' : 'Block if desired.'}</p>
+    `;
+    
+    // Generate diagram
+    generateDiagram(calc);
+  }
+  
+  function generateDiagram(calc) {
+    const { hatHeight, brimDepth, targetWidth, isInches } = calc;
+    
+    const displayWidth = isInches ? targetWidth.toFixed(1) : (targetWidth * 2.54).toFixed(1);
+    const displayHeight = isInches ? hatHeight.toFixed(1) : (hatHeight * 2.54).toFixed(1);
+    const displayBrimDepth = isInches ? brimDepth.toFixed(1) : (brimDepth * 2.54).toFixed(1);
+    const displayCrownStart = isInches ? (hatHeight - brimDepth).toFixed(1) : ((hatHeight - brimDepth) * 2.54).toFixed(1);
+    const unit = isInches ? '"' : 'cm';
+    
+    const svg = `
+      <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
+        <!-- Hat outline -->
+        <path d="M 150 300 L 150 150 Q 150 120, 180 110 L 320 110 Q 350 120, 350 150 L 350 300 Z" 
+              fill="#f3f4f6" stroke="#52682D" stroke-width="2"/>
+        
+        <!-- Brim -->
+        <rect x="150" y="280" width="200" height="20" fill="#e5e7eb" stroke="#52682D" stroke-width="2"/>
+        
+        <!-- Crown shaping line -->
+        <line x1="150" y1="180" x2="350" y2="180" stroke="#52682D" stroke-width="1" stroke-dasharray="5,5"/>
+        
+        <!-- Width dimension -->
+        <line x1="150" y1="330" x2="350" y2="330" stroke="#374151" stroke-width="1.5" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+        <text x="250" y="350" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">
+          Width: ${displayWidth}${unit}
+        </text>
+        
+        <!-- Height dimension -->
+        <line x1="380" y1="110" x2="380" y2="300" stroke="#374151" stroke-width="1.5" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+        <text x="410" y="210" text-anchor="start" font-size="14" font-weight="600" fill="#374151">
+          Height: ${displayHeight}${unit}
+        </text>
+        
+        <!-- Brim depth -->
+        <line x1="120" y1="280" x2="120" y2="300" stroke="#52682D" stroke-width="1.5" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+        <text x="80" y="295" text-anchor="end" font-size="12" font-weight="600" fill="#52682D">
+          Brim: ${displayBrimDepth}${unit}
+        </text>
+        
+        <!-- Crown start -->
+        <text x="360" y="185" text-anchor="start" font-size="12" fill="#52682D">
+          Crown Start
+        </text>
+        
+        <!-- Labels -->
+        <text x="250" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#52682D">
+          Crown
+        </text>
+        <text x="250" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">
+          Body
+        </text>
+        <text x="250" y="292" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">
+          Brim
+        </text>
+        
+        <!-- Arrow markers -->
+        <defs>
+          <marker id="arrowStart" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto-start-reverse">
+            <polygon points="0,5 10,0 10,10" fill="#374151"/>
+          </marker>
+          <marker id="arrowEnd" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
+            <polygon points="0,0 0,10 10,5" fill="#374151"/>
+          </marker>
+        </defs>
+      </svg>
+    `;
+    
+    diagramContent.innerHTML = svg;
+  }
+});
+</script>
+
+</BaseLayout>
