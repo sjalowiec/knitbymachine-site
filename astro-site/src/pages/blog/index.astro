@@ -128,13 +128,6 @@ const schemaData = {
             {blogPosts.map((post) => (
               <article class="post-card">
                 <div class="post-content">
-                  <time class="post-date" datetime={post.date}>
-                    {new Date(post.date).toLocaleDateString('en-US', { 
-                      year: 'numeric', 
-                      month: 'long', 
-                      day: 'numeric' 
-                    })}
-                  </time>
                   <h2 class="post-title">
                     <a href={`/blog/${post.slug}`}>{post.title}</a>
                   </h2>
