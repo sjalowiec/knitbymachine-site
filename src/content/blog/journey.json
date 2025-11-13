@@ -13,5 +13,5 @@
   "body": "this is my content\n<br>\n<b>this is bold</b>\n<ul>\n<li>lkjsfldkjl </li>\n<li>lkjl; lj</li>\n</ul>",
   "isDraft": false,
   "publishedDate": "2025-11-13",
-  "pendingPublish": true
+  "pendingPublish": false
 }
