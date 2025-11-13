@@ -1,0 +1,178 @@
+Create a complete “Blog Admin” page for my Knit by Machine site.
+This will NOT use a CMS yet; all posts should be stored as JSON files in my project.
+Keep everything simple, clean, and easy for me to use as I build content.
+
+Here is exactly what I need:
+
+1. Create a Blog Admin page
+
+Build an HTML page at:
+/admin/blog.html
+
+This page should allow me to:
+
+create new blog posts
+
+edit existing blog posts
+
+delete posts
+
+save posts as JSON files
+
+upload post images manually to /public/images/blog/
+
+The form should include these fields:
+
+title (text)
+
+date (YYYY-MM-DD — auto-fill today’s date)
+
+category (text input or dropdown; don’t hardcode options)
+
+tags (comma-separated text input)
+
+heroImage (text input for the URL, example: /images/blog/my-photo.webp)
+
+content (a large textarea using Markdown, not HTML)
+
+I will paste the image paths manually after uploading images into /public/images/blog/.
+
+Please do NOT try to handle image uploading automatically.
+Just allow text fields for the image URLs.
+
+2. Data storage as JSON files
+
+Save each blog post as a separate JSON file inside:
+
+/src/content/blog/
+
+The filename should be:
+
+{slug}.json
+
+Slug rules:
+
+based on the title
+
+lowercase
+
+spaces → hyphens
+
+remove special characters
+
+example:
+Title: “Back to Basics: Revisiting Increases”
+Slug: back-to-basics-revisiting-increases
+
+3. JSON schema (use exactly this structure)
+
+Each JSON file must use this structure:
+
+{
+  "title": "",
+  "slug": "",
+  "date": "",
+  "description": "",
+  "category": "",
+  "tags": [],
+  "heroImage": "",
+  "content": "",
+  "images": []
+}
+
+
+Notes:
+
+description is auto-generated from the first 160 characters of the Markdown content, unless I enter one manually in the admin form.
+
+tags should be an array, created from splitting the comma-separated list.
+
+images is optional — leave it as an empty array for now, but allow the admin UI to add more image paths in the future.
+
+4. Markdown handling
+
+The admin page should save raw Markdown text into the JSON content field.
+
+In the front-end blog pages:
+
+Markdown will be parsed into HTML using Astro’s Markdown utilities.
+
+You do NOT need to build the front-end here — just ensure JSON stores Markdown cleanly.
+
+5. Image usage rules
+
+Do NOT attempt image uploading inside the admin tool.
+
+I’ll upload images manually to:
+
+public/images/blog/
+
+The admin page should:
+
+include a text field for heroImage
+
+show an example path
+
+NOT require absolute URLs
+
+allow any relative path like:
+/images/blog/myphoto.webp
+
+6. Blog Post List View (inside the admin)
+
+At the top of the admin page, display:
+
+a list of existing blog posts (read from src/content/blog/)
+
+each row should show: title, date, slug
+
+an Edit button
+
+a Delete button
+
+Delete should require confirmation.
+
+7. Blog Post Editor UI Requirements
+
+The editor should:
+
+load existing JSON into the form
+
+allow me to update any field
+
+regenerate the slug only if the title changes
+
+save back to the same JSON file
+
+Use clean, modern HTML and basic CSS only — no frameworks.
+
+8. Notes about Markdown + JSON
+
+Markdown inside JSON should be:
+
+stored as a plain string
+
+not escaped weirdly
+
+preserved exactly as typed
+
+safe for Astro Markdown parsing later
+
+9. Keep everything modular and easy to expand
+
+I will expand this admin system later as I add a CMS.
+Keep the code readable, well-commented, and organized.
+
+10. Final Output
+
+Please output:
+
+the full HTML file for /admin/blog.html
+
+any companion JS or CSS (inline or external — your choice)
+
+an example JSON file created by the admin
+
+instructions on where each file should be placed inside my project structure
+
+Make everything copy-and-paste ready.
