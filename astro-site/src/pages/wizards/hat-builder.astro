@@ -410,24 +410,15 @@ import ActionBar from "../../components/wizards/ActionBar.astro";
         </div>
       </div>
 
-      <!-- Direction -->
-      <h3 class="section-title">Knitting Direction</h3>
-      <div class="input-group">
-        <label for="direction">Direction</label>
-        <select id="direction" data-testid="select-direction">
-          <option value="round">In the Round (circular)</option>
-          <option value="flat">Flat (back and forth)</option>
-        </select>
-      </div>
-
       <!-- Brim Style -->
       <h3 class="section-title">Brim Style</h3>
       <div class="input-group">
         <label for="brim">Brim Type</label>
         <select id="brim" data-testid="select-brim">
-          <option value="rib">Ribbed (1x1 or 2x2)</option>
+          <option value="rib">Ribbed (1x1, 2x2, or Mock Ribbing)</option>
           <option value="roll">Rolled Edge</option>
           <option value="fold">Fold-Up Brim</option>
+          <option value="hem">Hung Hem</option>
         </select>
       </div>
 
@@ -448,10 +439,10 @@ import ActionBar from "../../components/wizards/ActionBar.astro";
       <div class="input-group">
         <label for="fit">Fit Style</label>
         <select id="fit" data-testid="select-fit">
-          <option value="beanie">Beanie (snug, 7")</option>
-          <option value="watchcap">Watch Cap (medium, 8.5")</option>
-          <option value="slouchy">Slouchy (loose, 10")</option>
-          <option value="relaxed">Relaxed (casual, 9")</option>
+          <option value="beanie">Beanie (7" total height)</option>
+          <option value="watchcap">Watch Cap (8.5" total height)</option>
+          <option value="slouchy">Slouchy (10" total height)</option>
+          <option value="relaxed">Relaxed (9" total height)</option>
         </select>
       </div>
 
@@ -523,7 +514,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   const customSizeDiv = document.getElementById('custom-size');
   const hatSizeSelect = document.getElementById('hat-size');
   const customCircInput = document.getElementById('custom-circumference');
-  const directionSelect = document.getElementById('direction');
   const brimSelect = document.getElementById('brim');
   const crownSelect = document.getElementById('crown');
   const fitSelect = document.getElementById('fit');
@@ -607,7 +597,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   });
   
   // Auto-calculate on input change
-  const inputs = [hatSizeSelect, customCircInput, directionSelect, brimSelect, crownSelect, fitSelect, stitchGaugeInput, rowGaugeInput];
+  const inputs = [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, stitchGaugeInput, rowGaugeInput];
   inputs.forEach(input => {
     input.addEventListener('change', calculate);
     input.addEventListener('input', calculate);
@@ -625,7 +615,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     useCustomCheckbox.checked = false;
     standardSizeDiv.style.display = 'block';
     customSizeDiv.style.display = 'none';
-    directionSelect.value = 'round';
     brimSelect.value = 'rib';
     crownSelect.value = 'gathered';
     fitSelect.value = 'beanie';
@@ -652,7 +641,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     // Get other inputs
-    const direction = directionSelect.value;
     const brim = brimSelect.value;
     const crown = crownSelect.value;
     const fit = fitSelect.value;
@@ -688,7 +676,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const brimDepths = {
       rib: 2,
       roll: 1.5,
-      fold: 3
+      fold: 3,
+      hem: 2.5
     };
     const brimDepth = brimDepths[brim];
     const brimRows = Math.round(brimDepth * rowGaugePerInch);
@@ -707,7 +696,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       brimRows,
       crownStart,
       crownRows,
-      direction,
       brim,
       crown,
       fit,
@@ -723,7 +711,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
   
   function generatePattern(calc) {
-    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, direction, brim, crown, fit, stGaugePerInch, rowGaugePerInch, isInches } = calc;
+    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, brim, crown, fit, stGaugePerInch, rowGaugePerInch, isInches } = calc;
     
     // Convert display values
     const displayHeadCirc = isInches ? headCircInches.toFixed(1) : (headCircInches * 2.54).toFixed(1);
@@ -734,9 +722,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Brim instructions
     const brimInstructions = {
-      rib: 'Work in 1x1 or 2x2 ribbing (knit 1, purl 1, or knit 2, purl 2 across all stitches).',
+      rib: 'Work in 1x1 or 2x2 ribbing (knit 1, purl 1, or knit 2, purl 2 across all stitches). For Mock Ribbing: Work in stockinette and use slip stitch technique to create ribbed appearance.',
       roll: 'Work in stockinette stitch. The edge will naturally roll.',
-      fold: 'Work in stockinette stitch for a fold-up brim. Fold up when wearing.'
+      fold: 'Work in stockinette stitch for a fold-up brim. Fold up when wearing.',
+      hem: 'Work stockinette for half the brim depth, place a turning row (purl on knit side or use picot edge), then work stockinette for remaining rows. Fold at turning row and tack hem to wrong side.'
     };
     
     // Crown shaping
@@ -784,11 +773,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       `;
     }
     
-    // Direction note
-    const directionNote = direction === 'flat' 
-      ? '<p><strong>Note:</strong> Since knitting flat, remember to purl wrong-side rows for stockinette stitch. Seam the hat when finished.</p>'
-      : '<p><strong>Note:</strong> Knitting in the round - no seaming required!</p>';
-    
     // Pattern HTML
     patternContent.innerHTML = `
       <h3>Your Custom Hat Pattern</h3>
@@ -801,7 +785,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       <h4>Materials</h4>
       <p>• Yarn of your choice</p>
-      <p>• Needles appropriate for your gauge</p>
       <p>• Stitch markers (for wedge crowns)</p>
       <p>• Tapestry needle</p>
       
@@ -809,8 +792,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p>${calc.stGaugePerInch.toFixed(1)} stitches per inch | ${calc.rowGaugePerInch.toFixed(1)} rows per inch</p>
       
       <h4>Cast-On</h4>
-      <p>Cast on <strong>${castOnSts} stitches</strong> ${direction === 'round' ? 'in the round' : 'and work flat'}.</p>
-      ${directionNote}
+      <p>Cast on <strong>${castOnSts} stitches</strong>.</p>
       
       <h4>Brim (${displayBrimDepth} ${unit})</h4>
       <p>Work ${brimRows} rows:</p>
@@ -823,7 +805,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       ${crownInstructions}
       
       <h4>Finishing</h4>
-      <p>Weave in all ends. ${direction === 'flat' ? 'Seam the hat using mattress stitch or your preferred method.' : 'Block if desired.'}</p>
+      <p>Seam the hat using mattress stitch or your preferred method. Weave in all ends and block if desired.</p>
     `;
     
     // Generate diagram
@@ -852,19 +834,25 @@ document.addEventListener('DOMContentLoaded', async function() {
         <line x1="150" y1="180" x2="350" y2="180" stroke="#52682D" stroke-width="1" stroke-dasharray="5,5"/>
         
         <!-- Width dimension -->
-        <line x1="150" y1="330" x2="350" y2="330" stroke="#374151" stroke-width="1.5" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+        <line x1="150" y1="330" x2="350" y2="330" stroke="#374151" stroke-width="1.5"/>
+        <circle cx="150" cy="330" r="4" fill="#374151"/>
+        <circle cx="350" cy="330" r="4" fill="#374151"/>
         <text x="250" y="350" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">
           Width: ${displayWidth}${unit}
         </text>
         
         <!-- Height dimension -->
-        <line x1="380" y1="110" x2="380" y2="300" stroke="#374151" stroke-width="1.5" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+        <line x1="380" y1="110" x2="380" y2="300" stroke="#374151" stroke-width="1.5"/>
+        <circle cx="380" cy="110" r="4" fill="#374151"/>
+        <circle cx="380" cy="300" r="4" fill="#374151"/>
         <text x="410" y="210" text-anchor="start" font-size="14" font-weight="600" fill="#374151">
           Height: ${displayHeight}${unit}
         </text>
         
         <!-- Brim depth -->
-        <line x1="120" y1="280" x2="120" y2="300" stroke="#52682D" stroke-width="1.5" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)"/>
+        <line x1="120" y1="280" x2="120" y2="300" stroke="#52682D" stroke-width="1.5"/>
+        <circle cx="120" cy="280" r="4" fill="#52682D"/>
+        <circle cx="120" cy="300" r="4" fill="#52682D"/>
         <text x="80" y="295" text-anchor="end" font-size="12" font-weight="600" fill="#52682D">
           Brim: ${displayBrimDepth}${unit}
         </text>
@@ -884,16 +872,6 @@ document.addEventListener('DOMContentLoaded', async function() {
         <text x="250" y="292" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">
           Brim
         </text>
-        
-        <!-- Arrow markers -->
-        <defs>
-          <marker id="arrowStart" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto-start-reverse">
-            <polygon points="0,5 10,0 10,10" fill="#374151"/>
-          </marker>
-          <marker id="arrowEnd" markerWidth="10" markerHeight="10" refX="5" refY="5" orient="auto">
-            <polygon points="0,0 0,10 10,5" fill="#374151"/>
-          </marker>
-        </defs>
       </svg>
     `;
     
