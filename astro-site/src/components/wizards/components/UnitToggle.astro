@@ -1,0 +1,42 @@
+---
+/**
+ * Reusable Unit Toggle Component
+ * Provides inches/cm switching with consistent styling
+ * 
+ * Note: This component only renders the UI. The parent page must handle
+ * the toggle logic using the unitHelpers utilities.
+ */
+
+interface Props {
+  /** ID prefix for the toggle buttons (e.g., 'hat' creates 'hat-btn-inches') */
+  id?: string;
+  /** Additional CSS classes */
+  class?: string;
+}
+
+const { id = 'unit', class: className = '' } = Astro.props;
+---
+
+<div class={`units-toggle ${className}`}>
+  <button 
+    class="unit-btn active" 
+    id={`${id}-btn-inches`}
+    data-unit="inches"
+    data-testid="button-toggle-inches"
+  >
+    Inches
+  </button>
+  <button 
+    class="unit-btn" 
+    id={`${id}-btn-cm`}
+    data-unit="cm"
+    data-testid="button-toggle-cm"
+  >
+    Centimeters
+  </button>
+</div>
+
+<style>
+/* Styles are inherited from wizard.css */
+/* This is just for any component-specific overrides if needed */
+</style>
