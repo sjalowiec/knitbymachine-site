@@ -2,7 +2,7 @@
   "term": "Scrap 'n Ravel",
   "slug": "scrap-n-ravel",
   "abbreviation": " ",
-  "description": "A popular cast-on method using scrap yarn (waste yarn) and a ravel cord before beginning with the garment yarn.\nSteps:<ul>\n<li>Cast on with scrap yarn.</li>\n<li>Knit several rows.</li>\n<li>Knit one row of ravel cord.</li>\n<li>Begin knitting with your garment yarn.</li>\n</ul>\n\nThis technique protects delicate yarn from the cast-on comb, provides a stable base for hanging weights, and is ideal for hung hems or any project where the starting edge will be finished later.\n\nIn hand knitting, this is similar to a provisional cast-on.",
+  "description": "A popular cast-on method using scrap yarn (waste yarn) and a ravel cord before beginning with the garment yarn. When the ravel cord is removed, live stitches are picked up and finished.\n\nSteps:<ul>\n<li>Cast on with scrap yarn.</li>\n<li>Knit several rows.</li>\n<li>Knit one row of ravel cord.</li>\n<li>Begin knitting with your garment yarn.</li>\n</ul>\n\nThis technique protects delicate yarn from the cast-on comb, provides a stable base for hanging weights, and is ideal for hung hems or any project where the starting edge will be finished later.\n\nIn hand knitting, this is similar to a provisional cast-on.",
   "tooltip": "Cast on with scrap yarn and a ravel cord before starting garment yarn—like a provisional cast-on.",
   "example": "Use a scrap ’n ravel cast-on for a sweater hem to create a clean folded edge.",
   "categories": [
@@ -27,5 +27,5 @@
   ],
   "isDraft": false,
   "publishedDate": "2025-11-10",
-  "pendingPublish": false
+  "pendingPublish": true
 }
