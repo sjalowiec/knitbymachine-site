@@ -812,70 +812,34 @@ document.addEventListener('DOMContentLoaded', async function() {
     generateDiagram(calc);
   }
   
-  function generateDiagram(calc) {
+  async function generateDiagram(calc) {
     const { hatHeight, brimDepth, targetWidth, isInches } = calc;
     
     const displayWidth = isInches ? targetWidth.toFixed(1) : (targetWidth * 2.54).toFixed(1);
     const displayHeight = isInches ? hatHeight.toFixed(1) : (hatHeight * 2.54).toFixed(1);
     const displayBrimDepth = isInches ? brimDepth.toFixed(1) : (brimDepth * 2.54).toFixed(1);
-    const displayCrownStart = isInches ? (hatHeight - brimDepth).toFixed(1) : ((hatHeight - brimDepth) * 2.54).toFixed(1);
     const unit = isInches ? '"' : 'cm';
     
-    const svg = `
-      <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" style="max-width: 100%; height: auto;">
-        <!-- Hat outline -->
-        <path d="M 150 300 L 150 150 Q 150 120, 180 110 L 320 110 Q 350 120, 350 150 L 350 300 Z" 
-              fill="#f3f4f6" stroke="#52682D" stroke-width="2"/>
-        
-        <!-- Brim -->
-        <rect x="150" y="280" width="200" height="20" fill="#e5e7eb" stroke="#52682D" stroke-width="2"/>
-        
-        <!-- Crown shaping line -->
-        <line x1="150" y1="180" x2="350" y2="180" stroke="#52682D" stroke-width="1" stroke-dasharray="5,5"/>
-        
-        <!-- Width dimension -->
-        <line x1="150" y1="330" x2="350" y2="330" stroke="#374151" stroke-width="1.5"/>
-        <circle cx="150" cy="330" r="4" fill="#374151"/>
-        <circle cx="350" cy="330" r="4" fill="#374151"/>
-        <text x="250" y="350" text-anchor="middle" font-size="14" font-weight="600" fill="#374151">
-          Width: ${displayWidth}${unit}
-        </text>
-        
-        <!-- Height dimension -->
-        <line x1="380" y1="110" x2="380" y2="300" stroke="#374151" stroke-width="1.5"/>
-        <circle cx="380" cy="110" r="4" fill="#374151"/>
-        <circle cx="380" cy="300" r="4" fill="#374151"/>
-        <text x="410" y="210" text-anchor="start" font-size="14" font-weight="600" fill="#374151">
-          Height: ${displayHeight}${unit}
-        </text>
-        
-        <!-- Brim depth -->
-        <line x1="120" y1="280" x2="120" y2="300" stroke="#52682D" stroke-width="1.5"/>
-        <circle cx="120" cy="280" r="4" fill="#52682D"/>
-        <circle cx="120" cy="300" r="4" fill="#52682D"/>
-        <text x="80" y="295" text-anchor="end" font-size="12" font-weight="600" fill="#52682D">
-          Brim: ${displayBrimDepth}${unit}
-        </text>
-        
-        <!-- Crown start -->
-        <text x="360" y="185" text-anchor="start" font-size="12" fill="#52682D">
-          Crown Start
-        </text>
-        
-        <!-- Labels -->
-        <text x="250" y="130" text-anchor="middle" font-size="14" font-weight="700" fill="#52682D">
-          Crown
-        </text>
-        <text x="250" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">
-          Body
-        </text>
-        <text x="250" y="292" text-anchor="middle" font-size="14" font-weight="700" fill="#374151">
-          Brim
-        </text>
-      </svg>
-    `;
+    // Map crown type to template name
+    const crown = crownSelect.value;
+    const templateName = `hat-${crown}`;
     
-    diagramContent.innerHTML = svg;
+    try {
+      // Load SVG template from diagrams directory
+      const response = await fetch(`/diagrams/${templateName}.svg`);
+      let svgContent = await response.text();
+      
+      // Replace placeholders with fully-formatted values (including units)
+      svgContent = svgContent
+        .replace(/{{WIDTH}}/g, `${displayWidth}${unit}`)
+        .replace(/{{HEIGHT}}/g, `${displayHeight}${unit}`)
+        .replace(/{{BRIM_DEPTH}}/g, `${displayBrimDepth}${unit}`);
+      
+      diagramContent.innerHTML = svgContent;
+    } catch (error) {
+      console.error('Failed to load diagram template:', templateName, error);
+      diagramContent.innerHTML = '<p style="text-align: center; color: #6b7280;">Diagram unavailable</p>';
+    }
   }
 });
 </script>
