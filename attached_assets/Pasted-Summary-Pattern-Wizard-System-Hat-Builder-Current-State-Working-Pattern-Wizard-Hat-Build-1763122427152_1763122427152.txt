@@ -1,0 +1,52 @@
+Summary: Pattern Wizard System & Hat Builder
+🎯 Current State
+Working Pattern Wizard:
+
+Hat Builder (astro-site/src/pages/wizards/hat-builder.astro) - Fully functional wizard for custom hat patterns
+12 standard sizes (preemie to adult) from sizing_hats.json
+Custom sizing with head circumference input
+Unit toggle (inches ↔ cm)
+4 brim styles: Ribbed (with mock ribbing), Rolled Edge, Fold-Up Brim, Hung Hem
+4 crown shapings: Gathered, 4-Wedge, 6-Wedge, Spiral
+4 fit types: Beanie, Watch Cap, Slouchy, Relaxed (total height)
+Generates complete knitting instructions with materials, gauge, cast-on, brim, body, crown shaping, and finishing
+Machine knitting focused (removed direction selector, seaming instructions, needle references)
+🎨 Reusable SVG Diagram System (Just Built!)
+Component Architecture:
+
+PatternDiagram.astro - Reusable component for loading SVG templates with placeholder replacement
+Templates stored in astro-site/public/diagrams/
+Simple placeholder system: {{WIDTH}}, {{HEIGHT}}, {{BRIM_DEPTH}}
+Wizards provide fully-formatted values with units ("18.5"" or "47.0cm")
+4 Crown-Specific Diagrams:
+
+hat-gathered.svg - Shows "G" indicator at crown top
+hat-4-wedge.svg - Displays 4 numbered wedge sections with dividing lines
+hat-6-wedge.svg - Displays 6 numbered wedge sections with dividing lines
+hat-spiral.svg - Shows spiral decrease curves
+Design System:
+
+Colors: KBM olive green (#52682D) primary, dark gray (#374151) secondary
+Dimension markers: Circles at endpoints (not arrows) - consistent across all patterns
+Documentation: SVG_DIAGRAM_STYLE.md with complete guide for creating new pattern diagrams
+📋 What Could Be Next
+For Hat Builder:
+
+Test all crown variations with different sizes/units
+Add more brim options or crown shapings if needed
+Enhance instructions for specific techniques
+For SVG System:
+
+Create diagrams for other patterns (corner-to-corner blanket, future patterns)
+Add conditional elements (show/hide based on selections)
+Create more crown variation diagrams (e.g., different wedge line styles for 6-wedge)
+Other Existing Patterns:
+
+Corner-to-corner blanket wizard exists at astro-site/src/pages/wizards/corner-to-corner.astro
+Could benefit from standardized SVG diagram system
+🔑 Key Files
+astro-site/src/pages/wizards/hat-builder.astro - Hat wizard
+astro-site/public/diagrams/ - SVG templates
+astro-site/public/data/sizing_hats.json - Hat sizing data
+SVG_DIAGRAM_STYLE.md - SVG creation guide
+astro-site/src/components/wizards/ActionBar.astro - Print/Start Over buttons
