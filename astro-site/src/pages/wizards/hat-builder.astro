@@ -29,6 +29,14 @@ import '../../styles/wizard.css';
   text-decoration: underline;
 }
 
+.title-icon {
+  width: 48px;
+  height: 48px;
+  vertical-align: middle;
+  margin-right: 0.75rem;
+  display: inline-block;
+}
+
 /* Print-specific overrides for hat patterns */
 @media print {
   * {
@@ -71,7 +79,10 @@ import '../../styles/wizard.css';
 
   <div class="page-header no-print">
     <div class="page-header-title">
-      <h1>Hat Builder</h1>
+      <h1>
+        <img src="/images/hat.svg" alt="Hat" class="title-icon" />
+        Hat Builder
+      </h1>
       <button class="video-button" onclick="alert('Video tutorial coming soon!')">
         <i class="fas fa-play-circle"></i> Watch Tutorial
       </button>
@@ -571,7 +582,16 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Map crown type to template name
     const crown = crownSelect.value;
-    const templateName = `hat-${crown}`;
+    let templateName;
+    
+    // Map crown values to correct SVG filenames
+    if (crown === 'wedge-4') {
+      templateName = 'hat-4-wedge';
+    } else if (crown === 'wedge-6') {
+      templateName = 'hat-6-wedge';
+    } else {
+      templateName = `hat-${crown}`; // gathered, spiral
+    }
     
     try {
       // Load SVG template from diagrams directory
