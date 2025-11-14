@@ -1,11 +1,6 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
-import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
-import PatternDiagram from "../../components/wizards/PatternDiagram.astro";
-
-// Import shared wizard styles
-import '../../styles/wizard.css';
 ---
 
 <BaseLayout 
@@ -13,7 +8,262 @@ import '../../styles/wizard.css';
   description="Design your perfect custom hat with precise sizing, brim options, and crown shaping. Get complete knitting instructions with an illustrated diagram.">
 
 <style>
-/* Hat-specific styles only */
+.wizard-page {
+  padding-top: 120px;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.page-header {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.page-header-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.75rem;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .page-header-title {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+}
+
+.page-header h1 {
+  color: var(--kbm-green);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.video-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  background: #e5e7eb;
+  color: #374151;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.2s;
+  border: 1px solid #d1d5db;
+  cursor: pointer;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.video-button:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wizard-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 1rem 120px 1rem;
+}
+
+.calculator-card {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-title {
+  color: var(--kbm-green);
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin: 1.5rem 0 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #eef0ea;
+}
+
+.units-toggle {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+  padding: 4px;
+  background: #f3f4f6;
+  border-radius: 8px;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.unit-btn {
+  padding: 0.5rem 1.5rem;
+  border: none;
+  background: transparent;
+  color: #6b7280;
+  font-weight: 600;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.95rem;
+}
+
+.unit-btn.active {
+  background: var(--kbm-green);
+  color: white;
+}
+
+.input-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.input-group label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.input-group input, 
+.input-group select {
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+  outline: none;
+  border-color: var(--kbm-green);
+  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #52682D;
+}
+
+.checkbox-group label {
+  cursor: pointer;
+  font-weight: 600;
+  color: #374151;
+}
+
+.info-box {
+  background: rgba(82, 104, 45, 0.1);
+  border-left: 4px solid var(--kbm-green);
+  padding: 1rem;
+  border-radius: 4px;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.results-section {
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 2px solid #eef0ea;
+}
+
+.pattern-card {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.pattern-card h3 {
+  color: var(--kbm-green);
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.pattern-card h4 {
+  color: #374151;
+  font-size: 1.05rem;
+  margin: 1.5rem 0 0.75rem;
+  font-weight: 700;
+}
+
+.pattern-card p {
+  margin: 0.5rem 0;
+  line-height: 1.7;
+  color: #4b5563;
+}
+
+.pattern-card strong {
+  color: #1f2937;
+}
+
+.highlight-box {
+  background: rgba(82, 104, 45, 0.15);
+  border-left: 4px solid var(--kbm-green);
+  padding: 1rem;
+  border-radius: 4px;
+  margin: 1rem 0;
+}
+
+.diagram-container {
+  text-align: center;
+  margin: 2rem 0;
+  background: white;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.diagram-container h3 {
+  color: var(--kbm-green);
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+.diagram-container svg {
+  max-width: 500px;
+  width: 100%;
+  height: auto;
+}
+
+.print-footer {
+  display: none;
+}
+
 .back-link {
   display: inline-block;
   color: #52682D;
@@ -29,7 +279,6 @@ import '../../styles/wizard.css';
   text-decoration: underline;
 }
 
-/* Print-specific overrides for hat patterns */
 @media print {
   * {
     background: white !important;
@@ -40,14 +289,56 @@ import '../../styles/wizard.css';
     background: white !important;
   }
   
+  .no-print {
+    display: none !important;
+  }
+  
+  .wizard-page {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    background: white !important;
+  }
+  
   .page-header, .video-button {
     display: none;
+  }
+  
+  .units-toggle,
+  .section-title,
+  .input-grid,
+  .input-group,
+  .checkbox-group,
+  .info-box {
+    display: none !important;
+  }
+  
+  .results-section {
+    border-top: none;
+    padding-top: 0;
+    margin-top: 0;
+    background: white !important;
+  }
+  
+  .calculator-card,
+  .pattern-card,
+  .wizard-container {
+    box-shadow: none !important;
+    padding: 1rem;
+    background: white !important;
+    border: none !important;
   }
   
   .highlight-box {
     background: white !important;
     border-left: 2px solid #333 !important;
     padding: 0.5rem !important;
+  }
+  
+  .diagram-container,
+  .diagram-container svg {
+    display: block !important;
+    page-break-inside: avoid;
+    background: white !important;
   }
   
   .print-footer {
@@ -83,8 +374,11 @@ import '../../styles/wizard.css';
   
   <div class="wizard-container">
     <div class="calculator-card">
-      <!-- Reusable Unit Toggle Component -->
-      <UnitToggle id="hat" />
+      <!-- Units Toggle -->
+      <div class="units-toggle">
+        <button class="unit-btn active" id="btn-inches" data-testid="button-inches">Inches</button>
+        <button class="unit-btn" id="btn-cm" data-testid="button-cm">Centimeters</button>
+      </div>
 
       <!-- Size Selection -->
       <h3 class="section-title">Hat Size</h3>
@@ -204,35 +498,17 @@ import '../../styles/wizard.css';
   </div>
 </div>
 
-<!-- Load shared wizard utilities -->
-<script src="/js/wizard-utils.js"></script>
-
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
   console.log('Hat Builder initializing...');
   
-  // Use shared wizard utilities from window.WizardUtils (or shorthand WU)
-  const {
-    convertLength,
-    formatLength,
-    formatLengthWithUnit,
-    gaugeToPerUnit,
-    getPlaceholders,
-    createUnitStore,
-    showResults,
-    setupAutoCalculate,
-    updateHTML
-  } = window.WizardUtils;
-  
-  // ========== HAT BUILDER SPECIFIC CODE ==========
-  
   // State
   let hatSizingData = [];
-  const unitStore = createUnitStore('hat-unit', 'inches');
+  let currentUnit = localStorage.getItem('hat-unit') || 'inches';
   
   // DOM Elements
-  const btnInches = document.getElementById('hat-btn-inches');
-  const btnCm = document.getElementById('hat-btn-cm');
+  const btnInches = document.getElementById('btn-inches');
+  const btnCm = document.getElementById('btn-cm');
   const useCustomCheckbox = document.getElementById('use-custom');
   const standardSizeDiv = document.getElementById('standard-size');
   const customSizeDiv = document.getElementById('custom-size');
@@ -243,6 +519,10 @@ document.addEventListener('DOMContentLoaded', async function() {
   const fitSelect = document.getElementById('fit');
   const stitchGaugeInput = document.getElementById('stitch-gauge');
   const rowGaugeInput = document.getElementById('row-gauge');
+  const resultsDiv = document.getElementById('results');
+  const patternContent = document.getElementById('pattern-content');
+  const diagramContent = document.getElementById('diagram-content');
+  const actionBar = document.getElementById('action-bar');
   const printBtn = document.getElementById('print-btn');
   const startOverBtn = document.getElementById('start-over-btn');
   
@@ -265,7 +545,6 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   // Unit Toggle
   function updateUnitToggle() {
-    const currentUnit = unitStore.get();
     if (currentUnit === 'inches') {
       btnInches.classList.add('active');
       btnCm.classList.remove('active');
@@ -277,25 +556,28 @@ document.addEventListener('DOMContentLoaded', async function() {
   }
   
   function updatePlaceholders() {
-    const currentUnit = unitStore.get();
-    const placeholders = getPlaceholders(currentUnit);
-    
-    stitchGaugeInput.placeholder = placeholders.stitchGauge;
-    rowGaugeInput.placeholder = placeholders.rowGauge;
-    customCircInput.placeholder = placeholders.circumference;
+    if (currentUnit === 'inches') {
+      stitchGaugeInput.placeholder = 'stitches per 4"';
+      rowGaugeInput.placeholder = 'rows per 4"';
+      customCircInput.placeholder = 'Enter head circumference (inches)';
+    } else {
+      stitchGaugeInput.placeholder = 'stitches per 10cm';
+      rowGaugeInput.placeholder = 'rows per 10cm';
+      customCircInput.placeholder = 'Enter head circumference (cm)';
+    }
   }
   
   btnInches.addEventListener('click', () => {
-    unitStore.set('inches');
+    currentUnit = 'inches';
+    localStorage.setItem('hat-unit', currentUnit);
     updateUnitToggle();
-    const resultsDiv = document.getElementById('results');
     if (resultsDiv.style.display === 'block') calculate();
   });
   
   btnCm.addEventListener('click', () => {
-    unitStore.set('cm');
+    currentUnit = 'cm';
+    localStorage.setItem('hat-unit', currentUnit);
     updateUnitToggle();
-    const resultsDiv = document.getElementById('results');
     if (resultsDiv.style.display === 'block') calculate();
   });
   
@@ -314,18 +596,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
   
-  // Auto-calculate
-  setupAutoCalculate(
-    [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, stitchGaugeInput, rowGaugeInput],
-    calculate
-  );
+  // Auto-calculate on input change
+  const inputs = [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, stitchGaugeInput, rowGaugeInput];
+  inputs.forEach(input => {
+    input.addEventListener('change', calculate);
+    input.addEventListener('input', calculate);
+  });
   
-  // Action Bar
+  // Action Bar Buttons
   printBtn.addEventListener('click', () => {
     window.print();
   });
   
   startOverBtn.addEventListener('click', () => {
+    // Reset all inputs
     hatSizeSelect.value = '';
     customCircInput.value = '';
     useCustomCheckbox.checked = false;
@@ -336,14 +620,12 @@ document.addEventListener('DOMContentLoaded', async function() {
     fitSelect.value = 'beanie';
     stitchGaugeInput.value = '';
     rowGaugeInput.value = '';
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('action-bar').style.display = 'none';
+    resultsDiv.style.display = 'none';
+    actionBar.style.display = 'none';
   });
   
   // Calculate Function
   function calculate() {
-    const currentUnit = unitStore.get();
-    
     // Get head circumference
     let headCirc = 0;
     let depth = 7; // default beanie depth
@@ -371,12 +653,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     // Convert to inches for calculations
-    const headCircInches = currentUnit === 'inches' 
-      ? headCirc 
-      : convertLength(headCirc, 'cm', 'inches');
-    
-    const stGaugePerInch = gaugeToPerUnit(stitchGauge, currentUnit);
-    const rowGaugePerInch = gaugeToPerUnit(rowGauge, currentUnit);
+    const isInches = currentUnit === 'inches';
+    const headCircInches = isInches ? headCirc : headCirc / 2.54;
+    const stGaugePerInch = isInches ? stitchGauge / 4 : (stitchGauge / 10) * 2.54;
+    const rowGaugePerInch = isInches ? rowGauge / 4 : (rowGauge / 10) * 2.54;
     
     // Calculations
     const negativeEase = 0.90;
@@ -420,40 +700,25 @@ document.addEventListener('DOMContentLoaded', async function() {
       crown,
       fit,
       stGaugePerInch,
-      rowGaugePerInch
+      rowGaugePerInch,
+      isInches
     });
     
     // Show results
-    showResults({
-      resultsSelector: '#results',
-      actionBarSelector: '#action-bar',
-      printButtonSelector: '#print-btn',
-      printFooterSelector: '#print-footer'
-    });
+    resultsDiv.style.display = 'block';
+    actionBar.style.display = 'flex';
+    printBtn.style.display = 'block';
   }
   
   function generatePattern(calc) {
-    const currentUnit = unitStore.get();
-    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, brim, crown, fit, stGaugePerInch, rowGaugePerInch } = calc;
+    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, brim, crown, fit, stGaugePerInch, rowGaugePerInch, isInches } = calc;
     
     // Convert display values
-    const displayHeadCirc = currentUnit === 'inches' 
-      ? formatLength(headCircInches, 'inches')
-      : formatLength(convertLength(headCircInches, 'inches', 'cm'), 'cm');
-    
-    const displayWidth = currentUnit === 'inches'
-      ? formatLength(targetWidth, 'inches')
-      : formatLength(convertLength(targetWidth, 'inches', 'cm'), 'cm');
-    
-    const displayHeight = currentUnit === 'inches'
-      ? formatLength(hatHeight, 'inches')
-      : formatLength(convertLength(hatHeight, 'inches', 'cm'), 'cm');
-    
-    const displayBrimDepth = currentUnit === 'inches'
-      ? formatLength(brimDepth, 'inches')
-      : formatLength(convertLength(brimDepth, 'inches', 'cm'), 'cm');
-    
-    const unit = currentUnit === 'inches' ? 'inches' : 'cm';
+    const displayHeadCirc = isInches ? headCircInches.toFixed(1) : (headCircInches * 2.54).toFixed(1);
+    const displayWidth = isInches ? targetWidth.toFixed(1) : (targetWidth * 2.54).toFixed(1);
+    const displayHeight = isInches ? hatHeight.toFixed(1) : (hatHeight * 2.54).toFixed(1);
+    const displayBrimDepth = isInches ? brimDepth.toFixed(1) : (brimDepth * 2.54).toFixed(1);
+    const unit = isInches ? 'inches' : 'cm';
     
     // Brim instructions
     const brimInstructions = {
@@ -509,7 +774,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     // Pattern HTML
-    const patternHTML = `
+    patternContent.innerHTML = `
       <h3>Your Custom Hat Pattern</h3>
       
       <div class="highlight-box">
@@ -524,7 +789,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p>• Tapestry needle</p>
       
       <h4>Gauge</h4>
-      <p>${stGaugePerInch.toFixed(1)} stitches per inch | ${rowGaugePerInch.toFixed(1)} rows per inch</p>
+      <p>${calc.stGaugePerInch.toFixed(1)} stitches per inch | ${calc.rowGaugePerInch.toFixed(1)} rows per inch</p>
       
       <h4>Cast-On</h4>
       <p>Cast on <strong>${castOnSts} stitches</strong>.</p>
@@ -543,31 +808,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p>Seam the hat using mattress stitch or your preferred method. Weave in all ends and block if desired.</p>
     `;
     
-    updateHTML('#pattern-content', patternHTML);
-    
     // Generate diagram
     generateDiagram(calc);
   }
   
   async function generateDiagram(calc) {
-    const currentUnit = unitStore.get();
-    const { hatHeight, brimDepth, targetWidth } = calc;
+    const { hatHeight, brimDepth, targetWidth, isInches } = calc;
     
-    // Format values with units
-    const displayWidth = formatLengthWithUnit(
-      currentUnit === 'inches' ? targetWidth : convertLength(targetWidth, 'inches', currentUnit),
-      currentUnit
-    );
-    
-    const displayHeight = formatLengthWithUnit(
-      currentUnit === 'inches' ? hatHeight : convertLength(hatHeight, 'inches', currentUnit),
-      currentUnit
-    );
-    
-    const displayBrimDepth = formatLengthWithUnit(
-      currentUnit === 'inches' ? brimDepth : convertLength(brimDepth, 'inches', currentUnit),
-      currentUnit
-    );
+    const displayWidth = isInches ? targetWidth.toFixed(1) : (targetWidth * 2.54).toFixed(1);
+    const displayHeight = isInches ? hatHeight.toFixed(1) : (hatHeight * 2.54).toFixed(1);
+    const displayBrimDepth = isInches ? brimDepth.toFixed(1) : (brimDepth * 2.54).toFixed(1);
+    const unit = isInches ? '"' : 'cm';
     
     // Map crown type to template name
     const crown = crownSelect.value;
@@ -580,14 +831,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       // Replace placeholders with fully-formatted values (including units)
       svgContent = svgContent
-        .replace(/{{WIDTH}}/g, displayWidth)
-        .replace(/{{HEIGHT}}/g, displayHeight)
-        .replace(/{{BRIM_DEPTH}}/g, displayBrimDepth);
+        .replace(/{{WIDTH}}/g, `${displayWidth}${unit}`)
+        .replace(/{{HEIGHT}}/g, `${displayHeight}${unit}`)
+        .replace(/{{BRIM_DEPTH}}/g, `${displayBrimDepth}${unit}`);
       
-      updateHTML('#diagram-content', svgContent);
+      diagramContent.innerHTML = svgContent;
     } catch (error) {
       console.error('Failed to load diagram template:', templateName, error);
-      updateHTML('#diagram-content', '<p style="text-align: center; color: #6b7280;">Diagram unavailable</p>');
+      diagramContent.innerHTML = '<p style="text-align: center; color: #6b7280;">Diagram unavailable</p>';
     }
   }
 });
