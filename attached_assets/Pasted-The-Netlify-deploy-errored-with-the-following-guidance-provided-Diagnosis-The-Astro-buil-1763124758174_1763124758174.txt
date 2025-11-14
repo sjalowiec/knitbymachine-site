@@ -1,0 +1,76 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis**  
+The Astro build fails because the script tag in `astro-site/src/pages/wizards/hat-builder.astro` references `/js/wizard-utils.js` from `public/` without using the `is:inline` directive. This causes Vite to treat it as a module that must be bundled, triggering the error in [line 95](#L95-L97).
+
+**Solution**  
+Update the script tag in `astro-site/src/pages/wizards/hat-builder.astro` to mark the public asset as inline, for example:
+
+```astro
+<script is:inline src="/js/wizard-utils.js"></script>
+```
+
+(Alternatively, move the script into `src/` and import it normally so Astro can bundle it.) Once the script reference is corrected, re-run the Netlify build.
+
+The relevant error logs are:
+
+Line 77: [2m12:51:41[22m [34m[build][39m output: [34m"server"[39m
+Line 78: [2m12:51:41[22m [34m[build][39m mode: [34m"server"[39m
+Line 79: [2m12:51:41[22m [34m[build][39m directory: [34m/opt/build/repo/astro-site/dist/[39m
+Line 80: [2m12:51:41[22m [34m[build][39m adapter: [32m@astrojs/netlify[39m
+Line 81: [2m12:51:41[22m [34m[build][39m Collecting build info...
+Line 82: [2m12:51:41[22m [34m[build][39m [32m✓ Completed in 349ms.[39m
+Line 83: [2m12:51:41[22m [34m[build][39m Building server entrypoints...
+Line 84: [1m[33mwarn[39m[22m - The `content` option in your Tailwind CSS configuration is missing or empty.
+Line 85: [1m[33mwarn[39m[22m - Configure your content sources or your generated CSS will be missing styles.
+Line 86: [1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+Line 87: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 88: [33m[1m12:51:44[22m [WARN] [vite][39m [33m"matchHostname", "matchPathname", "matchPort" and "matchProtocol" are imported fr
+Line 89: [2m12:51:44[22m [34m[vite][39m [32m✓ built in 2.64s[39m
+Line 90: [2m12:51:44[22m [34m[build][39m [32m✓ Completed in 2.67s.[39m
+Line 91: [42m[30m building client (vite) [39m[49m
+Line 92: [2m12:51:44[22m [34m[vite][39m [32m✓[39m 0 modules transformed.
+Line 93: [31m[1m12:51:44[22m [ERROR] [vite][39m [31m✗[39m Build failed in 11ms
+Line 94: [2m12:51:44[22m [34m[vite][39m transforming...
+Line 95: [astro:build] Could not load /opt/build/repo/astro-site/src/pages/wizards/hat-builder.astro?astro&type=script&index=1&lang.ts:
+Line 96: <script src="/js/wizard-utils.js"> references an asset in the "public/" directory. Please add the "is:inline" directive to keep 
+Line 97: File: /opt/build/repo/astro-site/src/pages/wizards/hat-builder.astro?astro&type=script&index=1&lang.ts
+Line 98:   [1mStack trace:[22m
+Line 99: [2m    at Object.load (file:///opt/build/repo/astro-site/node_modules/astro/dist/vite-plugin-astro/index.js:119:21)
+Line 100:     at file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:22437:40
+Line 101:     at async file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:21319:33[22m
+Line 102: [91m[1m​[22m[39m
+Line 103: [91m[1m"build.command" failed                                        [22m[39m
+Line 104: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 105: ​
+Line 106:   [31m[1mError message[22m[39m
+Line 107:   Command failed with exit code 1: npm run build
+Line 108: ​
+Line 109:   [31m[1mError location[22m[39m
+Line 110:   In build.command from netlify.toml:
+Line 111:   npm run build
+Line 112: ​
+Line 113:   [31m[1mResolved config[22m[39m
+Line 114:   build:
+Line 115:     base: /opt/build/repo/astro-site
+Line 116:     command: npm run build
+Line 117:     commandOrigin: config
+Line 118:     environment:
+Line 119:       - GITHUB_CLIENT_ID
+Line 120:       - GITHUB_CLIENT_SECRET
+Line 121:       - GITHUB_TOKEN
+Line 122:       - NODE_VERSION
+Line 123:     publish: /opt/build/repo/astro-site/dist
+Line 124:     publishOrigin: config
+Line 125:   functions:
+Line 126:     "*":
+Line 127:       included_files:
+Line 128:         - dist/**
+      node_bundler: esbuild
+  headers:
+    - for: /*
+      values:
+        Cache-Control: public, max-age=0, m
+Line 129: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 130: Failing build: Failed to build site
+Line 131: Finished processing build request in 23.142s
