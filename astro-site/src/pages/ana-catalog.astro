@@ -77,7 +77,7 @@ const description = "Browse all our knitting machine questions and answers, orga
         <div class="error">
           <p><strong>Error loading questions</strong></p>
           <p>Unable to fetch ANA entries. Please try again later.</p>
-          <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
+          <p style="font-size: var(--text-base); margin-top: 1rem;">{errorMessage}</p>
         </div>
       )}
     </div>
@@ -127,7 +127,7 @@ const description = "Browse all our knitting machine questions and answers, orga
 
   .intro-tagline {
     color: #52682D;
-    font-size: 1.25rem;
+    font-size: var(--text-lg);
     line-height: 1.5;
     margin: 0 0 0.75rem 0;
     opacity: 0.85;
@@ -135,7 +135,7 @@ const description = "Browse all our knitting machine questions and answers, orga
 
   .intro-subtitle {
     color: #52682D;
-    font-size: 1rem;
+    font-size: var(--text-base);
     line-height: 1.6;
     margin: 0;
     opacity: 0.7;
@@ -159,7 +159,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     padding: 0.875rem 1.25rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
-    font-size: 1rem;
+    font-size: var(--text-base);
     background-color: white;
     transition: all 0.3s ease;
   }
@@ -179,7 +179,7 @@ const description = "Browse all our knitting machine questions and answers, orga
   .sort-label {
     color: #52682D;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: var(--text-base);
     white-space: nowrap;
   }
 
@@ -187,7 +187,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     padding: 0.75rem 1rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
-    font-size: 0.95rem;
+    font-size: var(--text-base);
     background-color: white;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -217,7 +217,7 @@ const description = "Browse all our knitting machine questions and answers, orga
   /* Consistent Section Titles */
   :global(.section-title) {
     color: #52682D;
-    font-size: 1.75rem;
+    font-size: var(--text-xl);
     font-weight: 700;
     margin: 0 0 0.5rem 0;
     padding-bottom: 0.75rem;
@@ -337,7 +337,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     padding: 1.25rem 1.75rem;
     border-radius: 25px;
     text-decoration: none;
-    font-size: 1.1rem;
+    font-size: var(--text-lg);
     font-weight: 500;
     white-space: normal;
     max-width: 280px;
@@ -498,11 +498,11 @@ const description = "Browse all our knitting machine questions and answers, orga
     }
 
     .intro-tagline {
-      font-size: 1.1rem;
+      font-size: var(--text-lg);
     }
 
     .intro-subtitle {
-      font-size: 0.95rem;
+      font-size: var(--text-base);
       max-width: 100%;
     }
 
