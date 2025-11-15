@@ -67,22 +67,22 @@ p {
   border-radius: 2px;
 }
 
-/* Mobile typography scaling */
+/* Mobile typography scaling - SIGNIFICANTLY LARGER for readability */
 @media (max-width: 768px) {
   :root {
     --header-height: 8rem;
-    --text-base: 1.125rem;
-    --text-lg: 1.25rem;
-    --text-xl: 1.375rem;
-    --text-xxl: 2rem;
+    --text-base: 1.25rem;    /* 20px - much bigger base text */
+    --text-lg: 1.5rem;       /* 24px - larger headings */
+    --text-xl: 1.75rem;      /* 28px - even larger */
+    --text-xxl: 2.25rem;     /* 36px - big headings */
   }
   
   body {
-    line-height: 1.6;
+    line-height: 1.7;        /* more spacing for readability */
   }
   
   p {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5rem;
   }
 }
 
