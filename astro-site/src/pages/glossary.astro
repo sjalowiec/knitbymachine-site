@@ -401,7 +401,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       }
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       .alphabet-filter {
         top: var(--header-height);
       }
@@ -603,7 +603,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       });
 
       // Desktop hover
-      if (!window.matchMedia('(max-width: 768px)').matches) {
+      if (!window.matchMedia('(max-width: 1024px)').matches) {
         cards.forEach(card => {
           card.addEventListener('mouseenter', () => {
             if (currentlyFlippedCard && currentlyFlippedCard !== card) {

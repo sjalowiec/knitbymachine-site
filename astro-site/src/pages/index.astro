@@ -13,7 +13,7 @@ import "../styles/temphome.css";
   <script is:inline>
     function updateDebugInfo() {
       const width = window.innerWidth;
-      const isMobile = width <= 768;
+      const isMobile = width <= 1024;
       const textBase = getComputedStyle(document.documentElement).getPropertyValue('--text-base').trim();
       const bodyFontSize = getComputedStyle(document.body).fontSize;
       
@@ -21,7 +21,7 @@ import "../styles/temphome.css";
       if (debugEl) {
         debugEl.innerHTML = `
           <strong>VIEWPORT: ${width}px</strong> | 
-          Mobile Mode: ${isMobile ? 'YES ✓' : 'NO ✗'} | 
+          Mobile Mode (≤1024px): ${isMobile ? 'YES ✓' : 'NO ✗'} | 
           --text-base: ${textBase || 'UNDEFINED!'} | 
           Body font-size: ${bodyFontSize}
         `;

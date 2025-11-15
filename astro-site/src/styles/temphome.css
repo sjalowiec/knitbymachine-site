@@ -198,7 +198,7 @@
 }
 
 /* MOBILE */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .kbm-hero {
     padding-top: 6rem; /* smaller since global already offsets */
     padding-bottom: 2rem;
