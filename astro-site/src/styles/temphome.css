@@ -204,10 +204,58 @@
     padding-bottom: 2rem;
     min-height: auto;
   }
+  
+  .kbm-hero h1 {
+    font-size: clamp(32px, 7vw, 48px);
+  }
+  
+  .kbm-hero p {
+    font-size: clamp(18px, 3vw, 20px);
+    line-height: 1.7;
+  }
 
   .click-icon {
     width: 26px;
     height: 26px;
   }
+  
+  .early-access {
+    padding: 1.25rem 1.5rem 1.75rem;
+    width: 95%;
+  }
+  
+  .early-access p {
+    font-size: var(--text-base);
+    line-height: 1.7;
+  }
+  
+  .discussion-toggle {
+    font-size: var(--text-base);
+    padding: 10px 18px;
+    min-height: 44px;
+  }
+  
+  #_form_1_ {
+    padding: 20px 22px;
+  }
+  
+  #_form_1_ ._form-title {
+    font-size: 22px;
+  }
+  
+  #_form_1_ ._form-label {
+    font-size: var(--text-base);
+  }
+  
+  #_form_1_ input {
+    font-size: var(--text-base);
+    padding: 12px 14px;
+    min-height: 44px;
+  }
+  
+  #_form_1_ ._submit {
+    font-size: var(--text-base);
+    padding: 14px 24px;
+    min-height: 48px;
+  }
 }
-
