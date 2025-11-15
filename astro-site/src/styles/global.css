@@ -68,7 +68,7 @@ p {
 }
 
 /* Mobile typography scaling - SIGNIFICANTLY LARGER for readability */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   :root {
     --header-height: 8rem;
     --text-base: 1.25rem;    /* 20px - much bigger base text */
@@ -169,7 +169,7 @@ section,
 }
 
 /* Typography override for any element that doesn't use vars */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   body,
   p,
   li,
