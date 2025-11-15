@@ -16,7 +16,7 @@ const updated = "October 3, 2025";
       color: #6b7280;
     }
     .kbm-legal h1 {
-      font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+      font-size: var(--text-xxl);
       line-height: 1.2;
       margin: 0 0 0.75rem 0;
     }
@@ -89,7 +89,7 @@ const updated = "October 3, 2025";
       justify-content: center;
       cursor: pointer;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-      font-size: 1.5rem;
+      font-size: var(--text-xl);
       transition: background 0.2s ease;
       z-index: 999;
     }
@@ -105,7 +105,7 @@ const updated = "October 3, 2025";
         padding: 20px 18px;
       }
       .kbm-legal h1 {
-        font-size: clamp(2rem, 6vw, 2.5rem);
+        /* font-size handled by CSS variable */
       }
       h2 {
         margin-top: 1.5rem;
@@ -113,7 +113,7 @@ const updated = "October 3, 2025";
       .print-btn {
         width: 48px;
         height: 48px;
-        font-size: 1.25rem;
+        /* font-size handled by CSS variable */
       }
     }
     
