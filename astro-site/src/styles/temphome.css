@@ -38,7 +38,7 @@
 .kbm-hero h1 {
   margin: 0;
   font-weight: 600;
-  font-size: clamp(28px, 5vw, 48px);
+  font-size: var(--text-xxl);
   line-height: 1.1;
 }
 
@@ -115,7 +115,7 @@
 }
 
 .toggle-arrow {
-  font-size: 14px;
+  font-size: var(--text-base);
   transition: transform 0.4s ease;
 }
 
@@ -152,7 +152,7 @@
 }
 
 #_form_1_ ._form-title {
-  font-size: 26px;
+  font-size: var(--text-xl);
   font-weight: 600;
   margin: 0 0 12px;
 }
@@ -206,7 +206,7 @@
   }
   
   .kbm-hero h1 {
-    font-size: clamp(32px, 7vw, 48px);
+    font-size: var(--text-xxl);
   }
   
   .kbm-hero p {
@@ -239,7 +239,7 @@
   }
   
   #_form_1_ ._form-title {
-    font-size: 22px;
+    font-size: var(--text-xl);
   }
   
   #_form_1_ ._form-label {
