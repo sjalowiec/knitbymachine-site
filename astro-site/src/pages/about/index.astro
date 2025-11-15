@@ -17,18 +17,20 @@ const updated = "October 3, 2025";
     }
 
     h2 {
-      font-size: 1.4rem;
+      font-size: var(--text-xl);
       margin-top: 2rem;
     }
 
     p {
       margin: 1rem 0;
+      font-size: var(--text-base);
     }
 
     .subhead {
       color: var(--kbm-green);
       font-weight: 600;
       margin-bottom: 1.5rem;
+      font-size: var(--text-lg);
     }
 
     /* ===== Responsive Banner / Placeholder ===== */
@@ -66,7 +68,7 @@ const updated = "October 3, 2025";
     }
 
     .banner-note {
-      font-size: .95rem;
+      font-size: var(--text-base);
       line-height: 1.4;
       opacity: 0.9;
       margin: 0;
@@ -85,7 +87,7 @@ const updated = "October 3, 2025";
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: .8rem;
+      font-size: var(--text-base);
       font-weight: 600;
       text-align: center;
       line-height: 1.2;
@@ -147,12 +149,12 @@ const updated = "October 3, 2025";
 
     .card h3 {
       margin-top: 0;
-      font-size: 1.1rem;
+      font-size: var(--text-lg);
       color: #111827;
     }
 
     .card p {
-      font-size: 0.95rem;
+      font-size: var(--text-base);
       margin-top: 0.5rem;
     }
 
@@ -206,6 +208,29 @@ const updated = "October 3, 2025";
     #kbm-top:hover {
       background: var(--kbm-green-2);
       transform: translateY(-3px);
+    }
+    
+    @media (max-width: 768px) {
+      main {
+        padding: 60px 20px;
+      }
+      
+      h1 {
+        font-size: clamp(2rem, 6vw, 2.5rem);
+        margin-bottom: 1rem;
+      }
+      
+      .banner {
+        margin-bottom: 1.5rem;
+      }
+      
+      .card {
+        padding: 1.25rem;
+      }
+      
+      .connect {
+        padding: 1.25rem;
+      }
     }
   </style>
 

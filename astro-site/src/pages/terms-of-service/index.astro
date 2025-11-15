@@ -11,7 +11,7 @@ const updated = "October 3, 2025";
       margin: 0 auto;
     }
     .kbm-breadcrumb {
-      font-size: 0.9rem;
+      font-size: var(--text-base);
       margin-bottom: 1rem;
       color: #6b7280;
     }
@@ -22,7 +22,7 @@ const updated = "October 3, 2025";
     }
     .meta {
       color: #6b7280;
-      font-size: 0.95rem;
+      font-size: var(--text-base);
       margin-bottom: 2rem;
     }
     .kbm-card {
@@ -41,7 +41,7 @@ const updated = "October 3, 2025";
     }
     .kbm-toc-title {
       font-weight: 600;
-      font-size: 1.05rem;
+      font-size: var(--text-lg);
       margin-bottom: 10px;
     }
     .kbm-toc a {
@@ -50,7 +50,7 @@ const updated = "October 3, 2025";
       border-radius: 6px;
       color: #1f2937;
       text-decoration: none;
-      font-size: 0.94rem;
+      font-size: var(--text-base);
       transition: background 0.15s ease;
     }
     .kbm-toc a:hover {
@@ -59,18 +59,20 @@ const updated = "October 3, 2025";
     }
     h2 {
       margin-top: 2rem;
-      font-size: 1.5rem;
+      font-size: var(--text-xl);
     }
     p,
     ul {
       margin: 1rem 0;
       color: #374151;
+      font-size: var(--text-base);
     }
     ul {
       padding-left: 1.5rem;
     }
     li {
       margin: 0.5rem 0;
+      font-size: var(--text-base);
     }
     .print-btn {
       position: fixed;
@@ -94,6 +96,27 @@ const updated = "October 3, 2025";
     .print-btn:hover {
       background: var(--kbm-green-2);
     }
+    
+    @media (max-width: 768px) {
+      main {
+        padding: 120px 20px 60px;
+      }
+      .kbm-card {
+        padding: 20px 18px;
+      }
+      .kbm-legal h1 {
+        font-size: clamp(2rem, 6vw, 2.5rem);
+      }
+      h2 {
+        margin-top: 1.5rem;
+      }
+      .print-btn {
+        width: 48px;
+        height: 48px;
+        font-size: 1.25rem;
+      }
+    }
+    
     @media print {
       .print-btn {
         display: none;
