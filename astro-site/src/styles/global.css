@@ -149,3 +149,50 @@ p {
 .kbm-tooltip:focus {
   box-shadow: 0 0 0 2px #E8EDE2;
 }
+/* ============================================
+   MOBILE PAGE READABILITY FIX (GLOBAL)
+   Ensures all text-heavy pages render well.
+   Paste below existing CSS.
+============================================ */
+
+/* Constrain text width everywhere for readability */
+.content-wrapper,
+.page,
+.blog_container,
+#bloginfo,
+article,
+section,
+.kbm-text,
+.main-content {
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+/* Typography override for any element that doesn't use vars */
+@media (max-width: 768px) {
+  body,
+  p,
+  li,
+  a,
+  span,
+  div,
+  article,
+  section {
+    font-size: 1.2rem;     /* readable size */
+    line-height: 1.6;
+  }
+
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.6rem; }
+  h3 { font-size: 1.4rem; }
+
+  /* Add padding so text isn’t smashed to screen edges */
+  .content-wrapper,
+  .blog_container,
+  #bloginfo,
+  article,
+  section {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
