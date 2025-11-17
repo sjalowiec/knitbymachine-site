@@ -1,0 +1,41 @@
+/* --- Q&A Block Styles --- */
+
+.kbm-qa {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 2px solid #e0e4d8;
+}
+
+.kbm-qa-title {
+  font-size: var(--text-xl);
+  color: #2c3a57;
+  margin-bottom: 1rem;
+}
+
+.kbm-qa-item {
+  margin-bottom: 1.25rem;
+}
+
+.kbm-qa-question {
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: #52682d;
+  margin-bottom: 0.4rem;
+}
+
+.kbm-qa-answer {
+  margin: 0;
+  color: #3b4b2f;
+  line-height: 1.6;
+}
+
+/* --- Optional: general blog spacing --- */
+.kbm-post h1,
+.kbm-post h2,
+.kbm-post h3 {
+  color: #2c3a57;
+}
+
+.kbm-post p {
+  margin-bottom: 1rem;
+}
