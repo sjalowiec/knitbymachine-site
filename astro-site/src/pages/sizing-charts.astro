@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/layout.astro";
 import Header from "../components/header.astro";
+import SectionHero from "../components/SectionHero.astro";
 ---
 
 <Layout 
@@ -11,11 +12,13 @@ import Header from "../components/header.astro";
 
   <main class="page-content sizing-chart-page">
 
-    <div class="sizing-header">
-      <h1>Standard Sizing Charts</h1>
-      
-      <!-- Unit toggle next to title -->
-      <div class="unit-toggle-wrapper">
+    <SectionHero 
+      title="Standard Sizing Charts" 
+      subtitle="Quickly find standard measurements for your machine-knit projects."
+      iconPath="/images/sizing_logo.svg"
+      iconAlt="Sizing Charts"
+    >
+      <div slot="toolbar" class="unit-toggle-wrapper">
         <span class="unit-label">in</span>
         <label class="switch">
           <input type="checkbox" id="unitToggle">
@@ -23,11 +26,7 @@ import Header from "../components/header.astro";
         </label>
         <span class="unit-label">cm</span>
       </div>
-    </div>
-
-    <p class="sizing-intro">
-      Quickly find standard measurements for your machine-knit projects.
-    </p>
+    </SectionHero>
 
     <p class="related-link">
       <a href="/minimum-ease-chart">Minimum ease suggestions</a>.
@@ -88,28 +87,6 @@ import Header from "../components/header.astro";
 
     .sizing-chart-page {
       font-family: "Poppins", sans-serif;
-    }
-
-    .sizing-header {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 16px;
-      gap: 20px;
-    }
-
-    .sizing-header h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--kbm-green);
-      margin: 0;
-    }
-
-    .sizing-intro {
-      text-align: center;
-      font-size: 1.1rem;
-      color: #666;
-      margin-bottom: 32px;
     }
 
     .related-link {
