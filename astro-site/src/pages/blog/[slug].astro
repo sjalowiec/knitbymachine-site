@@ -4,6 +4,7 @@ export const prerender = false;
 import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
 import "../../styles/global.css";
+import "../../styles/blog.css";
 
 const { slug } = Astro.params;
 
@@ -37,6 +38,8 @@ async function getBlogPost(slug: string) {
       description: post.excerpt || post.description || '',
       author: post.author || 'Sue Jalowiec',
       body: post.body || '',
+      qaSection: post.qaSection || '',
+      customSchema: post.customSchema || '',
       tags: post.tags || [],
       imageUrl: post.imageUrl || null,
       imageAlt: post.imageAlt || null,
@@ -110,6 +113,11 @@ const schemaData = {
     
     <!-- Schema.org structured data -->
     <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+    
+    <!-- Custom schema.org structured data (if provided) -->
+    {post.customSchema && (
+      <script type="application/ld+json" set:html={post.customSchema} />
+    )}
   </head>
   <body>
     <Header />
@@ -136,7 +144,11 @@ const schemaData = {
           )}
         </header>
 
-        <div class="article-content" set:html={post.body} />
+        <div class="article-content kbm-post" set:html={post.body} />
+
+        {post.qaSection && (
+          <div class="kbm-qa" set:html={post.qaSection} />
+        )}
 
         {post.tags && post.tags.length > 0 && (
           <footer class="article-footer">
