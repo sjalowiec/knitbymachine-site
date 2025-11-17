@@ -4,18 +4,18 @@
 <style is:global>
 /* ========== FOOTER STYLES ========== */
 footer {
-  background-color: #e8ece3;          /* soft neutral green-gray background */
-  color: #3b4b2f;                     /* dark olive text for good contrast */
+  background-color: #e8ece3;
+  color: #3b4b2f;
   font-family: "Poppins", Arial, sans-serif;
   font-size: var(--text-base);
   line-height: 1.6;
   padding: 30px 0 10px;
-  border-top: 3px solid #6a8141;      /* matches header accent green */
+  border-top: 3px solid #6a8141;
 }
 
-/* Footer container alignment */
-footer .container {
-  max-width: 1200px;                  
+/* ========== DESKTOP LAYOUT (≥769px) ========== */
+footer .footer-desktop {
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
@@ -24,13 +24,11 @@ footer .container {
   padding: 0 40px;
 }
 
-/* Footer columns */
 footer .footer-column {
   flex: 1 1 200px;
   min-width: 180px;
 }
 
-/* Headings */
 footer h4 {
   font-weight: 700;
   font-size: var(--text-lg);
@@ -38,12 +36,10 @@ footer h4 {
   margin-bottom: 8px;
 }
 
-/* Paragraph text */
 footer p {
   margin: 0 0 8px;
 }
 
-/* Links */
 footer a {
   color: #3b4b2f;
   text-decoration: none;
@@ -57,7 +53,105 @@ footer a:hover {
   text-decoration: underline;
 }
 
-/* Footer bottom section */
+/* ========== MOBILE LAYOUT (≤768px) ========== */
+footer .footer-mobile {
+  display: none;
+  max-width: 100%;
+  padding: 0 20px;
+}
+
+/* Mobile brand section - always visible */
+footer .footer-brand {
+  text-align: center;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #c3c9b9;
+}
+
+footer .footer-brand h3 {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: #384b25;
+  margin: 0 0 8px 0;
+}
+
+footer .footer-brand p {
+  margin: 0;
+  font-size: var(--text-base);
+  color: #3b4b2f;
+}
+
+/* Accordion sections */
+footer .footer-accordion {
+  margin-bottom: 20px;
+}
+
+footer .accordion-item {
+  border-bottom: 1px solid #c3c9b9;
+}
+
+footer .accordion-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 16px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-family: "Poppins", Arial, sans-serif;
+  min-height: 44px;
+  text-align: left;
+}
+
+footer .accordion-header h4 {
+  font-weight: 700;
+  font-size: var(--text-lg);
+  color: #384b25;
+  margin: 0;
+}
+
+footer .accordion-icon {
+  font-size: 1.2em;
+  color: #6a8141;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+
+footer .accordion-item.active .accordion-icon {
+  transform: rotate(180deg);
+}
+
+footer .accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+}
+
+footer .accordion-item.active .accordion-content {
+  max-height: 500px;
+}
+
+footer .accordion-content-inner {
+  padding: 0 0 16px 0;
+}
+
+footer .accordion-content a {
+  display: block;
+  padding: 8px 0;
+  color: #3b4b2f;
+  text-decoration: none;
+  font-size: var(--text-base);
+  transition: color 0.3s ease;
+}
+
+footer .accordion-content a:hover {
+  color: #6a8141;
+  text-decoration: underline;
+}
+
+/* ========== FOOTER BOTTOM (both mobile and desktop) ========== */
 footer .footer-bottom {
   width: 100%;
   text-align: center;
@@ -65,14 +159,13 @@ footer .footer-bottom {
   color: #4a5a35;
   border-top: 1px solid #c3c9b9;
   margin-top: 25px;
-  padding-top: 12px;
+  padding: 12px 20px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 6px;
 }
 
-/* Legal links row */
 footer .legal-links {
   display: flex;
   flex-wrap: nowrap;
@@ -89,9 +182,9 @@ footer .legal-links a {
   font-size: var(--text-base);
   position: relative;
   transition: color 0.3s ease;
+  margin: 0;
 }
 
-/* Underline hover effect */
 footer .legal-links a::after {
   content: "";
   position: absolute;
@@ -111,54 +204,25 @@ footer .legal-links a:hover::after {
   width: 100%;
 }
 
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-  footer .container {
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 0 20px;
-  }
-
-  footer .footer-column {
-    flex: 1 1 100%;
-    margin-bottom: 15px;
-  }
-
-  footer h4 {
-    margin-top: 10px;
-  }
-
-  footer .footer-bottom {
-    gap: 4px;
-  }
-
-  footer .legal-links {
-    flex-wrap: nowrap;
-    white-space: nowrap;
-  }
-
-  footer .legal-links a {
-    display: inline-block;
-  }
-}
-
-/* Small mobile screens - stack legal links vertically */
-@media (max-width: 600px) {
-  footer .legal-links {
-    flex-direction: column;
-    gap: 8px;
-    white-space: normal;
-  }
-
-  /* Hide separators on vertical layout */
-  footer .legal-links span {
+/* ========== RESPONSIVE BREAKPOINTS ========== */
+@media (max-width: 768px) {
+  footer .footer-desktop {
     display: none;
   }
 
-  footer .legal-links a {
+  footer .footer-mobile {
     display: block;
-    margin: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  footer .legal-links {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  footer .legal-links span {
+    display: none;
   }
 }
 
@@ -171,39 +235,128 @@ footer .legal-links a:hover::after {
 </style>
 
 <footer aria-label="Site footer">
-  <div class="container">
+  <!-- Desktop Layout (≥769px) -->
+  <div class="footer-desktop">
     <div class="footer-column">
       <h4>Knit by Machine</h4>
       <p>Practical tools, patterns, and guides for confident machine knitting.</p>
     </div>
     <div class="footer-column">
       <h4>Patterns and Tools</h4>
-      <a href="https://knitbymachine.com/wizards-catalog">Patterns</a>
-      <a href="/workshops">Workshops</a>
+      <a href="/wizards-catalog" data-testid="footer-patterns">Patterns</a>
+      <a href="/workshops" data-testid="footer-workshops">Workshops</a>
     </div>
     <div class="footer-column">
       <h4>Help Hub</h4>
-      <a href="/ana-catalog">Ask 'n Answer</a>
-      <a href="/sizing-charts">Sizing Charts</a>
-      <a href="/machine-history">Machine History</a>
-      <a href="/glossary">Glossary</a>
+      <a href="/ana-catalog" data-testid="footer-ana">Ask 'n Answer</a>
+      <a href="/sizing-charts" data-testid="footer-sizing">Sizing Charts</a>
+      <a href="/machine-history" data-testid="footer-history">Machine History</a>
+      <a href="/glossary" data-testid="footer-glossary">Glossary</a>
     </div>
     <div class="footer-column">
       <h4>Connect</h4>
-      <a href="/contact">Contact Us</a>
-      <a href="/about">About</a>
-      <a href="/membership">Membership</a>
+      <a href="/contact" data-testid="footer-contact">Contact Us</a>
+      <a href="/about" data-testid="footer-about">About</a>
+      <a href="/membership" data-testid="footer-membership">Membership</a>
     </div>
   </div>
 
+  <!-- Mobile Layout (≤768px) with Accordion -->
+  <div class="footer-mobile">
+    <!-- Brand Section - Always Visible -->
+    <div class="footer-brand">
+      <h3>Knit by Machine</h3>
+      <p>Practical tools, patterns, and guides for confident machine knitting.</p>
+    </div>
+
+    <!-- Accordion Sections -->
+    <div class="footer-accordion">
+      <!-- Patterns and Tools -->
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" data-testid="accordion-patterns">
+          <h4>Patterns and Tools</h4>
+          <span class="accordion-icon">▾</span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-content-inner">
+            <a href="/wizards-catalog" data-testid="footer-mobile-patterns">Patterns</a>
+            <a href="/workshops" data-testid="footer-mobile-workshops">Workshops</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Help Hub -->
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" data-testid="accordion-help">
+          <h4>Help Hub</h4>
+          <span class="accordion-icon">▾</span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-content-inner">
+            <a href="/ana-catalog" data-testid="footer-mobile-ana">Ask 'n Answer</a>
+            <a href="/sizing-charts" data-testid="footer-mobile-sizing">Sizing Charts</a>
+            <a href="/machine-history" data-testid="footer-mobile-history">Machine History</a>
+            <a href="/glossary" data-testid="footer-mobile-glossary">Glossary</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Connect -->
+      <div class="accordion-item">
+        <button class="accordion-header" aria-expanded="false" data-testid="accordion-connect">
+          <h4>Connect</h4>
+          <span class="accordion-icon">▾</span>
+        </button>
+        <div class="accordion-content">
+          <div class="accordion-content-inner">
+            <a href="/contact" data-testid="footer-mobile-contact">Contact Us</a>
+            <a href="/about" data-testid="footer-mobile-about">About</a>
+            <a href="/membership" data-testid="footer-mobile-membership">Membership</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer Bottom - Both Mobile and Desktop -->
   <div class="footer-bottom">
     <div>© <span id="year">{new Date().getFullYear()}</span> Knit by Machine</div>
     <div class="legal-links">
-      <a href="/privacy">Privacy Policy</a>
+      <a href="/privacy" data-testid="footer-privacy">Privacy Policy</a>
       <span>|</span>
-      <a href="/terms-of-service">Terms of Use</a>
+      <a href="/terms-of-service" data-testid="footer-terms">Terms of Use</a>
       <span>|</span>
-      <a href="/refund-policy">Refund Policy</a>
+      <a href="/refund-policy" data-testid="footer-refund">Refund Policy</a>
     </div>
   </div>
 </footer>
+
+<script>
+  // Footer accordion functionality for mobile
+  document.addEventListener('DOMContentLoaded', () => {
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    
+    accordionHeaders.forEach(header => {
+      header.addEventListener('click', () => {
+        const accordionItem = header.parentElement;
+        const isActive = accordionItem.classList.contains('active');
+        
+        // Close all other accordion items
+        document.querySelectorAll('.accordion-item').forEach(item => {
+          item.classList.remove('active');
+          const btn = item.querySelector('.accordion-header');
+          if (btn) btn.setAttribute('aria-expanded', 'false');
+        });
+        
+        // Toggle current item
+        if (!isActive) {
+          accordionItem.classList.add('active');
+          header.setAttribute('aria-expanded', 'true');
+        } else {
+          accordionItem.classList.remove('active');
+          header.setAttribute('aria-expanded', 'false');
+        }
+      });
+    });
+  });
+</script>
