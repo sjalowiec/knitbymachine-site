@@ -7,12 +7,33 @@
 :root {
   --kbm-green: #52682d;
   --kbm-green-hover: #445626;
+  --kbm-green-2: #738c52;
   --kbm-bg: #e9ece7;
   --page-bg: #f7f8f7;
   --ring: #e5e8e0;
+  --font: "Poppins", system-ui, Arial, sans-serif;
+  
+  /* Typography scaling - DEFAULT (desktop) */
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-xxl: 2.25rem;
 }
 
-/* Typography variables moved to global.css to avoid conflicts */
+/* Mobile typography - SIGNIFICANTLY LARGER for Android/iOS readability */
+@media (max-width: 1024px) {
+  :root {
+    --text-base: 1.5rem;     /* 24px - MUCH bigger base text */
+    --text-lg: 1.75rem;      /* 28px - larger headings */
+    --text-xl: 2.25rem;      /* 36px - even larger */
+    --text-xxl: 2.75rem;     /* 44px - big headings */
+  }
+  
+  body {
+    font-size: var(--text-base);  /* Ensure body uses larger mobile font */
+    line-height: 1.7;
+  }
+}
 
 /* ===== FIXED HEADER ===== */
 .kbm-header-wrap {
