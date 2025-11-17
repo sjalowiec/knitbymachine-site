@@ -213,9 +213,13 @@
     line-height: 1.7;
   }
 
+  .click-word {
+    font-size: 1.6em;       /* Bigger emphasized text on mobile */
+  }
+  
   .click-icon {
-    width: 26px;
-    height: 26px;
+    width: 32px;            /* Bigger icon on mobile */
+    height: 32px;
   }
   
   .early-access {
