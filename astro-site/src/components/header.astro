@@ -13,25 +13,30 @@
   --ring: #e5e8e0;
   --font: "Poppins", system-ui, Arial, sans-serif;
   
-  /* Typography scaling - DEFAULT (desktop) */
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.5rem;
-  --text-xxl: 2.25rem;
+  /* Typography scaling - DEFAULT (MOBILE-FIRST - large for ALL devices) */
+  --text-base: 1.5rem;     /* 24px - readable on mobile */
+  --text-lg: 1.75rem;      /* 28px */
+  --text-xl: 2.25rem;      /* 36px */
+  --text-xxl: 2.75rem;     /* 44px */
 }
 
-/* Mobile typography - SIGNIFICANTLY LARGER for Android/iOS readability */
-@media (max-width: 1024px) {
+html, body {
+  font-size: var(--text-base);  /* Apply to all devices by default */
+  line-height: 1.7;
+}
+
+/* Desktop typography - SMALLER fonts only for large screens */
+@media (min-width: 1025px) {
   :root {
-    --text-base: 1.5rem;     /* 24px - MUCH bigger base text */
-    --text-lg: 1.75rem;      /* 28px - larger headings */
-    --text-xl: 2.25rem;      /* 36px - even larger */
-    --text-xxl: 2.75rem;     /* 44px - big headings */
+    --text-base: 1rem;       /* 16px for desktop */
+    --text-lg: 1.125rem;     /* 18px */
+    --text-xl: 1.5rem;       /* 24px */
+    --text-xxl: 2.25rem;     /* 36px */
   }
   
   body {
-    font-size: var(--text-base);  /* Ensure body uses larger mobile font */
-    line-height: 1.7;
+    font-size: var(--text-base);
+    line-height: 1.6;
   }
 }
 
