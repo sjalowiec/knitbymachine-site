@@ -6,7 +6,7 @@ import "../../styles/global.css";
 
 // Fetch blog posts from GitHub content/blog directory
 let blogPosts = [];
-let errorMessage = '';
+let errorMessage = ''; 
 
 try {
   const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/src/content/blog');
