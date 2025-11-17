@@ -136,11 +136,29 @@ footer .legal-links a:hover::after {
   footer .legal-links {
     flex-wrap: nowrap;
     white-space: nowrap;
-    overflow-x: auto;
   }
 
   footer .legal-links a {
     display: inline-block;
+  }
+}
+
+/* Small mobile screens - stack legal links vertically */
+@media (max-width: 600px) {
+  footer .legal-links {
+    flex-direction: column;
+    gap: 8px;
+    white-space: normal;
+  }
+
+  /* Hide separators on vertical layout */
+  footer .legal-links span {
+    display: none;
+  }
+
+  footer .legal-links a {
+    display: block;
+    margin: 0;
   }
 }
 
