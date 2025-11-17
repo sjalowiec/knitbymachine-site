@@ -55,7 +55,7 @@
 /* ===== CENTERED LOGO ===== */
 .kbm-logo-section {
   text-align: center;
-  padding: 14px 0 10px;
+  padding: 14px 80px 10px 80px;  /* Side padding to prevent hamburger overlap */
   border-bottom: 1px solid var(--ring);
 }
 
@@ -219,26 +219,26 @@
 .kbm-hamburger {
   display: none;
   position: absolute;
-  top: 20px;
+  top: 18px;
   right: 20px;
   flex-direction: column;
-  gap: 6px;
+  gap: 7px;
   background: none;
   border: none;
-  padding: 12px;
+  padding: 14px;
   cursor: pointer;
   z-index: 1300;
-  min-width: 48px;
-  min-height: 48px;
+  min-width: 56px;      /* Larger tap target */
+  min-height: 56px;     /* Larger tap target */
   align-items: center;
   justify-content: center;
 }
 
 .kbm-hamburger span {
-  width: 32px;
-  height: 4px;
+  width: 40px;          /* Bigger bars - easier to see */
+  height: 5px;          /* Thicker bars */
   background: var(--kbm-green);
-  border-radius: 2px;
+  border-radius: 3px;
   transition: all 0.3s ease;
 }
 
