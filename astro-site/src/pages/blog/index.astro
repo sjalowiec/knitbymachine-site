@@ -1,6 +1,7 @@
 ---
 import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
+import SectionHero from "../../components/SectionHero.astro";
 import "../../styles/global.css";
 
 // Fetch blog posts from GitHub content/blog directory
@@ -111,15 +112,12 @@ const schemaData = {
     
     <main class="blog-list">
       <div class="blog-container">
-        <header class="blog-header">
-          <div class="header-content">
-            <div class="header-text">
-              <h1 class="blog-title">{pageTitle}</h1>
-              <p class="blog-subtitle">{pageDescription}</p>
-            </div>
-            <img src="/images/blog_logo.svg" alt="Blog logo" class="blog-logo" />
-          </div>
-        </header>
+        <SectionHero 
+          title={pageTitle} 
+          subtitle={pageDescription}
+          iconPath="/images/blog_logo.svg"
+          iconAlt="Blog"
+        />
 
         {errorMessage ? (
           <div class="error-message">
@@ -171,42 +169,6 @@ const schemaData = {
     max-width: 900px;
     margin: 0 auto;
     padding: 3rem 1.5rem;
-  }
-
-  .blog-header {
-    margin-bottom: 4rem;
-  }
-
-  .header-content {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-  }
-
-  .header-text {
-    flex: 1;
-  }
-
-  .blog-title {
-    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
-    font-size: clamp(2.5rem, 5vw, 3.5rem);
-    font-weight: 700;
-    color: var(--kbm-green, #52682d);
-    margin-bottom: 1rem;
-  }
-
-  .blog-subtitle {
-    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
-    font-size: var(--text-lg, 1.125rem);
-    color: #5a6b47;
-    line-height: 1.6;
-  }
-
-  .blog-logo {
-    width: clamp(120px, 15vw, 180px);
-    height: auto;
-    flex-shrink: 0;
   }
 
   .posts-grid {
