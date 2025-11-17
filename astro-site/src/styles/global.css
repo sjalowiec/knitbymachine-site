@@ -71,18 +71,20 @@ p {
 @media (max-width: 1024px) {
   :root {
     --header-height: 8rem;
-    --text-base: 1.25rem;    /* 20px - much bigger base text */
-    --text-lg: 1.5rem;       /* 24px - larger headings */
-    --text-xl: 1.75rem;      /* 28px - even larger */
-    --text-xxl: 2.25rem;     /* 36px - big headings */
+    --text-base: 1.5rem;     /* 24px - MUCH bigger base text */
+    --text-lg: 1.75rem;      /* 28px - larger headings */
+    --text-xl: 2.25rem;      /* 36px - even larger */
+    --text-xxl: 2.75rem;     /* 44px - big headings */
   }
   
   body {
-    line-height: 1.7;        /* more spacing for readability */
+    font-size: var(--text-base);  /* Apply base font size to body */
+    line-height: 1.7;              /* more spacing for readability */
   }
   
   p {
     margin-bottom: 1.5rem;
+    font-size: var(--text-base);   /* Ensure paragraphs use base size */
   }
 }
 

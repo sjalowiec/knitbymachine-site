@@ -10,23 +10,9 @@
   --kbm-bg: #e9ece7;
   --page-bg: #f7f8f7;
   --ring: #e5e8e0;
-  
-  /* Typography scaling */
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.5rem;
-  --text-xxl: 2.25rem;
 }
 
-/* Mobile typography scaling - SIGNIFICANTLY LARGER for readability */
-@media (max-width: 1024px) {
-  :root {
-    --text-base: 1.375rem;   /* 22px - much bigger base text */
-    --text-lg: 1.625rem;     /* 26px - larger headings */
-    --text-xl: 2rem;         /* 32px - even larger */
-    --text-xxl: 2.5rem;      /* 40px - big headings */
-  }
-}
+/* Typography variables moved to global.css to avoid conflicts */
 
 /* ===== FIXED HEADER ===== */
 .kbm-header-wrap {
