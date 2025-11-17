@@ -58,95 +58,29 @@ footer .footer-mobile {
   display: none;
   max-width: 100%;
   padding: 0 20px;
-}
-
-/* Mobile brand section - always visible */
-footer .footer-brand {
   text-align: center;
-  margin-bottom: 20px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #c3c9b9;
 }
 
-footer .footer-brand h3 {
-  font-weight: 700;
-  font-size: var(--text-lg);
-  color: #384b25;
-  margin: 0 0 8px 0;
-}
-
-footer .footer-brand p {
-  margin: 0;
-  font-size: var(--text-base);
-  color: #3b4b2f;
-}
-
-/* Accordion sections */
-footer .footer-accordion {
-  margin-bottom: 20px;
-}
-
-footer .accordion-item {
-  border-bottom: 1px solid #c3c9b9;
-}
-
-footer .accordion-header {
-  width: 100%;
-  background: none;
-  border: none;
-  padding: 16px 0;
+/* Essential links for mobile */
+footer .footer-mobile-links {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  cursor: pointer;
-  font-family: "Poppins", Arial, sans-serif;
-  min-height: 44px;
-  text-align: left;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
-footer .accordion-header h4 {
-  font-weight: 700;
-  font-size: var(--text-lg);
-  color: #384b25;
-  margin: 0;
-}
-
-footer .accordion-icon {
-  font-size: 1.2em;
-  color: #6a8141;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-  margin-left: 8px;
-}
-
-footer .accordion-item.active .accordion-icon {
-  transform: rotate(180deg);
-}
-
-footer .accordion-content {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.3s ease;
-}
-
-footer .accordion-item.active .accordion-content {
-  max-height: 500px;
-}
-
-footer .accordion-content-inner {
-  padding: 0 0 16px 0;
-}
-
-footer .accordion-content a {
-  display: block;
-  padding: 8px 0;
+footer .footer-mobile-links a {
   color: #3b4b2f;
   text-decoration: none;
   font-size: var(--text-base);
+  font-weight: 600;
   transition: color 0.3s ease;
+  display: inline-block;
 }
 
-footer .accordion-content a:hover {
+footer .footer-mobile-links a:hover {
   color: #6a8141;
   text-decoration: underline;
 }
@@ -163,17 +97,15 @@ footer .footer-bottom {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 footer .legal-links {
   display: flex;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
   gap: 12px;
-  flex-shrink: 0;
-  white-space: nowrap;
 }
 
 footer .legal-links a {
@@ -183,6 +115,7 @@ footer .legal-links a {
   position: relative;
   transition: color 0.3s ease;
   margin: 0;
+  display: inline-block;
 }
 
 footer .legal-links a::after {
@@ -204,6 +137,10 @@ footer .legal-links a:hover::after {
   width: 100%;
 }
 
+footer .legal-links span {
+  color: #4a5a35;
+}
+
 /* ========== RESPONSIVE BREAKPOINTS ========== */
 @media (max-width: 768px) {
   footer .footer-desktop {
@@ -215,10 +152,11 @@ footer .legal-links a:hover::after {
   }
 }
 
-@media (max-width: 360px) {
+/* Small screens - stack legal links vertically to prevent cutoff */
+@media (max-width: 500px) {
   footer .legal-links {
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
   }
 
   footer .legal-links span {
@@ -261,60 +199,12 @@ footer .legal-links a:hover::after {
     </div>
   </div>
 
-  <!-- Mobile Layout (≤768px) with Accordion -->
+  <!-- Mobile Layout (≤768px) - Minimal -->
   <div class="footer-mobile">
-    <!-- Brand Section - Always Visible -->
-    <div class="footer-brand">
-      <h3>Knit by Machine</h3>
-      <p>Practical tools, patterns, and guides for confident machine knitting.</p>
-    </div>
-
-    <!-- Accordion Sections -->
-    <div class="footer-accordion">
-      <!-- Explore -->
-      <div class="accordion-item">
-        <button class="accordion-header" aria-expanded="false" data-testid="accordion-explore">
-          <h4>Explore</h4>
-          <span class="accordion-icon">▾</span>
-        </button>
-        <div class="accordion-content">
-          <div class="accordion-content-inner">
-            <a href="/wizards-catalog" data-testid="footer-mobile-patterns">Patterns</a>
-            <a href="/workshops" data-testid="footer-mobile-workshops">Workshops</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Help & Reference -->
-      <div class="accordion-item">
-        <button class="accordion-header" aria-expanded="false" data-testid="accordion-help">
-          <h4>Help &amp; Reference</h4>
-          <span class="accordion-icon">▾</span>
-        </button>
-        <div class="accordion-content">
-          <div class="accordion-content-inner">
-            <a href="/ana-catalog" data-testid="footer-mobile-ana">Ask 'n Answer</a>
-            <a href="/sizing-charts" data-testid="footer-mobile-sizing">Sizing Charts</a>
-            <a href="/machine-history" data-testid="footer-mobile-history">Machine History</a>
-            <a href="/glossary" data-testid="footer-mobile-glossary">Glossary</a>
-          </div>
-        </div>
-      </div>
-
-      <!-- Connect -->
-      <div class="accordion-item">
-        <button class="accordion-header" aria-expanded="false" data-testid="accordion-connect">
-          <h4>Connect</h4>
-          <span class="accordion-icon">▾</span>
-        </button>
-        <div class="accordion-content">
-          <div class="accordion-content-inner">
-            <a href="/contact" data-testid="footer-mobile-contact">Contact Us</a>
-            <a href="/about" data-testid="footer-mobile-about">About</a>
-            <a href="/membership" data-testid="footer-mobile-membership">Membership</a>
-          </div>
-        </div>
-      </div>
+    <div class="footer-mobile-links">
+      <a href="/contact" data-testid="footer-mobile-contact">Contact Us</a>
+      <a href="/about" data-testid="footer-mobile-about">About</a>
+      <a href="/membership" data-testid="footer-mobile-membership">Membership</a>
     </div>
   </div>
 
@@ -330,33 +220,3 @@ footer .legal-links a:hover::after {
     </div>
   </div>
 </footer>
-
-<script>
-  // Footer accordion functionality for mobile
-  document.addEventListener('DOMContentLoaded', () => {
-    const accordionHeaders = document.querySelectorAll('.accordion-header');
-    
-    accordionHeaders.forEach(header => {
-      header.addEventListener('click', () => {
-        const accordionItem = header.parentElement;
-        const isActive = accordionItem.classList.contains('active');
-        
-        // Close all other accordion items
-        document.querySelectorAll('.accordion-item').forEach(item => {
-          item.classList.remove('active');
-          const btn = item.querySelector('.accordion-header');
-          if (btn) btn.setAttribute('aria-expanded', 'false');
-        });
-        
-        // Toggle current item
-        if (!isActive) {
-          accordionItem.classList.add('active');
-          header.setAttribute('aria-expanded', 'true');
-        } else {
-          accordionItem.classList.remove('active');
-          header.setAttribute('aria-expanded', 'false');
-        }
-      });
-    });
-  });
-</script>
