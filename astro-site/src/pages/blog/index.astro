@@ -51,8 +51,8 @@ try {
   errorMessage = error.message;
 }
 
-const pageTitle = "KBM Blog";
-const pageDescription = "Tips, tutorials, and insights on machine knitting from Sue Jalowiec";
+const pageTitle = "From Sue's desk";
+const pageDescription = "Behind-the-scenes notes, ideas, and practical tips for machine knitters";
 
 // Schema.org structured data for blog list page
 const schemaData = {
@@ -112,8 +112,13 @@ const schemaData = {
     <main class="blog-list">
       <div class="blog-container">
         <header class="blog-header">
-          <h1 class="blog-title">{pageTitle}</h1>
-          <p class="blog-subtitle">{pageDescription}</p>
+          <div class="header-content">
+            <div class="header-text">
+              <h1 class="blog-title">{pageTitle}</h1>
+              <p class="blog-subtitle">{pageDescription}</p>
+            </div>
+            <img src="/images/blog_logo.svg" alt="Blog logo" class="blog-logo" />
+          </div>
         </header>
 
         {errorMessage ? (
@@ -169,8 +174,18 @@ const schemaData = {
   }
 
   .blog-header {
-    text-align: center;
     margin-bottom: 4rem;
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .header-text {
+    flex: 1;
   }
 
   .blog-title {
@@ -186,6 +201,12 @@ const schemaData = {
     font-size: var(--text-lg, 1.125rem);
     color: #5a6b47;
     line-height: 1.6;
+  }
+
+  .blog-logo {
+    width: clamp(120px, 15vw, 180px);
+    height: auto;
+    flex-shrink: 0;
   }
 
   .posts-grid {
@@ -281,6 +302,17 @@ const schemaData = {
     
     .blog-header {
       margin-bottom: 3rem;
+    }
+
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .blog-logo {
+      width: clamp(100px, 20vw, 140px);
+      align-self: flex-end;
     }
     
     .blog-title {
