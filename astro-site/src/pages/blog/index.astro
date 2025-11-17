@@ -8,7 +8,7 @@ let blogPosts = [];
 let errorMessage = '';
 
 try {
-  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/astro-site/src/content/blog');
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/src/content/blog');
   
   if (response.ok) {
     const files = await response.json();
