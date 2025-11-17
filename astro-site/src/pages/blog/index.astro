@@ -33,6 +33,7 @@ try {
             date: data.publishedDate || data.date,
             description: data.excerpt || data.description || '',
             author: data.author || 'Sue Jalowiec',
+            displayOrder: data.displayOrder ?? 100,
           };
         } catch (error) {
           console.error(`Error fetching blog post ${file.name}:`, error);
@@ -42,10 +43,17 @@ try {
     
     const fetchedPosts = await Promise.all(postPromises);
     
-    // Filter out null entries and sort by date (newest first)
+    // Filter out null entries and sort by displayOrder (ascending), then by date (newest first)
     blogPosts = fetchedPosts
       .filter(post => post !== null)
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
+      .sort((a, b) => {
+        // First sort by displayOrder (lower numbers first)
+        if (a.displayOrder !== b.displayOrder) {
+          return a.displayOrder - b.displayOrder;
+        }
+        // If displayOrder is the same, sort by date (newest first)
+        return new Date(b.date) - new Date(a.date);
+      });
   }
 } catch (error) {
   console.error('Error fetching blog posts:', error);

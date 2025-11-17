@@ -3,6 +3,7 @@ export const prerender = false;
 
 import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
+import QAAccordion from "../../components/QAAccordion.astro";
 import "../../styles/global.css";
 import "../../styles/blog.css";
 
@@ -147,7 +148,7 @@ const schemaData = {
         <div class="article-content kbm-post" set:html={post.body} />
 
         {post.qaSection && (
-          <div class="kbm-qa" set:html={post.qaSection} />
+          <QAAccordion qaHTML={post.qaSection} />
         )}
 
         {post.tags && post.tags.length > 0 && (
