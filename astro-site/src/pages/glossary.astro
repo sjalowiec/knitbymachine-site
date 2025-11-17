@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/layout.astro";
+import SectionHero from "../components/SectionHero.astro";
 
 // Helper to normalize image paths - handles full URLs, paths, and bare filenames
 function normalizeGlossaryImagePath(imageValue: string | null | undefined): string | null {
@@ -91,42 +92,13 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       padding: 2rem 1.5rem;
     }
 
-    .header-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
-      flex-wrap: wrap;
-      padding-top: 2rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .header-title {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .header-logo {
-      width: 70px;
-      height: 70px;
-      flex-shrink: 0;
-    }
-
-    h1 {
-      font-size: var(--text-xxl);
-      font-weight: 800;
-      color: #1f2937;
-      margin: 0;
-    }
-
-    .header-search {
+    .glossary-search {
       flex: 1;
       max-width: 400px;
       min-width: 250px;
     }
 
-    .header-search form {
+    .glossary-search form {
       display: flex;
       gap: 0.5rem;
     }
@@ -163,12 +135,6 @@ const description = "Unlock the secrets of machine knitting patterns with this c
       background: var(--kbm-green-2);
     }
 
-    .description {
-      font-size: var(--text-lg);
-      color: #6b7280;
-      margin-bottom: 1.5rem;
-      line-height: 1.6;
-    }
 
     .alphabet-filter {
       position: sticky;
@@ -406,12 +372,7 @@ const description = "Unlock the secrets of machine knitting patterns with this c
         top: var(--header-height);
       }
 
-      .header-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .header-search {
+      .glossary-search {
         max-width: none;
       }
 
@@ -445,32 +406,27 @@ const description = "Unlock the secrets of machine knitting patterns with this c
     }
   </style>
 
-  <div class="container">
-    <div class="header-row">
-      <div class="header-title">
-        <img src="/images/glossary/glossary_logo.svg" alt="Glossary logo" class="header-logo" />
-        <h1>{title}</h1>
-      </div>
-      <div class="header-search">
-        <form method="get" action="/glossary" id="searchForm">
-          <input
-            type="text"
-            name="q"
-            placeholder="Search terms..."
-            class="kbm-search-input"
-            id="searchInput"
-          />
-          <button type="submit" class="kbm-search-btn" aria-label="Search">
-            <i class="fa fa-search"></i>
-          </button>
-        </form>
-      </div>
+  <SectionHero 
+    title={title} 
+    subtitle={description}
+    iconPath="/images/glossary/glossary_logo.svg"
+    iconAlt="Glossary"
+  >
+    <div slot="toolbar" class="glossary-search">
+      <form method="get" action="/glossary" id="searchForm">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search terms..."
+          class="kbm-search-input"
+          id="searchInput"
+        />
+        <button type="submit" class="kbm-search-btn" aria-label="Search">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
     </div>
-    
-    <p class="description">
-      {description}
-    </p>
-  </div>
+  </SectionHero>
   
   <div class="alphabet-filter">
     <div class="alphabet">
