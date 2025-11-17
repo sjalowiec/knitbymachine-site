@@ -346,74 +346,74 @@
   
   /* Mobile font size overrides - Make all text significantly larger */
   .page-header h1 {
-    font-size: 2.5rem;        /* Bigger heading on mobile */
+    font-size: 2.75rem;       /* Match --text-xxl mobile (44px) */
   }
   
   .page-header p {
-    font-size: 1.375rem;      /* Match --text-base mobile */
+    font-size: 1.5rem;        /* Match --text-base mobile (24px) */
   }
   
   .video-button {
-    font-size: 1.2rem;        /* Bigger buttons */
+    font-size: 1.35rem;       /* Bigger buttons */
     padding: 0.75rem 1.25rem;
   }
   
   .section-title {
-    font-size: 1.75rem;       /* Bigger section headings */
+    font-size: 2rem;          /* Bigger section headings */
   }
   
   .unit-btn {
-    font-size: 1.25rem;       /* Bigger toggle buttons */
+    font-size: 1.4rem;        /* Bigger toggle buttons */
     padding: 0.75rem 1.75rem;
   }
   
   .input-group label {
-    font-size: 1.2rem;        /* Bigger labels */
+    font-size: 1.35rem;       /* Bigger labels */
   }
   
   .input-group input,
   .input-group select {
-    font-size: 1.375rem;      /* Bigger input text */
+    font-size: 1.5rem;        /* Match --text-base mobile (24px) */
     padding: 1rem;
   }
   
   .checkbox-group input[type="checkbox"] {
-    width: 24px;              /* Bigger checkboxes */
-    height: 24px;
+    width: 26px;              /* Bigger checkboxes */
+    height: 26px;
   }
   
   .checkbox-group label {
-    font-size: 1.375rem;      /* Bigger checkbox labels */
+    font-size: 1.5rem;        /* Match --text-base mobile (24px) */
   }
   
   .info-box {
-    font-size: 1.25rem;       /* Bigger info boxes */
+    font-size: 1.4rem;        /* Bigger info boxes */
     padding: 1.25rem;
   }
   
   .pattern-card h3 {
-    font-size: 1.625rem;      /* Bigger card headings */
+    font-size: 1.75rem;       /* Bigger card headings */
   }
   
   .pattern-card h4 {
-    font-size: 1.375rem;      /* Bigger subheadings */
+    font-size: 1.5rem;        /* Match --text-base mobile (24px) */
   }
   
   .pattern-card p,
   .pattern-card li {
-    font-size: 1.375rem;      /* Bigger body text */
+    font-size: 1.5rem;        /* Match --text-base mobile (24px) */
   }
   
   .diagram-container h3 {
-    font-size: 1.625rem;      /* Bigger diagram headings */
+    font-size: 1.75rem;       /* Bigger diagram headings */
   }
   
   .calculate-btn {
-    font-size: 1.5rem;        /* Bigger calculate button */
+    font-size: 1.65rem;       /* Bigger calculate button */
     padding: 1.25rem 2rem;
   }
   
   .print-footer {
-    font-size: 1.125rem;      /* Bigger footer text */
+    font-size: 1.25rem;       /* Bigger footer text */
   }
 }

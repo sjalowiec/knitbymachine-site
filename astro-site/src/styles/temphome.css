@@ -214,12 +214,12 @@
   }
 
   .click-word {
-    font-size: 1.6em;       /* Bigger emphasized text on mobile */
+    font-size: 1.7em;       /* Bigger emphasized text on mobile */
   }
   
   .click-icon {
-    width: 32px;            /* Bigger icon on mobile */
-    height: 32px;
+    width: 36px;            /* Bigger icon on mobile */
+    height: 36px;
   }
   
   .early-access {
