@@ -1,6 +1,6 @@
 {
   "title": "Join me on the journey",
-  "author": "Sue",
+  "author": "Sue Jalowiec",
   "category": "Basics & Setup",
   "tags": [
     "advanced"
@@ -10,8 +10,8 @@
   "imageAlt": "alt text",
   "metaTitle": "meta title",
   "metaDescription": " meta description",
-  "body": "this is my content\n<br>\n<b>this is bold</b>\n<ul>\n<li>lkjsfldkjl </li>\n<li>lkjl; lj</li>\n</ul>",
+  "body": "<p>this is my content <br><strong>this is bold</strong></p><ul><li><p>lkjsfldkjl</p></li><li><p>lkjl; lj</p></li></ul><p></p>",
   "isDraft": false,
   "publishedDate": "2025-11-13",
-  "pendingPublish": false
+  "pendingPublish": true
 }
