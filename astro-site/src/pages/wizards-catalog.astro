@@ -10,7 +10,7 @@ let entries = [];
 let errorMessage = '';
 
 try {
-  const wizardsDir = fileURLToPath(new URL('../../../../src/content/wizards', import.meta.url));
+  const wizardsDir = fileURLToPath(new URL('../../content/wizards', import.meta.url));
   const files = fs.readdirSync(wizardsDir);
   
   const allEntries = files
