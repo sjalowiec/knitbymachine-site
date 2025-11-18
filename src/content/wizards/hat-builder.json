@@ -17,10 +17,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
+  "iconUrl": "https://www.knitbymachine.com/images/hat.svg",
   "metaTitle": "",
   "metaDescription": "",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2024-11-14",
-  "pendingPublish": false
+  "pendingPublish": true
 }
