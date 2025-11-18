@@ -1,0 +1,389 @@
+You are working in my existing Astro project for Knit by Machine (KBM).
+I want you to create a Triangle Pattern Helper page – an interactive pattern generator (I call it a “pattern”, not a wizard) for knitting triangular shapes on a flat-bed knitting machine.
+
+1. General project context
+
+Framework: Astro
+
+Styling: use my existing global CSS and utility classes where possible, including my KBM CSS variables (for example: --kbm-green, --kbm-bg, etc.).
+
+I already have shared layout elements:
+
+A Header component
+
+A Footer component
+
+Do NOT re-invent global layout or colors; instead:
+
+Import and use the existing Header and Footer components the same way other main pages do.
+
+Use simple, clean card-style sections, standard form controls, and buttons that fit with the rest of the site.
+
+No emojis or cute icons.
+
+2. File to create
+
+Create a new Astro page at:
+
+src/pages/patterns/triangle.astro
+
+This page will be the Triangle Pattern Helper (a pattern that behaves like a calculator).
+
+3. Page purpose (copy & tone)
+
+This page should:
+
+Help a machine knitter plan a triangle shape based on:
+
+Desired bottom width (cast-on edge)
+
+Desired depth (from bottom edge up to the point)
+
+Their gauge (stitches/rows per inch)
+
+Maximum needles available on their machine
+
+Decide if the triangle:
+
+Fits in one piece, or
+
+Needs to be knit in two pieces with a seam
+
+Offer shape options and generate clear, text-based pattern instructions (no charts needed).
+
+Tone & copy style:
+
+Friendly, clear, and practical.
+
+Short sentences and helpful microcopy.
+
+Avoid “fix/learn/discover” type language.
+
+Emphasize “You can…” and “Here’s how…”
+
+Use this wording (you can adjust lightly for flow, but keep the meaning):
+
+Page title: “Triangle Pattern Helper”
+
+Main heading on the page: “Triangle Pattern Helper”
+
+Short intro paragraph:
+
+“Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.”
+
+Subheading above the form:
+
+“Step 1: Enter your triangle details”
+
+Subheading above results:
+
+“Step 2: Your pattern outline”
+
+4. Inputs and UI layout
+
+Use a single column main content area. Inside it, have a card-style box for the form and a card-style box for the results.
+
+Inputs (all required):
+
+Width along the bottom (cast-on edge)
+
+Label: “Bottom width at cast-on (inches)”
+
+Type: number, step: 0.25, min: 1
+
+Depth / length
+
+Label: “Depth from bottom edge to point (inches)”
+
+Type: number, step: 0.25, min: 1
+
+Stitch gauge
+
+Label: “Stitch gauge (stitches per inch)”
+
+Type: number, step: 0.1, min: 0.1
+
+Row gauge
+
+Label: “Row gauge (rows per inch)”
+
+Type: number, step: 0.1, min: 0.1
+
+Needles available
+
+Label: “Maximum needles available on this bed”
+
+Type: number, step: 1, min: 20
+
+Add a small helper text line:
+
+“Use the number of needles you comfortably work with for a wide piece on your machine.”
+
+Add a primary button:
+
+Text: “Build my triangle pattern”
+
+Disabled until all inputs are valid numbers.
+
+Styling notes:
+
+Use my existing form styles if available (matching other pages).
+
+Use a subtle card background and border radius similar to other KBM cards.
+
+No clutter; lots of breathing room.
+
+5. Implementation style
+
+Use vanilla JS in the same .astro file for interactivity (no React/Vue/Svelte).
+
+In the <script type="module"> section, attach an event listener to the form’s submit event.
+
+Prevent page reload, run the calculations, and then update a “results” area with generated HTML.
+
+Use semantic HTML:
+
+<main> around content
+
+<section> for form and for results
+
+Proper headings (<h1>, <h2>, <h3>)
+
+6. Triangle logic and math (UPSIDE DOWN VERSION)
+
+We are knitting from the wide bottom edge (cast-on) up to the point.
+
+Work entirely in inches for this first version.
+
+Define the following variables from user input:
+
+const bottomWidthInches; // desired bottom width (cast-on edge)
+const depthInches;       // desired depth from bottom edge to point
+const stitchGauge;       // stitches per inch
+const rowGauge;          // rows per inch
+const needlesAvailable;  // maximum needles user says they can use
+
+
+Define constants inside the script:
+
+const SAFETY_MARGIN_NEEDLES = 10;  // reserve a few needles for edges & comfort
+const SEAM_ALLOWANCE_STS = 4;     // seam stitches for two-piece options
+const END_STS = 3;                // small stitch count at the top point
+
+
+Calculate:
+
+const widthSts = Math.round(bottomWidthInches * stitchGauge); // cast-on stitches at bottom
+const effectiveMax = needlesAvailable - SAFETY_MARGIN_NEEDLES;
+const fitsInOnePiece = widthSts <= effectiveMax;
+
+const halfWidthSts = Math.ceil(widthSts / 2) + SEAM_ALLOWANCE_STS; // per piece for 2-piece options
+const halfFits = halfWidthSts <= effectiveMax;
+
+const depthRows = Math.round(depthInches * rowGauge);
+
+
+Validation:
+
+If any value is invalid/NaN, or effectiveMax < 20, show a friendly error message in the results and stop.
+
+7. Decision logic and messages
+7.1. If the triangle fits in one piece
+
+If fitsInOnePiece is true:
+
+Show a short summary at the top of the results area, e.g.:
+
+“Your triangle cast-on will be approximately X stitches wide and about Y rows deep. With Z needles available, this will fit on your machine in a single piece.”
+
+Replace X with widthSts, Y with depthRows, Z with needlesAvailable.
+
+Then show two pattern options as tabs or simple buttons:
+
+Option A: “Single isosceles triangle”
+
+Option B: “Single right-angle triangle”
+
+Implementation detail: you can implement these as:
+
+Two <button type="button"> elements above the pattern details.
+
+Clicking one sets the “active” option and updates the text below.
+
+Isosceles triangle (single piece) – shaping math, bottom-up
+
+Treat this as knitting from the wide bottom edge up to the point, decreasing at both edges.
+
+Cast on widthSts stitches at the bottom edge.
+
+You want to reach END_STS stitches at the top point.
+
+Each decrease row removes 2 stitches (one at each edge).
+
+Use:
+
+const decsNeededIso = Math.max(widthSts - END_STS, 0) / 2;
+
+
+Guard against edge cases: if decsNeededIso <= 0, handle gently and set rowsPerDecIsoRounded = 1.
+
+Then:
+
+const rowsPerDecIso = depthRows / decsNeededIso;
+const rowsPerDecIsoRounded = Math.max(1, Math.round(rowsPerDecIso));
+
+
+Use this in the text:
+
+“Cast on widthSts stitches across the bottom edge.”
+
+“Decrease 1 stitch at each edge every rowsPerDecIsoRounded rows.”
+
+“Continue until you have about END_STS stitches remaining or you have worked about depthRows rows.”
+
+In the explanation, mention that this creates an isosceles triangle with the bottom edge as the widest side.
+
+Right-angle triangle (single piece) – shaping math, bottom-up
+
+Treat this as knitting from the wide bottom edge up to the point, decreasing on one side only.
+
+Cast on widthSts stitches at the bottom.
+
+You want to reach END_STS stitches at the top, shaping along one edge.
+
+Use:
+
+const decsNeededRt = Math.max(widthSts - END_STS, 0);
+const rowsPerDecRt = depthRows / decsNeededRt;
+const rowsPerDecRtRounded = Math.max(1, Math.round(rowsPerDecRt));
+
+
+Use this in the text:
+
+“Cast on widthSts stitches along the bottom edge.”
+
+“Decrease 1 stitch at the designated shaping edge only every rowsPerDecRtRounded rows.”
+
+“Work until you have about END_STS stitches remaining and approximately depthRows rows in total.”
+
+In the explanatory copy, mention that this creates a right-angle triangle with the non-shaped side remaining straight.
+
+7.2. If the triangle does NOT fit in one piece
+
+If fitsInOnePiece is false:
+
+At the top of results, show:
+
+“Your full triangle cast-on would need about widthSts stitches, but you set a limit of needlesAvailable needles (effective maximum effectiveMax). Let’s work this as two pieces with a seam.”
+
+If halfFits is false (meaning even half doesn’t fit), show:
+
+“Even half the width (with seam allowance) would need about halfWidthSts stitches, which is more than your effective maximum of effectiveMax needles.
+Try a narrower width, a shallower depth, or plan the triangle in more than two panels.”
+
+Do not generate shaping in this case.
+
+If halfFits is true, offer the two options as buttons/tabs:
+
+Option A: “Two mirrored halves (isosceles triangle)”
+
+Option B: “Two right-angle triangles”
+
+Same UI logic as above (click to switch text).
+
+Two mirrored halves (isosceles triangle) – shaping math, bottom-up
+
+Each half is effectively a right triangle worked from a half-width bottom edge up to the point.
+
+Cast-on for each half: halfWidthSts stitches.
+
+Work to the same depth: depthRows rows.
+
+Use:
+
+const decsNeededHalfIso = Math.max(halfWidthSts - END_STS, 0);
+const rowsPerDecHalfIso = depthRows / decsNeededHalfIso;
+const rowsPerDecHalfIsoRounded = Math.max(1, Math.round(rowsPerDecHalfIso));
+
+
+Pattern text for each half:
+
+“For each half, cast on halfWidthSts stitches along the bottom edge.”
+
+“Decrease 1 stitch at the outside edge only every rowsPerDecHalfIsoRounded rows.”
+
+“Work until you have about END_STS stitches and approximately depthRows rows.”
+
+“Knit a second, mirrored piece.”
+
+“Join the two straight (non-shaped) edges with a seam to form the full isosceles triangle with a seam up the center.”
+
+Two right-angle triangles – shaping math, bottom-up
+
+The shaping math can reuse the same halfWidthSts, depthRows, and rowsPerDecHalfIsoRounded, with different assembly instructions:
+
+Each triangle is worked from a half-width bottom edge up to a point.
+
+The seam is along the long diagonal (hypotenuse).
+
+Pattern text:
+
+“Knit 2 identical right-angle triangles.”
+
+“For each, cast on halfWidthSts stitches along the bottom edge.”
+
+“Decrease 1 stitch at the shaping edge every rowsPerDecHalfIsoRounded rows until you have about END_STS stitches and approximately depthRows rows.”
+
+“Join the two triangles along their long edges (the hypotenuse) to form the full triangle, with the combined bottom edges forming the full width.”
+
+8. Results layout
+
+Reserve a <div id="triangle-results"> in the template where the script will inject results.
+
+On initial page load, show a short note like:
+
+“Your pattern outline will appear here after you enter your details.”
+
+After calculations, replace the contents with:
+
+A short summary block (triangle fits or needs two pieces).
+
+The option buttons (if applicable).
+
+The detailed pattern text below, clearly broken into paragraphs and bullet lists.
+
+Use headings like:
+
+“Summary”
+
+“Option A: Single isosceles triangle”
+
+“Option B: Single right-angle triangle”
+
+“Option A: Two mirrored halves”
+
+“Option B: Two right-angle triangles”
+
+9. Validation & UX details
+
+On submit, if any field is empty or invalid, show a small inline error message above the form or near the results area, in clear language:
+
+“Please enter all measurements and gauges before building your pattern.”
+
+Avoid alert() popups. Keep all feedback in the page.
+
+Format numbers in the text with toLocaleString or Math.round where appropriate so they don’t show too many decimals (e.g., show “68 stitches” or “every 3 rows” instead of long decimals).
+
+10. Final check
+
+Before you finish:
+
+Ensure the page:
+
+Imports and uses the shared Header and Footer without breaking any existing layout.
+
+Uses my existing fonts and colors (no new font imports).
+
+Has clean, commented JS explaining each step of the math so I can tweak it later.
+
+The final output should be a single complete triangle.astro file that I can copy and paste into my project.
