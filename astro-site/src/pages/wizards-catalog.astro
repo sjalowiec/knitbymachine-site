@@ -204,8 +204,8 @@ const description = "Browse all our knitting calculators and interactive tools t
   }
 
   .filter-icon img {
-    width: 90px;
-    height: 90px;
+    width: 50px;
+    height: 50px;
     object-fit: contain;
     display: block;
     transition: all 0.3s ease;
@@ -412,6 +412,21 @@ const description = "Browse all our knitting calculators and interactive tools t
 
   :global(.wizard-card.card-hidden) {
     display: none;
+  }
+
+  :global(.wizard-card-icon) {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+
+  :global(.wizard-card:hover .wizard-card-icon) {
+    opacity: 1;
   }
 
   /* Scroll to Top Button */
@@ -684,6 +699,7 @@ const description = "Browse all our knitting calculators and interactive tools t
                   class="wizard-card"
                   data-title="${entry.title.toLowerCase()}"
                   data-tags="${entry.tags.join(' ').toLowerCase()}">
+                  ${entry.iconUrl ? `<img src="${entry.iconUrl}" alt="${entry.title} icon" class="wizard-card-icon" />` : ''}
                   <h3 class="wizard-card-title">${entry.title}</h3>
                   ${entry.description ? `<p class="wizard-card-description">${entry.description}</p>` : ''}
                   ${entry.accessLevel !== 'free' ? `<span class="wizard-card-badge ${badgeClass}">${badgeText}</span>` : ''}
