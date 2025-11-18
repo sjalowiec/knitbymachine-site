@@ -202,6 +202,16 @@ import '../../styles/wizard.css';
   color: var(--kbm-green);
 }
 
+/* NEW: Construction recommendation card styling */
+.recommendation-card {
+  background: linear-gradient(135deg, rgba(82, 104, 45, 0.08) 0%, rgba(82, 104, 45, 0.03) 100%);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border: 2px solid var(--kbm-green-2);
+  box-shadow: 0 2px 4px rgba(82, 104, 45, 0.1);
+}
+
 .option-buttons {
   display: flex;
   gap: 1rem;
@@ -990,6 +1000,75 @@ import '../../styles/wizard.css';
     `;
   }
 
+  // ============================================================================
+  // NEW: Decide construction method based on needle capacity
+  // ============================================================================
+  /**
+   * Evaluates whether the triangle fits on the needlebed and recommends
+   * the best construction method.
+   * 
+   * @param {number} widthSts - Full width in stitches
+   * @param {number} effectiveMax - Effective maximum needles available
+   * @param {number} halfWidthSts - Half width in stitches (with seam allowance)
+   * @returns {string} - One of: 'side-to-side', 'two-piece-center-back', 'corner-to-corner'
+   */
+  function decideConstructionMethod(widthSts, effectiveMax, halfWidthSts) {
+    // Rule 1: If full width fits, recommend side-to-side (right triangle) construction
+    if (widthSts <= effectiveMax) {
+      return 'side-to-side';
+    }
+    
+    // Rule 2: If half width fits, recommend two-piece center-back (isosceles) construction
+    if (halfWidthSts <= effectiveMax) {
+      return 'two-piece-center-back';
+    }
+    
+    // Rule 3: Otherwise, recommend corner-to-corner construction
+    return 'corner-to-corner';
+  }
+
+  /**
+   * Generates the construction method recommendation card
+   * 
+   * @param {string} method - The construction method returned by decideConstructionMethod()
+   * @returns {string} - HTML for the recommendation card
+   */
+  function generateConstructionRecommendation(method) {
+    let title = '';
+    let description = '';
+    
+    switch (method) {
+      case 'side-to-side':
+        title = 'Side-to-Side Triangle';
+        description = 'Your width fits your needlebed. This triangle will be knit from the point outward, increasing on one edge.';
+        break;
+      
+      case 'two-piece-center-back':
+        title = 'Two-Piece Center-Back Triangle';
+        description = 'Your full width is wider than your needlebed, but each half fits comfortably. Knit two matching triangles and seam them at center back.';
+        break;
+      
+      case 'corner-to-corner':
+        title = 'Corner-to-Corner Triangle';
+        description = 'Your chosen width exceeds your needlebed, even when divided in half. Corner-to-corner construction allows you to knit the full size without exceeding your machine\'s limits.';
+        break;
+    }
+    
+    return `
+      <div class="recommendation-card" data-testid="construction-recommendation">
+        <h3 style="margin-top: 0; color: var(--kbm-green); font-size: 1.1rem;">
+          🎯 Your Recommended Construction
+        </h3>
+        <h4 style="margin: 0.5rem 0; color: #374151; font-size: 1rem; font-weight: 600;">
+          ${title}
+        </h4>
+        <p style="margin: 0.75rem 0 0 0; color: #4b5563; line-height: 1.6;">
+          ${description}
+        </p>
+      </div>
+    `;
+  }
+
   // Render results
   function renderResults(data) {
     const { 
@@ -999,10 +1078,16 @@ import '../../styles/wizard.css';
       effectiveMax, 
       fitsInOnePiece, 
       halfWidthSts, 
-      halfFits 
+      halfFits,
+      constructionMethod  // NEW: Include construction method from calculationData
     } = data;
 
     let html = '';
+    
+    // NEW: Add construction recommendation at the top of results
+    if (constructionMethod) {
+      html += generateConstructionRecommendation(constructionMethod);
+    }
 
     if (fitsInOnePiece) {
       // Single piece fits
@@ -1123,6 +1208,11 @@ import '../../styles/wizard.css';
     const halfFits = halfWidthSts <= effectiveMax;
     const depthRows = Math.round(depth * rowGauge);
 
+    // NEW: Determine the recommended construction method based on needle capacity
+    // This evaluates whether the triangle should be knit side-to-side, as two pieces,
+    // or corner-to-corner based on how the width fits the needlebed
+    const constructionMethod = decideConstructionMethod(widthSts, effectiveMax, halfWidthSts);
+
     // Store calculation data (including original measurements in current units for diagrams)
     calculationData = {
       widthSts,
@@ -1133,13 +1223,14 @@ import '../../styles/wizard.css';
       halfWidthSts,
       halfFits,
       bottomWidth: bottomWidthInput_value,
-      depth: depthInput_value
+      depth: depthInput_value,
+      constructionMethod  // NEW: Store the recommended construction method
     };
 
     // Reset to option A
     currentOption = 'A';
 
-    // Render results
+    // Render results (now includes construction recommendation)
     renderResults(calculationData);
   }
 
