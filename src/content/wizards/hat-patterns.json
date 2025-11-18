@@ -3,7 +3,7 @@
   "slug": "hat-patterns",
   "hero": "",
   "description": "hats are fast and fun to knit.  ;kj ;lkadfj;lk; k\n<ul>\n<Li>lj;jl</li>\n<li>lkfj;lj l</li>\n</ul>",
-  "category": "Patterns",
+  "category": "pattern",
   "tags": [],
   "videoUrl": "",
   "accessLevel": "free",
@@ -17,5 +17,5 @@
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-14",
-  "pendingPublish": false
+  "pendingPublish": true
 }
