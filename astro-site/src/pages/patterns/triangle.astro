@@ -1,0 +1,571 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout 
+  title="Triangle Pattern Helper | Knit by Machine" 
+  description="Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.">
+
+<style>
+.wizard-page {
+  padding-top: 120px;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.page-header {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.page-header h1 {
+  color: var(--kbm-green);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+  margin: 0;
+}
+
+.wizard-container {
+  max-width: 700px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.section-title {
+  color: var(--kbm-green);
+  font-size: 1.25rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+}
+
+.input-group {
+  margin-bottom: 1.5rem;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-size: 0.95rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: var(--kbm-green);
+}
+
+.input-group input::placeholder {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+.helper-text {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 1rem;
+  background: var(--kbm-green);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #445626;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.submit-btn:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}
+
+.results-container {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  background: rgba(82, 104, 45, 0.05);
+  border-radius: 8px;
+  border-left: 4px solid var(--kbm-green);
+}
+
+.results-placeholder {
+  color: #6b7280;
+  font-size: 0.95rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.error-message {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.summary-box {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 6px;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+.summary-box p {
+  margin: 0;
+  color: #374151;
+  line-height: 1.6;
+}
+
+.summary-box strong {
+  color: var(--kbm-green);
+}
+
+.option-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.option-btn {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  background: white;
+  color: #374151;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.option-btn:hover {
+  border-color: var(--kbm-green-2);
+  background: #f9fafb;
+}
+
+.option-btn.active {
+  background: var(--kbm-green);
+  color: white;
+  border-color: var(--kbm-green);
+}
+
+.pattern-details {
+  background: white;
+  padding: 1.25rem;
+  border-radius: 6px;
+}
+
+.pattern-details h3 {
+  color: var(--kbm-green);
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+}
+
+.pattern-details p {
+  margin: 0 0 0.75rem 0;
+  color: #374151;
+  line-height: 1.7;
+}
+
+.pattern-details ul {
+  margin: 0.5rem 0 1rem 1.5rem;
+  padding: 0;
+}
+
+.pattern-details li {
+  margin-bottom: 0.5rem;
+  color: #374151;
+  line-height: 1.6;
+}
+
+@media (max-width: 640px) {
+  .wizard-container {
+    padding: 1.5rem;
+  }
+  
+  .option-buttons {
+    flex-direction: column;
+  }
+}
+</style>
+
+<div class="wizard-page">
+  <div class="page-header">
+    <h1>Triangle Pattern Helper</h1>
+    <p>Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.</p>
+  </div>
+
+  <div class="wizard-container">
+    <h2 class="section-title">Step 1: Enter your triangle details</h2>
+    
+    <form id="triangle-form">
+      <div class="input-group">
+        <label for="bottom-width" data-testid="label-bottom-width">Bottom width at cast-on (inches)</label>
+        <input 
+          type="number" 
+          id="bottom-width" 
+          data-testid="input-bottom-width"
+          step="0.25" 
+          min="1" 
+          placeholder="e.g., 20"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="depth" data-testid="label-depth">Depth from bottom edge to point (inches)</label>
+        <input 
+          type="number" 
+          id="depth" 
+          data-testid="input-depth"
+          step="0.25" 
+          min="1" 
+          placeholder="e.g., 15"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="stitch-gauge" data-testid="label-stitch-gauge">Stitch gauge (stitches per inch)</label>
+        <input 
+          type="number" 
+          id="stitch-gauge" 
+          data-testid="input-stitch-gauge"
+          step="0.1" 
+          min="0.1" 
+          placeholder="e.g., 5.5"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="row-gauge" data-testid="label-row-gauge">Row gauge (rows per inch)</label>
+        <input 
+          type="number" 
+          id="row-gauge" 
+          data-testid="input-row-gauge"
+          step="0.1" 
+          min="0.1" 
+          placeholder="e.g., 7.0"
+          required
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="needles" data-testid="label-needles">Maximum needles available on this bed</label>
+        <input 
+          type="number" 
+          id="needles" 
+          data-testid="input-needles"
+          step="1" 
+          min="20" 
+          placeholder="e.g., 200"
+          required
+        />
+        <div class="helper-text">Use the number of needles you comfortably work with for a wide piece on your machine.</div>
+      </div>
+
+      <button type="submit" class="submit-btn" data-testid="button-submit">Build my triangle pattern</button>
+    </form>
+
+    <div class="results-container">
+      <h2 class="section-title">Step 2: Your pattern outline</h2>
+      <div id="triangle-results" data-testid="results-container">
+        <div class="results-placeholder">Your pattern outline will appear here after you enter your details.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+  // Constants
+  const SAFETY_MARGIN_NEEDLES = 10;
+  const SEAM_ALLOWANCE_STS = 4;
+  const END_STS = 3;
+
+  // Get form elements
+  const form = document.getElementById('triangle-form');
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const resultsDiv = document.getElementById('triangle-results');
+
+  // Input elements
+  const bottomWidthInput = document.getElementById('bottom-width');
+  const depthInput = document.getElementById('depth');
+  const stitchGaugeInput = document.getElementById('stitch-gauge');
+  const rowGaugeInput = document.getElementById('row-gauge');
+  const needlesInput = document.getElementById('needles');
+
+  // State
+  let currentOption = 'A';
+  let calculationData = null;
+
+  // Validate form inputs
+  function validateInputs() {
+    const allInputs = [bottomWidthInput, depthInput, stitchGaugeInput, rowGaugeInput, needlesInput];
+    const allValid = allInputs.every(input => {
+      const value = parseFloat(input.value);
+      return !isNaN(value) && value >= parseFloat(input.min);
+    });
+    submitBtn.disabled = !allValid;
+  }
+
+  // Add input listeners for validation
+  [bottomWidthInput, depthInput, stitchGaugeInput, rowGaugeInput, needlesInput].forEach(input => {
+    input.addEventListener('input', validateInputs);
+  });
+
+  // Initial validation
+  validateInputs();
+
+  // Format number for display
+  function formatNum(num) {
+    return Math.round(num).toLocaleString();
+  }
+
+  // Generate isosceles pattern (single piece)
+  function generateIsoscelesPattern(data) {
+    const { widthSts, depthRows } = data;
+    const decsNeededIso = Math.max(widthSts - END_STS, 0) / 2;
+    const rowsPerDecIso = decsNeededIso > 0 ? depthRows / decsNeededIso : 1;
+    const rowsPerDecIsoRounded = Math.max(1, Math.round(rowsPerDecIso));
+
+    return `
+      <h3>Single isosceles triangle</h3>
+      <p>This creates an isosceles triangle with the bottom edge as the widest side, decreasing evenly at both edges as you knit upward.</p>
+      <ul>
+        <li>Cast on <strong>${formatNum(widthSts)} stitches</strong> across the bottom edge.</li>
+        <li>Decrease 1 stitch at each edge every <strong>${formatNum(rowsPerDecIsoRounded)} rows</strong>.</li>
+        <li>Continue until you have about <strong>${END_STS} stitches</strong> remaining or you have worked about <strong>${formatNum(depthRows)} rows</strong>.</li>
+        <li>Bind off remaining stitches to complete the point.</li>
+      </ul>
+    `;
+  }
+
+  // Generate right-angle pattern (single piece)
+  function generateRightAnglePattern(data) {
+    const { widthSts, depthRows } = data;
+    const decsNeededRt = Math.max(widthSts - END_STS, 0);
+    const rowsPerDecRt = decsNeededRt > 0 ? depthRows / decsNeededRt : 1;
+    const rowsPerDecRtRounded = Math.max(1, Math.round(rowsPerDecRt));
+
+    return `
+      <h3>Single right-angle triangle</h3>
+      <p>This creates a right-angle triangle with the non-shaped side remaining straight and one edge shaped to form the diagonal.</p>
+      <ul>
+        <li>Cast on <strong>${formatNum(widthSts)} stitches</strong> along the bottom edge.</li>
+        <li>Decrease 1 stitch at the designated shaping edge only every <strong>${formatNum(rowsPerDecRtRounded)} rows</strong>.</li>
+        <li>Work until you have about <strong>${END_STS} stitches</strong> remaining and approximately <strong>${formatNum(depthRows)} rows</strong> in total.</li>
+        <li>Bind off remaining stitches to complete the point.</li>
+      </ul>
+      <p>The non-shaped edge will remain straight, creating the right angle.</p>
+    `;
+  }
+
+  // Generate two mirrored halves pattern
+  function generateTwoMirroredPattern(data) {
+    const { halfWidthSts, depthRows } = data;
+    const decsNeededHalfIso = Math.max(halfWidthSts - END_STS, 0);
+    const rowsPerDecHalfIso = decsNeededHalfIso > 0 ? depthRows / decsNeededHalfIso : 1;
+    const rowsPerDecHalfIsoRounded = Math.max(1, Math.round(rowsPerDecHalfIso));
+
+    return `
+      <h3>Two mirrored halves (isosceles triangle)</h3>
+      <p>Each half is a right triangle worked from the bottom edge up to the point. The two pieces will be joined along their straight edges to form a complete isosceles triangle.</p>
+      <ul>
+        <li>For each half, cast on <strong>${formatNum(halfWidthSts)} stitches</strong> along the bottom edge.</li>
+        <li>Decrease 1 stitch at the outside edge only every <strong>${formatNum(rowsPerDecHalfIsoRounded)} rows</strong>.</li>
+        <li>Work until you have about <strong>${END_STS} stitches</strong> and approximately <strong>${formatNum(depthRows)} rows</strong>.</li>
+        <li>Bind off remaining stitches.</li>
+        <li>Knit a second, mirrored piece.</li>
+        <li>Join the two straight (non-shaped) edges with a seam to form the full isosceles triangle with a seam up the center.</li>
+      </ul>
+    `;
+  }
+
+  // Generate two right-angle triangles pattern
+  function generateTwoRightAnglesPattern(data) {
+    const { halfWidthSts, depthRows } = data;
+    const decsNeededHalfIso = Math.max(halfWidthSts - END_STS, 0);
+    const rowsPerDecHalfIso = decsNeededHalfIso > 0 ? depthRows / decsNeededHalfIso : 1;
+    const rowsPerDecHalfIsoRounded = Math.max(1, Math.round(rowsPerDecHalfIso));
+
+    return `
+      <h3>Two right-angle triangles</h3>
+      <p>Knit two identical right-angle triangles and join them along their long edges (the hypotenuse) to form the full triangle.</p>
+      <ul>
+        <li>For each triangle, cast on <strong>${formatNum(halfWidthSts)} stitches</strong> along the bottom edge.</li>
+        <li>Decrease 1 stitch at the shaping edge every <strong>${formatNum(rowsPerDecHalfIsoRounded)} rows</strong> until you have about <strong>${END_STS} stitches</strong> and approximately <strong>${formatNum(depthRows)} rows</strong>.</li>
+        <li>Bind off remaining stitches.</li>
+        <li>Knit a second identical triangle.</li>
+        <li>Join the two triangles along their long edges (the hypotenuse) to form the full triangle, with the combined bottom edges forming the full width.</li>
+      </ul>
+    `;
+  }
+
+  // Render results
+  function renderResults(data) {
+    const { 
+      widthSts, 
+      depthRows, 
+      needlesAvailable, 
+      effectiveMax, 
+      fitsInOnePiece, 
+      halfWidthSts, 
+      halfFits 
+    } = data;
+
+    let html = '';
+
+    if (fitsInOnePiece) {
+      // Single piece fits
+      html += `
+        <div class="summary-box" data-testid="summary-single-piece">
+          <p>Your triangle cast-on will be approximately <strong>${formatNum(widthSts)} stitches</strong> wide and about <strong>${formatNum(depthRows)} rows</strong> deep. With <strong>${formatNum(needlesAvailable)} needles</strong> available, this will fit on your machine in a single piece.</p>
+        </div>
+        <div class="option-buttons">
+          <button class="option-btn ${currentOption === 'A' ? 'active' : ''}" data-option="A" data-testid="button-option-a">Option A: Single isosceles triangle</button>
+          <button class="option-btn ${currentOption === 'B' ? 'active' : ''}" data-option="B" data-testid="button-option-b">Option B: Single right-angle triangle</button>
+        </div>
+        <div class="pattern-details" data-testid="pattern-details">
+          ${currentOption === 'A' ? generateIsoscelesPattern(data) : generateRightAnglePattern(data)}
+        </div>
+      `;
+    } else {
+      // Two pieces needed
+      if (!halfFits) {
+        // Even half doesn't fit
+        html += `
+          <div class="error-message" data-testid="error-too-wide">
+            Your full triangle cast-on would need about <strong>${formatNum(widthSts)} stitches</strong>, but you set a limit of <strong>${formatNum(needlesAvailable)} needles</strong> (effective maximum <strong>${formatNum(effectiveMax)}</strong>). Even half the width (with seam allowance) would need about <strong>${formatNum(halfWidthSts)} stitches</strong>, which is more than your effective maximum of <strong>${formatNum(effectiveMax)} needles</strong>.
+            <br><br>
+            Try a narrower width, a shallower depth, or plan the triangle in more than two panels.
+          </div>
+        `;
+      } else {
+        // Two pieces will work
+        html += `
+          <div class="summary-box" data-testid="summary-two-pieces">
+            <p>Your full triangle cast-on would need about <strong>${formatNum(widthSts)} stitches</strong>, but you set a limit of <strong>${formatNum(needlesAvailable)} needles</strong> (effective maximum <strong>${formatNum(effectiveMax)}</strong>). Let's work this as two pieces with a seam.</p>
+          </div>
+          <div class="option-buttons">
+            <button class="option-btn ${currentOption === 'A' ? 'active' : ''}" data-option="A" data-testid="button-option-a">Option A: Two mirrored halves</button>
+            <button class="option-btn ${currentOption === 'B' ? 'active' : ''}" data-option="B" data-testid="button-option-b">Option B: Two right-angle triangles</button>
+          </div>
+          <div class="pattern-details" data-testid="pattern-details">
+            ${currentOption === 'A' ? generateTwoMirroredPattern(data) : generateTwoRightAnglesPattern(data)}
+          </div>
+        `;
+      }
+    }
+
+    resultsDiv.innerHTML = html;
+
+    // Add event listeners to option buttons
+    const optionButtons = resultsDiv.querySelectorAll('.option-btn');
+    optionButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        currentOption = btn.dataset.option;
+        renderResults(calculationData);
+      });
+    });
+  }
+
+  // Form submit handler
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    // Get input values
+    const bottomWidthInches = parseFloat(bottomWidthInput.value);
+    const depthInches = parseFloat(depthInput.value);
+    const stitchGauge = parseFloat(stitchGaugeInput.value);
+    const rowGauge = parseFloat(rowGaugeInput.value);
+    const needlesAvailable = parseFloat(needlesInput.value);
+
+    // Validate inputs
+    if (isNaN(bottomWidthInches) || isNaN(depthInches) || isNaN(stitchGauge) || 
+        isNaN(rowGauge) || isNaN(needlesAvailable)) {
+      resultsDiv.innerHTML = `
+        <div class="error-message" data-testid="error-invalid">
+          Please enter all measurements and gauges before building your pattern.
+        </div>
+      `;
+      return;
+    }
+
+    // Calculate
+    const widthSts = Math.round(bottomWidthInches * stitchGauge);
+    const effectiveMax = needlesAvailable - SAFETY_MARGIN_NEEDLES;
+
+    if (effectiveMax < 20) {
+      resultsDiv.innerHTML = `
+        <div class="error-message" data-testid="error-needles">
+          The effective maximum needles (after safety margin) is too low. Please enter a higher needle count.
+        </div>
+      `;
+      return;
+    }
+
+    const fitsInOnePiece = widthSts <= effectiveMax;
+    const halfWidthSts = Math.ceil(widthSts / 2) + SEAM_ALLOWANCE_STS;
+    const halfFits = halfWidthSts <= effectiveMax;
+    const depthRows = Math.round(depthInches * rowGauge);
+
+    // Store calculation data
+    calculationData = {
+      widthSts,
+      depthRows,
+      needlesAvailable,
+      effectiveMax,
+      fitsInOnePiece,
+      halfWidthSts,
+      halfFits
+    };
+
+    // Reset to option A
+    currentOption = 'A';
+
+    // Render results
+    renderResults(calculationData);
+  });
+</script>
+
+</BaseLayout>
