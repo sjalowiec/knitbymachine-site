@@ -1,0 +1,83 @@
+I already have a working triangle wizard.
+Please do not rebuild or replace the UI or file structure.
+I want to add and update the construction-selection logic only.
+
+The wizard already collects these inputs:
+
+Bottom Width (in inches)
+
+Depth (in inches)
+
+Stitch Gauge (stitches per 4")
+
+Row Gauge (rows per 4")
+
+Maximum Needles Available
+
+Please add a new function called decideConstructionMethod() and use the following EXACT rules.
+Keep all existing components, styling, and “lego block” conventions in place.
+
+⭐ CONSTRUCTION METHOD LOGIC (IMPORTANT — UPDATED)
+Step 1 — Convert inches to stitches
+const widthStitches = (bottomWidthInches * stitchGauge) / 4;
+const depthStitches = (depthInches * stitchGauge) / 4;
+
+⭐ Rule 1 — Side-to-Side Triangle (Right Triangle)
+
+If the full width fits on the needlebed:
+
+if (widthStitches <= maxNeedles) {
+    return "side-to-side";
+}
+
+⭐ Rule 2 — Two-Piece Center-Back Triangle
+
+If the full width is too large, but each half fits:
+
+if ((widthStitches / 2) <= maxNeedles) {
+    return "two-piece-center-back";
+}
+
+⭐ Rule 3 — Corner-to-Corner (C2C) Triangle
+
+Only allow C2C if the depth ALSO fits on the needlebed.
+This is the required new rule.
+
+if (depthStitches <= maxNeedles) {
+    return "corner-to-corner";
+}
+
+⭐ Rule 4 — Fallback (Depth too large for C2C)
+
+If width is too large AND depth is too large:
+
+return "two-piece-center-back";
+
+
+(Two-piece construction is the only way to achieve both the width and depth.)
+
+⭐ Integration Instructions
+
+Call decideConstructionMethod() inside your existing calculation/update handler.
+
+Display the chosen construction method in the results section using the wizard’s existing layout and design.
+
+Do not remove or replace any existing UI or code unless absolutely required.
+
+Add clear inline comments explaining each rule and the reason behind it.
+
+⭐ Display text for each method
+
+Use the existing results card style to show one of these:
+
+side-to-side
+
+“Your width fits your needlebed. This triangle is knit from a point, increasing on one edge.”
+
+two-piece-center-back
+
+“Your width exceeds your needlebed. Each half will fit, so knit two matching triangles and seam at center back.”
+
+corner-to-corner
+
+“Your width exceeds your needlebed, but the depth fits. Corner-to-corner lets you knit the full size without exceeding machine limits.”
