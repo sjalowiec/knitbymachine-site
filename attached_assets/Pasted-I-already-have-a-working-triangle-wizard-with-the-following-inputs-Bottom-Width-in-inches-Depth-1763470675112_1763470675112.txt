@@ -1,0 +1,121 @@
+I already have a working triangle wizard with the following inputs:
+
+Bottom Width (in inches)
+
+Depth (in inches)
+
+Stitch Gauge (stitches per 4")
+
+Row Gauge (rows per 4")
+
+Maximum Needles Available on the Bed
+
+Do not rebuild the wizard.
+Do not delete any existing structure, styling, or modular “lego block” components already in place.
+Please add the following logic on top of the existing code.
+
+1. Add a new function called decideConstructionMethod()
+
+This function should evaluate the user’s inputs and return one of three construction paths:
+
+"side-to-side"
+
+"two-piece-center-back"
+
+"corner-to-corner"
+
+Logic rules:
+
+First, convert width in inches to required stitches:
+
+const stitchesNeeded = (bottomWidthInches * stitchGauge) / 4;
+
+
+Then apply the rules:
+
+Rule 1 — Side-to-Side Triangle (Right Triangle)
+
+If the full stitch count fits on the needlebed:
+
+if (stitchesNeeded <= maxNeedles) {
+    return "side-to-side";
+}
+
+Rule 2 — Two-Piece Center-Back Triangle (Isosceles)
+
+If half the width fits on the bed:
+
+if ((stitchesNeeded / 2) <= maxNeedles) {
+    return "two-piece-center-back";
+}
+
+Rule 3 — Corner-to-Corner Triangle
+
+Default fallback when neither 1 nor 2 is possible:
+
+return "corner-to-corner";
+
+2. Call this function whenever the user updates any input
+
+Use the same event handlers already in your wizard (e.g., input, change, or calculate buttons).
+Do not modify user interface events — just hook into them.
+
+3. Display the result in the existing Results/Output area
+
+Create a new result card without changing the existing layout.
+
+Add text like:
+
+Your Recommended Construction
+
+(Show one of the following based on the result:)
+
+If side-to-side
+
+“Your width fits your needlebed.
+This triangle will be knit from the point outward, increasing on one edge.”
+
+If two-piece center-back
+
+“Your full width is wider than your needlebed, but each half fits comfortably.
+Knit two matching triangles and seam them at center back.”
+
+If corner-to-corner
+
+“Your chosen width exceeds your needlebed, even when divided in half.
+Corner-to-corner construction allows you to knit the full size without exceeding your machine’s limits.”
+
+4. Keep all styling consistent with the existing design
+
+Keep:
+
+colors
+
+fonts
+
+spacing
+
+input style
+
+KBM visual structure
+
+Do not introduce new UI conventions.
+Use my existing “lego blocks” where appropriate (inches/cm toggle, gauge formatting, info cards, etc.).
+
+5. Do NOT remove or rewrite any code unless absolutely necessary
+
+This should be an additive enhancement, not a rebuild.
+
+If small refactoring is required, explain it in comments.
+
+6. After implementation
+
+Please:
+
+add inline comments explaining each step
+
+confirm that the logic is triggered on input changes
+
+ensure no console errors
+
+keep the wizard functioning as it currently does
