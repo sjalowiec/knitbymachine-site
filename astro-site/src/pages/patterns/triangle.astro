@@ -7,7 +7,7 @@ import '../../styles/wizard.css';
 ---
 
 <BaseLayout 
-  title="Triangle Pattern Helper | Knit by Machine" 
+  title="Tailor-Made Triangle Shawl | Knit by Machine" 
   description="Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.">
 
 <style>
@@ -41,14 +41,6 @@ import '../../styles/wizard.css';
   padding: 0.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   z-index: 10;
-}
-
-.svg-input-box label {
-  display: block;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--kbm-green);
-  margin-bottom: 0.25rem;
 }
 
 .svg-input-box input {
@@ -105,14 +97,6 @@ import '../../styles/wizard.css';
   border-radius: 8px;
   padding: 1rem;
   margin-top: 1.5rem;
-}
-
-.input-needles label {
-  display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--kbm-green);
-  margin-bottom: 0.5rem;
 }
 
 .input-needles input {
@@ -312,20 +296,77 @@ import '../../styles/wizard.css';
     flex-direction: column;
   }
   
+  .triangle-diagram {
+    padding: 1rem;
+  }
+  
   .svg-input-box {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
+    padding: 0.4rem;
   }
   
   .svg-input-box input {
-    width: 80px;
-    font-size: 0.85rem;
+    width: 70px;
+    font-size: 0.8rem;
+    padding: 0.3rem;
+  }
+  
+  /* Adjust positioned input boxes for mobile */
+  .input-width {
+    bottom: -15px;
+  }
+  
+  .input-depth {
+    right: -15px;
+    top: 35%;
+  }
+  
+  /* Stack gauge grid vertically on mobile */
+  .gauge-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
+  
+  /* Adjust input-needles for mobile */
+  .input-needles {
+    padding: 0.75rem;
+  }
+  
+  .input-needles input {
+    padding: 0.6rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* Additional breakpoint for very small screens */
+@media (max-width: 400px) {
+  .triangle-diagram {
+    padding: 0.75rem;
+  }
+  
+  .svg-input-box {
+    font-size: 0.75rem;
+    padding: 0.35rem;
+  }
+  
+  .svg-input-box input {
+    width: 60px;
+    font-size: 0.75rem;
+  }
+  
+  .input-width {
+    bottom: -20px;
+  }
+  
+  .input-depth {
+    right: -20px;
   }
 }
 </style>
 
 <div class="wizard-page">
   <div class="page-header">
-    <h1>Triangle Pattern Helper</h1>
+    <h1>Tailor-Made Triangle Shawl</h1>
     <p>Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.</p>
   </div>
 
@@ -390,28 +431,26 @@ import '../../styles/wizard.css';
           
           <!-- Width Input (bottom) -->
           <div class="svg-input-box input-width">
-            <label for="bottom-width" id="label-width">Bottom Width</label>
             <input 
               type="number" 
               id="bottom-width" 
               data-testid="input-bottom-width"
               step="0.25" 
               min="1" 
-              placeholder="20"
+              placeholder="Bottom Width"
               required
             />
           </div>
           
           <!-- Depth Input (right side) -->
           <div class="svg-input-box input-depth">
-            <label for="depth" id="label-depth">Depth</label>
             <input 
               type="number" 
               id="depth" 
               data-testid="input-depth"
               step="0.25" 
               min="1" 
-              placeholder="15"
+              placeholder="Depth"
               required
             />
           </div>
@@ -420,27 +459,25 @@ import '../../styles/wizard.css';
         <!-- Gauge Inputs (below diagram) -->
         <div class="gauge-grid" style="margin-top: 1.5rem;">
           <div class="svg-input-box">
-            <label for="stitch-gauge" id="label-stitch-gauge">Stitch Gauge</label>
             <input 
               type="number" 
               id="stitch-gauge" 
               data-testid="input-stitch-gauge"
               step="0.1" 
               min="0.1" 
-              placeholder="22"
+              placeholder="Stitch Gauge"
               required
             />
           </div>
           
           <div class="svg-input-box">
-            <label for="row-gauge" id="label-row-gauge">Row Gauge</label>
             <input 
               type="number" 
               id="row-gauge" 
               data-testid="input-row-gauge"
               step="0.1" 
               min="0.1" 
-              placeholder="28"
+              placeholder="Row Gauge"
               required
             />
           </div>
@@ -448,14 +485,13 @@ import '../../styles/wizard.css';
         
         <!-- Needles Input -->
         <div class="input-needles">
-          <label for="needles">Maximum needles available on this bed</label>
           <input 
             type="number" 
             id="needles" 
             data-testid="input-needles"
             step="1" 
             min="20" 
-            placeholder="200"
+            placeholder="Maximum needles available on this bed"
             required
           />
           <div class="helper-text">Use the number of needles you comfortably work with for a wide piece on your machine.</div>
@@ -507,33 +543,15 @@ import '../../styles/wizard.css';
   let currentOption = 'A';
   let calculationData = null;
 
-  // Update labels and placeholders based on unit
-  function updateLabelsForUnit() {
-    const widthLabel = document.getElementById('label-width');
-    const depthLabel = document.getElementById('label-depth');
-    const stitchLabel = document.getElementById('label-stitch-gauge');
-    const rowLabel = document.getElementById('label-row-gauge');
+  // Update placeholders based on unit
+  function updatePlaceholdersForUnit() {
+    const unit = currentUnit === 'inches' ? 'in' : 'cm';
+    const gaugeRef = currentUnit === 'inches' ? '4in' : '10cm';
     
-    const unit = currentUnit === 'inches' ? '"' : 'cm';
-    const gaugeRef = currentUnit === 'inches' ? '4"' : '10cm';
-    
-    widthLabel.textContent = `Bottom Width (${unit})`;
-    depthLabel.textContent = `Depth (${unit})`;
-    stitchLabel.textContent = `Stitch Gauge (per ${gaugeRef})`;
-    rowLabel.textContent = `Row Gauge (per ${gaugeRef})`;
-    
-    // Update placeholders
-    if (currentUnit === 'inches') {
-      bottomWidthInput.placeholder = '20';
-      depthInput.placeholder = '15';
-      stitchGaugeInput.placeholder = '22';
-      rowGaugeInput.placeholder = '28';
-    } else {
-      bottomWidthInput.placeholder = '50';
-      depthInput.placeholder = '38';
-      stitchGaugeInput.placeholder = '55';
-      rowGaugeInput.placeholder = '70';
-    }
+    bottomWidthInput.placeholder = `Bottom Width (${unit})`;
+    depthInput.placeholder = `Depth (${unit})`;
+    stitchGaugeInput.placeholder = `Stitch Gauge (per ${gaugeRef})`;
+    rowGaugeInput.placeholder = `Row Gauge (per ${gaugeRef})`;
   }
 
   // Convert input values when unit changes
@@ -584,8 +602,8 @@ import '../../styles/wizard.css';
     // Convert existing input values
     convertInputValues(oldUnit, newUnit);
     
-    // Update labels
-    updateLabelsForUnit();
+    // Update placeholders
+    updatePlaceholdersForUnit();
     
     // If results are visible, recalculate
     if (calculationData) {
@@ -598,7 +616,7 @@ import '../../styles/wizard.css';
   cmBtn.addEventListener('click', () => handleUnitToggle('cm'));
 
   // Initialize UI
-  updateLabelsForUnit();
+  updatePlaceholdersForUnit();
   inchesBtn.classList.toggle('active', currentUnit === 'inches');
   cmBtn.classList.toggle('active', currentUnit === 'cm');
 
@@ -628,7 +646,7 @@ import '../../styles/wizard.css';
   // Format length with unit
   function formatLength(value) {
     const formatted = currentUnit === 'inches' ? value.toFixed(1) : Math.round(value).toString();
-    const symbol = currentUnit === 'inches' ? '"' : 'cm';
+    const symbol = currentUnit === 'inches' ? 'in' : 'cm';
     return `${formatted}${symbol}`;
   }
 
