@@ -12,11 +12,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
-  "iconUrl": "https://www.knitbymachine.com/images/shawl.svg",
+  "iconUrl": "https://www.knitbymachine.com/images/shawl.svg ",
   "metaTitle": "",
   "metaDescription": "Create a triangle shawl that fits your machine in 3 easy steps",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
