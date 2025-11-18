@@ -1,5 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
+
+// Import shared wizard styles
+import '../../styles/wizard.css';
 ---
 
 <BaseLayout 
@@ -7,84 +11,125 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   description="Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.">
 
 <style>
-.wizard-page {
-  padding-top: 120px;
-  padding-bottom: 3rem;
-  min-height: 100vh;
-  background: var(--page-bg);
-}
-
-.page-header {
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
-}
-
-.page-header h1 {
-  color: var(--kbm-green);
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-  text-align: center;
-}
-
-.page-header p {
-  color: #6b7280;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  text-align: center;
-  margin: 0;
-}
-
-.wizard-container {
-  max-width: 700px;
-  margin: 0 auto;
-  background: white;
+/* Triangle-specific styles */
+.triangle-diagram {
+  max-width: 600px;
+  margin: 2rem auto;
   padding: 2rem;
+  background: rgba(82, 104, 45, 0.03);
   border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  border: 2px dashed #d1d5db;
 }
 
-.section-title {
-  color: var(--kbm-green);
-  font-size: 1.25rem;
-  font-weight: 700;
-  margin: 0 0 1.5rem 0;
-}
-
-.input-group {
-  margin-bottom: 1.5rem;
-}
-
-.input-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #374151;
-  font-size: 0.95rem;
-}
-
-.input-group input {
+.triangle-svg-container {
+  position: relative;
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
+  max-width: 500px;
+  margin: 0 auto;
 }
 
-.input-group input:focus {
+.triangle-svg {
+  width: 100%;
+  height: auto;
+}
+
+.svg-input-box {
+  position: absolute;
+  background: white;
+  border: 2px solid var(--kbm-green);
+  border-radius: 6px;
+  padding: 0.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.svg-input-box label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--kbm-green);
+  margin-bottom: 0.25rem;
+}
+
+.svg-input-box input {
+  width: 100px;
+  padding: 0.4rem;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.svg-input-box input:focus {
   outline: none;
   border-color: var(--kbm-green);
 }
 
-.input-group input::placeholder {
-  color: #9ca3af;
+/* Position input boxes on the SVG */
+.input-width {
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.input-depth {
+  right: -10px;
+  top: 40%;
+  transform: translateY(-50%);
+}
+
+.input-gauge {
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.gauge-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+.gauge-grid .svg-input-box {
+  position: relative;
+  transform: none;
+  left: auto;
+  right: auto;
+  top: auto;
+  bottom: auto;
+}
+
+.input-needles {
+  position: relative;
+  background: white;
+  border: 2px solid var(--kbm-green);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-top: 1.5rem;
+}
+
+.input-needles label {
+  display: block;
   font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--kbm-green);
+  margin-bottom: 0.5rem;
+}
+
+.input-needles input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 6px;
+  font-size: 1rem;
+}
+
+.input-needles input:focus {
+  outline: none;
+  border-color: var(--kbm-green);
 }
 
 .helper-text {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: #6b7280;
   margin-top: 0.25rem;
   font-style: italic;
@@ -101,7 +146,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  margin-top: 1rem;
+  margin-top: 1.5rem;
 }
 
 .submit-btn:hover:not(:disabled) {
@@ -225,6 +270,15 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   .option-buttons {
     flex-direction: column;
   }
+  
+  .svg-input-box {
+    font-size: 0.85rem;
+  }
+  
+  .svg-input-box input {
+    width: 80px;
+    font-size: 0.85rem;
+  }
 }
 </style>
 
@@ -235,77 +289,137 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   </div>
 
   <div class="wizard-container">
-    <h2 class="section-title">Step 1: Enter your triangle details</h2>
-    
-    <form id="triangle-form">
-      <div class="input-group">
-        <label for="bottom-width" data-testid="label-bottom-width">Bottom width at cast-on (inches)</label>
-        <input 
-          type="number" 
-          id="bottom-width" 
-          data-testid="input-bottom-width"
-          step="0.25" 
-          min="1" 
-          placeholder="e.g., 20"
-          required
-        />
+    <div class="calculator-card">
+      <!-- Unit Toggle -->
+      <UnitToggle id="triangle" />
+
+      <h2 class="section-title">Step 1: Enter your triangle details</h2>
+      
+      <!-- Visual Triangle Diagram with Inputs -->
+      <div class="triangle-diagram">
+        <div class="triangle-svg-container">
+          <svg class="triangle-svg" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+            <!-- Main triangle -->
+            <polygon points="200,40 350,260 50,260" 
+                     fill="none" 
+                     stroke="#52682d" 
+                     stroke-width="3"/>
+            
+            <!-- Bottom width measurement line -->
+            <line x1="50" y1="275" x2="350" y2="275" 
+                  stroke="#52682d" 
+                  stroke-width="2" 
+                  marker-start="url(#arrow)" 
+                  marker-end="url(#arrow)"/>
+            <circle cx="50" cy="275" r="4" fill="#52682d"/>
+            <circle cx="350" cy="275" r="4" fill="#52682d"/>
+            
+            <!-- Depth measurement line -->
+            <line x1="365" y1="260" x2="365" y2="40" 
+                  stroke="#52682d" 
+                  stroke-width="2" 
+                  marker-start="url(#arrow)" 
+                  marker-end="url(#arrow)"/>
+            <circle cx="365" cy="260" r="4" fill="#52682d"/>
+            <circle cx="365" cy="40" r="4" fill="#52682d"/>
+            
+            <!-- Gauge swatch indicator (small square) -->
+            <rect x="90" y="80" width="40" height="40" 
+                  fill="none" 
+                  stroke="#738c52" 
+                  stroke-width="2" 
+                  stroke-dasharray="4,4"/>
+            <text x="110" y="75" 
+                  font-size="12" 
+                  fill="#52682d" 
+                  text-anchor="middle" 
+                  font-weight="600">Gauge</text>
+            
+            <!-- Arrow markers -->
+            <defs>
+              <marker id="arrow" markerWidth="10" markerHeight="10" 
+                      refX="5" refY="5" orient="auto">
+                <circle cx="5" cy="5" r="3" fill="#52682d"/>
+              </marker>
+            </defs>
+          </svg>
+          
+          <!-- Width Input (bottom) -->
+          <div class="svg-input-box input-width">
+            <label for="bottom-width" id="label-width">Bottom Width</label>
+            <input 
+              type="number" 
+              id="bottom-width" 
+              data-testid="input-bottom-width"
+              step="0.25" 
+              min="1" 
+              placeholder="20"
+              required
+            />
+          </div>
+          
+          <!-- Depth Input (right side) -->
+          <div class="svg-input-box input-depth">
+            <label for="depth" id="label-depth">Depth</label>
+            <input 
+              type="number" 
+              id="depth" 
+              data-testid="input-depth"
+              step="0.25" 
+              min="1" 
+              placeholder="15"
+              required
+            />
+          </div>
+        </div>
+        
+        <!-- Gauge Inputs (below diagram) -->
+        <div class="gauge-grid" style="margin-top: 1.5rem;">
+          <div class="svg-input-box">
+            <label for="stitch-gauge" id="label-stitch-gauge">Stitch Gauge</label>
+            <input 
+              type="number" 
+              id="stitch-gauge" 
+              data-testid="input-stitch-gauge"
+              step="0.1" 
+              min="0.1" 
+              placeholder="22"
+              required
+            />
+          </div>
+          
+          <div class="svg-input-box">
+            <label for="row-gauge" id="label-row-gauge">Row Gauge</label>
+            <input 
+              type="number" 
+              id="row-gauge" 
+              data-testid="input-row-gauge"
+              step="0.1" 
+              min="0.1" 
+              placeholder="28"
+              required
+            />
+          </div>
+        </div>
+        
+        <!-- Needles Input -->
+        <div class="input-needles">
+          <label for="needles">Maximum needles available on this bed</label>
+          <input 
+            type="number" 
+            id="needles" 
+            data-testid="input-needles"
+            step="1" 
+            min="20" 
+            placeholder="200"
+            required
+          />
+          <div class="helper-text">Use the number of needles you comfortably work with for a wide piece on your machine.</div>
+        </div>
       </div>
 
-      <div class="input-group">
-        <label for="depth" data-testid="label-depth">Depth from bottom edge to point (inches)</label>
-        <input 
-          type="number" 
-          id="depth" 
-          data-testid="input-depth"
-          step="0.25" 
-          min="1" 
-          placeholder="e.g., 15"
-          required
-        />
-      </div>
-
-      <div class="input-group">
-        <label for="stitch-gauge" data-testid="label-stitch-gauge">Stitch gauge (stitches per inch)</label>
-        <input 
-          type="number" 
-          id="stitch-gauge" 
-          data-testid="input-stitch-gauge"
-          step="0.1" 
-          min="0.1" 
-          placeholder="e.g., 5.5"
-          required
-        />
-      </div>
-
-      <div class="input-group">
-        <label for="row-gauge" data-testid="label-row-gauge">Row gauge (rows per inch)</label>
-        <input 
-          type="number" 
-          id="row-gauge" 
-          data-testid="input-row-gauge"
-          step="0.1" 
-          min="0.1" 
-          placeholder="e.g., 7.0"
-          required
-        />
-      </div>
-
-      <div class="input-group">
-        <label for="needles" data-testid="label-needles">Maximum needles available on this bed</label>
-        <input 
-          type="number" 
-          id="needles" 
-          data-testid="input-needles"
-          step="1" 
-          min="20" 
-          placeholder="e.g., 200"
-          required
-        />
-        <div class="helper-text">Use the number of needles you comfortably work with for a wide piece on your machine.</div>
-      </div>
-
-      <button type="submit" class="submit-btn" data-testid="button-submit">Build my triangle pattern</button>
-    </form>
+      <button type="button" id="submit-btn" class="submit-btn" data-testid="button-submit">Build my triangle pattern</button>
+    </div>
 
     <div class="results-container">
       <h2 class="section-title">Step 2: Your pattern outline</h2>
@@ -316,15 +430,22 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   </div>
 </div>
 
-<script type="module">
+<!-- Load wizard utilities -->
+<script is:inline src="/js/wizard-utils.js"></script>
+
+<script>
   // Constants
   const SAFETY_MARGIN_NEEDLES = 10;
   const SEAM_ALLOWANCE_STS = 4;
   const END_STS = 3;
+  const INCH_TO_CM = 2.54;
+
+  // Unit state
+  const unitStore = WizardUtils.createUnitStore('triangle-unit', 'inches');
+  let currentUnit = unitStore.get();
 
   // Get form elements
-  const form = document.getElementById('triangle-form');
-  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitBtn = document.getElementById('submit-btn');
   const resultsDiv = document.getElementById('triangle-results');
 
   // Input elements
@@ -334,16 +455,115 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   const rowGaugeInput = document.getElementById('row-gauge');
   const needlesInput = document.getElementById('needles');
 
+  // Unit toggle buttons
+  const inchesBtn = document.getElementById('triangle-btn-inches');
+  const cmBtn = document.getElementById('triangle-btn-cm');
+
   // State
   let currentOption = 'A';
   let calculationData = null;
+
+  // Update labels and placeholders based on unit
+  function updateLabelsForUnit() {
+    const widthLabel = document.getElementById('label-width');
+    const depthLabel = document.getElementById('label-depth');
+    const stitchLabel = document.getElementById('label-stitch-gauge');
+    const rowLabel = document.getElementById('label-row-gauge');
+    
+    const unit = currentUnit === 'inches' ? '"' : 'cm';
+    const gaugeRef = currentUnit === 'inches' ? '4"' : '10cm';
+    
+    widthLabel.textContent = `Bottom Width (${unit})`;
+    depthLabel.textContent = `Depth (${unit})`;
+    stitchLabel.textContent = `Stitch Gauge (per ${gaugeRef})`;
+    rowLabel.textContent = `Row Gauge (per ${gaugeRef})`;
+    
+    // Update placeholders
+    if (currentUnit === 'inches') {
+      bottomWidthInput.placeholder = '20';
+      depthInput.placeholder = '15';
+      stitchGaugeInput.placeholder = '22';
+      rowGaugeInput.placeholder = '28';
+    } else {
+      bottomWidthInput.placeholder = '50';
+      depthInput.placeholder = '38';
+      stitchGaugeInput.placeholder = '55';
+      rowGaugeInput.placeholder = '70';
+    }
+  }
+
+  // Convert input values when unit changes
+  function convertInputValues(fromUnit, toUnit) {
+    // Convert dimension inputs
+    if (bottomWidthInput.value) {
+      const converted = WizardUtils.convertLength(parseFloat(bottomWidthInput.value), fromUnit, toUnit);
+      bottomWidthInput.value = currentUnit === 'inches' ? converted.toFixed(2) : Math.round(converted);
+    }
+    if (depthInput.value) {
+      const converted = WizardUtils.convertLength(parseFloat(depthInput.value), fromUnit, toUnit);
+      depthInput.value = currentUnit === 'inches' ? converted.toFixed(2) : Math.round(converted);
+    }
+    
+    // Convert gauge inputs (they're measured per different standards)
+    if (stitchGaugeInput.value) {
+      const currentGauge = parseFloat(stitchGaugeInput.value);
+      if (fromUnit === 'inches' && toUnit === 'cm') {
+        // Converting from "per 4 inches" to "per 10cm"
+        stitchGaugeInput.value = (currentGauge * 2.5).toFixed(1);
+      } else if (fromUnit === 'cm' && toUnit === 'inches') {
+        // Converting from "per 10cm" to "per 4 inches"
+        stitchGaugeInput.value = (currentGauge / 2.5).toFixed(1);
+      }
+    }
+    if (rowGaugeInput.value) {
+      const currentGauge = parseFloat(rowGaugeInput.value);
+      if (fromUnit === 'inches' && toUnit === 'cm') {
+        rowGaugeInput.value = (currentGauge * 2.5).toFixed(1);
+      } else if (fromUnit === 'cm' && toUnit === 'inches') {
+        rowGaugeInput.value = (currentGauge / 2.5).toFixed(1);
+      }
+    }
+  }
+
+  // Handle unit toggle
+  function handleUnitToggle(newUnit) {
+    if (newUnit === currentUnit) return;
+    
+    const oldUnit = currentUnit;
+    currentUnit = newUnit;
+    unitStore.set(newUnit);
+    
+    // Update button states
+    inchesBtn.classList.toggle('active', newUnit === 'inches');
+    cmBtn.classList.toggle('active', newUnit === 'cm');
+    
+    // Convert existing input values
+    convertInputValues(oldUnit, newUnit);
+    
+    // Update labels
+    updateLabelsForUnit();
+    
+    // If results are visible, recalculate
+    if (calculationData) {
+      handleSubmit();
+    }
+  }
+
+  // Set up unit toggle event listeners
+  inchesBtn.addEventListener('click', () => handleUnitToggle('inches'));
+  cmBtn.addEventListener('click', () => handleUnitToggle('cm'));
+
+  // Initialize UI
+  updateLabelsForUnit();
+  inchesBtn.classList.toggle('active', currentUnit === 'inches');
+  cmBtn.classList.toggle('active', currentUnit === 'cm');
 
   // Validate form inputs
   function validateInputs() {
     const allInputs = [bottomWidthInput, depthInput, stitchGaugeInput, rowGaugeInput, needlesInput];
     const allValid = allInputs.every(input => {
       const value = parseFloat(input.value);
-      return !isNaN(value) && value >= parseFloat(input.min);
+      return !isNaN(value) && value >= parseFloat(input.min || 0);
     });
     submitBtn.disabled = !allValid;
   }
@@ -359,6 +579,13 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
   // Format number for display
   function formatNum(num) {
     return Math.round(num).toLocaleString();
+  }
+
+  // Format length with unit
+  function formatLength(value) {
+    const formatted = currentUnit === 'inches' ? value.toFixed(1) : Math.round(value).toString();
+    const symbol = currentUnit === 'inches' ? '"' : 'cm';
+    return `${formatted}${symbol}`;
   }
 
   // Generate isosceles pattern (single piece)
@@ -509,19 +736,17 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     });
   }
 
-  // Form submit handler
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
+  // Submit handler
+  function handleSubmit() {
     // Get input values
-    const bottomWidthInches = parseFloat(bottomWidthInput.value);
-    const depthInches = parseFloat(depthInput.value);
-    const stitchGauge = parseFloat(stitchGaugeInput.value);
-    const rowGauge = parseFloat(rowGaugeInput.value);
+    let bottomWidth = parseFloat(bottomWidthInput.value);
+    let depth = parseFloat(depthInput.value);
+    let stitchGauge = parseFloat(stitchGaugeInput.value);
+    let rowGauge = parseFloat(rowGaugeInput.value);
     const needlesAvailable = parseFloat(needlesInput.value);
 
     // Validate inputs
-    if (isNaN(bottomWidthInches) || isNaN(depthInches) || isNaN(stitchGauge) || 
+    if (isNaN(bottomWidth) || isNaN(depth) || isNaN(stitchGauge) || 
         isNaN(rowGauge) || isNaN(needlesAvailable)) {
       resultsDiv.innerHTML = `
         <div class="error-message" data-testid="error-invalid">
@@ -531,8 +756,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
       return;
     }
 
+    // Convert to inches for calculations if needed
+    if (currentUnit === 'cm') {
+      bottomWidth = bottomWidth / INCH_TO_CM;
+      depth = depth / INCH_TO_CM;
+      // Gauge is per 10cm, convert to per inch
+      stitchGauge = stitchGauge / 10 * INCH_TO_CM;
+      rowGauge = rowGauge / 10 * INCH_TO_CM;
+    } else {
+      // Gauge is per 4 inches, convert to per inch
+      stitchGauge = stitchGauge / 4;
+      rowGauge = rowGauge / 4;
+    }
+
     // Calculate
-    const widthSts = Math.round(bottomWidthInches * stitchGauge);
+    const widthSts = Math.round(bottomWidth * stitchGauge);
     const effectiveMax = needlesAvailable - SAFETY_MARGIN_NEEDLES;
 
     if (effectiveMax < 20) {
@@ -547,7 +785,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
     const fitsInOnePiece = widthSts <= effectiveMax;
     const halfWidthSts = Math.ceil(widthSts / 2) + SEAM_ALLOWANCE_STS;
     const halfFits = halfWidthSts <= effectiveMax;
-    const depthRows = Math.round(depthInches * rowGauge);
+    const depthRows = Math.round(depth * rowGauge);
 
     // Store calculation data
     calculationData = {
@@ -565,7 +803,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
     // Render results
     renderResults(calculationData);
-  });
+  }
+
+  // Button click handler
+  submitBtn.addEventListener('click', handleSubmit);
 </script>
 
 </BaseLayout>
