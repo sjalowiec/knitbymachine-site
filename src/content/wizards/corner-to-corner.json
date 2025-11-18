@@ -2,7 +2,7 @@
   "title": "Corner to Corner Blanket",
   "slug": "corner-to-corner",
   "hero": "",
-  "description": "description for corner to c2c",
+  "description": "<p>description for corner to c2c</p>",
   "category": "pattern",
   "tags": [
     "advanced"
@@ -19,5 +19,5 @@
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-14",
-  "pendingPublish": false
+  "pendingPublish": true
 }
