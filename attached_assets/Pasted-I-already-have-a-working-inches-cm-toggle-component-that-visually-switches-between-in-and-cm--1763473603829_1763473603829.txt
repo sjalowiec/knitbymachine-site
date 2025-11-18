@@ -1,0 +1,107 @@
+I already have a working inches/cm toggle component that:
+
+visually switches between “in” and “cm”
+
+stores the user’s choice in localStorage
+
+integrates with wizard-utils.js for unit conversion
+
+is designed as a reusable lego block
+
+Please update this existing component using the following instructions.
+Do not rebuild it from scratch.
+
+1. Update the component’s layout so the toggle appears in the top-right corner of the wizard header
+Add this wrapper structure in each wizard:
+<div class="wizard-header kbm-header-layout">
+  <h1 class="wizard-title">[Wizard Title Here]</h1>
+  <div id="kbm-units-toggle"></div>
+</div>
+
+
+The toggle component should render inside #kbm-units-toggle, not inside the main form body.
+
+Layout requirements:
+
+.kbm-header-layout should be:
+display: flex; justify-content: space-between; align-items: center;
+
+Title on the left
+
+Units toggle aligned flush right
+
+On small screens (<600px), allow the toggle to drop below the title but center it.
+
+Do not reposition anything manually in each wizard —
+this should now be handled entirely by the .kbm-header-layout CSS.
+
+2. Convert the toggle into a “header-friendly” size
+
+Update ONLY the visual styling:
+
+Keep current colors + active/inactive states
+
+Reduce padding/margins so the toggle looks appropriate in a header
+
+Ensure the component remains compact (no large button styles)
+
+Slightly increase font weight for readability
+
+This should be a subtle visual adjustment, not a redesign.
+
+3. Ensure the toggle initializes automatically inside #kbm-units-toggle
+
+If the component currently uses something like:
+
+renderUnitsToggle();
+
+
+Update it to:
+
+renderUnitsToggle("#kbm-units-toggle");
+
+
+or (if needed) modify the component so it accepts a container selector.
+
+If the toggle already looks for a default mount node,
+update that default to #kbm-units-toggle.
+
+4. Do not change any logic related to:
+
+localStorage
+
+currentUnits variable
+
+wizard-utils.js integration
+
+event listeners
+
+unit conversion helpers
+
+We only want cleaner placement + layout standardization.
+
+5. Add explanatory comments inside the component
+
+Please insert comments explaining:
+
+This component is a KBM “lego block”
+
+It is standardized to appear in the top-right of all wizard headers
+
+It should be mounted inside #kbm-units-toggle
+
+It persists the user’s preference
+
+It updates wizard-utils.js automatically
+
+6. Apply the same updated units-toggle layout to all wizards that currently use the component
+
+Wherever the old placement existed, remove it and replace with:
+
+<div class="wizard-header kbm-header-layout">
+  <h1 class="wizard-title">...</h1>
+  <div id="kbm-units-toggle"></div>
+</div>
+
+
+This ensures uniform UI across KBM tools.
