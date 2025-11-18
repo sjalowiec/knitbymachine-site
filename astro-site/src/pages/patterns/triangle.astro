@@ -331,10 +331,13 @@ import '../../styles/wizard.css';
 
   <div class="wizard-container">
     <div class="calculator-card">
-      <!-- Unit Toggle -->
-      <UnitToggle id="triangle" />
-
-      <h2 class="section-title">Step 1: Enter your triangle details</h2>
+      <!-- Wizard Header with Unit Toggle (KBM standardized layout) -->
+      <div class="wizard-header kbm-header-layout">
+        <h2 class="wizard-title">Step 1: Enter your triangle details</h2>
+        <div id="kbm-units-toggle">
+          <UnitToggle id="triangle" />
+        </div>
+      </div>
       
       <!-- Visual Triangle Diagram with Inputs -->
       <div class="triangle-diagram">

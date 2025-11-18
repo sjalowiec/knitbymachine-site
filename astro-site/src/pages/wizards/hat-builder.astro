@@ -94,8 +94,13 @@ import '../../styles/wizard.css';
   
   <div class="wizard-container">
     <div class="calculator-card">
-      <!-- Reusable Unit Toggle Component -->
-      <UnitToggle id="hat" />
+      <!-- Wizard Header with Unit Toggle (KBM standardized layout) -->
+      <div class="wizard-header kbm-header-layout">
+        <h2 class="wizard-title">Hat Pattern Builder</h2>
+        <div id="kbm-units-toggle">
+          <UnitToggle id="hat" />
+        </div>
+      </div>
 
       <!-- Size Selection -->
       <h3 class="section-title">Hat Size</h3>
