@@ -219,6 +219,16 @@ import '../../styles/wizard.css';
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.option-btn svg {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
 }
 
 .option-btn:hover {
@@ -230,6 +240,27 @@ import '../../styles/wizard.css';
   background: var(--kbm-green);
   color: white;
   border-color: var(--kbm-green);
+}
+
+.option-btn.active svg {
+  stroke: white;
+}
+
+/* Pattern diagram */
+.pattern-diagram-visual {
+  margin: 1.5rem 0;
+  padding: 1.5rem;
+  background: rgba(82, 104, 45, 0.03);
+  border-radius: 8px;
+  border: 2px dashed #d1d5db;
+}
+
+.pattern-diagram-visual svg {
+  max-width: 600px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 .pattern-details {
@@ -588,6 +619,293 @@ import '../../styles/wizard.css';
     return `${formatted}${symbol}`;
   }
 
+  // SVG icon generators
+  function getIsoscelesIcon(color = '#374151') {
+    return `
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 4 L20 20 L4 20 Z" stroke="${color}" stroke-width="2" fill="none"/>
+      </svg>
+    `;
+  }
+
+  function getRightAngleIcon(color = '#374151') {
+    return `
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M4 4 L4 20 L20 20 Z" stroke="${color}" stroke-width="2" fill="none"/>
+      </svg>
+    `;
+  }
+
+  // Dynamic SVG diagram generators
+  function generateSingleIsoscelesDiagram(data) {
+    const { widthSts, depthRows, bottomWidth, depth } = data;
+    
+    return `
+      <div class="pattern-diagram-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Triangle shape -->
+          <polygon points="200,40 350,260 50,260" 
+                   fill="rgba(82, 104, 45, 0.08)" 
+                   stroke="#52682d" 
+                   stroke-width="3"/>
+          
+          <!-- Width measurement -->
+          <line x1="50" y1="275" x2="350" y2="275" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="50" cy="275" r="4" fill="#52682d"/>
+          <circle cx="350" cy="275" r="4" fill="#52682d"/>
+          <text x="200" y="292" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">${formatLength(bottomWidth)} (${formatNum(widthSts)} sts)</text>
+          
+          <!-- Depth measurement -->
+          <line x1="365" y1="260" x2="365" y2="40" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="365" cy="260" r="4" fill="#52682d"/>
+          <circle cx="365" cy="40" r="4" fill="#52682d"/>
+          <text x="380" y="155" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="start" 
+                font-weight="600">${formatLength(depth)}</text>
+          <text x="380" y="172" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="start" 
+                font-weight="600">(${formatNum(depthRows)} rows)</text>
+          
+          <!-- Point label -->
+          <text x="200" y="30" 
+                font-size="12" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">Point (${END_STS} sts)</text>
+        </svg>
+      </div>
+    `;
+  }
+
+  function generateSingleRightAngleDiagram(data) {
+    const { widthSts, depthRows, bottomWidth, depth } = data;
+    
+    return `
+      <div class="pattern-diagram-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Triangle shape (right angle) -->
+          <polygon points="50,40 50,260 350,260" 
+                   fill="rgba(82, 104, 45, 0.08)" 
+                   stroke="#52682d" 
+                   stroke-width="3"/>
+          
+          <!-- Width measurement -->
+          <line x1="50" y1="275" x2="350" y2="275" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="50" cy="275" r="4" fill="#52682d"/>
+          <circle cx="350" cy="275" r="4" fill="#52682d"/>
+          <text x="200" y="292" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">${formatLength(bottomWidth)} (${formatNum(widthSts)} sts)</text>
+          
+          <!-- Depth measurement (straight edge) -->
+          <line x1="35" y1="260" x2="35" y2="40" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="35" cy="260" r="4" fill="#52682d"/>
+          <circle cx="35" cy="40" r="4" fill="#52682d"/>
+          <text x="20" y="155" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="end" 
+                font-weight="600">${formatLength(depth)}</text>
+          <text x="20" y="172" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="end" 
+                font-weight="600">(${formatNum(depthRows)} rows)</text>
+          
+          <!-- Point label -->
+          <text x="50" y="30" 
+                font-size="12" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">Point (${END_STS} sts)</text>
+          
+          <!-- Shaped edge label -->
+          <text x="220" y="140" 
+                font-size="12" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600" 
+                transform="rotate(-35 220 140)">Shaped edge</text>
+          
+          <!-- Straight edge label -->
+          <text x="40" y="150" 
+                font-size="12" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600" 
+                transform="rotate(-90 40 150)">Straight edge</text>
+        </svg>
+      </div>
+    `;
+  }
+
+  function generateTwoMirroredDiagram(data) {
+    const { halfWidthSts, depthRows, bottomWidth, depth } = data;
+    const halfWidth = bottomWidth / 2;
+    
+    return `
+      <div class="pattern-diagram-visual">
+        <svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left half triangle -->
+          <polygon points="200,40 50,260 200,260" 
+                   fill="rgba(82, 104, 45, 0.08)" 
+                   stroke="#52682d" 
+                   stroke-width="3"/>
+          
+          <!-- Right half triangle -->
+          <polygon points="200,40 350,260 200,260" 
+                   fill="rgba(115, 140, 82, 0.08)" 
+                   stroke="#52682d" 
+                   stroke-width="3"/>
+          
+          <!-- Center seam line (dashed) -->
+          <line x1="200" y1="40" x2="200" y2="260" 
+                stroke="#52682d" 
+                stroke-width="2" 
+                stroke-dasharray="5,5"/>
+          
+          <!-- Half width measurement (left piece) -->
+          <line x1="50" y1="275" x2="200" y2="275" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="50" cy="275" r="4" fill="#52682d"/>
+          <circle cx="200" cy="275" r="4" fill="#52682d"/>
+          <text x="125" y="292" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">${formatLength(halfWidth)} (${formatNum(halfWidthSts)} sts)</text>
+          
+          <!-- Half width measurement (right piece) -->
+          <line x1="200" y1="20" x2="350" y2="20" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="200" cy="20" r="4" fill="#52682d"/>
+          <circle cx="350" cy="20" r="4" fill="#52682d"/>
+          <text x="275" y="13" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">${formatLength(halfWidth)} (${formatNum(halfWidthSts)} sts)</text>
+          
+          <!-- Depth measurement -->
+          <line x1="365" y1="260" x2="365" y2="40" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="365" cy="260" r="4" fill="#52682d"/>
+          <circle cx="365" cy="40" r="4" fill="#52682d"/>
+          <text x="380" y="155" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="start" 
+                font-weight="600">${formatLength(depth)}</text>
+          <text x="380" y="172" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="start" 
+                font-weight="600">(${formatNum(depthRows)} rows)</text>
+          
+          <!-- Seam label -->
+          <text x="210" y="150" 
+                font-size="12" 
+                fill="#52682d" 
+                text-anchor="start" 
+                font-weight="600">Seam</text>
+        </svg>
+      </div>
+    `;
+  }
+
+  function generateTwoRightAnglesDiagram(data) {
+    const { halfWidthSts, depthRows, bottomWidth, depth } = data;
+    const halfWidth = bottomWidth / 2;
+    
+    return `
+      <div class="pattern-diagram-visual">
+        <svg viewBox="0 0 450 300" xmlns="http://www.w3.org/2000/svg">
+          <!-- Left right-angle triangle -->
+          <polygon points="50,40 50,260 200,260" 
+                   fill="rgba(82, 104, 45, 0.08)" 
+                   stroke="#52682d" 
+                   stroke-width="3"/>
+          
+          <!-- Right right-angle triangle (mirrored) -->
+          <polygon points="250,40 250,260 400,260" 
+                   fill="rgba(115, 140, 82, 0.08)" 
+                   stroke="#52682d" 
+                   stroke-width="3"/>
+          
+          <!-- Left triangle width -->
+          <line x1="50" y1="275" x2="200" y2="275" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="50" cy="275" r="4" fill="#52682d"/>
+          <circle cx="200" cy="275" r="4" fill="#52682d"/>
+          <text x="125" y="292" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">${formatLength(halfWidth)} (${formatNum(halfWidthSts)} sts)</text>
+          
+          <!-- Right triangle width -->
+          <line x1="250" y1="275" x2="400" y2="275" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="250" cy="275" r="4" fill="#52682d"/>
+          <circle cx="400" cy="275" r="4" fill="#52682d"/>
+          <text x="325" y="292" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600">${formatLength(halfWidth)} (${formatNum(halfWidthSts)} sts)</text>
+          
+          <!-- Left triangle depth -->
+          <line x1="35" y1="260" x2="35" y2="40" 
+                stroke="#52682d" 
+                stroke-width="2"/>
+          <circle cx="35" cy="260" r="4" fill="#52682d"/>
+          <circle cx="35" cy="40" r="4" fill="#52682d"/>
+          <text x="20" y="155" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="end" 
+                font-weight="600">${formatLength(depth)}</text>
+          <text x="20" y="172" 
+                font-size="14" 
+                fill="#52682d" 
+                text-anchor="end" 
+                font-weight="600">(${formatNum(depthRows)} rows)</text>
+          
+          <!-- Hypotenuse join label -->
+          <text x="125" y="140" 
+                font-size="12" 
+                fill="#52682d" 
+                text-anchor="middle" 
+                font-weight="600" 
+                transform="rotate(-35 125 140)">Join along hypotenuse →</text>
+        </svg>
+      </div>
+    `;
+  }
+
   // Generate isosceles pattern (single piece)
   function generateIsoscelesPattern(data) {
     const { widthSts, depthRows } = data;
@@ -596,6 +914,7 @@ import '../../styles/wizard.css';
     const rowsPerDecIsoRounded = Math.max(1, Math.round(rowsPerDecIso));
 
     return `
+      ${generateSingleIsoscelesDiagram(data)}
       <h3>Single isosceles triangle</h3>
       <p>This creates an isosceles triangle with the bottom edge as the widest side, decreasing evenly at both edges as you knit upward.</p>
       <ul>
@@ -615,6 +934,7 @@ import '../../styles/wizard.css';
     const rowsPerDecRtRounded = Math.max(1, Math.round(rowsPerDecRt));
 
     return `
+      ${generateSingleRightAngleDiagram(data)}
       <h3>Single right-angle triangle</h3>
       <p>This creates a right-angle triangle with the non-shaped side remaining straight and one edge shaped to form the diagonal.</p>
       <ul>
@@ -635,6 +955,7 @@ import '../../styles/wizard.css';
     const rowsPerDecHalfIsoRounded = Math.max(1, Math.round(rowsPerDecHalfIso));
 
     return `
+      ${generateTwoMirroredDiagram(data)}
       <h3>Two mirrored halves (isosceles triangle)</h3>
       <p>Each half is a right triangle worked from the bottom edge up to the point. The two pieces will be joined along their straight edges to form a complete isosceles triangle.</p>
       <ul>
@@ -656,6 +977,7 @@ import '../../styles/wizard.css';
     const rowsPerDecHalfIsoRounded = Math.max(1, Math.round(rowsPerDecHalfIso));
 
     return `
+      ${generateTwoRightAnglesDiagram(data)}
       <h3>Two right-angle triangles</h3>
       <p>Knit two identical right-angle triangles and join them along their long edges (the hypotenuse) to form the full triangle.</p>
       <ul>
@@ -689,8 +1011,14 @@ import '../../styles/wizard.css';
           <p>Your triangle cast-on will be approximately <strong>${formatNum(widthSts)} stitches</strong> wide and about <strong>${formatNum(depthRows)} rows</strong> deep. With <strong>${formatNum(needlesAvailable)} needles</strong> available, this will fit on your machine in a single piece.</p>
         </div>
         <div class="option-buttons">
-          <button class="option-btn ${currentOption === 'A' ? 'active' : ''}" data-option="A" data-testid="button-option-a">Option A: Single isosceles triangle</button>
-          <button class="option-btn ${currentOption === 'B' ? 'active' : ''}" data-option="B" data-testid="button-option-b">Option B: Single right-angle triangle</button>
+          <button class="option-btn ${currentOption === 'A' ? 'active' : ''}" data-option="A" data-testid="button-option-a">
+            ${getIsoscelesIcon(currentOption === 'A' ? 'white' : '#374151')}
+            <span>Option A: Single isosceles triangle</span>
+          </button>
+          <button class="option-btn ${currentOption === 'B' ? 'active' : ''}" data-option="B" data-testid="button-option-b">
+            ${getRightAngleIcon(currentOption === 'B' ? 'white' : '#374151')}
+            <span>Option B: Single right-angle triangle</span>
+          </button>
         </div>
         <div class="pattern-details" data-testid="pattern-details">
           ${currentOption === 'A' ? generateIsoscelesPattern(data) : generateRightAnglePattern(data)}
@@ -714,8 +1042,14 @@ import '../../styles/wizard.css';
             <p>Your full triangle cast-on would need about <strong>${formatNum(widthSts)} stitches</strong>, but you set a limit of <strong>${formatNum(needlesAvailable)} needles</strong> (effective maximum <strong>${formatNum(effectiveMax)}</strong>). Let's work this as two pieces with a seam.</p>
           </div>
           <div class="option-buttons">
-            <button class="option-btn ${currentOption === 'A' ? 'active' : ''}" data-option="A" data-testid="button-option-a">Option A: Two mirrored halves</button>
-            <button class="option-btn ${currentOption === 'B' ? 'active' : ''}" data-option="B" data-testid="button-option-b">Option B: Two right-angle triangles</button>
+            <button class="option-btn ${currentOption === 'A' ? 'active' : ''}" data-option="A" data-testid="button-option-a">
+              ${getIsoscelesIcon(currentOption === 'A' ? 'white' : '#374151')}
+              <span>Option A: Two mirrored halves</span>
+            </button>
+            <button class="option-btn ${currentOption === 'B' ? 'active' : ''}" data-option="B" data-testid="button-option-b">
+              ${getRightAngleIcon(currentOption === 'B' ? 'white' : '#374151')}
+              <span>Option B: Two right-angle triangles</span>
+            </button>
           </div>
           <div class="pattern-details" data-testid="pattern-details">
             ${currentOption === 'A' ? generateTwoMirroredPattern(data) : generateTwoRightAnglesPattern(data)}
@@ -739,8 +1073,10 @@ import '../../styles/wizard.css';
   // Submit handler
   function handleSubmit() {
     // Get input values
-    let bottomWidth = parseFloat(bottomWidthInput.value);
-    let depth = parseFloat(depthInput.value);
+    const bottomWidthInput_value = parseFloat(bottomWidthInput.value);
+    const depthInput_value = parseFloat(depthInput.value);
+    let bottomWidth = bottomWidthInput_value;
+    let depth = depthInput_value;
     let stitchGauge = parseFloat(stitchGaugeInput.value);
     let rowGauge = parseFloat(rowGaugeInput.value);
     const needlesAvailable = parseFloat(needlesInput.value);
@@ -787,7 +1123,7 @@ import '../../styles/wizard.css';
     const halfFits = halfWidthSts <= effectiveMax;
     const depthRows = Math.round(depth * rowGauge);
 
-    // Store calculation data
+    // Store calculation data (including original measurements in current units for diagrams)
     calculationData = {
       widthSts,
       depthRows,
@@ -795,7 +1131,9 @@ import '../../styles/wizard.css';
       effectiveMax,
       fitsInOnePiece,
       halfWidthSts,
-      halfFits
+      halfFits,
+      bottomWidth: bottomWidthInput_value,
+      depth: depthInput_value
     };
 
     // Reset to option A
