@@ -2,7 +2,7 @@
   "title": "Tailor-Made Triangle Shawl",
   "slug": "triangle",
   "hero": "",
-  "description": "Create a triangle shawl that fits your machine. Follow three easy steps and get a pattern tailored to your yarn, gauge, and needlebed.",
+  "description": "<p>Create a triangle shawl that fits your machine. Follow three easy steps and get a pattern tailored to your yarn, gauge, and needlebed.</p>",
   "category": "pattern",
   "tags": [],
   "videoUrl": "",
@@ -17,5 +17,5 @@
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
