@@ -1,0 +1,42 @@
+{
+  "term": "Carriage on the Left",
+  "slug": "carriage-on-the-left",
+  "abbreviation": "COL",
+  "description": "<p><strong>Carriage on the Left</strong> (abbreviated <strong>COL</strong>) tells you where the main carriage should be positioned before you take the next pass. It simply means the carriage is resting on the left side of the needle bed.</p>\n\n<p>Patterns use COL as a quick reminder to check your starting point. This matters because many techniques—like shaping, short rows, increases, and decreases—depend on starting the row from the correct side.</p>\n\n<p>You’ll often see COL paired with <strong>COR</strong> (Carriage on the Right) so you always know where to place the carriage before continuing.</p>\n",
+  "tooltip": "The main knitting carriage is positioned on the left side of the needle bed before knitting the next row.",
+  "example": "",
+  "categories": [
+    "Abbreviations",
+    "Machine Parts & Accessories"
+  ],
+  "letter": "C",
+  "imageFilename": "1763576015315-carraige-on-the-left.jpg",
+  "imageAlt": "Knitting machine carriage positioned on the left side of the needle bed",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "url": "https://knitbymachine.com/glossary/carriage-on-the-left",
+    "name": "Carriage on the Left",
+    "@type": "DefinedTerm",
+    "@context": "https://schema.org",
+    "description": "Instruction indicating that the knitting machine carriage should be positioned on the left side of the needle bed before the next row.",
+    "alternateName": [
+      "COL"
+    ],
+    "inDefinedTermSet": "https://knitbymachine.com/glossary"
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "carriage-on-the-right"
+  ],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": false,
+  "pendingPublish": false,
+  "publishedDate": "2025-11-19T00:00:00.000Z"
+}
