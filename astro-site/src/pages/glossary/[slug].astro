@@ -333,7 +333,7 @@ if (!entry) {
         <h1 class="term-title">{entry.term}</h1>
         {entry.tooltip && <p class="term-tooltip"><em>{entry.tooltip}</em></p>}
 
-        <p class="term-description">{entry.description}</p>
+        <div class="term-description" set:html={entry.description} />
 
         {entry.example && (
           <div class="term-example">
