@@ -1,0 +1,42 @@
+{
+  "term": "Main Color",
+  "slug": "main-color",
+  "abbreviation": "MC",
+  "description": "<p><strong>Main color</strong> (abbreviated <strong>MC</strong>) refers to the primary yarn color used in a project. It forms the background or dominant surface of the knitted fabric and provides the base that other colors—such as contrasting colors—sit on top of.</p>\n\n<p>In machine knitting, the main color is typically used for:</p>\n\n<ul>\n  <li>The majority of the garment or fabric</li>\n  <li>Sections where you want consistency and visual stability</li>\n  <li>Areas that support design details worked in contrasting or accent colors</li>\n</ul>\n\n<p>The main color is important because it influences the overall look, feel, and readability of your stitch patterns. Choosing a clear, stable MC helps any decorative elements (stripes, motifs, borders, or marking rows) stand out cleanly.</p>\n\n<p>Patterns often pair MC with <strong>CC</strong>—the contrasting color—for colorwork, edging, shaping markers, or design emphasis.</p>\n",
+  "tooltip": "The primary yarn color that forms the background or main fabric in your project.",
+  "example": "Cast on with MC and knit 20 rows.",
+  "categories": [
+    "Abbreviations"
+  ],
+  "letter": "M",
+  "imageFilename": "1763575327484-contrasting-color-yarn.jpg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "url": "https://knitbymachine.com/glossary/main-color",
+    "name": "Main Color",
+    "@type": "DefinedTerm",
+    "@context": "https://schema.org",
+    "description": "The primary yarn color that forms the background or dominant fabric in a knitting project.",
+    "alternateName": [
+      "MC",
+      "main colour"
+    ],
+    "inDefinedTermSet": "https://knitbymachine.com/glossary"
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "contrasting-color"
+  ],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": false,
+  "pendingPublish": false,
+  "publishedDate": "2025-11-19T00:00:00.000Z"
+}
