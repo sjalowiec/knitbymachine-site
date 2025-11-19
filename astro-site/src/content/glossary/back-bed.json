@@ -32,11 +32,13 @@
   "anaId": "",
   "workshopId": "",
   "promoText": "",
-  "relatedTerms": [],
+  "relatedTerms": [
+    "main-bed"
+  ],
   "tags": [
     "beginner"
   ],
   "isDraft": false,
   "publishedDate": "2025-11-19",
-  "pendingPublish": false
+  "pendingPublish": true
 }
