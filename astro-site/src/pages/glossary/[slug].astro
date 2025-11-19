@@ -172,7 +172,45 @@ if (!entry) {
       line-height: 1.7;
       color: #374151;
       margin-bottom: 1.5rem;
-      white-space: pre-line;
+    }
+    
+    .term-description p {
+      margin-bottom: 1rem;
+    }
+    
+    .term-description p:last-child {
+      margin-bottom: 0;
+    }
+    
+    .term-description ul,
+    .term-description ol {
+      margin: 1rem 0;
+      padding-left: 1.5rem;
+    }
+    
+    .term-description li {
+      margin-bottom: 0.5rem;
+    }
+    
+    .term-description strong {
+      font-weight: 700;
+    }
+    
+    .term-description em {
+      font-style: italic;
+    }
+    
+    .term-description a {
+      color: var(--kbm-green);
+      text-decoration: underline;
+    }
+    
+    .term-description blockquote {
+      border-left: 4px solid var(--kbm-green);
+      padding-left: 1rem;
+      margin: 1rem 0;
+      font-style: italic;
+      color: #6b7280;
     }
 
     .term-example {
