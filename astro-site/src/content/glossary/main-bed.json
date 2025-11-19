@@ -1,5 +1,5 @@
 {
-  "term": "Main Bed",
+  "term": "Main Bed | Back Bed | Knittter",
   "slug": "main-bed",
   "abbreviation": "MB",
   "description": "<p>The back bed is the main needle bed on Japanese flat-bed knitting machines.<br>It’s the workhorse of the machine, handling most of your knitting whether you’re using it on its own or paired with the ribber for double-bed fabrics.</p>",
@@ -32,11 +32,13 @@
   "anaId": "",
   "workshopId": "",
   "promoText": "",
-  "relatedTerms": [],
+  "relatedTerms": [
+    "back-bed"
+  ],
   "tags": [
     "beginner"
   ],
   "isDraft": false,
   "publishedDate": "2025-11-19",
-  "pendingPublish": false
+  "pendingPublish": true
 }
