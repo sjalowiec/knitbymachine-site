@@ -507,8 +507,12 @@ const description = "Browse all our knitting machine questions and answers, orga
   }
 
   :global(.ana-card:hover) {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
     box-shadow: 0 4px 10px rgba(82, 104, 45, 0.16);
+  }
+
+  :global(.ana-card:hover .ana-card-arrow) {
+    transform: translateX(3px);
   }
 
   /* top row in the card: category pill + optional meta */
@@ -527,7 +531,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     border-radius: 999px;
     border: 1px solid #DDE4D1;
     background-color: #FFFFFF;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 500;
     letter-spacing: 0.01em;
     color: #52682d;
@@ -556,6 +560,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     height: 16px;
     color: #52682D;
     margin-left: auto;
+    transition: transform 0.2s ease;
   }
 
   /* Scroll to Top Button */
