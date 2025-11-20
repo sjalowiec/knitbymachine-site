@@ -241,11 +241,13 @@ const description = "Browse all our knitting machine questions and answers, orga
     align-items: center;
     gap: 1rem;
     width: 100%;
+    flex-wrap: wrap;
   }
 
   .search-wrapper {
-    flex: 1;
+    flex: 1 1 320px;
     max-width: 400px;
+    min-width: 280px;
   }
 
   .search-input {
@@ -268,7 +270,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    flex-shrink: 0;
+    flex: 0 0 auto;
   }
 
   .sort-label {
@@ -488,18 +490,18 @@ const description = "Browse all our knitting machine questions and answers, orga
   .ana-card {
     display: block;
     background: #fff;
-    border: 1px solid #d1d9c2;
-    border-radius: 12px;
-    padding: 1.25rem 1.5rem;
-    box-shadow: 0 2px 6px rgba(82,104,45,0.08);
+    border: 1px solid #d6ddc8;
+    border-radius: 16px;
+    padding: 1.5rem 1.75rem;
+    box-shadow: 0 10px 30px rgba(37, 51, 28, 0.08);
     text-decoration: none;
     color: #2c3a57;
-    transition: transform .12s ease, box-shadow .15s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
   .ana-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 4px 12px rgba(82,104,45,0.15);
+    transform: translateY(-4px);
+    box-shadow: 0 14px 40px rgba(37, 51, 28, 0.12);
   }
 
   .ana-card h3 {
@@ -622,6 +624,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     .search-wrapper {
       width: 100%;
       max-width: none;
+      min-width: unset;
     }
 
     .sort-wrapper {
