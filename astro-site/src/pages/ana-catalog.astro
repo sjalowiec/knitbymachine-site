@@ -153,18 +153,21 @@ const description = "Browse all our knitting machine questions and answers, orga
       </div>
     </div>
 
-    <!-- Category Speech Bubble Grid -->
-    <div class="ana-category-grid" id="categoryGrid">
-      {anaCategories.map((cat) => (
-        <button
-          class="ana-category-bubble"
-          data-category={cat.title}
-          data-category-slug={cat.slug}
-        >
-          {cat.title}
-        </button>
-      ))}
-    </div>
+    <!-- Category Topics Well -->
+    <section class="ana-topics-well">
+      <p class="ana-topics-label">Browse by topic:</p>
+      <div class="ana-category-grid" id="categoryGrid">
+        {anaCategories.map((cat) => (
+          <button
+            class="ana-category-bubble"
+            data-category={cat.title}
+            data-category-slug={cat.slug}
+          >
+            {cat.title}
+          </button>
+        ))}
+      </div>
+    </section>
 
     <!-- ANA Cards Grid -->
     <div id="catalogueContent" class="catalogue-content" data-entries={JSON.stringify(entries)}>
@@ -296,6 +299,25 @@ const description = "Browse all our knitting machine questions and answers, orga
   }
 
   /* ================================================
+     ANA TOPICS WELL
+     ================================================ */
+
+  .ana-topics-well {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 18px rgba(82, 104, 45, 0.10);
+    padding: 1.5rem 2rem 1.75rem;
+    margin: 1.5rem 0 2rem;
+  }
+
+  .ana-topics-label {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #52682d;
+  }
+
+  /* ================================================
      ANA CATEGORY BUBBLE GRID
      ================================================ */
 
@@ -303,8 +325,8 @@ const description = "Browse all our knitting machine questions and answers, orga
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 1.5rem;
-    margin: 1.5rem 0 2rem;
-    padding-bottom: 1rem;
+    margin: 0;
+    padding-bottom: 0.25rem;
   }
 
   /* ================================================
@@ -412,11 +434,14 @@ const description = "Browse all our knitting machine questions and answers, orga
      ANA CARDS
      ================================================ */
 
+  .ana-list {
+    margin-top: 1.5rem;
+  }
+
   .ana-card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
   }
 
   .ana-card {
