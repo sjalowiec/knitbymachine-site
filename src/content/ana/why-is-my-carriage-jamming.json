@@ -1,7 +1,7 @@
 {
   "title": "Why is my carriage Jamming?",
   "slug": "why-is-my-carriage-jamming",
-  "category": "Ask 'n Answer (ANA)",
+  "category": "Troubleshooting",
   "tags": [
     "cast on",
     "maintenance"
@@ -13,10 +13,11 @@
   "wizardUrl": "",
   "metaTitle": "",
   "metaDescription": "",
+  "schemaMarkup": null,
   "relatedAnas": [],
   "relatedWorkshops": [],
   "body": "There are a number of reasons for the carraige to jam.  ",
   "isDraft": false,
-  "publishedDate": "",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "publishedDate": "2025-11-20T14:36:10.105Z"
 }
