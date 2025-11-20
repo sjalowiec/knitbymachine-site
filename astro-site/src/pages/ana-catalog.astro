@@ -130,7 +130,6 @@ const description = "Browse all our knitting machine questions and answers, orga
       <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="intro-icon">
       <div class="intro-content">
         <p class="intro-tagline">Troubleshoot, learn, and master your knitting machine — one question at a time.</p>
-        <p class="intro-subtitle">Because understanding your machine shouldn't be a mystery. You're not alone — every knitter has questions, and every question leads to a new "aha" moment.</p>
       </div>
       <div class="controls-wrapper">
         <div class="search-wrapper">
@@ -201,7 +200,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     background-color: #ffffff;
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
-    padding: 1.8rem 2.5rem;
+    padding: 1.25rem 2rem;
     margin-bottom: 1.5rem;
     display: flex;
     align-items: center;
@@ -213,48 +212,40 @@ const description = "Browse all our knitting machine questions and answers, orga
   }
 
   .intro-icon {
-    width: 200px;
-    height: 200px;
+    width: 120px;
+    height: 120px;
     flex-shrink: 0;
   }
 
   .intro-content {
     flex: 1;
-    min-width: 300px;
+    min-width: 250px;
   }
 
   .intro-tagline {
     color: #52682D;
     font-size: var(--text-lg);
     line-height: 1.5;
-    margin: 0 0 0.75rem 0;
-    opacity: 0.85;
-  }
-
-  .intro-subtitle {
-    color: #52682D;
-    font-size: var(--text-base);
-    line-height: 1.6;
     margin: 0;
-    opacity: 0.7;
-    max-width: 580px;
+    opacity: 0.85;
   }
 
   /* Search and Sort Controls */
   .controls-wrapper {
     display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    min-width: 280px;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+    min-width: 450px;
   }
 
   .search-wrapper {
-    width: 100%;
+    flex: 1;
   }
 
   .search-input {
     width: 100%;
-    padding: 0.875rem 1.25rem;
+    padding: 0.75rem 1.25rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
     font-size: var(--text-base);
@@ -272,6 +263,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    flex-shrink: 0;
   }
 
   .sort-label {
@@ -289,7 +281,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     background-color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    flex: 1;
+    min-width: 140px;
   }
 
   .sort-select:focus {
@@ -597,13 +589,13 @@ const description = "Browse all our knitting machine questions and answers, orga
     .header-panel {
       flex-direction: column;
       text-align: center;
-      padding: 1.5rem;
-      gap: 1.25rem;
+      padding: 1.25rem 1.5rem;
+      gap: 1rem;
     }
 
     .intro-icon {
-      width: 120px;
-      height: 120px;
+      width: 100px;
+      height: 100px;
     }
 
     .intro-content {
@@ -611,26 +603,27 @@ const description = "Browse all our knitting machine questions and answers, orga
     }
 
     .intro-tagline {
-      font-size: var(--text-lg);
-    }
-
-    .intro-subtitle {
       font-size: var(--text-base);
-      max-width: 100%;
     }
 
     .controls-wrapper {
       width: 100%;
       min-width: unset;
+      flex-direction: column;
+      gap: 0.75rem;
     }
 
-    .search-wrapper,
-    .sort-wrapper {
+    .search-wrapper {
       width: 100%;
     }
 
     .sort-wrapper {
+      width: 100%;
       justify-content: space-between;
+    }
+
+    .sort-select {
+      flex: 1;
     }
 
     .ana-category-grid {
@@ -657,20 +650,16 @@ const description = "Browse all our knitting machine questions and answers, orga
     }
 
     .header-panel {
-      padding: 1.25rem 1rem;
-      gap: 1rem;
+      padding: 1rem;
+      gap: 0.875rem;
     }
 
     .intro-icon {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
     }
 
     .intro-tagline {
-      font-size: var(--text-base);
-    }
-
-    .intro-subtitle {
       font-size: var(--text-sm);
     }
 
@@ -679,25 +668,18 @@ const description = "Browse all our knitting machine questions and answers, orga
     }
 
     .search-input {
-      padding: 0.75rem 1rem;
+      padding: 0.625rem 1rem;
       font-size: var(--text-sm);
-    }
-
-    .sort-wrapper {
-      flex-wrap: wrap;
-      gap: 0.5rem;
     }
 
     .sort-label {
       font-size: var(--text-sm);
-      width: 100%;
-      text-align: left;
     }
 
     .sort-select {
       padding: 0.625rem 0.875rem;
       font-size: var(--text-sm);
-      width: 100%;
+      min-width: unset;
     }
 
     .ana-topics-well {
