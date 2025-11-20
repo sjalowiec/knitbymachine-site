@@ -57,9 +57,11 @@ if (!entry) {
   <div class="ana-container">
     <div class="header-row">
       <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
-      <p class="ana-detail-label">
-        You're not alone — asking questions is how you grow your skills.
-      </p>
+      <div class="ana-label-wrapper">
+        <p class="ana-detail-label">
+          You're not alone — asking questions is how you grow your skills.
+        </p>
+      </div>
     </div>
 
     <div class="content-wrapper">
@@ -120,10 +122,16 @@ if (!entry) {
     text-decoration: underline;
   }
 
-  .ana-detail-label {
+  .ana-label-wrapper {
     flex: 1;
+    background-color: rgba(231, 240, 220, 0.4);
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+  }
+
+  .ana-detail-label {
     margin: 0;
-    font-size: 0.95rem;
+    font-size: 1.1rem;
     font-weight: 500;
     font-style: italic;
     color: #52682d;
