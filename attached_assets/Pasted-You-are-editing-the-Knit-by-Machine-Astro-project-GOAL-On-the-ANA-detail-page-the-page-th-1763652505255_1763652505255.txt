@@ -1,0 +1,76 @@
+You are editing the Knit by Machine Astro project.
+
+GOAL:
+On the **ANA detail page** (the page that shows a single ANA Question + Answer with the two bubbles), remove the large hero header ("Every machine knitter hits a snag…") and replace it with a small, subtle ANA label so the Q&A bubbles are closer to the top and the page feels less heavy.
+
+TARGET:
+- The file that renders an individual ANA entry (detail page).
+- This file will contain the `.thought-bubble` question and `.speech-bubble` answer.
+- It may be named something like `src/pages/ana/[slug].astro` or similar. Find the file that uses `question-bubble` and `answer-bubble` classes.
+
+MAKE THESE CHANGES:
+
+1. KEEP:
+   - The back link at the top, e.g.:
+
+     <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
+
+   Do NOT remove or change this link.
+
+2. REMOVE the big hero block from the ANA detail page:
+   - Find the container that looks like this (or similar):
+
+     <div class="page-header" ...>
+       <img ... class="header-icon" ...>
+       <div class="header-text">
+         <p class="header-tagline">Every machine knitter hits a snag now and then. Here's how to get back on track.</p>
+       </div>
+     </div>
+
+   - Delete this entire `<div class="page-header"> ... </div>` block from the ANA detail page file.
+
+   IMPORTANT:
+   - Only remove it from the **detail page** file.
+   - Do NOT touch the hero on the ANA catalog page (`/ana-catalog`); that can stay as-is.
+
+3. ADD a small ANA context label under the back link and above the question bubble:
+
+   Immediately after the back-link and before the Q&A bubble markup, insert:
+
+   <p class="ana-detail-label">
+     Ask ’n Answer · Quick help for machine knitters
+   </p>
+
+   If the page already has an ANA category available (e.g. `categoryTitle`), you may optionally use:
+
+   <p class="ana-detail-label">
+     Ask ’n Answer · {categoryTitle}
+   </p>
+
+4. Ensure the Q&A bubbles now appear directly below this new label:
+   - The first `.thought-bubble.question-bubble` should follow this new <p> label, with normal spacing.
+   - There should no longer be a large white hero block between the back link and the Q&A content.
+
+5. ADD CSS for the new ANA detail label:
+
+   In the stylesheet that affects the ANA detail page (either a global CSS file or a <style is:global> block in the same Astro file), add:
+
+   .ana-detail-label {
+     margin: 0 0 1rem;
+     font-size: 0.95rem;
+     font-weight: 500;
+     color: #52682d;
+     opacity: 0.85;
+   }
+
+   If needed, slightly reduce the top padding of the main container on the detail page so there isn’t too much empty space now that the hero has been removed.
+
+6. DO NOT CHANGE:
+   - The Q & A bubble HTML structure
+   - The GIF sidebar and its container
+   - The footer or site header
+
+When you’re done, show me the updated ANA detail Astro file (or the relevant diff) so I can verify that:
+- The hero header is gone on ANA detail pages.
+- The back link + small ANA label appear above the first Q bubble.
+- The two bubbles are closer to the top and the page feels less tall and heavy.
