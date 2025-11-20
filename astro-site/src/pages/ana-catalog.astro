@@ -474,20 +474,20 @@ const description = "Browse all our knitting machine questions and answers, orga
   }
 
   /* ================================================
-     ANA CARDS
+     ANA CARDS (Global styles for dynamically generated content)
      ================================================ */
 
-  .ana-list {
+  :global(.ana-list) {
     margin-top: 1.5rem;
   }
 
-  .ana-card-grid {
+  :global(.ana-card-grid) {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
   }
 
-  .ana-card {
+  :global(.ana-card) {
     display: block;
     background: #fff;
     border: 1px solid #d6ddc8;
@@ -499,19 +499,19 @@ const description = "Browse all our knitting machine questions and answers, orga
     transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .ana-card:hover {
+  :global(.ana-card:hover) {
     transform: translateY(-4px);
     box-shadow: 0 14px 40px rgba(37, 51, 28, 0.12);
   }
 
-  .ana-card h3 {
+  :global(.ana-card h3) {
     margin-top: 0;
     margin-bottom: .5rem;
     color: #2c3a57;
     font-size: 1.1rem;
   }
 
-  .ana-card p {
+  :global(.ana-card p) {
     margin: 0;
     color: #5a5a5a;
     font-size: 0.95rem;
