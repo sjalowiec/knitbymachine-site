@@ -1,7 +1,7 @@
 {
   "title": "Publish All Test Entry 2 EmAoH5",
   "slug": "publish-all-test-entry-2-emaoh5",
-  "category": "",
+  "category": "Can my machine Do that?",
   "tags": [],
   "isMemberOnly": false,
   "videoUrl": "",
@@ -10,10 +10,11 @@
   "wizardUrl": "",
   "metaTitle": "",
   "metaDescription": "",
+  "schemaMarkup": null,
   "relatedAnas": [],
   "relatedWorkshops": [],
   "body": "Second test entry for publish all",
   "isDraft": false,
-  "publishedDate": "2025-11-03",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "publishedDate": "2025-11-03T00:00:00.000Z"
 }
