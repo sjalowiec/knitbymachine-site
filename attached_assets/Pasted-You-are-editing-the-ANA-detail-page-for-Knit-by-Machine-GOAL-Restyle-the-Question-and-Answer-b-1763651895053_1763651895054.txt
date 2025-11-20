@@ -1,0 +1,84 @@
+You are editing the ANA detail page for Knit by Machine.
+
+GOAL:
+Restyle the Question and Answer bubbles so the QUESTION is the main visual focus and the ANSWER is softer and more readable. Replace the dark green answer bubble with a pale green one. Keep the existing HTML structure—only update the CSS for .question-bubble and .answer-bubble.
+
+MAKE THESE CHANGES:
+
+1. Update the QUESTION bubble:
+   - White background (#ffffff)
+   - Border 1px solid #c7d8a4
+   - Slight drop shadow (0 2px 8px rgba(82,104,45,0.08))
+   - Keep the thought-bubble circles but use #c7d8a4 as the border color
+   - Use this CSS:
+
+.thought-bubble.question-bubble {
+  background-color: #ffffff;
+  color: #2c3a57;
+  border: 1px solid #c7d8a4;
+  padding: 1.5rem 2rem;
+  border-radius: 25px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  box-shadow: 0 2px 8px rgba(82, 104, 45, 0.08);
+}
+
+.thought-bubble.question-bubble::before,
+.thought-bubble.question-bubble::after {
+  border-color: #c7d8a4;
+}
+
+2. Update the ANSWER bubble:
+   - Pale green background (#eef3e4)
+   - Text color #2c3a57
+   - Border 1px solid #c7d8a4
+   - Softer shadow (0 2px 6px rgba(82,104,45,0.10))
+   - Replace dark green tail with pale green tail + matching border
+   - Use this CSS:
+
+.speech-bubble.answer-bubble {
+  position: relative;
+  background-color: #eef3e4;
+  color: #2c3a57;
+  padding: 1.4rem 1.8rem;
+  border-radius: 22px;
+  border: 1px solid #c7d8a4;
+  font-size: 1rem;
+  line-height: 1.6;
+  box-shadow: 0 2px 6px rgba(82, 104, 45, 0.10);
+}
+
+.speech-bubble.answer-bubble::before {
+  content: "";
+  position: absolute;
+  right: -10px;
+  bottom: 18px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid #eef3e4;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid transparent;
+}
+
+.speech-bubble.answer-bubble::after {
+  content: "";
+  position: absolute;
+  right: -12px;
+  bottom: 18px;
+  width: 0;
+  height: 0;
+  border-left: 16px solid #c7d8a4;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  z-index: -1;
+}
+
+3. Do NOT change:
+   - HTML structure
+   - Layout
+   - Padding wrappers
+   - The GIF or sidebar
+
+ONLY update the CSS exactly as shown above.
+
+When finished, show the updated CSS file.
