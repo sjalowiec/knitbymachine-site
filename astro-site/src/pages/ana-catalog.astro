@@ -354,7 +354,12 @@ const description = "Browse all our knitting machine questions and answers, orga
       background-color 0.15s ease,
       border-color 0.15s ease,
       box-shadow 0.15s ease,
-      transform 0.12s ease;
+      transform 0.12s ease,
+      opacity 0.3s ease,
+      visibility 0.3s ease,
+      max-height 0.3s ease,
+      padding 0.3s ease,
+      margin 0.3s ease;
   }
 
   /* ================================================
@@ -423,6 +428,21 @@ const description = "Browse all our knitting machine questions and answers, orga
 
   .ana-category-bubble.is-active::before {
     border-top-color: #eef3e4;
+  }
+
+  /* ================================================
+     HIDDEN STATE (for unselected bubbles)
+     ================================================ */
+  .ana-category-bubble.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: scale(0.95);
+    pointer-events: none;
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin: 0;
+    overflow: hidden;
   }
 
   /* Catalogue Content */
@@ -702,14 +722,21 @@ const description = "Browse all our knitting machine questions and answers, orga
       selectedCategory = categoryTitle;
     }
 
-    // Update active state on category bubbles
+    // Update active state and visibility on category bubbles
     const categoryBubbles = document.querySelectorAll('.ana-category-bubble');
     categoryBubbles.forEach(bubble => {
       const bubbleCategory = bubble.dataset.category;
       if (bubbleCategory === selectedCategory) {
         bubble.classList.add('is-active');
+        bubble.classList.remove('is-hidden');
       } else {
         bubble.classList.remove('is-active');
+        // Hide non-selected bubbles only when a category is selected
+        if (selectedCategory) {
+          bubble.classList.add('is-hidden');
+        } else {
+          bubble.classList.remove('is-hidden');
+        }
       }
     });
 
