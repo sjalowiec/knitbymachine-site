@@ -1,7 +1,7 @@
 {
   "title": "Test Entry for Batching System",
   "slug": "test-entry-for-batching-system",
-  "category": "Ask 'n Answer (ANA)",
+  "category": "Troubleshooting",
   "tags": [],
   "isMemberOnly": false,
   "videoUrl": "",
@@ -10,10 +10,11 @@
   "wizardUrl": "",
   "metaTitle": "",
   "metaDescription": "",
+  "schemaMarkup": null,
   "relatedAnas": [],
   "relatedWorkshops": [],
   "body": "This is a test answer to verify the batching system works correctly.",
   "isDraft": false,
-  "publishedDate": "2025-11-03",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "publishedDate": "2025-11-03T00:00:00.000Z"
 }
