@@ -7,7 +7,7 @@ const { slug } = Astro.params;
 
 const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
 const REPO_OWNER = 'sjalowiec';
-const REPO_NAME = 'knitbymachine';
+const REPO_NAME = 'knitbymachine-site';
 const CONTENT_PATH = 'src/content/ana';
 
 async function getANAEntry(slug: string) {
