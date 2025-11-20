@@ -1,7 +1,7 @@
 {
   "title": "How do I fix dropped stitches?",
   "slug": "dropped",
-  "category": "",
+  "category": "Troubleshooting",
   "tags": [
     "beginner",
     "knitting"
@@ -13,10 +13,11 @@
   "wizardUrl": "https://example.com/wizard/fix-stitches",
   "metaTitle": "How to Fix Dropped Stitches | Knitting Tips",
   "metaDescription": "Learn the best technique to fix dropped stitches in knitting with our step-by-step guide",
+  "schemaMarkup": null,
   "relatedAnas": [],
   "relatedWorkshops": [],
   "body": "When you drop a stitch, here's the best way to fix it...",
   "isDraft": false,
-  "publishedDate": "2025-11-03",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "publishedDate": "2025-11-03T00:00:00.000Z"
 }
