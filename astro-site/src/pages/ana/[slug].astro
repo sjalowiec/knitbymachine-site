@@ -55,11 +55,12 @@ if (!entry) {
 
 <Layout>
   <div class="ana-container">
-    <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
-
-    <p class="ana-detail-label">
-      Ask 'n Answer · Quick help for machine knitters
-    </p>
+    <div class="header-row">
+      <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
+      <p class="ana-detail-label">
+        You're not alone — asking questions is how you grow your skills.
+      </p>
+    </div>
 
     <div class="content-wrapper">
       <div class="bubbles-column">
@@ -98,9 +99,16 @@ if (!entry) {
     padding: 2rem 1rem 2rem;
   }
 
-  .back-link {
-    display: inline-block;
+  .header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .back-link {
     color: #52682D;
     font-size: 0.95rem;
     font-weight: 500;
@@ -114,9 +122,10 @@ if (!entry) {
   }
 
   .ana-detail-label {
-    margin: 0 0 1rem;
+    margin: 0;
     font-size: 0.95rem;
     font-weight: 500;
+    font-style: italic;
     color: #52682d;
     opacity: 0.85;
   }
