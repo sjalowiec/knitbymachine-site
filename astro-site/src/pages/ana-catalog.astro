@@ -246,7 +246,7 @@ const description = "Browse all our knitting machine questions and answers, orga
 
   .search-wrapper {
     flex: 1 1 auto;
-    max-width: 500px;
+    max-width: 350px;
     min-width: 250px;
   }
 
@@ -258,6 +258,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     font-size: var(--text-base);
     background-color: white;
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
 
   .search-input:focus {
@@ -372,6 +373,8 @@ const description = "Browse all our knitting machine questions and answers, orga
   /* Reset icon styling */
   .reset-icon {
     flex-shrink: 0;
+    width: 22px;
+    height: 22px;
     color: #52682d;
     animation: fadeIn 0.3s ease;
   }
@@ -483,41 +486,66 @@ const description = "Browse all our knitting machine questions and answers, orga
     margin-top: 1.5rem;
   }
 
+  /* ==== ANA CARD GRID (container) ==== */
   :global(.ana-card-grid) {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.25rem;
+    margin-top: 1.25rem;
   }
 
+  /* ==== ANA CARD ==== */
   :global(.ana-card) {
-    display: block;
-    background: #fff;
-    border: 1px solid #d6ddc8;
-    border-radius: 16px;
-    padding: 1.5rem 1.75rem;
-    box-shadow: 0 10px 30px rgba(37, 51, 28, 0.08);
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d1d9c2;
+    padding: 1rem 1.2rem 1.1rem;
     text-decoration: none;
     color: #2c3a57;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 2px 6px rgba(82, 104, 45, 0.08);
+    transition: transform 0.12s ease, box-shadow 0.15s ease;
   }
 
   :global(.ana-card:hover) {
-    transform: translateY(-4px);
-    box-shadow: 0 14px 40px rgba(37, 51, 28, 0.12);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(82, 104, 45, 0.16);
   }
 
-  :global(.ana-card h3) {
-    margin-top: 0;
-    margin-bottom: .5rem;
-    color: #2c3a57;
-    font-size: 1.1rem;
+  /* top row in the card: category pill + optional meta */
+  :global(.ana-card-meta) {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
   }
 
-  :global(.ana-card p) {
-    margin: 0;
-    color: #5a5a5a;
-    font-size: 0.95rem;
-    line-height: 1.5;
+  /* ==== CATEGORY PILL ==== */
+  :global(.ana-category-pill) {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.6rem;
+    border-radius: 999px;
+    border: 1px solid #c7d8a4;
+    background-color: #f7f9f3;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+    color: #52682d;
+    text-transform: uppercase;
+  }
+
+  /* optional: small grey meta next to pill */
+  :global(.ana-card-date) {
+    font-size: 0.75rem;
+    color: #7a836f;
+  }
+
+  /* ==== QUESTION TEXT ==== */
+  :global(.ana-card-question) {
+    margin: 0.15rem 0 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #52682D;
   }
 
   /* Scroll to Top Button */
@@ -644,7 +672,7 @@ const description = "Browse all our knitting machine questions and answers, orga
       gap: 1rem;
     }
 
-    .ana-card-grid {
+    :global(.ana-card-grid) {
       grid-template-columns: 1fr;
     }
 
@@ -783,11 +811,13 @@ const description = "Browse all our knitting machine questions and answers, orga
     let html = '<div class="ana-card-grid">';
     
     filteredEntries.forEach(entry => {
-      const excerpt = getExcerpt(entry.body);
+      const categoryLabel = entry.category || 'General';
       html += `
         <a href="/ana/${entry.slug}" class="ana-card">
-          <h3>${entry.title}</h3>
-          <p>${excerpt}</p>
+          <div class="ana-card-meta">
+            <span class="ana-category-pill">${categoryLabel}</span>
+          </div>
+          <div class="ana-card-question">${entry.title}</div>
         </a>
       `;
     });
