@@ -1,6 +1,87 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 
+// Define ANA categories (matching the admin categories)
+const anaCategories = [
+  { title: 'Getting started', slug: 'getting-started' },
+  { title: 'Machines and Setup', slug: 'machines-and-setup' },
+  { title: 'Yarn, Tension and Gauge', slug: 'yarn-tension-and-gauge' },
+  { title: 'Stitch patterns and Techniques', slug: 'stitch-patterns-and-techniques' },
+  { title: 'Shaping Fitting and Construction', slug: 'shaping-fitting-and-construction' },
+  { title: 'Troubleshooting', slug: 'troubleshooting' },
+  { title: 'Patterns and Projects', slug: 'patterns-and-projects' },
+  { title: 'Tools and Accessories', slug: 'tools-and-accessories' },
+  { title: 'Is this Normal?', slug: 'is-this-normal' },
+  { title: 'Can my machine Do that?', slug: 'can-my-machine-do-that' },
+  { title: 'Finishing and Care', slug: 'finishing-and-care' },
+];
+
+// Track unmapped categories for data migration telemetry
+const unmappedCategories = new Set();
+
+// Normalize legacy category names to new standardized categories
+function normalizeCategory(rawCategory) {
+  // Default to "Getting started" for missing/unknown categories (reasonable catch-all)
+  if (!rawCategory) {
+    console.warn('[ANA Catalog] Entry with missing category - mapped to "Getting started"');
+    return 'Getting started';
+  }
+  
+  // Comprehensive mapping of legacy categories to the 11 approved categories
+  const categoryMap = {
+    // Legacy general categories - map to Getting started as reasonable default
+    'ask \'n answer (ana)': 'Getting started',
+    'general': 'Getting started',
+    'ana': 'Getting started',
+    'uncategorized': 'Getting started',
+    
+    // Map slug variations to standardized categories
+    'getting-started': 'Getting started',
+    'machines-and-setup': 'Machines and Setup',
+    'machine setup': 'Machines and Setup',
+    'yarn-tension-and-gauge': 'Yarn, Tension and Gauge',
+    'yarn tension gauge': 'Yarn, Tension and Gauge',
+    'stitch-patterns-and-techniques': 'Stitch patterns and Techniques',
+    'stitch patterns techniques': 'Stitch patterns and Techniques',
+    'shaping-fitting-and-construction': 'Shaping Fitting and Construction',
+    'shaping fitting construction': 'Shaping Fitting and Construction',
+    'troubleshooting': 'Troubleshooting',
+    'patterns-and-projects': 'Patterns and Projects',
+    'patterns projects': 'Patterns and Projects',
+    'tools-and-accessories': 'Tools and Accessories',
+    'tools accessories': 'Tools and Accessories',
+    'is-this-normal': 'Is this Normal?',
+    'can-my-machine-do-that': 'Can my machine Do that?',
+    'finishing-and-care': 'Finishing and Care',
+    'finishing care': 'Finishing and Care',
+  };
+  
+  const lowerCategory = rawCategory.toLowerCase().trim();
+  
+  // Check if it's a mapped legacy category
+  if (categoryMap[lowerCategory]) {
+    const mappedCat = categoryMap[lowerCategory];
+    if (mappedCat !== rawCategory) {
+      console.log(`[ANA Catalog] Mapped "${rawCategory}" → "${mappedCat}"`);
+    }
+    return mappedCat;
+  }
+  
+  // Check if it matches one of our standardized categories (case-insensitive)
+  const matchedCategory = anaCategories.find(
+    cat => cat.title.toLowerCase() === lowerCategory
+  );
+  
+  if (matchedCategory) {
+    return matchedCategory.title;
+  }
+  
+  // No match found - log for data migration review and default to "Getting started"
+  unmappedCategories.add(rawCategory);
+  console.warn(`[ANA Catalog] UNMAPPED category: "${rawCategory}" - defaulting to "Getting started" (needs review)`);
+  return 'Getting started';
+}
+
 // Fetch ANA entries from GitHub at build time
 let entries = [];
 let errorMessage = '';
@@ -20,11 +101,12 @@ try {
         return {
           title: data.title,
           slug: data.slug,
-          category: data.category || 'Uncategorized',
+          category: normalizeCategory(data.category),
           tags: data.tags || [],
           isDraft: data.isDraft,
           pendingPublish: data.pendingPublish,
           publishedDate: data.publishedDate,
+          body: data.body || '',
         };
       });
     
@@ -71,7 +153,20 @@ const description = "Browse all our knitting machine questions and answers, orga
       </div>
     </div>
 
-    <!-- Catalogue Content -->
+    <!-- Category Speech Bubble Grid -->
+    <div class="ana-category-grid" id="categoryGrid">
+      {anaCategories.map((cat) => (
+        <button
+          class="ana-category-bubble"
+          data-category={cat.title}
+          data-category-slug={cat.slug}
+        >
+          {cat.title}
+        </button>
+      ))}
+    </div>
+
+    <!-- ANA Cards Grid -->
     <div id="catalogueContent" class="catalogue-content" data-entries={JSON.stringify(entries)}>
       {errorMessage && (
         <div class="error">
@@ -200,13 +295,112 @@ const description = "Browse all our knitting machine questions and answers, orga
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
   }
 
-  /* Header Divider */
-  .header-divider {
-    border: none;
-    height: 1px;
-    background-color: #a9b88f;
-    width: 90%;
-    margin: 1.5rem auto 3rem;
+  /* ================================================
+     ANA CATEGORY BUBBLE GRID
+     ================================================ */
+
+  .ana-category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin: 1.5rem 0 2rem;
+    padding-bottom: 1rem;
+  }
+
+  /* ================================================
+     BASE CATEGORY BUBBLE
+     ================================================ */
+  .ana-category-bubble {
+    display: inline-block;
+    width: 100%;
+    position: relative;
+
+    background-color: #ffffff;
+    color: #2c3a57;
+    padding: 0.85rem 1.4rem;
+    border-radius: 20px;
+    border: 2px solid #52682d;
+
+    font-size: 1rem;
+    font-weight: 500;
+    text-align: center;
+
+    cursor: pointer;
+
+    box-shadow: 0 2px 6px rgba(82, 104, 45, 0.12);
+    transition:
+      background-color 0.15s ease,
+      border-color 0.15s ease,
+      box-shadow 0.15s ease,
+      transform 0.12s ease;
+  }
+
+  /* ================================================
+     SPEECH BUBBLE TAIL — Bottom Right (Outer triangle)
+     ================================================ */
+  .ana-category-bubble::after {
+    content: "";
+    position: absolute;
+    bottom: -14px;
+    right: 26px;
+    width: 0;
+    height: 0;
+    border-left: 18px solid transparent;
+    border-right: 0;
+    border-top: 14px solid #52682d;
+    transition: border-top-color 0.15s ease;
+  }
+
+  /* ================================================
+     SPEECH BUBBLE TAIL FILL (Inner triangle)
+     ================================================ */
+  .ana-category-bubble::before {
+    content: "";
+    position: absolute;
+    bottom: -11px;
+    right: 28px;
+    width: 0;
+    height: 0;
+    border-left: 15px solid transparent;
+    border-right: 0;
+    border-top: 11px solid #ffffff;
+    z-index: 1;
+    transition: border-top-color 0.15s ease;
+  }
+
+  /* ================================================
+     HOVER STATE
+     ================================================ */
+  .ana-category-bubble:hover {
+    background-color: #f7f9f3;
+    border-color: #6e8b3d;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(82, 104, 45, 0.20);
+  }
+
+  .ana-category-bubble:hover::after {
+    border-top-color: #6e8b3d;
+  }
+
+  .ana-category-bubble:hover::before {
+    border-top-color: #f7f9f3;
+  }
+
+  /* ================================================
+     ACTIVE / SELECTED STATE
+     ================================================ */
+  .ana-category-bubble.is-active {
+    background-color: #eef3e4;
+    border-color: #6e8b3d;
+    font-weight: 600;
+  }
+
+  .ana-category-bubble.is-active::after {
+    border-top-color: #6e8b3d;
+  }
+
+  .ana-category-bubble.is-active::before {
+    border-top-color: #eef3e4;
   }
 
   /* Catalogue Content */
@@ -214,193 +408,46 @@ const description = "Browse all our knitting machine questions and answers, orga
     position: relative;
   }
 
-  /* Consistent Section Titles */
-  :global(.section-title) {
-    color: #52682D;
-    font-size: var(--text-xl);
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    padding-bottom: 0.75rem;
-    position: relative;
+  /* ================================================
+     ANA CARDS
+     ================================================ */
+
+  .ana-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
   }
 
-
-  /* Section Rhythm and Balance */
-  :global(.category-section) {
-    margin-bottom: 4rem;
-    padding: 2.5rem;
+  .ana-card {
+    display: block;
+    background: #fff;
+    border: 1px solid #d1d9c2;
     border-radius: 12px;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-
-  :global(.category-section:nth-child(odd)) {
-    background-color: #ffffff;
-  }
-
-  :global(.category-section:nth-child(even)) {
-    background-color: #f9fdf5;
-  }
-
-  :global(.category-section.hidden) {
-    display: none;
-  }
-
-  :global(.row-wrapper) {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    position: relative;
-    margin-top: 1.5rem;
-  }
-
-  :global(.scrollable-row) {
-    flex: 1;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: #c7d8a4 transparent;
-    padding: 0.5rem 1rem 1rem 0.5rem;
-    scroll-behavior: smooth;
-    scroll-snap-type: x mandatory;
-    cursor: grab;
-  }
-
-  :global(.scrollable-row:active) {
-    cursor: grabbing;
-  }
-
-  :global(.scrollable-row::-webkit-scrollbar) {
-    height: 6px;
-  }
-
-  :global(.scrollable-row::-webkit-scrollbar-track) {
-    background: transparent;
-  }
-
-  :global(.scrollable-row::-webkit-scrollbar-thumb) {
-    background-color: #c7d8a4;
-    border-radius: 10px;
-  }
-
-  :global(.bubbles-container) {
-    display: flex;
-    gap: 1rem;
-    padding: 0.5rem 0.5rem 0.5rem 2rem;
-    min-width: min-content;
-  }
-
-  :global(.scroll-arrow) {
-    width: 44px;
-    height: 44px;
-    min-width: 44px;
-    border-radius: 50%;
-    background-color: #c7d8a4;
-    border: 2px solid #52682D;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.15);
-    flex-shrink: 0;
-  }
-
-  :global(.scroll-arrow:hover) {
-    background-color: #52682D;
-    transform: scale(1.1);
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25);
-  }
-
-  :global(.scroll-arrow svg) {
-    width: 22px;
-    height: 22px;
-    fill: #52682D;
-    transition: fill 0.3s ease;
-  }
-
-  :global(.scroll-arrow:hover svg) {
-    fill: white;
-  }
-
-  :global(.scroll-arrow.hidden) {
-    opacity: 0.3;
-    pointer-events: none;
-  }
-
-  /* Interactive Question Bubbles with Animation */
-  :global(.thought-bubble) {
-    position: relative;
-    background-color: #ffffff;
-    color: #52682D;
-    border: 1px solid #c7d8a4;
-    padding: 1.25rem 1.75rem;
-    border-radius: 25px;
+    padding: 1.25rem 1.5rem;
+    box-shadow: 0 2px 6px rgba(82,104,45,0.08);
     text-decoration: none;
-    font-size: var(--text-lg);
-    font-weight: 500;
-    white-space: normal;
-    max-width: 280px;
-    min-width: 180px;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    cursor: pointer;
-    flex-shrink: 0;
-    scroll-snap-align: start;
-    word-wrap: break-word;
-    hyphens: auto;
-    opacity: 0;
-    transform: translateY(20px);
+    color: #2c3a57;
+    transition: transform .12s ease, box-shadow .15s ease;
   }
 
-  /* Scroll-triggered animation states */
-  :global(.thought-bubble.animate-in) {
-    opacity: 1;
-    transform: translateY(0);
+  .ana-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(82,104,45,0.15);
   }
 
-  :global(.thought-bubble::before) {
-    content: '';
-    position: absolute;
-    left: -14px;
-    bottom: 20px;
-    width: 12px;
-    height: 12px;
-    background-color: #ffffff;
-    border: 1px solid #c7d8a4;
-    border-radius: 50%;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
+  .ana-card h3 {
+    margin-top: 0;
+    margin-bottom: .5rem;
+    color: #2c3a57;
+    font-size: 1.1rem;
   }
 
-  :global(.thought-bubble::after) {
-    content: '';
-    position: absolute;
-    left: -24px;
-    bottom: 12px;
-    width: 8px;
-    height: 8px;
-    background-color: #ffffff;
-    border: 1px solid #c7d8a4;
-    border-radius: 50%;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    transition: all 0.3s ease;
-  }
-
-  /* Hover effects - lift and grow */
-  :global(.thought-bubble:hover) {
-    background-color: #eef4e5;
-    transform: translateY(-4px) scale(1.02);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
-  }
-
-  :global(.thought-bubble:hover::before),
-  :global(.thought-bubble:hover::after) {
-    background-color: #eef4e5;
-  }
-
-  :global(.thought-bubble.bubble-hidden) {
-    display: none;
+  .ana-card p {
+    margin: 0;
+    color: #5a5a5a;
+    font-size: 0.95rem;
+    line-height: 1.5;
   }
 
   /* Scroll to Top Button */
@@ -520,19 +567,13 @@ const description = "Browse all our knitting machine questions and answers, orga
       justify-content: space-between;
     }
 
-    :global(.category-section) {
-      padding: 1.5rem 1rem;
-      margin-bottom: 2.5rem;
+    .ana-category-grid {
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
     }
 
-    :global(.section-title) {
-      font-size: 1.5rem;
-    }
-
-    :global(.thought-bubble) {
-      font-size: 0.95rem;
-      padding: 1rem 1.5rem;
-      min-width: 160px;
+    .ana-card-grid {
+      grid-template-columns: 1fr;
     }
 
     .scroll-to-top {
@@ -547,6 +588,7 @@ const description = "Browse all our knitting machine questions and answers, orga
 <script>
   let allEntries = [];
   let currentSort = 'newest';
+  let selectedCategory = null;
 
   function sortEntries(entries, sortBy) {
     const sorted = [...entries];
@@ -574,196 +616,80 @@ const description = "Browse all our knitting machine questions and answers, orga
     return sorted;
   }
 
-  function groupByCategory(entries) {
-    const grouped = {};
-    entries.forEach(entry => {
-      if (!grouped[entry.category]) {
-        grouped[entry.category] = [];
-      }
-      grouped[entry.category].push(entry);
-    });
-    return grouped;
+  function getExcerpt(body, maxLength = 150) {
+    if (!body) return '';
+    
+    // Strip HTML tags and get plain text
+    const plainText = body.replace(/<[^>]*>/g, '');
+    
+    if (plainText.length <= maxLength) {
+      return plainText;
+    }
+    
+    return plainText.substring(0, maxLength).trim() + '...';
   }
 
-  function renderCatalogue(entries) {
+  function renderCards(entries) {
     const container = document.getElementById('catalogueContent');
-    const sortedEntries = sortEntries(entries, currentSort);
-    const grouped = groupByCategory(sortedEntries);
-    const categories = Object.keys(grouped).sort();
+    let filteredEntries = sortEntries(entries, currentSort);
 
-    if (categories.length === 0) {
-      container.innerHTML = '<div class="no-results">No questions found matching your search.</div>';
+    // Filter by selected category if one is selected
+    if (selectedCategory) {
+      filteredEntries = filteredEntries.filter(entry => entry.category === selectedCategory);
+    }
+
+    // Apply search filter if search term exists
+    const searchTerm = document.getElementById('searchInput')?.value?.toLowerCase().trim() || '';
+    if (searchTerm) {
+      filteredEntries = filteredEntries.filter(entry => {
+        return entry.title.toLowerCase().includes(searchTerm) ||
+               entry.tags.some(tag => tag.toLowerCase().includes(searchTerm)) ||
+               entry.category.toLowerCase().includes(searchTerm);
+      });
+    }
+
+    if (filteredEntries.length === 0) {
+      container.innerHTML = '<div class="no-results">No questions found matching your criteria.</div>';
       return;
     }
 
-    let html = '';
-
-    categories.forEach(category => {
-      const categoryEntries = grouped[category];
-      const rowId = category.replace(/\s+/g, '-').toLowerCase();
-
+    let html = '<div class="ana-card-grid">';
+    
+    filteredEntries.forEach(entry => {
+      const excerpt = getExcerpt(entry.body);
       html += `
-        <div class="category-section" data-category="${category}">
-          <h2 class="section-title">${category}</h2>
-          <div class="row-wrapper">
-            <button class="scroll-arrow left" data-row="${rowId}" aria-label="Scroll left">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-              </svg>
-            </button>
-            <div class="scrollable-row" data-row-id="${rowId}">
-              <div class="bubbles-container">
-                ${categoryEntries.map(entry => `
-                  <a href="/ana/${entry.slug}"
-                    class="thought-bubble"
-                    data-title="${entry.title.toLowerCase()}"
-                    data-tags="${entry.tags.join(' ').toLowerCase()}">
-                    ${entry.title}
-                  </a>
-                `).join('')}
-              </div>
-            </div>
-            <button class="scroll-arrow right" data-row="${rowId}" aria-label="Scroll right">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-              </svg>
-            </button>
-          </div>
-        </div>
+        <a href="/ana/${entry.slug}" class="ana-card">
+          <h3>${entry.title}</h3>
+          <p>${excerpt}</p>
+        </a>
       `;
     });
 
+    html += '</div>';
     container.innerHTML = html;
-    
-    // Initialize scroll animations after render
-    setTimeout(() => {
-      initializeScrollAnimations();
-      initializeScrollingEnhancements();
-    }, 100);
   }
 
-  // Intersection Observer for scroll-triggered bubble animations (wave effect)
-  function initializeScrollAnimations() {
-    const bubbles = document.querySelectorAll('.thought-bubble');
-    
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, index) => {
-        if (entry.isIntersecting) {
-          // Stagger animation with wave effect
-          setTimeout(() => {
-            entry.target.classList.add('animate-in');
-          }, index * 50); // 50ms delay between each bubble
-          
-          observer.unobserve(entry.target);
-        }
-      });
-    }, {
-      threshold: 0.1,
-      rootMargin: '0px 0px -50px 0px'
-    });
+  function handleCategoryClick(categoryTitle) {
+    // Toggle category selection
+    if (selectedCategory === categoryTitle) {
+      selectedCategory = null;
+    } else {
+      selectedCategory = categoryTitle;
+    }
 
-    bubbles.forEach(bubble => {
-      observer.observe(bubble);
-    });
-  }
-
-  function filterCatalogue(searchTerm) {
-    const term = searchTerm.toLowerCase().trim();
-    const sections = document.querySelectorAll('.category-section');
-
-    sections.forEach(section => {
-      const bubbles = section.querySelectorAll('.thought-bubble');
-      let hasVisibleBubbles = false;
-
-      bubbles.forEach(bubble => {
-        const title = bubble.dataset.title;
-        const tags = bubble.dataset.tags;
-        const matches = title.includes(term) || tags.includes(term);
-
-        if (matches) {
-          bubble.classList.remove('bubble-hidden');
-          hasVisibleBubbles = true;
-        } else {
-          bubble.classList.add('bubble-hidden');
-        }
-      });
-
-      if (hasVisibleBubbles) {
-        section.classList.remove('hidden');
+    // Update active state on category bubbles
+    const categoryBubbles = document.querySelectorAll('.ana-category-bubble');
+    categoryBubbles.forEach(bubble => {
+      const bubbleCategory = bubble.dataset.category;
+      if (bubbleCategory === selectedCategory) {
+        bubble.classList.add('is-active');
       } else {
-        section.classList.add('hidden');
+        bubble.classList.remove('is-active');
       }
     });
-    
-    setTimeout(() => {
-      document.querySelectorAll('.scrollable-row').forEach(row => {
-        updateArrowVisibility(row);
-      });
-    }, 50);
-  }
 
-  function updateArrowVisibility(row) {
-    const rowId = row.dataset.rowId;
-    const leftArrow = document.querySelector(`.scroll-arrow.left[data-row="${rowId}"]`);
-    const rightArrow = document.querySelector(`.scroll-arrow.right[data-row="${rowId}"]`);
-    
-    if (leftArrow && rightArrow) {
-      const isAtStart = row.scrollLeft <= 0;
-      const isAtEnd = row.scrollLeft >= row.scrollWidth - row.clientWidth - 1;
-      
-      leftArrow.classList.toggle('hidden', isAtStart);
-      rightArrow.classList.toggle('hidden', isAtEnd);
-    }
-  }
-
-  function initializeScrollingEnhancements() {
-    const scrollableRows = document.querySelectorAll('.scrollable-row');
-    
-    scrollableRows.forEach(row => {
-      let isDown = false;
-      let startX;
-      let scrollLeft;
-      
-      row.addEventListener('mousedown', (e) => {
-        if (e.target.closest('.thought-bubble')) return;
-        
-        isDown = true;
-        startX = e.pageX - row.offsetLeft;
-        scrollLeft = row.scrollLeft;
-      });
-      
-      row.addEventListener('mouseleave', () => {
-        isDown = false;
-      });
-      
-      row.addEventListener('mouseup', () => {
-        isDown = false;
-      });
-      
-      row.addEventListener('mousemove', (e) => {
-        if (!isDown) return;
-        e.preventDefault();
-        const x = e.pageX - row.offsetLeft;
-        const walk = (x - startX) * 2;
-        row.scrollLeft = scrollLeft - walk;
-      });
-      
-      row.addEventListener('scroll', () => updateArrowVisibility(row));
-      updateArrowVisibility(row);
-    });
-
-    const arrows = document.querySelectorAll('.scroll-arrow');
-    arrows.forEach(arrow => {
-      arrow.addEventListener('click', () => {
-        const rowId = arrow.dataset.row;
-        const row = document.querySelector(`.scrollable-row[data-row-id="${rowId}"]`);
-        
-        if (row) {
-          const scrollAmount = arrow.classList.contains('left') ? -300 : 300;
-          row.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-        }
-      });
-    });
+    // Re-render cards with new filter
+    renderCards(allEntries);
   }
 
   // Scroll to Top Button
@@ -792,23 +718,30 @@ const description = "Browse all our knitting machine questions and answers, orga
     
     if (entriesData) {
       allEntries = JSON.parse(entriesData);
-      renderCatalogue(allEntries);
+      renderCards(allEntries);
     }
+
+    // Set up category bubble click handlers
+    const categoryBubbles = document.querySelectorAll('.ana-category-bubble');
+    categoryBubbles.forEach(bubble => {
+      bubble.addEventListener('click', () => {
+        const categoryTitle = bubble.dataset.category;
+        handleCategoryClick(categoryTitle);
+      });
+    });
 
     initializeScrollToTop();
   }
 
-  document.getElementById('searchInput')?.addEventListener('input', (e) => {
-    filterCatalogue(e.target.value);
+  // Search input handler
+  document.getElementById('searchInput')?.addEventListener('input', () => {
+    renderCards(allEntries);
   });
 
+  // Sort select handler
   document.getElementById('sortSelect')?.addEventListener('change', (e) => {
     currentSort = e.target.value;
-    renderCatalogue(allEntries);
-    const searchTerm = document.getElementById('searchInput').value;
-    if (searchTerm) {
-      filterCatalogue(searchTerm);
-    }
+    renderCards(allEntries);
   });
 
   init();

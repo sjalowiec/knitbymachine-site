@@ -1,0 +1,214 @@
+Update the page at:
+src/pages/ana-catalog.astro
+so it uses the new ANA category speech-bubble layout.
+
+1. KEEP this exactly as it is:
+
+The existing hero section at the top of the page
+(Ask ’n Answer icon, intro text, search/sort UI)
+
+Do NOT modify the hero.
+
+2. INSERT the category speech-bubble grid directly below the hero
+
+Replace the current content section with:
+
+<div class="ana-category-grid">
+  {categories.map((cat) => (
+    <button
+      class={`ana-category-bubble ${selectedCategory === cat.slug ? 'is-active' : ''}`}
+      on:click={() => setSelectedCategory(cat.slug)}
+    >
+      {cat.title}
+    </button>
+  ))}
+</div>
+
+
+Where:
+
+categories = your list of ANA categories from Sanity or JSON
+
+selectedCategory = temporary state (or URL param)
+
+3. BELOW the category bubbles, output the ANA cards
+
+Replace the old ANA list layout with a clean card grid:
+
+<div class="ana-card-grid">
+  {filteredANAs.map((ana) => (
+    <a href={`/ana/${ana.slug}`} class="ana-card">
+      <h3>{ana.title}</h3>
+      <p>{ana.excerpt}</p>
+    </a>
+  ))}
+</div>
+
+
+Where:
+
+filteredANAs = ANAs filtered by selected category
+
+fallback = show all ANAs when no category is selected
+
+4. ADD the full speech-bubble CSS to the page or to your site CSS
+
+Paste THIS CSS exactly (full working version):
+
+/* ================================================
+   ANA CATEGORY BUBBLE GRID
+   ================================================ */
+
+.ana-category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+  margin: 1.5rem 0 2rem;
+  padding-bottom: 1rem;
+}
+
+/* ================================================
+   BASE CATEGORY BUBBLE
+   ================================================ */
+.ana-category-bubble {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+
+  background-color: #ffffff;
+  color: #2c3a57;
+  padding: 0.85rem 1.4rem;
+  border-radius: 20px;
+  border: 2px solid #52682d;
+
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+
+  cursor: pointer;
+
+  box-shadow: 0 2px 6px rgba(82, 104, 45, 0.12);
+  transition:
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.12s ease;
+}
+
+/* ================================================
+   SPEECH BUBBLE TAIL — Bottom Right (Outer triangle)
+   ================================================ */
+.ana-category-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  right: 26px;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 0;
+  border-top: 14px solid #52682d;
+  transition: border-top-color 0.15s ease;
+}
+
+/* ================================================
+   SPEECH BUBBLE TAIL FILL (Inner triangle)
+   ================================================ */
+.ana-category-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -11px;
+  right: 28px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 0;
+  border-top: 11px solid #ffffff;
+  z-index: 1;
+  transition: border-top-color 0.15s ease;
+}
+
+/* ================================================
+   HOVER STATE
+   ================================================ */
+.ana-category-bubble:hover {
+  background-color: #f7f9f3;
+  border-color: #6e8b3d;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(82, 104, 45, 0.20);
+}
+
+.ana-category-bubble:hover::after {
+  border-top-color: #6e8b3d;
+}
+
+.ana-category-bubble:hover::before {
+  border-top-color: #f7f9f3;
+}
+
+/* ================================================
+   ACTIVE / SELECTED STATE
+   ================================================ */
+.ana-category-bubble.is-active {
+  background-color: #eef3e4;
+  border-color: #6e8b3d;
+  font-weight: 600;
+}
+
+.ana-category-bubble.is-active::after {
+  border-top-color: #6e8b3d;
+}
+
+.ana-category-bubble.is-active::before {
+  border-top-color: #eef3e4;
+}
+
+/* ================================================
+   ANA CARDS
+   ================================================ */
+
+.ana-card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.ana-card {
+  display: block;
+  background: #fff;
+  border: 1px solid #d1d9c2;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(82,104,45,0.08);
+  text-decoration: none;
+  color: #2c3a57;
+  transition: transform .12s ease, box-shadow .15s ease;
+}
+
+.ana-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 12px rgba(82,104,45,0.15);
+}
+
+.ana-card h3 {
+  margin-top: 0;
+  margin-bottom: .5rem;
+  color: #2c3a57;
+  font-size: 1.1rem;
+}
+
+.ana-card p {
+  margin: 0;
+  color: #5a5a5a;
+}
+
+
+
+preserve all existing imports, scripts, and the search/sort UI
+
+categories may come from JSON or Sanity — keep the source intact
+
+replace only the ANA list section with the new bubble grid + card list
+
+ensure the page remains responsive exactly like the rest of KBM
