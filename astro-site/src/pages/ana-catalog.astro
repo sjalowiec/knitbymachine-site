@@ -128,26 +128,26 @@ const description = "Browse all our knitting machine questions and answers, orga
     <!-- Compact Header: Icon + Text + Search/Sort -->
     <div class="header-panel fade-in">
       <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="intro-icon">
-      <div class="intro-content">
+      <div class="header-right">
         <p class="intro-tagline">Troubleshoot, learn, and master your knitting machine — one question at a time.</p>
-      </div>
-      <div class="controls-wrapper">
-        <div class="search-wrapper">
-          <input 
-            type="text" 
-            class="search-input" 
-            id="searchInput" 
-            placeholder="Search ANA questions..."
-            aria-label="Search questions"
-          >
-        </div>
-        <div class="sort-wrapper">
-          <label for="sortSelect" class="sort-label">Sort by:</label>
-          <select id="sortSelect" class="sort-select" aria-label="Sort order">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="alphabetical">Alphabetical</option>
-          </select>
+        <div class="controls-wrapper">
+          <div class="search-wrapper">
+            <input 
+              type="text" 
+              class="search-input" 
+              id="searchInput" 
+              placeholder="Search ANA questions..."
+              aria-label="Search questions"
+            >
+          </div>
+          <div class="sort-wrapper">
+            <label for="sortSelect" class="sort-label">Sort by:</label>
+            <select id="sortSelect" class="sort-select" aria-label="Sort order">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="alphabetical">Alphabetical</option>
+            </select>
+          </div>
         </div>
       </div>
     </div>
@@ -217,9 +217,12 @@ const description = "Browse all our knitting machine questions and answers, orga
     flex-shrink: 0;
   }
 
-  .intro-content {
+  .header-right {
     flex: 1;
-    min-width: 250px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    min-width: 0;
   }
 
   .intro-tagline {
@@ -228,6 +231,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     line-height: 1.5;
     margin: 0;
     opacity: 0.85;
+    width: 100%;
   }
 
   /* Search and Sort Controls */
@@ -236,7 +240,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     flex-direction: row;
     align-items: center;
     gap: 1rem;
-    min-width: 450px;
+    width: 100%;
   }
 
   .search-wrapper {
@@ -598,8 +602,8 @@ const description = "Browse all our knitting machine questions and answers, orga
       height: 100px;
     }
 
-    .intro-content {
-      min-width: unset;
+    .header-right {
+      width: 100%;
     }
 
     .intro-tagline {
@@ -607,8 +611,6 @@ const description = "Browse all our knitting machine questions and answers, orga
     }
 
     .controls-wrapper {
-      width: 100%;
-      min-width: unset;
       flex-direction: column;
       gap: 0.75rem;
     }
