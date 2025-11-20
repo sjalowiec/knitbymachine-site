@@ -649,6 +649,71 @@ const description = "Browse all our knitting machine questions and answers, orga
       height: 45px;
     }
   }
+
+  /* Small Mobile Devices */
+  @media (max-width: 640px) {
+    .page-container {
+      padding: 1.5rem 0.75rem;
+    }
+
+    .header-panel {
+      padding: 1.25rem 1rem;
+      gap: 1rem;
+    }
+
+    .intro-icon {
+      width: 100px;
+      height: 100px;
+    }
+
+    .intro-tagline {
+      font-size: var(--text-base);
+    }
+
+    .intro-subtitle {
+      font-size: var(--text-sm);
+    }
+
+    .controls-wrapper {
+      gap: 0.625rem;
+    }
+
+    .search-input {
+      padding: 0.75rem 1rem;
+      font-size: var(--text-sm);
+    }
+
+    .sort-wrapper {
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .sort-label {
+      font-size: var(--text-sm);
+      width: 100%;
+      text-align: left;
+    }
+
+    .sort-select {
+      padding: 0.625rem 0.875rem;
+      font-size: var(--text-sm);
+      width: 100%;
+    }
+
+    .ana-topics-well {
+      padding: 1.25rem 1rem;
+    }
+
+    .ana-category-grid {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+    }
+
+    .ana-category-bubble {
+      padding: 0.75rem 1.2rem;
+      font-size: 0.9rem;
+    }
+  }
 </style>
 
 <script>
