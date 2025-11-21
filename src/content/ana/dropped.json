@@ -8,7 +8,7 @@
   ],
   "isMemberOnly": false,
   "videoUrl": "https://vimeo.com/1129979374",
-  "imageUrl": "/public-objects/glossary/1763740042406-machine-knitting-dropped-stitch.webp",
+  "imageUrl": "/images/ana/1763740042406-machine-knitting-dropped-stitch.webp",
   "imageAlt": "Diagram showing how to fix a dropped stitch",
   "wizardUrl": "https://example.com/wizard/fix-stitches",
   "metaTitle": "How to Fix Dropped Stitches on a Knitting Machine | Ask ’n Answer",
@@ -33,7 +33,7 @@
     "why-is-my-carriage-jamming"
   ],
   "relatedWorkshops": [],
-  "body": "<p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p>\n<ol>\n    <li>\n        <p>Stop as soon as you notice the drop</p>\n    </li>\n    <li>\n        <p>Find the dropped stitch and pick up with a <strong>transfer tool</strong> <Tooltip term=\"transfer-tool\" /><br></p>\n    </li>\n    <li>\n        <p>Use the <strong>latch tool</strong> <Tooltip term=\"latch-tool\" /></p>\n        <p><br>(hook facing you) to relatch the stitch back up</p>\n    </li>\n    <li>\n        <p>Put the stitch back on the needle without twisting it <br></p>\n    </li>\n</ol>\n\n",
+  "body": "<p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p>\n<ol>\n    <li>\n        <p>Stop as soon as you notice the drop</p>\n    </li>\n    <li>\n        <p>Find the dropped stitch and pick up with a <strong>transfer tool</strong> <Tooltip term=\"transfer-tool\" /><br></p>\n    </li>\n    <li>Use the <strong>latch tool</strong> <Tooltip term=\"latch-tool\" />(hook facing you) to relatch the stitch back up\n    </li>\n    <li>\n        Put the stitch back on the needle without twisting it <br>\n    </li>\n</ol>\n\n",
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2025-11-03T00:00:00.000Z"
