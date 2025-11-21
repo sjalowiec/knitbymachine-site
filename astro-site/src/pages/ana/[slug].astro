@@ -123,17 +123,28 @@ const relatedWizards = entry.data.relatedWizards?.length
           </div>
         </div>
 
-        <!-- Image centered below bubbles -->
+        <!-- Image centered below bubbles with zoom feature -->
         {entry.data.imageUrl && (
           <div class="ana-image-section">
             <img 
               src={entry.data.imageUrl} 
               alt={entry.data.imageAlt || entry.data.title}
-              class="ana-image"
+              class="ana-image zoomable-image"
               data-testid="img-ana-visual"
+              role="button"
+              tabindex="0"
+              aria-label="Click to zoom image"
             />
+            <p class="zoom-hint">Click image to zoom</p>
           </div>
         )}
+
+        <!-- Zoom Modal (hidden by default) -->
+        <div id="zoom-modal" class="zoom-modal" data-testid="modal-image-zoom">
+          <div class="zoom-backdrop"></div>
+          <button class="zoom-close" aria-label="Close zoom" data-testid="button-close-zoom">&times;</button>
+          <img id="zoom-image" src="" alt="" class="zoom-image" />
+        </div>
 
         <!-- Related Content Section -->
         {(relatedAnas.length > 0 || relatedWorkshops.length > 0 || relatedWizards.length > 0) && (
@@ -401,7 +412,7 @@ const relatedWizards = entry.data.relatedWizards?.length
   .ana-image-section {
     text-align: center;
     margin: 0 auto;
-    max-width: 600px;
+    max-width: 400px;
   }
 
   .ana-image {
@@ -409,6 +420,88 @@ const relatedWizards = entry.data.relatedWizards?.length
     height: auto;
     border-radius: 12px;
     box-shadow: 0 2px 8px rgba(82, 104, 45, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .zoomable-image {
+    cursor: zoom-in;
+  }
+
+  .zoomable-image:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25);
+  }
+
+  .zoom-hint {
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #52682d;
+    opacity: 0.7;
+    font-style: italic;
+  }
+
+  /* Zoom Modal */
+  .zoom-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .zoom-modal.active {
+    display: flex;
+  }
+
+  .zoom-backdrop {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    cursor: zoom-out;
+  }
+
+  .zoom-close {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: white;
+    font-size: 3rem;
+    font-weight: 300;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 10001;
+    line-height: 1;
+    padding: 0;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s ease;
+  }
+
+  .zoom-close:hover {
+    opacity: 0.7;
+  }
+
+  .zoom-image {
+    position: relative;
+    max-width: 95%;
+    max-height: 95%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    z-index: 10000;
+    border-radius: 8px;
+    cursor: zoom-out;
   }
 
   /* Related Content Section */
@@ -567,6 +660,28 @@ const relatedWizards = entry.data.relatedWizards?.length
       margin-left: 0;
     }
 
+    .ana-image-section {
+      max-width: 100%;
+      padding: 0 1rem;
+    }
+
+    .zoom-hint {
+      font-size: 0.75rem;
+    }
+
+    .zoom-close {
+      top: 10px;
+      right: 10px;
+      font-size: 2.5rem;
+      width: 40px;
+      height: 40px;
+    }
+
+    .zoom-image {
+      max-width: 98%;
+      max-height: 98%;
+    }
+
     .related-content-section {
       padding: 1.5rem;
     }
@@ -594,3 +709,59 @@ const relatedWizards = entry.data.relatedWizards?.length
 </style>
 
 <script is:inline src="/scripts/dynamic-tooltips.js"></script>
+
+<script is:inline>
+  // Image Zoom Functionality
+  (function() {
+    const zoomableImage = document.querySelector('.zoomable-image');
+    const zoomModal = document.getElementById('zoom-modal');
+    const zoomImage = document.getElementById('zoom-image');
+    const zoomClose = document.querySelector('.zoom-close');
+    const zoomBackdrop = document.querySelector('.zoom-backdrop');
+
+    if (!zoomableImage || !zoomModal || !zoomImage) return;
+
+    function openZoom() {
+      zoomImage.src = zoomableImage.src;
+      zoomImage.alt = zoomableImage.alt;
+      zoomModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeZoom() {
+      zoomModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Open zoom on image click
+    zoomableImage.addEventListener('click', openZoom);
+    
+    // Open zoom on Enter key
+    zoomableImage.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        openZoom();
+      }
+    });
+
+    // Close zoom on close button click
+    if (zoomClose) {
+      zoomClose.addEventListener('click', closeZoom);
+    }
+
+    // Close zoom on backdrop click
+    if (zoomBackdrop) {
+      zoomBackdrop.addEventListener('click', closeZoom);
+    }
+
+    // Close zoom on image click
+    zoomImage.addEventListener('click', closeZoom);
+
+    // Close zoom on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && zoomModal.classList.contains('active')) {
+        closeZoom();
+      }
+    });
+  })();
+</script>
