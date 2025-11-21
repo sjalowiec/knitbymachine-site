@@ -2,10 +2,17 @@ export const prerender = false;
 
 import type { APIRoute } from 'astro';
 
-const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
+const GITHUB_TOKEN = (import.meta as any).env?.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
 const REPO_OWNER = 'sjalowiec';
 const REPO_NAME = 'knitbymachine-site';
 const CONTENT_PATH = 'astro-site/src/content/glossary';
+
+interface GlossaryEntry {
+  slug: string;
+  term: string;
+  tooltip: string;
+  description: string;
+}
 
 export const GET: APIRoute = async () => {
   try {
@@ -34,7 +41,7 @@ export const GET: APIRoute = async () => {
     const jsonFiles = files.filter((file: any) => file.name.endsWith('.json'));
 
     // Fetch each glossary entry
-    const entries = [];
+    const entries: GlossaryEntry[] = [];
     for (const file of jsonFiles) {
       try {
         const fileResponse = await fetch(file.download_url);

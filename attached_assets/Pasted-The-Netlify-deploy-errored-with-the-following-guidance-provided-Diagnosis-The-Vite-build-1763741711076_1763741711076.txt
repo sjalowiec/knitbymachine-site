@@ -1,0 +1,73 @@
+The Netlify deploy errored, with the following guidance provided:
+
+**Diagnosis**
+
+The Vite build fails when it tries to load `astro-site/src/pages/ana/[slug].astro` because the component contains `<script src="/scripts/dynamic-tooltips.js">`. Astro requires any `<script>` tag that points to a file in the `public/` directory to include the `is:inline` directive, otherwise the asset won’t be bundled and build stops ([lines 95-97](#L95-L97)).
+
+**Solution**
+
+Edit `astro-site/src/pages/ana/[slug].astro` and update the script tag so the file from `public/scripts/dynamic-tooltips.js` is marked inline, for example:
+
+```astro
+<script is:inline src="/scripts/dynamic-tooltips.js"></script>
+```
+
+Alternatively, move the script into `src/` and import it as a module
+
+The relevant error logs are:
+
+Line 83: [2m16:13:55[22m [34m[build][39m [32m✓ Completed in 295ms.[39m
+Line 84: [2m16:13:55[22m [34m[build][39m Building server entrypoints...
+Line 85: [1m[33mwarn[39m[22m - The `content` option in your Tailwind CSS configuration is missing or empty.
+Line 86: [1m[33mwarn[39m[22m - Configure your content sources or your generated CSS will be missing styles.
+Line 87: [1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+Line 88: [33m[1m16:13:58[22m [WARN] [vite][39m [33m"matchHostname", "matchPathname", "matchPort" and "matchProtocol" are imported fr
+Line 89: [2m16:13:58[22m [34m[vite][39m [32m✓ built in 2.73s[39m
+Line 90: [2m16:13:58[22m [34m[build][39m [32m✓ Completed in 2.75s.[39m
+Line 91: [42m[30m building client (vite) [39m[49m
+Line 92: [2m16:13:58[22m [34m[vite][39m [32m✓[39m 0 modules transformed.
+Line 93: [31m[1m16:13:58[22m [ERROR] [vite][39m [31m✗[39m Build failed in 15ms
+Line 94: [2m16:13:58[22m [34m[vite][39m transforming...
+Line 95: [astro:build] Could not load /opt/build/repo/astro-site/src/pages/ana/[slug].astro?astro&type=script&index=0&lang.ts:
+Line 96: <script src="/scripts/dynamic-tooltips.js"> references an asset in the "public/" directory. Please add the "is:inline" directive
+Line 97: File: /opt/build/repo/astro-site/src/pages/ana/[slug].astro?astro&type=script&index=0&lang.ts
+Line 98:   [1mStack trace:[22m
+Line 99: [2m    at Object.load (file:///opt/build/repo/astro-site/node_modules/astro/dist/vite-plugin-astro/index.js:119:21)
+Line 100:     at file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:22451:40
+Line 101:     at async file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:21333:33[22m
+Line 102: [91m[1m​[22m[39m
+Line 103: [91m[1m"build.command" failed                                        [22m[39m
+Line 104: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 105: ​
+Line 106:   [31m[1mError message[22m[39m
+Line 107:   Command failed with exit code 1: npm run build
+Line 108: ​
+Line 109:   [31m[1mError location[22m[39m
+Line 110:   In build.command from netlify.toml:
+Line 111:   npm run build
+Line 112: ​
+Line 113:   [31m[1mResolved config[22m[39m
+Line 114:   build:
+Line 115:     base: /opt/build/repo/astro-site
+Line 116:     command: npm run build
+Line 117:     commandOrigin: config
+Line 118:     environment:
+Line 119:       - GITHUB_CLIENT_ID
+Line 120:       - GITHUB_CLIENT_SECRET
+Line 121:       - GITHUB_TOKEN
+Line 122:       - NODE_VERSION
+Line 123:     publish: /opt/build/repo/astro-site/dist
+Line 124:     publishOrigin: config
+Line 125:   functions:
+Line 126:     "*":
+Line 127:       included_files:
+Line 128:         - dist/**
+      node_bundler: esbuild
+  headers:
+    - for: /*
+      values:
+        Cache-Control: public, max-age=0, m
+Line 129: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 130: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 131: Failing build: Failed to build site
+Line 132: Finished processing build request in 24.617s
