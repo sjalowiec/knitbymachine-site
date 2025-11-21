@@ -11,12 +11,25 @@
   "imageUrl": "https://example.com/images/dropped-stitch.jpg",
   "imageAlt": "Diagram showing how to fix a dropped stitch",
   "wizardUrl": "https://example.com/wizard/fix-stitches",
-  "metaTitle": "How to Fix Dropped Stitches | Knitting Tips",
-  "metaDescription": "Learn the best technique to fix dropped stitches in knitting with our step-by-step guide",
-  "schemaMarkup": null,
+  "metaTitle": "How to Fix Dropped Stitches on a Knitting Machine | Ask ’n Answer",
+  "metaDescription": "Dropped a stitch on your knitting machine? Here’s how to spot it, lift it back up the ladder, and secure it so your work stays intact.",
+  "schemaMarkup": {
+    "@type": "FAQPage",
+    "@context": "https://schema.org",
+    "mainEntity": [
+      {
+        "name": "How do I fix dropped stitches?",
+        "@type": "Question",
+        "acceptedAnswer": {
+          "text": "To fix a dropped stitch on a knitting machine, stop knitting as soon as you notice it. Use a latch tool to pick up the loop and pull it through each ladder rung until you reach the active row. Place the repaired stitch back on the correct needle and continue knitting. If the stitch has dropped multiple rows, work slowly and keep ladder bars straight so the tension stays even. For large drops or textured fabrics, it may help to remove the fabric and rehang it before repairing.",
+          "@type": "Answer"
+        }
+      }
+    ]
+  },
   "relatedAnas": [],
   "relatedWorkshops": [],
-  "body": "When you drop a stitch, here's the best way to fix it...",
+  "body": "<section class=\"ana-entry\">\n  <h1 class=\"ana-question\">How do I fix dropped stitches?</h1>\n\n  <div class=\"ana-answer\">\n    <p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p>\n\n    <h2>1. Stop as soon as you notice the drop</h2>\n    <p>Don’t take another pass with the carriage. This keeps the drop contained and easier to repair.</p>\n\n    <h2>2. Find the loop that slipped off the needle</h2>\n    <p>You’ll see a loose loop below the needle, with a series of “ladder” bars above it.</p>\n\n    <h2>3. Use a latch tool to climb the stitch back up</h2>\n    <ul>\n      <li>Place the loop onto your latch tool.</li>\n      <li>Catch the next ladder bar and pull it through the loop.</li>\n      <li>Repeat, working rung by rung, until you reach the active row.</li>\n    </ul>\n\n    <h2>4. Put the stitch back on its needle</h2>\n    <p>Make sure the hook is fully open and the loop is seated correctly before you keep knitting.</p>\n\n    <h2>5. Check your tension and surrounding needles</h2>\n    <p>If the stitch dropped several rows, you may need to adjust nearby loops so the fabric looks consistent.</p>\n\n    <p>If a large area has dropped—or if you’re working in tuck, slip, or lace—it may be easier to remove the work and rehang it before repairing.</p>\n  </div>\n</section>\n",
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2025-11-03T00:00:00.000Z"
