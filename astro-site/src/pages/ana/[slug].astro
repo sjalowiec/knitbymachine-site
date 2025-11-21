@@ -3,6 +3,7 @@ export const prerender = false;
 
 import Layout from "../../layouts/layout.astro";
 import Tooltip from "../../components/Tooltip.astro";
+import "../../styles/global.css";
 
 const { slug } = Astro.params;
 
@@ -591,3 +592,5 @@ const relatedWizards = entry.data.relatedWizards?.length
     }
   }
 </style>
+
+<script src="/scripts/dynamic-tooltips.js"></script>
