@@ -1,0 +1,29 @@
+{
+  "term": "Ladder",
+  "slug": "ladder",
+  "abbreviation": "",
+  "description": "<p>A <strong>ladder</strong> is the long vertical strand of yarn that appears between stitches when a needle isn’t knitting. Instead of forming a new stitch, the yarn floats up the fabric in a straight line.</p>\n\n<p>Ladders are created when:</p>\n\n<ul>\n  <li>A needle is intentionally taken out of work (for decorative ladders or open columns)</li>\n  <li>A stitch drops and runs down the fabric, whether on purpose or by accident</li>\n</ul>\n\n<p>Ladders can be used decoratively to create open columns, or they can signal that a stitch dropped and needs to be repaired.</p>\n",
+  "tooltip": "A vertical strand between stitches caused by a needle out of work or a dropped stitch.",
+  "example": "Reform purl stitches for ribbing by picking up the ladders",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "L",
+  "imageFilename": "1763737234349-ladder.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": false,
+  "publishedDate": "2025-11-21T00:00:00.000Z",
+  "pendingPublish": false
+}
