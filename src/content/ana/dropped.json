@@ -7,8 +7,8 @@
     "knitting"
   ],
   "isMemberOnly": false,
-  "videoUrl": "",
-  "imageUrl": "https://example.com/images/dropped-stitch.jpg",
+  "videoUrl": "https://vimeo.com/1129979374",
+  "imageUrl": "/public-objects/glossary/1763731241322-dropped-stitch-time-0-00-0322.jpg",
   "imageAlt": "Diagram showing how to fix a dropped stitch",
   "wizardUrl": "https://example.com/wizard/fix-stitches",
   "metaTitle": "How to Fix Dropped Stitches on a Knitting Machine | Ask ’n Answer",
@@ -27,9 +27,13 @@
       }
     ]
   },
-  "relatedAnas": [],
+  "relatedAnas": [
+    "another",
+    "test-entry-for-batching-system",
+    "why-is-my-carriage-jamming"
+  ],
   "relatedWorkshops": [],
-  "body": "<section class=\"ana-entry\">\n  <h1 class=\"ana-question\">How do I fix dropped stitches?</h1>\n\n  <div class=\"ana-answer\">\n    <p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p>\n\n    <h2>1. Stop as soon as you notice the drop</h2>\n    <p>Don’t take another pass with the carriage. This keeps the drop contained and easier to repair.</p>\n\n    <h2>2. Find the loop that slipped off the needle</h2>\n    <p>You’ll see a loose loop below the needle, with a series of “ladder” bars above it.</p>\n\n    <h2>3. Use a latch tool to climb the stitch back up</h2>\n    <ul>\n      <li>Place the loop onto your latch tool.</li>\n      <li>Catch the next ladder bar and pull it through the loop.</li>\n      <li>Repeat, working rung by rung, until you reach the active row.</li>\n    </ul>\n\n    <h2>4. Put the stitch back on its needle</h2>\n    <p>Make sure the hook is fully open and the loop is seated correctly before you keep knitting.</p>\n\n    <h2>5. Check your tension and surrounding needles</h2>\n    <p>If the stitch dropped several rows, you may need to adjust nearby loops so the fabric looks consistent.</p>\n\n    <p>If a large area has dropped—or if you’re working in tuck, slip, or lace—it may be easier to remove the work and rehang it before repairing.</p>\n  </div>\n</section>\n",
+  "body": "<p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p><ol><li><p>Stop as soon as you notice the drop</p></li><li><p>Find the dropped stitch and pick up with a transfer tool</p></li><li><p>Use the latch tool ( turned to face you) to relatch the stitch back up</p></li><li><p>Put the stitch back on the needle<br></p></li></ol><p></p>",
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2025-11-03T00:00:00.000Z"
