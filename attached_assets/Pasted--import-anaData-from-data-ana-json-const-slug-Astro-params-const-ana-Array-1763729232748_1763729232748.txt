@@ -1,0 +1,130 @@
+---
+import anaData from "../../data/ana.json";
+
+const { slug } = Astro.params;
+const ana = Array.isArray(anaData)
+  ? anaData.find((item) => item.slug === slug)
+  : null;
+
+if (!ana) {
+  // simple 404-style output
+}
+---
+
+<html lang="en">
+  <head>
+    <title>{ana ? ana.question + " | Knit by Machine" : "ANA Not Found | Knit by Machine"}</title>
+  </head>
+  <body>
+    <main>
+      <div class="ana-container">
+        <!-- Header row -->
+        <div class="header-row">
+          <a href="/ana-catalog" class="back-link">← Back to Ask 'n Answer</a>
+          <div class="ana-label-wrapper">
+            <p class="ana-detail-label">
+              {ana?.labelText || "You're not alone — asking questions is how you grow your skills."}
+            </p>
+          </div>
+        </div>
+
+        <div class="content-wrapper">
+          <div class="bubbles-column">
+            <article class="ana-item">
+
+              <!-- Question bubble -->
+              <div class="bubble-wrapper question-wrapper">
+                <div class="thought-bubble question-bubble">
+                  <p>{ana.question}</p>
+                </div>
+              </div>
+
+              <!-- Answer bubble -->
+              <div class="bubble-wrapper answer-wrapper">
+                <div class="speech-bubble answer-bubble">
+                  <div class="bubble-content">
+                    <!-- shortAnswerHtml is raw HTML from JSON -->
+                    <Fragment set:html={ana.shortAnswerHtml} />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Image below answer -->
+              {ana.image && (
+                <div class="ana-image-section" style="margin-top:2rem; max-width:600px;">
+                  <img
+                    src={ana.image.src}
+                    alt={ana.image.alt}
+                    style="width:100%; border-radius:12px; box-shadow:0 2px 8px #52682d2a;"
+                  />
+                </div>
+              )}
+
+              <!-- Divider band -->
+              <hr class="kbm-divider" />
+
+              <!-- Teaser/free block -->
+              <section class="ana-teaser" style="max-width:600px; margin:0 auto;">
+                <h2 style="color:#52682d; font-size:1.3rem; margin-bottom:0.5rem;">
+                  {ana.teaserTitle}
+                </h2>
+                <p>{ana.teaserText}</p>
+                {ana.teaserButtonHref && (
+                  <a
+                    href={ana.teaserButtonHref}
+                    class="kbm-button"
+                    style="display:inline-block;margin-top:0.75rem;
+                           padding:0.6rem 1.2rem;background:#52682d;color:#fff;
+                           border-radius:8px;text-decoration:none;font-weight:600;"
+                  >
+                    {ana.teaserButtonLabel || "Learn more"}
+                  </a>
+                )}
+              </section>
+
+              <!-- Member-only content (toggle later with membership logic) -->
+              {ana.memberEnabled && (
+                <section
+                  class="ana-member-content"
+                  style="margin-top:2.5rem; max-width:650px; display:none;"
+                  data-member-visible="false"
+                >
+                  <div class="speech-bubble answer-bubble">
+                    <div class="bubble-content">
+                      <h2>{ana.memberTitle}</h2>
+                      <Fragment set:html={ana.memberHtml} />
+
+                      {ana.memberVideoEmbed && (
+                        <div class="member-video" style="margin-top:1.5rem;">
+                          <iframe
+                            width="100%"
+                            height="315"
+                            src={ana.memberVideoEmbed}
+                            title={ana.memberTitle}
+                            style="border-radius:12px;"
+                            allowfullscreen
+                          ></iframe>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </section>
+              )}
+
+            </article>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Simple demo script to simulate a member -->
+    <script>
+      const isMember = false; // Change to true to show member section for demo
+      const memberSection = document.querySelector(".ana-member-content");
+      if (memberSection && isMember) {
+        memberSection.style.display = "block";
+        memberSection.setAttribute("data-member-visible", "true");
+      }
+    </script>
+  </body>
+</html>
