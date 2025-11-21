@@ -8,7 +8,7 @@
   ],
   "isMemberOnly": false,
   "videoUrl": "https://vimeo.com/1129979374",
-  "imageUrl": "/public-objects/glossary/1763733436020-dropped-stitch-time-0-00-0322.jpg",
+  "imageUrl": "/public-objects/glossary/1763739852706-dropped-stitch-time-0-00-0322.jpg",
   "imageAlt": "Diagram showing how to fix a dropped stitch",
   "wizardUrl": "https://example.com/wizard/fix-stitches",
   "metaTitle": "How to Fix Dropped Stitches on a Knitting Machine | Ask ’n Answer",
@@ -33,7 +33,7 @@
     "why-is-my-carriage-jamming"
   ],
   "relatedWorkshops": [],
-  "body": "<p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p><ol><li><p>Stop as soon as you notice the drop</p></li><li><p>Find the dropped stitch and pick up with a transfer tool</p></li><li><p>Use the latch tool ( turned to face you) to relatch the stitch back up</p></li><li><p>Put the stitch back on the needle without twisting it  <br></p></li></ol><p></p>",
+  "body": "<p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p><ol><li><p>Stop as soon as you notice the drop</p></li><li><p>Find the dropped stitch and pick up with a transfer tool <strong>&lt;Tooltip term=\"transfer-tool\" /&gt;</strong><br></p></li><li><p>Use the latch tool <strong>&lt;Tooltip term=\"latch-tool\" /&gt;</strong></p><p><br>(hook facing you) to relatch the stitch back up</p></li><li><p>Put the stitch back on the needle without twisting it <br></p></li></ol><p></p>",
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2025-11-03T00:00:00.000Z"
