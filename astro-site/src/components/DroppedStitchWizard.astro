@@ -18,13 +18,28 @@ const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
   width: 100%;
 }
 
-/* Option grid layout - single column like catalog */
+/* Option grid layout - responsive 2-3 columns */
 .options-grid {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 0.75rem;
   margin: 2rem 0;
-  max-width: 600px;
+}
+
+/* 2 columns on tablets */
+@media (min-width: 640px) {
+  .options-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+}
+
+/* 3 columns on desktop */
+@media (min-width: 1024px) {
+  .options-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+  }
 }
 
 /* Card styling */

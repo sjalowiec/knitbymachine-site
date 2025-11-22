@@ -330,12 +330,16 @@ const relatedWizards = entry.data.relatedWizards?.length
 
   .question-wrapper {
     justify-content: flex-start;
+    position: relative;
+    z-index: 2; /* Question on top */
   }
 
   .answer-wrapper {
     justify-content: flex-end;
     margin-left: auto;
-    margin-top: -3rem; /* Increased overlap with question bubble */
+    margin-top: -3rem; /* Overlap - answer goes under question */
+    position: relative;
+    z-index: 1; /* Answer underneath */
   }
 
   .thought-bubble {
