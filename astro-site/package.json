@@ -10,13 +10,8 @@
   },
   "dependencies": {
     "@astrojs/netlify": "^6.0.0",
-    "@astrojs/react": "^3.6.2",
     "@octokit/rest": "^21.0.2",
-    "@types/react": "^18.3.12",
-    "@types/react-dom": "^18.3.1",
-    "astro": "^5.0.5",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "astro": "^5.0.5"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
