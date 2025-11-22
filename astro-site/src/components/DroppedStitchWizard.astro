@@ -18,19 +18,13 @@ const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
   width: 100%;
 }
 
-/* Option grid layout */
+/* Option grid layout - single column like catalog */
 .options-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   margin: 2rem 0;
-}
-
-@media (min-width: 640px) {
-  .options-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
-  }
+  max-width: 600px;
 }
 
 /* Card styling */
