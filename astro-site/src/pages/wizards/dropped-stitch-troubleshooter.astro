@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import DroppedStitchWizard from "../../components/DroppedStitchWizard";
+---
+
+<BaseLayout 
+  title="Dropped Stitch Troubleshooter | Knit by Machine" 
+  description="Dropped stitches happen to everyone. This quick check helps you spot what's causing them so you can get back to confident knitting.">
+
+<link rel="stylesheet" href="/src/styles/wizard.css">
+
+<div class="wizard-page">
+  <div class="page-header">
+    <h1>Dropped Stitch Troubleshooter</h1>
+    <p>Find out what's causing your dropped stitches and get practical fixes that work.</p>
+  </div>
+
+  <div class="wizard-container">
+    <DroppedStitchWizard client:load />
+  </div>
+</div>
+
+</BaseLayout>
