@@ -1,6 +1,5 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import DroppedStitchWizard from "../../components/DroppedStitchWizard";
 ---
 
 <BaseLayout 
@@ -9,6 +8,42 @@ import DroppedStitchWizard from "../../components/DroppedStitchWizard";
 
 <link rel="stylesheet" href="/src/styles/wizard.css">
 
+<style>
+.wizard-page {
+  padding-top: 120px;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.page-header {
+  max-width: 800px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.page-header h1 {
+  color: var(--kbm-green);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  text-align: center;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.wizard-container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+</style>
+
 <div class="wizard-page">
   <div class="page-header">
     <h1>Dropped Stitch Troubleshooter</h1>
@@ -16,8 +51,283 @@ import DroppedStitchWizard from "../../components/DroppedStitchWizard";
   </div>
 
   <div class="wizard-container">
-    <DroppedStitchWizard client:load />
+    <div id="wizard-root" class="kbm-wizard"></div>
   </div>
 </div>
+
+<script>
+  const diagnoses = {
+    edge: {
+      causeTitle: "Edge tension or patterning at the edge",
+      explanation: "The edge stitches may be too loose, losing contact with the gate pegs, or patterning may be pulling more on the edge needles.",
+      tryThisItems: [
+        "Add a claw weight or extra weight near the edge.",
+        "Check that your edge needles are fully in working position.",
+        "If you're patterning, try a plain-knit edge (1–2 stitches) before the pattern starts.",
+      ],
+      encouragement: "Edge stitches are fussy for everyone. A little extra weight and attention usually fixes it.",
+    },
+    transfer: {
+      causeTitle: "Transfer tool technique",
+      explanation: "Stitches may be falling off while they're on the tool or while you're moving them to new needles.",
+      tryThisItems: [
+        "Slow down and keep the stitches fully on the prongs before you move them.",
+        "Keep the tool level with the needle bed instead of tipping it.",
+        "Practice on scrap yarn until the motions feel smooth.",
+      ],
+      encouragement: "This is pure practice. The more you transfer on scrap, the more automatic it feels.",
+    },
+    sameNeedle: {
+      causeTitle: "A problem needle (bent, sticky, or damaged)",
+      explanation: "One stubborn needle can cause repeated dropped stitches in the same column.",
+      tryThisItems: [
+        "Mark the problem needle with a bit of yarn.",
+        "Remove and inspect it for burrs, bends, or rough spots.",
+        "Replace it if in doubt – it's not worth fighting.",
+      ],
+      encouragement: "If one needle keeps misbehaving, retiring it is an easy win.",
+    },
+    random: {
+      causeTitle: "Overall yarn or carriage tension",
+      explanation: "The yarn may be feeding too loosely or too tightly, or the carriage may not be moving smoothly.",
+      tryThisItems: [
+        "Knit a small swatch and adjust your tension dial up or down one number.",
+        "Check that the mast, tension dial, and yarn path are smooth with no snags.",
+        "Make sure you're moving the carriage all the way across with even speed.",
+      ],
+      encouragement: "Small tension tweaks can make a big difference. Keep notes as you experiment.",
+    },
+    unsure: {
+      causeTitle: "A mix of tension and technique",
+      explanation: "When things feel random, it usually means a few small factors are stacking up.",
+      tryThisItems: [
+        "Knit a 20–30 row test swatch and watch where the fabric misbehaves.",
+        "Check edge weights, overall tension, and any tools you use often.",
+        "Note when the drop happens (edge, transfer, middle) – then rerun this checker.",
+      ],
+      encouragement: "You're not doing anything 'wrong.' You're just gathering clues. Each small test gives you more control.",
+    },
+  };
+
+  const options = [
+    { key: "edge", label: "On the edge of my knitting" },
+    { key: "transfer", label: "While I'm transferring stitches" },
+    { key: "sameNeedle", label: "On the same needle over and over" },
+    { key: "random", label: "Randomly in the middle of the fabric" },
+    { key: "unsure", label: "I'm not sure – it feels random" },
+  ];
+
+  let currentStep = "intro";
+  let selectedOption = null;
+
+  function renderIntro() {
+    return `
+      <div class="kbm-card kbm-card--shadow">
+        <div class="kbm-card__header">
+          <h2 class="kbm-card__title" data-testid="text-wizard-title">
+            Dropped Stitch Troubleshooter
+          </h2>
+        </div>
+        <div class="kbm-card__body">
+          <p class="kbm-lede" data-testid="text-intro-description">
+            Dropped stitches happen to everyone. This quick check helps you
+            spot what's causing them so you can get back to confident
+            knitting.
+          </p>
+        </div>
+        <div class="kbm-card__footer">
+          <button
+            class="kbm-button kbm-button--primary"
+            id="btn-start"
+            data-testid="button-start"
+          >
+            Start
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderQuestion() {
+    return `
+      <div class="kbm-card kbm-card--shadow">
+        <div class="kbm-card__header">
+          <h2 class="kbm-card__title" data-testid="text-question-title">
+            When do you usually notice the dropped stitch?
+          </h2>
+          <p class="kbm-card__subtitle" data-testid="text-question-helper">
+            Choose the option that sounds most like what you're seeing.
+          </p>
+        </div>
+        <div class="kbm-card__body">
+          <div class="kbm-pill-group">
+            ${options.map((option) => `
+              <button
+                class="kbm-pill ${selectedOption === option.key ? 'kbm-pill--selected' : ''}"
+                data-option="${option.key}"
+                data-testid="button-option-${option.key}"
+              >
+                ${option.label}
+              </button>
+            `).join('')}
+          </div>
+        </div>
+        <div class="kbm-card__footer">
+          <button
+            class="kbm-button kbm-button--secondary"
+            id="btn-back"
+            data-testid="button-back"
+          >
+            Back
+          </button>
+          <button
+            class="kbm-button kbm-button--primary"
+            id="btn-see-diagnosis"
+            data-testid="button-see-diagnosis"
+            ${!selectedOption ? 'disabled' : ''}
+          >
+            See my diagnosis
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function renderResult() {
+    if (!selectedOption) return '';
+    
+    const diagnosis = diagnoses[selectedOption];
+    
+    return `
+      <div class="kbm-card kbm-card--shadow">
+        <div class="kbm-card__header">
+          <div class="kbm-eyebrow" data-testid="text-result-eyebrow">
+            Likely cause
+          </div>
+          <h2 class="kbm-card__title" data-testid="text-result-title">
+            ${diagnosis.causeTitle}
+          </h2>
+        </div>
+        <div class="kbm-card__body">
+          <p data-testid="text-result-explanation">${diagnosis.explanation}</p>
+
+          <h3
+            class="kbm-wizard__result-heading"
+            data-testid="text-result-try-this-heading"
+          >
+            Try this next:
+          </h3>
+          <ul
+            class="kbm-wizard__result-list"
+            data-testid="list-result-suggestions"
+          >
+            ${diagnosis.tryThisItems.map((item, index) => `
+              <li data-testid="list-item-suggestion-${index}">
+                ${item}
+              </li>
+            `).join('')}
+          </ul>
+
+          <p
+            class="kbm-text-muted"
+            data-testid="text-result-encouragement"
+          >
+            ${diagnosis.encouragement}
+          </p>
+        </div>
+        <div class="kbm-card__footer">
+          <button
+            class="kbm-button kbm-button--primary"
+            id="btn-start-over"
+            data-testid="button-start-over"
+          >
+            Start over
+          </button>
+          <button
+            class="kbm-button kbm-button--ghost"
+            id="btn-change-answer"
+            data-testid="button-change-answer"
+          >
+            Change my answer
+          </button>
+        </div>
+      </div>
+    `;
+  }
+
+  function render() {
+    const root = document.getElementById('wizard-root');
+    if (!root) return;
+
+    let html = '';
+    if (currentStep === 'intro') {
+      html = renderIntro();
+    } else if (currentStep === 'question') {
+      html = renderQuestion();
+    } else if (currentStep === 'result') {
+      html = renderResult();
+    }
+
+    root.innerHTML = html;
+    attachEventListeners();
+  }
+
+  function attachEventListeners() {
+    const btnStart = document.getElementById('btn-start');
+    const btnBack = document.getElementById('btn-back');
+    const btnSeeDiagnosis = document.getElementById('btn-see-diagnosis');
+    const btnStartOver = document.getElementById('btn-start-over');
+    const btnChangeAnswer = document.getElementById('btn-change-answer');
+    const optionButtons = document.querySelectorAll('[data-option]');
+
+    if (btnStart) {
+      btnStart.addEventListener('click', () => {
+        currentStep = 'question';
+        render();
+      });
+    }
+
+    if (btnBack) {
+      btnBack.addEventListener('click', () => {
+        currentStep = 'intro';
+        render();
+      });
+    }
+
+    if (btnSeeDiagnosis) {
+      btnSeeDiagnosis.addEventListener('click', () => {
+        if (selectedOption) {
+          currentStep = 'result';
+          render();
+        }
+      });
+    }
+
+    if (btnStartOver) {
+      btnStartOver.addEventListener('click', () => {
+        selectedOption = null;
+        currentStep = 'intro';
+        render();
+      });
+    }
+
+    if (btnChangeAnswer) {
+      btnChangeAnswer.addEventListener('click', () => {
+        currentStep = 'question';
+        render();
+      });
+    }
+
+    optionButtons.forEach((btn) => {
+      btn.addEventListener('click', (e) => {
+        selectedOption = e.target.getAttribute('data-option');
+        render();
+      });
+    });
+  }
+
+  // Initialize wizard
+  render();
+</script>
 
 </BaseLayout>
