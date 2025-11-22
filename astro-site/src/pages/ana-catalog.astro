@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import "../styles/wizard.css";
 
 // Define ANA categories (matching the admin categories)
 const anaCategories = [
@@ -120,11 +121,10 @@ try {
 }
 
 const title = "Ask 'n Answer Catalogue";
-const description = "Browse all our knitting machine questions and answers, organized by topic. Find solutions to troubleshooting, techniques, machines, and more.";
+const description = "Browse all your knitting machine questions and answers, organized by topic. Find solutions to troubleshooting, techniques, machines, and more.";
 ---
 
 <BaseLayout {title} {description}>
-<link rel="stylesheet" href="/src/styles/wizard.css">
   <div class="page-container">
     <!-- Compact Header: Icon + Text + Search/Sort -->
     <div class="header-panel fade-in">
