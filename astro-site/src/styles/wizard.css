@@ -335,6 +335,219 @@
   transform: none;
 }
 
+/* ========================================
+   KBM Wizard Component Styles
+   For DroppedStitchWizard and similar
+   ======================================== */
+
+/* Wrapper & layout */
+.kbm-section {
+  padding: 2rem 0;
+}
+
+.kbm-section__inner {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+.kbm-wizard {
+  width: 100%;
+}
+
+/* Card */
+.kbm-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.kbm-card--shadow {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.kbm-card__header {
+  padding: 2rem 2rem 1rem;
+}
+
+.kbm-card__title {
+  color: var(--kbm-green);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem;
+}
+
+.kbm-card__subtitle {
+  color: #6b7280;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.kbm-card__body {
+  padding: 0 2rem 1.5rem;
+}
+
+.kbm-card__footer {
+  padding: 1.5rem 2rem 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Text styles */
+.kbm-eyebrow {
+  color: var(--kbm-green);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.5rem;
+}
+
+.kbm-lede {
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: #374151;
+  margin-bottom: 1.5rem;
+}
+
+.kbm-text-muted {
+  color: #6b7280;
+  font-size: 0.95rem;
+  font-style: italic;
+}
+
+/* Buttons */
+.kbm-button {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: inherit;
+}
+
+.kbm-button--primary {
+  background: var(--kbm-green);
+  color: white;
+}
+
+.kbm-button--primary:hover:not(:disabled) {
+  background: #3f5123;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25);
+}
+
+.kbm-button--primary:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.kbm-button--primary:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.kbm-button--secondary {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.kbm-button--secondary:hover {
+  background: #d1d5db;
+  transform: translateY(-1px);
+}
+
+.kbm-button--ghost {
+  background: transparent;
+  color: var(--kbm-green);
+  border: 1px solid var(--kbm-green);
+}
+
+.kbm-button--ghost:hover {
+  background: rgba(82, 104, 45, 0.1);
+}
+
+/* Option pills */
+.kbm-pill-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.kbm-pill {
+  padding: 1rem 1.25rem;
+  background: white;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 1rem;
+  text-align: left;
+  color: #374151;
+  font-weight: 500;
+}
+
+.kbm-pill:hover {
+  border-color: var(--kbm-green);
+  background: rgba(82, 104, 45, 0.05);
+}
+
+.kbm-pill--selected {
+  border-color: var(--kbm-green);
+  background: rgba(82, 104, 45, 0.1);
+  color: var(--kbm-green);
+  font-weight: 600;
+}
+
+/* Mobile responsive for KBM components */
+@media (max-width: 1024px) {
+  .kbm-card__header {
+    padding: 1.5rem 1.5rem 1rem;
+  }
+  
+  .kbm-card__title {
+    font-size: 2rem;
+  }
+  
+  .kbm-card__subtitle {
+    font-size: 1.35rem;
+  }
+  
+  .kbm-card__body {
+    padding: 0 1.5rem 1.25rem;
+  }
+  
+  .kbm-card__footer {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+  
+  .kbm-lede {
+    font-size: 1.5rem;
+  }
+  
+  .kbm-button {
+    padding: 1rem 1.75rem;
+    font-size: 1.35rem;
+  }
+  
+  .kbm-pill {
+    padding: 1.25rem 1.5rem;
+    font-size: 1.5rem;
+  }
+  
+  .kbm-text-muted {
+    font-size: 1.35rem;
+  }
+  
+  .kbm-eyebrow {
+    font-size: 1.1rem;
+  }
+}
+
 /* Print Styles */
 @media print {
   .no-print {
