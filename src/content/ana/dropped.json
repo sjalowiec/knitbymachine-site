@@ -36,7 +36,7 @@
   "body": "<p>Dropped stitches happen to everyone. The key is to catch them early and walk the stitch back up to the current row.</p>\n<ol>\n    <li>\n        Stop as soon as you notice the drop\n    </li>\n    <li>\n        Find the dropped stitch and pick up with a <strong>transfer tool</strong> <span data-tooltip-term=\"transfer-tool\"></span>\n    </li>\n    <li>\n        Use the <strong>latch tool</strong> <span data-tooltip-term=\"latch-tool\"></span> (hook facing you) to relatch the stitch back up\n    </li>\n    <li>\n        Put the stitch back on the needle without twisting it <br>\n    </li>\n</ol>\n\n",
   "memberDividerText": "",
   "memberTitle": "",
-  "memberBody": "<p></p><img class=\"max-w-full h-auto rounded-md my-4\" src=\"astro-site/public/images/troubleshooter-wizard-logo.svg\" alt=\"\"><p></p>",
+  "memberBody": "<img class=\"max-w-full h-auto rounded-md my-4\" src=\"astro-site/public/images/troubleshooter-wizard-logo.svg\" alt=\"\">",
   "memberVideoUrl": "",
   "embedWizard": "dropped-stitch-troubleshooter",
   "isDraft": false,
