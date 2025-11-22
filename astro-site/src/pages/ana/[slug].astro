@@ -86,14 +86,6 @@ if (!entry) {
   return Astro.redirect('/404');
 }
 
-// Debug: Log video URL to console
-console.log('[ANA Detail] Entry data:', {
-  slug,
-  videoUrl: entry.data.videoUrl,
-  imageUrl: entry.data.imageUrl,
-  hasVideo: !!entry.data.videoUrl,
-  hasImage: !!entry.data.imageUrl
-});
 
 const relatedAnas = entry.data.relatedAnas?.length 
   ? await fetchRelatedContent(entry.data.relatedAnas, 'src/content/ana')
@@ -137,8 +129,7 @@ const relatedWizards = entry.data.relatedWizards?.length
 
         <!-- Video Section (prioritized - if videoUrl is provided, show video instead of image) -->
         {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' ? (
-          <div class="ana-video-section" style="border: 2px solid red; padding: 20px; background: yellow;">
-            <p style="color: black; font-weight: bold;">VIDEO SHOULD BE HERE - videoId: {entry.data.videoUrl}</p>
+          <div class="ana-video-section">
             <VimeoEmbed 
               videoId={entry.data.videoUrl.trim()}
               title={entry.data.title}
