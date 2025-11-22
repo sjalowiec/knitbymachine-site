@@ -485,11 +485,11 @@
   position: relative;
   background-color: #ffffff;
   color: #2c3a57;
-  padding: 0.75rem 1.25rem;
-  min-height: 70px;
+  padding: 0.5rem 1rem;
+  min-height: 50px;
   border-radius: 20px;
   border: 2px solid #52682d;
-  font-size: 1rem;
+  font-size: 0.95rem;
   font-weight: 500;
   text-align: center;
   cursor: pointer;
