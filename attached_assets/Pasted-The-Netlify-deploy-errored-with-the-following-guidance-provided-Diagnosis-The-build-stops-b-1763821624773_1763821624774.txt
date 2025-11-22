@@ -1,0 +1,92 @@
+The Netlify deploy errored, with the following guidance provided:
+
+Diagnosis:
+- The build stops because Vite cannot resolve the `"react"` import used in `astro-site/src/components/DroppedStitchWizard.tsx`; see [lines 81-87](#L81-L87). No `react` (or `react-dom`) dependency is present, so the import fails and the build exits with code 2.
+
+Solution:
+- Verify that `react` and `react-dom` are listed in your `package.json`. If they are missing, add them by running:
+  ```bash
+  npm install react react-dom
+  ```
+  Commit the updated `package.json` and `package-lock.json`, then re-run the Netlify build.
+- Alternatively, rewrite the component so it no longer depends on React (e.g., convert it to an Astro component); otherwise React must stay installed.
+
+The relevant error logs are:
+
+Line 13: Now using node v20.19.5 (npm v10.8.2)
+Line 14: Enabling Node.js Corepack
+Line 15: Started restoring cached build plugins
+Line 16: Finished restoring cached build plugins
+Line 17: Started restoring cached corepack dependencies
+Line 18: Finished restoring cached corepack dependencies
+Line 19: No npm workspaces detected
+Line 20: Started restoring cached node modules
+Line 21: Finished restoring cached node modules
+Line 22: Installing npm packages using npm version 10.8.2
+Line 23: npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+Line 24: added 790 packages in 28s
+Line 25: npm packages installed
+Line 26: Successfully installed dependencies
+Line 27: Starting build script
+Line 28: Detected 1 framework(s)
+Line 29: "astro" at version "5.16.0"
+Line 30: Section completed: initializing
+Line 31: [96m[1m​[22m[39m
+Line 32: [96m[1mNetlify Build                                                 [22m[39m
+Line 33: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 71: [2m14:26:19[22m [34m[build][39m output: [34m"server"[39m
+Line 72: [2m14:26:19[22m [34m[build][39m mode: [34m"server"[39m
+Line 73: [2m14:26:19[22m [34m[build][39m directory: [34m/opt/build/repo/astro-site/dist/[39m
+Line 74: [2m14:26:19[22m [34m[build][39m adapter: [32m@astrojs/netlify[39m
+Line 75: [2m14:26:19[22m [34m[build][39m Collecting build info...
+Line 76: [2m14:26:19[22m [34m[build][39m [32m✓ Completed in 268ms.[39m
+Line 77: [2m14:26:19[22m [34m[build][39m Building server entrypoints...
+Line 78: [1m[33mwarn[39m[22m - The `content` option in your Tailwind CSS configuration is missing or empty.
+Line 79: [1m[33mwarn[39m[22m - Configure your content sources or your generated CSS will be missing styles.
+Line 80: [1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+Line 81: [31m[1m14:26:21[22m [ERROR] [vite][39m [31m✗[39m Build failed in 1.96s
+Line 82: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 83: [vite]: Rollup failed to resolve import "react" from "/opt/build/repo/astro-site/src/components/DroppedStitchWizard.tsx".
+Line 84: This is most likely unintended because it can break your application at runtime.
+Line 85: If you do want to externalize this module explicitly add it to
+Line 86: `build.rollupOptions.external`
+Line 87:   [1mStack trace:[22m
+Line 88: [2m    at viteLog (file:///opt/build/repo/astro-site/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46374:15)
+Line 89:     at onLog (file:///opt/build/repo/astro-site/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46072:7)
+Line 90:     at Object.logger [as onLog] (file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:22848:9)
+Line 91:     at file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:21550:26[22m
+Line 92: [91m[1m​[22m[39m
+Line 93: [91m[1m"build.command" failed                                        [22m[39m
+Line 94: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 95: ​
+Line 96:   [31m[1mError message[22m[39m
+Line 97:   Command failed with exit code 1: npm run build
+Line 98: ​
+Line 99:   [31m[1mError location[22m[39m
+Line 100:   In build.command from netlify.toml:
+Line 101:   npm run build
+Line 102: ​
+Line 103:   [31m[1mResolved config[22m[39m
+Line 104:   build:
+Line 105:     base: /opt/build/repo/astro-site
+Line 106:     command: npm run build
+Line 107:     commandOrigin: config
+Line 108:     environment:
+Line 109:       - GITHUB_CLIENT_ID
+Line 110:       - GITHUB_CLIENT_SECRET
+Line 111:       - GITHUB_TOKEN
+Line 112:       - NODE_VERSION
+Line 113:     publish: /opt/build/repo/astro-site/dist
+Line 114:     publishOrigin: config
+Line 115:   functions:
+Line 116:     "*":
+Line 117:       included_files:
+Line 118:         - dist/**
+      node_bundler: esbuild
+  headers:
+    - for: /*
+      values:
+        Cache-Control: public, max-age=0, m
+Line 119: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 120: Failing build: Failed to build site
+Line 121: Finished processing build request in 42.284s
