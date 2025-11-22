@@ -295,7 +295,7 @@ const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
       <div class="wizard-card">
         <div class="wizard-card-header">
           <!-- Selected option in speech bubble -->
-          <div style="max-width: 500px; margin: 0 auto 1.5rem;">
+          <div style="max-width: 500px; margin: 0 0 1.5rem;">
             <div class="option-bubble selected" style="cursor: default; pointer-events: none;" data-testid="text-selected-option">
               ${selectedOptionData.label}
             </div>
@@ -340,6 +340,7 @@ const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
             class="wizard-button wizard-button-secondary"
             id="btn-change-answer"
             data-testid="button-change-answer"
+            style="border-radius: 24px;"
           >
             Change my answer
           </button>
