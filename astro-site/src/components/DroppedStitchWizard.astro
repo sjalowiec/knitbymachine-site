@@ -294,11 +294,14 @@ const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
     return `
       <div class="wizard-card">
         <div class="wizard-card-header">
-          <div class="wizard-eyebrow" data-testid="text-result-eyebrow">
-            Your answer
+          <!-- Selected option in speech bubble -->
+          <div style="max-width: 500px; margin: 0 auto 1.5rem;">
+            <div class="option-bubble selected" style="cursor: default; pointer-events: none;" data-testid="text-selected-option">
+              ${selectedOptionData.label}
+            </div>
           </div>
-          <h3 class="wizard-card-subtitle" style="margin-top: 0.5rem; font-weight: 500;">${selectedOptionData.label}</h3>
-          <div class="wizard-eyebrow" style="margin-top: 1rem;" data-testid="text-likely-cause">
+          
+          <div class="wizard-eyebrow" data-testid="text-result-eyebrow">
             Likely cause
           </div>
           <h2 class="wizard-card-title" data-testid="text-result-title">

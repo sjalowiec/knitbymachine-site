@@ -266,10 +266,18 @@ import "../../styles/wizard.css";
     if (!selectedOption) return '';
     
     const diagnosis = diagnoses[selectedOption];
+    const selectedOptionData = options.find(opt => opt.key === selectedOption);
     
     return `
       <div class="kbm-card kbm-card--shadow">
         <div class="kbm-card__header">
+          <!-- Selected option in speech bubble -->
+          <div style="max-width: 500px; margin: 0 auto 1.5rem;">
+            <div class="option-bubble selected" style="cursor: default; pointer-events: none;" data-testid="text-selected-option">
+              ${selectedOptionData.label}
+            </div>
+          </div>
+          
           <div class="kbm-eyebrow" data-testid="text-result-eyebrow">
             Likely cause
           </div>
