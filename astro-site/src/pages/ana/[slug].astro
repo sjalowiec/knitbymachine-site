@@ -315,24 +315,8 @@ const relatedWizards = entry.data.relatedWizards?.length
     gap: 2.5rem;
   }
 
-  .bubble-wrapper {
-    display: flex;
-    max-width: 650px;
-  }
-
-  .question-wrapper {
-    justify-content: flex-start;
-    position: relative;
-    z-index: 2; /* Question on top */
-  }
-
-  .answer-wrapper {
-    justify-content: flex-end;
-    margin-left: auto;
-    margin-top: -3rem; /* Overlap - answer goes under question */
-    position: relative;
-    z-index: 1; /* Answer underneath */
-  }
+  /* Note: .bubble-wrapper, .question-wrapper, and .answer-wrapper styles 
+     are now in global.css to ensure consistent overlap across all ANA entries */
 
   .thought-bubble {
     position: relative;
