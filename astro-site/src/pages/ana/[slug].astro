@@ -126,31 +126,8 @@ const relatedWizards = entry.data.relatedWizards?.length
           </div>
         </div>
 
-        <!-- Image centered below bubbles with zoom feature -->
-        {entry.data.imageUrl && (
-          <div class="ana-image-section">
-            <img 
-              src={entry.data.imageUrl} 
-              alt={entry.data.imageAlt || entry.data.title}
-              class="ana-image zoomable-image"
-              data-testid="img-ana-visual"
-              role="button"
-              tabindex="0"
-              aria-label="Click to zoom image"
-            />
-            <p class="zoom-hint">Click image to zoom</p>
-          </div>
-        )}
-
-        <!-- Zoom Modal (hidden by default) -->
-        <div id="zoom-modal" class="zoom-modal" data-testid="modal-image-zoom">
-          <div class="zoom-backdrop"></div>
-          <button class="zoom-close" aria-label="Close zoom" data-testid="button-close-zoom">&times;</button>
-          <img id="zoom-image" src="" alt="" class="zoom-image" />
-        </div>
-
-        <!-- Video Section (if videoUrl is provided) -->
-        {entry.data.videoUrl && (
+        <!-- Video Section (prioritized - if videoUrl is provided, show video instead of image) -->
+        {entry.data.videoUrl ? (
           <div class="ana-video-section">
             <VimeoEmbed 
               videoId={entry.data.videoUrl}
@@ -158,6 +135,29 @@ const relatedWizards = entry.data.relatedWizards?.length
               aspectRatio="16:9"
             />
           </div>
+        ) : entry.data.imageUrl && (
+          <>
+            <!-- Image centered below bubbles with zoom feature (only shown if no video) -->
+            <div class="ana-image-section">
+              <img 
+                src={entry.data.imageUrl} 
+                alt={entry.data.imageAlt || entry.data.title}
+                class="ana-image zoomable-image"
+                data-testid="img-ana-visual"
+                role="button"
+                tabindex="0"
+                aria-label="Click to zoom image"
+              />
+              <p class="zoom-hint">Click image to zoom</p>
+            </div>
+
+            <!-- Zoom Modal (hidden by default) -->
+            <div id="zoom-modal" class="zoom-modal" data-testid="modal-image-zoom">
+              <div class="zoom-backdrop"></div>
+              <button class="zoom-close" aria-label="Close zoom" data-testid="button-close-zoom">&times;</button>
+              <img id="zoom-image" src="" alt="" class="zoom-image" />
+            </div>
+          </>
         )}
 
         <!-- Related Content Section -->
