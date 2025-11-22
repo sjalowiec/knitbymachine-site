@@ -503,6 +503,25 @@
   font-weight: 600;
 }
 
+/* Result section styling */
+.kbm-wizard__result-heading {
+  color: var(--kbm-green);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.kbm-wizard__result-list {
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.kbm-wizard__result-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
 /* Mobile responsive for KBM components */
 @media (max-width: 1024px) {
   .kbm-card__header {
@@ -545,6 +564,14 @@
   
   .kbm-eyebrow {
     font-size: 1.1rem;
+  }
+  
+  .kbm-wizard__result-heading {
+    font-size: 1.5rem;
+  }
+  
+  .kbm-wizard__result-list li {
+    font-size: 1.5rem;
   }
 }
 
