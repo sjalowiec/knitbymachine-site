@@ -136,10 +136,11 @@ const relatedWizards = entry.data.relatedWizards?.length
         </div>
 
         <!-- Video Section (prioritized - if videoUrl is provided, show video instead of image) -->
-        {entry.data.videoUrl ? (
-          <div class="ana-video-section">
+        {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' ? (
+          <div class="ana-video-section" style="border: 2px solid red; padding: 20px; background: yellow;">
+            <p style="color: black; font-weight: bold;">VIDEO SHOULD BE HERE - videoId: {entry.data.videoUrl}</p>
             <VimeoEmbed 
-              videoId={entry.data.videoUrl}
+              videoId={entry.data.videoUrl.trim()}
               title={entry.data.title}
               aspectRatio="16:9"
             />
