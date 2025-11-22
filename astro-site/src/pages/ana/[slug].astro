@@ -4,6 +4,7 @@ export const prerender = false;
 import Layout from "../../layouts/layout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import VimeoEmbed from "../../components/VimeoEmbed.astro";
+import DroppedStitchWizard from "../../components/DroppedStitchWizard.astro";
 import "../../styles/global.css";
 
 const { slug } = Astro.params;
@@ -211,7 +212,7 @@ const relatedWizards = entry.data.relatedWizards?.length
         )}
 
         <!-- Divider Band with Custom Text -->
-        {(entry.data.memberTitle || entry.data.memberBody || entry.data.memberVideoUrl) && (
+        {(entry.data.memberTitle || entry.data.memberBody || entry.data.memberVideoUrl || entry.data.embedWizard) && (
           <>
             <div class="member-divider">
               <div class="divider-content">
@@ -239,6 +240,10 @@ const relatedWizards = entry.data.relatedWizards?.length
 
               {entry.data.memberBody && (
                 <div class="member-body" set:html={entry.data.memberBody} data-testid="text-member-body"></div>
+              )}
+
+              {entry.data.embedWizard === 'dropped-stitch-troubleshooter' && (
+                <DroppedStitchWizard />
               )}
             </div>
           </>

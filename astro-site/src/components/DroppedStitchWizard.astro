@@ -1,9 +1,11 @@
 ---
 // Embeddable Dropped Stitch Troubleshooter Wizard
+// Generate unique ID for this instance
+const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
 <div class="embedded-wizard">
-  <div id="wizard-root" class="wizard-content"></div>
+  <div id={wizardId} class="wizard-content" data-wizard-instance></div>
 </div>
 
 <style>
@@ -274,7 +276,9 @@
 }
 </style>
 
-<script>
+<script define:vars={{ wizardId }}>
+  // Wrap in IIFE to isolate scope for multiple instances
+  (function(containerId) {
   const diagnoses = {
     edge: {
       causeTitle: "Edge tension or patterning at the edge",
@@ -427,7 +431,7 @@
   }
 
   function render() {
-    const root = document.getElementById('wizard-root');
+    const root = document.getElementById(containerId);
     if (!root) return;
 
     let html = '';
@@ -442,8 +446,11 @@
   }
 
   function attachEventListeners() {
-    const btnChangeAnswer = document.getElementById('btn-change-answer');
-    const optionButtons = document.querySelectorAll('[data-option]');
+    const root = document.getElementById(containerId);
+    if (!root) return;
+
+    const btnChangeAnswer = root.querySelector('#btn-change-answer');
+    const optionButtons = root.querySelectorAll('[data-option]');
 
     if (btnChangeAnswer) {
       btnChangeAnswer.addEventListener('click', () => {
@@ -476,4 +483,5 @@
 
   // Initialize wizard
   render();
+  })(wizardId);
 </script>
