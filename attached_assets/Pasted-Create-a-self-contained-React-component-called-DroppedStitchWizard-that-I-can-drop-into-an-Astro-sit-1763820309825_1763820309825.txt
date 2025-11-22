@@ -1,0 +1,272 @@
+Create a self-contained React component called DroppedStitchWizard that I can drop into an Astro site as a React island. It should use my existing KBM layout and classes, not Tailwind or inline custom styling.
+
+Tech & structure
+
+Use React + TypeScript in a single file.
+
+No Tailwind, no CSS-in-JS, no new global styles.
+
+Assume my global KBM stylesheet already defines the classes listed below.
+
+The component should just output semantic HTML + KBM class names.
+
+Use these KBM-style classes
+
+Use these classes in the markup (do not define them in this file):
+
+Wrapper & layout
+
+kbm-section – outer section wrapper
+
+kbm-section__inner – centered content
+
+kbm-wizard – wrapper around the card
+
+Card
+
+kbm-card
+
+kbm-card--shadow
+
+kbm-card__header
+
+kbm-card__title
+
+kbm-card__subtitle
+
+kbm-card__body
+
+kbm-card__footer
+
+Text
+
+kbm-eyebrow (small label like “Likely cause”)
+
+kbm-lede (short intro text)
+
+kbm-text-muted (soft helper text)
+
+Buttons
+
+kbm-button
+
+kbm-button--primary
+
+kbm-button--secondary
+
+kbm-button--ghost
+
+Option pills
+
+kbm-pill-group – container for options
+
+kbm-pill – base option style
+
+kbm-pill--selected – selected state
+
+If a class feels missing for structure, use a sensible kbm-wizard__* name and I’ll style it later.
+
+Component behavior
+
+The wizard has three views:
+
+Intro
+
+Question
+
+Result
+
+Use useState to track:
+
+type WizardStep = "intro" | "question" | "result";
+
+const [step, setStep] = useState<WizardStep>("intro");
+const [selectedOption, setSelectedOption] = useState<OptionKey | null>(null);
+
+
+Where OptionKey is a union type for the five options (e.g. "edge" | "transfer" | "sameNeedle" | "random" | "unsure").
+
+1. Intro view
+
+Inside a kbm-card kbm-card--shadow:
+
+Title (kbm-card__title): “Dropped Stitch Troubleshooter”
+
+Short intro paragraph (kbm-lede):
+
+Dropped stitches happen to everyone. This quick check helps you spot what’s causing them so you can get back to confident knitting.
+
+Footer with one primary button:
+
+<button className="kbm-button kbm-button--primary">Start</button>
+
+Clicking sets step to "question".
+
+2. Question view
+
+Same card layout:
+
+Title: “When do you usually notice the dropped stitch?”
+
+Under the title, a muted helper line:
+
+Choose the option that sounds most like what you’re seeing.
+
+Show the options as a vertical or horizontal pill group:
+
+Wrap them in div.kbm-pill-group.
+Each option is a button with class kbm-pill.
+If the option is selected, also add kbm-pill--selected.
+
+Options:
+
+On the edge of my knitting
+
+While I’m transferring stitches
+
+On the same needle over and over
+
+Randomly in the middle of the fabric
+
+I’m not sure – it feels random
+
+At the bottom (kbm-card__footer), show:
+
+Secondary button: Back → setStep("intro")
+
+Primary button: See my diagnosis → setStep("result")
+
+This button is disabled until selectedOption is not null.
+
+3. Result view
+
+Based on selectedOption, show a result block inside the card:
+
+Structure:
+
+Small label (kbm-eyebrow): “Likely cause”
+
+Heading (kbm-card__title) with a short cause summary
+
+Short explanation paragraph
+
+Bulleted list under a subheading: “Try this next:”
+
+Muted, encouraging line at the bottom (kbm-text-muted)
+
+Use this mapping:
+
+edge
+
+Likely cause title: “Edge tension or patterning at the edge”
+
+Explanation + bullets + encouragement exactly as below:
+
+Explanation: The edge stitches may be too loose, losing contact with the gate pegs, or patterning may be pulling more on the edge needles.
+Try this next:
+
+Add a claw weight or extra weight near the edge.
+
+Check that your edge needles are fully in working position.
+
+If you’re patterning, try a plain-knit edge (1–2 stitches) before the pattern starts.
+Encouragement:
+
+Edge stitches are fussy for everyone. A little extra weight and attention usually fixes it.
+
+transfer
+
+Title: “Transfer tool technique”
+
+Explanation: Stitches may be falling off while they’re on the tool or while you’re moving them to new needles.
+
+Try this next:
+
+Slow down and keep the stitches fully on the prongs before you move them.
+
+Keep the tool level with the needle bed instead of tipping it.
+
+Practice on scrap yarn until the motions feel smooth.
+
+Encouragement:
+
+This is pure practice. The more you transfer on scrap, the more automatic it feels.
+
+sameNeedle
+
+Title: “A problem needle (bent, sticky, or damaged)”
+
+Explanation: One stubborn needle can cause repeated dropped stitches in the same column.
+
+Try this next:
+
+Mark the problem needle with a bit of yarn.
+
+Remove and inspect it for burrs, bends, or rough spots.
+
+Replace it if in doubt – it’s not worth fighting.
+
+Encouragement:
+
+If one needle keeps misbehaving, retiring it is an easy win.
+
+random
+
+Title: “Overall yarn or carriage tension”
+
+Explanation: The yarn may be feeding too loosely or too tightly, or the carriage may not be moving smoothly.
+
+Try this next:
+
+Knit a small swatch and adjust your tension dial up or down one number.
+
+Check that the mast, tension dial, and yarn path are smooth with no snags.
+
+Make sure you’re moving the carriage all the way across with even speed.
+
+Encouragement:
+
+Small tension tweaks can make a big difference. Keep notes as you experiment.
+
+unsure
+
+Title: “A mix of tension and technique”
+
+Explanation: When things feel random, it usually means a few small factors are stacking up.
+
+Try this next:
+
+Knit a 20–30 row test swatch and watch where the fabric misbehaves.
+
+Check edge weights, overall tension, and any tools you use often.
+
+Note when the drop happens (edge, transfer, middle) – then rerun this checker.
+
+Encouragement:
+
+You’re not doing anything “wrong.” You’re just gathering clues. Each small test gives you more control.
+
+At the bottom of the Results view (kbm-card__footer):
+
+Primary button: Start over → clears selectedOption and goes back to "intro".
+
+Ghost button: Change my answer → goes back to "question" keeping the current selection.
+
+Export
+
+End the file with:
+
+export default DroppedStitchWizard;
+
+
+So I can use it in an Astro page like:
+
+---
+import DroppedStitchWizard from "../components/DroppedStitchWizard";
+---
+
+<section class="kbm-section">
+  <div class="kbm-section__inner">
+    <DroppedStitchWizard />
+  </div>
+</section>
