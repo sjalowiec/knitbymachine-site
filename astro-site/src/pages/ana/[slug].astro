@@ -110,7 +110,7 @@ const relatedWizards = entry.data.relatedWizards?.length
       </div>
     </div>
 
-    <div class="content-wrapper">
+    <div class="unified-content-card">
       <article class="ana-item">
         <!-- Question Bubble -->
         <div class="bubble-wrapper question-wrapper">
@@ -299,7 +299,12 @@ const relatedWizards = entry.data.relatedWizards?.length
     text-align: center;
   }
 
-  .content-wrapper {
+  /* Unified white content card */
+  .unified-content-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+    padding: 2.5rem;
     width: 100%;
   }
 
@@ -658,6 +663,11 @@ const relatedWizards = entry.data.relatedWizards?.length
   @media (max-width: 768px) {
     .ana-container {
       padding: 1.5rem 0.75rem 3rem;
+    }
+
+    .unified-content-card {
+      padding: 1.5rem;
+      border-radius: 12px;
     }
 
     .back-link {
