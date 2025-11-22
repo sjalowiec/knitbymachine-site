@@ -10,44 +10,186 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 <style>
 .wizard-page {
-  padding-top: 120px;
+  padding-top: 4.5rem;
   padding-bottom: 3rem;
   min-height: 100vh;
   background: var(--page-bg);
+  max-width: 1400px;
+  margin: 0 auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
-.page-header {
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
+/* Ana-catalog style header */
+.header-panel {
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+  padding: 0.625rem 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
 }
 
-.page-header h1 {
-  color: var(--kbm-green);
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 0.75rem 0;
-  text-align: center;
+.intro-icon {
+  width: 180px;
+  height: 180px;
+  flex-shrink: 0;
 }
 
-.page-header p {
-  color: #6b7280;
-  font-size: 1.05rem;
+.header-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+  min-width: 0;
+}
+
+.intro-tagline {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #2c3a57;
   line-height: 1.6;
-  text-align: center;
 }
 
 .wizard-container {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   padding: 0 1rem;
+}
+
+/* Speech bubble styling for options */
+.option-bubble {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  position: relative;
+  background-color: #ffffff;
+  color: #2c3a57;
+  padding: 0.75rem 1.25rem;
+  min-height: 70px;
+  border-radius: 20px;
+  border: 2px solid #52682d;
+  font-size: 1rem;
+  font-weight: 500;
+  text-align: center;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(82, 104, 45, 0.30);
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+/* Speech bubble tail - bottom right (outer triangle) */
+.option-bubble::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  right: 26px;
+  width: 0;
+  height: 0;
+  border-left: 18px solid transparent;
+  border-right: 0;
+  border-top: 14px solid #52682d;
+  transition: border-top-color 0.15s ease;
+}
+
+/* Speech bubble tail fill (inner triangle) */
+.option-bubble::before {
+  content: "";
+  position: absolute;
+  bottom: -11px;
+  right: 28px;
+  width: 0;
+  height: 0;
+  border-left: 15px solid transparent;
+  border-right: 0;
+  border-top: 11px solid #ffffff;
+  z-index: 1;
+  transition: border-top-color 0.15s ease;
+}
+
+/* Hover state */
+.option-bubble:hover {
+  background-color: #f7f9f3;
+  border-color: #6e8b3d;
+  transform: translateY(-1px);
+  box-shadow: 0 3px 8px rgba(82, 104, 45, 0.20);
+}
+
+.option-bubble:hover::after {
+  border-top-color: #6e8b3d;
+}
+
+.option-bubble:hover::before {
+  border-top-color: #f7f9f3;
+}
+
+/* Selected state */
+.option-bubble.selected {
+  background-color: #eef3e4;
+  border-color: #6e8b3d;
+  font-weight: 600;
+}
+
+.option-bubble.selected::after {
+  border-top-color: #6e8b3d;
+}
+
+.option-bubble.selected::before {
+  border-top-color: #eef3e4;
+}
+
+/* Option grid layout */
+.options-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  margin: 2rem 0;
+}
+
+@media (min-width: 640px) {
+  .options-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Larger primary button */
+.kbm-button--primary-large {
+  font-size: 1.25rem;
+  padding: 1rem 2.5rem;
+  min-height: 3.5rem;
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .header-panel {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .intro-icon {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .options-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
 }
 </style>
 
 <div class="wizard-page">
-  <div class="page-header">
-    <h1>Dropped Stitch Troubleshooter</h1>
-    <p>Find out what's causing your dropped stitches and get practical fixes that work.</p>
+  <!-- Ana-catalog style header -->
+  <div class="header-panel">
+    <img src="/images/troubleshooter-wizard-logo.svg" alt="Dropped Stitch Troubleshooter" class="intro-icon">
+    <div class="header-right">
+      <p class="intro-tagline">Find out what's causing your dropped stitches and get practical fixes that work.</p>
+    </div>
   </div>
 
   <div class="wizard-container">
@@ -160,10 +302,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
           </p>
         </div>
         <div class="kbm-card__body">
-          <div class="kbm-pill-group">
+          <div class="options-grid">
             ${options.map((option) => `
               <button
-                class="kbm-pill ${selectedOption === option.key ? 'kbm-pill--selected' : ''}"
+                class="option-bubble ${selectedOption === option.key ? 'selected' : ''}"
                 data-option="${option.key}"
                 data-testid="button-option-${option.key}"
               >
@@ -181,12 +323,12 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
             Back
           </button>
           <button
-            class="kbm-button kbm-button--primary"
+            class="kbm-button kbm-button--primary kbm-button--primary-large"
             id="btn-see-diagnosis"
             data-testid="button-see-diagnosis"
             ${!selectedOption ? 'disabled' : ''}
           >
-            See my diagnosis
+            Let's take a look
           </button>
         </div>
       </div>
