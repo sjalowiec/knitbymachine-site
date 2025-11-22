@@ -4,6 +4,8 @@
 const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
 ---
 
+<link rel="stylesheet" href="/src/styles/wizard.css">
+
 <div class="embedded-wizard">
   <div id={wizardId} class="wizard-content" data-wizard-instance></div>
 </div>
@@ -16,101 +18,6 @@ const wizardId = `wizard-${Math.random().toString(36).substr(2, 9)}`;
 
 .wizard-content {
   width: 100%;
-}
-
-/* Speech bubble styling for options */
-.option-bubble {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  position: relative;
-  background-color: #ffffff;
-  color: #2c3a57;
-  padding: 0.75rem 1.25rem;
-  min-height: 70px;
-  border-radius: 20px;
-  border: 2px solid #52682d;
-  font-size: 1rem;
-  font-weight: 500;
-  text-align: center;
-  cursor: pointer;
-  box-shadow: 0 6px 16px rgba(82, 104, 45, 0.30);
-  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease, opacity 0.3s ease, visibility 0.3s ease, max-height 0.3s ease;
-}
-
-/* Speech bubble tail - bottom right (outer triangle) */
-.option-bubble::after {
-  content: "";
-  position: absolute;
-  bottom: -14px;
-  right: 26px;
-  width: 0;
-  height: 0;
-  border-left: 18px solid transparent;
-  border-right: 0;
-  border-top: 14px solid #52682d;
-  transition: border-top-color 0.15s ease;
-}
-
-/* Speech bubble tail fill (inner triangle) */
-.option-bubble::before {
-  content: "";
-  position: absolute;
-  bottom: -11px;
-  right: 28px;
-  width: 0;
-  height: 0;
-  border-left: 15px solid transparent;
-  border-right: 0;
-  border-top: 11px solid #ffffff;
-  z-index: 1;
-  transition: border-top-color 0.15s ease;
-}
-
-/* Hover state */
-.option-bubble:hover {
-  background-color: #f7f9f3;
-  border-color: #6e8b3d;
-  transform: translateY(-1px);
-  box-shadow: 0 3px 8px rgba(82, 104, 45, 0.20);
-}
-
-.option-bubble:hover::after {
-  border-top-color: #6e8b3d;
-}
-
-.option-bubble:hover::before {
-  border-top-color: #f7f9f3;
-}
-
-/* Selected state */
-.option-bubble.selected {
-  background-color: #eef3e4;
-  border-color: #6e8b3d;
-  font-weight: 600;
-}
-
-.option-bubble.selected::after {
-  border-top-color: #6e8b3d;
-}
-
-.option-bubble.selected::before {
-  border-top-color: #eef3e4;
-}
-
-/* Hidden state for unselected bubbles */
-.option-bubble.is-hidden {
-  opacity: 0;
-  visibility: hidden;
-  transform: scale(0.95);
-  pointer-events: none;
-  max-height: 0;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin: 0;
-  overflow: hidden;
 }
 
 /* Option grid layout */

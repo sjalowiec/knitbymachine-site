@@ -124,6 +124,7 @@ const description = "Browse all our knitting machine questions and answers, orga
 ---
 
 <BaseLayout {title} {description}>
+<link rel="stylesheet" href="/src/styles/wizard.css">
   <div class="page-container">
     <!-- Compact Header: Icon + Text + Search/Sort -->
     <div class="header-panel fade-in">
@@ -333,44 +334,7 @@ const description = "Browse all our knitting machine questions and answers, orga
     padding-bottom: 0.25rem;
   }
 
-  /* ================================================
-     BASE CATEGORY BUBBLE
-     ================================================ */
-  .ana-category-bubble {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    width: 100%;
-    position: relative;
-
-    background-color: #ffffff;
-    color: #2c3a57;
-    padding: 0.5rem 1rem;
-    min-height: 60px;
-    border-radius: 20px;
-    border: 2px solid #52682d;
-
-    font-size: 1rem;
-    font-weight: 500;
-    text-align: center;
-
-    cursor: pointer;
-
-    box-shadow: 0 6px 16px rgba(82, 104, 45, 0.30);
-    transition:
-      background-color 0.15s ease,
-      border-color 0.15s ease,
-      box-shadow 0.15s ease,
-      transform 0.12s ease,
-      opacity 0.3s ease,
-      visibility 0.3s ease,
-      max-height 0.3s ease,
-      padding 0.3s ease,
-      margin 0.3s ease;
-  }
-  
-  /* Reset icon styling */
+  /* Reset icon styling for category filter */
   .reset-icon {
     flex-shrink: 0;
     width: 22px;
@@ -388,89 +352,6 @@ const description = "Browse all our knitting machine questions and answers, orga
       opacity: 1;
       transform: scale(1);
     }
-  }
-
-  /* ================================================
-     SPEECH BUBBLE TAIL — Bottom Right (Outer triangle)
-     ================================================ */
-  .ana-category-bubble::after {
-    content: "";
-    position: absolute;
-    bottom: -14px;
-    right: 26px;
-    width: 0;
-    height: 0;
-    border-left: 18px solid transparent;
-    border-right: 0;
-    border-top: 14px solid #52682d;
-    transition: border-top-color 0.15s ease;
-  }
-
-  /* ================================================
-     SPEECH BUBBLE TAIL FILL (Inner triangle)
-     ================================================ */
-  .ana-category-bubble::before {
-    content: "";
-    position: absolute;
-    bottom: -11px;
-    right: 28px;
-    width: 0;
-    height: 0;
-    border-left: 15px solid transparent;
-    border-right: 0;
-    border-top: 11px solid #ffffff;
-    z-index: 1;
-    transition: border-top-color 0.15s ease;
-  }
-
-  /* ================================================
-     HOVER STATE
-     ================================================ */
-  .ana-category-bubble:hover {
-    background-color: #f7f9f3;
-    border-color: #6e8b3d;
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(82, 104, 45, 0.20);
-  }
-
-  .ana-category-bubble:hover::after {
-    border-top-color: #6e8b3d;
-  }
-
-  .ana-category-bubble:hover::before {
-    border-top-color: #f7f9f3;
-  }
-
-  /* ================================================
-     ACTIVE / SELECTED STATE
-     ================================================ */
-  .ana-category-bubble.is-active {
-    background-color: #eef3e4;
-    border-color: #6e8b3d;
-    font-weight: 600;
-  }
-
-  .ana-category-bubble.is-active::after {
-    border-top-color: #6e8b3d;
-  }
-
-  .ana-category-bubble.is-active::before {
-    border-top-color: #eef3e4;
-  }
-
-  /* ================================================
-     HIDDEN STATE (for unselected bubbles)
-     ================================================ */
-  .ana-category-bubble.is-hidden {
-    opacity: 0;
-    visibility: hidden;
-    transform: scale(0.95);
-    pointer-events: none;
-    max-height: 0;
-    padding-top: 0;
-    padding-bottom: 0;
-    margin: 0;
-    overflow: hidden;
   }
 
   /* Catalogue Content */
