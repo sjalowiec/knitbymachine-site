@@ -1,21 +1,55 @@
 {
   "title": "Dropped Stitch Troubleshooter",
   "slug": "dropped-stitch-troubleshooter",
-  "hero": "Stop fighting dropped stitches. Find the real cause.",
-  "description": "<p>Dropped stitches happen to everyone. This quick check helps you spot what's causing them so you can get back to confident knitting.</p>",
-  "category": "troubleshooting",
-  "tags": ["troubleshooting", "dropped-stitches", "tension", "technique"],
+  "hero": "Find out what's causing your dropped stitches - and get one clear fix you can try right now.",
+  "description": "<p>Dropped stitches happen to every knitter — but they don’t have to derail your project.<br>This interactive Troubleshooter walks you through a short diagnostic to understand <strong>why</strong> it’s happening and what you can do about it.</p><p>You’ll choose the option that best matches what you’re seeing, and the guide will give you:</p><ul><li><p>the most likely cause</p></li><li><p>a simple, practical fix</p></li><li><p>one action step you can take right away</p></li></ul><p>Clear, calm, and to the point — so you can get back to knitting with confidence.</p>",
+  "category": "smart guide",
+  "tags": [
+    "troubleshooting",
+    "dropped-stitches",
+    "tension",
+    "technique"
+  ],
   "videoUrl": "",
   "accessLevel": "free",
   "price": "",
   "relatedAnas": [],
   "relatedWorkshops": [],
-  "imageUrl": "",
-  "imageAlt": "",
+  "imageUrl": "/public-objects/glossary/1763900772973-machine-knitting-dropped-stitch.webp",
+  "imageAlt": "picking up a dropped stitch in machine knitting",
+  "iconUrl": "",
   "metaTitle": "Dropped Stitch Troubleshooter - Knit by Machine",
   "metaDescription": "Find out what's causing your dropped stitches with this quick troubleshooting tool. Get practical fixes for edge tension, transfer technique, needle problems, and more.",
-  "schemaMarkup": null,
+  "schemaMarkup": {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "Dropped Stitch Troubleshooter",
+    "description": "A quick diagnostic tool that helps machine knitters identify why they’re dropping stitches and provides a clear, practical fix.",
+    "tool": [
+      "Knitting machine",
+      "Latch tool",
+      "Transfer tool",
+      "Weights"
+    ],
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Identify where the stitch drops",
+        "text": "Choose when and where you usually see the dropped stitch to narrow down the most likely cause."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Review the likely cause",
+        "text": "Based on your selection, the tool reveals the most probable reason for the dropped stitch."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Take the recommended action",
+        "text": "Follow a quick, practical fix tailored to your situation, with one clear step to try immediately."
+      }
+    ]
+  },
   "isDraft": false,
   "publishedDate": "2025-01-22",
-  "pendingPublish": false
+  "pendingPublish": true
 }
