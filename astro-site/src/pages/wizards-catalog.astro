@@ -242,6 +242,30 @@ const description = "Browse all our knitting calculators and interactive tools t
     text-decoration: none;
   }
 
+  /* Desktop Layout - Search bar on top, filters below */
+  @media (min-width: 1024px) {
+    .wizards-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .search-wrapper {
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .category-filters-wrapper {
+      width: 100%;
+    }
+
+    .category-filters {
+      justify-content: flex-start;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+  }
+
   /* Mobile Responsive */
   @media (max-width: 1024px) {
     .header-panel {
