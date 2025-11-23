@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 493.6 442.86">
+  <defs>
+    <style>
+      .g, .h, .i, .j, .k {
+        stroke-miterlimit: 10;
+      }
+
+      .g, .l {
+        fill: #fff;
+      }
+
+      .g, .k {
+        stroke: #6e8b3d;
+        stroke-width: 4.49px;
+      }
+
+      .h {
+        stroke-width: 8px;
+      }
+
+      .h, .i {
+        stroke: #fff;
+      }
+
+      .h, .i, .j {
+        fill: none;
+      }
+
+      .m, .k {
+        fill: #52682d;
+      }
+
+      .i {
+        stroke-width: 7.27px;
+      }
+
+      .j {
+        stroke: #fefffd;
+        stroke-width: 4px;
+      }
+
+      .k {
+        opacity: .9;
+      }
+    </style>
+  </defs>
+  <g id="a" data-name="Layer 1">
+    <path class="m" d="M345.36,4.66h-189.37c-17.62,0-33.9,9.4-42.7,24.65L18.6,193.32c-8.81,15.26-8.81,34.05,0,49.31l94.69,164c8.81,15.26,25.09,24.65,42.7,24.65h189.37c17.62,0,33.9-9.4,42.7-24.65l94.69-164c8.81-15.26,8.81-34.05,0-49.31L388.06,29.32c-8.81-15.26-25.09-24.65-42.7-24.65Z"/>
+    <rect class="g" x="118.31" y="253.66" width="75.66" height="65.96" transform="translate(312.28 573.28) rotate(-180)"/>
+    <rect class="g" x="294.75" y="253.66" width="75.66" height="65.96" transform="translate(665.16 573.28) rotate(-180)"/>
+    <rect class="g" x="294.75" y="175.7" width="75.66" height="65.96" transform="translate(665.16 417.36) rotate(-180)"/>
+    <g>
+      <rect class="g" x="206.53" y="253.66" width="75.66" height="65.96" transform="translate(488.72 573.28) rotate(-180)"/>
+      <rect class="g" x="206.53" y="175.7" width="75.66" height="65.96" transform="translate(488.72 417.36) rotate(-180)"/>
+    </g>
+    <rect class="k" x="294.62" y="97.31" width="75.66" height="65.96" transform="translate(664.91 260.59) rotate(-180)"/>
+    <rect class="j" x="298.17" y="100.61" width="68.09" height="59.36" transform="translate(664.43 260.59) rotate(-180)"/>
+  </g>
+  <g id="e" data-name="troubleshoot">
+    <path class="i" d="M333.1,32.28h-164.85c-15.34,0-29.5,8.18-37.17,21.46L48.64,196.51c-7.67,13.29-7.67,29.64,0,42.92l82.43,142.76c7.67,13.29,21.84,21.46,37.17,21.46h164.85c15.34,0,29.5-8.18,37.17-21.46l82.43-142.76c7.67-13.29,7.67-29.64,0-42.92l-82.43-142.76c-7.67-13.29-21.84-21.46-37.17-21.46h0Z"/>
+    <g>
+      <line class="h" x1="93.59" y1="230.21" x2="213.95" y2="109.84"/>
+      <polygon class="l" points="227.32 134.27 241.15 82.65 189.53 96.48 227.32 134.27"/>
+    </g>
+  </g>
+</svg>
