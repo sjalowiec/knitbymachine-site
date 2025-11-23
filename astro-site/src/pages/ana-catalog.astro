@@ -801,6 +801,16 @@ const description = "Browse all your knitting machine questions and answers, org
       }
     }
 
+    // Update the topics label text based on filter state
+    const topicsLabel = document.querySelector('.ana-topics-label');
+    if (topicsLabel) {
+      if (activeBubble) {
+        topicsLabel.textContent = 'View all topics →';
+      } else {
+        topicsLabel.textContent = 'Browse by topic:';
+      }
+    }
+
     // Re-render cards with new filter
     renderCards(allEntries);
   }
