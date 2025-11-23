@@ -60,7 +60,7 @@ html, body {
 /* ===== CENTERED LOGO ===== */
 .kbm-logo-section {
   text-align: center;
-  padding: 14px 80px 10px 80px;  /* Side padding to prevent hamburger overlap */
+  padding: 8px 80px 4px 80px;  /* Reduced vertical padding */
   border-bottom: 1px solid var(--ring);
 }
 
@@ -97,14 +97,14 @@ html, body {
   font-family: "Poppins", sans-serif;
   font-size: calc(var(--text-base) + 2px);
   color: rgba(60, 80, 45, 0.75);
-  margin-top: 5px;
+  margin-top: 2px;
   font-weight: 400;
 }
 
 /* ===== NAVIGATION ROW ===== */
 .kbm-nav-row {
-  padding: 8px 0;
-  margin-top: 8px;
+  padding: 6px 0;
+  margin-top: 4px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -285,11 +285,11 @@ html, body {
 
   .kbm-nav-row {
     position: fixed;
-    top: 110px;
+    top: var(--header-height, 90px);
     right: -100%;
     width: 320px;
     max-width: 85vw;
-    height: calc(100vh - 110px);
+    height: calc(100vh - var(--header-height, 90px));
     background: var(--kbm-bg);
     box-shadow: -4px 0 12px rgba(0, 0, 0, .1);
     transition: right 0.3s ease;
