@@ -667,8 +667,8 @@ const description = "Browse all our knitting calculators and interactive tools t
     const categoryLower = category.toLowerCase();
     if (categoryLower.includes('pattern')) {
       return '/images/pattern_icon.png';
-    } else if (categoryLower.includes('practice')) {
-      return '/images/practice-icon.png';
+    } else if (categoryLower.includes('practice') || categoryLower.includes('skill builder')) {
+      return '/images/practice-icon.svg';
     } else if (categoryLower.includes('calculator') || categoryLower.includes('tool')) {
       return '/images/tools_icon.png';
     } else if (categoryLower.includes('guide') || categoryLower.includes('smart')) {
