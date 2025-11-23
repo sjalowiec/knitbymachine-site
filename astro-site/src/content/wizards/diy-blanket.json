@@ -2,8 +2,7 @@
   "title": "DIY Blanket",
   "slug": "diy-blanket",
   "hero": "",
-  "description": "<p>this is the description of the diy blanket Html??? <em>italics</em></p>",
-  "excerpt": "Create your own custom blanket pattern",
+  "description": "<p>The DIY Blanket Wizard helps you plan any blanket with the yarn, gauge, and machine you have. Enter your finished size, gauge, and preferred construction style, and the wizard calculates needle counts, rows, shaping details (when needed), and a clear step-by-step plan you can follow at the machine.<br>It’s the fastest way to turn “I want to knit a blanket” into a project you feel confident starting.</p>",
   "category": "pattern",
   "tags": [
     "beginner"
@@ -16,10 +15,24 @@
   "imageUrl": "1763127366336-swatch-background.png",
   "imageAlt": "",
   "iconUrl": "https://www.knitbymachine.com/images/blanket.svg",
-  "metaTitle": "",
-  "metaDescription": "",
-  "schemaMarkup": null,
+  "metaTitle": "DIY Blanket Wizard | Custom Machine-Knit Blanket Planner",
+  "metaDescription": "Create a custom machine-knit blanket using your yarn and gauge. The DIY Blanket Wizard calculates needle counts, rows, and steps so you can start knitting with confidence.",
+  "schemaMarkup": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "DIY Blanket Wizard",
+    "description": "Interactive tool that calculates needle counts, rows, shaping, and step-by-step instructions for creating a custom machine-knit blanket using any yarn and gauge.",
+    "applicationCategory": "KnittingTool",
+    "operatingSystem": "Web",
+    "provider": {
+      "@type": "Organization",
+      "name": "Knit by Machine",
+      "url": "https://knitbymachine.com"
+    },
+    "url": "https://knitbymachine.com/wizards/diy-blanket",
+    "image": "https://knitbymachine.com/images/wizards/diy-blanket.jpg"
+  },
   "isDraft": false,
   "publishedDate": "2025-11-14",
-  "pendingPublish": false
+  "pendingPublish": true
 }
