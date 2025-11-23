@@ -12,12 +12,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
-  "iconUrl": "",
+  "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
   "metaTitle": "",
   "metaDescription": "",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false,
-  "excerpt": "A tiny change in gauge can make a big difference. See how your project grows (or shrinks) — one stitch at a time."
+  "pendingPublish": true
 }
