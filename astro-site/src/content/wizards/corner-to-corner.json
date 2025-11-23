@@ -35,6 +35,10 @@
   },
   "isDraft": false,
   "publishedDate": "2025-11-14",
+<<<<<<< HEAD
   "pendingPublish": false,
   "excerpt": "this the tagline"
+=======
+  "pendingPublish": true
+>>>>>>> d0d9a8ace9c186efd369dce51eeb0b3e1449abf2
 }
