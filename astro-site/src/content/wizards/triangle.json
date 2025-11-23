@@ -3,7 +3,6 @@
   "slug": "triangle",
   "hero": "",
   "description": "<p>Create a triangle shawl that fits your machine. Follow three easy steps and get a pattern tailored to your yarn, gauge, and needlebed.</p>",
-  "excerpt": "Create a triangle shawl that fits your machine. Follow three easy steps and get a pattern tailored to your yarn, gauge, and needlebed.",
   "category": "pattern",
   "tags": [],
   "videoUrl": "",
@@ -13,11 +12,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
-  "iconUrl": "https://www.knitbymachine.com/images/shawl.svg ",
+  "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
   "metaTitle": "",
   "metaDescription": "Create a triangle shawl that fits your machine in 3 easy steps",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
