@@ -12,12 +12,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
-  "iconUrl": "",
+  "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
   "metaTitle": "",
   "metaDescription": "",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false,
-  "excerpt": "Convert any pattern to your gauge — no math required."
+  "pendingPublish": true
 }
