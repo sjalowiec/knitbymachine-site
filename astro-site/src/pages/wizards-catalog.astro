@@ -368,6 +368,7 @@ const description = "Browse all our knitting calculators and interactive tools t
     color: #52682D;
     margin: 0;
     line-height: 1.3;
+    padding-right: 70px;
   }
 
   :global(.wizard-card-description) {
@@ -420,13 +421,14 @@ const description = "Browse all our knitting calculators and interactive tools t
 
   :global(.wizard-card-icon) {
     position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
+    top: 1.75rem;
+    right: 1.75rem;
     width: 56px;
     height: 56px;
     object-fit: contain;
     opacity: 0.5;
     transition: opacity 0.3s ease;
+    pointer-events: none;
   }
 
   :global(.wizard-card:hover .wizard-card-icon) {
