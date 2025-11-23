@@ -1,11 +1,12 @@
 {
   "title": "Corner to Corner Blanket",
   "slug": "corner-to-corner",
-  "hero": "",
-  "description": "<p>description for corner to c2c more text</p>",
+  "hero": "this the tagline",
+  "description": "<p>The Corner-to-Corner Blanket Wizard helps you plan a diagonal, bias-knit blanket from any yarn, any gauge, and any machine. Enter your finished size, yarn weight, and stitch/row gauge, and the wizard calculates shaping, needle counts, and the increase/decrease sequence for smooth edges and a perfect square or rectangle.<br>You can also explore variations, choose your construction style, and download a step sheet for your machine.</p><p>It’s a quick way to go from “I think I want to try this project” to “I know exactly how many stitches I need and how to knit it.”</p>",
   "category": "pattern",
   "tags": [
-    "advanced"
+    "advanced",
+    "beginner"
   ],
   "videoUrl": "",
   "accessLevel": "free",
@@ -13,12 +14,26 @@
   "relatedAnas": [],
   "relatedWorkshops": [],
   "imageUrl": "1763127504557-no-sound.png",
-  "imageAlt": "",
+  "imageAlt": "machine knit corner to corner blanket",
   "iconUrl": "https://www.knitbymachine.com/images/blanket.svg",
-  "metaTitle": "",
-  "metaDescription": "",
-  "schemaMarkup": null,
+  "metaTitle": "Corner-to-Corner Blanket Pattern| Knit a Diagonal Blanket on Your Machine",
+  "metaDescription": "Create a custom corner-to-corner machine-knit blanket with your yarn and gauge. This pattern calculates needle counts, shaping, and step-by-step instructions for perfect diagonal knitting.",
+  "schemaMarkup": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Corner-to-Corner Blanket Pattern",
+    "description": "Interactive tool that calculates shaping, needle counts, and instructions for knitting a diagonal corner-to-corner blanket on any machine.",
+    "applicationCategory": "KnittingTool",
+    "operatingSystem": "Web",
+    "provider": {
+      "@type": "Organization",
+      "name": "Knit by Machine",
+      "url": "https://knitbymachine.com"
+    },
+    "url": "https://knitbymachine.com/wizards/corner-to-corner-blanket",
+    "image": "https://knitbymachine.com/images/wizards/c2c-blanket.jpg"
+  },
   "isDraft": false,
   "publishedDate": "2025-11-14",
-  "pendingPublish": false
+  "pendingPublish": true
 }
