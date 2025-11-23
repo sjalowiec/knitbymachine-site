@@ -317,21 +317,27 @@ p {
    Ensures question overlaps answer on all ANA entries
    ============================================ */
 
-.bubble-wrapper {
+.bubbles-container {
+  position: relative;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.bubbles-container .thought-bubble {
+  position: relative;
+  z-index: 2;
+  margin-bottom: -3rem; /* Creates overlap */
   max-width: 650px;
+  align-self: flex-start; /* Left-aligned */
 }
 
-.question-wrapper {
-  justify-content: flex-start;
+.bubbles-container .speech-bubble {
   position: relative;
-  z-index: 2; /* Question on top */
-}
-
-.answer-wrapper {
-  justify-content: flex-end;
-  margin-left: auto;
-  margin-top: -3rem; /* Overlap - answer goes under question */
-  position: relative;
-  z-index: 1; /* Answer underneath */
+  z-index: 1;
+  max-width: 650px;
+  align-self: flex-end; /* Right-aligned */
 }

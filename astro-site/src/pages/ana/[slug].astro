@@ -113,15 +113,14 @@ const relatedWizards = entry.data.relatedWizards?.length
 
     <div class="unified-content-card">
       <article class="ana-item">
-        <!-- Question Bubble -->
-        <div class="bubble-wrapper question-wrapper">
+        <!-- Bubbles Container - single wrapper for proper stacking -->
+        <div class="bubbles-container">
+          <!-- Question Bubble -->
           <div class="thought-bubble question-bubble">
             <p>{entry.data.title}</p>
           </div>
-        </div>
 
-        <!-- Answer Bubble -->
-        <div class="bubble-wrapper answer-wrapper">
+          <!-- Answer Bubble -->
           <div class="speech-bubble answer-bubble">
             <div class="bubble-content" set:html={entry.data.body}></div>
           </div>
@@ -315,8 +314,8 @@ const relatedWizards = entry.data.relatedWizards?.length
     gap: 2.5rem;
   }
 
-  /* Note: .bubble-wrapper, .question-wrapper, and .answer-wrapper styles 
-     are now in global.css to ensure consistent overlap across all ANA entries */
+  /* Note: .bubbles-container and bubble positioning styles 
+     are in global.css to ensure consistent overlap across all ANA entries */
 
   .thought-bubble {
     position: relative;
