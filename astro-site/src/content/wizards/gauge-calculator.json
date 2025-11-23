@@ -2,7 +2,7 @@
   "title": "Gauge Calculator",
   "slug": "gauge-calculator",
   "hero": "Get your gauge right — no math, no mistakes.",
-  "description": "<p>Accurate gauge means accurate fit. Measure your swatch, enter the numbers, and instantly get your stitch and row gauge in inches or centimeters.</p>",
+  "description": "<p>Accurate gauge means accurate fit. Measure your swatch, enter the numbers, and instantly get your stitch and row gauge in inches or centimeters.   </p>",
   "category": "tool",
   "tags": [],
   "videoUrl": "",
@@ -12,10 +12,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
+  "iconUrl": "",
   "metaTitle": "",
   "metaDescription": "",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
