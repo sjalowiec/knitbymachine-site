@@ -10,7 +10,9 @@
   "videoUrl": "",
   "accessLevel": "free",
   "price": "",
-  "relatedAnas": [],
+  "relatedAnas": [
+    "dropped"
+  ],
   "relatedWorkshops": [],
   "imageUrl": "/public-objects/glossary/1763900120414-machine-knitting-dropped-stitch.webp",
   "imageAlt": "Picking up a dropped stitch in machine knitting",
