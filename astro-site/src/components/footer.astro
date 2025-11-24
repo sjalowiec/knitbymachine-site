@@ -115,6 +115,21 @@ footer .legal-links span {
   }
 }
 
+/* Tablet and small laptop screens - scale down typography and padding */
+@media (min-width: 600px) and (max-width: 1024px) {
+  footer {
+    padding: 1.5rem 0;
+  }
+  footer p,
+  footer a {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+  footer h3 {
+    font-size: 1.1rem;
+  }
+}
+
 /* Hide footer when printing */
 @media print {
   footer {
