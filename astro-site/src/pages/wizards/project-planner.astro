@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout 
+  title="Project Planner | Knit by Machine" 
+  description="What do you want to knit? Use our interactive project planner to explore knitting project ideas and get started.">
+
+<style>
+.wizard-page {
+  padding-top: 120px;
+  padding-bottom: 3rem;
+  min-height: 100vh;
+  background: var(--page-bg);
+}
+
+.page-header {
+  max-width: 900px;
+  margin: 0 auto 2rem;
+  padding: 0 1rem;
+}
+
+.page-header h1 {
+  color: var(--kbm-green);
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  text-align: center;
+}
+
+.page-header p {
+  color: #6b7280;
+  font-size: 1.05rem;
+  line-height: 1.6;
+  text-align: center;
+}
+
+.chatbot-container {
+  max-width: 900px;
+  margin: 0 auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.kbm-chat {
+  width: 100%;
+  min-height: 700px;
+}
+
+.kbm-chat iframe {
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  height: 700px;
+}
+
+@media (max-width: 768px) {
+  .wizard-page {
+    padding-top: 100px;
+  }
+  
+  .chatbot-container {
+    padding: 1rem;
+  }
+  
+  .kbm-chat iframe {
+    height: 600px;
+  }
+}
+</style>
+
+<div class="wizard-page">
+  <div class="page-header">
+    <h1>Project Planner</h1>
+    <p>What do you want to knit?</p>
+  </div>
+
+  <div class="chatbot-container">
+    <section class="kbm-chat">
+      <iframe 
+        src="https://chatbot.getmindpal.com/ready-set-knit-td6"
+        width="100%"
+        height="700"
+        style="border: none; border-radius: 12px;"
+        title="Knitting Project Planner Chatbot"
+      ></iframe>
+    </section>
+  </div>
+</div>
+
+</BaseLayout>
