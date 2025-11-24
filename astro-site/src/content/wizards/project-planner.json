@@ -13,11 +13,11 @@
   "relatedWorkshops": [],
   "imageUrl": "",
   "imageAlt": "",
-  "iconUrl": "",
-  "metaTitle": "",
-  "metaDescription": "",
+  "iconUrl": "https://www.knitbymachine.com/images/blanket.svg",
+  "metaTitle": "project planner",
+  "metaDescription": "machine kntiting project planner",
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-24",
-  "pendingPublish": false
+  "pendingPublish": true
 }
