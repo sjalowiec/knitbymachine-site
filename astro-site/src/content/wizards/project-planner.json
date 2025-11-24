@@ -2,7 +2,7 @@
   "title": "project planner",
   "slug": "project-planner",
   "hero": "",
-  "description": "\n\n\nthis is the button<br>\n<section class=\"kbm-chat\">\n\n  <iframe \n\n    src=\"https://chatbot.getmindpal.com/ready-set-knit-td6\"\n\n    width=\"100%\"\n\n    height=\"700\"\n\n    style=\"border: none; border-radius: 12px;\"\n\n  ></iframe>\n\n</section>\n\n",
+  "description": "\n\n\nthis is the button<br>\n<section class=\"kbm-chat\">\n\n<section class=\"smart-guide-embed\">\n  <iframe\n    src=\"https://chatbot.getmindpal.com/ready-set-knit-td6\"\n    width=\"100%\"\n    style=\"border: none; border-radius: 12px; min-height: 800px;\"\n  ></iframe>\n</section>\n\n",
   "excerpt": "what do you want to knit?\n",
   "category": "smart guide",
   "tags": [],
@@ -33,5 +33,5 @@
   },
   "isDraft": false,
   "publishedDate": "2025-11-24",
-  "pendingPublish": false
+  "pendingPublish": true
 }
