@@ -16,8 +16,22 @@
   "iconUrl": "https://www.knitbymachine.com/images/blanket.svg",
   "metaTitle": "project planner",
   "metaDescription": "machine kntiting project planner",
-  "schemaMarkup": null,
+  "schemaMarkup": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Machine Knitting Project planner",
+    "description": "Interactive tool that calculates shaping, needle counts, and instructions for knitting a diagonal corner-to-corner blanket on any machine.",
+    "applicationCategory": "KnittingTool",
+    "operatingSystem": "Web",
+    "provider": {
+      "@type": "Organization",
+      "name": "Knit by Machine",
+      "url": "https://knitbymachine.com"
+    },
+    "url": "https://knitbymachine.com/wizards/project-planner",
+    "image": "https://knitbymachine.com/images/wizards/c2c-blanket.jpg"
+  },
   "isDraft": false,
   "publishedDate": "2025-11-24",
-  "pendingPublish": false
+  "pendingPublish": true
 }
