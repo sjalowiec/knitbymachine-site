@@ -1,0 +1,23 @@
+{
+  "title": "project planner",
+  "slug": "project-planner",
+  "hero": "",
+  "description": "\n\n\nthis is the button<br>\n<section class=\"kbm-chat\">\n\n  <iframe \n\n    src=\"https://chatbot.getmindpal.com/ready-set-knit-td6\"\n\n    width=\"100%\"\n\n    height=\"700\"\n\n    style=\"border: none; border-radius: 12px;\"\n\n  ></iframe>\n\n</section>\n\n",
+  "excerpt": "what do you want to knit?\n",
+  "category": "smart guide",
+  "tags": [],
+  "videoUrl": "",
+  "accessLevel": "free",
+  "price": "",
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "imageUrl": "",
+  "imageAlt": "",
+  "iconUrl": "",
+  "metaTitle": "",
+  "metaDescription": "",
+  "schemaMarkup": null,
+  "isDraft": true,
+  "publishedDate": "2025-11-24",
+  "pendingPublish": true
+}
