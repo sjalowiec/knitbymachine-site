@@ -15,8 +15,9 @@ import AnnouncementBar from "../components/AnnouncementBar.astro";
   </head>
 
   <body>
-    <Header />
-    <AnnouncementBar />
+    <Header>
+      <AnnouncementBar slot="announcement" />
+    </Header>
 
     <main class="page">
       <!-- ========================= HERO ========================= -->
