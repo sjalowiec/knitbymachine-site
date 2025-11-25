@@ -12,7 +12,7 @@
   "provider": "mindpal",
   "accessLevel": "free",
   "iconUrl": "https://www.knitbymachine.com/images/lightbulb.svg",
-  "htmlContent": "<style>\n.kbm-button-download {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.5rem;\n  padding: 0.6rem 1.2rem;\n  background-color: #52682D;\n  color: #ffffff;\n  border-radius: 6px;\n  text-decoration: none;\n  font-weight: 600;\n  font-size: 1rem;\n}\n.kbm-button-download:hover {\n  background-color: #445626;\n}\n\n</style>\n<a href=\"https://knitbymachine.com/checklist.pdf\" download class=\"kbm-button-download\">\n  <span>Download Your Checklist</span>\n  <span style=\"font-size: 1.1rem;\">⬇️</span>\n</a>\n",
+  "htmlContent": "<p class=\"kbm-checklist-link\">\n  📝 Prefer a printable as you plan? \n  <a href=\"https://knitbymachine.com/checklist.pdf\" download>\n    Download the Project Readiness Checklist (PDF)\n  </a>\n  and keep it handy while you use Ready ● Set ● Knit.\n</p>",
   "imageUrl": "",
   "imageAlt": "",
   "metaTitle": "Ready, Set, Knit: Project Planner | Knit by Machine Smart Guide",
