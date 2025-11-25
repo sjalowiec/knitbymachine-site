@@ -59,26 +59,17 @@ const pageDescription = agent.metaDescription || agent.description || '';
   description={pageDescription}>
 
 <style>
-html, body {
-  overflow: hidden;
-  height: 100%;
-}
-
 .agent-page {
   padding-top: 100px;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
+  padding-bottom: 2rem;
+  min-height: 100vh;
   background: var(--page-bg);
-  overflow: hidden;
 }
 
 .back-link-container {
   max-width: 1000px;
-  width: 100%;
-  margin: 0 auto;
-  padding: 0 1rem 0.5rem 1rem;
-  flex-shrink: 0;
+  margin: 0 auto 1rem auto;
+  padding: 0 1rem;
 }
 
 .back-link {
@@ -97,46 +88,37 @@ html, body {
 
 .agent-container {
   max-width: 1000px;
-  width: 100%;
   margin: 0 auto;
   background: white;
-  padding: 1.5rem;
+  padding: 2rem;
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  margin-bottom: 1rem;
 }
 
 .agent-intro {
-  margin-bottom: 1rem;
-  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
   color: #2c3a57;
-  font-size: 1rem;
-  flex-shrink: 0;
-  max-height: 150px;
-  overflow-y: auto;
+  font-size: 1.1rem;
 }
 
 .agent-intro h1, .agent-intro h2, .agent-intro h3 {
   color: #52682D;
-  margin-top: 0.5rem;
+  margin-top: 1rem;
   margin-bottom: 0.5rem;
 }
 
 .agent-intro p {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .agent-intro ul, .agent-intro ol {
-  margin-bottom: 0.75rem;
+  margin-bottom: 1rem;
   padding-left: 1.5rem;
 }
 
 .agent-intro li {
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .agent-intro a {
@@ -150,56 +132,52 @@ html, body {
 
 .kbm-agent {
   width: 100%;
-  flex: 1;
-  min-height: 0;
 }
 
-.kbm-agent iframe,
-.kbm-agent iframe[style] {
-  border: none !important;
-  border-radius: 8px !important;
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 0 !important;
-  max-height: none !important;
+.kbm-agent iframe {
+  border: none;
+  border-radius: 12px;
+  width: 100%;
+  height: 700px;
 }
 
 @media (max-width: 768px) {
   .agent-page {
-    padding-top: 90px;
+    padding-top: 100px;
   }
   
   .agent-container {
     padding: 1rem;
-    border-radius: 8px;
-    margin-left: 0.5rem;
-    margin-right: 0.5rem;
+    margin: 0 0.5rem;
   }
   
   .agent-intro {
-    font-size: 0.9rem;
-    line-height: 1.5;
-    max-height: 120px;
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
   
   .agent-intro h1 {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
   }
   
   .agent-intro h2 {
-    font-size: 1.1rem;
+    font-size: 1.2rem;
   }
   
   .agent-intro h3 {
-    font-size: 1rem;
+    font-size: 1.1rem;
   }
   
   .agent-intro p {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem;
   }
   
   .agent-intro ul, .agent-intro ol {
     padding-left: 1.25rem;
+  }
+  
+  .kbm-agent iframe {
+    height: 600px;
   }
 }
 </style>
