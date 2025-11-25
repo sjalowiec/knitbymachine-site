@@ -66,6 +66,26 @@ const pageDescription = agent.metaDescription || agent.description || '';
   background: var(--page-bg);
 }
 
+.back-link-container {
+  max-width: 1000px;
+  margin: 0 auto 1rem auto;
+  padding: 0 1rem;
+}
+
+.back-link {
+  display: inline-block;
+  color: #52682D;
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.back-link:hover {
+  color: #6b8840;
+  text-decoration: underline;
+}
+
 .agent-container {
   max-width: 1000px;
   margin: 0 auto;
@@ -143,6 +163,9 @@ const pageDescription = agent.metaDescription || agent.description || '';
 </style>
 
 <div class="agent-page">
+  <div class="back-link-container">
+    <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
+  </div>
   <div class="agent-container">
     {agent.htmlContent && (
       <div class="agent-intro" set:html={agent.htmlContent}></div>
