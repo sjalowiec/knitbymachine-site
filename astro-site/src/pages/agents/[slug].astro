@@ -132,14 +132,16 @@ const pageDescription = agent.metaDescription || agent.description || '';
 
 .kbm-agent {
   width: 100%;
+  min-height: 80vh;
 }
 
 .kbm-agent iframe {
   border: none;
   border-radius: 12px;
-  width: 100%;
-  height: calc(100vh - 180px);
-  min-height: 600px;
+  width: 100% !important;
+  height: 85vh !important;
+  min-height: 700px !important;
+  max-height: none !important;
 }
 
 @media (max-width: 768px) {
@@ -177,8 +179,8 @@ const pageDescription = agent.metaDescription || agent.description || '';
   }
   
   .kbm-agent iframe {
-    height: calc(100vh - 150px);
-    min-height: 500px;
+    height: 80vh !important;
+    min-height: 600px !important;
   }
 }
 </style>
