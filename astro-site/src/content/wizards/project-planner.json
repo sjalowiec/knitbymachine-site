@@ -2,8 +2,8 @@
   "title": "project planner",
   "slug": "project-planner",
   "hero": "",
-  "description": "\n\n\nthis is the button<br>\n<section class=\"kbm-chat\">\n\n<section class=\"smart-guide-embed\">\n  <iframe\n    src=\"https://chatbot.getmindpal.com/ready-set-knit-td6\"\n    width=\"100%\"\n    style=\"border: none; border-radius: 12px; min-height: 800px;\"\n  ></iframe>\n</section>\n\n",
-  "excerpt": "what do you want to knit?\n",
+  "description": "\n\n<div class=\"text-center\">\n<a href=\"/path-to-your-checklist.pdf\" download class=\"button\">\n  Download your checklist\n</a></div><Br>\n<iframe \n  src=\"https://chatbot.getmindpal.com/ready-set-knit-projects-copy-6a3\"\n  allow=\"clipboard-read; clipboard-write; microphone\"\n  style=\"width: 100%; height: 100%; min-height: 700px\"\n></iframe>\n\n",
+  "excerpt": "A friendly, step-by-step Smart Guide that helps you choose a project you’re truly ready to knit. Answer a few simple questions and get a confidence-boosting recommendation—plus the right Knit by Machine tools to get started.\n",
   "category": "smart guide",
   "tags": [],
   "videoUrl": "",
@@ -14,22 +14,41 @@
   "imageUrl": "",
   "imageAlt": "",
   "iconUrl": "https://www.knitbymachine.com/images/blanket.svg",
-  "metaTitle": "project planner",
-  "metaDescription": "machine kntiting project planner",
+  "metaTitle": "Ready, Set, Knit: Project Planner | Knit by Machine Smart Guide",
+  "metaDescription": "Not sure what to knit next? Use the Ready, Set, Knit Project Planner to choose a project that matches your time, yarn, machine, and confidence—then get guided to the perfect Knit by Machine resource.",
   "schemaMarkup": {
     "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Machine Knitting Project planner",
-    "description": "Interactive tool that calculates shaping, needle counts, and instructions for knitting a diagonal corner-to-corner blanket on any machine.",
-    "applicationCategory": "KnittingTool",
-    "operatingSystem": "Web",
-    "provider": {
+    "@type": "HowTo",
+    "name": "Ready, Set, Knit: Project Planner",
+    "description": "A friendly project-readiness Smart Guide that helps machine knitters choose a project based on their skills, time, yarn, and machine, and directs them to the appropriate Knit by Machine tool.",
+    "publisher": {
       "@type": "Organization",
       "name": "Knit by Machine",
       "url": "https://knitbymachine.com"
     },
-    "url": "https://knitbymachine.com/wizards/project-planner",
-    "image": "https://knitbymachine.com/images/wizards/c2c-blanket.jpg"
+    "image": "https://knitbymachine.com/path-to-image.jpg",
+    "step": [
+      {
+        "@type": "HowToStep",
+        "name": "Choose your project direction",
+        "text": "Begin by answering a few simple questions about what you want to knit next."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Share your experience and goals",
+        "text": "Tell the guide how confident you feel, how long you've been machine knitting, and what you want from your project."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Provide details about your yarn and machine",
+        "text": "Let the guide know what yarn you have and which machine you’ll be using."
+      },
+      {
+        "@type": "HowToStep",
+        "name": "Receive a personalized project recommendation",
+        "text": "Based on your answers, the Smart Guide suggests a project you’re ready to knit and connects you to the right Knit by Machine resource."
+      }
+    ]
   },
   "isDraft": false,
   "publishedDate": "2025-11-24",
