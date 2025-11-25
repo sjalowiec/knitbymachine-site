@@ -132,15 +132,17 @@ const pageDescription = agent.metaDescription || agent.description || '';
 
 .kbm-agent {
   width: 100%;
-  min-height: 80vh;
+  height: 85vh;
+  min-height: 600px;
 }
 
-.kbm-agent iframe {
-  border: none;
-  border-radius: 12px;
+.kbm-agent iframe,
+.kbm-agent iframe[style] {
+  border: none !important;
+  border-radius: 12px !important;
   width: 100% !important;
-  height: 85vh !important;
-  min-height: 700px !important;
+  height: 100% !important;
+  min-height: 0 !important;
   max-height: none !important;
 }
 
@@ -178,9 +180,15 @@ const pageDescription = agent.metaDescription || agent.description || '';
     padding-left: 1.25rem;
   }
   
-  .kbm-agent iframe {
-    height: 80vh !important;
-    min-height: 600px !important;
+  .kbm-agent {
+    height: 80vh;
+    min-height: 500px;
+  }
+  
+  .kbm-agent iframe,
+  .kbm-agent iframe[style] {
+    height: 100% !important;
+    min-height: 0 !important;
   }
 }
 </style>
