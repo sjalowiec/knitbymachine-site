@@ -61,15 +61,15 @@ const pageDescription = agent.metaDescription || agent.description || '';
 <style>
 .agent-page {
   padding-top: 100px;
-  padding-bottom: 2rem;
+  padding-bottom: 3rem;
   min-height: 100vh;
   background: var(--page-bg);
 }
 
 .back-link-container {
-  max-width: 800px;
-  margin: 0 auto 1rem auto;
-  padding: 0 1rem;
+  max-width: 1100px;
+  margin: 0 auto 1.5rem auto;
+  padding: 0 1.5rem;
 }
 
 .back-link {
@@ -86,57 +86,159 @@ const pageDescription = agent.metaDescription || agent.description || '';
   text-decoration: underline;
 }
 
-.agent-container {
-  max-width: 800px;
-  margin: 0 auto;
-  background: white;
-  padding: 2.5rem;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+/* Hero Section - Icon + Title */
+.agent-hero {
+  max-width: 1100px;
+  margin: 0 auto 2rem;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.agent-intro {
-  margin-bottom: 2rem;
+.hero-icon {
+  width: clamp(72px, 8vw, 96px);
+  height: clamp(72px, 8vw, 96px);
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.hero-icon-placeholder {
+  width: clamp(72px, 8vw, 96px);
+  height: clamp(72px, 8vw, 96px);
+  flex-shrink: 0;
+  background: linear-gradient(135deg, #52682D 0%, #6b8840 100%);
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hero-icon-placeholder svg {
+  width: 48px;
+  height: 48px;
+  color: white;
+}
+
+.hero-title {
+  font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  font-weight: 700;
+  color: #52682D;
+  margin: 0;
+  line-height: 1.2;
+}
+
+/* Excerpt Section */
+.agent-excerpt {
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.excerpt-text {
+  font-size: clamp(1.1rem, 2vw, 1.25rem);
+  color: #5a6b47;
+  line-height: 1.6;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Main Content Container */
+.agent-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* Two Column Layout */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.content-column {
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.column-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #52682D;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid #e8ede3;
+}
+
+.description-text {
+  font-size: 1.05rem;
   line-height: 1.7;
   color: #2c3a57;
-  font-size: 1.1rem;
+  margin: 0;
 }
 
-.agent-intro h1, .agent-intro h2, .agent-intro h3 {
+/* HTML Content Styling */
+.page-content {
+  line-height: 1.7;
+  color: #2c3a57;
+  font-size: 1.05rem;
+}
+
+.page-content h1, .page-content h2, .page-content h3 {
   color: #52682D;
-  margin-top: 1rem;
+  margin-top: 1.25rem;
   margin-bottom: 0.5rem;
 }
 
-.agent-intro h1 {
-  font-size: 1.8rem;
+.page-content h1 {
+  font-size: 1.6rem;
 }
 
-.agent-intro p {
+.page-content h2 {
+  font-size: 1.35rem;
+}
+
+.page-content h3 {
+  font-size: 1.15rem;
+}
+
+.page-content p {
   margin-bottom: 1rem;
 }
 
-.agent-intro ul, .agent-intro ol {
+.page-content ul, .page-content ol {
   margin-bottom: 1rem;
   padding-left: 1.5rem;
 }
 
-.agent-intro li {
+.page-content li {
   margin-bottom: 0.5rem;
 }
 
-.agent-intro a {
+.page-content a {
   color: #52682D;
   text-decoration: underline;
 }
 
-.agent-intro a:hover {
+.page-content a:hover {
   color: #6b8840;
 }
 
+/* Launch Section */
 .launch-section {
   text-align: center;
-  padding: 2rem 0;
+  padding: 2rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
 }
 
 .launch-button {
@@ -168,39 +270,50 @@ const pageDescription = agent.metaDescription || agent.description || '';
   color: #666;
 }
 
+/* Single column fallback when only one content type exists */
+.content-single {
+  max-width: 800px;
+  margin: 0 auto 2.5rem;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
   .agent-page {
     padding-top: 100px;
   }
   
-  .agent-container {
+  .agent-hero {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .hero-title {
+    font-size: 1.75rem;
+  }
+  
+  .content-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .content-column {
     padding: 1.5rem;
-    margin: 0 0.5rem;
   }
   
-  .agent-intro {
+  .page-content {
     font-size: 0.95rem;
-    line-height: 1.6;
   }
   
-  .agent-intro h1 {
+  .page-content h1 {
     font-size: 1.4rem;
   }
   
-  .agent-intro h2 {
+  .page-content h2 {
     font-size: 1.2rem;
   }
   
-  .agent-intro h3 {
+  .page-content h3 {
     font-size: 1.1rem;
-  }
-  
-  .agent-intro p {
-    margin-bottom: 0.75rem;
-  }
-  
-  .agent-intro ul, .agent-intro ol {
-    padding-left: 1.25rem;
   }
   
   .launch-button {
@@ -214,13 +327,65 @@ const pageDescription = agent.metaDescription || agent.description || '';
   <div class="back-link-container">
     <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
   </div>
-  <div class="agent-container">
-    {agent.htmlContent && (
-      <div class="agent-intro" set:html={agent.htmlContent}></div>
+  
+  <!-- Hero: Icon + Title -->
+  <div class="agent-hero">
+    {agent.iconUrl ? (
+      <img src={agent.iconUrl} alt={agent.title} class="hero-icon" />
+    ) : (
+      <div class="hero-icon-placeholder">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 8V4H8"/>
+          <rect width="16" height="12" x="4" y="8" rx="2"/>
+          <path d="M2 14h2"/>
+          <path d="M20 14h2"/>
+          <path d="M15 13v2"/>
+          <path d="M9 13v2"/>
+        </svg>
+      </div>
     )}
+    <h1 class="hero-title">{agent.title}</h1>
+  </div>
+  
+  <!-- Centered Excerpt -->
+  {agent.excerpt && (
+    <div class="agent-excerpt">
+      <p class="excerpt-text">{agent.excerpt}</p>
+    </div>
+  )}
+  
+  <div class="agent-container">
+    <!-- Two Column Content OR Single Column -->
+    {agent.description && agent.htmlContent ? (
+      <div class="content-grid">
+        <div class="content-column">
+          <p class="column-label">About This Guide</p>
+          <p class="description-text">{agent.description}</p>
+        </div>
+        <div class="content-column">
+          <p class="column-label">How It Works</p>
+          <div class="page-content" set:html={agent.htmlContent}></div>
+        </div>
+      </div>
+    ) : agent.description ? (
+      <div class="content-single">
+        <div class="content-column">
+          <p class="column-label">About This Guide</p>
+          <p class="description-text">{agent.description}</p>
+        </div>
+      </div>
+    ) : agent.htmlContent ? (
+      <div class="content-single">
+        <div class="content-column">
+          <div class="page-content" set:html={agent.htmlContent}></div>
+        </div>
+      </div>
+    ) : null}
+    
+    <!-- Launch Button -->
     <div class="launch-section">
       <a href={agent.iframeUrl} target="_blank" rel="noopener noreferrer" class="launch-button">
-        Launch Smart Guide →
+        Launch {agent.title} →
       </a>
       <p class="launch-hint">Opens in a new tab</p>
     </div>
