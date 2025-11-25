@@ -108,9 +108,24 @@ import "../../styles/wizard.css";
     gap: 0.75rem;
   }
 }
+
+.back-link {
+  display: inline-block;
+  color: #52682D;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 1rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #3d4e21;
+  text-decoration: underline;
+}
 </style>
 
 <div class="wizard-page">
+  <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
   <!-- Ana-catalog style header -->
   <div class="header-panel">
     <img src="/images/troubleshooter-wizard-logo.svg" alt="Dropped Stitch Troubleshooter" class="intro-icon">
