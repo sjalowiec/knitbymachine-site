@@ -697,13 +697,41 @@ const description = "Browse all our knitting calculators and interactive tools t
     return sorted;
   }
 
+  function normalizeCategory(category) {
+    // Normalize category names for consistent grouping
+    const cat = (category || 'Uncategorized').toLowerCase().trim();
+    
+    // Normalize "smart guide" variations to "Smart Guide"
+    if (cat.includes('smart guide')) {
+      return 'Smart Guide';
+    }
+    // Normalize "skill builder" variations
+    if (cat.includes('skill builder')) {
+      return 'Skill Builder';
+    }
+    // Normalize "tool" variations
+    if (cat.includes('tool')) {
+      return 'Tool';
+    }
+    // Normalize "pattern" variations
+    if (cat.includes('pattern')) {
+      return 'Pattern';
+    }
+    
+    // Return original with first letter capitalized
+    return category.split(' ')
+      .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+  }
+
   function groupByCategory(entries) {
     const grouped = {};
     entries.forEach(entry => {
-      if (!grouped[entry.category]) {
-        grouped[entry.category] = [];
+      const normalizedCategory = normalizeCategory(entry.category);
+      if (!grouped[normalizedCategory]) {
+        grouped[normalizedCategory] = [];
       }
-      grouped[entry.category].push(entry);
+      grouped[normalizedCategory].push(entry);
     });
     return grouped;
   }
