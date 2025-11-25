@@ -363,9 +363,27 @@ import '../../styles/wizard.css';
     right: -20px;
   }
 }
+
+.back-link {
+  display: inline-block;
+  color: #52682D;
+  text-decoration: none;
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+  padding: 0.5rem 0;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #3d4e21;
+  text-decoration: underline;
+}
 </style>
 
 <div class="wizard-page">
+  <div style="max-width: 800px; margin: 0 auto; padding: 0 1rem;">
+    <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
+  </div>
   <div class="page-header">
     <h1>Tailor-Made Triangle Shawl</h1>
     <p>Build a triangle that fits your machine and your project. Enter your size, gauge, and needles, and this pattern will outline the shaping for you.</p>
