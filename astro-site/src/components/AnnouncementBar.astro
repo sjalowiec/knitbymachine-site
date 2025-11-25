@@ -1,0 +1,43 @@
+---
+/* Toggle banner visibility */
+const show = true;
+
+/* Banner text */
+const message =
+  "New around here? Start with a quick introduction to Knit by Machine.";
+
+/* Where the link goes */
+const href = "/about";
+---
+
+{show && (
+  <div class="kbm-announcement">
+    <p>
+      {message}{" "}
+      <a href={href} class="kbm-announcement-link">
+        Read the intro →
+      </a>
+    </p>
+  </div>
+)}
+
+<style>
+  .kbm-announcement {
+    background: var(--kbm-green, #52682d);
+    color: #fff;
+    padding: 0.6rem 1.25rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .kbm-announcement-link {
+    color: #fff;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+  }
+
+  .kbm-announcement-link:hover {
+    text-decoration-thickness: 2px;
+  }
+</style>
