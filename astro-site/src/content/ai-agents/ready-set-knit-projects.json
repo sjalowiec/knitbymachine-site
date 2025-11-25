@@ -2,7 +2,7 @@
   "title": "Ready ● Set ● Knit: Projects",
   "slug": "ready-set-knit-projects",
   "description": "Ready, Set, Knit: Projects is your guided helper for choosing what to knit next. With a few simple questions, this Smart Guide learns your confidence, your time, your machine, and your yarn situation — then suggests a project that fits you right now. You’ll get gentle guidance, clear next steps, and direct links to the right Knit by Machine tools, patterns, and resources to get started without overwhelm.",
-  "excerpt": "The shortest path to your next project",
+  "excerpt": "The shortest path to your next project ",
   "category": "Smart Guides",
   "tags": [
     "beginner"
@@ -11,6 +11,8 @@
   "iframeHeight": "700",
   "provider": "mindpal",
   "accessLevel": "free",
+  "iconUrl": "https://www.knitbymachine.com/images/lightbulb.svg",
+  "htmlContent": "<style>\n.kbm-button-download {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.5rem;\n  padding: 0.6rem 1.2rem;\n  background-color: #52682D;\n  color: #ffffff;\n  border-radius: 6px;\n  text-decoration: none;\n  font-weight: 600;\n  font-size: 1rem;\n}\n.kbm-button-download:hover {\n  background-color: #445626;\n}\n\n</style>\n<a href=\"https://knitbymachine.com/checklist.pdf\" download class=\"kbm-button-download\">\n  <span>Download Your Checklist</span>\n  <span style=\"font-size: 1.1rem;\">⬇️</span>\n</a>\n",
   "imageUrl": "",
   "imageAlt": "",
   "metaTitle": "Ready, Set, Knit: Project Planner | Knit by Machine Smart Guide",
