@@ -67,7 +67,7 @@ const pageDescription = agent.metaDescription || agent.description || '';
 }
 
 .agent-container {
-  max-width: 900px;
+  max-width: 1000px;
   margin: 0 auto;
   background: white;
   padding: 2rem;
@@ -75,16 +75,51 @@ const pageDescription = agent.metaDescription || agent.description || '';
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
+.agent-intro {
+  margin-bottom: 1.5rem;
+  line-height: 1.7;
+  color: #2c3a57;
+  font-size: 1.1rem;
+}
+
+.agent-intro h1, .agent-intro h2, .agent-intro h3 {
+  color: #52682D;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.agent-intro p {
+  margin-bottom: 1rem;
+}
+
+.agent-intro ul, .agent-intro ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.agent-intro li {
+  margin-bottom: 0.5rem;
+}
+
+.agent-intro a {
+  color: #52682D;
+  text-decoration: underline;
+}
+
+.agent-intro a:hover {
+  color: #6b8840;
+}
+
 .kbm-agent {
   width: 100%;
-  min-height: 700px;
 }
 
 .kbm-agent iframe {
   border: none;
   border-radius: 12px;
   width: 100%;
-  height: 700px;
+  height: calc(100vh - 180px);
+  min-height: 600px;
 }
 
 @media (max-width: 768px) {
@@ -96,20 +131,26 @@ const pageDescription = agent.metaDescription || agent.description || '';
     padding: 1rem;
   }
   
+  .agent-intro {
+    font-size: 1rem;
+  }
+  
   .kbm-agent iframe {
-    height: 600px;
+    height: calc(100vh - 150px);
+    min-height: 500px;
   }
 }
 </style>
 
 <div class="agent-page">
   <div class="agent-container">
+    {agent.htmlContent && (
+      <div class="agent-intro" set:html={agent.htmlContent}></div>
+    )}
     <section class="kbm-agent">
       <iframe 
         src={agent.iframeUrl}
         width="100%"
-        height={agent.iframeHeight || "700"}
-        style="border: none; border-radius: 12px;"
         title={agent.title}
       ></iframe>
     </section>
