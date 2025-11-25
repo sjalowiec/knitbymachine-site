@@ -49,10 +49,10 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
 }
 
 try {
-  // Fetch from both wizards and agents folders
+  // Fetch from both wizards and ai-agents folders
   const [wizardEntries, agentEntries] = await Promise.all([
     fetchEntriesFromPath('astro-site/src/content/wizards', 'wizard'),
-    fetchEntriesFromPath('astro-site/src/content/agents', 'agent')
+    fetchEntriesFromPath('astro-site/src/content/ai-agents', 'agent')
   ]);
   
   entries = [...wizardEntries, ...agentEntries];
