@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Ask Sue Form Blueprint</title>
+</head>
+<body>
+  <!-- 
+    This is a hidden form blueprint for Netlify form detection.
+    Netlify parses this at build time to register the form.
+    The actual form in ana-catalog.astro must match these field names exactly.
+  -->
+  <form name="ask-sue" netlify data-netlify="true" hidden>
+    <input type="hidden" name="form-name" value="ask-sue" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <input type="text" name="machine" />
+    <textarea name="question"></textarea>
+    <input type="checkbox" name="permission" value="yes" />
+  </form>
+</body>
+</html>
