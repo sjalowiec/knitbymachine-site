@@ -224,10 +224,13 @@ const description = "Browse all your knitting machine questions and answers, org
           method="POST"
           action="/thank-you"
           data-netlify="true"
-          netlify
+          data-netlify-honeypot="bot-field"
           class="ask-form"
         >
           <input type="hidden" name="form-name" value="ask-sue" />
+          <p style="display:none;">
+            <label>Don't fill this out: <input name="bot-field" /></label>
+          </p>
 
           <label class="ask-form__field">
             <span>Name</span>

@@ -9,8 +9,9 @@
     Netlify parses this at build time to register the form.
     The actual form in ana-catalog.astro must match these field names exactly.
   -->
-  <form name="ask-sue" action="/thank-you" method="POST" netlify data-netlify="true" hidden>
+  <form name="ask-sue" action="/thank-you" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
     <input type="hidden" name="form-name" value="ask-sue" />
+    <input name="bot-field" />
     <input type="text" name="name" />
     <input type="email" name="email" />
     <input type="text" name="machine" />
