@@ -228,6 +228,7 @@ const description = "Browse all your knitting machine questions and answers, org
           class="ask-form"
         >
           <input type="hidden" name="form-name" value="ask-sue" />
+          <input type="hidden" name="submitted-at" id="submittedAt" value="" />
           <p style="display:none;">
             <label>Don't fill this out: <input name="bot-field" /></label>
           </p>
@@ -266,6 +267,16 @@ const description = "Browse all your knitting machine questions and answers, org
           document.getElementById('askSueForm')?.addEventListener('submit', function(e) {
             e.preventDefault();
             const form = e.target;
+            
+            // Add submission timestamp
+            const now = new Date();
+            const timestamp = now.toLocaleString('en-US', { 
+              dateStyle: 'medium', 
+              timeStyle: 'short',
+              timeZone: 'America/New_York'
+            });
+            document.getElementById('submittedAt').value = timestamp;
+            
             const formData = new FormData(form);
             
             // POST to the blueprint page where Netlify detects the form
