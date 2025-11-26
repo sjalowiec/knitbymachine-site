@@ -1,0 +1,305 @@
+Task:
+Update ana-catalog.html to add a modal containing a Netlify-powered “Ask Sue” form.
+The existing link:
+
+<a href="#" id="openAskModal" class="ask-link">
+  Didn’t find your question? Ask Sue →
+</a>
+
+
+should open the modal. The rest of the page (catalog, bubbles, GitHub fetch, etc.) should remain unchanged.
+
+File:
+ana-catalog.html
+
+1. Enhance the existing “Ask Sue” link wrapper
+
+Find this block in the .controls section:
+
+<p class="a">
+  <a href="#" id="openAskModal" class="ask-link"
+    >Didn’t find your question? Ask Sue →</a
+  >
+</p>
+
+
+Replace it with:
+
+<p class="ask-link-wrapper">
+  <a href="#" id="openAskModal" class="ask-link">
+    Didn’t find your question? Ask Sue →
+  </a>
+</p>
+
+2. Add modal CSS to the <style> section
+
+Inside the existing <style> block in <head>, at the bottom (before </style>), add:
+
+/* Ask Sue Modal */
+.ask-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 5000;
+  display: grid;
+  place-items: center;
+}
+
+.ask-modal[hidden] {
+  display: none;
+}
+
+.ask-modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.ask-modal__content {
+  position: relative;
+  background: #fff;
+  padding: 2rem;
+  max-width: 540px;
+  width: 90%;
+  border-radius: 12px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.ask-modal__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #52682d;
+}
+
+.ask-modal__title {
+  margin-top: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #52682d;
+}
+
+.ask-modal__intro {
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  color: #2c3a57;
+}
+
+.ask-modal__form {
+  margin-top: 1rem;
+}
+
+/* Basic form styling */
+.ask-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.ask-form__field span {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-bottom: 0.25rem;
+  color: #2c3a57;
+}
+
+.ask-form__field input,
+.ask-form__field textarea {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid #c7d8a4;
+  font-size: 0.95rem;
+  font-family: inherit;
+}
+
+.ask-form__checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  color: #2c3a57;
+}
+
+.ask-form__checkbox input {
+  margin-top: 0.2rem;
+}
+
+.ask-form__submit {
+  margin-top: 0.5rem;
+  padding: 0.65rem 1.5rem;
+  border-radius: 999px;
+  border: none;
+  background-color: #52682d;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+.ask-form__submit:hover {
+  background-color: #445626;
+}
+
+3. Add the modal HTML just before </body>
+
+Scroll to the bottom of ana-catalog.html.
+Right now you have:
+
+      // Start the app
+      init();
+    </script>
+  </body>
+</html>
+
+
+Immediately before </body>, insert this modal block:
+
+    <!-- Ask Sue Modal -->
+    <div id="askModal" class="ask-modal" hidden>
+      <div class="ask-modal__overlay"></div>
+
+      <div class="ask-modal__content">
+        <button
+          type="button"
+          class="ask-modal__close"
+          id="closeAskModal"
+          aria-label="Close"
+        >
+          &times;
+        </button>
+
+        <h2 class="ask-modal__title">Ask Sue a Question</h2>
+        <p class="ask-modal__intro">
+          I read every question and may add it to Ask ’n Answer so other machine knitters can benefit too.
+        </p>
+
+        <div class="ask-modal__form">
+          <!-- Netlify-powered Ask Sue form -->
+          <form
+            name="ask-sue"
+            method="POST"
+            data-netlify="true"
+            netlify
+            class="ask-form"
+          >
+            <input type="hidden" name="form-name" value="ask-sue" />
+
+            <label class="ask-form__field">
+              <span>Name</span>
+              <input type="text" name="name" required />
+            </label>
+
+            <label class="ask-form__field">
+              <span>Email</span>
+              <input type="email" name="email" required />
+            </label>
+
+            <label class="ask-form__field">
+              <span>Machine (optional)</span>
+              <input type="text" name="machine" />
+            </label>
+
+            <label class="ask-form__field">
+              <span>Your question</span>
+              <textarea name="question" rows="4" required></textarea>
+            </label>
+
+            <label class="ask-form__checkbox">
+              <input type="checkbox" name="permission" value="yes" />
+              <span>It’s okay to use my question anonymously on the site</span>
+            </label>
+
+            <button type="submit" class="ask-form__submit">
+              Send my question
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+
+So the tail of the file becomes:
+
+      // Start the app
+      init();
+    </script>
+
+    <!-- Ask Sue Modal -->
+    <div id="askModal" class="ask-modal" hidden>
+      ...
+      <!-- (modal block as above) -->
+      ...
+    </div>
+  </body>
+</html>
+
+4. Add the modal open/close JavaScript
+
+Right after your existing <script> block (where init() is called), but before </body>, add this small script:
+
+    <script>
+      (function () {
+        const openBtn = document.getElementById("openAskModal");
+        const modal = document.getElementById("askModal");
+        const closeBtn = document.getElementById("closeAskModal");
+        const overlay = modal?.querySelector(".ask-modal__overlay");
+
+        if (!openBtn || !modal) return;
+
+        function openModal(e) {
+          if (e) e.preventDefault();
+          modal.removeAttribute("hidden");
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+          modal.setAttribute("hidden", "true");
+          document.body.style.overflow = "";
+        }
+
+        openBtn.addEventListener("click", openModal);
+        closeBtn?.addEventListener("click", closeModal);
+        overlay?.addEventListener("click", closeModal);
+
+        // Optional: close on Escape key
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && !modal.hasAttribute("hidden")) {
+            closeModal();
+          }
+        });
+      })();
+    </script>
+
+
+Make sure this new <script> comes after your big ANA script, not inside it.
+
+5. Do NOT change anything else
+
+Leave:
+
+All existing CSS
+
+All existing ANA JS logic
+
+All GitHub fetch logic
+
+All bubble HTML
+
+as-is.
+
+Only:
+
+change the wrapper <p> for the link
+
+add modal CSS
+
+add modal HTML
+
+add the new script block

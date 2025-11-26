@@ -223,6 +223,7 @@ const description = "Browse all your knitting machine questions and answers, org
           name="ask-sue"
           method="POST"
           data-netlify="true"
+          netlify
           class="ask-form"
         >
           <input type="hidden" name="form-name" value="ask-sue" />
@@ -262,28 +263,36 @@ const description = "Browse all your knitting machine questions and answers, org
   </div>
 
   <script>
-    if (typeof window !== "undefined") {
+    (function () {
       const openBtn = document.getElementById("openAskModal");
       const modal = document.getElementById("askModal");
       const closeBtn = document.getElementById("closeAskModal");
       const overlay = modal?.querySelector(".ask-modal__overlay");
 
-      openBtn?.addEventListener("click", (e) => {
-        e.preventDefault();
-        modal?.removeAttribute("hidden");
+      if (!openBtn || !modal) return;
+
+      function openModal(e) {
+        if (e) e.preventDefault();
+        modal.removeAttribute("hidden");
         document.body.style.overflow = "hidden";
-      });
+      }
 
-      closeBtn?.addEventListener("click", () => {
-        modal?.setAttribute("hidden", "true");
+      function closeModal() {
+        modal.setAttribute("hidden", "true");
         document.body.style.overflow = "";
-      });
+      }
 
-      overlay?.addEventListener("click", () => {
-        modal?.setAttribute("hidden", "true");
-        document.body.style.overflow = "";
+      openBtn.addEventListener("click", openModal);
+      closeBtn?.addEventListener("click", closeModal);
+      overlay?.addEventListener("click", closeModal);
+
+      // Close on Escape key
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && !modal.hasAttribute("hidden")) {
+          closeModal();
+        }
       });
-    }
+    })();
   </script>
 </BaseLayout>
 
@@ -770,6 +779,60 @@ const description = "Browse all your knitting machine questions and answers, org
 
   .ask-modal__form {
     margin-top: 1rem;
+  }
+
+  /* Basic form styling */
+  .ask-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .ask-form__field span {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+    color: #2c3a57;
+  }
+
+  .ask-form__field input,
+  .ask-form__field textarea {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    border: 1px solid #c7d8a4;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+
+  .ask-form__checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: #2c3a57;
+  }
+
+  .ask-form__checkbox input {
+    margin-top: 0.2rem;
+  }
+
+  .ask-form__submit {
+    margin-top: 0.5rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 999px;
+    border: none;
+    background-color: #52682d;
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    align-self: flex-start;
+  }
+
+  .ask-form__submit:hover {
+    background-color: #445626;
   }
 </style>
 
