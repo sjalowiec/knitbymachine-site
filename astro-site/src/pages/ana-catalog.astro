@@ -131,6 +131,12 @@ const description = "Browse all your knitting machine questions and answers, org
       <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="intro-icon">
       <div class="header-right">
         <p class="intro-tagline">Troubleshoot, learn, and master your knitting machine — one question at a time.</p>
+        <!-- Ask Sue Trigger Link -->
+        <p class="ask-link-wrapper" style="margin-top: 0.5rem;">
+          <a href="#" id="openAskModal" class="ask-link" style="color: var(--kbm-green); font-weight: 600;">
+            Didn't find your question? Ask Sue →
+          </a>
+        </p>
         <div class="controls-wrapper">
           <div class="search-wrapper">
             <input 
@@ -195,6 +201,53 @@ const description = "Browse all your knitting machine questions and answers, org
       <path d="M7.41 15.41L12 10.83l4.59 4.58L18 14l-6-6-6 6z"/>
     </svg>
   </button>
+
+  <!-- Ask Sue Modal -->
+  <div id="askModal" class="ask-modal" hidden>
+    <div class="ask-modal__overlay"></div>
+
+    <div class="ask-modal__content">
+      <button type="button" class="ask-modal__close" id="closeAskModal" aria-label="Close">
+        &times;
+      </button>
+
+      <h2 class="ask-modal__title">Ask Sue a Question</h2>
+      <p class="ask-modal__intro">
+        I read every question and may add it to Ask 'n Answer so other machine knitters can benefit too.
+      </p>
+
+      <div class="ask-modal__form">
+        <!-- ActiveCampaign Inline Form Embed -->
+        <div class="_form_5"></div>
+        <script src="https://knitbymachine.activehosted.com/f/embed.php?id=5" charset="utf-8"></script>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    if (typeof window !== "undefined") {
+      const openBtn = document.getElementById("openAskModal");
+      const modal = document.getElementById("askModal");
+      const closeBtn = document.getElementById("closeAskModal");
+      const overlay = modal?.querySelector(".ask-modal__overlay");
+
+      openBtn?.addEventListener("click", (e) => {
+        e.preventDefault();
+        modal?.removeAttribute("hidden");
+        document.body.style.overflow = "hidden";
+      });
+
+      closeBtn?.addEventListener("click", () => {
+        modal?.setAttribute("hidden", "true");
+        document.body.style.overflow = "";
+      });
+
+      overlay?.addEventListener("click", () => {
+        modal?.setAttribute("hidden", "true");
+        document.body.style.overflow = "";
+      });
+    }
+  </script>
 </BaseLayout>
 
 <style>
@@ -619,6 +672,67 @@ const description = "Browse all your knitting machine questions and answers, org
     .ana-topic-filter__select {
       width: 100%;
     }
+  }
+
+  /* ================================================
+     ASK SUE MODAL
+     ================================================ */
+
+  .ask-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    display: grid;
+    place-items: center;
+  }
+
+  .ask-modal[hidden] {
+    display: none;
+  }
+
+  .ask-modal__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+  }
+
+  .ask-modal__content {
+    position: relative;
+    background: #fff;
+    padding: 2rem;
+    max-width: 540px;
+    width: 90%;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+  }
+
+  .ask-modal__close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #52682d;
+  }
+
+  .ask-modal__title {
+    margin-top: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682d);
+  }
+
+  .ask-modal__intro {
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+    color: #2c3a57;
+  }
+
+  .ask-modal__form {
+    margin-top: 1rem;
   }
 </style>
 
