@@ -268,7 +268,8 @@ const description = "Browse all your knitting machine questions and answers, org
             const form = e.target;
             const formData = new FormData(form);
             
-            fetch('/', {
+            // POST to the blueprint page where Netlify detects the form
+            fetch('/ask-sue-form.html', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
               body: new URLSearchParams(formData).toString()

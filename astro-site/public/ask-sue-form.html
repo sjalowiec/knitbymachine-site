@@ -2,14 +2,19 @@
 <html>
 <head>
   <title>Ask Sue Form Blueprint</title>
+  <style>
+    /* Hide this page visually but keep form detectable by Netlify */
+    body { display: none; }
+  </style>
 </head>
 <body>
   <!-- 
-    This is a hidden form blueprint for Netlify form detection.
+    This is a form blueprint for Netlify form detection.
     Netlify parses this at build time to register the form.
     The actual form in ana-catalog.astro must match these field names exactly.
+    NOTE: The form itself must NOT have the hidden attribute - use CSS to hide instead.
   -->
-  <form name="ask-sue" action="/thank-you" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" hidden>
+  <form name="ask-sue" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
     <input type="hidden" name="form-name" value="ask-sue" />
     <input name="bot-field" />
     <input type="text" name="name" />
@@ -17,6 +22,7 @@
     <input type="text" name="machine" />
     <textarea name="question"></textarea>
     <input type="checkbox" name="permission" value="yes" />
+    <button type="submit">Submit</button>
   </form>
 </body>
 </html>
