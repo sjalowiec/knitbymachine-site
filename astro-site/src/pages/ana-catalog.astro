@@ -153,19 +153,27 @@ const description = "Browse all your knitting machine questions and answers, org
       </div>
     </div>
 
-    <!-- Category Topics Well -->
-    <section class="ana-topics-well">
-      <p class="ana-topics-label">Browse by topic:</p>
-      <div class="ana-category-grid" id="categoryGrid">
-        {anaCategories.map((cat) => (
-          <button
-            class="ana-category-bubble"
-            data-category={cat.title}
-            data-category-slug={cat.slug}
-          >
-            {cat.title}
-          </button>
-        ))}
+    <!-- ANA Topic Filter – Dropdown Version -->
+    <section class="ana-topic-filter">
+      <div class="ana-topic-filter__inner">
+        <label class="ana-topic-filter__label" for="topicFilter">
+          Browse by topic
+        </label>
+
+        <select id="topicFilter" class="ana-topic-filter__select">
+          <option value="all">All topics</option>
+          <option value="getting-started">Getting started</option>
+          <option value="machines-and-setup">Machines and Setup</option>
+          <option value="yarn-tension-gauge">Yarn, Tension and Gauge</option>
+          <option value="stitch-patterns-techniques">Stitch patterns and Techniques</option>
+          <option value="shaping-fitting-construction">Shaping, Fitting and Construction</option>
+          <option value="troubleshooting">Troubleshooting</option>
+          <option value="patterns-projects">Patterns and Projects</option>
+          <option value="tools-accessories">Tools and Accessories</option>
+          <option value="is-this-normal">Is this Normal?</option>
+          <option value="can-my-machine-do-that">Can my machine do that?</option>
+          <option value="finishing-care">Finishing and Care</option>
+        </select>
       </div>
     </section>
 
@@ -304,54 +312,43 @@ const description = "Browse all your knitting machine questions and answers, org
   }
 
   /* ================================================
-     ANA TOPICS WELL
+     ANA TOPIC DROPDOWN FILTER
      ================================================ */
 
-  .ana-topics-well {
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 18px rgba(82, 104, 45, 0.10);
-    padding: 1.5rem 2rem 2rem;
+  .ana-topic-filter {
     margin: 1.5rem 0 2rem;
   }
 
-  .ana-topics-label {
-    margin: 0 0 0.75rem;
+  .ana-topic-filter__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .ana-topic-filter__label {
+    font-weight: 600;
     font-size: 0.95rem;
-    font-weight: 500;
-    color: #52682d;
+    color: var(--kbm-green, #52682d);
   }
 
-  /* ================================================
-     ANA CATEGORY BUBBLE GRID
-     ================================================ */
-
-  .ana-category-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 1.5rem;
-    margin: 0;
-    padding-bottom: 0.25rem;
+  .ana-topic-filter__select {
+    min-width: 230px;
+    padding: 0.55rem 0.85rem;
+    border-radius: 999px;
+    border: 1px solid var(--kbm-green-2, #738c52);
+    background: #fff;
+    font-family: var(--font, system-ui, sans-serif);
+    font-size: 0.95rem;
+    color: #2c3a57;
+    outline: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
+    cursor: pointer;
   }
 
-  /* Reset icon styling for category filter */
-  .reset-icon {
-    flex-shrink: 0;
-    width: 22px;
-    height: 22px;
-    color: #52682d;
-    animation: fadeIn 0.3s ease;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: scale(0.8);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
+  .ana-topic-filter__select:focus {
+    border-color: var(--kbm-green, #52682d);
+    box-shadow: 0 0 0 2px rgba(82, 104, 45, 0.2);
   }
 
   /* Catalogue Content */
@@ -563,11 +560,6 @@ const description = "Browse all your knitting machine questions and answers, org
       flex: 1;
     }
 
-    .ana-category-grid {
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 1rem;
-    }
-
     :global(.ana-card-grid) {
       grid-template-columns: 1fr;
     }
@@ -619,18 +611,13 @@ const description = "Browse all your knitting machine questions and answers, org
       min-width: unset;
     }
 
-    .ana-topics-well {
-      padding: 1.25rem 1rem;
+    .ana-topic-filter__inner {
+      flex-direction: column;
+      align-items: flex-start;
     }
 
-    .ana-category-grid {
-      grid-template-columns: 1fr;
-      gap: 0.75rem;
-    }
-
-    .ana-category-bubble {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+    .ana-topic-filter__select {
+      width: 100%;
     }
   }
 </style>
@@ -638,8 +625,23 @@ const description = "Browse all your knitting machine questions and answers, org
 <script>
   let allEntries = [];
   let currentSort = 'newest';
-  let selectedCategory = null;
-  let originalBubbleOrder = [];
+  let selectedTopic = 'all';
+
+  // Map dropdown values to category names
+  const topicToCategory = {
+    'all': null,
+    'getting-started': 'Getting started',
+    'machines-and-setup': 'Machines and Setup',
+    'yarn-tension-gauge': 'Yarn, Tension and Gauge',
+    'stitch-patterns-techniques': 'Stitch patterns and Techniques',
+    'shaping-fitting-construction': 'Shaping Fitting and Construction',
+    'troubleshooting': 'Troubleshooting',
+    'patterns-projects': 'Patterns and Projects',
+    'tools-accessories': 'Tools and Accessories',
+    'is-this-normal': 'Is this Normal?',
+    'can-my-machine-do-that': 'Can my machine Do that?',
+    'finishing-care': 'Finishing and Care',
+  };
 
   function sortEntries(entries, sortBy) {
     const sorted = [...entries];
@@ -667,24 +669,12 @@ const description = "Browse all your knitting machine questions and answers, org
     return sorted;
   }
 
-  function getExcerpt(body, maxLength = 150) {
-    if (!body) return '';
-    
-    // Strip HTML tags and get plain text
-    const plainText = body.replace(/<[^>]*>/g, '');
-    
-    if (plainText.length <= maxLength) {
-      return plainText;
-    }
-    
-    return plainText.substring(0, maxLength).trim() + '...';
-  }
-
   function renderCards(entries) {
     const container = document.getElementById('catalogueContent');
     let filteredEntries = sortEntries(entries, currentSort);
 
-    // Filter by selected category if one is selected
+    // Filter by selected topic if one is selected
+    const selectedCategory = topicToCategory[selectedTopic];
     if (selectedCategory) {
       filteredEntries = filteredEntries.filter(entry => entry.category === selectedCategory);
     }
@@ -735,86 +725,6 @@ const description = "Browse all your knitting machine questions and answers, org
     container.innerHTML = html;
   }
 
-  function handleCategoryClick(categoryTitle) {
-    // Toggle category selection
-    if (selectedCategory === categoryTitle) {
-      selectedCategory = null;
-    } else {
-      selectedCategory = categoryTitle;
-    }
-
-    const categoryGrid = document.getElementById('categoryGrid');
-    const categoryBubbles = document.querySelectorAll('.ana-category-bubble');
-    let activeBubble = null;
-
-    // Update active state and visibility on category bubbles
-    categoryBubbles.forEach(bubble => {
-      const bubbleCategory = bubble.dataset.category;
-      
-      // Remove any existing icon first
-      const existingIcon = bubble.querySelector('.reset-icon');
-      if (existingIcon) {
-        existingIcon.remove();
-      }
-      
-      if (bubbleCategory === selectedCategory) {
-        bubble.classList.add('is-active');
-        bubble.classList.remove('is-hidden');
-        activeBubble = bubble;
-        
-        // Add grid icon to show it's clickable to reset
-        const icon = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        icon.setAttribute('class', 'reset-icon');
-        icon.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
-        icon.setAttribute('width', '22');
-        icon.setAttribute('height', '22');
-        icon.setAttribute('viewBox', '0 0 24 24');
-        icon.setAttribute('fill', 'none');
-        icon.setAttribute('stroke', 'currentColor');
-        icon.setAttribute('stroke-width', '2');
-        icon.setAttribute('stroke-linecap', 'round');
-        icon.setAttribute('stroke-linejoin', 'round');
-        icon.setAttribute('aria-hidden', 'true');
-        icon.innerHTML = '<rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/>';
-        bubble.insertBefore(icon, bubble.firstChild);
-      } else {
-        bubble.classList.remove('is-active');
-        // Hide non-selected bubbles only when a category is selected
-        if (selectedCategory) {
-          bubble.classList.add('is-hidden');
-        } else {
-          bubble.classList.remove('is-hidden');
-        }
-      }
-    });
-
-    // Move active bubble to first position in DOM or restore original order
-    if (categoryGrid) {
-      if (activeBubble) {
-        // Move active bubble to first position
-        categoryGrid.insertBefore(activeBubble, categoryGrid.firstChild);
-      } else if (selectedCategory === null && originalBubbleOrder.length > 0) {
-        // Restore original order when filter is cleared
-        originalBubbleOrder.forEach(bubble => {
-          categoryGrid.appendChild(bubble);
-        });
-      }
-    }
-
-    // Update the topics label text based on filter state
-    const topicsLabel = document.querySelector('.ana-topics-label');
-    if (topicsLabel) {
-      if (activeBubble) {
-        topicsLabel.textContent = 'View all topics →';
-      } else {
-        topicsLabel.textContent = 'Browse by topic:';
-      }
-    }
-
-    // Re-render cards with new filter
-    renderCards(allEntries);
-  }
-
   // Scroll to Top Button
   function initializeScrollToTop() {
     const scrollBtn = document.getElementById('scrollToTop');
@@ -844,23 +754,14 @@ const description = "Browse all your knitting machine questions and answers, org
       renderCards(allEntries);
     }
 
-    // Store original bubble order for restoration
-    const categoryGrid = document.getElementById('categoryGrid');
-    if (categoryGrid) {
-      originalBubbleOrder = Array.from(categoryGrid.children);
-    }
-
-    // Set up category bubble click handlers
-    const categoryBubbles = document.querySelectorAll('.ana-category-bubble');
-    categoryBubbles.forEach(bubble => {
-      bubble.addEventListener('click', () => {
-        const categoryTitle = bubble.dataset.category;
-        handleCategoryClick(categoryTitle);
-      });
-    });
-
     initializeScrollToTop();
   }
+
+  // Topic filter dropdown handler
+  document.getElementById('topicFilter')?.addEventListener('change', (e) => {
+    selectedTopic = e.target.value;
+    renderCards(allEntries);
+  });
 
   // Search input handler
   document.getElementById('searchInput')?.addEventListener('input', () => {
