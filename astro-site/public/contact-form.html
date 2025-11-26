@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact Form Blueprint</title>
+  <style>
+    /* Hide this page visually but keep form detectable by Netlify */
+    body { display: none; }
+  </style>
+</head>
+<body>
+  <!-- 
+    This is a form blueprint for Netlify form detection.
+    Netlify parses this at build time to register the form.
+    The actual form in contact/index.astro must match these field names exactly.
+    NOTE: The form itself must NOT have the hidden attribute - use CSS to hide instead.
+  -->
+  <form name="contact-sue" method="POST" data-netlify="true" data-netlify-honeypot="bot-field">
+    <input type="hidden" name="form-name" value="contact-sue" />
+    <input type="hidden" name="submission-type" value="contact" />
+    <input type="hidden" name="submitted-at" />
+    <input name="bot-field" />
+    <input type="text" name="name" />
+    <input type="email" name="email" />
+    <textarea name="message"></textarea>
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>

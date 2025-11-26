@@ -1,0 +1,142 @@
+You are an expert Astro + Netlify developer working on my Knit by Machine site.
+
+Goal:
+Update my **Contact Us** page so it no longer uses an ActiveCampaign form, and instead uses the SAME Netlify form + inline confirmation behavior as my ANA questions page.
+
+Please do the following carefully and ONLY change what’s needed:
+
+1. Locate the Contact page file
+- Find the Astro page that renders https://knitbymachine.com/contact
+  - It’s likely something like: `src/pages/contact.astro`
+- Confirm you’ve found the right file by looking for this text in the markup (or very close):
+  - "We'd love to hear from you! Whether you have a question about Knit by Machine, need help with your membership, or just want to say hello, you can reach us using the form below."
+  - "We try to respond within 1–2 business days."
+  - "Prefer email? Reach us directly at sue@knitbymachine.com"
+  - "Use this form to contact Knit by Machine support. A real person will read it and reply."
+
+2. Remove the ActiveCampaign form embed
+- In that contact page file, find and REMOVE the entire ActiveCampaign form block.
+  - This will likely include:
+    - Any `<form>` that has AC-specific classes like `_form_` or data attributes for ActiveCampaign
+    - Any `<script>` tags that load ActiveCampaign embed JS
+    - Any surrounding wrapper divs that are clearly only for the AC form
+- Be careful NOT to remove the surrounding layout, header/footer, or the text content of the page.
+
+3. Reuse ANA form behavior
+- Find the ANA questions page in the project.
+  - Look for a file with “ANA” or “Ask Sue” in its name or path, e.g. `src/pages/ana/ask-sue.astro` (name may differ).
+  - Inside it, find the Netlify-backed form used to submit ANA questions and any associated JavaScript that:
+    - Sets a hidden timestamp
+    - Submits to Netlify
+    - Shows an inline “success/thank you” message without sending the user to a generic Netlify success page
+- You will REUSE this behavior for the contact form so the UX is consistent:
+  - Same approach to Netlify form attributes
+  - Same approach to honeypot field
+  - Same inline confirmation pattern (whatever is currently used on the ANA form)
+
+4. Add a new Netlify-backed contact form to the Contact page
+- On the Contact page, directly below the intro text, insert a new Netlify form that follows this structure:
+
+  - Keep the existing text (or reflow it into semantic elements) like this:
+
+    <h1>Contact Us</h1>
+
+    <p>We'd love to hear from you! Whether you have a question about Knit by Machine, need help with your membership, or just want to say hello, you can reach us using the form below.</p>
+
+    <p>We try to respond within 1–2 business days.</p>
+
+    <p><strong>Prefer email?</strong> Reach us directly at <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a></p>
+
+    <h2>Send a message</h2>
+
+    <p>Use this form to contact Knit by Machine support. A real person will read it and reply.</p>
+
+  - Then add the form, modeled on the ANA Netlify form, but with these fields/text:
+
+    ```html
+    <form
+      id="contact-form"
+      name="contact-sue"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      class="contact-form"
+    >
+      <input type="hidden" name="form-name" value="contact-sue" />
+      <input type="hidden" name="submission-type" value="contact" />
+      <input type="hidden" name="submitted-at" id="contact-submitted-at" />
+
+      <!-- Honeypot for spam -->
+      <p class="hidden">
+        <label>
+          Don’t fill this out if you're human:
+          <input name="bot-field" />
+        </label>
+      </p>
+
+      <label for="contact-name">Name</label>
+      <input
+        id="contact-name"
+        type="text"
+        name="name"
+        required
+      />
+
+      <label for="contact-email">Email</label>
+      <input
+        id="contact-email"
+        type="email"
+        name="email"
+        required
+      />
+
+      <label for="contact-message">Your message</label>
+      <textarea
+        id="contact-message"
+        name="message"
+        rows="6"
+        required
+      ></textarea>
+
+      <button type="submit">
+        Send message
+      </button>
+    </form>
+
+    <div id="contact-success" class="contact-success" hidden>
+      <h2>Thank you — your message has been sent.</h2>
+      <p>I’ll read it soon and reply if needed. While you’re here, you can also explore ANA, Smart Guides, or Tools for quick help.</p>
+    </div>
+    ```
+
+- IMPORTANT:
+  - Use the same classes and styling patterns as the ANA form so it visually fits the rest of the site (e.g., similar padding, borders, button styles).
+  - The form `name` and hidden `form-name` must be "contact-sue" so Netlify sees it as a distinct form.
+
+5. Add matching JS behavior (like the ANA page)
+- On the Contact page component, add JavaScript that behaves just like the ANA page’s form logic.
+  - Reuse the same pattern you find on the ANA page (for example: intercepting submit, posting to Netlify, then toggling visibility of the form vs. success message).
+  - Specifically, make sure:
+    - The hidden field `contact-submitted-at` is set to `new Date().toISOString()` before submit.
+    - When the form is successfully submitted, the `<form id="contact-form">` is hidden and `<div id="contact-success">` is shown.
+  - If the ANA form already has a reusable helper function or pattern, use that same approach instead of inventing a new one.
+
+6. Keep everything else unchanged
+- Do NOT modify the site header, footer, global CSS, or any other sections of the Contact page.
+- Do NOT change the text content other than:
+  - Adjusting headings/labels as needed to fit the new form.
+- The goal is: same wording as now, but powered by a Netlify-backed form with ANA-style behavior instead of ActiveCampaign.
+
+7. Final check
+- Ensure the Contact page builds without errors.
+- Ensure the form markup includes:
+  - `data-netlify="true"`
+  - `netlify-honeypot="bot-field"`
+  - the hidden `form-name="contact-sue"`
+- Make sure the form and success message have IDs and classes that match the JS you implemented.
+
+When you are done, the /contact page should:
+- Show the existing “We’d love to hear from you…” text.
+- Show a simple, clean form with Name, Email, and Message.
+- Submit to Netlify like the ANA questions form.
+- Show an inline thank-you/success message similar to the ANA page, instead of using the old ActiveCampaign form.
