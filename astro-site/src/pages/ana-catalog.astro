@@ -220,9 +220,9 @@ const description = "Browse all your knitting machine questions and answers, org
 
         <!-- Netlify-powered Ask Sue form -->
         <form
+          id="askSueForm"
           name="ask-sue"
           method="POST"
-          action="/thank-you"
           data-netlify="true"
           data-netlify-honeypot="bot-field"
           class="ask-form"
@@ -261,6 +261,31 @@ const description = "Browse all your knitting machine questions and answers, org
             Send my question
           </button>
         </form>
+
+        <script>
+          document.getElementById('askSueForm')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            
+            fetch('/', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams(formData).toString()
+            })
+            .then(response => {
+              if (response.ok) {
+                window.location.href = '/thank-you';
+              } else {
+                alert('Something went wrong. Please try again.');
+              }
+            })
+            .catch(error => {
+              console.error('Form submission error:', error);
+              alert('Something went wrong. Please try again.');
+            });
+          });
+        </script>
 
       </div>
     </div>
