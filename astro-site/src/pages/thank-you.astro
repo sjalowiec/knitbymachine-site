@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Thank You - Ask Sue";
+const description = "Your question has been submitted successfully.";
+---
+
+<BaseLayout {title} {description}>
+  <div class="thank-you-container">
+    <div class="thank-you-card">
+      <div class="thank-you-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+          <polyline points="22 4 12 14.01 9 11.01"/>
+        </svg>
+      </div>
+      <h1 class="thank-you-title">Thank you!</h1>
+      <p class="thank-you-message">
+        Your question has been submitted successfully. I read every question and may add it to Ask 'n Answer so other machine knitters can benefit too.
+      </p>
+      <a href="/ana-catalog" class="thank-you-link">
+        ← Back to Ask 'n Answer
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .thank-you-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 4rem 1.5rem;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .thank-you-card {
+    background: #fff;
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+  }
+
+  .thank-you-icon {
+    color: #52682d;
+    margin-bottom: 1.5rem;
+  }
+
+  .thank-you-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #52682d;
+    margin: 0 0 1rem;
+  }
+
+  .thank-you-message {
+    font-size: 1.1rem;
+    color: #2c3a57;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+
+  .thank-you-link {
+    display: inline-block;
+    color: #52682d;
+    font-weight: 600;
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #52682d;
+    border-radius: 999px;
+    transition: background-color 0.2s, color 0.2s;
+  }
+
+  .thank-you-link:hover {
+    background-color: #52682d;
+    color: #fff;
+  }
+</style>
