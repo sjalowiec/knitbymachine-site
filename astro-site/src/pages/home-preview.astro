@@ -357,8 +357,16 @@ import AnnouncementBar from "../components/AnnouncementBar.astro";
     background: #ffffff;
     border-radius: var(--radius-lg);
     padding: 1.5rem 1.25rem;
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--ring);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 2px solid #c7d8a4;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(82, 104, 45, 0.15);
+    border-color: var(--kbm-green);
   }
 
   .card-link {
