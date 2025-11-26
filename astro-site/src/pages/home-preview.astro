@@ -274,15 +274,15 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     max-width: 40rem;
   }
 
-  .hero-photo img {
-    width: 100%;
-    max-height: 420px;
-    border-radius: var(--radius-lg);
-    box-shadow: var(--shadow-soft);
-    object-fit: cover;
-    object-position: center;
-    opacity: 0.96;
-  }
+ .hero-photo img {
+  width: 100%;
+  max-height: 420px;
+  object-fit: cover;
+  object-position: center;
+  border-radius: var(--radius-lg); /* already in your style */
+  border: 2px solid rgba(0, 0, 0, 0.08); /* matches card style */
+}
+
 
   @media (min-width: 900px) {
     .hero-grid {
