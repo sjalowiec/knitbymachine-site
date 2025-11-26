@@ -217,9 +217,46 @@ const description = "Browse all your knitting machine questions and answers, org
       </p>
 
       <div class="ask-modal__form">
-        <!-- ActiveCampaign Inline Form Embed -->
-        <div class="_form_5"></div>
-        <script src="https://knitbymachine.activehosted.com/f/embed.php?id=5" charset="utf-8"></script>
+
+        <!-- Netlify-powered Ask Sue form -->
+        <form
+          name="ask-sue"
+          method="POST"
+          data-netlify="true"
+          class="ask-form"
+        >
+          <input type="hidden" name="form-name" value="ask-sue" />
+
+          <label class="ask-form__field">
+            <span>Name</span>
+            <input type="text" name="name" required />
+          </label>
+
+          <label class="ask-form__field">
+            <span>Email</span>
+            <input type="email" name="email" required />
+          </label>
+
+          <label class="ask-form__field">
+            <span>Machine (optional)</span>
+            <input type="text" name="machine" />
+          </label>
+
+          <label class="ask-form__field">
+            <span>Your question</span>
+            <textarea name="question" rows="4" required></textarea>
+          </label>
+
+          <label class="ask-form__checkbox">
+            <input type="checkbox" name="permission" value="yes" />
+            <span>It's okay to use my question anonymously on the site</span>
+          </label>
+
+          <button type="submit" class="ask-form__submit">
+            Send my question
+          </button>
+        </form>
+
       </div>
     </div>
   </div>
