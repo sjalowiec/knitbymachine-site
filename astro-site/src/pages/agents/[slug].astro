@@ -31,7 +31,10 @@ async function getAgentEntry(slug: string) {
     }
 
     const data = await response.json();
-    const content = atob(data.content);
+    // Properly decode UTF-8 from base64 to handle special characters like bullets (●)
+    const binaryString = atob(data.content);
+    const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+    const content = new TextDecoder('utf-8').decode(bytes);
     const entry = JSON.parse(content);
     
     // Skip entries that are drafts or pending publish

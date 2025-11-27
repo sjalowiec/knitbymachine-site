@@ -33,7 +33,10 @@ async function getANAEntry(slug: string) {
     }
 
     const data = await response.json();
-    const content = atob(data.content);
+    // Properly decode UTF-8 from base64 to handle special characters
+    const binaryString = atob(data.content);
+    const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+    const content = new TextDecoder('utf-8').decode(bytes);
     const jsonData = JSON.parse(content);
 
     // Filter out drafts and pending publish entries
@@ -67,7 +70,10 @@ async function fetchRelatedContent(slugs: string[], contentPath: string) {
       );
       if (response.ok) {
         const data = await response.json();
-        const content = atob(data.content);
+        // Properly decode UTF-8 from base64 to handle special characters
+        const binaryString = atob(data.content);
+        const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+        const content = new TextDecoder('utf-8').decode(bytes);
         const jsonData = JSON.parse(content);
         if (!jsonData.isDraft && !jsonData.pendingPublish) {
           items.push({ ...jsonData, slug: itemSlug });
