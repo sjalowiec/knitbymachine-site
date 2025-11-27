@@ -1,0 +1,274 @@
+You are working in my Astro project for knitbymachine.com.
+
+Task: Update ONLY the content and styles for the page at /home-preview to reflect the new structure:
+Knit · Learn · Connect.
+
+1. Open the file:
+- src/pages/home-preview.astro
+(If this file is in a slightly different path, find the existing "Home Preview" page that currently renders at /home-preview and edit that file.)
+
+2. Keep:
+- Any existing frontmatter at the top (`---` block)
+- Any existing layout or shared components (Header, Footer, Layout, etc.)
+Do NOT change imports or layout wrappers. Only replace the inner content of the page.
+
+3. Inside the page, find the main content area (likely inside <main>...</main> or similar).
+Replace EVERYTHING inside that main container with the following markup:
+
+<main class="home-preview">
+  <section class="hero">
+    <p class="hero-eyebrow">Welcome to Knit by Machine</p>
+    <h1>Make things. Understand your machine. Get real help.</h1>
+    <p class="hero-text">
+      Knit by Machine is a modern home for machine knitters. You can plan projects, build skills,
+      and get answers — all in one place.
+    </p>
+    <div class="hero-actions">
+      <a href="/knit" class="btn primary">Start Knitting</a>
+      <a href="/learn" class="btn secondary">Learn the Basics</a>
+      <a href="/connect" class="btn ghost">Get Help</a>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="pillar">
+      <h2>🧶 Knit</h2>
+      <p class="pillar-tagline">“I want to MAKE something.”</p>
+      <p>
+        Start here when you’re ready to do something on your machine.
+        Plan a project, use a wizard, or try a small practice piece.
+      </p>
+      <ul>
+        <li>Ready | Set | Knit planners</li>
+        <li>DIY Blanket Wizard & tools</li>
+        <li>Practice patterns & skill builders</li>
+        <li>Printable checklists</li>
+      </ul>
+      <a href="/knit" class="pillar-link">Explore Knit →</a>
+    </div>
+
+    <div class="pillar">
+      <h2>📘 Learn</h2>
+      <p class="pillar-tagline">“I want to UNDERSTAND something.”</p>
+      <p>
+        When something feels confusing, this is your calm corner.
+        Short guides and clear explanations help you make sense of your machine.
+      </p>
+      <ul>
+        <li>Smart Guides for gauge, yarn, and fit</li>
+        <li>Simple technique walk-throughs</li>
+        <li>Troubleshooting help</li>
+        <li>Friendly glossary of terms</li>
+      </ul>
+      <a href="/learn" class="pillar-link">Explore Learn →</a>
+    </div>
+
+    <div class="pillar">
+      <h2>🤝 Connect</h2>
+      <p class="pillar-tagline">“I want HELP or SUPPORT.”</p>
+      <p>
+        You don’t have to figure this out alone. Ask questions, get answers,
+        and hear directly from Sue.
+      </p>
+      <ul>
+        <li>Ask ’n Answer (ANA) library</li>
+        <li>Ask your own question</li>
+        <li>Contact Sue for support</li>
+        <li>From Sue’s Desk & future workshops</li>
+      </ul>
+      <a href="/connect" class="pillar-link">Explore Connect →</a>
+    </div>
+  </section>
+
+  <section class="about-kbm">
+    <h2>What Knit by Machine is all about</h2>
+    <p>
+      Machine knitting doesn’t have to feel overwhelming. Knit by Machine gives you
+      quick answers, clear guidance, and modern tools so you can build confidence
+      one small win at a time.
+    </p>
+    <p class="about-note">
+      You can do this. This site is here to help you take the next step — not all the steps at once.
+    </p>
+  </section>
+</main>
+
+4. Add or update a <style> block scoped to this page.
+If there is already a <style> block in home-preview.astro, replace its contents with the CSS below.
+If there isn’t one, add this just before the closing </main> wrapper or at the bottom of the file:
+
+<style>
+  .home-preview {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 3rem;
+    font-family: var(--font, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    color: #738c52;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    margin-bottom: 0.75rem;
+    color: #2c3a57;
+  }
+
+  .hero-text {
+    max-width: 42rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #4d5a48;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+
+  .btn.primary {
+    background-color: var(--kbm-green, #52682d);
+    color: #fff;
+  }
+
+  .btn.primary:hover {
+    background-color: var(--kbm-green-hover, #445626);
+  }
+
+  .btn.secondary {
+    background-color: #ffffff;
+    border-color: #c5cfb5;
+    color: #2c3a57;
+  }
+
+  .btn.secondary:hover {
+    background-color: #f3f5ef;
+  }
+
+  .btn.ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: #52682d;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .pillar {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem 1.4rem;
+    border: 1px solid #e0e5d8;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  }
+
+  .pillar h2 {
+    margin-bottom: 0.4rem;
+    font-size: 1.3rem;
+    color: #2c3a57;
+  }
+
+  .pillar-tagline {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #738c52;
+  }
+
+  .pillar p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4f5a4b;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar ul {
+    padding-left: 1.2rem;
+    margin: 0 0 0.85rem;
+    font-size: 0.92rem;
+    color: #4f5a4b;
+  }
+
+  .pillar li {
+    margin-bottom: 0.25rem;
+  }
+
+  .pillar-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #52682d;
+    text-decoration: none;
+  }
+
+  .pillar-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-kbm {
+    text-align: center;
+    border-top: 1px solid #e0e5d8;
+    padding-top: 1.75rem;
+  }
+
+  .about-kbm h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #2c3a57;
+  }
+
+  .about-kbm p {
+    max-width: 40rem;
+    margin: 0 auto 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4f5a4b;
+  }
+
+  .about-note {
+    font-style: italic;
+    color: #738c52;
+  }
+
+  @media (min-width: 768px) {
+    .home-preview {
+      padding-top: 3rem;
+    }
+
+    .pillars {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+</style>
+
+5. Make sure the page still builds and the /home-preview route renders without errors.
+Answer with the final contents of src/pages/home-preview.astro after these changes.
