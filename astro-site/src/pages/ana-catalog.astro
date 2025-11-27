@@ -148,38 +148,48 @@ const description = "Browse all your knitting machine questions and answers, org
             >
           </div>
           <div class="sort-wrapper">
-            <label for="sortSelect" class="sort-label">Sort by:</label>
-            <select id="sortSelect" class="sort-select" aria-label="Sort order">
-              <option value="newest">Newest</option>
-              <option value="oldest">Oldest</option>
-              <option value="alphabetical">Alphabetical</option>
-            </select>
+            <span class="sort-label">Sort by:</span>
+            <div class="custom-dropdown" id="sortDropdown">
+              <button type="button" class="custom-dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-dropdown__value">Newest</span>
+                <svg class="custom-dropdown__arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+              </button>
+              <ul class="custom-dropdown__menu" role="listbox">
+                <li class="custom-dropdown__option selected" data-value="newest" role="option">Newest</li>
+                <li class="custom-dropdown__option" data-value="oldest" role="option">Oldest</li>
+                <li class="custom-dropdown__option" data-value="alphabetical" role="option">Alphabetical</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ANA Topic Filter – Dropdown Version -->
+    <!-- ANA Topic Filter – Custom Dropdown Version -->
     <section class="ana-topic-filter">
       <div class="ana-topic-filter__inner">
-        <label class="ana-topic-filter__label" for="topicFilter">
-          Browse by topic
-        </label>
+        <span class="ana-topic-filter__label">Browse by topic</span>
 
-        <select id="topicFilter" class="ana-topic-filter__select">
-          <option value="all">All topics</option>
-          <option value="getting-started">Getting started</option>
-          <option value="machines-and-setup">Machines and Setup</option>
-          <option value="yarn-tension-gauge">Yarn, Tension and Gauge</option>
-          <option value="stitch-patterns-techniques">Stitch patterns and Techniques</option>
-          <option value="shaping-fitting-construction">Shaping, Fitting and Construction</option>
-          <option value="troubleshooting">Troubleshooting</option>
-          <option value="patterns-projects">Patterns and Projects</option>
-          <option value="tools-accessories">Tools and Accessories</option>
-          <option value="is-this-normal">Is this Normal?</option>
-          <option value="can-my-machine-do-that">Can my machine do that?</option>
-          <option value="finishing-care">Finishing and Care</option>
-        </select>
+        <div class="custom-dropdown custom-dropdown--wide" id="topicDropdown">
+          <button type="button" class="custom-dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+            <span class="custom-dropdown__value">All topics</span>
+            <svg class="custom-dropdown__arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+          </button>
+          <ul class="custom-dropdown__menu" role="listbox">
+            <li class="custom-dropdown__option selected" data-value="all" role="option">All topics</li>
+            <li class="custom-dropdown__option" data-value="getting-started" role="option">Getting started</li>
+            <li class="custom-dropdown__option" data-value="machines-and-setup" role="option">Machines and Setup</li>
+            <li class="custom-dropdown__option" data-value="yarn-tension-gauge" role="option">Yarn, Tension and Gauge</li>
+            <li class="custom-dropdown__option" data-value="stitch-patterns-techniques" role="option">Stitch patterns and Techniques</li>
+            <li class="custom-dropdown__option" data-value="shaping-fitting-construction" role="option">Shaping, Fitting and Construction</li>
+            <li class="custom-dropdown__option" data-value="troubleshooting" role="option">Troubleshooting</li>
+            <li class="custom-dropdown__option" data-value="patterns-projects" role="option">Patterns and Projects</li>
+            <li class="custom-dropdown__option" data-value="tools-accessories" role="option">Tools and Accessories</li>
+            <li class="custom-dropdown__option" data-value="is-this-normal" role="option">Is this Normal?</li>
+            <li class="custom-dropdown__option" data-value="can-my-machine-do-that" role="option">Can my machine do that?</li>
+            <li class="custom-dropdown__option" data-value="finishing-care" role="option">Finishing and Care</li>
+          </ul>
+        </div>
       </div>
     </section>
 
@@ -434,22 +444,6 @@ const description = "Browse all your knitting machine questions and answers, org
     align-items: center;
   }
 
-  .sort-select {
-    padding: 0.75rem 1rem;
-    border: 2px solid #c7d8a4;
-    border-radius: 50px;
-    font-size: var(--text-base);
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    min-width: 140px;
-  }
-
-  .sort-select:focus {
-    outline: none;
-    border-color: #52682D;
-    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
-  }
 
   /* ================================================
      ANA TOPIC DROPDOWN FILTER
@@ -472,42 +466,118 @@ const description = "Browse all your knitting machine questions and answers, org
     color: var(--kbm-green, #52682d);
   }
 
-  .ana-topic-filter__select {
-    min-width: 230px;
-    padding: 0.55rem 0.85rem;
-    border-radius: 999px;
-    border: 1px solid var(--kbm-green-2, #738c52);
-    background: #fff;
-    font-family: var(--font, system-ui, sans-serif);
+  /* ================================================
+     CUSTOM DROPDOWN COMPONENT
+     ================================================ */
+  .custom-dropdown {
+    position: relative;
+    display: inline-block;
+    min-width: 140px;
+  }
+
+  .custom-dropdown--wide {
+    min-width: 260px;
+  }
+
+  .custom-dropdown__trigger {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.65rem 1rem;
+    border: 2px solid #c7d8a4;
+    border-radius: 50px;
+    background-color: white;
     font-size: 0.95rem;
     color: #2c3a57;
-    outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.03);
     cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: left;
   }
 
-  .ana-topic-filter__select:focus {
-    border-color: var(--kbm-green, #52682d);
-    box-shadow: 0 0 0 2px rgba(82, 104, 45, 0.2);
+  .custom-dropdown__trigger:hover {
+    border-color: #52682d;
   }
 
-  /* Style dropdown options with green colors */
-  .sort-select option,
-  .ana-topic-filter__select option {
-    background-color: #fff;
+  .custom-dropdown__trigger:focus {
+    outline: none;
+    border-color: #52682d;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.15);
+  }
+
+  .custom-dropdown__trigger[aria-expanded="true"] {
+    border-color: #52682d;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.15);
+  }
+
+  .custom-dropdown__trigger[aria-expanded="true"] .custom-dropdown__arrow {
+    transform: rotate(180deg);
+  }
+
+  .custom-dropdown__value {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .custom-dropdown__arrow {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    color: #52682d;
+    transition: transform 0.2s ease;
+  }
+
+  .custom-dropdown__menu {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    margin: 0;
+    padding: 0.5rem 0;
+    list-style: none;
+    background: white;
+    border: 1px solid #c7d8a4;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    max-height: 300px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .custom-dropdown__menu.open {
+    display: block;
+  }
+
+  .custom-dropdown__option {
+    padding: 0.6rem 1rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
     color: #2c3a57;
-    padding: 0.5rem;
   }
 
-  .sort-select option:hover,
-  .sort-select option:focus,
-  .sort-select option:checked,
-  .ana-topic-filter__select option:hover,
-  .ana-topic-filter__select option:focus,
-  .ana-topic-filter__select option:checked {
-    background-color: #52682d !important;
-    background: linear-gradient(#52682d, #52682d) !important;
-    color: #fff !important;
+  .custom-dropdown__option:hover {
+    background-color: #52682d;
+    color: white;
+  }
+
+  .custom-dropdown__option.selected {
+    background-color: #eef3e4;
+    color: #52682d;
+    font-weight: 600;
+  }
+
+  .custom-dropdown__option.selected:hover {
+    background-color: #52682d;
+    color: white;
+  }
+
+  .custom-dropdown__option.highlighted {
+    background-color: #52682d;
+    color: white;
   }
 
   /* Catalogue Content */
@@ -1031,22 +1101,154 @@ const description = "Browse all your knitting machine questions and answers, org
     initializeScrollToTop();
   }
 
-  // Topic filter dropdown handler
-  document.getElementById('topicFilter')?.addEventListener('change', (e) => {
-    selectedTopic = e.target.value;
-    renderCards(allEntries);
-  });
+  // Custom Dropdown Component Logic
+  function initCustomDropdowns() {
+    const dropdowns = document.querySelectorAll('.custom-dropdown');
+    
+    dropdowns.forEach(dropdown => {
+      const trigger = dropdown.querySelector('.custom-dropdown__trigger');
+      const menu = dropdown.querySelector('.custom-dropdown__menu');
+      const valueDisplay = dropdown.querySelector('.custom-dropdown__value');
+      const options = Array.from(dropdown.querySelectorAll('.custom-dropdown__option'));
+      let activeIndex = options.findIndex(o => o.classList.contains('selected')) || 0;
+      
+      function openMenu() {
+        // Close all other dropdowns first
+        document.querySelectorAll('.custom-dropdown__menu.open').forEach(m => {
+          m.classList.remove('open');
+          m.closest('.custom-dropdown').querySelector('.custom-dropdown__trigger').setAttribute('aria-expanded', 'false');
+        });
+        
+        menu.classList.add('open');
+        trigger.setAttribute('aria-expanded', 'true');
+        updateActiveOption(activeIndex);
+      }
+      
+      function closeMenu() {
+        menu.classList.remove('open');
+        trigger.setAttribute('aria-expanded', 'false');
+        trigger.focus();
+      }
+      
+      function updateActiveOption(index) {
+        options.forEach((o, i) => {
+          o.classList.toggle('highlighted', i === index);
+        });
+        activeIndex = index;
+      }
+      
+      function selectOption(option) {
+        const value = option.dataset.value;
+        const text = option.textContent;
+        
+        // Update selected state
+        options.forEach(o => o.classList.remove('selected'));
+        option.classList.add('selected');
+        
+        // Update display text
+        valueDisplay.textContent = text;
+        
+        // Close menu
+        closeMenu();
+        
+        // Trigger change handlers based on dropdown ID
+        if (dropdown.id === 'topicDropdown') {
+          selectedTopic = value;
+          renderCards(allEntries);
+        } else if (dropdown.id === 'sortDropdown') {
+          currentSort = value;
+          renderCards(allEntries);
+        }
+      }
+      
+      // Toggle menu on trigger click
+      trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = menu.classList.contains('open');
+        
+        if (isOpen) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+      
+      // Handle option selection via click
+      options.forEach((option, index) => {
+        option.addEventListener('click', (e) => {
+          e.stopPropagation();
+          selectOption(option);
+        });
+        
+        option.addEventListener('mouseenter', () => {
+          updateActiveOption(index);
+        });
+      });
+      
+      // Keyboard navigation
+      trigger.addEventListener('keydown', (e) => {
+        const isOpen = menu.classList.contains('open');
+        
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (isOpen) {
+            selectOption(options[activeIndex]);
+          } else {
+            openMenu();
+          }
+        } else if (e.key === 'Escape' && isOpen) {
+          e.preventDefault();
+          closeMenu();
+        } else if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (!isOpen) {
+            openMenu();
+          } else {
+            updateActiveOption((activeIndex + 1) % options.length);
+          }
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (!isOpen) {
+            openMenu();
+          } else {
+            updateActiveOption((activeIndex - 1 + options.length) % options.length);
+          }
+        } else if (e.key === 'Home' && isOpen) {
+          e.preventDefault();
+          updateActiveOption(0);
+        } else if (e.key === 'End' && isOpen) {
+          e.preventDefault();
+          updateActiveOption(options.length - 1);
+        }
+      });
+    });
+    
+    // Close dropdowns when clicking outside
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.custom-dropdown__menu.open').forEach(menu => {
+        menu.classList.remove('open');
+        menu.closest('.custom-dropdown').querySelector('.custom-dropdown__trigger').setAttribute('aria-expanded', 'false');
+      });
+    });
+    
+    // Close on Escape globally
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.custom-dropdown__menu.open').forEach(menu => {
+          menu.classList.remove('open');
+          const trigger = menu.closest('.custom-dropdown').querySelector('.custom-dropdown__trigger');
+          trigger.setAttribute('aria-expanded', 'false');
+          trigger.focus();
+        });
+      }
+    });
+  }
 
   // Search input handler
   document.getElementById('searchInput')?.addEventListener('input', () => {
     renderCards(allEntries);
   });
 
-  // Sort select handler
-  document.getElementById('sortSelect')?.addEventListener('change', (e) => {
-    currentSort = e.target.value;
-    renderCards(allEntries);
-  });
-
   init();
+  initCustomDropdowns();
 </script>
