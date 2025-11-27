@@ -11,7 +11,7 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     <title>Knit by Machine | Custom Machine Knitting Patterns & Instruction</title>
     <meta
       name="description"
-      content="Custom machine knitting patterns and clear, to-the-point instruction. Choose a project, get numbers for your machine and gauge, and follow simple steps from cast-on to bind-off."
+      content="Make things. Understand your machine. Get real help. Knit by Machine is a modern home for machine knitters with patterns, tools, and clear guidance."
     />
   </head>
 
@@ -20,178 +20,89 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
       <AnnouncementBar slot="announcement" />
     </Header>
 
-    <main class="page">
-      <!-- ========================= HERO ========================= -->
+    <main class="home-preview">
       <section class="hero">
-        <div class="hero-inner hero-grid">
-          <div class="hero-content">
-            <p class="hero-kicker">Patterns & instruction for machine knitters</p>
-
-            <h1>Custom machine knitting patterns and clear, to-the-point instruction.</h1>
-
-            <p class="hero-text">
-              Choose a project, get numbers that match your machine and gauge, and follow short,
-              practical steps so you can finish more knitting and spend less time guessing.
-            </p>
-
-            <div class="hero-actions">
-              <a href="/wizards-catalog" class="btn btn-primary">Browse patterns & projects</a>
-              <a href="/contact" class="btn btn-ghost">Get help with a problem</a>
-            </div>
-
-            <p class="hero-note">
-              Not sure where to start? You can begin with a simple rectangle, a blanket, or one clear
-              answer to "why is this happening?"
-            </p>
-          </div>
-
-          <div class="hero-photo">
-            <picture>
-              <source srcset="/images/homepage/knitting-machine.webp" type="image/webp" />
-              <img
-                src="/images/homepage/knitting-machine.jpg"
-                alt="Close-up of a machine knitting needlebed and carriage"
-                loading="lazy"
-              />
-            </picture>
-          </div>
+        <p class="hero-eyebrow">Welcome to Knit by Machine</p>
+        <h1>Make things. Understand your machine. Get real help.</h1>
+        <p class="hero-text">
+          Knit by Machine is a modern home for machine knitters. You can plan projects, build skills,
+          and get answers — all in one place.
+        </p>
+        <div class="hero-actions">
+          <a href="/wizards-catalog" class="btn primary">Start Knitting</a>
+          <a href="/workshops" class="btn secondary">Learn the Basics</a>
+          <a href="/contact" class="btn ghost">Get Help</a>
         </div>
       </section>
 
-      <!-- ===================== WHAT YOU'LL FIND ===================== -->
-      <section class="section section-pillars">
-        <div class="section-header">
-          <h2>What you'll find inside Knit by Machine</h2>
+      <section class="pillars">
+        <div class="pillar">
+          <h2>Knit</h2>
+          <p class="pillar-tagline">"I want to MAKE something."</p>
           <p>
-            Start with patterns and instruction. Along the way you'll see quick helpers and tools
-            that keep the numbers and decisions simple.
+            Start here when you're ready to do something on your machine.
+            Plan a project, use a wizard, or try a small practice piece.
           </p>
+          <ul>
+            <li>Ready | Set | Knit planners</li>
+            <li>DIY Blanket Wizard & tools</li>
+            <li>Practice patterns & skill builders</li>
+            <li>Printable checklists</li>
+          </ul>
+          <a href="/wizards-catalog" class="pillar-link">Explore Knit</a>
         </div>
 
-        <div class="card-grid">
-          <article class="card">
-            <h3>Patterns & Projects</h3>
-            <p>
-              Custom-friendly projects that respect your needlebed and your time — with clear,
-              practical steps instead of long, chatty patterns.
-            </p>
-            <ul class="card-list">
-              <li>DIY Blanket pattern & variations</li>
-              <li>Rectangles, triangles, and basics</li>
-              <li>Ready | Set | Knit project bundles</li>
-            </ul>
-            <a href="/wizards-catalog" class="card-link">See patterns & projects</a>
-          </article>
-
-          <article class="card">
-            <h3>Step-by-step instruction</h3>
-            <p>
-              Short, focused guides that show what to do next when something doesn't look right or
-              when you're trying a new technique.
-            </p>
-            <ul class="card-list">
-              <li>Ask 'n Answer question pages</li>
-              <li>Troubleshooting paths</li>
-              <li>Video walk-throughs where they help</li>
-            </ul>
-            <a href="/ana-catalog" class="card-link">Browse Ask 'n Answer</a>
-          </article>
-
-          <article class="card">
-            <h3>Quick tools & planners</h3>
-            <p>
-              I use interactive helpers behind the scenes to keep the math and decisions tidy —
-              so you can focus on knitting, not spreadsheets.
-            </p>
-            <ul class="card-list">
-              <li>DIY Blanket planner</li>
-              <li>Ready | Set | Knit project chooser</li>
-              <li>Gauge and sizing helpers</li>
-            </ul>
-            <a href="/wizards-catalog" class="card-link">Open the helpers</a>
-          </article>
-        </div>
-      </section>
-
-      <!-- ===================== START WITH A SMALL WIN ===================== -->
-      <section class="section section-alt">
-        <div class="section-header">
-          <h2>Start with a small win</h2>
-          <p>These are great first steps when you're getting to know Knit by Machine.</p>
-        </div>
-
-        <div class="card-grid">
-          <article class="card card-tool">
-            <h3>Ready | Set | Knit: Projects</h3>
-            <p>
-              Not sure what to make next? Answer a few questions about your machine, time, and
-              experience, and get project ideas that fit.
-            </p>
-            <a href="/agents/ready-set-knit-projects" class="card-link">Plan a project</a>
-          </article>
-
-          <article class="card card-tool">
-            <h3>DIY Blanket Planner</h3>
-            <p>
-              Turn "I want to knit a blanket" into clear numbers for size, needle count, and panels —
-              so you know it will fit your bed and your machine.
-            </p>
-            <a href="/wizards/diy-blanket" class="card-link">Plan a blanket</a>
-          </article>
-
-          <article class="card card-tool">
-            <h3>Dropped Stitches Troubleshooter</h3>
-            <p>
-              Walk through what happened, why it happened, and how to pick things back up without
-              tossing your knitting in a bag.
-            </p>
-            <a href="/wizards/dropped-stitch-troubleshooter" class="card-link">Get help</a>
-          </article>
-        </div>
-      </section>
-
-      <!-- ===================== QUICK ANSWERS ===================== -->
-      <section class="section">
-        <div class="section-header">
-          <h2>Quick answers when you're stuck</h2>
+        <div class="pillar">
+          <h2>Learn</h2>
+          <p class="pillar-tagline">"I want to UNDERSTAND something."</p>
           <p>
-            When something jams, drops, or doesn't look right, you can head straight to a clear
-            answer — or follow a short troubleshooting path.
+            When something feels confusing, this is your calm corner.
+            Short guides and clear explanations help you make sense of your machine.
           </p>
+          <ul>
+            <li>Smart Guides for gauge, yarn, and fit</li>
+            <li>Simple technique walk-throughs</li>
+            <li>Troubleshooting help</li>
+            <li>Friendly glossary of terms</li>
+          </ul>
+          <a href="/workshops" class="pillar-link">Explore Learn</a>
         </div>
 
-        <div class="split">
-          <div class="split-item">
-            <h3>Ask 'n Answer library (ANA)</h3>
-            <p>
-              Each ANA page focuses on one question or one "why is this happening?" with practical
-              steps you can use right away.
-            </p>
-            <a href="/ana-catalog" class="card-link">Browse ANA questions</a>
-          </div>
-
-          <div class="split-item">
-            <h3>Glossary & terminology</h3>
-            <p>
-              Short explanations of machine-knitting language — with visuals and links to tools that
-              use each term.
-            </p>
-            <a href="/glossary" class="card-link">Open the Glossary</a>
-          </div>
+        <div class="pillar">
+          <h2>Connect</h2>
+          <p class="pillar-tagline">"I want HELP or SUPPORT."</p>
+          <p>
+            You don't have to figure this out alone. Ask questions, get answers,
+            and hear directly from Sue.
+          </p>
+          <ul>
+            <li>Ask 'n Answer (ANA) library</li>
+            <li>Ask your own question</li>
+            <li>Contact Sue for support</li>
+            <li>From Sue's Desk & future workshops</li>
+          </ul>
+          <a href="/contact" class="pillar-link">Explore Connect</a>
         </div>
       </section>
 
-      <!-- ===================== EMAIL CTA ===================== -->
-      <section class="section section-alt section-cta">
+      <section class="about-kbm">
+        <h2>What Knit by Machine is all about</h2>
+        <p>
+          Machine knitting doesn't have to feel overwhelming. Knit by Machine gives you
+          quick answers, clear guidance, and modern tools so you can build confidence
+          one small win at a time.
+        </p>
+        <p class="about-note">
+          You can do this. This site is here to help you take the next step — not all the steps at once.
+        </p>
+      </section>
+
+      <section class="section-cta">
         <div class="section-header">
           <h2>Stay in the loop as new tools roll out</h2>
-
         </div>
-
         <div class="cta-inner">
           <ActiveCampaignForm />
-
-
         </div>
       </section>
     </main>
@@ -205,278 +116,217 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     --kbm-green: #52682d;
     --kbm-green-hover: #445626;
     --kbm-green-2: #738c52;
-    --kbm-bg: #e9ece7;
-    --page-bg: #f7f8f7;
-    --ring: #e5e8e0;
-    --font: "Poppins", system-ui, Arial, sans-serif;
-
-    --radius-lg: 1.5rem;
-    --shadow-soft: 0 14px 35px rgba(0, 0, 0, 0.06);
-    --max-width: 1120px;
+    --font: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
 
   body {
     margin: 0;
-    background: var(--page-bg);
+    background: #f7f8f7;
     font-family: var(--font);
     color: #222;
   }
 
-  main {
-    padding: var(--header-height, 160px) 1.25rem 3rem;
-  }
-
-  section {
+  .home-preview {
+    max-width: 960px;
     margin: 0 auto;
-    max-width: var(--max-width);
+    padding: var(--header-height, 160px) 1.5rem 3rem;
   }
-
-  /* ==================== HERO ==================== */
 
   .hero {
-    padding: 2.5rem 0 3rem;
+    text-align: center;
+    margin-bottom: 2.5rem;
   }
 
-  .hero-inner {
-    background: var(--kbm-bg);
-    border-radius: var(--radius-lg);
-    padding: 2rem 1.5rem 2.25rem;
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--ring);
-  }
-
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .hero-kicker {
-    font-size: 0.9rem;
-    letter-spacing: 0.08em;
+  .hero-eyebrow {
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--kbm-green-2);
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
+    color: #738c52;
   }
 
   .hero h1 {
-    font-size: 1.8rem;
-    line-height: 1.25;
-    margin: 0 0 0.75rem;
-    color: var(--kbm-green);
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    margin-bottom: 0.75rem;
+    color: #2c3a57;
   }
 
   .hero-text {
-    margin: 0 0 1.5rem;
+    max-width: 42rem;
+    margin: 0 auto 1.5rem;
     font-size: 1rem;
-    max-width: 40rem;
+    line-height: 1.5;
+    color: #4d5a48;
   }
 
- .hero-photo img {
-  width: 100%;
-  max-height: 420px;
-  object-fit: cover;
-  object-position: center;
-  border-radius: var(--radius-lg); /* already in your style */
-  border: 2px solid rgba(0, 0, 0, 0.08); /* matches card style */
-}
-
-
-  @media (min-width: 900px) {
-    .hero-grid {
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.5fr);
-      align-items: center;
-    }
-    .hero h1 {
-      font-size: 2.6rem;
-    }
-  }
-
-  /* ==================== BUTTONS ==================== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
     justify-content: center;
-    gap: 0.35rem;
-    padding: 0.7rem 1.25rem;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
     border-radius: 999px;
     font-size: 0.95rem;
     text-decoration: none;
+    font-weight: 500;
     border: 1px solid transparent;
-    cursor: pointer;
   }
 
-  .btn-primary {
-    background: var(--kbm-green);
+  .btn.primary {
+    background-color: var(--kbm-green);
     color: #fff;
   }
 
-  .btn-ghost {
-    background: #fff;
-    color: var(--kbm-green);
-    border-color: var(--ring);
+  .btn.primary:hover {
+    background-color: var(--kbm-green-hover);
   }
 
-  .btn-ghost:hover {
-    border-color: var(--kbm-green-2);
+  .btn.secondary {
+    background-color: #ffffff;
+    border-color: #c5cfb5;
+    color: #2c3a57;
   }
 
-  /* ==================== SECTIONS, CARDS, GRID ==================== */
+  .btn.secondary:hover {
+    background-color: #f3f5ef;
+  }
 
-  .section {
-    padding: 2.5rem 0 0;
+  .btn.ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: #52682d;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .pillar {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem 1.4rem;
+    border: 1px solid #e0e5d8;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  }
+
+  .pillar h2 {
+    margin-bottom: 0.4rem;
+    font-size: 1.3rem;
+    color: #2c3a57;
+  }
+
+  .pillar-tagline {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #738c52;
+  }
+
+  .pillar p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4f5a4b;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar ul {
+    padding-left: 1.2rem;
+    margin: 0 0 0.85rem;
+    font-size: 0.92rem;
+    color: #4f5a4b;
+  }
+
+  .pillar li {
+    margin-bottom: 0.25rem;
+  }
+
+  .pillar-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #52682d;
+    text-decoration: none;
+  }
+
+  .pillar-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-kbm {
+    text-align: center;
+    border-top: 1px solid #e0e5d8;
+    padding-top: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .about-kbm h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #2c3a57;
+  }
+
+  .about-kbm p {
+    max-width: 40rem;
+    margin: 0 auto 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4f5a4b;
+  }
+
+  .about-note {
+    font-style: italic;
+    color: #738c52;
+  }
+
+  .section-cta {
+    text-align: center;
   }
 
   .section-header {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .section-header h2 {
-    font-size: 1.4rem;
-    margin: 0 0 0.5rem;
+    font-size: 1.3rem;
     color: #2c3a57;
   }
 
-  .card-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  .card {
+  .cta-inner {
     background: #ffffff;
-    border-radius: var(--radius-lg);
-    padding: 1.5rem 1.25rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    border: 2px solid #c7d8a4;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 1rem;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e5d8;
   }
 
-  .card:hover {
-    background-color: #f6f8f2;
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(82, 104, 45, 0.15);
-    border-color: var(--kbm-green);
-  }
+  @media (min-width: 768px) {
+    .home-preview {
+      padding-top: calc(var(--header-height, 160px) + 1rem);
+    }
 
-  .card-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    font-size: 0.9rem;
-    text-decoration: none;
-    color: #2c3a57;
-    font-weight: 600;
-  }
-
-  .card-link::after {
-    content: "→";
-    font-size: 0.85em;
-  }
-
-  @media (min-width: 640px) {
-    .card-grid {
+    .pillars {
       grid-template-columns: repeat(3, 1fr);
     }
   }
 
-  /* ==================== SPLIT ==================== */
+  @media (max-width: 480px) {
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
 
-  .split {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .split {
-      grid-template-columns: repeat(2, 1fr);
+    .hero-actions .btn {
+      width: 100%;
+      text-align: center;
     }
   }
-
-  /* ==================== CTA ==================== */
-
-  .cta-inner {
-    background: #ffffff;
-    border-radius: var(--radius-lg);
-    padding: 1.75rem 1.5rem;
-    box-shadow: var(--shadow-soft);
-    border: 1px solid var(--ring);
-  }
-
-  .cta-form-placeholder {
-    border-radius: 1rem;
-    border: 1px dashed var(--kbm-green-2);
-    padding: 1.25rem;
-    background: var(--page-bg);
-    margin-bottom: 0.75rem;
-  }
-
-
-/* ========== MOBILE HERO TWEAKS ========== */
-
-/* Very small screens: tighten padding & type */
-@media (max-width: 480px) {
-  .hero {
-    padding-top: 1.75rem;
-  }
-
-  .hero-inner {
-    padding: 1.5rem 1.25rem 1.75rem;
-  }
-
-  .hero h1 {
-    font-size: 1.5rem;
-    line-height: 1.25;
-  }
-
-  .hero-text {
-    font-size: 0.95rem;
-    margin-bottom: 1.25rem;
-  }
-
-  .hero-note {
-    font-size: 0.85rem;
-  }
-
-  .hero-actions {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-  }
-
-  .hero-actions .btn {
-    width: 100%;          /* big thumb-friendly buttons */
-    justify-content: center;
-  }
-
-  .hero-photo img {
-    max-height: 260px;
-    margin-top: 0.75rem;
-  }
-}
-
-/* Mid-size phones / small tablets: slightly larger, still compact */
-@media (min-width: 481px) and (max-width: 767px) {
-  .hero-inner {
-    padding: 1.75rem 1.5rem 2rem;
-  }
-
-  .hero h1 {
-    font-size: 1.7rem;
-  }
-
-  .hero-actions {
-    flex-wrap: wrap;
-    gap: 0.6rem;
-  }
-
-  .hero-photo img {
-    max-height: 300px;
-    margin-top: 0.75rem;
-  }
-}
-
-
-
 </style>
