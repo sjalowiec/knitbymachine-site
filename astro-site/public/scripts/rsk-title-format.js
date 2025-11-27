@@ -1,7 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const headings = document.querySelectorAll("h1, h2, .page-title, .hero-title");
+  formatRskTitles();
+  
+  // Also run after a short delay to catch dynamically rendered content
+  setTimeout(formatRskTitles, 500);
+  
+  // Watch for dynamically added content (e.g., catalog cards)
+  const observer = new MutationObserver(() => {
+    formatRskTitles();
+  });
+  
+  observer.observe(document.body, { 
+    childList: true, 
+    subtree: true 
+  });
+});
+
+function formatRskTitles() {
+  const headings = document.querySelectorAll("h1, h2, h3, .page-title, .hero-title, .wizard-card-title, .section-title");
 
   headings.forEach(h => {
+    // Skip if already formatted
+    if (h.querySelector('.rsk-module')) return;
+    
     const text = h.textContent.trim();
     
     // Support both bullet styles: • (bullet) and ● (black circle)
@@ -18,4 +38,4 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   });
-});
+}
