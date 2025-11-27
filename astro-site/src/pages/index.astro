@@ -1,65 +1,332 @@
 ---
-import Layout from "../layouts/layout.astro";
-import "../styles/temphome.css";
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import AnnouncementBar from "../components/AnnouncementBar.astro";
 import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
 ---
 
-<Layout>
-  <section class="kbm-hero">
-    <div class="kbm-hero-content">
-      <h1>
-        <span class="line">Modern tools to make your</span>
-        <span class="line click-line">
-          machine knitting <span class="click-word">CLICK</span>
-          <span class="click-icon" aria-hidden="true">
-            <svg viewBox="0 0 189.6 190.1" xmlns="http://www.w3.org/2000/svg">
-              <path fill="white" stroke="#52682d" stroke-width="3"
-                d="M127.4,60.3c-2.1,1.2-3.7,2.9-4.9,4.8-4.3-5.3-12-6.9-18.1-3.3
-                -2.1,1.2-3.7,2.9-4.9,4.8-4.3-5.3-12-6.9-18.1-3.3
-                -2,1.2-3.6,2.8-4.8,4.6L51.7,40.3c-3.9-6.8-12.6-9.1-19.4-5.2
-                -6.8,3.9-9.1,12.6-5.2,19.4l28.6,49.6c-2.2-1.4-4.5-2.7-6.8-3.9
-                l-2.4-1.2c-4.4-2.3-9.5-2.3-13.8.2-2.3,1.3-4.1,3.2-5.4,5.5
-                -1.8,3.3-2.2,7.2-1.1,10.8c1.1,3.6,3.5,6.6,6.9,8.4
-                9.9,5.3,18.7,12.4,26.1,20.9l22.7,26.2c11.2,13,30.1,16.1,44.9,7.6
-                l26.3-15.2c17.1-9.9,22.9-31.8,13.1-48.8l-28.3-49
-                c-3.9-6.8-12.6-9.1-19.4-5.2Z"/>
-            </svg>
-          </span>
-        </span>
-      </h1>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Knit by Machine | Custom Machine Knitting Patterns & Instruction</title>
+    <meta
+      name="description"
+      content="Make things. Understand your machine. Get real help. Knit by Machine is a modern home for machine knitters with patterns, tools, and clear guidance."
+    />
+  </head>
 
-      <p>Spend less time struggling and more time knitting</p>
+  <body>
+    <Header>
+      <AnnouncementBar slot="announcement" />
+    </Header>
 
-      <div class="early-access">
-        <p>
-          Knit by Machine is in early access. You're getting a first look at the new tools,
-          patterns, and workshops we're building to make your machine knitting easier and more enjoyable.
+    <main class="home-preview">
+      <section class="hero">
+        <p class="hero-eyebrow">Welcome to Knit by Machine</p>
+        <h1>Make things. Understand your machine. Get real help.</h1>
+        <p class="hero-text">
+          Knit by Machine is a modern home for machine knitters. You can plan projects, build skills,
+          and get answers — all in one place.
         </p>
-
-        <ActiveCampaignForm />
-
-        <div class="discussion-section">
-          <button class="discussion-toggle" onclick="toggleDiscussion()">
-            <i class="fa-regular fa-comments"></i>
-            Help Shape Knit by Machine
-            <span class="toggle-arrow">▼</span>
-          </button>
-
-          <div id="discussion" class="discussion-content">
-            <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
-            <hyvor-talk-comments website-id="14320" page-id="pre-release-home"></hyvor-talk-comments>
-          </div>
+        <div class="hero-actions">
+          <a href="/wizards-catalog" class="btn primary">Start Knitting</a>
+          <a href="/workshops" class="btn secondary">Learn the Basics</a>
+          <a href="/contact" class="btn ghost">Get Help</a>
         </div>
-    </div>
-  </section> 
+      </section>
 
-  <script is:inline>
-    function toggleDiscussion() {
-      const content = document.getElementById("discussion");
-      const arrow = document.querySelector(".toggle-arrow");
-      const isVisible = content.classList.contains("show");
-      content.classList.toggle("show", !isVisible);
-      arrow.classList.toggle("open", !isVisible);
+      <section class="pillars">
+        <div class="pillar">
+          <h2>Knit</h2>
+          <p class="pillar-tagline">"I want to MAKE something."</p>
+          <p>
+            Start here when you're ready to do something on your machine.
+            Plan a project, use a wizard, or try a small practice piece.
+          </p>
+          <ul>
+            <li>Ready | Set | Knit planners</li>
+            <li>DIY Blanket Wizard & tools</li>
+            <li>Practice patterns & skill builders</li>
+            <li>Printable checklists</li>
+          </ul>
+          <a href="/wizards-catalog" class="pillar-link">Explore Knit</a>
+        </div>
+
+        <div class="pillar">
+          <h2>Learn</h2>
+          <p class="pillar-tagline">"I want to UNDERSTAND something."</p>
+          <p>
+            When something feels confusing, this is your calm corner.
+            Short guides and clear explanations help you make sense of your machine.
+          </p>
+          <ul>
+            <li>Smart Guides for gauge, yarn, and fit</li>
+            <li>Simple technique walk-throughs</li>
+            <li>Troubleshooting help</li>
+            <li>Friendly glossary of terms</li>
+          </ul>
+          <a href="/workshops" class="pillar-link">Explore Learn</a>
+        </div>
+
+        <div class="pillar">
+          <h2>Connect</h2>
+          <p class="pillar-tagline">"I want HELP or SUPPORT."</p>
+          <p>
+            You don't have to figure this out alone. Ask questions, get answers,
+            and hear directly from Sue.
+          </p>
+          <ul>
+            <li>Ask 'n Answer (ANA) library</li>
+            <li>Ask your own question</li>
+            <li>Contact Sue for support</li>
+            <li>From Sue's Desk & future workshops</li>
+          </ul>
+          <a href="/contact" class="pillar-link">Explore Connect</a>
+        </div>
+      </section>
+
+      <section class="about-kbm">
+        <h2>What Knit by Machine is all about</h2>
+        <p>
+          Machine knitting doesn't have to feel overwhelming. Knit by Machine gives you
+          quick answers, clear guidance, and modern tools so you can build confidence
+          one small win at a time.
+        </p>
+        <p class="about-note">
+          You can do this. This site is here to help you take the next step — not all the steps at once.
+        </p>
+      </section>
+
+      <section class="section-cta">
+        <div class="section-header">
+          <h2>Stay in the loop as new tools roll out</h2>
+        </div>
+        <div class="cta-inner">
+          <ActiveCampaignForm />
+        </div>
+      </section>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style>
+  :root {
+    --kbm-green: #52682d;
+    --kbm-green-hover: #445626;
+    --kbm-green-2: #738c52;
+    --font: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background: #f7f8f7;
+    font-family: var(--font);
+    color: #222;
+  }
+
+  .home-preview {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: var(--header-height, 160px) 1.5rem 3rem;
+  }
+
+  .hero {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 0.4rem;
+    color: #738c52;
+  }
+
+  .hero h1 {
+    font-size: clamp(1.9rem, 3vw, 2.4rem);
+    margin-bottom: 0.75rem;
+    color: #2c3a57;
+  }
+
+  .hero-text {
+    max-width: 42rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #4d5a48;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+  }
+
+  .btn.primary {
+    background-color: var(--kbm-green);
+    color: #fff;
+  }
+
+  .btn.primary:hover {
+    background-color: var(--kbm-green-hover);
+  }
+
+  .btn.secondary {
+    background-color: #ffffff;
+    border-color: #c5cfb5;
+    color: #2c3a57;
+  }
+
+  .btn.secondary:hover {
+    background-color: #f3f5ef;
+  }
+
+  .btn.ghost {
+    background-color: transparent;
+    border-color: transparent;
+    color: #52682d;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .pillar {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem 1.4rem;
+    border: 1px solid #e0e5d8;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+  }
+
+  .pillar h2 {
+    margin-bottom: 0.4rem;
+    font-size: 1.3rem;
+    color: #2c3a57;
+  }
+
+  .pillar-tagline {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #738c52;
+  }
+
+  .pillar p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #4f5a4b;
+    margin-bottom: 0.75rem;
+  }
+
+  .pillar ul {
+    padding-left: 1.2rem;
+    margin: 0 0 0.85rem;
+    font-size: 0.92rem;
+    color: #4f5a4b;
+  }
+
+  .pillar li {
+    margin-bottom: 0.25rem;
+  }
+
+  .pillar-link {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #52682d;
+    text-decoration: none;
+  }
+
+  .pillar-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .about-kbm {
+    text-align: center;
+    border-top: 1px solid #e0e5d8;
+    padding-top: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .about-kbm h2 {
+    font-size: 1.3rem;
+    margin-bottom: 0.75rem;
+    color: #2c3a57;
+  }
+
+  .about-kbm p {
+    max-width: 40rem;
+    margin: 0 auto 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4f5a4b;
+  }
+
+  .about-note {
+    font-style: italic;
+    color: #738c52;
+  }
+
+  .section-cta {
+    text-align: center;
+  }
+
+  .section-header {
+    margin-bottom: 1rem;
+  }
+
+  .section-header h2 {
+    font-size: 1.3rem;
+    color: #2c3a57;
+  }
+
+  .cta-inner {
+    background: #ffffff;
+    border-radius: 1rem;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border: 1px solid #e0e5d8;
+  }
+
+  @media (min-width: 768px) {
+    .home-preview {
+      padding-top: calc(var(--header-height, 160px) + 1rem);
     }
-  </script>
-</Layout>
+
+    .pillars {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .hero-actions .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
