@@ -1,7 +1,7 @@
 {
   "title": "Ready ● Set ● Knit: Projects",
   "slug": "ready-set-knit-projects",
-  "description": "<p>Ready ● Set ● Knit: Projects is your guided helper for choosing what to knit next. &lt;br&gt;</p><p>With a few simple questions, this Smart Guide learns your confidence, your time, your machine, and your yarn situation - then suggests a project that fits you right now. &lt;br&gt;You’ll get gentle guidance, clear next steps, and direct links to the right Knit by Machine tools, patterns, and resources to get started without overwhelm.</p>",
+  "description": "Ready ● Set ● Knit: Projects is your guided helper for choosing what to knit next. <br>\n\nWith a few simple questions, this Smart Guide learns your confidence, your time, your machine, and your yarn situation - then suggests a project that fits you right now. <br>You’ll get gentle guidance, clear next steps, and direct links to the right Knit by Machine tools, patterns, and resources to get started without overwhelm.",
   "excerpt": "The shortest path to your next project ",
   "category": "Smart Guides",
   "tags": [
@@ -12,7 +12,7 @@
   "provider": "mindpal",
   "accessLevel": "free",
   "iconUrl": "https://www.knitbymachine.com/images/wizard.svg",
-  "htmlContent": "  Want to follow along with a printable?<br>\n\n  <a href=\"https://knitbymachine.com/checklist.pdf\" download>\n    Download the Project Readiness Checklist (PDF)\n  </a>\n<br>\n  and keep it handy while you use this Smart Guide.\n\n\n",
+  "htmlContent": "  Want to follow along with a printable?<br><br>\n\n  <a href=\"https://knitbymachine.com/checklist.pdf\" download>\n    Download the Project Readiness Checklist (PDF)\n  </a>\n<br><br>\n  and keep it handy while you use this Smart Guide.\n\n\n",
   "imageUrl": "",
   "imageAlt": "",
   "metaTitle": "Ready, Set, Knit: Project Planner | Knit by Machine Smart Guide",
