@@ -3,6 +3,7 @@
   "slug": "dropped-stitch-troubleshooter",
   "hero": "Find out what's causing your dropped stitches - and get one clear fix you can try right now.",
   "description": "<p>Dropped stitches happen to every knitter — but they don’t have to derail your project.<br>This interactive Troubleshooter walks you through a short diagnostic to understand <strong>why</strong> it’s happening and what you can do about it.</p><p>You’ll choose the option that best matches what you’re seeing, and the guide will give you:</p><ul><li><p>the most likely cause</p></li><li><p>a simple, practical fix</p></li><li><p>one action step you can take right away</p></li></ul><p>Clear, calm, and to the point — so you can get back to knitting with confidence.</p>",
+  "excerpt": "Find the best fix for your dropped stitch problem.",
   "category": "smart guide",
   "tags": [
     "troubleshooting",
@@ -17,7 +18,7 @@
   "relatedWorkshops": [],
   "imageUrl": "/public-objects/glossary/1763900772973-machine-knitting-dropped-stitch.webp",
   "imageAlt": "picking up a dropped stitch in machine knitting",
-  "iconUrl": "https://www.knitbymachine.com/images/lightbulb.svg",
+  "iconUrl": "https://www.knitbymachine.com/images/wizard.svg",
   "metaTitle": "Dropped Stitch Troubleshooter - Knit by Machine",
   "metaDescription": "Find out what's causing your dropped stitches with this quick troubleshooting tool. Get practical fixes for edge tension, transfer technique, needle problems, and more.",
   "schemaMarkup": {
@@ -51,6 +52,5 @@
   },
   "isDraft": false,
   "publishedDate": "2025-01-22",
-  "pendingPublish": false,
-  "excerpt": "Find the best fix for your dropped stitch problem."
+  "pendingPublish": true
 }
