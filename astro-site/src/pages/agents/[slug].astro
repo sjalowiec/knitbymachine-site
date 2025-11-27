@@ -96,7 +96,7 @@ const pageDescription = entry.metaDescription || entry.description;
     <div class="content-section">
       <div class="description-column">
         <h2 class="section-heading">About This Guide</h2>
-        <p class="description-text">{entry.description}</p>
+        <div class="description-text" set:html={entry.description}></div>
         
         {entry.iframeUrl && (
           <a href={entry.iframeUrl} target="_blank" rel="noopener noreferrer" class="launch-button">
