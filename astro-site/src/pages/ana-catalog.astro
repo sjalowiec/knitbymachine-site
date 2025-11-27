@@ -491,6 +491,25 @@ const description = "Browse all your knitting machine questions and answers, org
     box-shadow: 0 0 0 2px rgba(82, 104, 45, 0.2);
   }
 
+  /* Style dropdown options with green colors */
+  .sort-select option,
+  .ana-topic-filter__select option {
+    background-color: #fff;
+    color: #2c3a57;
+    padding: 0.5rem;
+  }
+
+  .sort-select option:hover,
+  .sort-select option:focus,
+  .sort-select option:checked,
+  .ana-topic-filter__select option:hover,
+  .ana-topic-filter__select option:focus,
+  .ana-topic-filter__select option:checked {
+    background-color: #52682d !important;
+    background: linear-gradient(#52682d, #52682d) !important;
+    color: #fff !important;
+  }
+
   /* Catalogue Content */
   .catalogue-content {
     position: relative;
