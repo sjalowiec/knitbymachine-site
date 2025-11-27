@@ -67,6 +67,13 @@ p {
   border-radius: 2px;
 }
 
+/* Ready • Set • Knit: Module name styling (Smart Guide titles) */
+.rsk-module {
+  font-variant: small-caps;
+  color: #6E8B3D; /* lighter KBM green */
+  letter-spacing: 0.5px;
+}
+
 /* Mobile typography scaling - SIGNIFICANTLY LARGER for readability */
 @media (max-width: 1024px) {
   :root {
