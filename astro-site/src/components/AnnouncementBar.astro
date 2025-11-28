@@ -25,12 +25,17 @@ const message =
         <h2 id="intro-modal-title">Hi! I'm Sue - Welcome to Knit by Machine</h2>
         
         <div class="intro-modal-body">
+          <img src="/images/sue_icon9.png" alt="Sue" class="intro-sue-photo" />
           <p>
             Welcome! <b>Knit by Machine</b> is a modern, clarity-first resource for machine knitters 
-            who want real guidance without the overwhelm.</p><p> I'm Sue, and after years of helping 
-            knitters troubleshoot, build skills, and finish beautiful projects, I created this 
+            who want real guidance without the overwhelm.
+          </p>
+          <p>
+            I'm Sue, and after years of helping knitters troubleshoot, build skills, and finish beautiful projects, I created this 
             space to make machine knitting simpler, more confident, and more joyful.
           </p>
+          
+          <div class="intro-modal-clear"></div>
           
           <p>
             Here you'll find clear explanations, helpful tools, interactive wizards, and 
@@ -39,8 +44,10 @@ const message =
           
           <p>
             If you're just getting started, explore the <a href="/wizards-catalog">Tools page</a> or 
-            check out the <a href="/glossary">Glossary</a> for quick, confidence-boosting help. </p>
-            <p>And if you need anything, I'm always glad to point you in the right direction.
+            check out the <a href="/glossary">Glossary</a> for quick, confidence-boosting help.
+          </p>
+          <p>
+            And if you need anything, I'm always glad to point you in the right direction.
           </p>
         </div>
       </div>
@@ -166,6 +173,20 @@ const message =
 
   .intro-modal-body a:hover {
     text-decoration-thickness: 2px;
+  }
+
+  /* Sue's photo - floated left */
+  .intro-sue-photo {
+    float: left;
+    width: 110px;
+    height: 110px;
+    margin: 0.25rem 1rem 0.5rem 0;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  .intro-modal-clear {
+    clear: both;
   }
 
   /* Mobile adjustments */
