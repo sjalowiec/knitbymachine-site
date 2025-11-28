@@ -1,10 +1,10 @@
 {
   "title": "Corner to Corner Workshop",
   "slug": "corner-to-corner-workshop",
-  "tagline": "Learn the corner to corner technique",
+  "tagline": "",
   "shortDescription": "Master the C2C technique on your machine",
   "description": "A comprehensive workshop on corner to corner knitting",
-  "category": "learn",
+  "category": "knit",
   "tags": [
     "technique",
     "beginner"
@@ -15,10 +15,8 @@
     "Yarn",
     "Machine"
   ],
-  "learningOutcomes": [
-    "Understand C2C basics"
-  ],
-  "whoFor": "Beginners",
+  "learningOutcomes": [],
+  "whoFor": [],
   "price": "",
   "format": "On-demand",
   "dateTime": "",
@@ -27,14 +25,15 @@
   "videoUrl": "",
   "imageUrl": "",
   "imageAlt": "",
+  "cardIconUrl": "/images/knit-icon1.svg",
   "downloads": [],
   "relatedLinks": [],
-  "ctaLabel": "Watch Now",
+  "ctaLabel": "",
   "ctaNote": "",
   "metaTitle": "Corner to Corner Workshop",
   "metaDescription": "Learn C2C knitting",
   "schemaMarkup": null,
   "isDraft": false,
-  "pendingPublish": false,
-  "publishedDate": "2025-11-28T20:02:21.595Z"
+  "publishedDate": "2025-11-28",
+  "pendingPublish": true
 }
