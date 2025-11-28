@@ -2,7 +2,6 @@
 import Header from "../components/header.astro";
 import Footer from "../components/footer.astro";
 import AnnouncementBar from "../components/AnnouncementBar.astro";
-import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
 ---
 
 <html lang="en">
@@ -110,14 +109,6 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
         </p>
       </section>
 
-      <section class="section-cta">
-        <div class="section-header">
-          <h2>Stay in the loop as new tools roll out</h2>
-        </div>
-        <div class="cta-inner">
-          <ActiveCampaignForm />
-        </div>
-      </section>
     </main>
 
     <Footer />
@@ -272,10 +263,18 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
 
   .pillar {
     background-color: #ffffff;
-    border-radius: 1rem;
+    border-radius: 1.5rem;
     padding: 1.5rem 1.4rem;
-    border: 1px solid #e0e5d8;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
+    border: 2px solid #c7d8a4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .pillar:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(82, 104, 45, 0.15);
+    border-color: var(--kbm-green);
   }
 
   .pillar h2 {
@@ -310,10 +309,18 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
   }
 
   .pillar-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
     font-size: 0.95rem;
-    font-weight: 500;
-    color: #52682d;
+    font-weight: 600;
+    color: #2c3a57;
     text-decoration: none;
+  }
+
+  .pillar-link::after {
+    content: "→";
+    font-size: 0.85em;
   }
 
   .pillar-link:hover {
@@ -345,27 +352,6 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
   .about-note {
     font-style: italic;
     color: #738c52;
-  }
-
-  .section-cta {
-    text-align: center;
-  }
-
-  .section-header {
-    margin-bottom: 1rem;
-  }
-
-  .section-header h2 {
-    font-size: 1.3rem;
-    color: #2c3a57;
-  }
-
-  .cta-inner {
-    background: #ffffff;
-    border-radius: 1rem;
-    padding: 1.75rem 1.5rem;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
-    border: 1px solid #e0e5d8;
   }
 
   @media (max-width: 480px) {
