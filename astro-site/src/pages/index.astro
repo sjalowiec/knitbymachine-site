@@ -22,16 +22,29 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
 
     <main class="home-preview">
       <section class="hero">
-        <p class="hero-eyebrow">Welcome to Knit by Machine</p>
-        <h1>Make things. Understand your machine. Get real help.</h1>
-        <p class="hero-text">
-          Knit by Machine is a modern home for machine knitters. You can plan projects, build skills,
-          and get answers — all in one place.
-        </p>
-        <div class="hero-actions">
-          <a href="/wizards-catalog" class="btn primary">Start Knitting</a>
-          <a href="/workshops" class="btn secondary">Learn the Basics</a>
-          <a href="/contact" class="btn ghost">Get Help</a>
+        <div class="hero-grid">
+          <div class="hero-content">
+            <h1>Knit things. Understand your machine. Get real help.</h1>
+            <p class="hero-text">
+              Knit by Machine is a modern home for machine knitters. You can plan projects, build skills,
+              and get answers — all in one place.
+            </p>
+            <div class="hero-actions">
+              <a href="/wizards-catalog" class="btn primary">Start Knitting</a>
+              <a href="/workshops" class="btn secondary">Learn the Basics</a>
+              <a href="/contact" class="btn ghost">Get Help</a>
+            </div>
+          </div>
+          <div class="hero-image">
+            <picture>
+              <source srcset="/images/homepage/knitting-machine.webp" type="image/webp" />
+              <img 
+                src="/images/homepage/knitting-machine.jpg" 
+                alt="Close-up of a knitting machine needlebed and carriage" 
+                loading="eager"
+              />
+            </picture>
+          </div>
         </div>
       </section>
 
@@ -133,22 +146,25 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
   }
 
   .hero {
-    text-align: center;
     margin-bottom: 2.5rem;
   }
 
-  .hero-eyebrow {
-    font-size: 0.95rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    margin-bottom: 0.4rem;
-    color: #738c52;
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .hero-content {
+    text-align: center;
   }
 
   .hero h1 {
-    font-size: clamp(1.9rem, 3vw, 2.4rem);
-    margin-bottom: 0.75rem;
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    margin: 0 0 0.75rem;
     color: #2c3a57;
+    line-height: 1.25;
   }
 
   .hero-text {
@@ -164,6 +180,50 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     flex-wrap: wrap;
     justify-content: center;
     gap: 0.75rem;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .hero-image img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (min-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .hero-content {
+      text-align: left;
+    }
+
+    .hero-text {
+      margin-left: 0;
+    }
+
+    .hero-actions {
+      justify-content: flex-start;
+    }
+
+    .hero-image img {
+      max-width: 100%;
+    }
+
+    .home-preview {
+      padding-top: calc(var(--header-height, 160px) + 1rem);
+    }
+
+    .pillars {
+      grid-template-columns: repeat(3, 1fr);
+    }
   }
 
   .btn {
@@ -306,16 +366,6 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     padding: 1.75rem 1.5rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.03);
     border: 1px solid #e0e5d8;
-  }
-
-  @media (min-width: 768px) {
-    .home-preview {
-      padding-top: calc(var(--header-height, 160px) + 1rem);
-    }
-
-    .pillars {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   @media (max-width: 480px) {
