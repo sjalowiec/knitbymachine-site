@@ -41,16 +41,17 @@ html, body {
 
   /* Tighter spacing for desktop */
   .kbm-logo-section {
-    padding: 6px 80px 2px 80px;
+    padding: 4px 80px 0 80px;
   }
 
   .kbm-tagline {
     margin-top: 0;
+    margin-bottom: 0.25rem;
   }
 
   .kbm-nav-row {
-    padding: 4px 0;
-    margin-top: 2px;
+    padding: 0.25rem 0;
+    margin-top: 0;
   }
 }
 
@@ -74,7 +75,7 @@ html, body {
 /* ===== CENTERED LOGO ===== */
 .kbm-logo-section {
   text-align: center;
-  padding: 8px 80px 4px 80px;  /* Reduced vertical padding */
+  padding: 0.5rem 80px 0.25rem 80px;
   border-bottom: 1px solid var(--ring);
 }
 
@@ -84,11 +85,12 @@ html, body {
   gap: 8px;
   text-decoration: none;
   color: var(--kbm-green);
+  margin-bottom: 0.25rem;
 }
 
 .kbm-logo-img {
-  width: 50px;
-  height: 50px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
 }
 
@@ -111,14 +113,15 @@ html, body {
   font-family: "Poppins", sans-serif;
   font-size: calc(var(--text-base) + 2px);
   color: rgba(60, 80, 45, 0.75);
-  margin-top: 2px;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
   font-weight: 400;
 }
 
 /* ===== NAVIGATION ROW ===== */
 .kbm-nav-row {
-  padding: 6px 0;
-  margin-top: 4px;
+  padding: 0.25rem 0;
+  margin-top: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -289,12 +292,12 @@ html, body {
   }
 
   .kbm-logo-section {
-    padding: 16px 0;
+    padding: 0.5rem 0 0.25rem 0;
   }
 
   .kbm-logo-img {
-    width: 45px;
-    height: 45px;
+    width: 42px;
+    height: 42px;
   }
 
   .kbm-nav-row {
@@ -376,7 +379,7 @@ html, body {
 /* Tablet and small laptop screens - scale down header */
 @media (min-width: 600px) and (max-width: 1024px) {
   .kbm-logo-section {
-    padding: 0.75rem 1rem;
+    padding: 0.5rem 1rem 0.25rem 1rem;
   }
 
   .kbm-logo-text {
@@ -388,6 +391,7 @@ html, body {
     font-size: 0.9rem;
     line-height: 1.3;
     max-width: 420px;
+    margin-bottom: 0.5rem;
   }
 }
 
@@ -397,7 +401,7 @@ html, body {
   }
 
   .kbm-logo-section {
-    padding: 14px 70px 10px 70px;  /* Tighter padding on very small screens */
+    padding: 0.75rem 60px 0.5rem 60px;
   }
 
   .kbm-logo-img {
@@ -406,16 +410,17 @@ html, body {
   }
 
   .kbm-logo-text {
-    font-size: 1.8rem;  /* Slightly smaller text on very small screens */
+    font-size: 1.8rem;
   }
 
   .kbm-tagline {
-    font-size: 0.9rem;  /* Smaller tagline on mobile */
-    margin-top: 1.4px;
+    font-size: 0.9rem;
+    margin-top: 0;
+    margin-bottom: 0.5rem;
   }
 
   .kbm-hamburger {
-    top: 16px;
+    top: 12px;
     right: 16px;
   }
 }
