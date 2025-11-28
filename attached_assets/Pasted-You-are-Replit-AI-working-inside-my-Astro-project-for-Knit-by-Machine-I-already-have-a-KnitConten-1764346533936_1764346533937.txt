@@ -1,0 +1,273 @@
+You are Replit AI, working inside my Astro project for Knit by Machine.
+
+I already have a KnitContent manager app and an admin system for creating workshop records. Use my existing structure and conventions wherever possible.
+
+Goal
+
+Create two workshop detail pages wired to my existing workshop data:
+
+Sales / Overview Page (public)
+
+Watch / Presentation Page (member/purchase only, but for now just a regular page)
+
+These should both be driven from the same workshop record, using the slug field for routing.
+
+Workshop Data Assumptions
+
+Assume I have a Workshop type with at least these fields (adapt to my existing schema/filenames, don’t duplicate files if they already exist):
+
+slug: string
+
+title: string
+
+tagline?: string
+
+category: "knit" | "learn" | "other"
+
+description: string
+
+learningOutcomes?: string[] // “You’ll be able to…” bullets
+
+whoFor?: string[] // bullets
+
+materials?: string[] // yarn, machine, tools, gauge notes
+
+coverImage?: string // hero/thumbnail image URL
+
+videoUrl?: string // Vimeo or video URL for the workshop
+
+downloads?: { label: string; url: string }[] // patterns, worksheets, PDFs
+
+relatedLinks?: { label: string; url: string }[]// related tools, ANA, Skill Builders, etc.
+
+ctaLabel?: string // e.g. “Watch the Workshop”
+
+ctaNote?: string // optional extra text under the button
+
+If I already have a Workshop type or loader, reuse it instead of creating a new one.
+
+Data Loader
+
+If I already have a data loader/helper for workshops, use it.
+
+Example: src/lib/workshops.ts or similar.
+
+If there is no helper yet, create src/lib/workshops.ts with:
+
+export type WorkshopCategory = "knit" | "learn" | "other";
+
+export interface WorkshopDownload {
+  label: string;
+  url: string;
+}
+
+export interface WorkshopLink {
+  label: string;
+  url: string;
+}
+
+export interface Workshop {
+  slug: string;
+  title: string;
+  tagline?: string;
+  category: WorkshopCategory;
+  description: string;
+  learningOutcomes?: string[];
+  whoFor?: string[];
+  materials?: string[];
+  coverImage?: string;
+  videoUrl?: string;
+  downloads?: WorkshopDownload[];
+  relatedLinks?: WorkshopLink[];
+  ctaLabel?: string;
+  ctaNote?: string;
+}
+
+import workshopsData from "../data/workshops.json"; // adjust path if needed
+
+const workshops = workshopsData as Workshop[];
+
+export function getWorkshopBySlug(slug: string): Workshop | undefined {
+  return workshops.find((w) => w.slug === slug);
+}
+
+
+Adjust the import path to match my real data location.
+
+Routing Structure
+
+Create two Astro pages using dynamic slugs:
+
+Sales Page:
+src/pages/workshops/[slug]/index.astro
+
+Watch Page:
+src/pages/workshops/[slug]/watch.astro
+
+Use Astro’s file-based routing so that:
+
+Sales page URL looks like: /workshops/corner-to-corner
+
+Watch page URL looks like: /workshops/corner-to-corner/watch
+
+1. Sales / Overview Page
+
+File: src/pages/workshops/[slug]/index.astro
+
+Purpose: Help knitters decide “Should I watch this?” and send them to /workshops/[slug]/watch.
+
+Behavior:
+
+Read slug from Astro.params.slug
+
+Use getWorkshopBySlug(slug) to load data
+
+If not found, return a simple 404 page
+
+Layout Sections (all in one Astro file with minimal scoped CSS):
+
+Page Head
+
+<title>{workshop.title} | Knit by Machine Workshops</title>
+
+<meta name="description" content={workshop.tagline || workshop.description.slice(0, 150)} />
+
+Hero
+
+Category label (Knit / Learn / Other)
+
+Title
+
+Tagline (if exists)
+
+Optional cover image
+
+Primary CTA button:
+
+Label: workshop.ctaLabel || "Watch the Workshop"
+
+Link: /workshops/${slug}/watch
+
+Optional smaller line of text under button if ctaNote exists.
+
+What This Workshop Is About
+
+Short paragraph using workshop.description.
+
+You’ll Be Able To…
+
+Render learningOutcomes as a <ul> if it exists.
+
+Only render this section if the array is non-empty.
+
+Who This Workshop Is For
+
+Render whoFor as bullets if present.
+
+What You Need
+
+Render materials as bullets if present.
+
+Related Tools & Links
+
+Render relatedLinks as a simple list of links if present.
+
+About the Instructor (short static section)
+
+Small text block about “Sue from Knit by Machine” (hard-coded for now).
+
+Just put a placeholder <p>; I’ll edit the text later.
+
+Bottom CTA
+
+Repeat main button linking to /workshops/${slug}/watch.
+
+Style:
+
+Use my existing global styles.
+
+Don’t use Tailwind; just use simple class names and a small <style> block in this file for layout and spacing.
+
+Use my brand flavors: light neutral background sections, simple cards, but do not change global variables. Just use classes like .workshop-hero, .workshop-section, .workshop-cta.
+
+Please generate the full contents of src/pages/workshops/[slug]/index.astro with working Astro code, imports, and basic styling.
+
+2. Watch / Presentation Page
+
+File: src/pages/workshops/[slug]/watch.astro
+
+Purpose: This is the classroom where knitters actually watch and knit.
+
+Behavior:
+
+Same approach: read slug, load workshop, 404 if missing.
+
+Uses workshop.videoUrl, downloads, materials, relatedLinks.
+
+Layout Sections:
+
+Page Head
+
+<title>{workshop.title} – Watch the Workshop | Knit by Machine</title>
+
+Top Bar / Header
+
+Title
+
+Category (small label)
+
+A subtle link back to /workshops/${slug} like: “← Workshop details”
+
+Main Layout
+Use a simple two-column layout on desktop that stacks on mobile:
+
+Left / Top (main content):
+
+Video player area:
+
+If videoUrl exists, render a responsive <iframe> wrapper expecting Vimeo/embedded URL.
+
+If not, render a friendly message: “Video coming soon.”
+
+Optional short reminder text: “You can pause, rewind, and come back anytime.”
+
+Right / Bottom (supporting info):
+
+What You Need (materials list)
+
+Downloads (list of downloads with labels, target _blank)
+
+Related Links (from relatedLinks)
+
+Optional Extras (structure only, content placeholder)
+Add sections with headings but simple placeholders so I can expand later:
+
+“Notes & Tips” – simple <p> placeholder.
+
+“Questions?” – link to my ANA or Contact page; for now, just a <p> with a link to /ana or /contact (don’t invent slugs; use /ana and /contact as placeholders).
+
+Footer CTA
+
+Link back to “All Workshops” (assume /workshops exists or will exist soon).
+
+Render as a simple text link or button.
+
+Style:
+
+Same approach: use simple class names (.workshop-watch, .watch-layout, .video-wrapper, .downloads-list, etc.) and a small scoped <style> block at the bottom of the file.
+
+Make the video responsive using a standard aspect-ratio trick (e.g., container with position: relative; padding-top: 56.25%; and iframe absolutely positioned).
+
+Please generate the full contents of src/pages/workshops/[slug]/watch.astro with working Astro code, imports, and reasonable base styling.
+
+General Notes
+
+Don’t change unrelated files.
+
+Don’t introduce new build tools or libraries.
+
+Use my existing font and global styles.
+
+Keep class names clear and semantic.
+
+Add minimal comments in the Astro files so I can see what each section does.
