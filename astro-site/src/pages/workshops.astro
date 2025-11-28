@@ -74,10 +74,7 @@ const description = "Join our live and on-demand workshops to develop your machi
         <div class="category-filters-wrapper">
           <div class="category-filters">
             <button class="filter-btn active" data-category="all" aria-label="Show all workshops">
-              <span class="filter-icon-circle all">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-              </span>
-              <span class="filter-text">All</span>
+              <img src="/images/all_icon.svg" alt="All" class="filter-icon-img" />
             </button>
             <button class="filter-btn" data-category="learn" aria-label="Filter by Learn">
               <img src="/images/play_icon.svg" alt="Learn" class="filter-icon-img" />
@@ -176,27 +173,6 @@ const description = "Join our live and on-demand workshops to develop your machi
     min-width: 80px;
   }
 
-  .filter-icon-circle {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    color: white;
-  }
-
-  .filter-icon-circle.all { background-color: #52682D; }
-  .filter-icon-circle.learn { background-color: #4a90a4; }
-  .filter-icon-circle.knit { background-color: #738c52; }
-  .filter-icon-circle.other { background-color: #8b7355; }
-
-  .filter-icon-circle svg {
-    width: 24px;
-    height: 24px;
-  }
-
   .filter-icon-img {
     width: 56px;
     height: 56px;
@@ -253,16 +229,6 @@ const description = "Join our live and on-demand workshops to develop your machi
       gap: 1.25rem;
     }
 
-    .filter-icon-circle {
-      width: 56px;
-      height: 56px;
-    }
-
-    .filter-icon-circle svg {
-      width: 28px;
-      height: 28px;
-    }
-
     .filter-text {
       font-size: 1.1rem;
     }
@@ -284,16 +250,6 @@ const description = "Join our live and on-demand workshops to develop your machi
   }
 
   @media (max-width: 1024px) {
-    .filter-icon-circle {
-      width: 44px;
-      height: 44px;
-    }
-
-    .filter-icon-circle svg {
-      width: 22px;
-      height: 22px;
-    }
-
     .filter-icon-img {
       width: 48px;
       height: 48px;
