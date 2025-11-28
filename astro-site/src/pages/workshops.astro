@@ -80,22 +80,10 @@ const description = "Join our live and on-demand workshops to develop your machi
               <span class="filter-text">All</span>
             </button>
             <button class="filter-btn" data-category="learn" aria-label="Filter by Learn">
-              <span class="filter-icon-circle learn">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>
-              </span>
-              <span class="filter-text">Learn</span>
+              <img src="/images/play_icon.svg" alt="Learn" class="filter-icon-img" />
             </button>
             <button class="filter-btn" data-category="knit" aria-label="Filter by Knit">
-              <span class="filter-icon-circle knit">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/><circle cx="7.5" cy="11.5" r="1.5"/><circle cx="12" cy="7.5" r="1.5"/><circle cx="16.5" cy="11.5" r="1.5"/></svg>
-              </span>
-              <span class="filter-text">Knit</span>
-            </button>
-            <button class="filter-btn" data-category="other" aria-label="Filter by Other">
-              <span class="filter-icon-circle other">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-              </span>
-              <span class="filter-text">Other</span>
+              <img src="/images/knit_icon.svg" alt="Knit" class="filter-icon-img" />
             </button>
           </div>
         </div>
@@ -209,6 +197,17 @@ const description = "Join our live and on-demand workshops to develop your machi
     height: 24px;
   }
 
+  .filter-icon-img {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+
+  .filter-btn:hover .filter-icon-img {
+    transform: scale(1.1);
+  }
+
   .filter-text {
     font-size: 0.95rem;
     color: #52682D;
@@ -293,6 +292,11 @@ const description = "Join our live and on-demand workshops to develop your machi
     .filter-icon-circle svg {
       width: 22px;
       height: 22px;
+    }
+
+    .filter-icon-img {
+      width: 48px;
+      height: 48px;
     }
 
     .filter-text {
@@ -616,19 +620,17 @@ const description = "Join our live and on-demand workshops to develop your machi
 
   const CATEGORY_LABELS = {
     learn: 'Learn',
-    knit: 'Knit',
-    other: 'Other'
+    knit: 'Knit'
   };
 
-  const CATEGORY_ORDER = ['learn', 'knit', 'other'];
+  const CATEGORY_ORDER = ['learn', 'knit'];
 
   function getCategoryIcon(category) {
     const icons = {
-      learn: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg>`,
-      knit: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/><circle cx="7.5" cy="11.5" r="1.5"/><circle cx="12" cy="7.5" r="1.5"/><circle cx="16.5" cy="11.5" r="1.5"/></svg>`,
-      other: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
+      learn: `<img src="/images/play_icon.svg" alt="Learn" style="width: 32px; height: 32px;" />`,
+      knit: `<img src="/images/knit_icon.svg" alt="Knit" style="width: 32px; height: 32px;" />`
     };
-    return icons[category] || icons.other;
+    return icons[category] || icons.learn;
   }
 
   function formatDate(dateTime) {
