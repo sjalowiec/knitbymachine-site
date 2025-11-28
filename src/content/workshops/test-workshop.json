@@ -1,6 +1,6 @@
 {
   "title": "test workshop - learn",
-  "description": "long descritpion",
+  "description": "<p>long descritpion  </p>",
   "category": "learn",
   "tags": [],
   "duration": "",
@@ -16,5 +16,5 @@
   "metaDescription": "",
   "isDraft": false,
   "publishedDate": "2025-11-28",
-  "pendingPublish": false
+  "pendingPublish": true
 }
