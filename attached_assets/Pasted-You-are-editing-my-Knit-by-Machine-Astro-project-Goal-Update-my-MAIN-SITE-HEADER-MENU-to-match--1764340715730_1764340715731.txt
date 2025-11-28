@@ -1,0 +1,88 @@
+You are editing my Knit by Machine Astro project.
+
+Goal: Update my MAIN SITE HEADER MENU to match my current KNIT / LEARN / CONNECT structure. Do NOT touch my admin dashboard nav. Only update the public site header and its mobile menu.
+
+1️⃣ Files to edit
+- Find the component that controls the main site header navigation (likely something like:
+  - src/components/Header.astro
+  - src/components/layout/Header.astro
+  - or similar)
+- Also update any corresponding mobile / hamburger nav in the same component or related file so both desktop and mobile stay in sync.
+
+2️⃣ Keep this exactly as-is
+- Keep my logo, top banner, search box, colors, fonts, and overall header styling.
+- Do NOT change padding, font sizes, or layout unless required to adjust for the new menu labels.
+- Do NOT touch any ActiveCampaign or other script tags if present.
+
+3️⃣ New top-level structure
+Implement three top-level dropdowns (or groups), in this order:
+
+A. KNIT  
+B. LEARN  
+C. CONNECT  
+
+Make sure the labels appear in ALL CAPS exactly like that in the menu.
+
+4️⃣ KNIT dropdown items
+Under **KNIT**, show these items in this order:
+
+- Projects
+- Patterns
+- Tools
+- Skill Builders
+- DIY Wizards
+- Project Workshops
+
+Link each item as follows (reusing existing routes where they already exist):
+
+- “Projects” → use an existing “projects” or “projects catalog” page if one exists. If not, link to “/projects” and add a TODO comment.
+- “Patterns” → keep or point to my existing patterns catalog route (e.g. “/patterns”).
+- “Tools” → keep or point to my existing tools index (e.g. “/tools”).
+- “Skill Builders” → use the existing skill-builder/skill-practice route if it exists. If not, “/skill-builders”.
+- “DIY Wizards” → link to my wizards index page (for DIY-style tools). If I already have “/wizards” or “/wizards/diy-blanket”, point this item to the best existing “wizards catalog” page (e.g. “/wizards”).
+- “Project Workshops” → link to my workshop listing page filtered (or intended) for project/KNIT workshops. If there’s already a workshop catalog, use that route (e.g. “/workshops?category=knit”). If not yet built, use “/workshops/projects” and add a TODO comment.
+
+5️⃣ LEARN dropdown items
+Under **LEARN**, show these items:
+
+- Smart Guides
+- ANA
+- Glossary
+- Tutorials
+- Skill Workshops
+
+Link each item as follows, using existing routes where possible:
+
+- “Smart Guides” → my smart guide/agent listing page. Use the existing smart-guides or ready-set-knit hub route (e.g. “/smart-guides” or “/ready-set-knit”).
+- “ANA” → my Ask ’n Answer index page (existing ANA hub route, e.g. “/ana”).
+- “Glossary” → my glossary index page (e.g. “/glossary”).
+- “Tutorials” → my main tutorial/video/article list page (e.g. “/tutorials”).
+- “Skill Workshops” → link to the workshop listing page filtered (or intended) for LEARN/skill workshops (e.g. “/workshops?category=learn” or “/workshops/skills”). If that doesn’t exist yet, create a “/workshops/skills” link with a TODO comment.
+
+6️⃣ CONNECT dropdown items
+Under **CONNECT**, show these items:
+
+- Blog
+- Contact
+- Forum
+
+Link each item as follows, reusing existing routes:
+
+- “Blog” → existing blog listing page (e.g. “/blog”). Keep the route name “/blog” for SEO, even if the on-page title says “From Sue’s Desk”.
+- “Contact” → existing contact/support page (e.g. “/contact”).
+- “Forum” → link to my community/forum home. If the forum isn’t set up yet, link to “/forum” and add a TODO comment.
+
+7️⃣ Remove “Ask a Question” from CONNECT
+- If the current menu includes “Ask a Question” under CONNECT, REMOVE that menu item entirely from both desktop and mobile nav.
+- IMPORTANT: Do NOT delete or change the ANA page itself. On the ANA page I already have (or will have) an internal button or popup for “Ask a Question” — leave that behavior alone. This change is ONLY about the main global menu.
+
+8️⃣ Behavior and accessibility
+- Ensure dropdown behavior and keyboard accessibility still work properly after the changes.
+- Ensure mobile/hamburger nav shows the same groups and items, in the same order.
+- Check that all menu items wrap nicely and don’t break layout on tablet or small laptops.
+
+9️⃣ Clean up and comments
+- Update any outdated comments that refer to the old menu structure.
+- For any placeholder routes you had to introduce (e.g. if a page doesn’t exist yet), add a short TODO comment above the relevant link explaining what needs to be created.
+
+After making all changes, show me the final updated Header/Navigation code (or relevant files) so I can review it.

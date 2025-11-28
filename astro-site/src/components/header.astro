@@ -452,28 +452,46 @@ html, body {
         <span></span>
       </button>
 
-      <!-- Navigation Row -->
+      <!-- Navigation Row - KNIT / LEARN / CONNECT structure -->
       <div class="kbm-nav-row">
         <ul class="kbm-menu">
+          <!-- KNIT dropdown -->
           <li class="dd">
-            <a href="/wizards-catalog" data-testid="nav-knit">Knit <span class="caret">▾</span></a>
+            <a href="/wizards-catalog" data-testid="nav-knit">KNIT <span class="caret">▾</span></a>
             <ul class="dd-panel">
-              <li><a href="/wizards-catalog?category=pattern" data-testid="nav-knit-pattern">Patterns</a></li>
+              <!-- TODO: Create /projects page for project gallery/catalog -->
+              <li><a href="/projects" data-testid="nav-knit-projects">Projects</a></li>
+              <li><a href="/patterns" data-testid="nav-knit-patterns">Patterns</a></li>
+              <!-- TODO: Create /tools page or use wizards-catalog filtered by tool category -->
               <li><a href="/wizards-catalog?category=tool" data-testid="nav-knit-tools">Tools</a></li>
-              <li><a href="/wizards-catalog?category=skill builder" data-testid="nav-knit-practice">Skill Builders</a></li>
-              <li><a href="/wizards-catalog?category=smart guide" data-testid="nav-knit-guides">Smart Guides</a></li>
+              <li><a href="/skillbuilder-catalog" data-testid="nav-knit-skillbuilders">Skill Builders</a></li>
+              <li><a href="/wizards-catalog" data-testid="nav-knit-wizards">DIY Wizards</a></li>
+              <li><a href="/workshops?category=knit" data-testid="nav-knit-workshops">Project Workshops</a></li>
             </ul>
           </li>
-          <li><a href="/workshops" data-testid="nav-learn">Learn</a></li>
+          
+          <!-- LEARN dropdown -->
           <li class="dd">
-            <a href="#" data-testid="nav-connect">Connect <span class="caret">▾</span></a>
+            <a href="/workshops" data-testid="nav-learn">LEARN <span class="caret">▾</span></a>
             <ul class="dd-panel">
-              <li><a href="/ana-catalog" data-testid="nav-connect-ana">Ask 'n Answer</a></li>
-              <li><a href="/glossary" data-testid="nav-connect-glossary">Glossary</a></li>
+              <!-- TODO: Create /smart-guides catalog page for AI agents/smart guides -->
+              <li><a href="/smart-guides" data-testid="nav-learn-smartguides">Smart Guides</a></li>
+              <li><a href="/ana-catalog" data-testid="nav-learn-ana">ANA</a></li>
+              <li><a href="/glossary" data-testid="nav-learn-glossary">Glossary</a></li>
+              <!-- TODO: Create /tutorials page for video/article tutorials -->
+              <li><a href="/tutorials" data-testid="nav-learn-tutorials">Tutorials</a></li>
+              <li><a href="/workshops?category=learn" data-testid="nav-learn-workshops">Skill Workshops</a></li>
+            </ul>
+          </li>
+          
+          <!-- CONNECT dropdown -->
+          <li class="dd">
+            <a href="/blog" data-testid="nav-connect">CONNECT <span class="caret">▾</span></a>
+            <ul class="dd-panel">
               <li><a href="/blog" data-testid="nav-connect-blog">Blog</a></li>
-              <li><a href="/sizing-charts" data-testid="nav-connect-sizing">Sizing Charts</a></li>
-              <li><a href="/about" data-testid="nav-connect-about">About</a></li>
               <li><a href="/contact" data-testid="nav-connect-contact">Contact</a></li>
+              <!-- TODO: Create /forum page or link to external community forum when ready -->
+              <li><a href="/forum" data-testid="nav-connect-forum">Forum</a></li>
             </ul>
           </li>
         </ul>
