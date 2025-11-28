@@ -211,10 +211,6 @@ import AnnouncementBar from "../components/AnnouncementBar.astro";
     .home-preview {
       padding-top: calc(var(--header-height, 160px) + 1rem);
     }
-
-    .pillars {
-      grid-template-columns: repeat(3, 1fr);
-    }
   }
 
   .btn {
@@ -256,9 +252,15 @@ import AnnouncementBar from "../components/AnnouncementBar.astro";
 
   .pillars {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
     margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .pillars {
+      grid-template-columns: 1fr;
+    }
   }
 
   .pillar {
