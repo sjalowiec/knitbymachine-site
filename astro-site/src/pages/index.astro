@@ -50,7 +50,10 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
 
       <section class="pillars">
         <div class="pillar">
-          <h2>Knit</h2>
+          <div class="pillar-title">
+            <img src="/images/knit.svg" alt="Knit icon" class="pillar-icon" />
+            <h2>Knit</h2>
+          </div>
           <p class="pillar-tagline">"I want to MAKE something."</p>
           <p>
             Start here when you're ready to do something on your machine.
@@ -66,7 +69,10 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
         </div>
 
         <div class="pillar">
-          <h2>Learn</h2>
+          <div class="pillar-title">
+            <img src="/images/learn.svg" alt="Learn icon" class="pillar-icon" />
+            <h2>Learn</h2>
+          </div>
           <p class="pillar-tagline">"I want to UNDERSTAND something."</p>
           <p>
             When something feels confusing, this is your calm corner.
@@ -82,7 +88,10 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
         </div>
 
         <div class="pillar">
-          <h2>Connect</h2>
+          <div class="pillar-title">
+            <img src="/images/connect.svg" alt="Connect icon" class="pillar-icon" />
+            <h2>Connect</h2>
+          </div>
           <p class="pillar-tagline">"I want HELP or SUPPORT."</p>
           <p>
             You don't have to figure this out alone. Ask questions, get answers,
@@ -285,17 +294,30 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     border-color: var(--kbm-green);
   }
 
+  .pillar-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .pillar-icon {
+    width: 40px;
+    height: auto;
+  }
+
   .pillar h2 {
-    margin-bottom: 0.4rem;
+    margin: 0;
     font-size: 1.3rem;
     color: #2c3a57;
   }
 
   .pillar-tagline {
-    margin: 0 0 0.75rem;
+    font-style: italic;
+    text-align: center;
+    color: var(--kbm-green-2);
+    margin: 0 0 1rem;
     font-size: 0.95rem;
-    font-weight: 500;
-    color: #738c52;
   }
 
   .pillar p {
