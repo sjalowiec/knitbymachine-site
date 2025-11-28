@@ -392,7 +392,15 @@ const description = "Join our live and on-demand workshops to develop your machi
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.75rem;
+  }
+
+  :global(.workshop-card-icon) {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 8px;
   }
 
   :global(.workshop-card-title) {
@@ -650,6 +658,10 @@ const description = "Join our live and on-demand workshops to develop your machi
       ? `<img src="${entry.imageUrl}" alt="${entry.imageAlt || entry.title}" class="workshop-card-image" loading="lazy" />`
       : '';
     
+    const cardIconHtml = entry.cardIconUrl
+      ? `<img src="${entry.cardIconUrl}" alt="" class="workshop-card-icon" loading="lazy" />`
+      : '';
+    
     const featuredStar = entry.isFeatured && !isFeaturedSection
       ? `<svg class="featured-star" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>`
       : '';
@@ -661,6 +673,7 @@ const description = "Join our live and on-demand workshops to develop your machi
          data-tags="${(entry.tags || []).join(' ').toLowerCase()}">
         ${imageHtml}
         <div class="workshop-card-header">
+          ${cardIconHtml}
           <h3 class="workshop-card-title">${entry.title}</h3>
           ${featuredStar}
         </div>
@@ -701,27 +714,18 @@ const description = "Join our live and on-demand workshops to develop your machi
       `;
     }
     
-    const grouped = groupByCategory(filteredEntries);
+    // Render all workshops in a single grid (no category headers)
+    const nonFeaturedEntries = currentCategory === 'all' 
+      ? filteredEntries.filter(e => !e.isFeatured)
+      : filteredEntries;
     
-    CATEGORY_ORDER.forEach(category => {
-      const categoryEntries = grouped[category];
-      if (!categoryEntries || categoryEntries.length === 0) return;
-      
-      const categoryLabel = CATEGORY_LABELS[category];
-      const categoryIcon = getCategoryIcon(category);
-      
+    if (nonFeaturedEntries.length > 0) {
       html += `
-        <div class="category-section" data-category="${category}">
-          <h2 class="section-title">
-            <span class="category-icon ${category}">${categoryIcon}</span>
-            <span>${categoryLabel}</span>
-          </h2>
-          <div class="workshops-grid">
-            ${categoryEntries.map(entry => renderWorkshopCard(entry)).join('')}
-          </div>
+        <div class="workshops-grid">
+          ${nonFeaturedEntries.map(entry => renderWorkshopCard(entry)).join('')}
         </div>
       `;
-    });
+    }
     
     container.innerHTML = html;
     
