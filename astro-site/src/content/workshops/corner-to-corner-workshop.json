@@ -3,13 +3,13 @@
   "slug": "corner-to-corner-workshop",
   "tagline": "",
   "shortDescription": "Master the C2C technique on your machine",
-  "description": "A comprehensive workshop on corner to corner knitting",
+  "description": "<p>A comprehensive workshop on corner to corner knittinggsfgsf gfg f gs</p>",
   "category": "knit",
   "tags": [
     "technique",
     "beginner"
   ],
-  "duration": "2 hours",
+  "duration": "",
   "level": "Beginner",
   "materials": [
     "Yarn",
@@ -31,9 +31,9 @@
   "ctaLabel": "",
   "ctaNote": "",
   "metaTitle": "Corner to Corner Workshop",
-  "metaDescription": "Learn C2C knitting",
+  "metaDescription": "Learn C2C knittingfdsdfffddfsdf",
   "schemaMarkup": null,
   "isDraft": false,
-  "publishedDate": "2025-11-28",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "publishedDate": "2025-11-28"
 }
