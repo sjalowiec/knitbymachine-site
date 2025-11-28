@@ -1,0 +1,157 @@
+I’m working in my KnitContent manager app Replit project.
+Important:
+
+My admin/dashboard files and my KBM site files live in different locations inside this same project.
+
+Please be careful to update the admin side for content entry and the site side for public pages, without breaking existing wizards or tools.
+
+I want to add a Workshops feature with admin data entry + a public catalog + individual workshop pages.
+
+1. ADMIN: Create a Workshop content type with category field
+
+On the admin side of the KnitContent manager app:
+
+Follow the same patterns currently used for my other content types (for example: wizards, tools, etc.). Wherever I store schemas / models for content, add a new Workshop type with these fields (you can use my existing schema style – JSON, TS interface, or DB model):
+
+id (string or auto-generated)
+
+title (string, required)
+
+slug (string, required, unique; auto-generate from title if not provided)
+
+shortDescription (string; 1–2 sentence summary)
+
+description or longDescription (rich text / markdown field for full details)
+
+category (enum/string with exactly 3 choices: "learn", "knit", "other")
+
+level (optional string: e.g., Beginner / Intermediate / Advanced)
+
+price (optional number or string)
+
+format (optional string: e.g., “live”, “on-demand”, “replay”)
+
+dateTime (optional datetime for live workshops)
+
+duration (optional string)
+
+image (optional image URL or upload field)
+
+isFeatured (boolean, default false)
+
+isPublished (boolean, default true)
+
+In the admin UI, add a new “Workshops” section in the sidebar / navigation, similar to how “Wizards” or other content types are handled now:
+
+A list view that shows: Title, Category, Level, Format, Published status.
+
+An Add / Edit workshop form:
+
+Text inputs for title, slug, short description, long description, price, level, format, date/time, duration, image.
+
+A select/dropdown for category with these three fixed choices:
+
+learn
+
+knit
+
+other
+
+A checkbox for isPublished and isFeatured.
+
+Make sure the workshop data is stored using the same persistence layer the app already uses (file-based JSON, DB, etc.). Do not introduce a new storage method; follow the existing pattern used for other content types.
+
+2. SITE: Workshop catalog page with category filtering (similar to wizards-catalog)
+
+On the KBM site side of the project (NOT the admin dashboard):
+
+Create a workshop catalog page that lives at something like:
+
+/src/pages/workshops.astro
+or whatever matches my current routing system.
+
+Use my existing wizards-catalog page as the visual and structural reference:
+
+Same general card layout (image, title, short description, tags).
+
+Same spacing, typography, and card style so it feels consistent with the rest of KBM.
+
+Pull workshop data from the workshop collection created in the admin system. Only show workshops where isPublished is true.
+
+At the top of the workshops catalog, add simple filter controls for category:
+
+Buttons or tabs: All, Knit, Learn, Other
+
+Default view should be All workshops.
+
+When a filter is active, show only workshops matching that category.
+
+The filter can be done client-side or server-side, whichever fits my current stack, but keep it simple and consistent with how the wizards catalog works.
+
+For each workshop card, display at minimum:
+
+Title
+
+Category (formatted nicely as “Knit Workshop” / “Learn Workshop” / “Other”)
+
+Short description
+
+Optional tags like level or format (Beginner, Live, On-demand)
+
+A “View details” link that points to the individual workshop page using the slug.
+
+3. SITE: Individual workshop page {slug}
+
+Add a dynamic route for individual workshops, similar to how you handle detail pages for wizards:
+
+Examples (depending on my current structure):
+
+/src/pages/workshops/[slug].astro
+
+or equivalent in my routing system.
+
+On the Workshop detail page, include:
+
+Title
+
+Category (formatted nicely)
+
+Level
+
+Format (live / replay / on-demand)
+
+Price (if present)
+
+Date/time and duration (if present)
+
+Main hero image (if present)
+
+Full description / longDescription content
+
+A clear call-to-action area at the bottom (for now, this can be a placeholder button like “Get details / Join this workshop” or a link to my email or future checkout).
+
+Make sure the page:
+
+Returns 404 / not found for invalid slugs.
+
+Uses the same layout and styling system as my other detail pages (wizards, tools, etc.), so it looks like a natural part of the KBM site.
+
+4. Important: Keep admin + site areas separate and consistent
+
+Remember: This KnitContent manager app contains both the admin system and the KBM site.
+
+My admin dashboard lives in a different folder/area than my public KBM site.
+
+When you create or edit files:
+
+Put content schemas, admin views, and forms in the admin/dashboard part of the project.
+
+Put catalog pages and public workshop detail pages in the KBM site part of the project, alongside or near my wizards-catalog and other public pages.
+
+Do not move or rename existing wizards or tools pages; just add workshops alongside them following the same patterns.
+
+If anything in the current project structure (file paths, naming, or frameworks) requires small adjustments to this plan, please follow the existing conventions and keep the intent exactly the same:
+
+Admin: Workshop data entry with category (learn / knit / other).
+
+Site: One workshop catalog with category filters, plus per-workshop detail pages.
