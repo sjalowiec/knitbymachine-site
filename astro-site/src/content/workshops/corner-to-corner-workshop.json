@@ -25,7 +25,7 @@
   "videoUrl": "",
   "imageUrl": "",
   "imageAlt": "",
-  "cardIconUrl": "/images/knit-icon1.svg",
+  "cardIconUrl": "/images/knit_icon1.svg",
   "downloads": [],
   "relatedLinks": [],
   "ctaLabel": "",
@@ -35,5 +35,5 @@
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2025-11-28",
-  "pendingPublish": false
+  "pendingPublish": true
 }
