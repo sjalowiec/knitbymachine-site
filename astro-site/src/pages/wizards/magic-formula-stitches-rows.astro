@@ -467,6 +467,11 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
   border-bottom: none;
 }
 
+.breakdown-table .sts-col,
+.breakdown-table td:last-child {
+  text-align: center;
+}
+
 </style>
 
   <div class="wizard-page">
@@ -611,7 +616,7 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
               <th>Row</th>
               <th>Action</th>
               <th>Location</th>
-              <th>Stitches After</th>
+              <th class="sts-col">sts</th>
             </tr>
           </thead>
           <tbody id="breakdownBody"></tbody>
@@ -1153,7 +1158,7 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
         <td>Row ${step.rowNumber}</td>
         <td>${step.action.charAt(0).toUpperCase() + step.action.slice(1)}</td>
         <td>${step.location.charAt(0).toUpperCase() + step.location.slice(1)}</td>
-        <td>${step.totalStitches} sts</td>
+        <td>${step.totalStitches}</td>
       `;
       breakdownBody.appendChild(row);
     });
