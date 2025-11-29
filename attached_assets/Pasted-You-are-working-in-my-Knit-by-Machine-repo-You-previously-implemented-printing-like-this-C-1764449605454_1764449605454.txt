@@ -1,0 +1,156 @@
+You are working in my Knit by Machine repo.
+
+You previously implemented printing like this:
+
+- Created PrintButton.astro in astro-site/src/components/common/
+- Wired it into the two Magic Formula wizards
+- Added @media print rules inside wizard.css
+
+PROBLEM
+Right now:
+- The site header, unit toggle, and input fields still appear when printing.
+- The print styles live only in wizard.css, which is too narrow in scope and not reusable.
+- I want a truly GLOBAL print system that works for ALL tools, not just Magic Formula.
+
+GOAL
+Refactor the current print implementation so that:
+
+1) All print rules live in a **global print stylesheet** (e.g. src/styles/print.css), not wizard.css.
+2) The global print stylesheet is loaded from my base layout so it applies to every tool.
+3) The rules hide **headers, nav, footers, forms, and controls** across the site.
+4) The rules keep the **results/instructions card** visible and clean.
+5) PrintButton.astro continues to work as-is.
+
+--------------------------------
+STEP 1 — Create or update src/styles/print.css
+--------------------------------
+1. If src/styles/print.css does not exist yet, create it.
+2. Move ALL @media print rules from wizard.css into this new print.css file.
+3. Update the selectors so they are GLOBAL, not wizard-specific.
+
+Use the **actual class names** from the layout and tools.
+
+Example structure (you must replace with the real classes):
+
+```css
+@media print {
+  /* Hide global chrome */
+  header,
+  footer,
+  nav,
+  .kbm-header,
+  .kbm-footer,
+  .kbm-nav,
+  .site-search,
+  .kbm-banner {
+    display: none !important;
+  }
+
+  /* Hide all input areas and controls */
+  form,
+  .kbm-form,
+  .tool-inputs,
+  .wizard-inputs,
+  .unit-toggle,
+  .kbm-actions,
+  .kbm-control-bar,
+  .input-grid,
+  .copy-button,
+  .kbm-print-button {
+    display: none !important;
+  }
+}
+Then explicitly KEEP the results card(s) visible:
+
+css
+Copy code
+@media print {
+  .wizard-result-card,
+  .tool-results,
+  .kbm-tool-results,
+  .result-card {
+    display: block !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    border: 1px solid #52682D !important;
+    box-shadow: none !important;
+    padding: 1.25rem !important;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+}
+Use whatever result wrapper classes actually exist in my code.
+
+Also keep table styling generic:
+
+css
+Copy code
+@media print {
+  table {
+    border-collapse: collapse !important;
+  }
+
+  table th,
+  table td {
+    border: 1px solid #444 !important;
+  }
+
+  table tr:nth-child(even) {
+    background-color: #f1f1f1 !important;
+  }
+}
+STEP 2 — Import print.css globally
+In my base layout (for example astro-site/src/layouts/BaseLayout.astro or equivalent):
+
+Import the new print.css so all pages use it.
+
+Example (adjust the path as needed):
+
+astro
+Copy code
+---
+import "../styles/print.css";
+---
+<html>…</html>
+Make sure this layout is actually used by my tool pages (Magic Formula, etc).
+
+STEP 3 — Clean up wizard.css
+Remove any @media print rules from wizard.css to avoid duplication or conflicts.
+
+Keep wizard.css only for on-screen styling, not printing.
+
+STEP 4 — Verify across multiple tools
+Test print preview on:
+
+Magic Formula by Measurement
+
+Magic Formula – Stitches & Rows
+
+At least one other tool page
+
+In print preview, CONFIRM that:
+
+Site header, nav, footers are hidden.
+
+Inputs, unit toggle, “Calculate” button, and copy/share buttons are hidden.
+
+Only the results card with my instructions/diagram/table is visible, plus the print footer if present.
+
+On-screen appearance is unchanged when NOT printing.
+
+If any unwanted element still appears in print:
+
+Identify its class.
+
+Add that class to the @media print hide list in src/styles/print.css.
+
+DO NOT CHANGE
+Do not change any tool logic.
+
+Do not change on-screen layout or styling.
+
+Do not change PrintButton.astro behavior.
+
