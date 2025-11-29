@@ -278,15 +278,15 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
 }
 
 .icon-toggle-label {
-  font-size: 0.8rem;
+  font-size: 0.75rem;
   color: #6b7280;
-  font-weight: 500;
+  font-weight: 400;
   transition: color 0.2s ease;
 }
 
 .icon-toggle.active .icon-toggle-label {
-  color: var(--kbm-green);
-  font-weight: 600;
+  color: #4b5563;
+  font-weight: 500;
 }
 
 .calculate-btn {
@@ -314,11 +314,12 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
 
 .results {
   display: none;
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: var(--kbm-bg);
-  border-radius: 8px;
-  border-left: 4px solid var(--kbm-green);
+  margin-top: 1.5rem;
+  padding: 1.25rem 1.5rem;
+  background: #ffffff;
+  border-radius: 12px;
+  border: 2px solid var(--kbm-green);
+  box-shadow: 0 2px 8px rgba(82, 104, 45, 0.08);
 }
 
 .results.show {
@@ -327,8 +328,21 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
 
 .results h2 {
   color: var(--kbm-green);
-  font-size: 1.25rem;
-  margin: 0 0 1rem 0;
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+}
+
+.results p {
+  margin: 0.5rem 0;
+  line-height: 1.5;
+}
+
+.results-section-label {
+  font-weight: 600;
+  color: #374151;
+  margin-top: 0.75rem;
+  margin-bottom: 0.25rem;
 }
 
 .note {
@@ -372,36 +386,55 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
 .breakdown-content {
   display: none;
   margin-top: 0.5rem;
-  max-height: 300px;
-  overflow-y: auto;
 }
 
 .breakdown-content.show {
   display: block;
 }
 
+.breakdown-explanation {
+  font-size: 0.8rem;
+  color: #6b7280;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.breakdown-table-wrapper {
+  overflow-x: auto;
+  max-height: 300px;
+  overflow-y: auto;
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+}
+
 .breakdown-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
 }
 
 .breakdown-table th,
 .breakdown-table td {
   padding: 0.5rem 0.75rem;
   text-align: left;
-  border-bottom: 1px solid #e5e7eb;
 }
 
 .breakdown-table th {
-  background: #f9fafb;
+  background: #ffffff;
   font-weight: 600;
   color: #374151;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  border-bottom: 2px solid var(--kbm-green);
+  position: sticky;
+  top: 0;
 }
 
-.breakdown-table tr:last-child td {
-  border-bottom: none;
+.breakdown-table tbody tr:nth-child(odd) {
+  background: #ffffff;
+}
+
+.breakdown-table tbody tr:nth-child(even) {
+  background: #F7F9F4;
 }
 
 .breakdown-table .sts-col,
@@ -573,17 +606,20 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
         <span class="icon">▶</span> Row-by-row breakdown
       </button>
       <div id="breakdownContent" class="breakdown-content" data-testid="breakdown-content">
-        <table class="breakdown-table">
-          <thead>
-            <tr>
-              <th>Row</th>
-              <th>Action</th>
-              <th>Location</th>
-              <th class="sts-col">sts</th>
-            </tr>
-          </thead>
-          <tbody id="breakdownBody"></tbody>
-        </table>
+        <p class="breakdown-explanation">Stitch counts shown are totals after each shaping action.</p>
+        <div class="breakdown-table-wrapper">
+          <table class="breakdown-table">
+            <thead>
+              <tr>
+                <th>Row</th>
+                <th>Action</th>
+                <th>Location</th>
+                <th class="sts-col">sts</th>
+              </tr>
+            </thead>
+            <tbody id="breakdownBody"></tbody>
+          </table>
+        </div>
       </div>
       
       <button id="copyBtn" class="copy-btn" data-testid="button-copy">

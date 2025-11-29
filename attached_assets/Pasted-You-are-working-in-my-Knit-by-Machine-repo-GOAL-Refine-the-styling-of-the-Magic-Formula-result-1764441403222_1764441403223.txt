@@ -1,0 +1,149 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Refine the styling of the Magic Formula “results” area to better match my KBM brand:
+1) Remove the heavy green background from the instructions panel and use a white card with green border/shadow.
+2) Add soft zebra striping to the row-by-row table.
+3) Tighten vertical spacing (less padding, more compact).
+4) Improve visual hierarchy for headings and labels.
+5) Apply these changes at the COMPONENT level wherever possible (not just on one page).
+
+PAGES / COMPONENTS
+- Focus on the Magic Formula wizards (by Measurement and Stitches & Rows).
+- Identify the component(s) used for:
+  - The “Your Shaping Instructions” card container.
+  - The row-by-row breakdown table (likely `RowByRowTable.astro` or similar).
+- If there is a common “results card” or “wizard card” component, update that so both wizards inherit the styling.
+
+--------------------------------
+1. INSTRUCTIONS PANEL / RESULT CARD
+--------------------------------
+Locate the container that wraps:
+- “Your Shaping Instructions” heading
+- Diagram
+- Summary
+- Instructions
+- Tip
+- Row-by-row breakdown toggle/table
+
+Currently this has a greenish background.
+
+Change this container to:
+- Background: white (`#FFFFFF`)
+- Border: 2px solid KBM dark green (`#52682D`)
+- Border radius: match my existing card radius (e.g., 12px–16px)
+- Box shadow: subtle (same as other cards already on the site). If no shared shadow exists, use a very soft shadow.
+
+Reduce internal padding:
+- Decrease top and bottom padding by ~20–25% compared to current.
+- Keep left/right padding consistent with other card components.
+
+Heading inside the card:
+- “Your Shaping Instructions”:
+  - Slightly larger font-size than body text.
+  - Font-weight: 600 (semi-bold).
+  - Text color: KBM dark green `#52682D`.
+
+Summary / Instructions / Tip headings:
+- “Summary:”, “Instructions:”, “Tip:”:
+  - Use font-weight: 600.
+  - No all-caps; keep them capitalized normally.
+  - Add a small top margin to separate from previous content, but keep it tight.
+
+Reduce excess vertical gaps between:
+- Diagram and “Summary”
+- Summary and Instructions
+- Instructions and Tip
+- Tip and row-by-row toggle
+
+Use consistent spacing (e.g., 0.75–1rem) instead of large gaps.
+
+--------------------------------
+2. ROW-BY-ROW TABLE (ZEBRA STRIPING)
+--------------------------------
+Update the styling of the row-by-row breakdown table component
+(likely `RowByRowTable.astro` or similar).
+
+Container:
+- Wrap the `<table>` in a div with `overflow-x-auto` so it scrolls horizontally on small screens.
+
+Table header row:
+- Background: white.
+- Bottom border: 2px solid KBM dark green (`#52682D`).
+- Header text: slightly bolder than body text.
+
+Zebra striping for body rows:
+- Odd rows: white (`#FFFFFF`).
+- Even rows: very light neutral or green-tinted background. Example:
+  - `#F7F9F4` or similar very pale tint that works with the rest of the site.
+- Use this pattern for all rows in `<tbody>`.
+
+Columns:
+- Ensure you are showing:
+  - Row
+  - Action
+  - Location
+  - Stitches (or “Stitches After”)
+- Keep column headers short and aligned with content.
+
+Row height:
+- Keep rows compact; avoid excessive padding. 0.5–0.7rem vertical padding per cell is enough.
+
+Add a small line of explanatory text ABOVE the table (inside the same card, not inside the table):
+
+Text:
+- “Stitch counts shown are totals after each shaping action.”
+
+Make it small, muted body text.
+
+--------------------------------
+3. PAGE WIDTH / CONTAINER
+--------------------------------
+If there is a max-width container for the page content, ensure the main tool card and results card are not overly wide.
+
+- Set a sensible max-width for the main content area (around 900–980px) and center it.
+- This may already exist; if so, ensure the results card respects that width.
+
+--------------------------------
+4. ICON LABELS UNDER SHAPING OPTION ICONS
+--------------------------------
+Locate the labels under the shaping selection icons (“Both sides” / “One side”).
+
+- Reduce font-size slightly compared to body text (e.g., `0.85rem`).
+- Use a lighter font-weight (e.g., 400 instead of 500).
+- Keep text color neutral/dark gray rather than bright green.
+
+This keeps the focus on the icons, not the labels.
+
+--------------------------------
+5. COMPONENT-LEVEL CHANGES
+--------------------------------
+Important: wherever possible:
+
+- Apply these styles inside shared components:
+  - The result card wrapper component.
+  - `RowByRowTable.astro` (or the table component).
+- Do NOT inline a bunch of page-specific CSS if there is a reusable component already.
+
+The goal is that:
+- All Magic Formula tools share this improved look now.
+- Future wizards that use the same components automatically get the same styling.
+
+--------------------------------
+DO NOT CHANGE
+--------------------------------
+- Any calculation logic.
+- Any copy/text content (aside from the small table explanation line).
+- Any icons or SVGs already correctly in place.
+- Any behavior of the “Row-by-row breakdown” toggle.
+
+--------------------------------
+SUMMARY WHEN DONE
+--------------------------------
+When finished, summarize:
+
+1) Which components/files were updated and their paths.  
+2) A brief description of the new card background/border/shadow.  
+3) The exact zebra striping colors used.  
+4) How the table behaves on small screens (scrolling).  
+5) Any changes to spacing/typography that affect the results area.
