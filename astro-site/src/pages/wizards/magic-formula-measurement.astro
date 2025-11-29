@@ -76,7 +76,7 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
 }
 
 .wizard-container {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
   background: white;
   padding: 2rem;
@@ -84,41 +84,11 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.description {
-  text-align: center;
-  color: var(--text-dark);
-  margin-bottom: 2rem;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-
-.input-group {
-  margin-bottom: 1.25rem;
-}
-
-.input-group label {
-  display: block;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-  color: var(--text-dark);
-}
-
-input[type="number"],
-select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 1px solid #d0d5cc;
-  border-radius: 4px;
-  font-family: var(--font);
-  font-size: 1rem;
-  color: var(--text-dark);
-  transition: border-color 0.2s;
-}
-
-input[type="number"]:focus,
-select:focus {
-  outline: none;
-  border-color: var(--kbm-green);
+@media (max-width: 640px) {
+  .wizard-container {
+    padding: 1.5rem 1rem;
+    margin: 0 1rem;
+  }
 }
 
 .toggle-group {
@@ -126,7 +96,7 @@ select:focus {
   gap: 1rem;
   align-items: center;
   justify-content: center;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
 
 .units-toggle {
@@ -154,23 +124,143 @@ select:focus {
   color: white;
 }
 
+.form-grid {
+  display: grid;
+  gap: 1.25rem;
+}
+
+.form-row-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.form-row-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+  .form-row-3 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .form-row-2,
+  .form-row-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.floating-input {
+  position: relative;
+  width: 100%;
+}
+
+.floating-input input {
+  width: 100%;
+  padding: 1.25rem 0.875rem 0.5rem;
+  border: 1px solid #d0d5cc;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 1rem;
+  color: var(--text-dark);
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+}
+
+.floating-input input::-webkit-outer-spin-button,
+.floating-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.floating-input input:focus {
+  outline: none;
+  border-color: var(--kbm-green);
+  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+}
+
+.floating-input label {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  color: #6b7280;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: transparent;
+  padding: 0 2px;
+}
+
+.floating-input input:focus ~ label,
+.floating-input input:not(:placeholder-shown) ~ label {
+  top: 0.5rem;
+  transform: translateY(0);
+  font-size: 0.75rem;
+  color: var(--kbm-green);
+  font-weight: 500;
+}
+
+.floating-input input::placeholder {
+  color: transparent;
+}
+
+.floating-input input:focus::placeholder {
+  color: #9ca3af;
+}
+
+.section-divider {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 1.5rem 0;
+}
+
+.section-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--kbm-green);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.sides-control {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.sides-control-label {
+  font-weight: 500;
+  color: var(--text-dark);
+  min-width: 80px;
+}
+
 .sides-group {
   display: flex;
   gap: 0.5rem;
   flex: 1;
+  min-width: 250px;
 }
 
 .sides-btn {
   flex: 1;
-  padding: 0.75rem;
+  padding: 0.75rem 1rem;
   border: 1px solid #d0d5cc;
   background: white;
   color: var(--text-dark);
-  border-radius: 4px;
+  border-radius: 6px;
   cursor: pointer;
   font-family: var(--font);
   font-size: 0.95rem;
   transition: all 0.2s;
+  text-align: center;
 }
 
 .sides-btn.active {
@@ -179,23 +269,32 @@ select:focus {
   border-color: var(--kbm-green);
 }
 
+.sides-btn:hover:not(.active) {
+  border-color: var(--kbm-green);
+  background: rgba(82, 104, 45, 0.05);
+}
+
 .calculate-btn {
   width: 100%;
   padding: 1rem;
   background: var(--kbm-green);
   color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-family: var(--font);
   font-size: 1.05rem;
   font-weight: 600;
   cursor: pointer;
   margin-top: 1.5rem;
-  transition: background 0.2s;
+  transition: background 0.2s, transform 0.1s;
 }
 
 .calculate-btn:hover {
   background: #445626;
+}
+
+.calculate-btn:active {
+  transform: scale(0.99);
 }
 
 .results {
@@ -203,7 +302,7 @@ select:focus {
   margin-top: 2rem;
   padding: 1.5rem;
   background: var(--kbm-bg);
-  border-radius: 4px;
+  border-radius: 8px;
   border-left: 4px solid var(--kbm-green);
 }
 
@@ -232,7 +331,7 @@ select:focus {
   background: white;
   color: var(--kbm-green);
   border: 2px solid var(--kbm-green);
-  border-radius: 4px;
+  border-radius: 6px;
   font-family: var(--font);
   font-weight: 500;
   cursor: pointer;
@@ -263,13 +362,13 @@ select:focus {
 
   <div class="wizard-page">
     <div style="max-width: 800px; margin: 0 auto; padding: 0 1rem;">
-      <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
+      <a href="/wizards-catalog" class="back-link" data-testid="link-back-catalog">← Back to Wizards Catalog</a>
     </div>
 
   <div class="page-header">
     <div class="page-header-title">
       <h1>Magic Formula by Measurement</h1>
-      <button class="video-button" onclick="alert('Video tutorial coming soon!')">
+      <button class="video-button" data-testid="button-watch-tutorial" onclick="alert('Video tutorial coming soon!')">
         <i class="fas fa-play-circle"></i> Watch Tutorial
       </button>
     </div>
@@ -283,76 +382,100 @@ select:focus {
     <form id="wizard-form">
       <div class="toggle-group">
         <div class="units-toggle">
-          <button type="button" class="unit-btn active" id="inches-btn" data-unit="in">Inches</button>
-          <button type="button" class="unit-btn" id="cm-btn" data-unit="cm">Centimeters</button>
+          <button type="button" class="unit-btn active" id="inches-btn" data-unit="in" data-testid="button-unit-inches">Inches</button>
+          <button type="button" class="unit-btn" id="cm-btn" data-unit="cm" data-testid="button-unit-cm">Centimeters</button>
         </div>
       </div>
 
-      <div class="input-group">
-        <input 
-          type="number" 
-          id="startWidth" 
-          step="0.25" 
-          placeholder="Starting width in inches"
-          required
-        />
-      </div>
+      <div class="form-grid">
+        <div class="section-label">Measurements</div>
+        
+        <div class="form-row-2">
+          <div class="floating-input">
+            <input 
+              type="number" 
+              id="startWidth" 
+              step="0.25" 
+              placeholder=" "
+              required
+              data-testid="input-start-width"
+            />
+            <label for="startWidth" id="startWidthLabel">Starting width (in)</label>
+          </div>
 
-      <div class="input-group">
-        <input 
-          type="number" 
-          id="endWidth" 
-          step="0.25" 
-          placeholder="Ending width in inches"
-          required
-        />
-      </div>
+          <div class="floating-input">
+            <input 
+              type="number" 
+              id="endWidth" 
+              step="0.25" 
+              placeholder=" "
+              required
+              data-testid="input-end-width"
+            />
+            <label for="endWidth" id="endWidthLabel">Ending width (in)</label>
+          </div>
+        </div>
 
-      <div class="input-group">
-        <input 
-          type="number" 
-          id="totalLength" 
-          step="0.25" 
-          placeholder="Total length in inches"
-          required
-        />
-      </div>
+        <hr class="section-divider" />
+        <div class="section-label">Length & Gauge</div>
 
-      <div class="input-group">
-        <input 
-          type="number" 
-          id="stitchGauge" 
-          step="0.1" 
-          placeholder="Stitches per inch"
-          required
-        />
-      </div>
+        <div class="form-row-3">
+          <div class="floating-input">
+            <input 
+              type="number" 
+              id="totalLength" 
+              step="0.25" 
+              placeholder=" "
+              required
+              data-testid="input-total-length"
+            />
+            <label for="totalLength" id="totalLengthLabel">Total length (in)</label>
+          </div>
 
-      <div class="input-group">
-        <input 
-          type="number" 
-          id="rowGauge" 
-          step="0.1" 
-          placeholder="Rows per inch"
-          required
-        />
-      </div>
+          <div class="floating-input">
+            <input 
+              type="number" 
+              id="stitchGauge" 
+              step="0.1" 
+              placeholder=" "
+              required
+              data-testid="input-stitch-gauge"
+            />
+            <label for="stitchGauge" id="stitchGaugeLabel">Stitches per inch</label>
+          </div>
 
-      <div class="input-group" style="display: flex; gap: 1rem; align-items: center;">
-        <label style="font-weight: 500; min-width: 80px;">Shape on:</label>
-        <div class="sides-group">
-          <button type="button" class="sides-btn active" data-value="both">Both sides</button>
-          <button type="button" class="sides-btn" data-value="one">One side only</button>
+          <div class="floating-input">
+            <input 
+              type="number" 
+              id="rowGauge" 
+              step="0.1" 
+              placeholder=" "
+              required
+              data-testid="input-row-gauge"
+            />
+            <label for="rowGauge" id="rowGaugeLabel">Rows per inch</label>
+          </div>
+        </div>
+
+        <hr class="section-divider" />
+        <div class="section-label">Shaping Options</div>
+
+        <div class="sides-control">
+          <span class="sides-control-label">Shape on:</span>
+          <div class="sides-group">
+            <button type="button" class="sides-btn active" data-value="both" data-testid="button-shape-both">Both sides</button>
+            <button type="button" class="sides-btn" data-value="one" data-testid="button-shape-one">One side only</button>
+          </div>
         </div>
       </div>
 
-      <button type="submit" class="calculate-btn">Calculate Shaping</button>
+      <button type="submit" class="calculate-btn" data-testid="button-calculate">Calculate Shaping</button>
     </form>
 
-    <div id="results" class="results">
+    <div id="results" class="results" data-testid="results-section">
       <h2>Your Shaping Instructions</h2>
-      <div id="resultsContent"></div>
-      <button id="copyBtn" class="copy-btn">
+      <div id="resultsContent" data-testid="results-content"></div>
+      <button id="copyBtn" class="copy-btn" data-testid="button-copy">
         <i class="fas fa-copy"></i> Copy Instructions
       </button>
     </div>
@@ -364,15 +487,15 @@ select:focus {
   const cmBtn = document.getElementById('cm-btn');
   let useCm = false;
 
-  function updatePlaceholders() {
-    const unitLabel = useCm ? 'cm' : 'inches';
-    const unitPerLabel = useCm ? 'cm' : 'inch';
+  function updateLabels() {
+    const unitShort = useCm ? 'cm' : 'in';
+    const unitPer = useCm ? 'cm' : 'inch';
     
-    document.getElementById('startWidth').placeholder = `Starting width in ${unitLabel}`;
-    document.getElementById('endWidth').placeholder = `Ending width in ${unitLabel}`;
-    document.getElementById('totalLength').placeholder = `Total length in ${unitLabel}`;
-    document.getElementById('stitchGauge').placeholder = `Stitches per ${unitPerLabel}`;
-    document.getElementById('rowGauge').placeholder = `Rows per ${unitPerLabel}`;
+    document.getElementById('startWidthLabel').textContent = `Starting width (${unitShort})`;
+    document.getElementById('endWidthLabel').textContent = `Ending width (${unitShort})`;
+    document.getElementById('totalLengthLabel').textContent = `Total length (${unitShort})`;
+    document.getElementById('stitchGaugeLabel').textContent = `Stitches per ${unitPer}`;
+    document.getElementById('rowGaugeLabel').textContent = `Rows per ${unitPer}`;
   }
 
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
@@ -385,7 +508,7 @@ select:focus {
     inchesBtn.classList.add('active');
     cmBtn.classList.remove('active');
   }
-  updatePlaceholders();
+  updateLabels();
 
   inchesBtn.addEventListener('click', function() {
     if (!useCm) return;
@@ -393,7 +516,7 @@ select:focus {
     inchesBtn.classList.add('active');
     cmBtn.classList.remove('active');
     localStorage.setItem('kbm-unit-preference', 'in');
-    updatePlaceholders();
+    updateLabels();
   });
 
   cmBtn.addEventListener('click', function() {
@@ -402,7 +525,7 @@ select:focus {
     cmBtn.classList.add('active');
     inchesBtn.classList.remove('active');
     localStorage.setItem('kbm-unit-preference', 'cm');
-    updatePlaceholders();
+    updateLabels();
   });
 
   document.querySelectorAll('.sides-btn').forEach(btn => {

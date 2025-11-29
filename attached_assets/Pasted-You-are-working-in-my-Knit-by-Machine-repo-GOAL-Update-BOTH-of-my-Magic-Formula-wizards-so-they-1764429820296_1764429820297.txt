@@ -1,0 +1,90 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Update BOTH of my Magic Formula wizards so they share a modern, consistent UI design:
+
+1) Use a responsive grid layout instead of full-width stacked rows.
+2) Convert all input fields to compact, accessible floating-label inputs.
+3) Match my existing wizard card spacing, colors, and button styles.
+
+WIZARDS TO UPDATE (BOTH):
+A. “Magic Formula – by Measurement”
+   (the one with starting width in inches/cm, ending width, length, etc.)
+
+B. “Magic Formula – Stitches & Rows”
+   (the newer wizard that uses stitch counts and row counts)
+
+WHERE TO WORK
+- Locate BOTH of these pages in `src/pages/wizards/...` (or the correct matching path).
+- If either wizard uses a shared form component (e.g., `MagicFormulaForm`, `WizardForm`, `MeasurementFormulaForm`, etc.), update that shared component so both wizards inherit the improvements.
+- If they DO NOT share a component, update each wizard individually using the same grid + floating-label structure.
+
+RESPONSIVE GRID REQUIREMENTS
+For BOTH wizards:
+
+1. Keep the Inches / Centimeters toggle as a full-width row at the top.
+
+2. Replace the stacked fields with responsive grids:
+
+   **Row 1 (2 columns on md+ screens):**
+   - Starting width
+   - Ending width
+
+   **Row 2 (3 columns on lg screens, 2 on md, stacked on small):**
+   - Total length
+   - Stitches per unit
+   - Rows per unit
+
+   (If the measurement-based wizard uses “starting measurement / ending measurement / shaping length,” apply the same grouping logic.)
+
+3. On mobile:
+   - All inputs stack neatly full-width.
+
+4. On medium screens:
+   - Use 2 columns.
+
+5. On large screens:
+   - Use 2 columns on row 1, 3 columns on row 2.
+
+6. Use my existing spacing, padding, and card system so the layout matches other KBM wizards.
+
+FLOATING LABEL REQUIREMENTS
+Convert ALL input fields in BOTH Magic Formula wizards to floating labels:
+
+- Use real `<label>` elements for accessibility.
+- Label sits inside input when empty.
+- Label floats upward and shrinks when input is focused or has content.
+- Use the “peer / focus / not-placeholder-shown” Tailwind pattern if available, or replicate using standard CSS.
+- Use my KBM dark green + neutral gray color system.
+- Keep borders, radiuses, and fonts consistent with my other wizard inputs.
+
+DYNAMIC LABEL TEXT
+For BOTH wizards:
+
+- Labels must show units dynamically:
+  - e.g., “Stitches per [inch/cm]”
+  - “Starting width ([inch/cm])”
+- When the unit toggle changes, update the label text accordingly.
+
+PLACEHOLDER STYLE
+Use SHORT numeric placeholders only (optional):
+- 20, 10, 4, 6, etc.
+Labels carry the meaning.
+
+DO NOT ALTER LOGIC
+- Leave all math, calculations, validation, and results output untouched.
+- Modify ONLY layout, labeling, and form presentation.
+
+AFTER CHANGES, ENSURE:
+- The “Shape on: Both sides / One side only” segmented control stays intact.
+- The “Calculate Shaping” button stays full-width at the bottom.
+- Mobile → tablet → desktop experience is clean and consistent between both wizards.
+
+SUMMARY (REQUIRED)
+When you are finished, summarize:
+
+1) Which files you changed (full paths).
+2) Whether any shared components were updated.
+3) What grid/floating-label CSS or classes you added.
+4) How BOTH wizards now behave on mobile vs desktop.
+

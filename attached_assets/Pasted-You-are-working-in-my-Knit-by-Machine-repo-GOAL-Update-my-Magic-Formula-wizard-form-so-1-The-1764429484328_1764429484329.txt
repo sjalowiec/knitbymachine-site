@@ -1,0 +1,122 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Update my Magic Formula wizard form so:
+1) The inputs use a responsive grid instead of full-width rows.
+2) Each field uses a compact, accessible floating-label pattern.
+3) The styling matches my existing wizard card and button styles.
+
+WHERE TO WORK
+- Locate the Magic Formula wizard page that corresponds to the screenshot I’m seeing (the one with:
+  - Inches / Centimeters toggle
+  - Starting width in inches
+  - Ending width in inches
+  - Total length in inches
+  - Stitches per inch
+  - Rows per inch
+  - Shape on: Both sides / One side only
+  - Calculate Shaping button
+)
+- This is likely in `src/pages/wizards/...` or a similar path. Use that existing page as the base and update the form there.
+- If the form fields are abstracted into a separate component (e.g. `MagicFormulaForm`, `WizardForm`, etc.), update that component instead so both current and future wizards can reuse the pattern.
+
+STRUCTURE CHANGES – RESPONSIVE GRID
+Change the layout of the form fields to use a responsive grid:
+
+1. Keep the **Inches / Centimeters** toggle at the top, full-width.
+
+2. Under the unit toggle, create a grid for the numeric fields:
+
+   - **Row 1 (2 columns on md+ screens):**
+     - Column 1: Starting width
+     - Column 2: Ending width
+
+   - **Row 2 (3 columns on lg screens, 2 on md, stacked on small):**
+     - Column 1: Total length
+     - Column 2: Stitches per unit
+     - Column 3: Rows per unit
+
+   Layout rules:
+   - On small screens: all fields stack full-width.
+   - On medium screens: use 2 columns (e.g., starting/ending on row 1, total + stitches on row 2, rows on row 3).
+   - On large screens: use 2 columns on row 1 and 3 columns on row 2.
+   - Use my existing spacing and card padding, with reasonable gaps between grid items (e.g., gap-4 or similar).
+   - Reuse whatever grid or utility system I already have configured (Tailwind grid classes if Tailwind is installed; otherwise create a small CSS grid in the wizard’s stylesheet or shared CSS).
+
+3. Below the grid:
+   - Keep the “Shape on: Both sides / One side only” segmented buttons as they are, but align them nicely with the form width.
+   - Keep the **Calculate Shaping** button full-width below the “Shape on” segment, consistent with my other wizards.
+
+FLOATING LABEL PATTERN
+For each input, replace the placeholder-only approach with a proper floating label pattern:
+
+- Fields:
+  - Starting width
+  - Ending width
+  - Total length
+  - Stitches per unit
+  - Rows per unit
+
+- Labels and units:
+  - Label text (base):
+    - Starting width
+    - Ending width
+    - Total length
+    - Stitches per [unit]
+    - Rows per [unit]
+  - The [unit] is “inch” or “cm” depending on the toggle.
+  - When the unit changes, the label text updates accordingly.
+
+- Floating-label behavior:
+  - Before focus and when empty:
+    - Label appears inside the input area, like a placeholder.
+  - On focus OR when the input has a value:
+    - Label shrinks and moves above the input (small font, subtle color).
+  - The actual HTML structure should be accessible:
+    - `<label for="fieldId">` for each `input id="fieldId"`.
+    - Don’t rely on placeholder for the label; use real `<label>` elements.
+
+Implementation details (use whatever fits the existing stack; if Tailwind is present, use the peer/focus pattern):
+
+- Wrap each field in a container with `position: relative`.
+- The input:
+  - Has a class to mark it as a “peer” (if using Tailwind) or a class that can be targeted for `:focus` and `:not(:placeholder-shown)` states.
+  - Uses the same border radius, border color, background, and font as my existing inputs.
+- The label:
+  - Is absolutely positioned inside the input container.
+  - Starts centered vertically in the input when the field is empty.
+  - On focus or when the input has content, animates to a smaller font size at the top edge of the input.
+  - Uses my existing text color palette (e.g., medium gray for default, darker when focused).
+
+EXAMPLE LABEL TEXT AND PLACEHOLDERS
+Use short numeric placeholders to keep it clean; labels carry the meaning.
+
+- Starting width
+  - Label: “Starting width”
+  - Placeholder: “20”
+- Ending width
+  - Label: “Ending width”
+  - Placeholder: “10”
+- Total length
+  - Label: “Total length”
+  - Placeholder: “10”
+- Stitches per [inch/cm]
+  - Label: “Stitches per [unit]”
+  - Placeholder: “4”
+- Rows per [inch/cm]
+  - Label: “Rows per [unit]”
+  - Placeholder: “6”
+
+Make sure labels always remain visible even after typing (no reliance on placeholder text for semantics).
+
+ACCESSIBILITY & CONSISTENCY
+- Keep `name`, `id`, and `for` attributes correctly wired for accessibility and form handling.
+- Preserve any existing validation logic and error messages; just update the layout & label pattern.
+- Match my existing color variables / Tailwind config and typography so it feels like the same KBM design system.
+- Do not change the business logic or submit handler; only the layout and label UX.
+
+SUMMARY
+When you’re done, summarize:
+1) Which file(s) you updated (full paths).
+2) The CSS or class changes you introduced for the floating labels and grid.
+3) How the form behaves on mobile vs desktop.
