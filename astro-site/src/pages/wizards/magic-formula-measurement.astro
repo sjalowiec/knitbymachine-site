@@ -522,6 +522,65 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
     document.getElementById('rowGaugeLabel').textContent = `Rows in ${gaugeUnit}`;
   }
 
+  // Render SVG shaping diagram with trapezoid, labels, and shorthand
+  function renderShapingDiagram(startSts, endSts, mode, direction, steps) {
+    const isIncrease = direction === 'increase';
+    
+    // Get polygon points based on mode and direction
+    let polygonPoints;
+    if (mode === 'both') {
+      if (isIncrease) {
+        polygonPoints = '60,30 200,30 220,170 40,170'; // Narrow bottom, wide top
+      } else {
+        polygonPoints = '40,30 220,30 200,170 60,170'; // Wide bottom, narrow top
+      }
+    } else {
+      if (isIncrease) {
+        polygonPoints = '80,30 220,30 220,170 40,170'; // One-sided increase
+      } else {
+        polygonPoints = '40,30 220,30 220,170 80,170'; // One-sided decrease
+      }
+    }
+    
+    // Label positions
+    const startingY = isIncrease ? 25 : 185;
+    const endY = isIncrease ? 185 : 25;
+    const startLabel = `starting (${startSts} sts)`;
+    const endLabel = `end (${endSts} sts)`;
+    
+    // Get first step for center display
+    const firstStep = steps.length > 0 ? steps[0] : null;
+    
+    // Build shorthand list for all steps
+    let shorthandHtml = '';
+    if (steps.length > 0) {
+      shorthandHtml = '<div style="margin-top: 0.75rem; text-align: center;">';
+      shorthandHtml += '<div style="font-size: 0.75rem; font-weight: 600; color: #52682d; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Shaping shorthand</div>';
+      steps.forEach(step => {
+        shorthandHtml += `<div style="font-size: 1.125rem; font-weight: 600; color: #1f2937; font-family: 'JetBrains Mono', monospace;">${step.sts}–${step.rows}–${step.times}</div>`;
+      });
+      shorthandHtml += '<div style="font-size: 0.7rem; color: #6b7280; font-style: italic;">sts – rows – times</div>';
+      shorthandHtml += '</div>';
+    }
+    
+    return `
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+        <div style="width: 100%; max-width: 300px;">
+          <svg viewBox="0 0 260 200" style="width: 100%; height: auto; display: block;" aria-label="Shaping diagram showing ${direction} from ${startSts} to ${endSts} stitches on ${mode === 'both' ? 'both sides' : 'one side'}">
+            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="6" stroke-linejoin="round"/>
+            <text x="30" y="${startingY}" fill="#6b7280" style="font-size: 11px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
+            <text x="230" y="${endY}" text-anchor="end" fill="#6b7280" style="font-size: 11px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
+            ${firstStep ? `
+              <text x="130" y="95" text-anchor="middle" fill="#1f2937" style="font-size: 24px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${firstStep.sts}–${firstStep.rows}–${firstStep.times}</text>
+              <text x="130" y="115" text-anchor="middle" fill="#6b7280" style="font-size: 10px; font-family: system-ui, -apple-system, sans-serif; font-style: italic;">sts – rows – times</text>
+            ` : ''}
+          </svg>
+        </div>
+        ${steps.length > 1 ? shorthandHtml : ''}
+      </div>
+    `;
+  }
+
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
   if (savedUnit === 'cm') {
     useCm = true;
@@ -627,6 +686,26 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
       const action = isIncrease ? 'increase' : 'decrease';
       const actionCap = isIncrease ? 'Increase' : 'Decrease';
       const sidePrefix = sides === 'both' ? 'On each side' : 'On one side only';
+      const direction = isIncrease ? 'increase' : 'decrease';
+      const mode = sides === 'both' ? 'both' : 'one';
+      
+      // Build shaping steps array for diagram
+      let shapingSteps = [];
+      
+      if (remainder === 0) {
+        shapingSteps = [{ sts: 1, rows: spacing, times: shapingCount }];
+      } else {
+        const timesAtLonger = remainder;
+        const timesAtShorter = shapingCount - remainder;
+        const longerInterval = spacing + 1;
+        if (timesAtShorter > 0) {
+          shapingSteps.push({ sts: 1, rows: spacing, times: timesAtShorter });
+        }
+        shapingSteps.push({ sts: 1, rows: longerInterval, times: timesAtLonger });
+      }
+      
+      // Render the SVG diagram first
+      instructions += renderShapingDiagram(startStitches, endStitches, mode, direction, shapingSteps);
       
       instructions += `<p><strong>Summary:</strong></p>`;
       instructions += `<p>Starting stitches: ${startStitches}</p>`;
