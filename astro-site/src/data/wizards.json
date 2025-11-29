@@ -78,5 +78,13 @@
     "video": "",
     "cta": "/wizards/magic-formula-measurement",
     "category": "tool"
+  },
+  "magic-formula-stitches-rows": {
+    "name": "Magic Formula – Stitches & Rows",
+    "hero": "Turn stitch counts and rows into clear shaping instructions — no spreadsheet required.",
+    "description": "Enter stitch counts and rows to instantly see how to space your shaping — one or both sides.",
+    "video": "",
+    "cta": "/wizards/magic-formula-stitches-rows",
+    "category": "tool"
   }
 }
