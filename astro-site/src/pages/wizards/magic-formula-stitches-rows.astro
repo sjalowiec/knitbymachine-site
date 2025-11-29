@@ -779,6 +779,22 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
     document.getElementById('rowGaugeLabel').textContent = `Rows in ${gaugeUnit}`;
   }
 
+  // Build ShapingCode HTML (Japanese notation: sts-rows-times)
+  function buildShapingCodeHtml(steps) {
+    if (!steps || steps.length === 0) return '';
+    
+    let html = '<div class="shaping-code" style="margin-top: 1.25rem;">';
+    html += '<div style="font-size: 0.75rem; font-weight: 600; color: var(--kbm-green, #52682d); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Shaping shorthand (sts / rows / times)</div>';
+    html += '<div style="display: flex; flex-direction: column; gap: 0.125rem;">';
+    steps.forEach(step => {
+      html += `<div style="font-size: 1.125rem; font-weight: 600; color: #1f2937; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;">${step.sts}–${step.rows}–${step.times}</div>`;
+    });
+    html += '</div>';
+    html += '<div style="font-size: 0.7rem; color: #6b7280; margin-top: 0.25rem; font-style: italic;">sts – rows – times</div>';
+    html += '</div>';
+    return html;
+  }
+
   // Load saved unit preference
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
   if (savedUnit === 'cm') {
@@ -978,6 +994,9 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
       return intervals;
     }
     
+    // Build shaping steps for Japanese notation
+    let shapingSteps = [];
+    
     if (result.shapingMode === 'both-sides') {
       if (result.unevenWarning) {
         // Asymmetric case - derive from breakdown
@@ -990,9 +1009,11 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
         
         if (bothIntervals.length === 1) {
           instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${bothIntervals[0].interval}</strong> rows, <strong>${bothIntervals[0].count}</strong> times.</p>`;
+          shapingSteps.push({ sts: 1, rows: bothIntervals[0].interval, times: bothIntervals[0].count });
         } else if (bothIntervals.length > 1) {
           bothIntervals.forEach(int => {
             instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${int.interval}</strong> rows, <strong>${int.count}</strong> times</p>`;
+            shapingSteps.push({ sts: 1, rows: int.interval, times: int.count });
           });
         }
         
@@ -1000,17 +1021,21 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
           const extraRow = rightOnlySteps[0].rowNumber;
           instructions += `<p style="margin-top: 0.75rem;">On <strong>RIGHT side only</strong> (1 additional time):</p>`;
           instructions += `<p style="padding-left: 1rem;">• ${action} 1 more stitch at row <strong>${extraRow}</strong>.</p>`;
+          // Note: The extra right-side-only step is not added to shapingSteps as it's a special asymmetric case
         }
       } else {
         instructions += `<p>On <strong>EACH side</strong>:</p>`;
         
         if (result.extraRows === 0) {
           instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${result.baseInterval}</strong> rows, <strong>${result.changesPerSide}</strong> times.</p>`;
+          shapingSteps = [{ sts: 1, rows: result.baseInterval, times: result.changesPerSide }];
         } else {
           if (result.timesAtBase > 0) {
             instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${result.baseInterval}</strong> rows, <strong>${result.timesAtBase}</strong> times</p>`;
+            shapingSteps.push({ sts: 1, rows: result.baseInterval, times: result.timesAtBase });
           }
           instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${result.baseInterval + 1}</strong> rows, <strong>${result.timesAtLonger}</strong> times</p>`;
+          shapingSteps.push({ sts: 1, rows: result.baseInterval + 1, times: result.timesAtLonger });
           
           instructions += `<div class="note">`;
           instructions += `<strong>Tip:</strong> Your shaping doesn't divide evenly. Alternate between the two intervals to distribute the shaping evenly across your ${result.totalRows} rows.`;
@@ -1022,17 +1047,23 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
       
       if (result.extraRows === 0) {
         instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${result.baseInterval}</strong> rows, <strong>${result.changesPerSide}</strong> times.</p>`;
+        shapingSteps = [{ sts: 1, rows: result.baseInterval, times: result.changesPerSide }];
       } else {
         if (result.timesAtBase > 0) {
           instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${result.baseInterval}</strong> rows, <strong>${result.timesAtBase}</strong> times</p>`;
+          shapingSteps.push({ sts: 1, rows: result.baseInterval, times: result.timesAtBase });
         }
         instructions += `<p style="padding-left: 1rem;">• ${action} 1 stitch every <strong>${result.baseInterval + 1}</strong> rows, <strong>${result.timesAtLonger}</strong> times</p>`;
+        shapingSteps.push({ sts: 1, rows: result.baseInterval + 1, times: result.timesAtLonger });
         
         instructions += `<div class="note">`;
         instructions += `<strong>Tip:</strong> Your shaping doesn't divide evenly. Alternate between the two intervals to distribute the shaping evenly across your ${result.totalRows} rows.`;
         instructions += `</div>`;
       }
     }
+    
+    // Add shaping shorthand block
+    instructions += buildShapingCodeHtml(shapingSteps);
     
     // Approximate length
     instructions += `<p style="margin-top: 1.5rem; color: #6b7280;"><em>This shaping covers about <strong>${lengthFormatted} ${unitLabel}</strong>.</em></p>`;
