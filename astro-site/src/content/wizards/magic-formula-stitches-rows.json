@@ -5,9 +5,29 @@
   "description": "<p>Enter your starting and ending stitch counts, the number of rows, and your gauge to instantly see how to space your increases or decreases. Works for one or both sides, and shows you exactly which rows to shape on.</p>",
   "excerpt": "Enter stitch counts and rows to instantly see how to space your shaping — one or both sides.",
   "category": "tool",
-  "tags": ["shaping", "magic formula", "stitch-based shaping", "stitches and rows", "increase and decrease spacing", "knitting math", "shaping calculator"],
-  "keywords": ["magic formula", "stitch shaping", "row shaping", "increase calculator", "decrease calculator", "shaping instructions", "knitting shaping", "machine knitting shaping"],
-  "aliases": ["stitch shaping calculator", "row shaping tool"],
+  "tags": [
+    "shaping",
+    "magic formula",
+    "stitch-based shaping",
+    "stitches and rows",
+    "increase and decrease spacing",
+    "knitting math",
+    "shaping calculator"
+  ],
+  "keywords": [
+    "magic formula",
+    "stitch shaping",
+    "row shaping",
+    "increase calculator",
+    "decrease calculator",
+    "shaping instructions",
+    "knitting shaping",
+    "machine knitting shaping"
+  ],
+  "aliases": [
+    "stitch shaping calculator",
+    "row shaping tool"
+  ],
   "videoUrl": "",
   "accessLevel": "free",
   "price": "",
@@ -41,5 +61,5 @@
   },
   "isDraft": false,
   "publishedDate": "2025-11-29",
-  "pendingPublish": false
+  "pendingPublish": true
 }
