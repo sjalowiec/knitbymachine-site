@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
+import PrintButton from "../../components/common/PrintButton.astro";
 
 const pageTitle = "Magic Formula – Stitches & Rows | Knit by Machine";
 const pageDescription = "Turn stitch counts and rows into clear shaping instructions — no spreadsheet required. Calculate your increase or decrease spacing instantly.";
@@ -660,9 +661,12 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
         </div>
       </div>
       
-      <button id="copyBtn" class="copy-btn" data-testid="button-copy">
-        <i class="fas fa-copy"></i> Copy Instructions
-      </button>
+      <div class="results-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+        <button id="copyBtn" class="copy-btn" data-testid="button-copy">
+          <i class="fas fa-copy"></i> Copy Instructions
+        </button>
+        <PrintButton />
+      </div>
     </div>
   </div>
 </div>

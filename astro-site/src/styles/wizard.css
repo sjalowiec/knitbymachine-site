@@ -737,7 +737,11 @@
   .icon-toggle-group,
   .form-grid,
   #wizard-form,
-  .kbm-card__footer {
+  .kbm-card__footer,
+  .results-actions,
+  .floating-input,
+  .section-divider,
+  .section-label {
     display: none !important;
   }
   
