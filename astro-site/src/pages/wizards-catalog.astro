@@ -132,19 +132,19 @@ const description = "Browse all our knitting calculators and interactive tools t
     padding: 4.5rem 1.5rem 3rem;
   }
 
-  /* Wizards Toolbar */
+  /* Wizards Toolbar - Search and Filters on Same Row */
   .wizards-toolbar {
     display: flex;
     align-items: center;
-    gap: 2rem;
-    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 1rem;
     width: 100%;
   }
 
   .search-wrapper {
-    flex-shrink: 0;
-    width: 100%;
-    max-width: 320px;
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
   }
 
   .search-input {
@@ -166,20 +166,14 @@ const description = "Browse all our knitting calculators and interactive tools t
   }
 
   .category-filters-wrapper {
-    flex: 1;
-    min-width: 0;
+    flex-shrink: 0;
   }
 
   .category-filters {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: flex-end;
     gap: 0.5rem;
-    padding: 0.25rem 0.5rem;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-    scrollbar-color: #e5e8e0 #f7f8f7;
   }
 
   .category-filters::-webkit-scrollbar {
@@ -250,29 +244,22 @@ const description = "Browse all our knitting calculators and interactive tools t
     text-decoration: none;
   }
 
-  /* Desktop Layout - Centered, sticky header with larger icons */
+  /* Desktop Layout - Search and Filters Side by Side, Sticky Header */
   @media (min-width: 1024px) {
     .wizards-toolbar {
-      flex-direction: column;
+      flex-direction: row;
       align-items: center;
-      gap: 0.75rem;
+      justify-content: space-between;
+      gap: 1.5rem;
     }
 
     .search-wrapper {
-      width: 100%;
-      max-width: 600px;
-    }
-
-    .category-filters-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
+      flex: 1;
+      max-width: 450px;
     }
 
     .category-filters {
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     /* Slightly larger icons on desktop */
@@ -291,10 +278,19 @@ const description = "Browse all our knitting calculators and interactive tools t
       top: 0;
       background: white;
       z-index: 100;
-      padding-top: 1.5rem;
-      padding-bottom: 1.5rem;
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       transition: box-shadow 0.3s ease;
+    }
+
+    :global(.section-hero .hero-primary) {
+      margin-bottom: 0.75rem;
+    }
+
+    :global(.section-hero .hero-toolbar) {
+      padding: 0.5rem 0;
     }
 
     :global(.section-hero.scrolled) {
@@ -302,36 +298,54 @@ const description = "Browse all our knitting calculators and interactive tools t
     }
   }
 
-  /* Mobile Responsive */
-  @media (max-width: 1024px) {
-    .header-panel {
-      padding: 1.5rem 1.25rem;
+  /* Tablet - Keep on same row but tighter */
+  @media (max-width: 1023px) and (min-width: 641px) {
+    .wizards-toolbar {
+      gap: 1rem;
     }
 
-    .header-row-1 {
-      flex-direction: column;
-      align-items: flex-start;
-      text-align: left;
+    .search-wrapper {
+      max-width: 300px;
     }
 
-    .intro-icon {
-      width: 80px;
-      height: 80px;
+    .filter-icon img {
+      width: 36px;
+      height: 36px;
     }
 
-    .header-row-2 {
+    .filter-text {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Mobile - Stack vertically */
+  @media (max-width: 640px) {
+    .wizards-toolbar {
       flex-direction: column;
       align-items: stretch;
-      gap: 1rem;
+      gap: 0.75rem;
     }
 
     .search-wrapper {
       max-width: 100%;
     }
 
+    .category-filters-wrapper {
+      width: 100%;
+    }
+
+    .category-filters {
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
     .filter-icon img {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
+    }
+
+    .filter-text {
+      font-size: 0.7rem;
     }
   }
 
@@ -567,71 +581,10 @@ const description = "Browse all our knitting calculators and interactive tools t
     font-style: italic;
   }
 
-  /* Mobile Responsive */
-  @media (max-width: 1024px) {
+  /* Additional Mobile Responsive - Content Layout */
+  @media (max-width: 1023px) {
     .page-container {
       padding: 2rem 1rem;
-    }
-
-    .header-panel {
-      flex-direction: column;
-      text-align: center;
-      padding: 1.5rem;
-      gap: 1.25rem;
-    }
-
-    .intro-icon {
-      width: 120px;
-      height: 120px;
-    }
-
-    .intro-content {
-      min-width: unset;
-    }
-
-    .intro-tagline {
-      font-size: 1.1rem;
-    }
-
-    .intro-subtitle {
-      font-size: 0.95rem;
-      max-width: 100%;
-    }
-
-    .controls-wrapper {
-      width: 100%;
-      max-width: 100%;
-    }
-
-    .search-wrapper {
-      width: 100%;
-    }
-
-    .category-filters {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-    }
-
-    .filter-icon {
-      padding: 0.4rem 0.6rem;
-      margin: 0;
-    }
-
-    .filter-icon img {
-      width: 36px;
-      height: 36px;
-      transition: all 0.2s ease-in-out;
-    }
-
-    .filter-icon:hover img,
-    .filter-icon:active img {
-      transform: scale(1.05);
-    }
-
-    .filter-text {
-      font-size: 0.8rem;
     }
 
     :global(.category-section) {

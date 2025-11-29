@@ -1,0 +1,112 @@
+You are my AI pair programmer for my Knit by Machine Astro project.
+
+I’m working on the wizards catalog page – the one with the “Get knitting” header, the “Search wizards…” input, and the filter icons for Patterns / Tools / Skill Builders.
+
+The top section is too tall. I want the search bar and the filter icons on the same row, so the cards are visible sooner.
+
+Please make ONLY layout/styling changes for this page. Don’t touch any Workshops pages.
+
+1. Find the correct file
+
+Locate the page component that renders the Get knitting wizards catalog (the one with:
+
+heading “Get knitting”
+
+subheading “Patterns, tools, and skill builders to help you start your next project.”
+
+a “Search wizards…” field
+
+filter icons: Patterns, Tools, Skill Builders).
+
+Confirm in a comment which file you’re editing (for example: src/pages/wizards/index.astro or similar).
+
+2. Keep the header, but tighten it slightly
+
+Keep:
+
+The small hex knit icon
+
+The Get knitting H1
+
+The subheading text
+
+Reduce extra vertical margin above/below these elements so the hero area is a bit shorter, but don’t change the actual text or font sizes.
+
+3. Put search and filters on the SAME row
+
+Right now, the search bar is on its own row and the filters are below it.
+Change this so they share one row:
+
+Create a flex container that holds:
+
+Left: the search input
+
+Right: the three filter icon buttons (Patterns / Tools / Skill Builders)
+
+Example structure (adapt to the existing code):
+
+<div class="filter-bar">
+  <div class="filter-bar__search">
+    <!-- existing search input -->
+  </div>
+  <div class="filter-bar__filters">
+    <!-- existing icon buttons for Patterns / Tools / Skill Builders -->
+  </div>
+</div>
+
+
+Styling goals:
+
+.filter-bar:
+
+display: flex;
+
+align-items: center;
+
+justify-content: space-between;
+
+gap between search and filters
+
+.filter-bar__search:
+
+Let it grow, so the search bar takes most of the width (flex: 1; if needed).
+
+.filter-bar__filters:
+
+Display the three icon buttons in a row using flex:
+
+display: flex;
+
+gap between buttons
+
+Keep the icon look you already created (hex icon with label below or inside), just reuse the existing component/markup.
+
+4. Mobile behavior
+
+On small screens:
+
+Stack the row so it becomes:
+
+search on top
+
+filter icons below
+
+Implementation:
+
+For example, use responsive classes or media queries so:
+
+.filter-bar is flex-direction: column; on small screens
+
+and flex-direction: row; on medium+ screens
+
+Make sure there’s a reasonable gap between search and filters when stacked.
+
+5. Do NOT change the filtering logic
+
+The behavior should remain:
+
+Search filters the visible wizards
+
+Clicking Patterns / Tools / Skill Builders still switches the category
+
+Only adjust the layout/position of the existing UI.
