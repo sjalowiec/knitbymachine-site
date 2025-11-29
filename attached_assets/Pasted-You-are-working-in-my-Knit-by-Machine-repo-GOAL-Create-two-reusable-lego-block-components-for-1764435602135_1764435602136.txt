@@ -1,0 +1,151 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Create two reusable “lego block” components for displaying shaping instructions that I can use across patterns, wizards, and tools:
+
+1) ShapingCode – text-only shorthand block (sts / rows / times).
+2) ShapingDiagram – SVG diagram that shows a shaped piece plus ShapingCode.
+
+Do NOT integrate these into any existing page yet. Just create the components, fully styled and ready to reuse.
+
+--------------------------------
+TECH / LOCATION
+--------------------------------
+- This project uses Astro for UI.
+- Create the components under a shaping folder, for example:
+  - `src/components/shaping/ShapingCode.astro`
+  - `src/components/shaping/ShapingDiagram.astro`
+
+If my component paths use a different convention (e.g. `components/Wizards`), keep it consistent but still group them together logically.
+
+--------------------------------
+COMPONENT 1: ShapingCode.astro
+--------------------------------
+Purpose:
+- Display shaping shorthand in the fixed order: **sts – rows – times**.
+
+Props:
+- `steps`: Array of `{ sts: number; rows: number; times: number }`
+- `title?: string` – optional heading text. Default: `"Shaping shorthand (sts / rows / times)"`
+
+Behavior:
+- If `steps.length === 0`, render nothing.
+- Render a small heading using my normal small label style.
+- For each step, render a line:
+  - `${step.sts}–${step.rows}–${step.times}`
+- Under the list, render a tiny caption:
+  - `sts – rows – times`
+
+Layout / styling:
+- Use a simple vertical stack:
+  - heading
+  - lines of shorthand
+  - caption
+- Keep it compact; this should fit inside a results card without feeling heavy.
+- Use my existing text styles:
+  - Heading: same style as “SHAPING OPTIONS” or other small section labels.
+  - Shorthand numbers: slightly larger or bolder than body text.
+  - Caption: smaller and lighter.
+
+Implementation detail:
+- This component must NOT know anything about specific wizards. It receives data and just renders it.
+
+--------------------------------
+COMPONENT 2: ShapingDiagram.astro
+--------------------------------
+Purpose:
+- Visual diagram of a shaped piece + shorthand block.
+- Works for both “one side” shaping and “both sides” shaping.
+- Reuses ShapingCode internally.
+
+Props:
+- `startSts?: number`   // optional, starting stitch count
+- `endSts?: number`     // optional, ending stitch count
+- `mode: "one" | "both"`  // shaping on one side only vs both sides
+- `direction: "increase" | "decrease"` // shaping direction, for possible future mirroring
+- `steps: { sts: number; rows: number; times: number }[]`
+
+Behavior:
+- Always renders an SVG outline of the shaped piece plus ShapingCode.
+- Uses `mode` to choose between:
+  - “both” → symmetrical trapezoid (inward on both sides).
+  - “one” → trapezoid with only one angled side.
+- For now you can ignore `direction` visually (assume decreases); just accept the prop so it can be used later. If it’s easy, you may mirror the shape for “increase”, but that’s optional.
+
+SVG specifics:
+- Use inline SVG with `viewBox="0 0 260 200"`.
+- For `mode === "both"`:
+  - Draw a symmetrical trapezoid:
+    - Example polygon points: `"40,30 220,30 200,170 60,170"`
+- For `mode === "one"`:
+  - Draw a shape with one straight side and one angled side:
+    - Example polygon points: `"40,30 220,30 220,170 80,170"`
+- Style:
+  - `fill="none"`
+  - `stroke="#52682D"` (KBM dark green)
+  - `stroke-width="6"`
+  - `stroke-linejoin="round"`
+
+Text labels inside SVG:
+- Label “starting” near the wider end (bottom-left).
+  - If `startSts` is provided, show e.g. `"starting (20 sts)"`.
+- Label “end” near the narrower end (top-right).
+  - If `endSts` is provided, show e.g. `"end (10 sts)"`.
+- Place labels so they are clearly outside the shape, not on top of the stroke.
+
+Shorthand text inside SVG:
+- Pick a clear area to the right of the shape.
+- Add:
+  - Large text: `${sts}–${rows}–${times}` based on the FIRST element of `steps` (steps[0]).
+  - Small caption: `"sts – rows – times"` below it.
+- Font: browser default sans-serif is fine, but use consistent sizes:
+  - Numbers: ~24–28
+  - Caption: ~10–12
+
+If there is more than one step in `steps`, for now:
+- Use only `steps[0]` in the SVG.
+- The full array of steps will still be passed down to ShapingCode.
+
+Layout / wrapping:
+- Outside the SVG, wrap everything in a simple container:
+  - Center the SVG.
+  - Below or alongside the SVG, render `<ShapingCode steps={steps} />`.
+- On mobile, the SVG and ShapingCode can stack vertically.
+- On larger screens, ShapingCode can appear either below or right under the SVG. Keep it simple.
+
+Styling:
+- Ensure the SVG is responsive:
+  - `width: 100%` of its container
+  - Height determined by aspect ratio from the viewBox.
+- Space it with margin-top/margin-bottom consistent with other result elements.
+
+Import ShapingCode:
+- At the top of ShapingDiagram.astro:
+  - `import ShapingCode from "../shaping/ShapingCode.astro"` (adjust relative path based on real location).
+
+--------------------------------
+NO PAGE INTEGRATION YET
+--------------------------------
+Do NOT modify any wizard or pattern pages in this step.
+Just:
+
+1) Create `ShapingCode.astro`.
+2) Create `ShapingDiagram.astro`.
+3) Make sure they compile and can accept props as described.
+
+--------------------------------
+DEV NOTES / EXAMPLE USAGE
+--------------------------------
+At the bottom of `ShapingDiagram.astro` or in a comment, include an example of how it would be used:
+
+```astro
+<!-- Example usage (do not render this on a live page) -->
+<!--
+<ShapingDiagram
+  startSts={20}
+  endSts={10}
+  mode="both"
+  direction="decrease"
+  steps={[{ sts: 1, rows: 2, times: 20 }]}
+/>
+-->
