@@ -2,8 +2,8 @@
   "title": "Magic Formula by Measurement",
   "slug": "magic-formula-measurement",
   "hero": "Shape your knitting using real measurements instead of stitch counts.",
-  "description": "<p>Enter your starting and ending widths, your row length, and gauge to instantly see your shaping instructions. Perfect for knitters who think in inches and centimeters.</p>",
-  "excerpt": "Shape your knitting using real measurements instead of stitch counts. ",
+  "description": "<p>Shape your knitting the easy way. This calculator turns your measurements into clear shaping instructions - just enter your starting and ending widths, row length, and gauge. No formulas, no guesswork. You get clean, accurate shaping you can trust for sleeves, sides, and other gradual changes.</p>",
+  "excerpt": "Enter your widths, gauge, and row length, and get instant shaping instructions - no math needed.",
   "category": "tool",
   "tags": [],
   "videoUrl": "",
@@ -16,8 +16,28 @@
   "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
   "metaTitle": "",
   "metaDescription": "",
-  "schemaMarkup": null,
+  "schemaMarkup": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Magic Formula Shaping Calculator",
+    "alternateName": [
+      "Shaping Calculator",
+      "Knitting Shaping Tool",
+      "Magic Formula Tool"
+    ],
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": true,
+    "url": "https://knitbymachine.com/wizards/magic-formula",
+    "description": "A shaping calculator that turns your measurements into clear instructions. Enter your starting and ending widths, row length, and gauge to instantly generate accurate shaping guidance for sleeves, sides, and gradual shaping sections.",
+    "keywords": "shaping calculator, knitting shaping tool, magic formula, shaping instructions, decrease calculator, increase calculator, sleeve shaping, garment shaping, knitting math, gauge-based shaping, machine knitting shaping",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knit by Machine",
+      "url": "https://knitbymachine.com"
+    }
+  },
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
