@@ -17,9 +17,6 @@
   .kbm-menu,
   .kbm-hamburger,
   .kbm-search-wrap,
-  .kbm-search-input,
-  .kbm-search-btn,
-  .kbm-banner,
   .kbm-breadcrumb,
   .back-link,
   .video-button {
@@ -27,21 +24,13 @@
   }
 
   /* ========================================
-     HIDE: Forms, Inputs & Controls
+     HIDE: Interactive Input Elements
+     Only hide actual editable controls,
+     preserve all containers and labels
      ======================================== */
-  form,
-  .kbm-form,
-  .form-grid,
-  .form-row-2,
-  .form-row-3,
-  .input-grid,
-  .input-group,
-  .input-field,
-  .input-label,
-  .floating-input,
-  #wizard-form,
-  .tool-inputs,
-  .wizard-inputs {
+  input:not([readonly]):not([type="hidden"]),
+  select:not([disabled]),
+  textarea:not([readonly]) {
     display: none !important;
   }
 
@@ -52,6 +41,7 @@
   .copy-btn,
   .copy-button,
   .kbm-print-button,
+  .kbm-button,
   .breakdown-toggle,
   .units-toggle,
   .unit-btn,
@@ -61,9 +51,7 @@
   .kbm-actions,
   .kbm-control-bar,
   .kbm-card__footer,
-  .kbm-button,
   .section-divider,
-  .section-label,
   .no-print,
   button[type="submit"],
   button[type="button"]:not(.print-visible) {
@@ -136,7 +124,7 @@
   }
 
   /* ========================================
-     KBM CARDS: Show Results Only
+     KBM CARDS
      ======================================== */
   .kbm-card,
   .kbm-card--shadow {
@@ -170,18 +158,51 @@
 
   /* ========================================
      RESULTS SECTION: Always Visible
+     Explicitly ensure all result containers
+     are displayed for printing
      ======================================== */
   .results,
+  .results-section,
+  .results-container,
+  .results-card,
+  .result-card,
+  .result-item,
+  .result-grid,
   .tool-results,
   .kbm-tool-results,
-  .result-card,
-  .wizard-result-card {
+  .wizard-result-card,
+  .pattern-card,
+  .diagram-container,
+  #results {
     display: block !important;
-    border: 1px solid #52682D !important;
     box-shadow: none !important;
-    margin: 0 !important;
-    padding: 1.25rem !important;
     background: #ffffff !important;
+    color: #000000 !important;
+  }
+
+  /* Result containers with borders */
+  .results,
+  .results-section,
+  .pattern-card,
+  .result-card {
+    border: 1px solid #52682D !important;
+    padding: 1.25rem !important;
+    margin: 0 0 1rem 0 !important;
+  }
+
+  /* Result items and values */
+  .result-item,
+  .result-row {
+    display: flex !important;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .result-label {
+    font-weight: 600 !important;
+    margin-right: 0.5rem !important;
+  }
+
+  .result-value {
     color: #000000 !important;
   }
 
