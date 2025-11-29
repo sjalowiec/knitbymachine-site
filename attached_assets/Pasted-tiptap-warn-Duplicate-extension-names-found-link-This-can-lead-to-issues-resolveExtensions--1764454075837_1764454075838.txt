@@ -1,0 +1,36 @@
+tiptap warn]: Duplicate extension names found: ['link']. This can lead to issues.
+resolveExtensions @ chunk-ZFNBR4N4.js?v=4ee64096:13495Understand this warning
+client:223 [vite] hot updated: /src/pages/wizard-editor.tsx
+client:223 [vite] hot updated: /src/index.css?v=VAHWTVnTzvHwF89l3Jmcf
+wizard-editor.tsx:138 [DEBUG] existingEntry received: Object
+wizard-editor.tsx:139 [DEBUG] whyUseThisTool value: undefined
+chunk-ZFNBR4N4.js?v=4ee64096:13495 [tiptap warn]: Duplicate extension names found: ['link']. This can lead to issues.
+resolveExtensions @ chunk-ZFNBR4N4.js?v=4ee64096:13495Understand this warning
+wizard-editor.tsx:138 [DEBUG] existingEntry received: Object
+wizard-editor.tsx:139 [DEBUG] whyUseThisTool value: undefined
+tiptap-editor.tsx:54 [tiptap warn]: Duplicate extension names found: ['link']. This can lead to issues.
+resolveExtensions @ chunk-ZFNBR4N4.js?v=4ee64096:13495
+ExtensionManager @ chunk-ZFNBR4N4.js?v=4ee64096:15106
+createExtensionManager @ chunk-ZFNBR4N4.js?v=4ee64096:16269
+Editor @ chunk-ZFNBR4N4.js?v=4ee64096:16010
+createEditor @ @tiptap_react.js?v=4ee64096:629
+getInitialEditor @ @tiptap_react.js?v=4ee64096:561
+_EditorInstanceManager @ @tiptap_react.js?v=4ee64096:536
+(anonymous) @ @tiptap_react.js?v=4ee64096:760
+mountState @ chunk-RPCDYKBN.js?v=4ee64096:12005
+useState @ chunk-RPCDYKBN.js?v=4ee64096:12545
+useState @ chunk-QCHXOAYK.js?v=4ee64096:1066
+useEditor @ @tiptap_react.js?v=4ee64096:760
+TipTapEditor @ tiptap-editor.tsx:54
+renderWithHooks @ chunk-RPCDYKBN.js?v=4ee64096:11548
+mountIndeterminateComponent @ chunk-RPCDYKBN.js?v=4ee64096:14926
+beginWork @ chunk-RPCDYKBN.js?v=4ee64096:15914
+beginWork$1 @ chunk-RPCDYKBN.js?v=4ee64096:19753
+performUnitOfWork @ chunk-RPCDYKBN.js?v=4ee64096:19198
+workLoopSync @ chunk-RPCDYKBN.js?v=4ee64096:19137
+renderRootSync @ chunk-RPCDYKBN.js?v=4ee64096:19116
+performSyncWorkOnRoot @ chunk-RPCDYKBN.js?v=4ee64096:18874
+flushSyncCallbacks @ chunk-RPCDYKBN.js?v=4ee64096:9119
+(anonymous) @ chunk-RPCDYKBN.js?v=4ee64096:18627Understand this warning
+wizard-editor.tsx:138 [DEBUG] existingEntry received: {title: 'Gauge Difference Calculator', slug: 'gauge-difference', hero: 'See how your project grows (or shrinks) when your gauge changes — even by a little.', description: '<p>This tool shows how much your project can grow …gauge on sweaters, blankets, and any project.</p>', excerpt: 'A tiny change in gauge can make a big difference. …an dramatically change the width of your project.', …}
+wizard-editor.tsx:139 [DEBUG] whyUseThisTool value: undefined
