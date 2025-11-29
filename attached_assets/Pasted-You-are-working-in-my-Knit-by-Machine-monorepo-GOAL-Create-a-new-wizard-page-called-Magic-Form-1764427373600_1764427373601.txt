@@ -1,0 +1,156 @@
+You are working in my Knit by Machine monorepo.
+
+GOAL
+Create a new wizard page called “Magic Formula – Stitches & Rows” that looks and behaves like my existing wizards. Use the same “lego block” components, layout, and styling as the current Magic Formula / shaping wizard that is based on body measurements.
+
+GENERAL INSTRUCTIONS
+- Find my existing shaping wizard (the Magic Formula based on measurements) and treat it as the primary template for:
+  - Layout
+  - Typography
+  - Card structure
+  - Form field components
+  - Result display (summary text + optional table)
+- Create a NEW wizard that uses stitch counts and rows instead of body measurements.
+- Make sure this new wizard:
+  - Is responsive and matches my current wizard card styles and spacing.
+  - Uses my existing button, toggle, and input styles.
+  - Can be listed on my wizards catalog page like the others.
+
+ROUTING / FILES
+- Create a new page under the same section as my other wizards. For example:
+  - /wizards/magic-formula-stitches-rows
+- Name the main page file something consistent with the others, e.g.:
+  - `src/pages/wizards/magic-formula-stitches-rows.astro`
+- Re-use any shared “wizard layout” components I already have (for example WizardLayout, Card, FormField, etc. — use the actual names that exist in the repo).
+- If the other Magic Formula wizard uses a separate utility or helper file for calculations, add a new helper there instead of inlining complex logic.
+
+UI REQUIREMENTS
+The page should have:
+
+1. **Hero area / heading**
+   - Title: “Magic Formula – Stitches & Rows”
+   - Short tagline: “Turn stitch counts and rows into clear shaping instructions — no spreadsheet required.”
+   - Use the same hero style as the measurement-based Magic Formula wizard (same heading size, spacing, etc.).
+
+2. **Input form card**
+   Use my existing input components. The form needs these fields:
+
+   - Units toggle:
+     - Label: “Units”
+     - Options: “Inches”, “Centimeters”
+     - Default: Inches
+
+   - Starting stitch count:
+     - Label: “Starting stitch count”
+     - Type: number
+     - Helper: “Stitches at the beginning of the shaping section.”
+
+   - Ending stitch count:
+     - Label: “Ending stitch count”
+     - Type: number
+     - Helper: “Stitches at the end of the shaping section.”
+
+   - Total length in rows:
+     - Label: “Total length in rows”
+     - Type: number
+     - Helper: “Number of rows in the full shaping section.”
+
+   - Gauge – stitches:
+     - Label: “Gauge: stitches per [inch/cm]”
+     - Type: number
+     - Helper: Use the active unit label dynamically.
+
+   - Gauge – rows:
+     - Label: “Gauge: rows per [inch/cm]”
+     - Type: number
+     - Helper: Use the active unit label dynamically.
+
+   - Shaping side choice:
+     - Label: “Shape where?”
+     - Options (radio buttons or segmented toggle):
+       - “Shape one side only”
+       - “Shape both sides”
+     - Default: “Shape both sides”
+
+   - A primary button:
+     - Label: “Calculate shaping”
+
+3. **Validation / messages**
+   - If any required field is missing or <= 0, show a friendly inline error.
+   - If shaping both sides and the total number of stitches to change is not evenly divisible by 2, show a gentle warning like:
+     - “Note: The total stitch change isn’t even, so one side will have 1 more stitch change than the other.”
+     but still calculate the best distribution.
+
+CALCULATION LOGIC
+Implement the Magic Formula logic in a small helper function (either in the same file or a shared utility):
+
+Inputs to the helper:
+- startingSts (number)
+- endingSts (number)
+- totalRows (number)
+- stsGauge (number)  // sts per inch or cm
+- rowsGauge (number) // rows per inch or cm
+- units ("in" | "cm")
+- shapingMode ("one-side" | "both-sides")
+
+Derived values:
+- totalChange = Math.abs(startingSts - endingSts)
+- direction = startingSts > endingSts ? "decrease" : "increase"
+
+For shapingMode === "both-sides":
+- changesPerSide = totalChange / 2
+- If not an integer, floor it for one side, ceil for the other, and return information for both sides.
+
+For shapingMode === "one-side":
+- changesPerSide = totalChange  (all shaping is on one side)
+
+Spacing calculation (per side):
+- baseInterval = Math.floor(totalRows / changesPerSide)
+- extraRows = totalRows % changesPerSide
+
+Return a structure that lets the UI display:
+- A summary like: 
+  - “Decrease 1 stitch every [baseInterval] rows [changesPerSide - extraRows] times, then every [baseInterval + 1] rows [extraRows] times.”
+- And optionally a per-row breakdown as an array of steps:
+  - Each element includes:
+    - rowNumber
+    - action ("decrease 1 stitch" or "increase 1 stitch")
+    - which side ("each side", "right side only", etc. based on shapingMode)
+
+Approximate shaping length:
+- lengthInUnits = totalRows / rowsGauge
+- If units === "cm", compute using metric gauge or convert from inches as appropriate.
+- Return this so the UI can show:
+  - “This shaping spans about X.X inches/cm.”
+
+RESULT DISPLAY
+- Use the same result layout as the measurement-based Magic Formula wizard.
+- Show:
+  - A plain-language summary:
+    - “You are [increasing/decreasing] from [starting] to [ending] stitches over [totalRows] rows.”
+    - “Shape [one side / both sides].”
+  - The main Magic Formula instruction(s):
+    - For both sides: “On EACH side: decrease 1 stitch every X rows Y times, then every X+1 rows Z times.”
+    - For one side: “On ONE side: …”
+  - The approximate shaping length:
+    - “This shaping covers about X.X [inches/cm].”
+  - If the measurement-based wizard currently shows a detail table, add a similar collapsible “Row-by-row breakdown” table with the per-row instructions.
+
+INTEGRATION WITH WIZARDS CATALOG
+- Add this wizard to whatever data structure or JSON file powers my wizards catalog.
+- Title: “Magic Formula – Stitches & Rows”
+- Short description/excerpt: “Enter stitch counts and rows to instantly see how to space your shaping — one or both sides.”
+- Tags/keywords: reuse the same tags as the current Magic Formula wizard plus:
+  - "stitch-based shaping", "stitches and rows", "increase and decrease spacing"
+- Make sure it appears in the Knit/Tools wizard catalog grid using my standard card component and icon for tools.
+
+STYLE / ACCESSIBILITY
+- Match fonts, sizes, and spacing of the existing Magic Formula wizard.
+- Keep labels clear and visible.
+- Ensure the unit toggle and side-choice controls are keyboard accessible.
+- Keep everything inside my existing main content width and padding so it feels like part of the same system.
+
+When you’re done, summarize:
+1) The files you created or updated.
+2) Any helper utilities added or changed.
+3) How to access the new wizard route in the browser.
