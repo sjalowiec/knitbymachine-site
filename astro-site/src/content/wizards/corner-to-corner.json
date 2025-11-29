@@ -3,6 +3,7 @@
   "slug": "corner-to-corner",
   "hero": "this the tagline",
   "description": "<p>The Corner-to-Corner Blanket Wizard helps you plan a diagonal, bias-knit blanket from any yarn, any gauge, and any machine. Enter your finished size, yarn weight, and stitch/row gauge, and the wizard calculates shaping, needle counts, and the increase/decrease sequence for smooth edges and a perfect square or rectangle.<br>You can also explore variations, choose your construction style, and download a step sheet for your machine.</p><p>It’s a quick way to go from “I think I want to try this project” to “I know exactly how many stitches I need and how to knit it.”</p>",
+  "excerpt": "Unusual construction for a fast, fun blanket.",
   "category": "pattern",
   "tags": [
     "advanced",
@@ -35,5 +36,5 @@
   },
   "isDraft": false,
   "publishedDate": "2025-11-14",
-  "pendingPublish": false
+  "pendingPublish": true
 }
