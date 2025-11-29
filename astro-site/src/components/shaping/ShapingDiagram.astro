@@ -1,0 +1,229 @@
+---
+import ShapingCode from "./ShapingCode.astro";
+
+interface Step {
+  sts: number;
+  rows: number;
+  times: number;
+}
+
+interface Props {
+  startSts?: number;
+  endSts?: number;
+  mode: "one" | "both";
+  direction: "increase" | "decrease";
+  steps: Step[];
+}
+
+const { startSts, endSts, mode, direction, steps } = Astro.props;
+
+// Get polygon points based on mode
+// For decrease: wider at bottom (starting), narrower at top (ending)
+// For increase: narrower at bottom (starting), wider at top (ending)
+const isIncrease = direction === "increase";
+
+let polygonPoints: string;
+if (mode === "both") {
+  // Symmetrical trapezoid - shaping on both sides
+  if (isIncrease) {
+    // Narrow bottom, wide top
+    polygonPoints = "60,30 200,30 220,170 40,170";
+  } else {
+    // Wide bottom, narrow top
+    polygonPoints = "40,30 220,30 200,170 60,170";
+  }
+} else {
+  // One-sided trapezoid - shaping on one side only
+  if (isIncrease) {
+    // Left side angled (narrow bottom, wide top), right side straight
+    polygonPoints = "80,30 220,30 220,170 40,170";
+  } else {
+    // Left side angled (wide bottom, narrow top), right side straight
+    polygonPoints = "40,30 220,30 220,170 80,170";
+  }
+}
+
+// Get first step for SVG display
+const firstStep = steps.length > 0 ? steps[0] : null;
+
+// Label text
+const startLabel = startSts !== undefined ? `starting (${startSts} sts)` : "starting";
+const endLabel = endSts !== undefined ? `end (${endSts} sts)` : "end";
+
+// Label positions - for decrease, starting is at bottom (wider), end is at top (narrower)
+// For increase, it's reversed
+const startingY = isIncrease ? 25 : 185;
+const endY = isIncrease ? 185 : 25;
+---
+
+<div class="shaping-diagram-container">
+  <div class="shaping-diagram-svg-wrapper">
+    <svg 
+      viewBox="0 0 260 200" 
+      class="shaping-diagram-svg"
+      aria-label={`Shaping diagram showing ${direction} from ${startSts || '?'} to ${endSts || '?'} stitches on ${mode === 'both' ? 'both sides' : 'one side'}`}
+    >
+      <!-- Main shape outline -->
+      <polygon
+        points={polygonPoints}
+        fill="none"
+        stroke="#52682D"
+        stroke-width="6"
+        stroke-linejoin="round"
+      />
+      
+      <!-- Starting label (at wider end) -->
+      <text 
+        x="30" 
+        y={startingY}
+        class="diagram-label"
+        fill="#6b7280"
+      >
+        {startLabel}
+      </text>
+      
+      <!-- End label (at narrower end) -->
+      <text 
+        x="230" 
+        y={endY}
+        class="diagram-label"
+        text-anchor="end"
+        fill="#6b7280"
+      >
+        {endLabel}
+      </text>
+      
+      <!-- Shaping shorthand inside the shape -->
+      {firstStep && (
+        <g class="diagram-shorthand">
+          <text 
+            x="130" 
+            y="95"
+            text-anchor="middle"
+            class="diagram-shorthand-numbers"
+            fill="#1f2937"
+          >
+            {firstStep.sts}–{firstStep.rows}–{firstStep.times}
+          </text>
+          <text 
+            x="130" 
+            y="115"
+            text-anchor="middle"
+            class="diagram-shorthand-caption"
+            fill="#6b7280"
+          >
+            sts – rows – times
+          </text>
+        </g>
+      )}
+    </svg>
+  </div>
+  
+  <!-- Full shorthand breakdown below the diagram -->
+  {steps.length > 0 && (
+    <div class="shaping-diagram-code">
+      <ShapingCode steps={steps} />
+    </div>
+  )}
+</div>
+
+<style>
+  .shaping-diagram-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+  }
+
+  .shaping-diagram-svg-wrapper {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .shaping-diagram-svg {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .diagram-label {
+    font-size: 11px;
+    font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .diagram-shorthand-numbers {
+    font-size: 24px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .diagram-shorthand-caption {
+    font-size: 10px;
+    font-family: system-ui, -apple-system, sans-serif;
+    font-style: italic;
+  }
+
+  .shaping-diagram-code {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  /* Responsive: on larger screens, can adjust layout if needed */
+  @media (min-width: 640px) {
+    .shaping-diagram-container {
+      gap: 1.25rem;
+    }
+    
+    .shaping-diagram-svg-wrapper {
+      max-width: 320px;
+    }
+    
+    .shaping-diagram-code {
+      max-width: 320px;
+    }
+  }
+</style>
+
+<!--
+===========================================
+EXAMPLE USAGE (do not render on a live page)
+===========================================
+
+Basic decrease on both sides:
+<ShapingDiagram
+  startSts={20}
+  endSts={10}
+  mode="both"
+  direction="decrease"
+  steps={[{ sts: 1, rows: 2, times: 20 }]}
+/>
+
+Increase on one side only:
+<ShapingDiagram
+  startSts={10}
+  endSts={20}
+  mode="one"
+  direction="increase"
+  steps={[{ sts: 1, rows: 4, times: 10 }]}
+/>
+
+Multiple steps (complex shaping):
+<ShapingDiagram
+  startSts={40}
+  endSts={20}
+  mode="both"
+  direction="decrease"
+  steps={[
+    { sts: 1, rows: 2, times: 5 },
+    { sts: 1, rows: 4, times: 5 }
+  ]}
+/>
+
+Without stitch counts (just the shape):
+<ShapingDiagram
+  mode="both"
+  direction="decrease"
+  steps={[{ sts: 1, rows: 3, times: 10 }]}
+/>
+-->
