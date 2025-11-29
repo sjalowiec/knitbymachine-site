@@ -2,9 +2,29 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintButton from "../../components/common/PrintButton.astro";
+import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
 
 const pageTitle = "Magic Formula – Stitches & Rows | Knit by Machine";
 const pageDescription = "Turn stitch counts and rows into clear shaping instructions — no spreadsheet required. Calculate your increase or decrease spacing instantly.";
+
+// Fetch wizard metadata at build time
+const wizardSlug = 'magic-formula-stitches-rows';
+let whyUseThisTool = '';
+
+try {
+  const response = await fetch(`https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/astro-site/src/content/wizards/${wizardSlug}.json`);
+  if (response.ok) {
+    const fileData = await response.json();
+    // Use download_url to get raw JSON directly (avoids base64 decoding)
+    const contentResponse = await fetch(fileData.download_url);
+    if (contentResponse.ok) {
+      const wizardData = await contentResponse.json();
+      whyUseThisTool = wizardData.whyUseThisTool || '';
+    }
+  }
+} catch (e) {
+  // Silently fail - tooltip just won't show
+}
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -517,9 +537,13 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
   <div class="page-header">
     <div class="page-header-title">
       <h1>Magic Formula – Stitches & Rows</h1>
-      <button class="video-button" data-testid="button-watch-tutorial" onclick="alert('Video tutorial coming soon!')">
-        <i class="fas fa-play-circle"></i> Watch Tutorial
-      </button>
+      {whyUseThisTool ? (
+        <WhyUseThisToolTooltip text={whyUseThisTool} variant="inline" />
+      ) : (
+        <button class="video-button" data-testid="button-watch-tutorial" onclick="alert('Video tutorial coming soon!')">
+          <i class="fas fa-play-circle"></i> Watch Tutorial
+        </button>
+      )}
     </div>
     <p>
       Turn stitch counts and rows into clear shaping instructions — no spreadsheet required.
