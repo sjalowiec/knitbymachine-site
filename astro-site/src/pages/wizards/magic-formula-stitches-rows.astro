@@ -857,10 +857,15 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
     const startingSts = parseInt(startingStitchesInput.value);
     const endingSts = parseInt(endingStitchesInput.value);
     const totalRows = parseInt(totalRowsInput.value);
-    const stsGauge = parseFloat(stitchGaugeInput.value);
-    const rowsGauge = parseFloat(rowGaugeInput.value);
+    const stsGaugeRaw = parseFloat(stitchGaugeInput.value);
+    const rowsGaugeRaw = parseFloat(rowGaugeInput.value);
     const shapingMode = document.querySelector('.icon-toggle.active').dataset.value === 'both' ? 'both-sides' : 'one-side';
     const units = useCm ? 'cm' : 'in';
+
+    // Convert gauge from 4"/10cm to per-unit values
+    const gaugeDivisor = useCm ? 10 : 4;
+    const stsGauge = stsGaugeRaw / gaugeDivisor;
+    const rowsGauge = rowsGaugeRaw / gaugeDivisor;
 
     // Calculate shaping
     const result = calculateShaping({
