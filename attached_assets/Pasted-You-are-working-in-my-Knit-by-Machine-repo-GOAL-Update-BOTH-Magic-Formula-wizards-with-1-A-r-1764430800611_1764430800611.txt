@@ -1,0 +1,140 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Update BOTH Magic Formula wizards with:
+1) A responsive grid layout for the form fields.
+2) Compact floating-label inputs.
+3) Replace the “Both sides / One side only” segmented buttons with my new SVG icon toggle buttons.
+4) Reduce excess vertical padding and tighten the overall layout so the page feels more compact and modern.
+
+WIZARDS TO UPDATE (BOTH):
+A. Magic Formula – by Measurement
+B. Magic Formula – Stitches & Rows
+
+WHERE TO WORK
+- Find both wizard pages under `src/pages/wizards/...`
+- If they share any components (form fields, shaping controls, cards), update the shared components.
+- If not, apply identical updates to each page.
+
+---------------------------------------------
+RESPONSIVE GRID REQUIREMENTS (BOTH WIZARDS)
+---------------------------------------------
+Keep the unit toggle at full width at top.
+
+Below that, convert fields to a grid:
+
+Row 1 (md+ screens):
+- Starting width  |  Ending width
+
+Row 2 (lg screens):
+- Total length | Stitches per unit | Rows per unit
+
+Mobile:
+- All fields stacked full width.
+
+Medium screens:
+- Use 2 columns.
+
+Large screens:
+- Use 2 columns in row 1, 3 columns in row 2.
+
+Use existing KBM spacing utilities, but **reduce unnecessary gaps** (see “Tighten Vertical Spacing” below).
+
+---------------------------------------------
+FLOATING LABEL INPUTS (BOTH WIZARDS)
+---------------------------------------------
+Replace placeholder-only fields with floating-label inputs:
+
+- Labels:
+  - Starting width
+  - Ending width
+  - Total length
+  - Stitches per [inch/cm]
+  - Rows per [inch/cm]
+
+- Units update dynamically when user switches between inches/cm.
+
+Floating-label behavior:
+- Label appears inside input when empty.
+- Label moves upward and shrinks when focused or filled.
+- Keep all inputs visually consistent with other wizards (border radius, font size, KBM color palette).
+
+---------------------------------------------
+REPLACE SHAPING BUTTONS WITH SVG ICON TOGGLES
+---------------------------------------------
+Remove existing button row:
+  [ Both sides ]  [ One side only ]
+
+Replace with **two icon-based toggle buttons**:
+
+SVG paths:
+- Both sides: `/images/both-sides-choice.svg`
+- One side: `/images/one-side-choice.svg`
+
+Each icon toggle must:
+- Be a clickable button
+- Have its own active/inactive state
+- Update the same shapeMode variable used previously
+
+Inactive state:
+- White background
+- 2px KBM green border (#52682D)
+- Icon stroke = KBM green
+
+Active state:
+- KBM dark green background (#52682D)
+- Border blends into background
+- Icon stroke = white
+
+Labels below icons (small text):
+- Under both-sides icon: “Both sides”
+- Under one-side icon: “One side”
+
+Layout:
+- Icons placed side-by-side with a small horizontal gap
+- Center the entire control within the section
+- Make sure the section looks compact and not overly tall
+
+---------------------------------------------
+REDUCE VERTICAL SPACING (“TIGHTEN UP” THE PAGE)
+---------------------------------------------
+The current pages have too much empty vertical padding. Fix this throughout BOTH wizards:
+
+1. **Reduce vertical padding inside section wrappers**  
+   - Decrease top/bottom padding in the card container  
+   - Reduce the space before section headings (like “MEASUREMENTS”, “LENGTH & GAUGE”, “SHAPING OPTIONS”)
+
+2. **Reduce spacing between input rows**  
+   - Decrease margin-bottom between stacked fields  
+   - Reduce row gaps in grid from large (e.g. gap-8) to medium (gap-4 or gap-3)
+
+3. **Reduce spacing above/below toggles**  
+   - The Inches/Centimeters toggle should sit closer to the form, not floating with large padding  
+   - The Shaping Options section should have minimal top padding so the icon toggles sit near the preceding field grid
+
+4. **Condense dividing lines**  
+   - Reduce vertical spacing above and below HR lines (or remove unnecessary HRs)
+
+5. **Condense the distance above the Calculate button**  
+   - Bring the Calculate button closer to the shaping options  
+   - Keep visual breathing space, but tighten to around 1–1.5rem max
+
+6. **Keep typography readable**  
+   - No reduction in font size, only spacing  
+
+The end result should feel:
+- clean  
+- compact  
+- modern  
+- with far less vertical scrolling
+
+WITHOUT breaking the visual style of your other wizards.
+
+---------------------------------------------
+DO NOT CHANGE
+---------------------------------------------
+- Any Magic Formula logic or calculations  
+- Any validation  
+- Any result display logic  
+
+This task affects ONLY layout, spacing, and UI elements.
