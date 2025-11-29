@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
+import PrintButton from "../../components/common/PrintButton.astro";
 
 const pageTitle = "Magic Formula by Measurement | Knit by Machine";
 const pageDescription = "Calculate shaping with the Magic Formula using measurements. Enter your starting and ending widths and gauge to create clear knitting instructions.";
@@ -622,9 +623,12 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
         </div>
       </div>
       
-      <button id="copyBtn" class="copy-btn" data-testid="button-copy">
-        <i class="fas fa-copy"></i> Copy Instructions
-      </button>
+      <div class="results-actions" style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+        <button id="copyBtn" class="copy-btn" data-testid="button-copy">
+          <i class="fas fa-copy"></i> Copy Instructions
+        </button>
+        <PrintButton />
+      </div>
     </div>
   </div>
 </div>
