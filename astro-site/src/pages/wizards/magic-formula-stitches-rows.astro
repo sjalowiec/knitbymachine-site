@@ -630,6 +630,7 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
   </div>
 </div>
 
+<script src="/js/generateRowByRow.js"></script>
 <script is:inline>
   // ========== MAGIC FORMULA CALCULATION HELPER ==========
   
@@ -700,19 +701,18 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
     const extraRows = totalRows % primaryCount;
     
     // Build row-by-row breakdown with running stitch totals
-    const breakdown = [];
-    let currentRow = 0;
-    let currentStitches = startingSts; // Track running stitch total
+    let breakdown = [];
     let timesAtBase = primaryCount - extraRows;
     let timesAtLonger = extraRows;
-    
-    // Determine stitch change per action
-    const isDecrease = direction === 'decrease';
     
     // Generate breakdown steps
     if (shapingMode === 'both-sides' && unevenWarning) {
       // Asymmetric case: one side has more changes than the other
-      // Schedule all rows for both sides, then note the asymmetry
+      // This requires custom logic because the last shaping is on one side only
+      let currentRow = 0;
+      let currentStitches = startingSts;
+      const isDecrease = direction === 'decrease';
+      
       for (let i = 0; i < rightSideChanges; i++) {
         const useLonger = i < timesAtLonger;
         const interval = useLonger ? (baseInterval + 1) : baseInterval;
@@ -723,41 +723,41 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
           currentStitches = isDecrease ? currentStitches - 2 : currentStitches + 2;
           breakdown.push({
             rowNumber: currentRow,
-            action: `${direction} 1 stitch`,
-            location: 'each side',
-            totalStitches: currentStitches
+            action: `${direction === 'decrease' ? 'Decrease' : 'Increase'} 1 stitch`,
+            location: 'Both sides',
+            stitchesAfter: currentStitches
           });
         } else {
           // This extra row only applies to right side - 1 stitch changed
           currentStitches = isDecrease ? currentStitches - 1 : currentStitches + 1;
           breakdown.push({
             rowNumber: currentRow,
-            action: `${direction} 1 stitch`,
-            location: 'right side only (extra)',
-            totalStitches: currentStitches
+            action: `${direction === 'decrease' ? 'Decrease' : 'Increase'} 1 stitch`,
+            location: 'Right side only (extra)',
+            stitchesAfter: currentStitches
           });
         }
       }
     } else {
-      // Symmetric case or one-side mode
-      const stitchChangePerAction = shapingMode === 'both-sides' ? 2 : 1;
+      // Symmetric case or one-side mode: use the reusable utility
+      const mode = shapingMode === 'both-sides' ? 'both' : 'one';
       
-      for (let i = 0; i < changesPerSide; i++) {
-        const useLonger = i < timesAtLonger;
-        const interval = useLonger ? (baseInterval + 1) : baseInterval;
-        currentRow += interval;
-        
-        currentStitches = isDecrease 
-          ? currentStitches - stitchChangePerAction 
-          : currentStitches + stitchChangePerAction;
-        
-        breakdown.push({
-          rowNumber: currentRow,
-          action: `${direction} 1 stitch`,
-          location: shapingMode === 'both-sides' ? 'each side' : 'one side only',
-          totalStitches: currentStitches
-        });
+      // Build steps array for the utility (longer intervals first for proper row distribution)
+      const breakdownSteps = [];
+      if (timesAtLonger > 0) {
+        breakdownSteps.push({ sts: 1, rows: baseInterval + 1, times: timesAtLonger });
       }
+      if (timesAtBase > 0) {
+        breakdownSteps.push({ sts: 1, rows: baseInterval, times: timesAtBase });
+      }
+      
+      // Use the reusable generateRowByRow utility
+      breakdown = window.generateRowByRow({
+        startingStitches: startingSts,
+        steps: breakdownSteps,
+        shapingMode: mode,
+        direction: direction
+      });
     }
     
     // Calculate approximate length
@@ -1156,9 +1156,9 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
       const row = document.createElement('tr');
       row.innerHTML = `
         <td>Row ${step.rowNumber}</td>
-        <td>${step.action.charAt(0).toUpperCase() + step.action.slice(1)}</td>
-        <td>${step.location.charAt(0).toUpperCase() + step.location.slice(1)}</td>
-        <td>${step.totalStitches}</td>
+        <td>${step.action}</td>
+        <td>${step.location}</td>
+        <td>${step.stitchesAfter}</td>
       `;
       breakdownBody.appendChild(row);
     });
