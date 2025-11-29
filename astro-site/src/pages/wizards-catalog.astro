@@ -800,6 +800,12 @@ const description = "Browse all our knitting calculators and interactive tools t
               const keywordsStr = Array.isArray(entry.keywords) ? entry.keywords.join(' ').toLowerCase() : '';
               const aliasesStr = Array.isArray(entry.aliases) ? entry.aliases.join(' ').toLowerCase() : '';
               
+              // Determine which icon to show: category icon for skill builders, or entry's own icon
+              const isSkillBuilder = entry.category.toLowerCase() === 'skill builder';
+              const cardIcon = isSkillBuilder 
+                ? '/images/practice-icon-light.svg'
+                : entry.iconUrl;
+              
               return `
                 <a href="${basePath}/${entry.slug}"
                   class="wizard-card"
@@ -807,7 +813,7 @@ const description = "Browse all our knitting calculators and interactive tools t
                   data-tags="${entry.tags.join(' ').toLowerCase()}"
                   data-keywords="${keywordsStr}"
                   data-aliases="${aliasesStr}">
-                  ${entry.iconUrl ? `<img src="${entry.iconUrl}" alt="${entry.title} icon" class="wizard-card-icon" />` : ''}
+                  ${cardIcon ? `<img src="${cardIcon}" alt="${isSkillBuilder ? 'Skill Builder' : entry.title} icon" class="wizard-card-icon" />` : ''}
                   <h3 class="wizard-card-title">${entry.title}</h3>
                   ${entry.excerpt ? `<p class="wizard-card-description">${entry.excerpt}</p>` : ''}
                   ${entry.accessLevel !== 'free' ? `<span class="wizard-card-badge ${badgeClass}">${badgeText}</span>` : ''}
