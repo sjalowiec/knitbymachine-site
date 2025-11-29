@@ -1,11 +1,13 @@
 {
   "title": "Magic Formula by Measurement",
   "slug": "magic-formula-measurement",
-  "hero": "Shape your knitting using real measurements instead of stitch counts.",
+  "hero": "Shape your knitting using real instead of stitch counts.",
   "description": "<p>Shape your knitting the easy way. This calculator turns your measurements into clear shaping instructions - just enter your starting and ending widths, row length, and gauge. No formulas, no guesswork. You get clean, accurate shaping you can trust for sleeves, sides, and other gradual changes.</p>",
   "excerpt": "Enter your widths, gauge, and row length, and get instant shaping instructions - no math needed.",
   "category": "tool",
   "tags": [],
+  "keywords": [],
+  "aliases": [],
   "videoUrl": "",
   "accessLevel": "free",
   "price": "",
@@ -39,5 +41,5 @@
   },
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
