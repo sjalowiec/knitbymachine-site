@@ -550,13 +550,13 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
             <input 
               type="number" 
               id="stitchGauge" 
-              step="0.1" 
-              min="0.1"
-              placeholder=" "
+              step="1" 
+              min="1"
+              placeholder="16"
               required
               data-testid="input-stitch-gauge"
             />
-            <label for="stitchGauge" id="stitchGaugeLabel">Stitches per inch</label>
+            <label for="stitchGauge" id="stitchGaugeLabel">Stitches in 4 inches</label>
             <span class="error-text" id="stitchGaugeError">Please enter a valid gauge.</span>
           </div>
 
@@ -564,13 +564,13 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
             <input 
               type="number" 
               id="rowGauge" 
-              step="0.1" 
-              min="0.1"
-              placeholder=" "
+              step="1" 
+              min="1"
+              placeholder="24"
               required
               data-testid="input-row-gauge"
             />
-            <label for="rowGauge" id="rowGaugeLabel">Rows per inch</label>
+            <label for="rowGauge" id="rowGaugeLabel">Rows in 4 inches</label>
             <span class="error-text" id="rowGaugeError">Please enter a valid gauge.</span>
           </div>
         </div>
@@ -773,10 +773,10 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
   let useCm = false;
 
   function updateLabels() {
-    const unitPer = useCm ? 'cm' : 'inch';
+    const gaugeUnit = useCm ? '10 cm' : '4 inches';
     
-    document.getElementById('stitchGaugeLabel').textContent = `Stitches per ${unitPer}`;
-    document.getElementById('rowGaugeLabel').textContent = `Rows per ${unitPer}`;
+    document.getElementById('stitchGaugeLabel').textContent = `Stitches in ${gaugeUnit}`;
+    document.getElementById('rowGaugeLabel').textContent = `Rows in ${gaugeUnit}`;
   }
 
   // Load saved unit preference
