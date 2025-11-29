@@ -784,24 +784,33 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
     const isIncrease = direction === 'increase';
     
     // Get polygon points based on mode and direction
+    // Points order: top-left, top-right, bottom-right, bottom-left
+    // For decrease: wide at bottom (starting), narrow at top (ending)
+    // For increase: narrow at bottom (starting), wide at top (ending)
+    // For one-side: angled line is on the RIGHT side to match the icon
     let polygonPoints;
     if (mode === 'both') {
       if (isIncrease) {
-        polygonPoints = '60,30 200,30 220,170 40,170'; // Narrow bottom, wide top
+        // Increase: narrow bottom, wide top (symmetrical)
+        polygonPoints = '40,30 220,30 200,170 60,170';
       } else {
-        polygonPoints = '40,30 220,30 200,170 60,170'; // Wide bottom, narrow top
+        // Decrease: wide bottom, narrow top (symmetrical)
+        polygonPoints = '60,30 200,30 220,170 40,170';
       }
     } else {
+      // One-side mode: angled line on RIGHT side, left side straight
       if (isIncrease) {
-        polygonPoints = '80,30 220,30 220,170 40,170'; // One-sided increase
+        // Increase: narrow bottom-right, wide top-right
+        polygonPoints = '40,30 220,30 180,170 40,170';
       } else {
-        polygonPoints = '40,30 220,30 220,170 80,170'; // One-sided decrease
+        // Decrease: wide bottom-right, narrow top-right
+        polygonPoints = '40,30 180,30 220,170 40,170';
       }
     }
     
-    // Label positions
-    const startingY = isIncrease ? 25 : 185;
-    const endY = isIncrease ? 185 : 25;
+    // Label positions - starting is always at bottom, ending at top
+    const startingY = 185;
+    const endY = 25;
     const startLabel = `starting (${startSts} sts)`;
     const endLabel = `end (${endSts} sts)`;
     
