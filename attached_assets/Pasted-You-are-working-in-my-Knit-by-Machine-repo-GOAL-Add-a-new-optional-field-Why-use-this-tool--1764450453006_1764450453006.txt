@@ -1,0 +1,137 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Add a new optional field, “Why use this tool?”, to ALL wizard records in my admin/database and surface it in TWO places:
+
+1) On the WIZARD CATALOG page (tool cards).
+2) On EACH WIZARD DETAIL page (replacing the “Watch Tutorial” button/spot with a small “Why use this tool?” helper).
+
+If there is no value in this field for a given wizard, the UI should simply NOT render the helper. No errors, no empty boxes.
+
+Name the field in code: `whyUseThisTool`
+
+------------------------------------------------------------------
+PART 1 — Add `whyUseThisTool` to the wizard data model + admin UI
+------------------------------------------------------------------
+1. Locate the wizard content model / schema used for all my tools, in the KnitContent manager app. This is the same place that currently defines fields like:
+   - title
+   - slug
+   - shortDescription / excerpt
+   - category
+   - etc.
+
+2. Add a new OPTIONAL field:
+   - Field name (code): `whyUseThisTool`
+   - Type: string / text (longer than a one-liner; allow ~200 characters)
+   - Label in admin: “Why use this tool?”
+   - Help text in admin: “1–2 sentences that explain when and why a knitter would use this wizard. WIFM style.”
+
+3. Update the admin form for wizard records so this field appears in a sensible place (e.g. under the description/excerpt).
+
+4. Ensure this field is included in whatever data structure is used to send wizard data to the frontend (e.g. JSON, TypeScript type, etc.), but keep it optional.
+
+------------------------------------------------------------------
+PART 2 — Surface `whyUseThisTool` on the wizard CATALOG page
+------------------------------------------------------------------
+1. Locate the wizard catalog page that lists all wizards/tools (the page under KNIT that shows cards like “Gauge Calculator”, “Gauge Conversion Calculator”, etc.).
+
+2. In the code that renders each wizard card, make `whyUseThisTool` available from the data model.
+
+3. Add a small, unobtrusive “Why use this tool?” helper tied to this field.
+
+Implementation pattern:
+
+- Under the card description, add either:
+  - a small text link “Why use this tool?” that opens a tooltip/popover, OR
+  - an “info” icon (ⓘ) with a tooltip.
+
+Suggested structure (adjust to your component system):
+
+```astro
+{wizard.whyUseThisTool && (
+  <WhyUseThisToolTooltip text={wizard.whyUseThisTool} />
+)}
+Create a simple reusable component if needed, e.g.:
+
+src/components/common/WhyUseThisToolTooltip.astro
+
+This component should:
+
+Render a small “Why use this tool?” link or ⓘ icon.
+
+On hover (desktop) or tap (mobile), show a small tooltip box with the text from props.text.
+
+Use KBM styling: white background, thin green border, subtle shadow, rounded corners.
+
+Be compact so it doesn’t make the card taller when closed.
+
+IMPORTANT:
+
+If wizard.whyUseThisTool is missing or empty, render nothing at all. No placeholder text.
+
+PART 3 — Surface whyUseThisTool on ALL wizard DETAIL pages
+Locate the wizard detail page template used for individual tools (the page that currently shows the “Watch Tutorial” button for Magic Formula, etc.). This is likely src/pages/wizards/[slug].astro or a similar component.
+
+Identify the existing “Watch Tutorial” UI (button or link) on the wizard detail page(s). We will repurpose that space.
+
+Replace that “Watch Tutorial” element with a “Why use this tool?” helper that uses whyUseThisTool:
+
+If whyUseThisTool is present:
+
+Render a small, right-aligned helper near the top of the page (close to the title/intro).
+
+Use text or icon like: “ⓘ Why use this tool?”
+
+On click/tap, show a small popover with the whyUseThisTool text.
+
+If whyUseThisTool is missing:
+
+Render nothing. The layout should still look good without it.
+
+You may reuse the same component as the catalog (WhyUseThisToolTooltip) or create a variant that behaves like a popover. Keep it compact; do NOT introduce a modal or large block of text.
+
+Suggested usage:
+
+astro
+Copy code
+{wizard.whyUseThisTool && (
+  <WhyUseThisToolInline text={wizard.whyUseThisTool} />
+)}
+Where WhyUseThisToolInline:
+
+Renders inline with the title or below it.
+
+Shows the text in a small popover on click/tap.
+
+Ensure this change applies to ALL wizard detail pages, not just Magic Formula. Any wizard that has whyUseThisTool filled in should get this behavior automatically.
+
+PART 4 — Make the field OPTIONAL everywhere
+In the TypeScript types / interfaces for wizards, mark whyUseThisTool as optional.
+
+In both the catalog and detail page components, guard all usage with a simple truthy check:
+
+If no data, do not render the tooltip/popover at all.
+
+No errors, no empty boxes, no “undefined” text.
+
+PART 5 — Styling & UX
+Keep the helper very lightweight:
+
+small font
+
+secondary/neutral color
+
+uses my existing font and spacing scale
+
+Tooltip/popover should not shift the layout dramatically.
+
+Ensure tap/hover behavior works on both mobile and desktop.
+
+Ensure that the card grid doesn’t get taller just because the tooltip exists.
+
+DO NOT CHANGE
+Do not remove or alter titles, slugs, or main descriptions.
+
+Do not change any calculation logic for the tools.
+
+Do not add any intrusive modals.
