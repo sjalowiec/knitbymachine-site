@@ -29,6 +29,8 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
           description: data.description || '',
           category: data.category || 'Uncategorized',
           tags: data.tags || [],
+          keywords: data.keywords || [],
+          aliases: data.aliases || [],
           accessLevel: data.accessLevel || 'free',
           price: data.price || '',
           isDraft: data.isDraft,
@@ -799,11 +801,16 @@ const description = "Browse all our knitting calculators and interactive tools t
               // Use /agents/ path for agent entries, /wizards/ for wizard entries
               const basePath = entry.entryType === 'agent' ? '/agents' : '/wizards';
               
+              const keywordsStr = Array.isArray(entry.keywords) ? entry.keywords.join(' ').toLowerCase() : '';
+              const aliasesStr = Array.isArray(entry.aliases) ? entry.aliases.join(' ').toLowerCase() : '';
+              
               return `
                 <a href="${basePath}/${entry.slug}"
                   class="wizard-card"
                   data-title="${entry.title.toLowerCase()}"
-                  data-tags="${entry.tags.join(' ').toLowerCase()}">
+                  data-tags="${entry.tags.join(' ').toLowerCase()}"
+                  data-keywords="${keywordsStr}"
+                  data-aliases="${aliasesStr}">
                   ${entry.iconUrl ? `<img src="${entry.iconUrl}" alt="${entry.title} icon" class="wizard-card-icon" />` : ''}
                   <h3 class="wizard-card-title">${entry.title}</h3>
                   ${entry.excerpt ? `<p class="wizard-card-description">${entry.excerpt}</p>` : ''}
@@ -849,6 +856,23 @@ const description = "Browse all our knitting calculators and interactive tools t
     });
   }
 
+  function matchesQuery(card, query) {
+    if (!query) return true;
+    const q = query.toLowerCase();
+    
+    const title = card.dataset.title || '';
+    const tags = card.dataset.tags || '';
+    const keywords = card.dataset.keywords || '';
+    const aliases = card.dataset.aliases || '';
+    
+    const inTitle = title.includes(q);
+    const inTags = tags.includes(q);
+    const inKeywords = keywords.includes(q);
+    const inAliases = aliases.includes(q);
+    
+    return inTitle || inTags || inKeywords || inAliases;
+  }
+
   function filterCatalogue(searchTerm) {
     const term = searchTerm.toLowerCase().trim();
     const sections = document.querySelectorAll('.category-section');
@@ -858,9 +882,7 @@ const description = "Browse all our knitting calculators and interactive tools t
       let hasVisibleCards = false;
 
       cards.forEach(card => {
-        const title = card.dataset.title;
-        const tags = card.dataset.tags;
-        const matches = title.includes(term) || tags.includes(term);
+        const matches = matchesQuery(card, term);
 
         if (matches) {
           card.classList.remove('card-hidden');
