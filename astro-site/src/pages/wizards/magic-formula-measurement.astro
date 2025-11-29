@@ -522,22 +522,6 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
     document.getElementById('rowGaugeLabel').textContent = `Rows in ${gaugeUnit}`;
   }
 
-  // Build ShapingCode HTML (Japanese notation: sts-rows-times)
-  function buildShapingCodeHtml(steps) {
-    if (!steps || steps.length === 0) return '';
-    
-    let html = '<div class="shaping-code" style="margin-top: 1.25rem;">';
-    html += '<div style="font-size: 0.75rem; font-weight: 600; color: var(--kbm-green, #52682d); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.25rem;">Shaping shorthand (sts / rows / times)</div>';
-    html += '<div style="display: flex; flex-direction: column; gap: 0.125rem;">';
-    steps.forEach(step => {
-      html += `<div style="font-size: 1.125rem; font-weight: 600; color: #1f2937; font-family: 'JetBrains Mono', monospace; letter-spacing: 0.02em;">${step.sts}–${step.rows}–${step.times}</div>`;
-    });
-    html += '</div>';
-    html += '<div style="font-size: 0.7rem; color: #6b7280; margin-top: 0.25rem; font-style: italic;">sts – rows – times</div>';
-    html += '</div>';
-    return html;
-  }
-
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
   if (savedUnit === 'cm') {
     useCm = true;
@@ -640,42 +624,33 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
       const spacing = Math.floor(totalRows / shapingCount);
       const remainder = totalRows % shapingCount;
       
-      const action = isIncrease ? 'Increase' : 'Decrease';
-      const location = sides === 'both' ? 'at each end' : 'at the end';
+      const action = isIncrease ? 'increase' : 'decrease';
+      const actionCap = isIncrease ? 'Increase' : 'Decrease';
+      const sidePrefix = sides === 'both' ? 'On each side' : 'On one side only';
       
       instructions += `<p><strong>Summary:</strong></p>`;
       instructions += `<p>Starting stitches: ${startStitches}</p>`;
       instructions += `<p>Ending stitches: ${endStitches}</p>`;
       instructions += `<p>Total rows: ${totalRows}</p>`;
-      instructions += `<p>${action}s needed: ${shapingCount} ${sides === 'both' ? 'per side' : 'total'}</p>`;
+      instructions += `<p>${actionCap}s needed: ${shapingCount} ${sides === 'both' ? 'per side' : 'total'}</p>`;
       instructions += `<p><strong>Instructions:</strong></p>`;
       
-      // Build shaping steps for Japanese notation
-      let shapingSteps = [];
-      
       if (remainder === 0) {
-        instructions += `<p>${action} 1 stitch ${location} every ${spacing} rows, ${shapingCount} times.</p>`;
-        shapingSteps = [{ sts: 1, rows: spacing, times: shapingCount }];
+        instructions += `<p>${sidePrefix}, ${action} 1 stitch every ${spacing} rows, ${shapingCount} times <span style="font-family: 'JetBrains Mono', monospace; color: #52682d;">(1–${spacing}–${shapingCount} sts/rows/times)</span>.</p>`;
       } else {
         const timesAtLonger = remainder;
         const timesAtShorter = shapingCount - remainder;
         const longerInterval = spacing + 1;
         
-        instructions += `<p>${action} 1 stitch ${location}:</p>`;
         if (timesAtShorter > 0) {
-          instructions += `<p>• Every ${spacing} rows, ${timesAtShorter} times</p>`;
-          shapingSteps.push({ sts: 1, rows: spacing, times: timesAtShorter });
+          instructions += `<p>• ${sidePrefix}, ${action} 1 stitch every ${spacing} rows, ${timesAtShorter} times <span style="font-family: 'JetBrains Mono', monospace; color: #52682d;">(1–${spacing}–${timesAtShorter} sts/rows/times)</span>.</p>`;
         }
-        instructions += `<p>• Every ${longerInterval} rows, ${timesAtLonger} times</p>`;
-        shapingSteps.push({ sts: 1, rows: longerInterval, times: timesAtLonger });
+        instructions += `<p>• ${sidePrefix}, ${action} 1 stitch every ${longerInterval} rows, ${timesAtLonger} times <span style="font-family: 'JetBrains Mono', monospace; color: #52682d;">(1–${longerInterval}–${timesAtLonger} sts/rows/times)</span>.</p>`;
         
         instructions += `<div class="note">`;
         instructions += `<strong>Note:</strong> Your shaping doesn't divide evenly. Alternate between the two intervals above to distribute the shaping evenly across your ${totalRows} rows.`;
         instructions += `</div>`;
       }
-      
-      // Add shaping shorthand block
-      instructions += buildShapingCodeHtml(shapingSteps);
     }
 
     document.getElementById('resultsContent').innerHTML = instructions;

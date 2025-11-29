@@ -1,0 +1,108 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Update BOTH Magic Formula wizards so that:
+
+1) The main shaping sentences include:
+   - “On each side…” or “On one side only…” depending on the shaping setting.
+   - The sts/rows/times shorthand appended immediately after each sentence, NOT in a separate block.
+2) The shorthand is always in the order: sts – rows – times.
+3) Any previous separate “Shaping shorthand” block (if present) is removed or not rendered to avoid duplication.
+
+WIZARDS TO UPDATE
+- Magic Formula by Measurement
+- Magic Formula – Stitches & Rows
+
+If they share a result-rendering component, update that shared component. Otherwise, apply the same logic to each wizard’s result section.
+
+--------------------------------
+CURRENT BEHAVIOR (REFERENCE)
+--------------------------------
+Right now the results look something like:
+
+For shaping on BOTH sides:
+  “Decrease 1 stitch every 4 rows, 20 times.”
+  “Decrease 1 stitch every 5 rows, 4 times.”
+
+For shaping on ONE side:
+  “Decrease 1 stitch every 4 rows, 20 times.”
+  (wording may vary)
+
+You previously added a separate shorthand block using `ShapingCode`. We now want to move that shorthand inline, right after each instruction sentence.
+
+--------------------------------
+NEW SENTENCE FORMAT
+--------------------------------
+For each shaping “step” / interval, build a sentence like:
+
+- If shapingMode === "both" (both sides):
+  `On each side, decrease {sts} stitch(es) every {rows} rows, {times} times ({sts}–{rows}–{times} sts/rows/times).`
+
+- If shapingMode === "one" (one side only):
+  `On one side only, decrease {sts} stitch(es) every {rows} rows, {times} times ({sts}–{rows}–{times} sts/rows/times).`
+
+Notes:
+- Use singular/plural correctly if it’s easy (`stitch` vs `stitches`), otherwise “stitch” is acceptable.
+- The shorthand in parentheses uses hyphens or en dashes consistently:
+  - Example: `(1–4–20 sts/rows/times)`  (order is always sts, rows, times)
+- If there are multiple intervals (steps), render either:
+  - separate sentences, OR
+  - bullet list items, each with its own inline shorthand.
+
+Example, BOTH sides, 2 intervals:
+
+- `On each side, decrease 1 stitch every 4 rows, 20 times (1–4–20 sts/rows/times).`
+- `On each side, decrease 1 stitch every 5 rows, 4 times (1–5–4 sts/rows/times).`
+
+--------------------------------
+DATA SOURCE
+--------------------------------
+You already have enough data to build these sentences (the same data used for:
+
+- “Decrease 1 stitch every 4 rows, 20 times.”
+- “Decrease 1 stitch every 5 rows, 4 times.”
+
+and for the steps passed into ShapingCode).
+
+Reuse that structure. For each step/segment, you need:
+
+- sts  = number of stitches changed per action
+- rows = number of rows between actions
+- times = how many times to repeat
+
+Build your inline sentence from those values plus the shaping mode.
+
+--------------------------------
+REMOVING / DISABLING SEPARATE BLOCK
+--------------------------------
+If the wizards are currently rendering a separate “Shaping shorthand (sts / rows / times)” block using `ShapingCode`, do one of the following:
+
+- Either remove that block from the Magic Formula wizards, OR
+- Keep `ShapingCode` component available for other parts of the site but do not render it in these two wizards.
+
+The goal: in these wizards, the shorthand should appear **only inline** after each instruction sentence, not as a separate chunk.
+
+--------------------------------
+STYLE / LAYOUT
+--------------------------------
+- Keep the existing “Instructions:” heading and section styling.
+- If you currently use a bullet list for multiple intervals, keep the bullets—just update the text inside each bullet to the new sentence format.
+- Do not add extra vertical padding; keep accordance with the “tightened” layout from your last changes.
+
+--------------------------------
+DO NOT CHANGE
+--------------------------------
+- Magic Formula math.
+- Gauge conversion.
+- Any row-by-row breakdown table or charts.
+- Only adjust the wording and placement of the instruction text + shorthand.
+
+--------------------------------
+SUMMARY WHEN DONE
+--------------------------------
+When finished, summarize:
+
+1) The files and components you updated.
+2) How you detect shaping mode ("both sides" vs "one side only") and how that changes the wording.
+3) The exact inline format used for each step (provide an example for both modes).
+4) Whether the separate shorthand block was removed/disabled in these wizards.
