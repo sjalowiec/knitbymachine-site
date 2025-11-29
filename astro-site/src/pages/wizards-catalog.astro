@@ -709,6 +709,9 @@ const description = "Browse all our knitting calculators and interactive tools t
                 ? '/images/practice-icon-light.svg'
                 : entry.iconUrl;
               
+              // Use excerpt, or fall back to description if no excerpt
+              const cardDescription = entry.excerpt || entry.description || '';
+              
               return `
                 <a href="${basePath}/${entry.slug}"
                   class="wizard-card"
@@ -718,7 +721,7 @@ const description = "Browse all our knitting calculators and interactive tools t
                   data-aliases="${aliasesStr}">
                   ${cardIcon ? `<img src="${cardIcon}" alt="${isSkillBuilder ? 'Skill Builder' : entry.title} icon" class="wizard-card-icon" />` : ''}
                   <h3 class="wizard-card-title">${entry.title}</h3>
-                  ${entry.excerpt ? `<p class="wizard-card-description">${entry.excerpt}</p>` : ''}
+                  ${cardDescription ? `<p class="wizard-card-description">${cardDescription}</p>` : ''}
                   ${entry.accessLevel !== 'free' ? `<span class="wizard-card-badge ${badgeClass}">${badgeText}</span>` : ''}
                 </a>
               `;
