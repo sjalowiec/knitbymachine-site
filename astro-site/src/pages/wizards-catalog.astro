@@ -68,8 +68,8 @@ const description = "Browse all our knitting calculators and interactive tools t
 <BaseLayout {title} {description}>
   <div class="page-container">
     <SectionHero 
-      title="Tools and Interactive Resources" 
-      subtitle="Access calculators, pattern planners, and practice projects to streamline every step of your knitting."
+      title="Get knitting" 
+      subtitle="Patterns, tools, and skill builders to help you start your next project."
       iconPath="/images/all_tools.png"
       iconAlt="Wizards"
     >
@@ -86,25 +86,17 @@ const description = "Browse all our knitting calculators and interactive tools t
         
         <div class="category-filters-wrapper">
           <div class="category-filters">
-            <button class="filter-icon active" data-category="all" aria-label="Show all wizards" title="All Wizards">
-              <img src="/images/all-wizards.png" alt="All" />
-              <span class="filter-text">all</span>
-            </button>
-            <button class="filter-icon" data-category="pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
+            <button class="filter-icon active" data-category="pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
               <img src="/images/pattern_icon.png" alt="Pattern" />
-              <span class="filter-text">patterns</span>
+              <span class="filter-text">Patterns</span>
             </button>
             <button class="filter-icon" data-category="tool" aria-label="Filter by Tools" title="Tools Wizards">
               <img src="/images/tools_icon.png" alt="Tools" />
-              <span class="filter-text">tools</span>
+              <span class="filter-text">Tools</span>
             </button>
             <button class="filter-icon" data-category="skill builder" aria-label="Filter by Skill Builders" title="Skill Builders">
               <img src="/images/practice-icon.png" alt="Skill Builders" />
-              <span class="filter-text">skill builders</span>
-            </button>
-            <button class="filter-icon" data-category="smart guide" aria-label="Filter by Smart Guides" title="Smart Guides">
-              <img src="/images/guide_icon.png" alt="Smart Guides" />
-              <span class="filter-text">smart guides</span>
+              <span class="filter-text">Skill Builders</span>
             </button>
           </div>
         </div>
@@ -669,7 +661,7 @@ const description = "Browse all our knitting calculators and interactive tools t
 <script>
   let allEntries = [];
   let displayedEntries = [];
-  let currentCategory = 'all';
+  let currentCategory = 'pattern';
 
   function sortEntries(entries, sortBy) {
     const sorted = [...entries];
@@ -761,9 +753,9 @@ const description = "Browse all our knitting calculators and interactive tools t
   function renderCatalogue(entries) {
     const container = document.getElementById('catalogueContent');
     
-    // Filter by category if one is selected
+    // Filter by selected category (if one is active)
     let filteredEntries = entries;
-    if (currentCategory !== 'all') {
+    if (currentCategory) {
       filteredEntries = entries.filter(entry => {
         const entryCategory = (entry.category || '').toLowerCase();
         const selectedCategory = currentCategory.toLowerCase();
@@ -949,19 +941,26 @@ const description = "Browse all our knitting calculators and interactive tools t
     filterCatalogue(e.target.value);
   });
 
-  // Category filter buttons
+  // Category filter buttons (toggleable - click active filter to show all)
   document.querySelectorAll('.filter-icon').forEach(button => {
     button.addEventListener('click', () => {
       const category = button.dataset.category;
+      const isAlreadyActive = button.classList.contains('active');
       
       // Update active state
       document.querySelectorAll('.filter-icon').forEach(btn => {
         btn.classList.remove('active');
       });
-      button.classList.add('active');
       
-      // Update current category and re-render
-      currentCategory = category;
+      // Toggle behavior: if clicking the active filter, deactivate it (show all)
+      // Otherwise, activate the clicked filter
+      if (isAlreadyActive) {
+        currentCategory = ''; // Show all entries
+      } else {
+        button.classList.add('active');
+        currentCategory = category;
+      }
+      
       displayedEntries = allEntries;
       renderCatalogue(displayedEntries);
       
