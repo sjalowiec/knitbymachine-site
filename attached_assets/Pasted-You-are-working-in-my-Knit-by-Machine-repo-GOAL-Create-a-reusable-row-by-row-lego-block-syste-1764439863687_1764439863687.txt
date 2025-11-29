@@ -1,0 +1,88 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Create a reusable row-by-row “lego block” system that can be used across the entire site:
+✔ Magic Formula tools  
+✔ Patterns  
+✔ Skill builders  
+✔ Any shaping calculator or practice worksheet  
+
+This requires creating TWO new pieces:
+
+1. A LOGIC utility that generates row-by-row shaping actions.  
+2. A UI COMPONENT that renders the table in my KBM visual style.
+
+Do NOT integrate these into the Magic Formula wizards yet.  
+This step ONLY creates the reusable components.
+
+---------------------------------------------
+PART 1 — Create logic utility: generateRowByRow()
+---------------------------------------------
+Create a new TypeScript or JavaScript module:
+
+`src/lib/shaping/generateRowByRow.ts`
+
+This module exports a function:
+
+```ts
+export function generateRowByRow({
+  startingStitches,
+  steps,        // array of { sts, rows, times }
+  shapingMode,  // "both" | "one"
+}): RowEntry[]
+Where each RowEntry is:
+
+ts
+Copy code
+{
+  rowNumber: number;       // the row where shaping occurs
+  action: string;          // e.g., "Decrease 1 stitch"
+  location: string;        // "Both sides" | "One side only"
+  stitchesAfter: number;   // total stitches AFTER this shaping action
+}
+The function must:
+
+Start with:
+let currentStitches = startingStitches
+
+For EACH step (in order):
+
+sts = number of stitches decreased/increased per action
+
+rows = interval between shaping actions
+
+times = how many repeats
+
+For each repetition:
+
+Calculate the row number:
+Start counting shaping rows at 2 (row 1 has no shaping),
+OR use whatever internal rule the wizard currently uses.
+(You can adopt the existing wizard’s approach.)
+
+Update stitches:
+IF shapingMode === "both":
+currentStitches -= sts * 2
+IF shapingMode === "one":
+currentStitches -= sts
+
+(Later we may support increases, but decreases are fine for now.)
+
+Push an entry:
+
+ts
+Copy code
+rows.push({
+  rowNumber,
+  action: `Decrease ${sts} stitch${sts > 1 ? "es" : ""}`,
+  location: shapingMode === "both" ? "Both sides" : "One side only",
+  stitchesAfter: currentStitches,
+})
+Return the array.
+
+Add internal comments explaining:
+
+why stitchesAfter reflects the TOTAL needles in work AFTER shaping
+
+why “both sides” subtracts twice the sts amount
+
