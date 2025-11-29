@@ -691,10 +691,6 @@ const description = "Browse all our knitting calculators and interactive tools t
 
       html += `
         <div class="category-section" data-category="${category}">
-          <h2 class="section-title">
-            <img src="${categoryIcon}" alt="${categoryDisplayName}" class="category-icon" />
-            <span>${categoryDisplayName}</span>
-          </h2>
           <div class="wizards-grid">
             ${categoryEntries.map(entry => {
               const badgeClass = `badge-${entry.accessLevel}`;
