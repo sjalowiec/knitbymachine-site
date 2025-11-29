@@ -16,8 +16,28 @@
   "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
   "metaTitle": "",
   "metaDescription": "",
-  "schemaMarkup": null,
+  "schemaMarkup": {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Gauge Impact Tool",
+    "alternateName": [
+      "Gauge Shift Calculator",
+      "Gauge Difference Tool",
+      "Gauge Variation Preview"
+    ],
+    "applicationCategory": "EducationalApplication",
+    "operatingSystem": "Any",
+    "isAccessibleForFree": "true",
+    "url": "https://knitbymachine.com/wizards/gauge-impact",
+    "description": "A tiny change in gauge can make a big difference. See how your project grows or shrinks, one stitch at a time, so you can predict the impact on finished size and fit.",
+    "keywords": "gauge accuracy, stitch gauge, row gauge, gauge changes, gauge variation, tension changes, tension issues, stitch count differences, finished size changes, project too big, project too small, gauge impact, gauge shift, small gauge differences, gauge calculator, stitch growth, row growth",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Knit by Machine",
+      "url": "https://knitbymachine.com"
+    }
+  },
   "isDraft": false,
   "publishedDate": "2025-11-18",
-  "pendingPublish": false
+  "pendingPublish": true
 }
