@@ -27,6 +27,7 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
           hero: data.hero || '',
           excerpt: data.excerpt || '',
           description: data.description || '',
+          whyUseThisTool: data.whyUseThisTool || '',
           category: data.category || 'Uncategorized',
           tags: data.tags || [],
           keywords: data.keywords || [],
@@ -535,6 +536,112 @@ const description = "Browse all our knitting calculators and interactive tools t
     font-style: italic;
   }
 
+  /* Why Use This Tool Tooltip Styles */
+  :global(.why-tooltip) {
+    position: relative;
+    display: inline-block;
+  }
+
+  :global(.why-tooltip__trigger) {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.5rem;
+    background: transparent;
+    border: none;
+    color: #6b7280;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.2s ease;
+    border-radius: 4px;
+  }
+
+  :global(.why-tooltip__trigger:hover),
+  :global(.why-tooltip__trigger:focus) {
+    color: #52682D;
+    background: rgba(82, 104, 45, 0.05);
+  }
+
+  :global(.why-tooltip__trigger:focus) {
+    outline: 2px solid rgba(82, 104, 45, 0.3);
+    outline-offset: 2px;
+  }
+
+  :global(.why-tooltip__icon) {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  :global(.why-tooltip__label) {
+    white-space: nowrap;
+  }
+
+  :global(.why-tooltip__content) {
+    position: absolute;
+    left: 0;
+    bottom: 100%;
+    margin-bottom: 0.5rem;
+    width: max-content;
+    max-width: 280px;
+    padding: 0.75rem 1rem;
+    background: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #374151;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    z-index: 100;
+    pointer-events: none;
+  }
+
+  :global(.why-tooltip__content::before) {
+    content: "";
+    position: absolute;
+    left: 1.5rem;
+    top: 100%;
+    border: 6px solid transparent;
+    border-top-color: #c7d8a4;
+  }
+
+  :global(.why-tooltip__content::after) {
+    content: "";
+    position: absolute;
+    left: 1.5rem;
+    top: 100%;
+    border: 5px solid transparent;
+    border-top-color: #ffffff;
+    margin-top: -1px;
+  }
+
+  :global(.why-tooltip__content p) {
+    margin: 0;
+  }
+
+  :global(.why-tooltip:hover .why-tooltip__content),
+  :global(.why-tooltip:focus-within .why-tooltip__content) {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  :global(.why-tooltip--card) {
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    :global(.why-tooltip__content) {
+      max-width: 220px;
+      font-size: 0.85rem;
+      left: -0.5rem;
+    }
+  }
+
   /* Additional Mobile Responsive - Content Layout */
   @media (max-width: 1023px) {
     .page-container {
@@ -712,6 +819,21 @@ const description = "Browse all our knitting calculators and interactive tools t
               // Use excerpt first, then hero (legacy), then description as fallback
               const cardDescription = entry.excerpt || entry.hero || entry.description || '';
               
+              // Why use this tool tooltip (only for wizards with the field populated)
+              const whyTooltip = entry.whyUseThisTool ? `
+                <div class="why-tooltip why-tooltip--card">
+                  <button type="button" class="why-tooltip__trigger" aria-label="Why use this tool?" data-testid="button-why-use-this-tool">
+                    <svg class="why-tooltip__icon" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a.75.75 0 000 1.5h.253a.25.25 0 01.244.304l-.459 2.066A1.75 1.75 0 0010.747 15H11a.75.75 0 000-1.5h-.253a.25.25 0 01-.244-.304l.459-2.066A1.75 1.75 0 009.253 9H9z" clip-rule="evenodd" />
+                    </svg>
+                    <span class="why-tooltip__label">Why use this tool?</span>
+                  </button>
+                  <div class="why-tooltip__content" role="tooltip">
+                    <p>${entry.whyUseThisTool}</p>
+                  </div>
+                </div>
+              ` : '';
+              
               return `
                 <a href="${basePath}/${entry.slug}"
                   class="wizard-card"
@@ -722,6 +844,7 @@ const description = "Browse all our knitting calculators and interactive tools t
                   ${cardIcon ? `<img src="${cardIcon}" alt="${isSkillBuilder ? 'Skill Builder' : entry.title} icon" class="wizard-card-icon" />` : ''}
                   <h3 class="wizard-card-title">${entry.title}</h3>
                   ${cardDescription ? `<p class="wizard-card-description">${cardDescription}</p>` : ''}
+                  ${whyTooltip}
                   ${entry.accessLevel !== 'free' ? `<span class="wizard-card-badge ${badgeClass}">${badgeText}</span>` : ''}
                 </a>
               `;
@@ -900,6 +1023,15 @@ const description = "Browse all our knitting calculators and interactive tools t
         filterCatalogue(searchTerm);
       }
     });
+  });
+
+  // Prevent tooltip button clicks from navigating (event delegation for dynamic content)
+  document.getElementById('catalogueContent')?.addEventListener('click', (e) => {
+    const tooltip = e.target.closest('.why-tooltip__trigger');
+    if (tooltip) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
   });
 
   init();
