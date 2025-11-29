@@ -451,24 +451,26 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
             <input 
               type="number" 
               id="stitchGauge" 
-              step="0.1" 
-              placeholder=" "
+              step="1" 
+              min="1"
+              placeholder="16"
               required
               data-testid="input-stitch-gauge"
             />
-            <label for="stitchGauge" id="stitchGaugeLabel">Stitches per inch</label>
+            <label for="stitchGauge" id="stitchGaugeLabel">Stitches in 4 inches</label>
           </div>
 
           <div class="floating-input">
             <input 
               type="number" 
               id="rowGauge" 
-              step="0.1" 
-              placeholder=" "
+              step="1" 
+              min="1"
+              placeholder="24"
               required
               data-testid="input-row-gauge"
             />
-            <label for="rowGauge" id="rowGaugeLabel">Rows per inch</label>
+            <label for="rowGauge" id="rowGaugeLabel">Rows in 4 inches</label>
           </div>
         </div>
 
@@ -511,13 +513,13 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
 
   function updateLabels() {
     const unitShort = useCm ? 'cm' : 'in';
-    const unitPer = useCm ? 'cm' : 'inch';
+    const gaugeUnit = useCm ? '10 cm' : '4 inches';
     
     document.getElementById('startWidthLabel').textContent = `Starting width (${unitShort})`;
     document.getElementById('endWidthLabel').textContent = `Ending width (${unitShort})`;
     document.getElementById('totalLengthLabel').textContent = `Total length (${unitShort})`;
-    document.getElementById('stitchGaugeLabel').textContent = `Stitches per ${unitPer}`;
-    document.getElementById('rowGaugeLabel').textContent = `Rows per ${unitPer}`;
+    document.getElementById('stitchGaugeLabel').textContent = `Stitches in ${gaugeUnit}`;
+    document.getElementById('rowGaugeLabel').textContent = `Rows in ${gaugeUnit}`;
   }
 
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
@@ -563,9 +565,14 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
     const startWidth = parseFloat(document.getElementById('startWidth').value);
     const endWidth = parseFloat(document.getElementById('endWidth').value);
     const totalLength = parseFloat(document.getElementById('totalLength').value);
-    const stitchGauge = parseFloat(document.getElementById('stitchGauge').value);
-    const rowGauge = parseFloat(document.getElementById('rowGauge').value);
+    const stitchGaugeRaw = parseFloat(document.getElementById('stitchGauge').value);
+    const rowGaugeRaw = parseFloat(document.getElementById('rowGauge').value);
     const sides = document.querySelector('.icon-toggle.active').dataset.value;
+
+    // Convert gauge from 4"/10cm to per-unit values
+    const gaugeDivisor = useCm ? 10 : 4;
+    const stitchGauge = stitchGaugeRaw / gaugeDivisor;
+    const rowGauge = rowGaugeRaw / gaugeDivisor;
 
     const startStitches = Math.round(startWidth * stitchGauge);
     const endStitches = Math.round(endWidth * stitchGauge);

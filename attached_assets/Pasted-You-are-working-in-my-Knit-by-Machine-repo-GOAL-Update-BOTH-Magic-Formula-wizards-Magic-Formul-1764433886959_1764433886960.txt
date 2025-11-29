@@ -1,0 +1,88 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Update BOTH Magic Formula wizards (Magic Formula by Measurement and Magic Formula – Stitches & Rows) so that gauge is entered in **4 inches** (or **10 cm**) instead of per-inch/per-cm.
+
+This requires:
+1) Updating the UI labels and placeholders.
+2) Updating the calculation logic to convert the 4" gauge values into per-inch (or per-cm) values internally.
+3) Making sure all shaping math continues to function exactly the same once the conversion is applied.
+
+--------------------------------------
+WHERE TO WORK
+--------------------------------------
+Update BOTH wizards:
+
+1. `Magic Formula by Measurement`  
+2. `Magic Formula – Stitches & Rows`
+
+If these two pages share a gauge component or utility, update the shared component.  
+If not, apply the same changes to both code paths.
+
+Gauge fields appear in sections such as:
+- “Stitches per inch”
+- “Rows per inch”
+These must be replaced with **stitches in 4 inches** and **rows in 4 inches**.
+
+--------------------------------------
+UI CHANGES (FOR BOTH WIZARDS)
+--------------------------------------
+
+REPLACE the current inputs:
+
+- “Stitches per inch”  
+- “Rows per inch”
+
+WITH:
+
+- “Stitches in 4 inches” (or “Stitches in 10 cm” when in metric mode)
+- “Rows in 4 inches” (or “Rows in 10 cm” when in metric mode)
+
+Label rules:
+- When unit toggle = Inches → labels use “4 inches”
+- When unit toggle = Centimeters → labels use “10 cm”
+
+Placeholders:
+- Stitches in 4 inches → example placeholder: “16”
+- Rows in 4 inches → example placeholder: “24”
+
+Remove any references to “per inch” or “per cm” in the UI.
+
+--------------------------------------
+CALCULATION CHANGES (BOTH WIZARDS)
+--------------------------------------
+IMPORTANT: The math must still operate using stitches/rows **per single unit** (per inch or per cm), so convert the user’s 4" gauge to per-inch or per-cm BEFORE performing magic-formula calculations.
+
+Implement:
+
+If units === “inches”:
+  - stsPerUnit = stitchesInFourInches / 4
+  - rowsPerUnit = rowsInFourInches / 4
+
+If units === “centimeters”:
+  - Treat the field as “stitches in 10 cm” and “rows in 10 cm”
+  - Convert:
+      stsPerUnit = stitchesInTenCm / 10
+      rowsPerUnit = rowsInTenCm / 10
+
+Use `stsPerUnit` and `rowsPerUnit` everywhere the previous code used “stitches per inch/cm” and “rows per inch/cm”.
+
+Do NOT alter:
+- Magic formula logic (interval math, distribution, totals)
+- Direction of shaping
+- Both-sides vs one-side logic
+
+All existing calculations must continue working once gauge conversion is applied.
+
+--------------------------------------
+VALIDATION
+--------------------------------------
+Add validation:
+- Values must be > 0
+- Show the same error styles/messages currently used in the wizards
+
+--------------------------------------
+RESULTS DISPLAY
+--------------------------------------
+No text changes required EXCEPT:
+- If either wizard prints the gauge back to the user, convert internally per unit and display per-inch/per-cm (not the raw 4"/10cm values).
