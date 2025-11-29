@@ -1,6 +1,4 @@
 ---
-import ShapingCode from "./ShapingCode.astro";
-
 interface Step {
   sts: number;
   rows: number;
@@ -45,17 +43,13 @@ if (mode === "both") {
   }
 }
 
-// Get first step for SVG display
-const firstStep = steps.length > 0 ? steps[0] : null;
-
 // Label text
 const startLabel = startSts !== undefined ? `starting (${startSts} sts)` : "starting";
 const endLabel = endSts !== undefined ? `end (${endSts} sts)` : "end";
 
 // Label positions - starting is always at bottom, ending always at top
-// The shape orientation (wide/narrow) shows the direction
-const startingY = 185;
-const endY = 25;
+const startingY = 190;
+const endY = 20;
 ---
 
 <div class="shaping-diagram-container">
@@ -74,9 +68,9 @@ const endY = 25;
         stroke-linejoin="round"
       />
       
-      <!-- Starting label (at wider end) -->
+      <!-- Starting label (at bottom) -->
       <text 
-        x="30" 
+        x="25" 
         y={startingY}
         class="diagram-label"
         fill="#6b7280"
@@ -84,9 +78,9 @@ const endY = 25;
         {startLabel}
       </text>
       
-      <!-- End label (at narrower end) -->
+      <!-- End label (at top) -->
       <text 
-        x="230" 
+        x="235" 
         y={endY}
         class="diagram-label"
         text-anchor="end"
@@ -95,21 +89,76 @@ const endY = 25;
         {endLabel}
       </text>
       
-      <!-- Shaping shorthand inside the shape -->
-      {firstStep && (
+      <!-- All shaping shorthand inside the shape -->
+      {steps.length === 1 && (
         <g class="diagram-shorthand">
           <text 
             x="130" 
             y="95"
             text-anchor="middle"
-            class="diagram-shorthand-numbers"
+            class="diagram-shorthand-numbers-single"
             fill="#1f2937"
           >
-            {firstStep.sts}–{firstStep.rows}–{firstStep.times}
+            {steps[0].sts}–{steps[0].rows}–{steps[0].times}
           </text>
           <text 
             x="130" 
-            y="115"
+            y="118"
+            text-anchor="middle"
+            class="diagram-shorthand-caption"
+            fill="#6b7280"
+          >
+            sts – rows – times
+          </text>
+        </g>
+      )}
+      {steps.length === 2 && (
+        <g class="diagram-shorthand">
+          <text 
+            x="130" 
+            y="75"
+            text-anchor="middle"
+            class="diagram-shorthand-numbers"
+            fill="#1f2937"
+          >
+            {steps[0].sts}–{steps[0].rows}–{steps[0].times}
+          </text>
+          <text 
+            x="130" 
+            y="110"
+            text-anchor="middle"
+            class="diagram-shorthand-numbers"
+            fill="#1f2937"
+          >
+            {steps[1].sts}–{steps[1].rows}–{steps[1].times}
+          </text>
+          <text 
+            x="130" 
+            y="135"
+            text-anchor="middle"
+            class="diagram-shorthand-caption"
+            fill="#6b7280"
+          >
+            sts – rows – times
+          </text>
+        </g>
+      )}
+      {steps.length > 2 && (
+        <g class="diagram-shorthand">
+          {steps.map((step, i) => (
+            <text 
+              x="130" 
+              y={60 + i * 28}
+              text-anchor="middle"
+              class="diagram-shorthand-numbers-small"
+              fill="#1f2937"
+            >
+              {step.sts}–{step.rows}–{step.times}
+            </text>
+          ))}
+          <text 
+            x="130" 
+            y={60 + steps.length * 28 + 5}
             text-anchor="middle"
             class="diagram-shorthand-caption"
             fill="#6b7280"
@@ -120,13 +169,6 @@ const endY = 25;
       )}
     </svg>
   </div>
-  
-  <!-- Full shorthand breakdown below the diagram -->
-  {steps.length > 0 && (
-    <div class="shaping-diagram-code">
-      <ShapingCode steps={steps} />
-    </div>
-  )}
 </div>
 
 <style>
@@ -134,13 +176,13 @@ const endY = 25;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
     margin: 1rem 0;
   }
 
   .shaping-diagram-svg-wrapper {
     width: 100%;
-    max-width: 300px;
+    max-width: 320px;
   }
 
   .shaping-diagram-svg {
@@ -150,8 +192,14 @@ const endY = 25;
   }
 
   .diagram-label {
-    font-size: 11px;
+    font-size: 14px;
     font-family: system-ui, -apple-system, sans-serif;
+  }
+
+  .diagram-shorthand-numbers-single {
+    font-size: 28px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
   }
 
   .diagram-shorthand-numbers {
@@ -160,30 +208,16 @@ const endY = 25;
     font-family: 'JetBrains Mono', monospace;
   }
 
+  .diagram-shorthand-numbers-small {
+    font-size: 20px;
+    font-weight: 600;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
   .diagram-shorthand-caption {
-    font-size: 10px;
+    font-size: 13px;
     font-family: system-ui, -apple-system, sans-serif;
     font-style: italic;
-  }
-
-  .shaping-diagram-code {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  /* Responsive: on larger screens, can adjust layout if needed */
-  @media (min-width: 640px) {
-    .shaping-diagram-container {
-      gap: 1.25rem;
-    }
-    
-    .shaping-diagram-svg-wrapper {
-      max-width: 320px;
-    }
-    
-    .shaping-diagram-code {
-      max-width: 320px;
-    }
   }
 </style>
 
