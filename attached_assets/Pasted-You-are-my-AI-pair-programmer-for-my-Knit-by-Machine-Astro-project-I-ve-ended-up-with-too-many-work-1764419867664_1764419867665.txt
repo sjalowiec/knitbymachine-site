@@ -1,0 +1,104 @@
+You are my AI pair programmer for my Knit by Machine Astro project.
+I’ve ended up with too many workshop-related pages and I need to standardize them.
+
+Goal:
+For workshops, I only want:
+
+A single catalog page at /workshops
+
+File: src/pages/workshops/index.astro
+
+A single detail page template at /workshops/[slug]
+
+File: src/pages/workshops/[slug].astro
+
+Please do NOT create any new pages unless absolutely required. Focus on clean-up and consolidation.
+
+Step 1 – Show me what exists
+
+Scan src/pages (and any subfolders) for files with “workshop” in the name.
+
+List them out for me in a comment or log, e.g.:
+
+src/pages/workshops/index.astro
+
+src/pages/workshops-learn.astro
+
+src/pages/workshops-knit.astro
+
+src/pages/learn/workshops.astro
+
+etc.
+
+Step 2 – Consolidate to the standard
+
+Use src/pages/workshops/index.astro as the only catalog page.
+
+Make sure it displays:
+
+The Workshops hero (title + subtitle)
+
+The search bar (“Search workshops…”)
+
+The filter pills for All / Learn / Knit
+
+The grid of workshop cards.
+
+Reuse the good styling from my current page, but keep the layout balanced like we discussed: hero → search → filter pills → cards.
+
+Use src/pages/workshops/[slug].astro as the only detail template.
+
+If there are other workshop detail pages, merge their best pieces into this one template:
+
+Title, tagline
+
+Description
+
+Learning outcomes / what you’ll be able to do
+
+Who it’s for
+
+Materials / what you need
+
+Related links
+
+CTA button.
+
+For any extra catalog-like pages (such as workshops-learn.astro, workshops-knit.astro, or similar):
+
+Move any unique styling or logic that is still needed into:
+
+src/pages/workshops/index.astro, or
+
+a shared component like src/components/WorkshopList.astro.
+
+After that, delete those extra pages so there is only one Workshops catalog route: /workshops.
+
+For any extra detail pages (specific slugs hard-coded, etc.):
+
+Make sure all routes use the [slug].astro template instead.
+
+Move any one-off content into the data layer (JSON, Markdown, or content collection) used by [slug].astro.
+
+Step 3 – Navigation
+
+Update the main menu so that:
+
+The Workshops link under LEARN (or KNIT/LEARN, depending on my current nav) points to /workshops.
+
+Ensure all “View workshop” / “Learn more” buttons across the site link to /workshops/[slug] and are not pointing to any of the deleted pages.
+
+Step 4 – Show me the result
+
+When you’re done:
+
+Show me the final file tree for anything under src/pages that includes “workshop” in the name.
+
+Show me the full contents of:
+
+src/pages/workshops/index.astro
+
+src/pages/workshops/[slug].astro
+so I can review and tweak copy/layout.
+
+Again: do NOT proliferate more workshop pages. The goal is fewer, simpler, standardized routes.
