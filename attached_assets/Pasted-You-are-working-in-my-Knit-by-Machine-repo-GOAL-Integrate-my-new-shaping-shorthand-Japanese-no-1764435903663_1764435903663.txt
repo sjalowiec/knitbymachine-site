@@ -1,0 +1,138 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+Integrate my new shaping shorthand “Japanese notation” block into BOTH Magic Formula wizards:
+
+- Magic Formula by Measurement
+- Magic Formula – Stitches & Rows
+
+Use the `ShapingCode` component that was just created so each wizard’s results include a compact shorthand like:
+
+  1–2–20
+  sts – rows – times
+
+The order is ALWAYS: sts / rows / times.
+
+--------------------------------
+COMPONENT TO USE
+--------------------------------
+You just created:
+
+- `src/components/shaping/ShapingCode.astro`
+
+(It may be in a slightly different path; locate it if needed.)
+
+This component expects:
+
+- `steps`: Array of `{ sts: number; rows: number; times: number }`
+- Optional `title?: string`
+
+You will now import and use this in BOTH Magic Formula wizards.
+
+--------------------------------
+WHERE TO INTEGRATE
+--------------------------------
+Update BOTH Magic Formula wizards’ RESULTS sections:
+
+1. Magic Formula by Measurement
+2. Magic Formula – Stitches & Rows
+
+In each wizard’s result UI:
+
+- Find the place where the main shaping instructions are rendered, e.g.:
+  - “Decrease 1 stitch every 2 rows, 20 times.”
+  - or any similar sentence-style output.
+
+- Directly AFTER that sentence-style instruction (and BEFORE any row-by-row breakdown table or other extras), render the `ShapingCode` block.
+
+The flow should be:
+
+1) Plain-language instructions  
+2) Shaping shorthand block (sts / rows / times)  
+3) Any row-by-row table or extra details
+
+--------------------------------
+DATA / LOGIC FOR `steps`
+--------------------------------
+Both Magic Formula wizards already know:
+
+- how many stitches to change per action,
+- how many rows between actions,
+- how many times to repeat each action,
+- and they may support multiple stages (e.g. “every 2 rows 10 times, then every 3 rows 5 times”).
+
+You must **reuse that existing data** to construct a `steps` array:
+
+Each step object must be:
+
+- `sts`: number of stitches changed per shaping action (positive integer; usually 1)
+- `rows`: number of rows between actions (integer)
+- `times`: how many times that action is repeated (integer)
+
+Examples:
+
+Simple case:
+- Instruction: “Decrease 1 stitch every 2 rows, 20 times.”
+- `steps = [{ sts: 1, rows: 2, times: 20 }]`
+
+Two-stage case:
+- Instruction: “Decrease 1 stitch every 2 rows 10 times, then every 3 rows 5 times.”
+- `steps = [
+    { sts: 1, rows: 2, times: 10 },
+    { sts: 1, rows: 3, times: 5 },
+  ]`
+
+Do NOT invent new shaping logic.  
+Just map whatever structure is already used to build the English instructions into this `{ sts, rows, times }[]` format.
+
+If the internal structure already has an array of “intervals” or “segments”, use that directly to build `steps`.
+
+--------------------------------
+USING `ShapingCode` IN EACH WIZARD
+--------------------------------
+In each Magic Formula wizard:
+
+1. Import the component at the top of the file:
+
+   ```astro
+   import ShapingCode from "@/components/shaping/ShapingCode.astro"
+(Adjust the import path to match the actual location.)
+
+In the result render section, once you have the shaping calculation results and you are able to derive steps, render:
+
+astro
+Copy code
+{steps && steps.length > 0 && (
+  <ShapingCode steps={steps} />
+)}
+Ensure that:
+
+The title in ShapingCode (its default or explicit prop) clearly indicates the order:
+“Shaping shorthand (sts / rows / times)”
+
+The internal rendering of ShapingCode uses the order:
+
+${step.sts}–${step.rows}–${step.times}
+
+Caption: sts – rows – times
+
+This gives the knitter a Japanese-style notation feel but explicitly labeled.
+
+STYLE / LAYOUT
+Place the ShapingCode block inside the same result card/container as the main instructions.
+
+Add reasonable top margin so it feels visually grouped but not jammed (e.g., same vertical spacing used between other result sections).
+
+Do NOT introduce extra large vertical padding — keep it compact and in line with recent “tighten up” instructions.
+
+DO NOT CHANGE
+Do not change any Magic Formula calculations.
+
+Do not change gauge conversion logic.
+
+Do not remove or rewrite the plain-language instructions.
+
+Do not alter any existing row-by-row tables.
+
+You are only ADDING the shorthand block that reflects the same information in compact sts/rows/times notation.
+
