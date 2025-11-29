@@ -709,8 +709,8 @@ const description = "Browse all our knitting calculators and interactive tools t
                 ? '/images/practice-icon-light.svg'
                 : entry.iconUrl;
               
-              // Use excerpt, or fall back to description if no excerpt
-              const cardDescription = entry.excerpt || entry.description || '';
+              // Use excerpt first, then hero (legacy), then description as fallback
+              const cardDescription = entry.excerpt || entry.hero || entry.description || '';
               
               return `
                 <a href="${basePath}/${entry.slug}"
