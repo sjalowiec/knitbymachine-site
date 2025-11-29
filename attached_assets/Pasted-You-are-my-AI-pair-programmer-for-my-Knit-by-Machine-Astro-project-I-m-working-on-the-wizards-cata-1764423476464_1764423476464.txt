@@ -1,0 +1,151 @@
+You are my AI pair programmer for my Knit by Machine Astro project.
+
+I’m working on the wizards catalog / “Get knitting” page.
+This page has:
+
+The “Get knitting” header + subheading
+
+A local “Search wizards…” input
+
+Icon filter buttons for Patterns / Tools / Skill Builders
+
+A grid of wizard cards
+
+I want to make the search + filter row into a sticky control bar that stays visible when I scroll, but I do NOT want the whole hero (“Get knitting” header) to be sticky.
+
+Also: do not touch any Workshops pages or other routes.
+
+1️⃣ Find the correct page
+
+Locate the page/component that renders the Get knitting wizards catalog:
+
+Heading: “Get knitting”
+
+Subheading: “Patterns, tools, and skill builders to help you start your next project.”
+
+A “Search wizards…” field
+
+Icon filters: Patterns, Tools, Skill Builders
+
+Confirm in a comment which file you’re editing (for example:
+src/pages/wizards/index.astro or similar).
+
+2️⃣ Identify the search + filters container
+
+Right now, I should already have:
+
+A row where:
+
+The search input is on the left
+
+The icon filters are on the right
+(Patterns / Tools / Skill Builders)
+
+This row is the one I want to be sticky.
+
+If it isn’t already wrapped in a single parent element, please wrap it in a container, e.g.:
+
+<div class="wizard-controls">
+  <div class="wizard-controls__search">
+    <!-- search input -->
+  </div>
+  <div class="wizard-controls__filters">
+    <!-- icon filter buttons -->
+  </div>
+</div>
+
+
+Re-use whatever class names make sense, but keep the idea of a parent container that holds both search and filters.
+
+3️⃣ Make this control bar sticky
+
+Apply CSS (or utility classes) so that this wizard-controls container:
+
+Uses position: sticky
+
+Sticks to the top under my main site header
+
+Has a background so it doesn’t overlap text awkwardly
+
+Has a subtle bottom border or shadow to separate it from the cards
+
+Example (adapt to my setup):
+
+.wizard-controls {
+  position: sticky;
+  top: var(--kbm-header-offset, 4.5rem); /* adjust if needed */
+  z-index: 20;
+  background: white;
+  border-bottom: 1px solid rgba(0,0,0,0.05);
+  padding-block: 0.5rem; /* keep it compact */
+}
+
+
+If my project already has a CSS variable or token for the main header height, use that instead of guessing.
+
+Important:
+Do NOT make the title “Get knitting” sticky. Only the search + filter row should stick.
+
+4️⃣ Keep the existing desktop layout
+
+On desktop / larger screens:
+
+Keep the current layout where:
+
+Search input is on the left and can grow (e.g. flex: 1)
+
+Icon filters are on the right in a row
+
+Use a flex layout for .wizard-controls:
+
+.wizard-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+
+The filters container (wizard-controls__filters) should remain:
+
+display: flex;
+
+gap between icons
+
+Using my existing icon button styles (don’t redesign them).
+
+5️⃣ Mobile behavior
+
+On small screens, stack the controls vertically:
+
+Search on top
+
+Icon filters below
+
+For example (pseudo):
+
+@media (max-width: 768px) {
+  .wizard-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .wizard-controls__filters {
+    justify-content: flex-start; /* or center, depending on design */
+  }
+}
+
+
+The control bar should still be sticky on mobile, just taller because it’s stacked. Make sure there’s reasonable spacing so it doesn’t feel cramped.
+
+6️⃣ Don’t change the logic
+
+Keep all existing behavior:
+
+Search still filters the wizards
+
+Clicking an icon filter still switches between Patterns / Tools / Skill Builders
+
+The default view still shows all wizards for the selected category
+
+Only layout + sticky behavior should change.

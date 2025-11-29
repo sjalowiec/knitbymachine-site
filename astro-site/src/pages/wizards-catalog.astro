@@ -69,41 +69,41 @@ const description = "Browse all our knitting calculators and interactive tools t
 
 <BaseLayout {title} {description}>
   <div class="page-container">
+    <!-- Hero Header (NOT sticky) -->
     <SectionHero 
-      title="Get Knitting" 
-      subtitle="Everything you need to plan, prepare, and knit your next project."
+      title="Get knitting" 
+      subtitle="Patterns, tools, and skill builders to help you start your next project."
       iconPath="/images/knit_icon.svg"
       iconAlt="Knitting icon"
-    >
-      <div slot="toolbar" class="wizards-toolbar">
-        <div class="search-wrapper">
-          <input 
-            type="text" 
-            class="search-input" 
-            id="searchInput" 
-            placeholder="Search wizards..."
-            aria-label="Search wizards"
-          >
-        </div>
-        
-        <div class="category-filters-wrapper">
-          <div class="category-filters">
-            <button class="filter-icon active" data-category="pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
-              <img src="/images/pattern_icon.png" alt="Pattern" />
-              <span class="filter-text">Patterns</span>
-            </button>
-            <button class="filter-icon" data-category="tool" aria-label="Filter by Tools" title="Tools Wizards">
-              <img src="/images/tools_icon.png" alt="Tools" />
-              <span class="filter-text">Tools</span>
-            </button>
-            <button class="filter-icon" data-category="skill builder" aria-label="Filter by Skill Builders" title="Skill Builders">
-              <img src="/images/practice-icon.png" alt="Skill Builders" />
-              <span class="filter-text">Skill Builders</span>
-            </button>
-          </div>
-        </div>
+    />
+
+    <!-- Sticky Control Bar (search + filters) -->
+    <div class="wizard-controls">
+      <div class="wizard-controls__search">
+        <input 
+          type="text" 
+          class="search-input" 
+          id="searchInput" 
+          placeholder="Search wizards..."
+          aria-label="Search wizards"
+        >
       </div>
-    </SectionHero>
+      
+      <div class="wizard-controls__filters">
+        <button class="filter-icon active" data-category="pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
+          <img src="/images/pattern_icon.png" alt="Pattern" />
+          <span class="filter-text">Patterns</span>
+        </button>
+        <button class="filter-icon" data-category="tool" aria-label="Filter by Tools" title="Tools Wizards">
+          <img src="/images/tools_icon.png" alt="Tools" />
+          <span class="filter-text">Tools</span>
+        </button>
+        <button class="filter-icon" data-category="skill builder" aria-label="Filter by Skill Builders" title="Skill Builders">
+          <img src="/images/practice-icon.png" alt="Skill Builders" />
+          <span class="filter-text">Skill Builders</span>
+        </button>
+      </div>
+    </div>
 
     <!-- Catalogue Content -->
     <div id="catalogueContent" class="catalogue-content" data-entries={JSON.stringify(entries)}>
@@ -129,22 +129,36 @@ const description = "Browse all our knitting calculators and interactive tools t
   .page-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 4.5rem 1.5rem 3rem;
+    padding: 2rem 1.5rem 3rem;
   }
 
-  /* Wizards Toolbar - Search and Filters on Same Row */
-  .wizards-toolbar {
+  /* Sticky Control Bar - Search + Filters */
+  .wizard-controls {
+    position: sticky;
+    top: var(--header-height, 6rem);
+    z-index: 50;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    width: 100%;
+    gap: 1.5rem;
+    background: white;
+    padding: 0.75rem 1rem;
+    margin: 0 -1rem 1.5rem;
+    border-bottom: 1px solid rgba(82, 104, 45, 0.1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
   }
 
-  .search-wrapper {
+  .wizard-controls__search {
     flex: 1;
     min-width: 200px;
     max-width: 400px;
+  }
+
+  .wizard-controls__filters {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
   }
 
   .search-input {
@@ -163,35 +177,6 @@ const description = "Browse all our knitting calculators and interactive tools t
     outline: none;
     border-color: #52682D;
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
-  }
-
-  .category-filters-wrapper {
-    flex-shrink: 0;
-  }
-
-  .category-filters {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 0.5rem;
-  }
-
-  .category-filters::-webkit-scrollbar {
-    height: 8px;
-  }
-
-  .category-filters::-webkit-scrollbar-track {
-    background: #f7f8f7;
-    border-radius: 4px;
-  }
-
-  .category-filters::-webkit-scrollbar-thumb {
-    background: #e5e8e0;
-    border-radius: 4px;
-  }
-
-  .category-filters::-webkit-scrollbar-thumb:hover {
-    background: #52682D;
   }
 
   .filter-icon {
@@ -244,21 +229,18 @@ const description = "Browse all our knitting calculators and interactive tools t
     text-decoration: none;
   }
 
-  /* Desktop Layout - Search and Filters Side by Side, Sticky Header */
+  /* Desktop Layout */
   @media (min-width: 1024px) {
-    .wizards-toolbar {
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.5rem;
+    .wizard-controls {
+      padding: 0.75rem 1.5rem;
+      margin: 0 -1.5rem 1.5rem;
     }
 
-    .search-wrapper {
-      flex: 1;
+    .wizard-controls__search {
       max-width: 450px;
     }
 
-    .category-filters {
+    .wizard-controls__filters {
       gap: 0.75rem;
     }
 
@@ -271,41 +253,16 @@ const description = "Browse all our knitting calculators and interactive tools t
     .filter-text {
       font-size: 0.9rem;
     }
-
-    /* Make SectionHero sticky on desktop */
-    :global(.section-hero) {
-      position: sticky;
-      top: 0;
-      background: white;
-      z-index: 100;
-      padding-top: 1rem;
-      padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      transition: box-shadow 0.3s ease;
-    }
-
-    :global(.section-hero .hero-primary) {
-      margin-bottom: 0.75rem;
-    }
-
-    :global(.section-hero .hero-toolbar) {
-      padding: 0.5rem 0;
-    }
-
-    :global(.section-hero.scrolled) {
-      box-shadow: 0 4px 16px rgba(82, 104, 45, 0.15);
-    }
   }
 
   /* Tablet - Keep on same row but tighter */
   @media (max-width: 1023px) and (min-width: 641px) {
-    .wizards-toolbar {
+    .wizard-controls {
       gap: 1rem;
     }
 
-    .search-wrapper {
-      max-width: 300px;
+    .wizard-controls__search {
+      max-width: 280px;
     }
 
     .filter-icon img {
@@ -320,21 +277,18 @@ const description = "Browse all our knitting calculators and interactive tools t
 
   /* Mobile - Stack vertically */
   @media (max-width: 640px) {
-    .wizards-toolbar {
+    .wizard-controls {
       flex-direction: column;
       align-items: stretch;
       gap: 0.75rem;
+      padding: 0.75rem 1rem;
     }
 
-    .search-wrapper {
+    .wizard-controls__search {
       max-width: 100%;
     }
 
-    .category-filters-wrapper {
-      width: 100%;
-    }
-
-    .category-filters {
+    .wizard-controls__filters {
       justify-content: center;
       gap: 0.5rem;
     }
