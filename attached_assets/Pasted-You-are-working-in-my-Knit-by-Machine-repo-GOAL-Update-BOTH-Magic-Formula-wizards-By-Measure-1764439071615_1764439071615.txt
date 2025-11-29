@@ -1,0 +1,68 @@
+You are working in my Knit by Machine repo.
+
+GOAL  
+Update BOTH Magic Formula wizards (By Measurement and Stitches & Rows) so that:
+
+1. Each row-by-row breakdown entry includes the **total stitches AFTER the shaping action** for that row.
+2. The main instruction sentences include:
+   - “On each side…” or “On one side only…”
+   - Inline shorthand: (sts–rows–times sts/rows/times)
+3. Stitch counts are correctly computed based on:
+   - Starting stitch count
+   - Shaping mode (both sides vs one side)
+   - All shaping steps
+   - Correct running totals
+
+These updates must be applied consistently to both wizards.
+
+---------------------------------------------------------
+PART 1 — ADD TOTAL STITCH COUNTS TO ROW-BY-ROW BREAKDOWN
+---------------------------------------------------------
+
+In the logic that builds the row-by-row breakdown array, update the shape event for each row so that you compute:
+
+**totalStitchesAfter**
+
+Rules:
+
+• Let `currentStitches` = starting stitch count.  
+  This value must be tracked and updated step-by-step.
+
+• For EACH shaping event:
+  - If shapingMode === "both":
+      currentStitches = currentStitches - (sts * 2)
+  - If shapingMode === "one":
+      currentStitches = currentStitches - (sts * 1)
+
+• After updating currentStitches, store that value in the row object:
+  
+  ```js
+  row.totalStitches = currentStitches
+This ensures stitch totals represent the actual stitches IN WORK after that row's shaping action, which is the expected knitting standard.
+
+Example correctness check:
+
+Starting: 100 sts
+
+Both sides, decrease 1 st each side on Row 2 → new total = 98
+
+One side, decrease 1 st on Row 2 → new total = 99
+
+TABLE UPDATE
+Update the row-by-row table UI in BOTH wizards to add a new column:
+
+“Stitches After”
+(or simply “Stitches” if space is tight)
+
+Columns should now be:
+
+Row | Action | Location | Stitches After
+
+Example output:
+
+Row 2 | Decrease 1 stitch | Both sides | 98 sts
+Row 4 | Decrease 1 stitch | Both sides | 96 sts
+Row 6 | Decrease 1 stitch | One side only | 95 sts
+
+This should be styled using the same table styles already used.
+

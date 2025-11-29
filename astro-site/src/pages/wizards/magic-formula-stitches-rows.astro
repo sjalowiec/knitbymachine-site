@@ -611,6 +611,7 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
               <th>Row</th>
               <th>Action</th>
               <th>Location</th>
+              <th>Stitches After</th>
             </tr>
           </thead>
           <tbody id="breakdownBody"></tbody>
@@ -693,11 +694,15 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
     const baseInterval = Math.floor(totalRows / primaryCount);
     const extraRows = totalRows % primaryCount;
     
-    // Build row-by-row breakdown
+    // Build row-by-row breakdown with running stitch totals
     const breakdown = [];
     let currentRow = 0;
+    let currentStitches = startingSts; // Track running stitch total
     let timesAtBase = primaryCount - extraRows;
     let timesAtLonger = extraRows;
+    
+    // Determine stitch change per action
+    const isDecrease = direction === 'decrease';
     
     // Generate breakdown steps
     if (shapingMode === 'both-sides' && unevenWarning) {
@@ -709,32 +714,43 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
         currentRow += interval;
         
         if (i < leftSideChanges) {
-          // This row applies to both sides
+          // This row applies to both sides - 2 stitches changed
+          currentStitches = isDecrease ? currentStitches - 2 : currentStitches + 2;
           breakdown.push({
             rowNumber: currentRow,
             action: `${direction} 1 stitch`,
-            location: 'each side'
+            location: 'each side',
+            totalStitches: currentStitches
           });
         } else {
-          // This extra row only applies to right side
+          // This extra row only applies to right side - 1 stitch changed
+          currentStitches = isDecrease ? currentStitches - 1 : currentStitches + 1;
           breakdown.push({
             rowNumber: currentRow,
             action: `${direction} 1 stitch`,
-            location: 'right side only (extra)'
+            location: 'right side only (extra)',
+            totalStitches: currentStitches
           });
         }
       }
     } else {
       // Symmetric case or one-side mode
+      const stitchChangePerAction = shapingMode === 'both-sides' ? 2 : 1;
+      
       for (let i = 0; i < changesPerSide; i++) {
         const useLonger = i < timesAtLonger;
         const interval = useLonger ? (baseInterval + 1) : baseInterval;
         currentRow += interval;
         
+        currentStitches = isDecrease 
+          ? currentStitches - stitchChangePerAction 
+          : currentStitches + stitchChangePerAction;
+        
         breakdown.push({
           rowNumber: currentRow,
           action: `${direction} 1 stitch`,
-          location: shapingMode === 'both-sides' ? 'each side' : 'one side only'
+          location: shapingMode === 'both-sides' ? 'each side' : 'one side only',
+          totalStitches: currentStitches
         });
       }
     }
@@ -1137,6 +1153,7 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
         <td>Row ${step.rowNumber}</td>
         <td>${step.action.charAt(0).toUpperCase() + step.action.slice(1)}</td>
         <td>${step.location.charAt(0).toUpperCase() + step.location.slice(1)}</td>
+        <td>${step.totalStitches} sts</td>
       `;
       breakdownBody.appendChild(row);
     });
@@ -1162,7 +1179,7 @@ const pageDescription = "Turn stitch counts and rows into clear shaping instruct
         textToCopy += '\n\nRow-by-row breakdown:\n';
         rows.forEach(row => {
           const cells = row.querySelectorAll('td');
-          textToCopy += `${cells[0].textContent}: ${cells[1].textContent} (${cells[2].textContent})\n`;
+          textToCopy += `${cells[0].textContent}: ${cells[1].textContent} (${cells[2].textContent}) → ${cells[3].textContent}\n`;
         });
       }
       

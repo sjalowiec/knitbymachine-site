@@ -340,6 +340,70 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
   font-size: 0.9rem;
 }
 
+.breakdown-toggle {
+  display: none;
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: transparent;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-family: var(--font);
+  font-weight: 500;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s;
+}
+
+.breakdown-toggle:hover {
+  background: #f5f5f5;
+}
+
+.breakdown-toggle .icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.breakdown-toggle.open .icon {
+  transform: rotate(90deg);
+}
+
+.breakdown-content {
+  display: none;
+  margin-top: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.breakdown-content.show {
+  display: block;
+}
+
+.breakdown-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.breakdown-table th,
+.breakdown-table td {
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.breakdown-table th {
+  background: #f9fafb;
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.85rem;
+}
+
+.breakdown-table tr:last-child td {
+  border-bottom: none;
+}
+
 .copy-btn {
   margin-top: 1rem;
   padding: 0.65rem 1.25rem;
@@ -499,6 +563,24 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
     <div id="results" class="results" data-testid="results-section">
       <h2>Your Shaping Instructions</h2>
       <div id="resultsContent" data-testid="results-content"></div>
+      
+      <button id="breakdownToggle" class="breakdown-toggle" data-testid="button-breakdown-toggle">
+        <span class="icon">▶</span> Row-by-row breakdown
+      </button>
+      <div id="breakdownContent" class="breakdown-content" data-testid="breakdown-content">
+        <table class="breakdown-table">
+          <thead>
+            <tr>
+              <th>Row</th>
+              <th>Action</th>
+              <th>Location</th>
+              <th>Stitches After</th>
+            </tr>
+          </thead>
+          <tbody id="breakdownBody"></tbody>
+        </table>
+      </div>
+      
       <button id="copyBtn" class="copy-btn" data-testid="button-copy">
         <i class="fas fa-copy"></i> Copy Instructions
       </button>
@@ -659,6 +741,7 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
       instructions += `<p><strong>No shaping needed!</strong></p>`;
       instructions += `<p>Your starting and ending widths are the same (${startStitches} stitches).</p>`;
       instructions += `<p>Simply knit ${totalRows} rows with no increases or decreases.</p>`;
+      document.getElementById('breakdownToggle').style.display = 'none';
     } else {
       const isIncrease = stitchDifference > 0;
       const totalStitchChange = Math.abs(stitchDifference);
@@ -674,6 +757,7 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
           
           document.getElementById('resultsContent').innerHTML = instructions;
           document.getElementById('results').classList.add('show');
+          document.getElementById('breakdownToggle').style.display = 'none';
           window.currentInstructions = document.getElementById('resultsContent').innerText;
           return;
         }
@@ -691,6 +775,7 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
         
         document.getElementById('resultsContent').innerHTML = instructions;
         document.getElementById('results').classList.add('show');
+        document.getElementById('breakdownToggle').style.display = 'none';
         window.currentInstructions = document.getElementById('resultsContent').innerText;
         return;
       }
@@ -719,6 +804,34 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
         shapingSteps.push({ sts: 1, rows: longerInterval, times: timesAtLonger });
       }
       
+      // Build row-by-row breakdown with running stitch totals
+      const breakdown = [];
+      let currentRow = 0;
+      let currentStitches = startStitches;
+      const stitchChangePerAction = sides === 'both' ? 2 : 1;
+      const timesAtLonger = remainder;
+      const timesAtShorter = shapingCount - remainder;
+      const longerInterval = spacing + 1;
+      const locationText = sides === 'both' ? 'each side' : 'one side only';
+      
+      // Generate breakdown by alternating intervals (longer first, then shorter)
+      for (let i = 0; i < shapingCount; i++) {
+        const useLonger = i < timesAtLonger;
+        const interval = useLonger ? longerInterval : spacing;
+        currentRow += interval;
+        
+        currentStitches = isIncrease 
+          ? currentStitches + stitchChangePerAction 
+          : currentStitches - stitchChangePerAction;
+        
+        breakdown.push({
+          rowNumber: currentRow,
+          action: `${action} 1 stitch`,
+          location: locationText,
+          totalStitches: currentStitches
+        });
+      }
+      
       // Render the SVG diagram first
       instructions += renderShapingDiagram(startStitches, endStitches, mode, direction, shapingSteps);
       
@@ -732,10 +845,6 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
       if (remainder === 0) {
         instructions += `<p>${sidePrefix}, ${action} 1 stitch every ${spacing} rows, ${shapingCount} times <span style="font-family: 'JetBrains Mono', monospace; color: #52682d;">(1–${spacing}–${shapingCount} sts/rows/times)</span>.</p>`;
       } else {
-        const timesAtLonger = remainder;
-        const timesAtShorter = shapingCount - remainder;
-        const longerInterval = spacing + 1;
-        
         if (timesAtShorter > 0) {
           instructions += `<p>• ${sidePrefix}, ${action} 1 stitch every ${spacing} rows, ${timesAtShorter} times <span style="font-family: 'JetBrains Mono', monospace; color: #52682d;">(1–${spacing}–${timesAtShorter} sts/rows/times)</span>.</p>`;
         }
@@ -745,6 +854,23 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
         instructions += `<strong>Note:</strong> Your shaping doesn't divide evenly. Alternate between the two intervals above to distribute the shaping evenly across your ${totalRows} rows.`;
         instructions += `</div>`;
       }
+      
+      // Build breakdown table
+      const breakdownBody = document.getElementById('breakdownBody');
+      breakdownBody.innerHTML = '';
+      
+      breakdown.forEach(step => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>Row ${step.rowNumber}</td>
+          <td>${step.action.charAt(0).toUpperCase() + step.action.slice(1)}</td>
+          <td>${step.location.charAt(0).toUpperCase() + step.location.slice(1)}</td>
+          <td>${step.totalStitches} sts</td>
+        `;
+        breakdownBody.appendChild(row);
+      });
+      
+      document.getElementById('breakdownToggle').style.display = 'flex';
     }
 
     document.getElementById('resultsContent').innerHTML = instructions;
@@ -752,10 +878,28 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
     document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     window.currentInstructions = document.getElementById('resultsContent').innerText;
   });
+  
+  // Breakdown toggle
+  document.getElementById('breakdownToggle').addEventListener('click', function() {
+    this.classList.toggle('open');
+    document.getElementById('breakdownContent').classList.toggle('show');
+  });
 
   document.getElementById('copyBtn').addEventListener('click', function() {
     if (window.currentInstructions) {
-      navigator.clipboard.writeText(window.currentInstructions).then(() => {
+      // Also include breakdown if visible
+      let textToCopy = window.currentInstructions;
+      const breakdownContent = document.getElementById('breakdownContent');
+      if (breakdownContent.classList.contains('show')) {
+        const rows = document.querySelectorAll('#breakdownBody tr');
+        textToCopy += '\n\nRow-by-row breakdown:\n';
+        rows.forEach(row => {
+          const cells = row.querySelectorAll('td');
+          textToCopy += `${cells[0].textContent}: ${cells[1].textContent} (${cells[2].textContent}) → ${cells[3].textContent}\n`;
+        });
+      }
+      
+      navigator.clipboard.writeText(textToCopy).then(() => {
         const originalText = this.innerHTML;
         this.innerHTML = '<i class="fas fa-check"></i> Copied!';
         setTimeout(() => {
