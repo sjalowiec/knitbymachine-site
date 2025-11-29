@@ -1,0 +1,137 @@
+You are my AI pair programmer.
+Project: my Knit by Machine site + KnitContent Manager (Astro / TypeScript).
+Goal: improve the wizards search on the “Get knitting” (wizards-catalog) page so that typing “magic” will find Magic Formula, and search is specific to wizards.
+
+Please make the following changes step by step.
+
+1. Extend the wizard data model
+
+Find the wizard data model (type/interface) used for the wizards catalog.
+It will be something like Wizard, WizardItem, or similar, probably in src/types, src/content, or next to the wizards data file.
+
+Add two optional fields:
+
+keywords?: string[]; // extra search terms (e.g. "increase, decrease, shaping")
+aliases?: string[];  // alternate names users might type
+
+
+Locate the data source that lists all wizards
+(for example src/data/wizards.json, wizards.ts, or similar) and update a few sample records so I can see the pattern. For example, for Magic Formula:
+
+{
+  "title": "Magic Formula",
+  "slug": "magic-formula",
+  "category": "tools",
+  "keywords": ["increase", "decrease", "shaping", "math", "formula", "stitch counts", "magic"],
+  "aliases": ["magic shaping", "increase/decrease calculator"]
+}
+
+
+Leave existing fields as they are; just add keywords and aliases.
+
+2. Update the admin form in KnitContent Manager
+
+My admin and site are both in this KnitContent Manager app, so be sure you are editing the admin UI that I use for wizard records.
+
+Find the admin page / component used to create and edit wizard records
+(for example something like AdminWizardForm, WizardEditor, or admin/wizards/*).
+
+Add two new form fields:
+
+Search keywords – multi-line text or a single text input where I can enter a comma-separated list of keywords.
+
+Aliases – another comma-separated list.
+
+Label them clearly for future me, e.g.:
+
+“Search keywords (comma separated)”
+
+“Aliases / alternate names (comma separated)”
+
+When saving a wizard, split these fields into arrays and trim whitespace so they populate keywords: string[] and aliases: string[] in the underlying data model. Example logic:
+
+function toStringArray(value: string | undefined): string[] {
+  if (!value) return [];
+  return value
+    .split(",")
+    .map((v) => v.trim())
+    .filter(Boolean);
+}
+
+
+Use this when converting from form fields to the stored record.
+
+3. Improve the search logic on the “Get knitting” wizards catalog page
+
+Now update the wizards-catalog / Get knitting page. This is the page that currently shows:
+
+Header: “Get knitting”
+
+Subheader: “Patterns, tools, and skill builders to help you start your next project.”
+
+A search input with placeholder “Search wizards…”
+
+Filter icons for Patterns, Tools, Skill Builders
+
+Locate the Astro/TSX file that renders this page (it’s the one that includes the “Get knitting” heading and the “Search wizards…” input).
+
+Ensure the search logic:
+
+Is local to this page (only filters the wizards list, not the global site search).
+
+Uses a helper function that checks title, category, keywords, and aliases.
+
+Add a small helper like this (adapt to your file’s structure, but keep the logic intact):
+
+function matchesQuery(wizard: Wizard, query: string): boolean {
+  if (!query) return true;
+  const q = query.toLowerCase();
+
+  const inTitle = wizard.title.toLowerCase().includes(q);
+  const inCategory = wizard.category?.toLowerCase().includes(q) ?? false;
+
+  const inKeywords =
+    Array.isArray(wizard.keywords) &&
+    wizard.keywords.some((kw) => kw.toLowerCase().includes(q));
+
+  const inAliases =
+    Array.isArray(wizard.aliases) &&
+    wizard.aliases.some((a) => a.toLowerCase().includes(q));
+
+  return inTitle || inCategory || inKeywords || inAliases;
+}
+
+
+Wherever the filtered list of wizards is computed, update it to use matchesQuery. For example (pseudo-code; adapt to the actual state management you find):
+
+const filteredWizards = allWizards.filter((wizard) => {
+  const categoryMatches =
+    selectedCategory === "all" || wizard.category === selectedCategory;
+
+  const queryMatches = matchesQuery(wizard, searchQuery);
+
+  return categoryMatches && queryMatches;
+});
+
+
+Make sure the search is “contains” based (as above, using .includes(q)), not startsWith, so typing “magic” will correctly match “Magic Formula”.
+
+Confirm that:
+
+With an empty search query, all wizards for the selected category are shown.
+
+Typing “magic” shows Magic Formula.
+
+Typing a keyword like “increase” or “shaping” also shows Magic Formula (because of keywords).
+
+4. Keep the UX as-is, just smarter
+
+Do not change:
+
+The “Get knitting” header text.
+
+The three filters: Patterns, Tools, Skill Builders.
+
+The basic layout and styling of the cards.
+
+Only make search smarter by using the new keywords / aliases fields and the improved matching logic above.
