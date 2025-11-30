@@ -807,55 +807,92 @@ try {
     // Determine if we need slope mode (more shaping actions than rows available)
     let mode = 'standard';
     let warnings = [];
-    let effectiveRows = totalRows;
+    let slopeData = null;
     
     if (changesPerSide > totalRows) {
-      // SLOPE MODE: shoulder-style shaping on every other row
+      // SLOPE MODE: bind off multiple stitches on every other row (shoulder-style)
       mode = 'slope';
       
-      // Number of rows where shaping can actually occur (every other row)
+      // Number of shaping rows (every other row)
       const shapingRows = Math.max(1, Math.floor(totalRows / 2));
       
-      // Check if even slope mode can handle the shaping
-      if (changesPerSide > shapingRows) {
-        return {
-          error: 'not-enough-rows',
-          shapingCount: changesPerSide,
-          totalRows,
-          direction,
-          mode: 'slope',
-          warnings: ['Even with every-other-row shaping, there are not enough rows for this change.']
-        };
-      }
+      // Calculate how many stitches to bind off per shaping row
+      // Use Magic Formula: distribute changesPerSide across shapingRows
+      const stsPerAction = Math.floor(changesPerSide / shapingRows);
+      const extraSts = changesPerSide % shapingRows;
       
-      // Use shapingRows for the Magic Formula calculation
-      effectiveRows = shapingRows;
+      // Some rows will bind off (stsPerAction + 1), others just stsPerAction
+      const timesAtMore = extraSts;
+      const timesAtBase = shapingRows - extraSts;
+      
+      slopeData = {
+        shapingRows,
+        stsPerAction,
+        extraSts,
+        timesAtMore,
+        timesAtBase,
+        rowInterval: 2 // Every other row
+      };
       
       warnings.push(
-        "This is a steep change over a short distance. I've converted it to shoulder-style slope shaping: work the shaping on every other row and use short rows in between."
+        "This is a steep change over a short distance. I've converted it to shoulder-style slope shaping: bind off multiple stitches on every other row."
       );
     }
     
-    // Calculate spacing based on the primary count (for both-sides with odd total, use the larger count)
-    const primaryCount = shapingMode === 'both-sides' && unevenWarning ? rightSideChanges : changesPerSide;
+    // For standard mode, calculate spacing as before
+    let baseInterval, extraRows, intervalMultiplier, timesAtBase, timesAtLonger;
     
-    // Use effectiveRows for spacing calculation (halved in slope mode)
-    const baseIntervalRaw = Math.floor(effectiveRows / primaryCount);
-    const extraRowsRaw = effectiveRows % primaryCount;
-    
-    // In slope mode, double the intervals back to real rows (shaping happens every other row)
-    const intervalMultiplier = mode === 'slope' ? 2 : 1;
-    const baseInterval = baseIntervalRaw * intervalMultiplier;
-    const extraRows = extraRowsRaw;
+    if (mode === 'standard') {
+      // Calculate spacing based on the primary count (for both-sides with odd total, use the larger count)
+      const primaryCount = shapingMode === 'both-sides' && unevenWarning ? rightSideChanges : changesPerSide;
+      
+      baseInterval = Math.floor(totalRows / primaryCount);
+      extraRows = totalRows % primaryCount;
+      intervalMultiplier = 1;
+      timesAtBase = primaryCount - extraRows;
+      timesAtLonger = extraRows;
+    } else {
+      // Slope mode uses different structure
+      baseInterval = 2; // Every other row
+      extraRows = 0;
+      intervalMultiplier = 1;
+      timesAtBase = slopeData.timesAtBase;
+      timesAtLonger = slopeData.timesAtMore;
+    }
     
     // Build row-by-row breakdown with running stitch totals
     let breakdown = [];
-    let timesAtBase = primaryCount - extraRows;
-    let timesAtLonger = extraRows;
     
     // Generate breakdown steps
-    if (shapingMode === 'both-sides' && unevenWarning) {
-      // Asymmetric case: one side has more changes than the other
+    if (mode === 'slope') {
+      // SLOPE MODE: bind off multiple stitches every other row
+      let currentRow = 0;
+      let currentStitches = startingSts;
+      const isDecrease = direction === 'decrease';
+      const sideMode = shapingMode === 'both-sides' ? 'both' : 'one';
+      const stsMultiplier = shapingMode === 'both-sides' ? 2 : 1; // Double for both sides
+      
+      // Distribute stitches: some rows bind off more, some less
+      for (let i = 0; i < slopeData.shapingRows; i++) {
+        currentRow += 2; // Every other row
+        const useLarger = i < slopeData.timesAtMore;
+        const stsThisRow = useLarger ? (slopeData.stsPerAction + 1) : slopeData.stsPerAction;
+        const totalStsChanged = stsThisRow * stsMultiplier;
+        
+        currentStitches = isDecrease ? currentStitches - totalStsChanged : currentStitches + totalStsChanged;
+        
+        const actionVerb = isDecrease ? 'Bind off' : 'Increase';
+        const location = shapingMode === 'both-sides' ? `${stsThisRow} sts each side` : `${stsThisRow} sts one side`;
+        
+        breakdown.push({
+          rowNumber: currentRow,
+          action: `${actionVerb} ${stsThisRow} ${stsThisRow === 1 ? 'stitch' : 'stitches'}`,
+          location: location,
+          stitchesAfter: Math.max(0, currentStitches)
+        });
+      }
+    } else if (shapingMode === 'both-sides' && unevenWarning) {
+      // STANDARD MODE - Asymmetric case: one side has more changes than the other
       // This requires custom logic because the last shaping is on one side only
       let currentRow = 0;
       let currentStitches = startingSts;
@@ -887,14 +924,13 @@ try {
         }
       }
     } else {
-      // Symmetric case or one-side mode: use the reusable utility
+      // STANDARD MODE - Symmetric case or one-side mode: use the reusable utility
       const sideMode = shapingMode === 'both-sides' ? 'both' : 'one';
       
       // Build steps array for the utility (longer intervals first for proper row distribution)
-      // In slope mode, use the multiplied intervals
       const breakdownSteps = [];
       if (timesAtLonger > 0) {
-        breakdownSteps.push({ sts: 1, rows: baseInterval + intervalMultiplier, times: timesAtLonger });
+        breakdownSteps.push({ sts: 1, rows: baseInterval + 1, times: timesAtLonger });
       }
       if (timesAtBase > 0) {
         breakdownSteps.push({ sts: 1, rows: baseInterval, times: timesAtBase });
@@ -922,15 +958,15 @@ try {
       direction,
       shapingMode,
       changesPerSide,
-      primaryCount,
       leftSideChanges,
       rightSideChanges,
       unevenWarning,
       baseInterval,
       extraRows,
-      timesAtBase: primaryCount - extraRows,
-      timesAtLonger: extraRows,
-      intervalStep: intervalMultiplier, // +1 for standard, +2 for slope
+      timesAtBase,
+      timesAtLonger,
+      intervalStep: intervalMultiplier,
+      slopeData, // For slope mode: { shapingRows, stsPerAction, extraSts, timesAtMore, timesAtBase }
       breakdown,
       lengthInUnits,
       units,
@@ -1177,10 +1213,19 @@ try {
       : result.lengthInUnits.toFixed(1);
     
     // Build shaping steps array for diagram
-    // In slope mode, intervalStep is 2 (since each effective row = 2 real rows)
     const intervalStep = result.intervalStep || 1;
     let shapingSteps = [];
-    if (result.extraRows === 0) {
+    
+    if (result.mode === 'slope' && result.slopeData) {
+      // SLOPE MODE: show stitch counts per action instead of 1
+      const sd = result.slopeData;
+      if (sd.timesAtMore > 0) {
+        shapingSteps.push({ sts: sd.stsPerAction + 1, rows: 2, times: sd.timesAtMore });
+      }
+      if (sd.timesAtBase > 0) {
+        shapingSteps.push({ sts: sd.stsPerAction, rows: 2, times: sd.timesAtBase });
+      }
+    } else if (result.extraRows === 0) {
       shapingSteps = [{ sts: 1, rows: result.baseInterval, times: result.changesPerSide }];
     } else {
       if (result.timesAtBase > 0) {
@@ -1229,35 +1274,59 @@ try {
     // Main instructions
     instructions += `<p style="margin-top: 1rem;"><strong>Instructions:</strong></p>`;
     
-    // Helper function to analyze intervals from breakdown
-    function analyzeIntervals(breakdown) {
-      if (breakdown.length === 0) return [];
-      
-      const intervals = [];
-      let prevRow = 0;
-      
-      breakdown.forEach(step => {
-        const interval = step.rowNumber - prevRow;
-        prevRow = step.rowNumber;
-        
-        // Find or create interval entry
-        const existing = intervals.find(i => i.interval === interval);
-        if (existing) {
-          existing.count++;
-        } else {
-          intervals.push({ interval, count: 1 });
-        }
-      });
-      
-      // Sort by interval (smaller first)
-      intervals.sort((a, b) => a.interval - b.interval);
-      return intervals;
-    }
-    
     // Helper to format inline shorthand
     const shorthand = (sts, rows, times) => `<span style="font-family: 'JetBrains Mono', monospace; color: #52682d;">(${sts}–${rows}–${times} sts/rows/times)</span>`;
     
-    if (result.shapingMode === 'both-sides') {
+    // SLOPE MODE: special instructions for binding off multiple stitches
+    if (result.mode === 'slope' && result.slopeData) {
+      const sd = result.slopeData;
+      const actionVerb = result.direction === 'decrease' ? 'Bind off' : 'Cast on';
+      const locationText = result.shapingMode === 'both-sides' ? 'on each side' : 'on one side';
+      
+      if (sd.timesAtMore > 0 && sd.timesAtBase > 0) {
+        // Two different stitch counts
+        instructions += `<p>• ${actionVerb} <strong>${sd.stsPerAction + 1}</strong> stitches ${locationText} every 2 rows, <strong>${sd.timesAtMore}</strong> times ${shorthand(sd.stsPerAction + 1, 2, sd.timesAtMore)}.</p>`;
+        instructions += `<p>• ${actionVerb} <strong>${sd.stsPerAction}</strong> stitches ${locationText} every 2 rows, <strong>${sd.timesAtBase}</strong> times ${shorthand(sd.stsPerAction, 2, sd.timesAtBase)}.</p>`;
+        
+        instructions += `<div class="note">`;
+        instructions += `<strong>Tip:</strong> Alternate between binding off ${sd.stsPerAction + 1} and ${sd.stsPerAction} stitches to distribute the shaping evenly.`;
+        instructions += `</div>`;
+      } else if (sd.timesAtBase > 0) {
+        // Only one stitch count
+        instructions += `<p>${actionVerb} <strong>${sd.stsPerAction}</strong> stitches ${locationText} every 2 rows, <strong>${sd.shapingRows}</strong> times ${shorthand(sd.stsPerAction, 2, sd.shapingRows)}.</p>`;
+      } else {
+        // Only larger stitch count (rare)
+        instructions += `<p>${actionVerb} <strong>${sd.stsPerAction + 1}</strong> stitches ${locationText} every 2 rows, <strong>${sd.timesAtMore}</strong> times ${shorthand(sd.stsPerAction + 1, 2, sd.timesAtMore)}.</p>`;
+      }
+    } else {
+      // STANDARD MODE: regular shaping instructions
+      
+      // Helper function to analyze intervals from breakdown
+      function analyzeIntervals(breakdown) {
+        if (breakdown.length === 0) return [];
+        
+        const intervals = [];
+        let prevRow = 0;
+        
+        breakdown.forEach(step => {
+          const interval = step.rowNumber - prevRow;
+          prevRow = step.rowNumber;
+          
+          // Find or create interval entry
+          const existing = intervals.find(i => i.interval === interval);
+          if (existing) {
+            existing.count++;
+          } else {
+            intervals.push({ interval, count: 1 });
+          }
+        });
+        
+        // Sort by interval (smaller first)
+        intervals.sort((a, b) => a.interval - b.interval);
+        return intervals;
+      }
+      
+      if (result.shapingMode === 'both-sides') {
       if (result.unevenWarning) {
         // Asymmetric case - derive from breakdown
         const bothSidesSteps = result.breakdown.filter(s => s.location === 'each side');
@@ -1307,6 +1376,7 @@ try {
         instructions += `</div>`;
       }
     }
+    } // Close standard mode else block
     
     // Slope mode warnings
     if (result.warnings && result.warnings.length > 0) {
