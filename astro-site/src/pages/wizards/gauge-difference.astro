@@ -4,6 +4,7 @@ import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
 import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
+import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
 
@@ -334,7 +335,7 @@ try {
 
   <div class="wizard-page">
     <div style="max-width: 800px; margin: 0 auto; padding: 0 1rem;">
-      <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
+      <WizardBackLink category="tool" />
     </div>
 
   <div class="page-header">

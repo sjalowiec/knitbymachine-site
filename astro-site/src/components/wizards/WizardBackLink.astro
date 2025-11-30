@@ -1,0 +1,25 @@
+---
+interface Props {
+  category?: string;
+  wizardClass?: string;
+  classes?: string[];
+  linkClass?: string;
+}
+
+const { category, wizardClass, classes, linkClass = 'back-link' } = Astro.props;
+
+const normalizedCategory = (category || '').toLowerCase().trim();
+const normalizedClass = (wizardClass || '').toLowerCase().trim();
+const normalizedClasses = (classes || []).map(c => c.toLowerCase().trim());
+
+const isSmartGuide = 
+  normalizedClass === 'smart guide' || 
+  normalizedClasses.includes('smart guide') || 
+  normalizedCategory === 'smart guide' ||
+  normalizedCategory === 'smart guides';
+
+const href = isSmartGuide ? '/smart-guides' : '/wizards-catalog';
+const text = isSmartGuide ? '← Back to Smart Guides' : '← Back to Wizards Catalog';
+---
+
+<a href={href} class={linkClass} data-testid="link-back-catalog">{text}</a>

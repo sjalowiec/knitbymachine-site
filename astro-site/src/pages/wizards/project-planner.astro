@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
+import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/project-planner";
 ---
@@ -113,7 +114,7 @@ const pageUrl = "https://knitbymachine.com/wizards/project-planner";
 
 <div class="wizard-page">
   <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
-    <a href="/wizards-catalog" class="back-link">← Back to Wizards Catalog</a>
+    <WizardBackLink category="tool" />
   </div>
   <div class="page-header">
     <h1>Project Planner</h1>

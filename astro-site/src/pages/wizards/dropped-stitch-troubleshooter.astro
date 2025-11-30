@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/wizard.css";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
+import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/dropped-stitch-troubleshooter";
 ---
@@ -150,7 +151,7 @@ const pageUrl = "https://knitbymachine.com/wizards/dropped-stitch-troubleshooter
 </style>
 
 <div class="wizard-page">
-  <a href="/smart-guides" class="back-link">← Back to Smart Guides</a>
+  <WizardBackLink category="smart guide" />
   <!-- Ana-catalog style header -->
   <div class="header-panel">
     <img src="/images/troubleshooter-wizard-logo.svg" alt="Dropped Stitch Troubleshooter" class="intro-icon">
