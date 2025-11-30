@@ -5,6 +5,7 @@ import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
 import "../../styles/global.css";
 
 const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
@@ -137,6 +138,7 @@ const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
   </div>
 
   <div class="wizard-container">
+    <ActionBar />
     <iframe 
       src="https://wizards.knitbymachine.com/boat-neck" 
       class="wizard-frame"
@@ -145,6 +147,34 @@ const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
   </div>
   <PrintFooter url={pageUrl} />
 </div>
+
+<script>
+  // Action Bar buttons - Show by default for iframe-based wizard
+  const actionBar = document.getElementById('action-bar');
+  const startOverBtn = document.getElementById('start-over-btn');
+  const printBtn = document.getElementById('print-btn');
+
+  // Show ActionBar on load (iframe is always visible)
+  if (actionBar) actionBar.style.display = 'flex';
+  if (printBtn) printBtn.style.display = 'block';
+
+  // Start Over handler - reload the iframe
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      const iframe = document.querySelector('.wizard-frame');
+      if (iframe) {
+        iframe.src = iframe.src;
+      }
+    });
+  }
+
+  // Print handler
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+</script>
 
 <Footer />
 </BaseLayout>

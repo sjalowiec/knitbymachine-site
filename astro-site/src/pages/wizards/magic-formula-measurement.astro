@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintButton from "../../components/common/PrintButton.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
 
 const pageTitle = "Magic Formula by Measurement | Knit by Machine";
 const pageDescription = "Calculate shaping with the Magic Formula using measurements. Enter your starting and ending widths and gauge to create clear knitting instructions.";
@@ -602,6 +603,7 @@ const pageUrl = "https://knitbymachine.com/wizards/magic-formula-measurement";
     </form>
 
     <div id="results" class="results" data-testid="results-section">
+      <ActionBar />
       <h2>Your Shaping Instructions</h2>
       <div id="resultsContent" data-testid="results-content"></div>
       
@@ -921,7 +923,33 @@ const pageUrl = "https://knitbymachine.com/wizards/magic-formula-measurement";
     document.getElementById('results').classList.add('show');
     document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     window.currentInstructions = document.getElementById('resultsContent').innerText;
+    
+    // Show ActionBar
+    const actionBar = document.getElementById('action-bar');
+    const printBtn = document.getElementById('print-btn');
+    if (actionBar) actionBar.style.display = 'flex';
+    if (printBtn) printBtn.style.display = 'block';
   });
+  
+  // Action Bar buttons
+  const actionBarEl = document.getElementById('action-bar');
+  const startOverBtn = document.getElementById('start-over-btn');
+  const printBtnEl = document.getElementById('print-btn');
+
+  // Start Over handler
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      document.getElementById('results').classList.remove('show');
+      if (actionBarEl) actionBarEl.style.display = 'none';
+    });
+  }
+
+  // Print handler
+  if (printBtnEl) {
+    printBtnEl.addEventListener('click', () => {
+      window.print();
+    });
+  }
   
   // Breakdown toggle
   document.getElementById('breakdownToggle').addEventListener('click', function() {

@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
 
 // Import shared wizard styles
 import '../../styles/wizard.css';
@@ -526,6 +527,7 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
     <div class="results-container">
       <h2 class="section-title">Step 2: Your pattern outline</h2>
       <div id="triangle-results" data-testid="results-container">
+        <ActionBar />
         <div class="results-placeholder">Your pattern outline will appear here after you enter your details.</div>
       </div>
     </div>
@@ -1189,6 +1191,12 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
 
     resultsDiv.innerHTML = html;
 
+    // Show ActionBar
+    const actionBar = document.getElementById('action-bar');
+    const printBtn = document.getElementById('print-btn');
+    if (actionBar) actionBar.style.display = 'flex';
+    if (printBtn) printBtn.style.display = 'block';
+
     // Add event listeners to option buttons
     const optionButtons = resultsDiv.querySelectorAll('.option-btn');
     optionButtons.forEach(btn => {
@@ -1196,6 +1204,26 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
         currentOption = btn.dataset.option;
         renderResults(calculationData);
       });
+    });
+  }
+
+  // Action Bar buttons
+  const actionBarEl = document.getElementById('action-bar');
+  const startOverBtn = document.getElementById('start-over-btn');
+  const printBtnEl = document.getElementById('print-btn');
+
+  // Start Over handler
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      resultsDiv.innerHTML = '<div class="results-placeholder">Your pattern outline will appear here after you enter your details.</div>';
+      if (actionBarEl) actionBarEl.style.display = 'none';
+    });
+  }
+
+  // Print handler
+  if (printBtnEl) {
+    printBtnEl.addEventListener('click', () => {
+      window.print();
     });
   }
 

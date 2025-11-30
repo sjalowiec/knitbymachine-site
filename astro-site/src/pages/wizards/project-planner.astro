@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/project-planner";
 ---
@@ -99,6 +100,7 @@ const pageUrl = "https://knitbymachine.com/wizards/project-planner";
   </div>
 
   <div class="chatbot-container">
+    <ActionBar />
     <section class="kbm-chat">
       <iframe 
         src="https://chatbot.getmindpal.com/ready-set-knit-td6"
@@ -111,5 +113,33 @@ const pageUrl = "https://knitbymachine.com/wizards/project-planner";
   </div>
   <PrintFooter url={pageUrl} />
 </div>
+
+<script>
+  // Action Bar buttons - Show by default for chatbot-based wizard
+  const actionBar = document.getElementById('action-bar');
+  const startOverBtn = document.getElementById('start-over-btn');
+  const printBtn = document.getElementById('print-btn');
+
+  // Show ActionBar on load (chatbot is always visible)
+  if (actionBar) actionBar.style.display = 'flex';
+  if (printBtn) printBtn.style.display = 'block';
+
+  // Start Over handler - reload the chatbot iframe
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      const iframe = document.querySelector('.kbm-chat iframe');
+      if (iframe) {
+        iframe.src = iframe.src;
+      }
+    });
+  }
+
+  // Print handler
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
+</script>
 
 </BaseLayout>

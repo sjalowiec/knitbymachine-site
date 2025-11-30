@@ -2,6 +2,7 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
 ---
@@ -320,6 +321,7 @@ const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
 
     <!-- Results Section -->
     <div id="results" style="display: none;">
+      <ActionBar />
       <table class="comparison-table">
         <thead>
           <tr>
@@ -362,6 +364,26 @@ const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
   const gauge2Label = document.getElementById('gauge2-label');
   const resultsSection = document.getElementById('results');
   const comparisonRowsEl = document.getElementById('comparison-rows');
+
+  // Action Bar buttons
+  const actionBar = document.getElementById('action-bar');
+  const startOverBtn = document.getElementById('start-over-btn');
+  const printBtn = document.getElementById('print-btn');
+
+  // Start Over handler
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      resultsSection.style.display = 'none';
+      if (actionBar) actionBar.style.display = 'none';
+    });
+  }
+
+  // Print handler
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
 
   // Update units UI
   function updateUnitsUI() {
@@ -432,8 +454,11 @@ const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
       
       comparisonRowsEl.innerHTML = rowsHTML;
       resultsSection.style.display = 'block';
+      if (actionBar) actionBar.style.display = 'flex';
+      if (printBtn) printBtn.style.display = 'block';
     } else {
       resultsSection.style.display = 'none';
+      if (actionBar) actionBar.style.display = 'none';
     }
   }
 

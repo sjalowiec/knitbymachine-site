@@ -3,6 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import ActionBar from "../../components/wizards/ActionBar.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/gauge-calculator";
 
@@ -377,6 +378,7 @@ try {
 
     <!-- Results Section -->
     <div id="results" class="results-section" style="display: none;">
+      <ActionBar />
       <h3>Your Gauge</h3>
       
       <div class="gauge-result">
@@ -436,6 +438,26 @@ try {
   const tipsToggle = document.getElementById('tips-toggle');
   const tipsContent = document.getElementById('tips-content');
   const tipsChevron = document.getElementById('tips-chevron');
+
+  // Action Bar buttons
+  const actionBar = document.getElementById('action-bar');
+  const startOverBtn = document.getElementById('start-over-btn');
+  const printBtn = document.getElementById('print-btn');
+
+  // Start Over handler
+  if (startOverBtn) {
+    startOverBtn.addEventListener('click', () => {
+      resultsSection.style.display = 'none';
+      if (actionBar) actionBar.style.display = 'none';
+    });
+  }
+
+  // Print handler
+  if (printBtn) {
+    printBtn.addEventListener('click', () => {
+      window.print();
+    });
+  }
 
   // Initialize inputs from localStorage
   inputWidth.value = swatchWidth;
@@ -537,8 +559,11 @@ try {
       rowPerUnitEl.textContent = `${rowsPer4or10.toFixed(1)} rows per ${displayLabel}`;
       
       resultsSection.style.display = 'block';
+      if (actionBar) actionBar.style.display = 'flex';
+      if (printBtn) printBtn.style.display = 'block';
     } else {
       resultsSection.style.display = 'none';
+      if (actionBar) actionBar.style.display = 'none';
     }
   }
 

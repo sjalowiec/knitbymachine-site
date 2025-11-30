@@ -337,10 +337,6 @@ const pageUrl = "https://knitbymachine.com/wizards/diy-blanket";
   height: auto;
 }
 
-.print-footer {
-  display: none;
-}
-
 @media print {
   * {
     background: white !important;
@@ -410,19 +406,6 @@ const pageUrl = "https://knitbymachine.com/wizards/diy-blanket";
   .diagram-container svg {
     display: block !important;
     page-break-inside: avoid;
-    background: white !important;
-  }
-  
-  /* Show and style print footer */
-  .print-footer {
-    display: block !important;
-    text-align: center;
-    font-family: "Poppins", Arial, sans-serif;
-    font-size: 10pt;
-    color: #666;
-    margin-top: 2rem;
-    padding-top: 1rem;
-    border-top: 1px solid #ddd;
     background: white !important;
   }
 }
@@ -610,10 +593,6 @@ const pageUrl = "https://knitbymachine.com/wizards/diy-blanket";
             </div>
           </div>
           
-          <!-- Print footer -->
-          <div id="print-footer" class="print-footer" style="display: none;">
-            <!-- Will be populated by JavaScript when printing -->
-          </div>
         </div>
       </div>
     </div>
