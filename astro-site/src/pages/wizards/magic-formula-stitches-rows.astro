@@ -1399,8 +1399,16 @@ try {
     if (result.mode === 'slope') {
       instructions += renderSlopeDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
       
-      // Activate the slope indicator in the form
+      // Activate both slope indicator AND one-side toggle (slope uses one-side shaping)
       document.getElementById('slopeIndicator').classList.add('active');
+      // Slope mode forces one-side shaping - update the toggle icons
+      document.querySelectorAll('.icon-toggle[data-value]').forEach(btn => {
+        if (btn.dataset.value === 'one') {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
     } else {
       instructions += renderShapingDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
       
