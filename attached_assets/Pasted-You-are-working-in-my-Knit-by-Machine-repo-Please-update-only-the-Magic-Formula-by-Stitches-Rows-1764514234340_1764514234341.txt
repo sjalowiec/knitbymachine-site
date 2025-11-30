@@ -1,0 +1,150 @@
+You are working in my Knit by Machine repo.
+Please update only the “Magic Formula by Stitches & Rows” tool.
+Do not change the Measurement version yet.
+
+Use my KBM Dev Kit guidelines for tools and shaping components so the UI stays exactly on-brand (layout, spacing, floating labels, results card, etc.).
+
+Goal
+Add an automatic “slope” mode to the Magic Formula by Stitches & Rows tool:
+
+If the shaping requires more stitches than rows, the tool should automatically switch to shoulder-style slope shaping, where shaping happens every other row so the knitter can use short-row shoulder shaping.
+
+If there are enough rows, keep using the existing standard Magic Formula behavior.
+
+The knitter should never have to choose the formula. The tool decides quietly based on their inputs.
+
+1. Where to work
+
+Find the Astro page for Magic Formula by Stitches & Rows under src/pages/tools/ (the slug likely includes “magic-formula” and “sts-rows” or similar).
+
+Find the TypeScript file that holds the calculation logic for this tool, probably under something like:
+
+src/lib/tools/magicFormula/
+
+or wherever the current Magic Formula “by stitches & rows” calculator is defined.
+
+Do not rename files or move them. Just extend the existing logic.
+
+2. Core logic change — auto “slope” mode
+
+In the calculation function for Magic Formula by Stitches & Rows:
+
+Identify the values for:
+
+startSts (starting stitch count)
+
+endSts (ending stitch count)
+
+totalRows (rows available for shaping — whatever variable is currently used for rows in the MF formula)
+
+Compute:
+
+const diffSts = Math.abs(endSts - startSts);
+const rowsAvailable = totalRows;
+
+
+Add a branch:
+
+let steps;
+let warnings: string[] = [];
+let mode: "standard" | "slope" = "standard";
+
+if (diffSts > rowsAvailable) {
+  // --- SLOPE MODE: shoulder-style shaping on every other row ---
+  mode = "slope";
+
+  // Number of rows where shaping can actually occur
+  const shapingRows = Math.max(1, Math.floor(rowsAvailable / 2));
+
+  // Use the existing Magic Formula spacing logic, but feed it shapingRows
+  // This should return an array like [{ sts, rows, times }, ...]
+  const mfSteps = runMagicFormula(diffSts, shapingRows);
+
+  // Convert spacing back to real rows (every other row)
+  steps = mfSteps.map(step => ({
+    ...step,
+    rows: step.rows * 2,
+  }));
+
+  warnings.push(
+    "This is a steep change over a short distance. I’ve converted it to shoulder-style slope shaping: work the shaping on every other row and use short rows in between."
+  );
+} else {
+  // --- STANDARD MODE: existing Magic Formula behavior ---
+  mode = "standard";
+
+  steps = runMagicFormula(diffSts, rowsAvailable);
+}
+
+
+Make sure the rest of the calculation logic (summary text, diagram data, and row-by-row breakdown) uses this new steps array and has access to the mode and warnings values.
+
+If there is a generateRowByRow utility, feed it the final steps with the already-multiplied row spacing so the row-by-row output matches the “every other row” instructions in slope mode.
+
+3. Results object
+
+Update the main calculate function to include the new mode and warnings in its return value. For example:
+
+export function calculateMagicFormulaStsRows(input: MagicFormulaInput) {
+  // ...existing input handling...
+
+  // logic from step 3 above to produce steps, mode, warnings
+
+  return {
+    summary,
+    steps,
+    rowByRow,
+    diagramData,
+    warnings,
+    mode, // "standard" | "slope"
+  };
+}
+
+
+Keep naming consistent with whatever this file already uses; adapt the function name and types as needed.
+
+4. Results card UI updates (Stitches & Rows tool only)
+
+In the Magic Formula by Stitches & Rows Astro page:
+
+Make sure the returned mode and warnings from the calculate function are available in the component state.
+
+Within the existing results card:
+
+If mode === "slope", add a small label or line of text near the top of the results, for example:
+
+Shaping type: Shoulder-style slope (every other row)
+
+Render any warnings as a short paragraph or list near the bottom of the card, using the existing KBM text styling (no new styles — reuse current classes).
+
+Do not change the basic layout, spacing, border, or typography of the results card. Follow the KBM New Tool / UI guidelines already in place. 
+
+If there is already a way to select icons or variants for the diagram or heading, you can optionally use mode to choose the slope icon in “slope” mode, but keep it simple and consistent with the current patterns.
+
+5. What NOT to change
+
+Do not alter the layout or CSS for the form or results card.
+
+Do not create a separate tool or additional pages.
+
+Do not add any user-visible toggle for “standard vs slope.” The choice must be automatic based on diffSts > rowsAvailable.
+
+6. Validation & Behavior
+
+Keep all existing input validation (no negative numbers, required fields, etc.).
+
+The results card should still be hidden until submission, and the page should still smooth-scroll to the results after a successful calculation, just like it does now.
+
+When you’re done:
+
+Ensure standard cases (more rows than stitches) behave exactly as before.
+
+In steep cases (more stitches than rows), confirm that:
+
+mode is "slope",
+
+steps use “every other row” spacing (rows doubled),
+
+and a clear “shoulder-style slope” note appears in the results.
+
+After this is working for Stitches & Rows, I will run a separate prompt to apply the same auto-slope behavior to the Magic Formula by Measurement tool.

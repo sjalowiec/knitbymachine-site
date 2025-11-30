@@ -774,7 +774,9 @@ try {
         totalRows,
         direction: null,
         lengthInUnits: totalRows / rowsGauge,
-        units
+        units,
+        mode: 'standard',
+        warnings: []
       };
     }
     
@@ -802,20 +804,49 @@ try {
       rightSideChanges = null;
     }
     
-    // Check if we have enough rows
+    // Determine if we need slope mode (more shaping actions than rows available)
+    let mode = 'standard';
+    let warnings = [];
+    let effectiveRows = totalRows;
+    
     if (changesPerSide > totalRows) {
-      return {
-        error: 'not-enough-rows',
-        shapingCount: changesPerSide,
-        totalRows,
-        direction
-      };
+      // SLOPE MODE: shoulder-style shaping on every other row
+      mode = 'slope';
+      
+      // Number of rows where shaping can actually occur (every other row)
+      const shapingRows = Math.max(1, Math.floor(totalRows / 2));
+      
+      // Check if even slope mode can handle the shaping
+      if (changesPerSide > shapingRows) {
+        return {
+          error: 'not-enough-rows',
+          shapingCount: changesPerSide,
+          totalRows,
+          direction,
+          mode: 'slope',
+          warnings: ['Even with every-other-row shaping, there are not enough rows for this change.']
+        };
+      }
+      
+      // Use shapingRows for the Magic Formula calculation
+      effectiveRows = shapingRows;
+      
+      warnings.push(
+        "This is a steep change over a short distance. I've converted it to shoulder-style slope shaping: work the shaping on every other row and use short rows in between."
+      );
     }
     
     // Calculate spacing based on the primary count (for both-sides with odd total, use the larger count)
     const primaryCount = shapingMode === 'both-sides' && unevenWarning ? rightSideChanges : changesPerSide;
-    const baseInterval = Math.floor(totalRows / primaryCount);
-    const extraRows = totalRows % primaryCount;
+    
+    // Use effectiveRows for spacing calculation (halved in slope mode)
+    const baseIntervalRaw = Math.floor(effectiveRows / primaryCount);
+    const extraRowsRaw = effectiveRows % primaryCount;
+    
+    // In slope mode, double the intervals back to real rows (shaping happens every other row)
+    const intervalMultiplier = mode === 'slope' ? 2 : 1;
+    const baseInterval = baseIntervalRaw * intervalMultiplier;
+    const extraRows = extraRowsRaw;
     
     // Build row-by-row breakdown with running stitch totals
     let breakdown = [];
@@ -857,12 +888,13 @@ try {
       }
     } else {
       // Symmetric case or one-side mode: use the reusable utility
-      const mode = shapingMode === 'both-sides' ? 'both' : 'one';
+      const sideMode = shapingMode === 'both-sides' ? 'both' : 'one';
       
       // Build steps array for the utility (longer intervals first for proper row distribution)
+      // In slope mode, use the multiplied intervals
       const breakdownSteps = [];
       if (timesAtLonger > 0) {
-        breakdownSteps.push({ sts: 1, rows: baseInterval + 1, times: timesAtLonger });
+        breakdownSteps.push({ sts: 1, rows: baseInterval + intervalMultiplier, times: timesAtLonger });
       }
       if (timesAtBase > 0) {
         breakdownSteps.push({ sts: 1, rows: baseInterval, times: timesAtBase });
@@ -872,7 +904,7 @@ try {
       breakdown = window.generateRowByRow({
         startingStitches: startingSts,
         steps: breakdownSteps,
-        shapingMode: mode,
+        shapingMode: sideMode,
         direction: direction
       });
     }
@@ -898,9 +930,12 @@ try {
       extraRows,
       timesAtBase: primaryCount - extraRows,
       timesAtLonger: extraRows,
+      intervalStep: intervalMultiplier, // +1 for standard, +2 for slope
       breakdown,
       lengthInUnits,
-      units
+      units,
+      mode,
+      warnings
     };
   }
   
@@ -1139,6 +1174,8 @@ try {
       : result.lengthInUnits.toFixed(1);
     
     // Build shaping steps array for diagram
+    // In slope mode, intervalStep is 2 (since each effective row = 2 real rows)
+    const intervalStep = result.intervalStep || 1;
     let shapingSteps = [];
     if (result.extraRows === 0) {
       shapingSteps = [{ sts: 1, rows: result.baseInterval, times: result.changesPerSide }];
@@ -1146,13 +1183,21 @@ try {
       if (result.timesAtBase > 0) {
         shapingSteps.push({ sts: 1, rows: result.baseInterval, times: result.timesAtBase });
       }
-      shapingSteps.push({ sts: 1, rows: result.baseInterval + 1, times: result.timesAtLonger });
+      shapingSteps.push({ sts: 1, rows: result.baseInterval + intervalStep, times: result.timesAtLonger });
     }
     
     const diagramMode = result.shapingMode === 'both-sides' ? 'both' : 'one';
     
     // Render the SVG diagram first
     instructions += renderShapingDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
+    
+    // Slope mode indicator
+    if (result.mode === 'slope') {
+      instructions += `<div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; padding: 0.75rem 1rem; background: #fef9e7; border-left: 4px solid #f39c12; border-radius: 0 6px 6px 0;">`;
+      instructions += `<strong style="color: #b58900;">Shaping type:</strong>`;
+      instructions += `<span style="color: #6c5700;">Shoulder-style slope (every other row)</span>`;
+      instructions += `</div>`;
+    }
     
     // Summary
     instructions += `<p><strong>Summary:</strong></p>`;
@@ -1230,13 +1275,14 @@ try {
           instructions += `<p style="margin-top: 0.5rem;">• On right side only, ${action} 1 additional stitch at row ${extraRow}.</p>`;
         }
       } else {
+        const longerInterval = result.baseInterval + intervalStep;
         if (result.extraRows === 0) {
           instructions += `<p>On each side, ${action} 1 stitch every ${result.baseInterval} rows, ${result.changesPerSide} times ${shorthand(1, result.baseInterval, result.changesPerSide)}.</p>`;
         } else {
           if (result.timesAtBase > 0) {
             instructions += `<p>• On each side, ${action} 1 stitch every ${result.baseInterval} rows, ${result.timesAtBase} times ${shorthand(1, result.baseInterval, result.timesAtBase)}.</p>`;
           }
-          instructions += `<p>• On each side, ${action} 1 stitch every ${result.baseInterval + 1} rows, ${result.timesAtLonger} times ${shorthand(1, result.baseInterval + 1, result.timesAtLonger)}.</p>`;
+          instructions += `<p>• On each side, ${action} 1 stitch every ${longerInterval} rows, ${result.timesAtLonger} times ${shorthand(1, longerInterval, result.timesAtLonger)}.</p>`;
           
           instructions += `<div class="note">`;
           instructions += `<strong>Tip:</strong> Your shaping doesn't divide evenly. Alternate between the two intervals to distribute the shaping evenly across your ${result.totalRows} rows.`;
@@ -1244,18 +1290,27 @@ try {
         }
       }
     } else {
+      const longerInterval = result.baseInterval + intervalStep;
       if (result.extraRows === 0) {
         instructions += `<p>On one side only, ${action} 1 stitch every ${result.baseInterval} rows, ${result.changesPerSide} times ${shorthand(1, result.baseInterval, result.changesPerSide)}.</p>`;
       } else {
         if (result.timesAtBase > 0) {
           instructions += `<p>• On one side only, ${action} 1 stitch every ${result.baseInterval} rows, ${result.timesAtBase} times ${shorthand(1, result.baseInterval, result.timesAtBase)}.</p>`;
         }
-        instructions += `<p>• On one side only, ${action} 1 stitch every ${result.baseInterval + 1} rows, ${result.timesAtLonger} times ${shorthand(1, result.baseInterval + 1, result.timesAtLonger)}.</p>`;
+        instructions += `<p>• On one side only, ${action} 1 stitch every ${longerInterval} rows, ${result.timesAtLonger} times ${shorthand(1, longerInterval, result.timesAtLonger)}.</p>`;
         
         instructions += `<div class="note">`;
         instructions += `<strong>Tip:</strong> Your shaping doesn't divide evenly. Alternate between the two intervals to distribute the shaping evenly across your ${result.totalRows} rows.`;
         instructions += `</div>`;
       }
+    }
+    
+    // Slope mode warnings
+    if (result.warnings && result.warnings.length > 0) {
+      instructions += `<div class="note info" style="margin-top: 1rem;">`;
+      instructions += `<strong>Note:</strong> `;
+      instructions += result.warnings.join(' ');
+      instructions += `</div>`;
     }
     
     // Approximate length
