@@ -1,9 +1,10 @@
 {
   "title": "Magic Formula by Measurement",
   "slug": "magic-formula-measurement",
-  "hero": "Shape your knitting using real instead of stitch counts.",
+  "hero": "",
   "description": "<p>Shape your knitting the easy way. This calculator turns your measurements into clear shaping instructions - just enter your starting and ending widths, row length, and gauge. No formulas, no guesswork. You get clean, accurate shaping you can trust for sleeves, sides, and other gradual changes.</p>",
   "excerpt": "Enter your widths, gauge, and row length, and get instant shaping instructions - no math needed.",
+  "whyUseThisTool": "dfdfd fs",
   "category": "tool",
   "tags": [],
   "keywords": [],
@@ -16,28 +17,28 @@
   "imageUrl": "",
   "imageAlt": "",
   "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
-  "metaTitle": "",
-  "metaDescription": "",
+  "metaTitle": "Magic Formula by Measurement | Machine Knitting Shaping Calculator",
+  "metaDescription": "Shape your knitting using real measurements instead of stitch counts. Enter your starting and ending widths, row length, and gauge to instantly generate clear, accurate shaping instructions for any machine-knit project.",
   "schemaMarkup": {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "url": "https://knitbymachine.com/wizards/magic-formula",
     "name": "Magic Formula Shaping Calculator",
+    "@type": "SoftwareApplication",
+    "@context": "https://schema.org",
+    "keywords": "shaping calculator, knitting shaping tool, magic formula, shaping instructions, decrease calculator, increase calculator, sleeve shaping, garment shaping, knitting math, gauge-based shaping, machine knitting shaping",
+    "publisher": {
+      "url": "https://knitbymachine.com",
+      "name": "Knit by Machine",
+      "@type": "Organization"
+    },
+    "description": "A shaping calculator that turns your measurements into clear instructions. Enter your starting and ending widths, row length, and gauge to instantly generate accurate shaping guidance for sleeves, sides, and gradual shaping sections.",
     "alternateName": [
       "Shaping Calculator",
       "Knitting Shaping Tool",
       "Magic Formula Tool"
     ],
-    "applicationCategory": "EducationalApplication",
     "operatingSystem": "Any",
-    "isAccessibleForFree": true,
-    "url": "https://knitbymachine.com/wizards/magic-formula",
-    "description": "A shaping calculator that turns your measurements into clear instructions. Enter your starting and ending widths, row length, and gauge to instantly generate accurate shaping guidance for sleeves, sides, and gradual shaping sections.",
-    "keywords": "shaping calculator, knitting shaping tool, magic formula, shaping instructions, decrease calculator, increase calculator, sleeve shaping, garment shaping, knitting math, gauge-based shaping, machine knitting shaping",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Knit by Machine",
-      "url": "https://knitbymachine.com"
-    }
+    "applicationCategory": "EducationalApplication",
+    "isAccessibleForFree": true
   },
   "isDraft": false,
   "publishedDate": "2025-11-18",

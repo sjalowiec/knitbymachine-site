@@ -3,7 +3,8 @@
   "slug": "magic-formula-stitches-rows",
   "hero": "Turn stitch counts and rows into clear shaping instructions — no spreadsheet required.",
   "description": "<p>Enter your starting and ending stitch counts, the number of rows, and your gauge to instantly see how to space your increases or decreases. Works for one or both sides, and shows you exactly which rows to shape on.</p>",
-  "excerpt": "Enter stitch counts and rows to instantly see how to space your shaping — one or both sides.",
+  "excerpt": "Enter stitch counts and rows to instantly see how to space your shaping.",
+  "whyUseThisTool": "why use this tool???aafd dsfsdf",
   "category": "tool",
   "tags": [
     "shaping",
@@ -37,27 +38,27 @@
   "imageAlt": "",
   "iconUrl": "https://www.knitbymachine.com/images/tools.svg",
   "metaTitle": "Magic Formula – Stitches & Rows | Knit by Machine",
-  "metaDescription": "Turn stitch counts and rows into clear shaping instructions. Calculate your increase or decrease spacing instantly — no spreadsheet required.",
+  "metaDescription": "Turn stitch counts and rows into clear shaping instructions. Calculate your increase or decrease spacing instantly - no spreadsheet required.    ",
   "schemaMarkup": {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
+    "url": "https://knitbymachine.com/wizards/magic-formula-stitches-rows",
     "name": "Magic Formula – Stitches & Rows Calculator",
+    "@type": "SoftwareApplication",
+    "@context": "https://schema.org",
+    "keywords": "stitch shaping calculator, row shaping tool, magic formula, shaping instructions, decrease calculator, increase calculator, sleeve shaping, garment shaping, knitting math, machine knitting shaping",
+    "publisher": {
+      "url": "https://knitbymachine.com",
+      "name": "Knit by Machine",
+      "@type": "Organization"
+    },
+    "description": "A shaping calculator that turns stitch counts and rows into clear instructions. Enter your starting and ending stitch counts, total rows, and gauge to instantly generate accurate shaping guidance for sleeves, sides, and gradual shaping sections.",
     "alternateName": [
       "Stitch Shaping Calculator",
       "Row Shaping Tool",
       "Knitting Shaping Calculator"
     ],
-    "applicationCategory": "EducationalApplication",
     "operatingSystem": "Any",
-    "isAccessibleForFree": true,
-    "url": "https://knitbymachine.com/wizards/magic-formula-stitches-rows",
-    "description": "A shaping calculator that turns stitch counts and rows into clear instructions. Enter your starting and ending stitch counts, total rows, and gauge to instantly generate accurate shaping guidance for sleeves, sides, and gradual shaping sections.",
-    "keywords": "stitch shaping calculator, row shaping tool, magic formula, shaping instructions, decrease calculator, increase calculator, sleeve shaping, garment shaping, knitting math, machine knitting shaping",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Knit by Machine",
-      "url": "https://knitbymachine.com"
-    }
+    "applicationCategory": "EducationalApplication",
+    "isAccessibleForFree": true
   },
   "isDraft": false,
   "publishedDate": "2025-11-29",
