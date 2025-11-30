@@ -331,6 +331,36 @@ try {
   font-weight: 500;
 }
 
+/* Slope indicator - non-interactive, auto-activates when needed */
+.slope-indicator {
+  cursor: default;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.slope-indicator .icon-toggle-box {
+  border-style: dashed;
+}
+
+.slope-indicator.active {
+  opacity: 1;
+}
+
+.slope-indicator.active .icon-toggle-box {
+  background: var(--kbm-green);
+  border-color: var(--kbm-green);
+  border-style: solid;
+}
+
+.slope-indicator.active .icon-toggle-box img {
+  filter: brightness(0) invert(1);
+}
+
+.slope-indicator.active .icon-toggle-label {
+  color: var(--kbm-green);
+  font-weight: 500;
+}
+
 .calculate-btn {
   width: 100%;
   padding: 1rem;
@@ -706,6 +736,12 @@ try {
             </div>
             <span class="icon-toggle-label">One side</span>
           </button>
+          <div class="icon-toggle slope-indicator" id="slopeIndicator" data-testid="indicator-slope" title="Auto-activates when steep shaping is needed">
+            <div class="icon-toggle-box">
+              <img src="/images/slope-choice.svg" alt="Slope" />
+            </div>
+            <span class="icon-toggle-label">Slope</span>
+          </div>
         </div>
       </div>
 
@@ -1114,6 +1150,79 @@ try {
     `;
   }
 
+  // Render SVG slope diagram - right triangle shape for shoulder-style shaping
+  function renderSlopeDiagram(startSts, endSts, mode, direction, steps) {
+    const isDecrease = direction === 'decrease';
+    
+    // Right triangle shape - slope goes from wide (starting) to narrow (ending)
+    // The hypotenuse represents the slope/bind-off edge
+    // For decrease: wide at bottom-left corner, slopes up to narrow point at top-right
+    // For increase: narrow at bottom-left, slopes up to wide at top-right
+    let polygonPoints;
+    if (mode === 'both') {
+      // Both sides: symmetrical slope on both edges
+      if (isDecrease) {
+        // Decrease: wide bottom, both sides slope inward to narrow top
+        polygonPoints = '40,30 220,30 220,170 40,170';
+      } else {
+        // Increase: narrow bottom, slopes outward to wide top
+        polygonPoints = '100,30 160,30 220,170 40,170';
+      }
+    } else {
+      // One-side: right triangle shape - slope on one edge only
+      if (isDecrease) {
+        // Decrease: right triangle with slope on the right side (hypotenuse)
+        // Bottom-left corner, top-right corner, bottom-right corner
+        polygonPoints = '40,170 220,30 220,170';
+      } else {
+        // Increase: right triangle going the other way
+        polygonPoints = '40,30 220,30 40,170';
+      }
+    }
+    
+    // Labels
+    const startLabel = `starting (${startSts} sts)`;
+    const endLabel = `end (${endSts} sts)`;
+    
+    // Build shorthand text - positioned in the center of the triangle
+    let shorthandSvg = '';
+    const centerX = mode === 'both' ? 130 : 140;
+    const centerY = mode === 'both' ? 100 : 110;
+    
+    if (steps.length === 1) {
+      shorthandSvg = `
+        <text x="${centerX}" y="${centerY - 10}" text-anchor="middle" fill="#1f2937" style="font-size: 24px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${steps[0].sts}–${steps[0].rows}–${steps[0].times}</text>
+        <text x="${centerX}" y="${centerY + 15}" text-anchor="middle" fill="#6b7280" style="font-size: 12px; font-family: system-ui, -apple-system, sans-serif; font-style: italic;">sts – rows – times</text>
+      `;
+    } else if (steps.length === 2) {
+      shorthandSvg = `
+        <text x="${centerX}" y="${centerY - 20}" text-anchor="middle" fill="#1f2937" style="font-size: 20px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${steps[0].sts}–${steps[0].rows}–${steps[0].times}</text>
+        <text x="${centerX}" y="${centerY + 5}" text-anchor="middle" fill="#1f2937" style="font-size: 20px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${steps[1].sts}–${steps[1].rows}–${steps[1].times}</text>
+        <text x="${centerX}" y="${centerY + 28}" text-anchor="middle" fill="#6b7280" style="font-size: 11px; font-family: system-ui, -apple-system, sans-serif; font-style: italic;">sts – rows – times</text>
+      `;
+    } else if (steps.length > 2) {
+      let yPos = centerY - 30;
+      steps.forEach(step => {
+        shorthandSvg += `<text x="${centerX}" y="${yPos}" text-anchor="middle" fill="#1f2937" style="font-size: 18px; font-weight: 600; font-family: 'JetBrains Mono', monospace;">${step.sts}–${step.rows}–${step.times}</text>`;
+        yPos += 24;
+      });
+      shorthandSvg += `<text x="${centerX}" y="${yPos + 5}" text-anchor="middle" fill="#6b7280" style="font-size: 11px; font-family: system-ui, -apple-system, sans-serif; font-style: italic;">sts – rows – times</text>`;
+    }
+    
+    return `
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1rem 0;">
+        <div style="width: 100%; max-width: 320px;">
+          <svg viewBox="0 0 260 200" style="width: 100%; height: auto; display: block;" aria-label="Slope shaping diagram showing ${direction} from ${startSts} to ${endSts} stitches">
+            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="6" stroke-linejoin="round"/>
+            <text x="25" y="190" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
+            <text x="235" y="20" text-anchor="end" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
+            ${shorthandSvg}
+          </svg>
+        </div>
+      </div>
+    `;
+  }
+
   // Load saved unit preference
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
   if (savedUnit === 'cm') {
@@ -1286,10 +1395,20 @@ try {
     
     const diagramMode = result.shapingMode === 'both-sides' ? 'both' : 'one';
     
-    // Render the SVG diagram first
-    instructions += renderShapingDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
+    // Render the SVG diagram - use slope diagram for slope mode, standard for others
+    if (result.mode === 'slope') {
+      instructions += renderSlopeDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
+      
+      // Activate the slope indicator in the form
+      document.getElementById('slopeIndicator').classList.add('active');
+    } else {
+      instructions += renderShapingDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
+      
+      // Deactivate the slope indicator
+      document.getElementById('slopeIndicator').classList.remove('active');
+    }
     
-    // Slope mode indicator with icon
+    // Slope mode indicator text with icon
     if (result.mode === 'slope') {
       instructions += `<div style="display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0; padding: 0.75rem 1rem; background: #fef9e7; border-left: 4px solid #f39c12; border-radius: 0 6px 6px 0;">`;
       instructions += `<div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--kbm-green); border-radius: 6px; flex-shrink: 0;">`;
