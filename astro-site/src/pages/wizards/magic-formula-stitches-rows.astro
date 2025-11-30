@@ -1066,9 +1066,10 @@ try {
   });
 
   // Validation helper
-  function validateField(input, errorEl) {
+  function validateField(input, errorEl, allowZero = false) {
     const value = parseFloat(input.value);
-    if (!input.value || isNaN(value) || value <= 0) {
+    const minValue = allowZero ? 0 : 1;
+    if (!input.value || isNaN(value) || value < minValue) {
       input.classList.add('error');
       errorEl.classList.add('show');
       return false;
@@ -1092,7 +1093,7 @@ try {
     // Validate all fields
     let valid = true;
     valid = validateField(startingStitchesInput, document.getElementById('startingStitchesError')) && valid;
-    valid = validateField(endingStitchesInput, document.getElementById('endingStitchesError')) && valid;
+    valid = validateField(endingStitchesInput, document.getElementById('endingStitchesError'), true) && valid; // Allow 0 for ending stitches
     valid = validateField(totalRowsInput, document.getElementById('totalRowsError')) && valid;
     valid = validateField(stitchGaugeInput, document.getElementById('stitchGaugeError')) && valid;
     valid = validateField(rowGaugeInput, document.getElementById('rowGaugeError')) && valid;
@@ -1102,7 +1103,9 @@ try {
     }
     
     const startingSts = parseInt(startingStitchesInput.value);
-    const endingSts = parseInt(endingStitchesInput.value);
+    const endingStsRaw = parseInt(endingStitchesInput.value);
+    const endingSts = endingStsRaw === 0 ? 1 : endingStsRaw; // Treat 0 as 1 for calculation
+    const displayEndingSts = endingStsRaw; // Keep 0 for display purposes
     const totalRows = parseInt(totalRowsInput.value);
     const stsGaugeRaw = parseFloat(stitchGaugeInput.value);
     const rowsGaugeRaw = parseFloat(rowGaugeInput.value);
