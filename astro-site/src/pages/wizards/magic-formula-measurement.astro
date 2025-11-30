@@ -364,11 +364,11 @@ try {
   font-weight: 500;
 }
 
-/* Slope indicator - non-interactive, auto-activates when needed */
+/* Slope indicator - hidden by default, only visible when slope mode is active */
 .slope-indicator {
   cursor: default;
-  opacity: 0.4;
   pointer-events: none;
+  display: none;
 }
 
 .slope-indicator .icon-toggle-box {
@@ -376,7 +376,7 @@ try {
 }
 
 .slope-indicator.active {
-  opacity: 1;
+  display: flex;
 }
 
 .slope-indicator.active .icon-toggle-box {
@@ -584,7 +584,7 @@ try {
 }
 
 .breakdown-table tbody tr:nth-child(even) {
-  background: #F7F9F4;
+  background: #E8F0DC;
 }
 
 .breakdown-table .sts-col,
@@ -1412,20 +1412,39 @@ try {
     document.getElementById('wizard-form').dispatchEvent(new Event('submit', { cancelable: true }));
   }
   
+  // Track if an input currently has focus (to suppress UI changes during typing)
+  let inputHasFocus = false;
+  
   // Add input listeners to all form fields for real-time detection
   const inputFields = ['startingWidth', 'endingWidth', 'shapingLength', 'stitchGauge', 'rowGauge'];
   inputFields.forEach(fieldId => {
     const input = document.getElementById(fieldId);
     if (input) {
+      // Track focus state
+      input.addEventListener('focus', () => {
+        inputHasFocus = true;
+      });
+      
+      input.addEventListener('blur', () => {
+        inputHasFocus = false;
+        // Trigger mode detection on blur to catch changes made while focused
+        updateModeUI();
+      });
+      
       input.addEventListener('input', () => {
         // Clear any validation errors on input
         input.classList.remove('error');
         const errorEl = document.getElementById(fieldId + 'Error');
         if (errorEl) errorEl.classList.remove('show');
         
-        // Debounce the mode detection slightly
+        // Use longer debounce delay (500ms) to let user finish typing
+        // Only update UI if no input is focused, or after the delay
         clearTimeout(input._detectTimeout);
-        input._detectTimeout = setTimeout(updateModeUI, 150);
+        input._detectTimeout = setTimeout(() => {
+          if (!inputHasFocus) {
+            updateModeUI();
+          }
+        }, 500);
       });
     }
   });

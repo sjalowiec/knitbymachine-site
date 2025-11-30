@@ -364,11 +364,11 @@ try {
   font-weight: 500;
 }
 
-/* Slope indicator - non-interactive, auto-activates when needed */
+/* Slope indicator - hidden by default, only visible when slope mode is active */
 .slope-indicator {
   cursor: default;
-  opacity: 0.4;
   pointer-events: none;
+  display: none;
 }
 
 .slope-indicator .icon-toggle-box {
@@ -376,7 +376,7 @@ try {
 }
 
 .slope-indicator.active {
-  opacity: 1;
+  display: flex;
 }
 
 .slope-indicator.active .icon-toggle-box {
@@ -584,7 +584,7 @@ try {
 }
 
 .breakdown-table tbody tr:nth-child(even) {
-  background: #F7F9F4;
+  background: #E8F0DC;
 }
 
 .breakdown-table .sts-col,
