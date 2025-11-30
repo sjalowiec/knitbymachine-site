@@ -1160,9 +1160,7 @@ try {
     }
     
     const startingSts = parseInt(startingStitchesInput.value);
-    const endingStsRaw = parseInt(endingStitchesInput.value);
-    const endingSts = endingStsRaw === 0 ? 1 : endingStsRaw; // Treat 0 as 1 for calculation
-    const displayEndingSts = endingStsRaw; // Keep 0 for display purposes
+    const endingSts = parseInt(endingStitchesInput.value); // Allow 0 for complete bind-off
     const totalRows = parseInt(totalRowsInput.value);
     const stsGaugeRaw = parseFloat(stitchGaugeInput.value);
     const rowsGaugeRaw = parseFloat(rowGaugeInput.value);
