@@ -1839,8 +1839,11 @@ try {
       if (breakdownToggle) breakdownToggle.classList.remove('open');
       if (breakdownContent) breakdownContent.classList.remove('show');
       
-      // Scroll to top of form
-      document.querySelector('.wizard-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      // Scroll to top of page and focus first input
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        document.getElementById('startingStitches').focus();
+      }, 300);
     });
   }
 
