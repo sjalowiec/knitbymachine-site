@@ -1150,44 +1150,24 @@ try {
     `;
   }
 
-  // Render SVG slope diagram - right triangle shape for shoulder-style shaping
+  // Render SVG slope diagram - right triangle shape matching slope-choice.svg icon
+  // Triangle with hypotenuse from top-left to bottom-right
   function renderSlopeDiagram(startSts, endSts, mode, direction, steps) {
-    const isDecrease = direction === 'decrease';
+    // Right triangle matching the slope-choice.svg icon shape:
+    // - Top-left corner (narrow end / ending stitches)
+    // - Bottom-left corner 
+    // - Bottom-right corner (wide end / starting stitches)
+    // Hypotenuse goes from top-left down to bottom-right
+    const polygonPoints = '30,30 30,170 250,170';
     
-    // Right triangle shape - slope goes from wide (starting) to narrow (ending)
-    // The hypotenuse represents the slope/bind-off edge
-    // For decrease: wide at bottom-left corner, slopes up to narrow point at top-right
-    // For increase: narrow at bottom-left, slopes up to wide at top-right
-    let polygonPoints;
-    if (mode === 'both') {
-      // Both sides: symmetrical slope on both edges
-      if (isDecrease) {
-        // Decrease: wide bottom, both sides slope inward to narrow top
-        polygonPoints = '40,30 220,30 220,170 40,170';
-      } else {
-        // Increase: narrow bottom, slopes outward to wide top
-        polygonPoints = '100,30 160,30 220,170 40,170';
-      }
-    } else {
-      // One-side: right triangle shape - slope on one edge only
-      if (isDecrease) {
-        // Decrease: right triangle with slope on the right side (hypotenuse)
-        // Bottom-left corner, top-right corner, bottom-right corner
-        polygonPoints = '40,170 220,30 220,170';
-      } else {
-        // Increase: right triangle going the other way
-        polygonPoints = '40,30 220,30 40,170';
-      }
-    }
-    
-    // Labels
+    // Labels - starting at bottom (wide), ending at top (narrow)
     const startLabel = `starting (${startSts} sts)`;
     const endLabel = `end (${endSts} sts)`;
     
-    // Build shorthand text - positioned in the center of the triangle
+    // Build shorthand text - positioned in the lower-right area of the triangle
     let shorthandSvg = '';
-    const centerX = mode === 'both' ? 130 : 140;
-    const centerY = mode === 'both' ? 100 : 110;
+    const centerX = 140;
+    const centerY = 130;
     
     if (steps.length === 1) {
       shorthandSvg = `
@@ -1212,10 +1192,10 @@ try {
     return `
       <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1rem 0;">
         <div style="width: 100%; max-width: 320px;">
-          <svg viewBox="0 0 260 200" style="width: 100%; height: auto; display: block;" aria-label="Slope shaping diagram showing ${direction} from ${startSts} to ${endSts} stitches">
-            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="6" stroke-linejoin="round"/>
-            <text x="25" y="190" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
-            <text x="235" y="20" text-anchor="end" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
+          <svg viewBox="0 0 280 200" style="width: 100%; height: auto; display: block;" aria-label="Slope shaping diagram showing ${direction} from ${startSts} to ${endSts} stitches">
+            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="8" stroke-linejoin="miter"/>
+            <text x="15" y="25" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
+            <text x="255" y="190" text-anchor="end" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
             ${shorthandSvg}
           </svg>
         </div>
