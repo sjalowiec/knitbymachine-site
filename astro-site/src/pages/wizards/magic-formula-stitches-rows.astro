@@ -1176,9 +1176,10 @@ try {
       <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1rem 0;">
         <div style="width: 100%; max-width: 320px;">
           <svg viewBox="0 0 260 200" style="width: 100%; height: auto; display: block;" aria-label="Shaping diagram showing ${direction} from ${startSts} to ${endSts} stitches on ${mode === 'both' ? 'both sides' : 'one side'}">
-            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="6" stroke-linejoin="round"/>
-            <text x="25" y="${startingY}" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
-            <text x="235" y="${endY}" text-anchor="end" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
+            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="3" stroke-linejoin="round"/>
+            <!-- Labels positioned over the polygon lines with white knockout -->
+            <text x="130" y="173" text-anchor="middle" fill="#6b7280" stroke="white" stroke-width="4" paint-order="stroke" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
+            <text x="130" y="33" text-anchor="middle" fill="#6b7280" stroke="white" stroke-width="4" paint-order="stroke" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
             ${shorthandSvg}
           </svg>
         </div>
@@ -1229,9 +1230,10 @@ try {
       <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem; margin: 1rem 0;">
         <div style="width: 100%; max-width: 320px;">
           <svg viewBox="0 0 280 200" style="width: 100%; height: auto; display: block;" aria-label="Slope shaping diagram showing ${direction} from ${startSts} to ${endSts} stitches">
-            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="8" stroke-linejoin="miter"/>
-            <text x="15" y="25" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
-            <text x="255" y="190" text-anchor="end" fill="#6b7280" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
+            <polygon points="${polygonPoints}" fill="none" stroke="#52682D" stroke-width="4" stroke-linejoin="miter"/>
+            <!-- Labels positioned over the polygon lines with white knockout -->
+            <text x="32" y="35" fill="#6b7280" stroke="white" stroke-width="4" paint-order="stroke" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${endLabel}</text>
+            <text x="140" y="173" text-anchor="middle" fill="#6b7280" stroke="white" stroke-width="4" paint-order="stroke" style="font-size: 14px; font-family: system-ui, -apple-system, sans-serif;">${startLabel}</text>
             ${shorthandSvg}
           </svg>
         </div>
