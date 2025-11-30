@@ -210,6 +210,8 @@ try {
 .floating-input {
   position: relative;
   width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .floating-input input {
@@ -223,6 +225,7 @@ try {
   background: white;
   transition: border-color 0.2s, box-shadow 0.2s;
   -moz-appearance: textfield;
+  box-sizing: border-box;
 }
 
 .floating-input input::-webkit-outer-spin-button,

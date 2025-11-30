@@ -1,0 +1,171 @@
+You are working in my Knit by Machine repo.
+
+GOAL
+
+I now have a good Magic Formula (Shaping) tool by Stitches & Rows with:
+
+automatic slope detection
+
+“one side only” behavior when slope shaping is needed
+
+hidden Shaping Options on initial load
+
+a working Start Over button
+
+I want you to:
+
+Replace the existing “Magic Formula (Shaping) by Measurements” tool with a copy of this Stitches & Rows tool, but using measurement-based math instead of stitch/row inputs.
+
+All UI/behavior should match the Stitches & Rows version; only the underlying math and input fields differ.
+
+Use the KBM Dev Kit + New Tool Template + Shaping Components Guide for structure and consistency.
+
+1. Source of truth (copy from here)
+
+Use the current, updated Magic Formula (Shaping) by Stitches & Rows tool as the “master” implementation for:
+
+Page structure and layout
+
+Input grid and floating labels
+
+Slope detection logic
+
+Shaping Options show/hide rules
+
+Results card content and styling
+
+Start Over behavior
+
+Use of shaping components (ShapingDiagram, ShapingCode, RowByRowTable), if present
+
+Wherever possible, reuse this implementation and only swap the core calculation to be measurement-based.
+
+2. Target (measurement-based) tool
+
+Identify the existing Magic Formula (Shaping) by Measurements tool (its src/pages/tools/... page and its logic under src/lib/tools/...).
+
+Replace it so that:
+
+Page + UI:
+
+The measurement tool’s page should look and behave identically to the Stitches & Rows version, except:
+
+Inputs are measurements + gauge, not raw stitch/row counts.
+
+Keep:
+
+Main layout container and heading
+
+Tagline (update text only if needed)
+
+Responsive field grid + floating labels
+
+Hidden Shaping Options on initial load
+
+Results card styling (white background, 2px KBM green border, subtle shadow, rounded corners)
+
+Start Over button in the same place
+
+Inputs (by measurements):
+Replace stitch/row inputs with measurement-based inputs, following the original measurement tool’s intent. For example (adapt naming to my existing labels):
+
+Starting width (inches or cm)
+
+Ending width (inches or cm)
+
+Total length of shaping (inches or cm)
+
+Gauge:
+
+stitches per inch (or per 4" converted)
+
+rows per inch (or per 4" converted)
+
+Keep the unit toggle (in/cm) behavior consistent with my other tools.
+
+Internal conversion:
+Inside the calculation logic for the measurement tool:
+
+Convert measurements and gauge into internal stitch and row counts so you can reuse the same slope/regular logic as the Stitches & Rows tool:
+
+startSts = Math.round(startWidth * stsPerUnit)
+
+endSts = Math.round(endWidth * stsPerUnit)
+
+rows = Math.round(length * rowsPerUnit)
+
+Then call or reuse the same core Magic Formula shaping logic that powers the Stitches & Rows tool, passing in startSts, endSts, and rows.
+
+This ensures:
+
+Slope detection uses deltaSts > rows exactly the same way.
+
+Shaping steps and sts–rows–times sequences are calculated the same way.
+
+Slope vs regular behavior (must match Sts & Rows tool):
+
+Let:
+
+deltaSts = Math.abs(startSts - endSts)
+
+rows = totalRows (derived from measurement + row gauge)
+
+If deltaSts > rows (slope shaping):
+
+Do not show the Shaping Options section at all.
+
+Automatically calculate one-side shaping only using the slope formula.
+
+Output instructions, shorthand, diagram, and row-by-row data for one side only, same as the Stitches & Rows tool.
+
+Include the same explanatory note used in the Stitches & Rows tool for the slope case.
+
+If deltaSts <= rows (regular Magic Formula):
+
+After valid inputs, reveal the Shaping Options section (one side / both sides).
+
+Let the user choose one side vs both sides.
+
+Use the standard Magic Formula logic to compute shaping.
+
+The behavior and wording should match the Stitches & Rows tool, just with measurement-based input labels.
+
+Results card + text:
+
+Keep the overall text and structure of the Stitches & Rows results, but adjust wording so it makes sense in measurement context (e.g., “over X rows / Y inches” is fine).
+
+Continue to use:
+
+Summary sentence
+
+Plain-language instructions
+
+sts–rows–times shorthand
+
+Any shaping components already used in the Stitches & Rows version.
+
+Start Over button:
+
+Ensure the Start Over button in the measurement tool behaves exactly like the fixed version in the Stitches & Rows tool:
+
+Clears all input fields (measurements, gauge, options).
+
+Resets internal state (slope flag, shaping mode, errors).
+
+Hides Shaping Options.
+
+Hides the results card.
+
+Files & organization:
+
+The measurement tool page should live at the same slug and path it currently uses (do not change the URL).
+
+Its logic file under src/lib/tools/... should mirror the structure of the Stitches & Rows calculation file, just with the extra step of converting measurements to stitches/rows before calling the shared shaping logic.
+
+If needed, create a shared helper (e.g., calculateMagicFormulaCore) used by both tools to avoid duplicating the shaping steps. Keep it in a sensible shared location under src/lib/tools/.
+
+Scope:
+
+Do not remove or alter the working Magic Formula (Shaping) by Stitches & Rows tool.
+
+Only replace/update the measurement-based version to be a measurement-front-end + gauge wrapper around the same logic.
