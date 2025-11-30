@@ -4,7 +4,10 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Header from "../../components/header.astro";
 import Footer from "../../components/footer.astro";
 import Tooltip from "../../components/Tooltip.astro";
+import PrintFooter from "../../components/common/PrintFooter.astro";
 import "../../styles/global.css";
+
+const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
 ---
 
 <BaseLayout 
@@ -140,6 +143,7 @@ import "../../styles/global.css";
       title="Boat Neck Sweater Pattern Tool"
     ></iframe>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <Footer />

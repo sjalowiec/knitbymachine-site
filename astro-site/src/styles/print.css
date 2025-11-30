@@ -365,7 +365,7 @@
   }
 
   /* ========================================
-     PRINT FOOTER
+     PRINT FOOTER (legacy)
      ======================================== */
   .print-footer {
     display: block !important;
@@ -375,6 +375,27 @@
     font-size: 9pt !important;
     color: #666666 !important;
     text-align: center !important;
+  }
+
+  /* ========================================
+     KBM PRINT FOOTER (new standard)
+     ======================================== */
+  .kbm-print-footer {
+    display: block !important;
+    margin-top: 1.5rem !important;
+    padding-top: 0.5rem !important;
+    border-top: 1px solid #52682D !important;
+    font-size: 11px !important;
+    text-align: center !important;
+    color: #333333 !important;
+  }
+
+  .kbm-print-footer__brand {
+    font-weight: 600 !important;
+  }
+
+  .kbm-print-footer__url {
+    color: #666666 !important;
   }
 
   /* ========================================

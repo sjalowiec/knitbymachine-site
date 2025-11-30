@@ -1,6 +1,9 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import "../../styles/wizard.css";
+import PrintFooter from "../../components/common/PrintFooter.astro";
+
+const pageUrl = "https://knitbymachine.com/wizards/dropped-stitch-troubleshooter";
 ---
 
 <BaseLayout 
@@ -137,6 +140,7 @@ import "../../styles/wizard.css";
   <div class="wizard-container">
     <div id="wizard-root" class="kbm-wizard"></div>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <script>

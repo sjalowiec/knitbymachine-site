@@ -74,25 +74,30 @@ p {
   letter-spacing: 0.5px;
 }
 
-/* Mobile typography scaling - SIGNIFICANTLY LARGER for readability */
+/* Mobile typography scaling - balanced for readability */
 @media (max-width: 1024px) {
   :root {
-    --header-height: 8rem;
-    --text-base: 1.5rem;     /* 24px - MUCH bigger base text */
-    --text-lg: 1.75rem;      /* 28px - larger headings */
-    --text-xl: 2.25rem;      /* 36px - even larger */
-    --text-xxl: 2.75rem;     /* 44px - big headings */
+    --header-height: 5rem;
+    --text-base: 1rem;       /* 16px - standard mobile base */
+    --text-lg: 1.125rem;     /* 18px - slightly larger */
+    --text-xl: 1.5rem;       /* 24px - headings */
+    --text-xxl: 1.75rem;     /* 28px - large headings */
   }
   
   body {
-    font-size: var(--text-base);  /* Apply base font size to body */
-    line-height: 1.7;              /* more spacing for readability */
+    font-size: var(--text-base);
+    line-height: 1.6;
   }
   
   p {
-    margin-bottom: 1.5rem;
-    font-size: var(--text-base);   /* Ensure paragraphs use base size */
+    margin-bottom: 1rem;
+    font-size: var(--text-base);
   }
+}
+
+/* Print footer - hidden on screen, shown only in print */
+.kbm-print-footer {
+  display: none;
 }
 
 /* === Knit by Machine Tooltip Component === */

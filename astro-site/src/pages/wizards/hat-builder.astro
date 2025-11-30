@@ -5,9 +5,12 @@ import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 import PatternDiagram from "../../components/wizards/PatternDiagram.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
+import PrintFooter from "../../components/common/PrintFooter.astro";
 
 // Import shared wizard styles
 import '../../styles/wizard.css';
+
+const pageUrl = "https://knitbymachine.com/wizards/hat-builder";
 
 // Fetch wizard metadata at build time
 const wizardSlug = 'hat-builder';
@@ -243,6 +246,7 @@ try {
       </div>
     </div>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <!-- Load shared wizard utilities -->

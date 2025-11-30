@@ -1,0 +1,64 @@
+You’re working in my Knit by Machine repo.
+I already have a reusable PrintButton.astro component in src/components/common/ and global print styles per my KBM Dev Kit and tool templates.
+
+Goal:
+Add a consistent print-only footer to all printed tool and pattern pages. The footer should say:
+Produced by Knit by Machine · [full page URL]
+where the URL is the canonical URL for the current page (for example:
+https://knitbymachine.com/tools/[slug] or https://knitbymachine.com/patterns/[slug]).
+
+Requirements:
+
+Create a small, reusable print footer block:
+
+Add a new component src/components/common/PrintFooter.astro.
+
+Props:
+
+url: string (required)
+
+It should render:
+
+<footer class="kbm-print-footer">
+  <span class="kbm-print-footer__brand">Produced by Knit by Machine</span>
+  <span aria-hidden="true"> · </span>
+  <span class="kbm-print-footer__url">{url}</span>
+</footer>
+
+
+Do not show this footer on screen; it should be print-only.
+
+Wire it into tools and patterns:
+
+For all tool pages in src/pages/tools/ and all pattern pages in src/pages/patterns/ (or wherever my pattern detail pages live), import PrintFooter.astro and render it once per page outside the results card/content, near the bottom of <main>.
+
+Pass the correct full URL using the page’s route/slug. Hardcode it with the known base domain, for example:
+
+Tools: https://knitbymachine.com/tools/${slug}
+
+Patterns: https://knitbymachine.com/patterns/${slug}
+
+Make sure this works for all existing tools and patterns, not just one page.
+
+Print-only styling (use my existing KBM print style conventions):
+
+In the appropriate global stylesheet(s) (where my print styles already live), add styles for the footer:
+
+@media print {
+  .kbm-print-footer {
+    margin-top: 1.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid #52682D;
+    font-size: 11px;
+    text-align: center;
+  }
+
+  .kbm-print-footer__brand {
+    font-weight: 600;
+  }
+}
+
+
+Ensure .kbm-print-footer is visible only in print (display: none by default, display: block in @media print).
+
+Keep everything consistent with my KBM UI and print guidelines (spacing, borders, typography) as documented in the KBM Dev Kit and New Tool Template. Do not change existing PrintButton behavior; just ensure the new footer appears any time someone prints a tool or pattern page using the browser’s print dialog.

@@ -2,9 +2,12 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 import Tooltip from "../../components/Tooltip.astro";
+import PrintFooter from "../../components/common/PrintFooter.astro";
 
 // Import shared wizard styles
 import '../../styles/wizard.css';
+
+const pageUrl = "https://knitbymachine.com/wizards/triangle";
 ---
 
 <BaseLayout 
@@ -527,6 +530,7 @@ import '../../styles/wizard.css';
       </div>
     </div>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <!-- Load wizard utilities -->

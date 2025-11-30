@@ -2,9 +2,11 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintButton from "../../components/common/PrintButton.astro";
+import PrintFooter from "../../components/common/PrintFooter.astro";
 
 const pageTitle = "Magic Formula by Measurement | Knit by Machine";
 const pageDescription = "Calculate shaping with the Magic Formula using measurements. Enter your starting and ending widths and gauge to create clear knitting instructions.";
+const pageUrl = "https://knitbymachine.com/wizards/magic-formula-measurement";
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -631,6 +633,7 @@ const pageDescription = "Calculate shaping with the Magic Formula using measurem
       </div>
     </div>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <script is:inline src="/js/generateRowByRow.js"></script>

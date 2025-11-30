@@ -2,6 +2,9 @@
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
 import Tooltip from "../../components/Tooltip.astro";
+import PrintFooter from "../../components/common/PrintFooter.astro";
+
+const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping";
 ---
 
 <BaseLayout 
@@ -462,6 +465,7 @@ import Tooltip from "../../components/Tooltip.astro";
       </div>
     </div>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <ActionBar />

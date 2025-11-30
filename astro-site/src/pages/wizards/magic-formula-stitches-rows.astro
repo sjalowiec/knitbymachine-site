@@ -3,9 +3,11 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintButton from "../../components/common/PrintButton.astro";
 import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
+import PrintFooter from "../../components/common/PrintFooter.astro";
 
 const pageTitle = "Magic Formula – Stitches & Rows | Knit by Machine";
 const pageDescription = "Turn stitch counts and rows into clear shaping instructions — no spreadsheet required. Calculate your increase or decrease spacing instantly.";
+const pageUrl = "https://knitbymachine.com/wizards/magic-formula-stitches-rows";
 
 // Fetch wizard metadata at build time
 const wizardSlug = 'magic-formula-stitches-rows';
@@ -693,6 +695,7 @@ try {
       </div>
     </div>
   </div>
+  <PrintFooter url={pageUrl} />
 </div>
 
 <script is:inline src="/js/generateRowByRow.js"></script>
