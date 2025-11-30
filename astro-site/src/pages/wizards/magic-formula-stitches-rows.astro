@@ -530,6 +530,55 @@ try {
   text-align: center;
 }
 
+/* Print styles - hide input sections */
+@media print {
+  .wizard-page {
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  
+  .page-header,
+  .video-button,
+  .back-link,
+  .toggle-group,
+  .form-grid,
+  .section-label,
+  .section-divider,
+  .floating-input,
+  .form-row-2,
+  .form-row-3,
+  .icon-toggle-group,
+  .calculate-btn,
+  .results-actions,
+  .breakdown-toggle,
+  .no-print {
+    display: none !important;
+  }
+  
+  .wizard-container {
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: white !important;
+    border: none !important;
+  }
+  
+  .results {
+    border-top: none !important;
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  
+  .breakdown-content {
+    display: block !important;
+    max-height: none !important;
+  }
+  
+  .breakdown-table-wrapper {
+    max-height: none !important;
+    overflow: visible !important;
+  }
+}
+
 </style>
 
   <div class="wizard-page">

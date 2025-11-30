@@ -126,6 +126,27 @@ const pageUrl = "https://knitbymachine.com/wizards/dropped-stitch-troubleshooter
   color: #3d4e21;
   text-decoration: underline;
 }
+
+/* Print styles - hide navigation and intro */
+@media print {
+  .wizard-page {
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  
+  .header-panel,
+  .back-link,
+  .no-print,
+  .options-grid,
+  .kbm-button {
+    display: none !important;
+  }
+  
+  .wizard-container {
+    padding: 0 !important;
+    background: white !important;
+  }
+}
 </style>
 
 <div class="wizard-page">

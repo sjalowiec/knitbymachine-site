@@ -88,6 +88,27 @@ const pageUrl = "https://knitbymachine.com/wizards/project-planner";
   color: #3d4e21;
   text-decoration: underline;
 }
+
+/* Print styles - hide navigation */
+@media print {
+  .wizard-page {
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  
+  .page-header,
+  .back-link,
+  .no-print {
+    display: none !important;
+  }
+  
+  .chatbot-container {
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: white !important;
+    border: none !important;
+  }
+}
 </style>
 
 <div class="wizard-page">

@@ -302,6 +302,41 @@ const pageUrl = "https://knitbymachine.com/wizards/maximum-knitted-width";
   text-decoration: underline;
 }
 
+/* Print styles - hide input sections */
+@media print {
+  .wizard-page {
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  
+  .page-header,
+  .video-button,
+  .back-link,
+  .toggle-group,
+  .units-toggle,
+  .slider-section,
+  .section-title,
+  .input-wrapper,
+  .no-print {
+    display: none !important;
+  }
+  
+  .wizard-container,
+  .calculator-card {
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: white !important;
+    border: none !important;
+  }
+  
+  .result-box,
+  #results {
+    border-top: none !important;
+    padding-top: 0 !important;
+    background: white !important;
+  }
+}
+
 </style>
 
   <div class="wizard-page">

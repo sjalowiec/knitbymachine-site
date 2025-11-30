@@ -115,6 +115,28 @@ const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
   text-decoration: underline;
 }
 
+/* Print styles - hide navigation */
+@media print {
+  .wizard-page {
+    padding-top: 0 !important;
+    background: white !important;
+  }
+  
+  .page-header,
+  .video-button,
+  .back-link,
+  .no-print {
+    display: none !important;
+  }
+  
+  .wizard-container {
+    box-shadow: none !important;
+    padding: 0 !important;
+    background: white !important;
+    border: none !important;
+  }
+}
+
 </style>
 
   <div class="wizard-page">
