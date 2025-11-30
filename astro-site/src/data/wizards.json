@@ -72,7 +72,7 @@
     "category": "practice"
   },
   "magic-formula-measurement": {
-    "name": "Magic Formula by Measurement",
+    "name": "Shaping Formula by Measurement",
     "hero": "Shape your knitting using real measurements instead of stitch counts.",
     "description": "Enter your starting and ending widths, your row length, and gauge to instantly see your shaping instructions. Perfect for knitters who think in inches and centimeters.",
     "video": "",
@@ -80,7 +80,7 @@
     "category": "tool"
   },
   "magic-formula-stitches-rows": {
-    "name": "Magic Formula – Stitches & Rows",
+    "name": "Shaping Formula – Stitches & Rows",
     "hero": "Turn stitch counts and rows into clear shaping instructions — no spreadsheet required.",
     "description": "Enter stitch counts and rows to instantly see how to space your shaping — one or both sides.",
     "video": "",
