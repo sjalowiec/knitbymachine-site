@@ -3,8 +3,27 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
+import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
+
+// Fetch wizard metadata at build time
+const wizardSlug = 'gauge-difference';
+let whyUseThisTool = '';
+
+try {
+  const response = await fetch(`https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/astro-site/src/content/wizards/${wizardSlug}.json`);
+  if (response.ok) {
+    const fileData = await response.json();
+    const contentResponse = await fetch(fileData.download_url);
+    if (contentResponse.ok) {
+      const wizardData = await contentResponse.json();
+      whyUseThisTool = wizardData.whyUseThisTool || '';
+    }
+  }
+} catch (e) {
+  // Silently fail - tooltip just won't show
+}
 ---
 
 <BaseLayout 
@@ -321,9 +340,13 @@ const pageUrl = "https://knitbymachine.com/wizards/gauge-difference";
   <div class="page-header">
     <div class="page-header-title">
       <h1>What a Difference a Stitch Makes</h1>
-      <button class="video-button" onclick="alert('Video tutorial coming soon!')">
-        <i class="fas fa-play-circle"></i> Watch Tutorial
-      </button>
+      {whyUseThisTool ? (
+        <WhyUseThisToolTooltip text={whyUseThisTool} variant="inline" />
+      ) : (
+        <button class="video-button" onclick="alert('Video tutorial coming soon!')">
+          <i class="fas fa-play-circle"></i> Watch Tutorial
+        </button>
+      )}
     </div>
     <p>
       A tiny change in gauge can make a big difference. See how your project grows (or shrinks) — one stitch at a time.
