@@ -74,12 +74,12 @@ const description = "Step-by-step planning tools to help you start your next pro
   <div class="page-container">
     <SectionHero 
       title="Smart Guides" 
-      subtitle="Want better results? Think it through."
       iconPath="/images/guide_icon.png"
       iconAlt="Smart Guide icon"
     />
 
     <div class="intro-section">
+      <p class="intro-headline">Want better results? Think it through.</p>
       <p class="intro-text">
         These interactive conversations do what a FAQ can’t: they ask you questions, narrow the choices, and give you a clear path forward for your next knit.
       </p>
@@ -143,10 +143,18 @@ const description = "Step-by-step planning tools to help you start your next pro
     text-align: center;
   }
 
+  .intro-headline {
+    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    color: #52682D;
+    line-height: 1.4;
+    margin: 0 0 0.5rem 0;
+  }
+
   .intro-text {
-    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
     color: #5a6b47;
-    line-height: 1.7;
+    line-height: 1.6;
     margin: 0;
   }
 
