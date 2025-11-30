@@ -754,6 +754,7 @@ try {
           </div>
         </div>
 
+        <div id="shapingOptionsSection" style="display: none;">
         <hr class="section-divider" />
         <div class="section-label">Shaping Options</div>
 
@@ -777,9 +778,10 @@ try {
             <span class="icon-toggle-label">Slope</span>
           </div>
         </div>
+        </div>
       </div>
 
-      <button type="submit" class="calculate-btn" data-testid="button-calculate">Calculate Shaping</button>
+      <button type="submit" class="calculate-btn" id="calculateBtn" data-testid="button-calculate" style="display: none;">Calculate Shaping</button>
     </form>
 
     <div id="results" class="results" data-testid="results-section">
@@ -1237,6 +1239,145 @@ try {
     `;
   }
 
+  // ========== MODE DETECTION & AUTO-CALCULATION ==========
+  
+  // DOM references for mode detection
+  const shapingOptionsSection = document.getElementById('shapingOptionsSection');
+  const calculateBtn = document.getElementById('calculateBtn');
+  const resultsEl = document.getElementById('results');
+  const slopeIndicatorEl = document.getElementById('slopeIndicator');
+  
+  // State tracking
+  let currentMode = null; // 'slope', 'regular', or null
+  let isAutoCalculating = false;
+  
+  // Check if all required inputs have valid values
+  function hasValidInputs() {
+    const startSts = parseFloat(document.getElementById('startingStitches').value);
+    const endSts = parseFloat(document.getElementById('endingStitches').value);
+    const rows = parseFloat(document.getElementById('totalRows').value);
+    const stsGauge = parseFloat(document.getElementById('stitchGauge').value);
+    const rowGauge = parseFloat(document.getElementById('rowGauge').value);
+    
+    // Starting stitches must be >= 1
+    if (isNaN(startSts) || startSts < 1) return false;
+    // Ending stitches can be 0 (complete bind-off)
+    if (isNaN(endSts) || endSts < 0) return false;
+    // Other fields must be >= 1
+    if (isNaN(rows) || rows < 1) return false;
+    if (isNaN(stsGauge) || stsGauge < 1) return false;
+    if (isNaN(rowGauge) || rowGauge < 1) return false;
+    
+    return true;
+  }
+  
+  // Detect which mode should be used based on current inputs
+  function detectMode() {
+    if (!hasValidInputs()) {
+      return null;
+    }
+    
+    const startSts = parseInt(document.getElementById('startingStitches').value);
+    const endSts = parseInt(document.getElementById('endingStitches').value);
+    const rows = parseInt(document.getElementById('totalRows').value);
+    
+    const deltaSts = Math.abs(startSts - endSts);
+    
+    // No shaping needed
+    if (deltaSts === 0) {
+      return 'no-shaping';
+    }
+    
+    // Slope mode: more stitch changes than rows available
+    if (deltaSts > rows) {
+      return 'slope';
+    }
+    
+    // Regular mode: enough rows for standard shaping
+    return 'regular';
+  }
+  
+  // Update UI based on detected mode
+  function updateModeUI() {
+    const mode = detectMode();
+    
+    if (mode === null) {
+      // Not enough valid inputs - hide everything
+      shapingOptionsSection.style.display = 'none';
+      calculateBtn.style.display = 'none';
+      currentMode = null;
+      return;
+    }
+    
+    if (mode === 'no-shaping') {
+      // No shaping needed - show calculate button but hide options
+      shapingOptionsSection.style.display = 'none';
+      calculateBtn.style.display = 'block';
+      currentMode = 'no-shaping';
+      return;
+    }
+    
+    if (mode === 'slope') {
+      // Slope mode: hide options, auto-calculate with one-side
+      shapingOptionsSection.style.display = 'none';
+      calculateBtn.style.display = 'none';
+      currentMode = 'slope';
+      
+      // Auto-calculate immediately
+      autoCalculateSlope();
+      return;
+    }
+    
+    if (mode === 'regular') {
+      // Regular mode: show options and calculate button
+      shapingOptionsSection.style.display = 'block';
+      calculateBtn.style.display = 'block';
+      currentMode = 'regular';
+      
+      // Hide results if we switched from slope to regular
+      if (resultsEl.classList.contains('show') && isAutoCalculating) {
+        resultsEl.classList.remove('show');
+        isAutoCalculating = false;
+      }
+      return;
+    }
+  }
+  
+  // Auto-calculate for slope mode (one-side only, no user choice)
+  function autoCalculateSlope() {
+    isAutoCalculating = true;
+    
+    // Force one-side shaping for slope mode
+    document.querySelectorAll('.icon-toggle[data-value]').forEach(btn => {
+      if (btn.dataset.value === 'one') {
+        btn.classList.add('active');
+      } else {
+        btn.classList.remove('active');
+      }
+    });
+    
+    // Trigger form submission programmatically
+    document.getElementById('wizard-form').dispatchEvent(new Event('submit', { cancelable: true }));
+  }
+  
+  // Add input listeners to all form fields for real-time detection
+  const inputFields = ['startingStitches', 'endingStitches', 'totalRows', 'stitchGauge', 'rowGauge'];
+  inputFields.forEach(fieldId => {
+    const input = document.getElementById(fieldId);
+    if (input) {
+      input.addEventListener('input', () => {
+        // Clear any validation errors on input
+        input.classList.remove('error');
+        const errorEl = document.getElementById(fieldId + 'Error');
+        if (errorEl) errorEl.classList.remove('show');
+        
+        // Debounce the mode detection slightly
+        clearTimeout(input._detectTimeout);
+        input._detectTimeout = setTimeout(updateModeUI, 150);
+      });
+    }
+  });
+
   // Load saved unit preference
   const savedUnit = localStorage.getItem('kbm-unit-preference') || 'in';
   if (savedUnit === 'cm') {
@@ -1624,11 +1765,54 @@ try {
   const startOverBtn = document.getElementById('start-over-btn');
   const printBtnEl = document.getElementById('print-btn');
 
-  // Start Over handler
+  // Start Over handler - full reset to initial state
   if (startOverBtn) {
     startOverBtn.addEventListener('click', () => {
+      // Hide results
       document.getElementById('results').classList.remove('show');
       if (actionBarEl) actionBarEl.style.display = 'none';
+      
+      // Clear all input fields
+      inputFields.forEach(fieldId => {
+        const input = document.getElementById(fieldId);
+        if (input) {
+          input.value = '';
+          input.classList.remove('error');
+        }
+        const errorEl = document.getElementById(fieldId + 'Error');
+        if (errorEl) errorEl.classList.remove('show');
+      });
+      
+      // Reset shaping options to default (both sides active)
+      document.querySelectorAll('.icon-toggle[data-value]').forEach(btn => {
+        if (btn.dataset.value === 'both') {
+          btn.classList.add('active');
+        } else {
+          btn.classList.remove('active');
+        }
+      });
+      
+      // Deactivate slope indicator
+      if (slopeIndicatorEl) {
+        slopeIndicatorEl.classList.remove('active');
+      }
+      
+      // Hide shaping options and calculate button
+      if (shapingOptionsSection) shapingOptionsSection.style.display = 'none';
+      if (calculateBtn) calculateBtn.style.display = 'none';
+      
+      // Reset state
+      currentMode = null;
+      isAutoCalculating = false;
+      
+      // Close breakdown if open
+      const breakdownToggle = document.getElementById('breakdownToggle');
+      const breakdownContent = document.getElementById('breakdownContent');
+      if (breakdownToggle) breakdownToggle.classList.remove('open');
+      if (breakdownContent) breakdownContent.classList.remove('show');
+      
+      // Scroll to top of form
+      document.querySelector('.wizard-container').scrollIntoView({ behavior: 'smooth', block: 'start' });
     });
   }
 
