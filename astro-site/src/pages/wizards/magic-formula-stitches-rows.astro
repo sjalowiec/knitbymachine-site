@@ -707,15 +707,6 @@ try {
             <span class="icon-toggle-label">One side</span>
           </button>
         </div>
-        
-        <div class="slope-toggle-wrapper" style="margin-top: 1rem;">
-          <label class="slope-checkbox-label" style="display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
-            <input type="checkbox" id="forceSlope" data-testid="checkbox-force-slope" style="width: 18px; height: 18px; cursor: pointer;" />
-            <img src="/images/slope-choice.svg" alt="Slope" style="width: 24px; height: 24px;" />
-            <span style="font-size: 0.9rem; color: var(--text-secondary);">Force slope mode (shoulder-style bind-offs)</span>
-          </label>
-          <p class="slope-hint" style="font-size: 0.75rem; color: var(--text-muted); margin: 0.25rem 0 0 1.5rem;">Bind off multiple stitches every other row. Auto-enables when needed.</p>
-        </div>
       </div>
 
       <button type="submit" class="calculate-btn" data-testid="button-calculate">Calculate Shaping</button>
@@ -768,8 +759,7 @@ try {
       stsGauge,
       rowsGauge,
       units,
-      shapingMode,
-      forceSlope = false
+      shapingMode
     } = params;
     
     const totalChange = Math.abs(startingSts - endingSts);
@@ -824,9 +814,8 @@ try {
     // For asymmetric both-sides, use the larger side count (rightSideChanges) for slope detection
     const primaryCount = shapingMode === 'both-sides' && unevenWarning ? rightSideChanges : changesPerSide;
     const needsAutoSlope = primaryCount > totalRows;
-    const useSlope = needsAutoSlope || forceSlope;
     
-    if (useSlope) {
+    if (needsAutoSlope) {
       // SLOPE MODE: bind off multiple stitches on every other row (shoulder-style)
       mode = 'slope';
       
@@ -868,15 +857,9 @@ try {
         rightSideTotal: rightSideChanges
       };
       
-      if (needsAutoSlope) {
-        warnings.push(
-          "This is a steep change over a short distance. Auto-converted to shoulder-style slope shaping: bind off multiple stitches on every other row."
-        );
-      } else {
-        warnings.push(
-          "Slope mode enabled: bind off multiple stitches on every other row for faster shaping."
-        );
-      }
+      warnings.push(
+        "This is a steep change over a short distance. Auto-converted to shoulder-style slope shaping: bind off multiple stitches on every other row."
+      );
       
       if (hasAsymmetricLeftover) {
         warnings.push(
@@ -892,10 +875,11 @@ try {
       // primaryCount already calculated above for slope detection
       baseInterval = Math.floor(totalRows / primaryCount);
       
-      // Guard: if baseInterval is 0, we need slope mode (this shouldn't happen if slope detection worked)
+      // Guard: if baseInterval is 0, we need slope mode (this shouldn't happen if slope detection worked correctly)
       if (baseInterval === 0) {
-        // Fallback to slope mode
-        return calculateShaping({ ...params, forceSlope: true });
+        // This is a safety fallback - should be caught by needsAutoSlope detection above
+        console.warn('baseInterval=0 reached in standard mode - this should have been caught by slope detection');
+        baseInterval = 1; // Minimum interval
       }
       
       extraRows = totalRows % primaryCount;
@@ -1212,7 +1196,6 @@ try {
     const stsGaugeRaw = parseFloat(stitchGaugeInput.value);
     const rowsGaugeRaw = parseFloat(rowGaugeInput.value);
     const shapingMode = document.querySelector('.icon-toggle.active').dataset.value === 'both' ? 'both-sides' : 'one-side';
-    const forceSlope = document.getElementById('forceSlope').checked;
     const units = useCm ? 'cm' : 'in';
 
     // Convert gauge from 4"/10cm to per-unit values
@@ -1228,8 +1211,7 @@ try {
       stsGauge,
       rowsGauge,
       units,
-      shapingMode,
-      forceSlope
+      shapingMode
     });
 
     let instructions = '';
@@ -1307,11 +1289,16 @@ try {
     // Render the SVG diagram first
     instructions += renderShapingDiagram(result.startingSts, result.endingSts, diagramMode, result.direction, shapingSteps);
     
-    // Slope mode indicator
+    // Slope mode indicator with icon
     if (result.mode === 'slope') {
-      instructions += `<div style="display: flex; align-items: center; gap: 0.5rem; margin: 1rem 0; padding: 0.75rem 1rem; background: #fef9e7; border-left: 4px solid #f39c12; border-radius: 0 6px 6px 0;">`;
-      instructions += `<strong style="color: #b58900;">Shaping type:</strong>`;
-      instructions += `<span style="color: #6c5700;">Shoulder-style slope (every other row)</span>`;
+      instructions += `<div style="display: flex; align-items: center; gap: 0.75rem; margin: 1rem 0; padding: 0.75rem 1rem; background: #fef9e7; border-left: 4px solid #f39c12; border-radius: 0 6px 6px 0;">`;
+      instructions += `<div style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; background: var(--kbm-green); border-radius: 6px; flex-shrink: 0;">`;
+      instructions += `<img src="/images/slope-choice.svg" alt="Slope" style="width: 20px; height: 20px; filter: brightness(0) invert(1);" />`;
+      instructions += `</div>`;
+      instructions += `<div>`;
+      instructions += `<strong style="color: #b58900;">Shoulder-style slope</strong>`;
+      instructions += `<span style="color: #6c5700; display: block; font-size: 0.85rem;">Bind off multiple stitches every other row</span>`;
+      instructions += `</div>`;
       instructions += `</div>`;
     }
     
