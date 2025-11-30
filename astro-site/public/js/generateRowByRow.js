@@ -3,7 +3,7 @@
  * 
  * A reusable "lego block" utility for generating row-by-row shaping instructions.
  * Can be used across the entire Knit by Machine site:
- * - Magic Formula tools
+ * - Shaping Formula tools
  * - Patterns
  * - Skill builders
  * - Any shaping calculator or practice worksheet

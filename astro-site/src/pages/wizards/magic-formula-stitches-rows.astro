@@ -806,7 +806,7 @@ try {
 
 <script is:inline src="/js/generateRowByRow.js"></script>
 <script is:inline>
-  // ========== MAGIC FORMULA CALCULATION HELPER ==========
+  // ========== SHAPING FORMULA CALCULATION HELPER ==========
   
   function calculateShaping(params) {
     const {
@@ -894,7 +894,7 @@ try {
       }
       
       // Calculate how many stitches to bind off per shaping row
-      // Use Magic Formula: distribute stsToDistribute across shapingRows
+      // Use Shaping Formula: distribute stsToDistribute across shapingRows
       const stsPerAction = Math.floor(stsToDistribute / shapingRows);
       const extraSts = stsToDistribute % shapingRows;
       
