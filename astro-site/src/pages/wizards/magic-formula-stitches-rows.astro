@@ -821,7 +821,9 @@ try {
     let warnings = [];
     let slopeData = null;
     
-    const needsAutoSlope = changesPerSide > totalRows;
+    // For asymmetric both-sides, use the larger side count (rightSideChanges) for slope detection
+    const primaryCount = shapingMode === 'both-sides' && unevenWarning ? rightSideChanges : changesPerSide;
+    const needsAutoSlope = primaryCount > totalRows;
     const useSlope = needsAutoSlope || forceSlope;
     
     if (useSlope) {
@@ -831,10 +833,24 @@ try {
       // Number of shaping rows (every other row)
       const shapingRows = Math.max(1, Math.floor(totalRows / 2));
       
+      // For both-sides mode, use the common portion (min of left/right) for symmetric slope
+      // The leftover stitch (if any) will be handled separately on one side
+      let stsToDistribute;
+      let hasAsymmetricLeftover = false;
+      
+      if (shapingMode === 'both-sides') {
+        // Use the minimum to get symmetric bind-offs, leftover handled separately
+        const minSide = Math.min(leftSideChanges, rightSideChanges);
+        stsToDistribute = minSide;
+        hasAsymmetricLeftover = unevenWarning; // Will have 1 extra stitch on right side
+      } else {
+        stsToDistribute = changesPerSide;
+      }
+      
       // Calculate how many stitches to bind off per shaping row
-      // Use Magic Formula: distribute changesPerSide across shapingRows
-      const stsPerAction = Math.floor(changesPerSide / shapingRows);
-      const extraSts = changesPerSide % shapingRows;
+      // Use Magic Formula: distribute stsToDistribute across shapingRows
+      const stsPerAction = Math.floor(stsToDistribute / shapingRows);
+      const extraSts = stsToDistribute % shapingRows;
       
       // Some rows will bind off (stsPerAction + 1), others just stsPerAction
       const timesAtMore = extraSts;
@@ -846,7 +862,10 @@ try {
         extraSts,
         timesAtMore,
         timesAtBase,
-        rowInterval: 2 // Every other row
+        rowInterval: 2, // Every other row
+        hasAsymmetricLeftover, // True if one side needs 1 extra stitch
+        leftSideTotal: leftSideChanges,
+        rightSideTotal: rightSideChanges
       };
       
       if (needsAutoSlope) {
@@ -858,16 +877,27 @@ try {
           "Slope mode enabled: bind off multiple stitches on every other row for faster shaping."
         );
       }
+      
+      if (hasAsymmetricLeftover) {
+        warnings.push(
+          "Note: One side requires 1 extra stitch. The right side will have an additional bind-off step."
+        );
+      }
     }
     
     // For standard mode, calculate spacing as before
     let baseInterval, extraRows, intervalMultiplier, timesAtBase, timesAtLonger;
     
     if (mode === 'standard') {
-      // Calculate spacing based on the primary count (for both-sides with odd total, use the larger count)
-      const primaryCount = shapingMode === 'both-sides' && unevenWarning ? rightSideChanges : changesPerSide;
-      
+      // primaryCount already calculated above for slope detection
       baseInterval = Math.floor(totalRows / primaryCount);
+      
+      // Guard: if baseInterval is 0, we need slope mode (this shouldn't happen if slope detection worked)
+      if (baseInterval === 0) {
+        // Fallback to slope mode
+        return calculateShaping({ ...params, forceSlope: true });
+      }
+      
       extraRows = totalRows % primaryCount;
       intervalMultiplier = 1;
       timesAtBase = primaryCount - extraRows;
@@ -890,7 +920,6 @@ try {
       let currentRow = 0;
       let currentStitches = startingSts;
       const isDecrease = direction === 'decrease';
-      const sideMode = shapingMode === 'both-sides' ? 'both' : 'one';
       const stsMultiplier = shapingMode === 'both-sides' ? 2 : 1; // Double for both sides
       
       // Distribute stitches: some rows bind off more, some less
@@ -902,7 +931,7 @@ try {
         
         currentStitches = isDecrease ? currentStitches - totalStsChanged : currentStitches + totalStsChanged;
         
-        const actionVerb = isDecrease ? 'Bind off' : 'Increase';
+        const actionVerb = isDecrease ? 'Bind off' : 'Cast on';
         const location = shapingMode === 'both-sides' ? `${stsThisRow} sts each side` : `${stsThisRow} sts one side`;
         
         breakdown.push({
@@ -911,6 +940,24 @@ try {
           location: location,
           stitchesAfter: Math.max(0, currentStitches)
         });
+      }
+      
+      // Handle asymmetric leftover: add 1 extra stitch on right side
+      // Note: This is included in the last shaping action on the right side only
+      // We don't add an extra row - it's handled on the same row as the last symmetric action
+      if (slopeData.hasAsymmetricLeftover && shapingMode === 'both-sides') {
+        // Update the last breakdown entry to note the asymmetry
+        if (breakdown.length > 0) {
+          const lastEntry = breakdown[breakdown.length - 1];
+          const currentSts = parseInt(lastEntry.action.match(/\d+/)[0]);
+          const isDecrease = direction === 'decrease';
+          const actionVerb = isDecrease ? 'Bind off' : 'Cast on';
+          
+          // The right side binds off 1 more stitch on this row
+          lastEntry.location = `${currentSts} sts left side, ${currentSts + 1} sts right side`;
+          lastEntry.stitchesAfter = isDecrease ? lastEntry.stitchesAfter - 1 : lastEntry.stitchesAfter + 1;
+          lastEntry.action = `${actionVerb} ${currentSts}/${currentSts + 1} stitches`;
+        }
       }
     } else if (shapingMode === 'both-sides' && unevenWarning) {
       // STANDARD MODE - Asymmetric case: one side has more changes than the other
@@ -1318,6 +1365,11 @@ try {
       } else {
         // Only larger stitch count (rare)
         instructions += `<p>${actionVerb} <strong>${sd.stsPerAction + 1}</strong> stitches ${locationText} every 2 rows, <strong>${sd.timesAtMore}</strong> times ${shorthand(sd.stsPerAction + 1, 2, sd.timesAtMore)}.</p>`;
+      }
+      
+      // Handle asymmetric leftover: 1 extra stitch on right side (on the last shaping row)
+      if (sd.hasAsymmetricLeftover && result.shapingMode === 'both-sides') {
+        instructions += `<p style="margin-top: 0.5rem;">• On the <strong>last shaping row</strong>, ${actionVerb.toLowerCase()} 1 extra stitch on the right side only (to account for the odd total).</p>`;
       }
     } else {
       // STANDARD MODE: regular shaping instructions
