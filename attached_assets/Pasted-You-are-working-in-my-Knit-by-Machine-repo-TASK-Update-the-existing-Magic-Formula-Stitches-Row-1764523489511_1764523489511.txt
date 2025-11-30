@@ -1,0 +1,97 @@
+You are working in my Knit by Machine repo.
+
+TASK
+
+Update the existing Magic Formula (Stitches & Rows) tool so that:
+
+Slope shaping case (more stitches than rows):
+
+The tool automatically:
+
+Uses the slope shaping formula.
+
+Calculates shaping for one side only (no “both sides” option, no choice shown).
+
+The Shaping Options section is never shown in this case.
+
+The results card should show only one-side shaping instructions (diagram, shorthand, row-by-row, etc., if those components are in use).
+
+Regular shaping case (more rows than stitches):
+
+The Shaping Options section (one side / both sides) is hidden initially on page load.
+
+After the user enters valid numbers and we determine that rows ≥ stitches, then:
+
+Show the Shaping Options section.
+
+Show/enable the “Calculate shaping” button.
+
+In this case, the knitter can choose one side or both sides, and the tool uses the standard Magic Formula logic.
+
+Initial state (page load):
+
+Hide the Shaping Options section.
+
+Hide the results card.
+
+Ensure that the layout, spacing, and floating labels still follow the KBM Dev Kit and New Tool Template.
+
+Decision logic (key rule):
+
+Let:
+
+deltaSts = Math.abs(startSts - endSts)
+
+rows = totalRows
+
+If deltaSts > rows:
+
+Treat as slope shaping.
+
+Skip / hide the Shaping Options section.
+
+Force one-side shaping and run the slope shaping formula.
+
+Render only one-side shaping instructions in the results.
+
+If deltaSts <= rows:
+
+Treat as regular Magic Formula.
+
+Reveal the Shaping Options section and the Calculate button (if not already visible).
+
+Use the knitter’s choice of one side / both sides.
+
+Start Over button behavior:
+
+Fix the existing Start Over button so that it truly resets the tool:
+
+Clears all input fields.
+
+Clears any internal state (including shaping mode, slope flags, validation errors).
+
+Hides the Shaping Options section again.
+
+Hides the results card.
+
+After clicking Start Over, the page should behave the same as on initial load.
+
+UI / UX constraints:
+
+Do not change the overall layout or styles.
+
+Continue to use:
+
+Existing responsive field grid and floating labels.
+
+Existing results card styling (white background, 2px KBM green border, subtle shadow, rounded corners).
+
+If any shaping components are used (ShapingDiagram, ShapingCode, RowByRowTable), ensure they are only passed data for one side in the slope case.
+
+Scope:
+
+Apply these changes only to the Magic Formula (Stitches & Rows) tool:
+
+The existing page under src/pages/tools/... for this tool.
+
+The associated calculation logic under src/lib/tools/... for this tool.
