@@ -1,0 +1,142 @@
+I do NOT want to replace my current homepage yet.
+
+Instead, please create a NEW DRAFT PAGE for a “Guide on the Side / Start Here” home so I can preview and tweak it.
+
+Tech context:
+- This is an Astro site.
+- Keep my existing homepage (`src/pages/index.astro`) as-is.
+- Create a new page file at `src/pages/start-here.astro` (or similar) that uses the same main layout, header, nav, and footer as my current home page.
+
+High-level goal:
+Build a user-focused “Start Here” draft that:
+- Welcomes machine knitters.
+- Helps them figure out what to do next.
+- Gently points them to existing KBM features (guides, tools, wizards, ANA, etc.).
+- Uses my hex icon visual style and simple image placeholders.
+- I will tweak copy, links, and styling later.
+
+--------------------------------
+LAYOUT & SECTIONS TO BUILD
+--------------------------------
+
+1) PAGE WRAPPER
+
+- Use the same layout component that the current home page uses (e.g. `<Layout>` or similar), so header/nav/footer are consistent.
+- The page route should be `/start-here` when I run the dev server.
+
+2) HERO SECTION (Start Here)
+
+Inside `start-here.astro`, add a hero:
+
+- Eyebrow text: “Start Here”
+- H1: “You can knit on your machine — I’ll help you get there.”
+- Short paragraph (2–3 lines max):
+  “If you’re feeling excited and overwhelmed, you’re in the right place. You don’t need to know everything to begin — you just need your next small step.”
+- Primary button:
+  - Text: “Find your next step”
+  - Behavior: scroll to the “Where are you right now?” section (`href="#where-are-you"`).
+- On the right, add a hero image placeholder:
+  `<img src="/images/home-hero-machine-placeholder.jpg" alt="A knitting machine set up and ready to knit." />`
+
+Use my existing hero/layout classes if possible (e.g. `kbm-hero`, `kbm-hero__content`, etc.). If not, create simple `kbm-` prefixed classes.
+
+3) “WHERE ARE YOU RIGHT NOW?” SECTION (4 hex cards)
+
+Add a section with `id="where-are-you"`.
+
+Header:
+- H2: “Where are you right now?”
+- Subtitle: “Pick the statement that feels closest. I’ll point you to your best next step.”
+
+Below that, add a responsive grid of 4 cards. Each card:
+
+- Uses a hex icon placeholder at the top.
+  - If there’s a reusable hex icon component from other pages, reuse it.
+  - If not, use a simple placeholder:
+    `<div class="kbm-hex-icon"><img src="/images/home-hex-start-placeholder.svg" alt="Stage icon" /></div>`
+- Has a title, brief body text, and a CTA.
+
+Card 1:
+- Title: “I just opened the box… where do I start?”
+- Body: “You’re in the Start phase. All you need right now is one simple win.”
+- Highlight: “Next step: Make your first swatch.”
+- Button: “Go to the First Swatch Guide”
+- Link: `href="/guides/first-swatch"` (placeholder; I’ll adjust later).
+
+Card 2:
+- Title: “I know the basics. I want to build skills.”
+- Body: “You’re in the Build Skills phase.”
+- Highlight: “Next step: Visit Skill Builders.”
+- Button: “Explore Skill Builders”
+- Link: `href="/skill-builders"` (placeholder).
+
+Card 3:
+- Title: “I want to knit an actual project.”
+- Body: “You’re in the Make Projects phase.”
+- Highlight: “Next step: choose one easy win.”
+- Short list with links:
+  - “DIY Blanket Wizard – your easiest first success.” → `/wizards/diy-blanket`
+  - “Ready | Set | Knit: Choose a Project – answer a few questions and get a plan.” → `/rsk/projects`
+
+Card 4:
+- Title: “Something went wrong.”
+- Body: “You’re in the Troubleshoot phase.”
+- Highlight: “Next step: get a quick answer.”
+- Short list:
+  - “Dropped Stitch Troubleshooter” → `/smart-guides/dropped-stitch`
+  - “Ask a Question (ANA) – tell me what’s happening and I’ll point you in the right direction.” → `/ask`
+
+Make the grid responsive: 1 column on mobile, 2 columns on tablet, up to 4 cards across on desktop.
+
+4) “MACHINE KNITTING PATH” SECTION
+
+Add a section explaining the 4-stage path:
+
+Header:
+- H2: “The Machine Knitting Path”
+- Subtitle: “You’ll cycle through these four stages with every project. You don’t have to master them all before you begin.”
+
+Then show 4 steps (horizontal on desktop, stacked on mobile), each with a small hex icon and short text:
+
+1) Start – “Unpack your machine, set it up, and knit your first swatch.”
+2) Build Skills – “Practice edges, shaping, tension, and handling your machine with small exercises.”
+3) Make Projects – “Choose simple, success-first projects like blankets, scarves, and hats.”
+4) Troubleshoot & Adjust – “Fix issues, adjust fit, and refine your projects one small change at a time.”
+
+Use placeholder SVGs like:
+- `/images/path-start-hex.svg`
+- `/images/path-skills-hex.svg`
+- `/images/path-projects-hex.svg`
+- `/images/path-troubleshoot-hex.svg`
+
+5) “GUIDED START” CTA SECTION
+
+Add a centered section:
+
+- H2: “Not sure where you fit?”
+- Subtitle: “Answer a couple of quick questions and I’ll recommend your best next step.”
+- Button:
+  - Text: “Try the Guided Start”
+  - Link: `/smart-guides/guided-start` (placeholder)
+
+6) OPTIONAL ABOUT-LITE STRIP
+
+Add a small “about” strip at the bottom of the main content:
+
+- Placeholder headshot:
+  `<img src="/images/sue-headshot-placeholder.jpg" alt="Sue at a knitting machine." />`
+- Title: “You’re not doing this alone.”
+- Text:
+  “I’m Sue, your guide on the side here at Knit by Machine. I’ve helped thousands of knitters get comfortable at their machines. I’ll walk with you one small win at a time.”
+- Link: “Learn more about Knit by Machine” → `/about`
+
+--------------------------------
+STYLING & STRUCTURE NOTES
+--------------------------------
+
+- Do NOT modify `src/pages/index.astro`. This is a separate draft page.
+- Use my existing `kbm-` classes and layout patterns where possible.
+- If you must add new CSS, put it in an appropriate existing stylesheet (or create a small one) and keep the styles minimal and easy to tweak.
+- The goal is a solid draft I can refine: structure and placeholders first, perfect design later.
+
+At the end, show me the contents of `src/pages/start-here.astro` and any new/updated CSS so I can adjust copy and links myself.
