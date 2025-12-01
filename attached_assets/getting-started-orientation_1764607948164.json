@@ -1,0 +1,264 @@
+{
+  "id": "getting-started-orientation",
+  "slug": "getting-started-orientation",
+  "title": "Getting Started: First Time at the Machine",
+  "cardTitle": "I just opened the box… where do I start?",
+  "category": "getting-started",
+  "status": "published",
+
+  "meta": {
+    "excerpt": "Get organized, set up your machine, and knit your very first rows with confidence.",
+    "why_use": "Perfect if you just unpacked your machine and feel overwhelmed by all the parts. This walkthrough helps you get oriented, choose the right yarn, and knit your first simple fabric.",
+    "tags": ["beginner", "getting started", "unboxing", "orientation", "first rows"]
+  },
+
+  "ui": {
+    "icon": "hex-getting-started",
+    "ctaLabel": "Start the Getting Started Wizard",
+    "printTitle": "Getting Started Checklist"
+  },
+
+  "steps": [
+    {
+      "id": "intro",
+      "title": "Welcome — let’s get you oriented",
+      "body": [
+        "You just opened the box. There are parts everywhere. Take a breath — you don’t have to figure it out alone.",
+        "We’ll walk through what’s in the box, your manual, yarn choice, basic setup, and knitting your very first rows."
+      ],
+      "fields": [],
+      "next": "inventory"
+    },
+
+    {
+      "id": "inventory",
+      "title": "What’s in the box?",
+      "body": [
+        "Every machine model is a little different, but most include a similar set of parts. Let’s make sure you recognize the basics."
+      ],
+      "checklist": [
+        "Needlebed (the long bed with all the needles)",
+        "Carriage (the part you slide across the needles)",
+        "Yarn mast / tension unit",
+        "Weights and/or claw weights",
+        "Cast-on combs or hem",
+        "Latch tool and transfer tools",
+        "Row counter (built-in or separate)",
+        "Sponge bar or needle retaining strip",
+        "Instruction manual or quick-start leaflet"
+      ],
+      "fields": [
+        {
+          "name": "inventory_status",
+          "label": "How are you feeling about the parts?",
+          "type": "select",
+          "options": [
+            { "value": "all-good", "label": "I can identify most of these parts." },
+            { "value": "missing", "label": "I think I’m missing something important." },
+            { "value": "overwhelmed", "label": "I’m not sure what I’m looking at yet." }
+          ],
+          "required": true"
+        }
+      ],
+      "helperText": {
+        "showWhen": {
+          "field": "inventory_status",
+          "equals": "missing"
+        },
+        "text": "Many used or older machines arrive with a few tools missing. That doesn’t mean you can’t get started. We’ll focus on the essentials and you can replace missing tools over time."
+      },
+      "next": "manual"
+    },
+
+    {
+      "id": "manual",
+      "title": "Do you have your manual?",
+      "body": [
+        "Your machine’s manual is your best friend. It shows you how your specific model was designed to be threaded, cast on, and used safely."
+      ],
+      "fields": [
+        {
+          "name": "manual_status",
+          "label": "Do you have your machine’s manual?",
+          "type": "radio",
+          "options": [
+            { "value": "yes", "label": "Yes, I have the original manual." },
+            { "value": "pdf", "label": "I found a PDF or copy online." },
+            { "value": "no", "label": "No, I don’t have a manual yet." }
+          ],
+          "required": true
+        }
+      ],
+      "helperText": {
+        "showWhen": {
+          "field": "manual_status",
+          "equals": "no"
+        },
+        "text": "When you have a moment, search online for your machine brand and model plus the word \"manual\". Many manuals are available as free PDFs. For now, we’ll keep things simple and safe."
+      },
+      "next": "yarn"
+    },
+
+    {
+      "id": "yarn",
+      "title": "Choose yarn that sets you up for success",
+      "body": [
+        "The wrong yarn can make a great machine feel impossible. For your first time, we want smooth and cooperative.",
+        "Avoid dark, fuzzy, very textured, or sticky yarns. A smooth, light-colored yarn that matches your machine’s recommended weight is ideal."
+      ],
+      "fields": [
+        {
+          "name": "yarn_status",
+          "label": "Do you have suitable yarn for your first practice?",
+          "type": "select",
+          "options": [
+            { "value": "yes", "label": "Yes, I have smooth, light-colored yarn." },
+            { "value": "not-sure", "label": "I’m not sure if my yarn is a good match." },
+            { "value": "no", "label": "No, I don’t think I have suitable yarn yet." }
+          ],
+          "required": true
+        }
+      ],
+      "helperText": {
+        "showWhen": {
+          "field": "yarn_status",
+          "equals": "not-sure"
+        },
+        "text": "As a quick check: if it’s fuzzy, very hairy, bumpy, or very dark, save it for later. Choose something smoother and lighter in color to make it easier to see your stitches."
+      },
+      "next": "setup"
+    },
+
+    {
+      "id": "setup",
+      "title": "Basic machine setup",
+      "body": [
+        "Before you knit your first rows, let’s make sure your machine is stable and ready.",
+        "You don’t need every accessory to be perfect — we’re just aiming for a safe, simple setup."
+      ],
+      "checklist": [
+        "The machine is on a sturdy table or stand.",
+        "The yarn mast / tension unit is attached and upright.",
+        "The carriage can slide smoothly from left to right and back.",
+        "The needles move freely in and out of working position.",
+        "The row counter (if you have one) is reset to 000."
+      ],
+      "fields": [
+        {
+          "name": "setup_feeling",
+          "label": "How does your setup feel right now?",
+          "type": "radio",
+          "options": [
+            { "value": "ready", "label": "Ready — I think everything is in place." },
+            { "value": "almost", "label": "Almost — I’m unsure about one or two things." },
+            { "value": "stuck", "label": "Stuck — something feels wrong." }
+          ],
+          "required": true
+        }
+      ],
+      "helperText": {
+        "showWhen": {
+          "field": "setup_feeling",
+          "equals": "stuck"
+        },
+        "text": "It’s okay to pause here. Double-check that nothing is caught under the carriage, the machine is level, and no tools are resting on the needlebed. Small adjustments can make a big difference."
+      },
+      "next": "first-rows"
+    },
+
+    {
+      "id": "first-rows",
+      "title": "Knit your very first rows",
+      "body": [
+        "This isn’t about making something perfect — it’s about feeling your machine knit.",
+        "We’ll cast on simply and knit a small rectangle of fabric so you can see stitches forming and gain confidence."
+      ],
+      "checklist": [
+        "Bring a small group of needles to working position in the center of the bed (for example, 20–30 needles).",
+        "Use a basic cast-on method recommended in your manual or a simple e-wrap cast-on.",
+        "Set your tension dial somewhere in the middle of its range.",
+        "Thread the yarn through the tension unit and carriage as your manual shows.",
+        "Knit 20–30 rows, watching the needles and stitches as you go."
+      ],
+      "fields": [
+        {
+          "name": "first_rows_status",
+          "label": "Were you able to knit a small piece of fabric?",
+          "type": "radio",
+          "options": [
+            { "value": "yes", "label": "Yes — I knit my first little rectangle!" },
+            { "value": "trouble", "label": "Not yet — I ran into trouble." }
+          ],
+          "required": true
+        }
+      ],
+      "helperText": {
+        "showWhen": {
+          "field": "first_rows_status",
+          "equals": "trouble"
+        },
+        "text": "Every knitter fights the first few rows. If stitches are dropping or the carriage feels tight, it doesn’t mean you’re doing it wrong — it just means the machine is new to you. Make a quick note of what’s happening so you can ask for help or come back with fresh eyes."
+      },
+      "next": "next-steps"
+    },
+
+    {
+      "id": "next-steps",
+      "title": "Great job — here’s what’s next",
+      "body": [
+        "If you’ve knit even a handful of rows, you’ve done the hardest part — you started.",
+        "From here, you can practice a few basics, or move on to learning how to knit and measure a swatch."
+      ],
+      "fields": [
+        {
+          "name": "next_choice",
+          "label": "What sounds like the best next step for you?",
+          "type": "select",
+          "options": [
+            { "value": "practice", "label": "Keep practicing simple cast-ons and rows." },
+            { "value": "swatch", "label": "Learn how to knit and measure a swatch." },
+            { "value": "explore", "label": "Explore other beginner-friendly tools and guides." }
+          ],
+          "required": true
+        }
+      ],
+      "actions": [
+        {
+          "type": "link",
+          "label": "Practice basics",
+          "href": "/guides/practice-basics",
+          "showWhen": {
+            "field": "next_choice",
+            "equals": "practice"
+          }
+        },
+        {
+          "type": "link",
+          "label": "Go to the Swatch Guide",
+          "href": "/guides/swatch-guide",
+          "showWhen": {
+            "field": "next_choice",
+            "equals": "swatch"
+          }
+        },
+        {
+          "type": "link",
+          "label": "See more beginner tools",
+          "href": "/wizards-catalog?category=getting%20started",
+          "showWhen": {
+            "field": "next_choice",
+            "equals": "explore"
+          }
+        }
+      ],
+      "summary": [
+        "Inventory status: {{inventory_status}}",
+        "Manual: {{manual_status}}",
+        "Yarn: {{yarn_status}}",
+        "Setup feeling: {{setup_feeling}}",
+        "First rows: {{first_rows_status}}"
+      ],
+      "next": null
+    }
+  ]
+}
