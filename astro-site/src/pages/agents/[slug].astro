@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import '../../styles/wizard.css';
+import { getCollection } from 'astro:content';
+
+export const prerender = true;
 
 export async function getStaticPaths() {
-  const { getCollection } = await import('astro:content');
   const agents = await getCollection('ai-agents');
   
   return agents
@@ -14,7 +16,7 @@ export async function getStaticPaths() {
     }));
 }
 
-// Use props.agent from getStaticPaths to guarantee alignment
+// Get agent from props (static generation)
 const { agent } = Astro.props;
 const url = Astro.url;
 const data = agent.data;
