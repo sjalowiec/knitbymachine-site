@@ -35,11 +35,9 @@ const primaryCtaLabel = `Start ${pageTitle}`;
 const hasVideo = Boolean(data.videoUrl);
 const hasRelatedGuides = Array.isArray(data.relatedGuides) && data.relatedGuides.length > 0;
 
-// Check if any overview panels should be shown
+// Check if optional overview panels have content
 const hasWhoThisIsFor = data.whoThisIsFor && data.whoThisIsFor.length > 0;
-const hasWhyItMatters = Boolean(data.whyItMatters);
 const hasBenefits = data.benefits && data.benefits.length > 0;
-const hasOverviewContent = hasWhoThisIsFor || hasWhyItMatters || hasBenefits;
 ---
 
 <BaseLayout title={metaTitle} description={metaDescription}>
@@ -93,37 +91,35 @@ const hasOverviewContent = hasWhoThisIsFor || hasWhyItMatters || hasBenefits;
       )}
     </section>
 
-    <!-- 2. Overview: who / why / what (only show if any panels have content) -->
-    {hasOverviewContent && (
-      <section class="kbm-section kbm-section--agent-overview">
-        <div class="kbm-section__grid">
-          {hasWhoThisIsFor && (
-            <div class="kbm-panel">
-              <h2>Who this is for</h2>
-              <ul>
-                {data.whoThisIsFor!.map((item: string) => <li>{item}</li>)}
-              </ul>
-            </div>
-          )}
+    <!-- 2. Overview: who / why / what -->
+    <section class="kbm-section kbm-section--agent-overview">
+      <div class="kbm-section__grid">
+        {hasWhoThisIsFor && (
+          <div class="kbm-panel">
+            <h2>Who this is for</h2>
+            <ul>
+              {data.whoThisIsFor!.map((item: string) => <li>{item}</li>)}
+            </ul>
+          </div>
+        )}
 
-          {hasWhyItMatters && (
-            <div class="kbm-panel">
-              <h2>Why this Smart Guide matters</h2>
-              <p>{data.whyItMatters}</p>
-            </div>
-          )}
-
-          {hasBenefits && (
-            <div class="kbm-panel">
-              <h2>What this Smart Guide will walk you through</h2>
-              <ul>
-                {data.benefits!.map((benefit: string) => <li>{benefit}</li>)}
-              </ul>
-            </div>
-          )}
+        <div class="kbm-panel">
+          <h2>Why this Smart Guide matters</h2>
+          <p>
+            {data.whyItMatters ?? "A small decision early in a project can make the difference between a confident finish and a frustrating do-over. This Smart Guide helps you make those choices before you cast on."}
+          </p>
         </div>
-      </section>
-    )}
+
+        {hasBenefits && (
+          <div class="kbm-panel">
+            <h2>What this Smart Guide will walk you through</h2>
+            <ul>
+              {data.benefits!.map((benefit: string) => <li>{benefit}</li>)}
+            </ul>
+          </div>
+        )}
+      </div>
+    </section>
 
     <!-- 3. Optional related guides -->
     {hasRelatedGuides && (
