@@ -1,398 +1,496 @@
 ---
-export const prerender = false;
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/wizard.css';
 
-import Layout from "../../layouts/layout.astro";
-
-const { slug } = Astro.params;
-
-const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
-const REPO_OWNER = 'sjalowiec';
-const REPO_NAME = 'knitbymachine-site';
-const CONTENT_PATH = 'astro-site/src/content/ai-agents';
-
-async function getAgentEntry(slug: string) {
-  try {
-    const url = `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}/${slug}.json`;
-    
-    const headers: Record<string, string> = {
-      'Accept': 'application/vnd.github.v3+json',
-      'User-Agent': 'knitbymachine-site'
-    };
-    
-    if (GITHUB_TOKEN) {
-      headers['Authorization'] = `token ${GITHUB_TOKEN}`;
-    }
-    
-    const response = await fetch(url, { headers });
-
-    if (!response.ok) {
-      console.error('GitHub API error:', response.status, response.statusText);
-      return null;
-    }
-
-    const data = await response.json();
-    // Properly decode UTF-8 from base64 to handle special characters like bullets (●)
-    const binaryString = atob(data.content);
-    const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
-    const content = new TextDecoder('utf-8').decode(bytes);
-    const entry = JSON.parse(content);
-    
-    // Skip entries that are drafts or pending publish
-    if (entry.isDraft || entry.pendingPublish) {
-      return null;
-    }
-
-    return {
-      title: entry.title,
-      slug: entry.slug,
-      description: entry.description || '',
-      excerpt: entry.excerpt || '',
-      category: entry.category || 'Smart Guides',
-      tags: entry.tags || [],
-      iframeUrl: entry.iframeUrl || '',
-      iconUrl: entry.iconUrl || '',
-      htmlContent: entry.htmlContent || '',
-      imageUrl: entry.imageUrl || '',
-      imageAlt: entry.imageAlt || '',
-      metaTitle: entry.metaTitle || entry.title,
-      metaDescription: entry.metaDescription || entry.description,
-      accessLevel: entry.accessLevel || 'free',
-      relatedAnas: entry.relatedAnas || [],
-      relatedWorkshops: entry.relatedWorkshops || [],
-      publishedDate: entry.publishedDate
-    };
-  } catch (error) {
-    console.error('Error fetching agent entry:', error);
-    return null;
-  }
+export async function getStaticPaths() {
+  const { getCollection } = await import('astro:content');
+  const agents = await getCollection('ai-agents');
+  
+  return agents
+    .filter(agent => !agent.data.isDraft)
+    .map(agent => ({
+      params: { slug: agent.data.slug },
+      props: { agent }
+    }));
 }
 
-const entry = await getAgentEntry(slug);
+// Use props.agent from getStaticPaths to guarantee alignment
+const { agent } = Astro.props;
+const url = Astro.url;
+const data = agent.data;
 
-if (!entry) {
-  return Astro.redirect('/404');
-}
+// Mode logic
+const fromParam = url.searchParams.get('from');
+const forcedOnboarding = fromParam === 'home' || fromParam === 'onboarding';
+const onboardingMode = forcedOnboarding || data.onboardingMode === true;
 
-const pageTitle = entry.metaTitle || entry.title;
-const pageDescription = entry.metaDescription || entry.description;
+// Derived text values
+const pageTitle = data.title;
+const subheading = onboardingMode
+  ? (data.onboardingIntroTitle ?? data.excerpt ?? '')
+  : (data.toolSubheading ?? data.excerpt ?? '');
+const metaTitle = data.metaTitle ?? pageTitle;
+const metaDescription = data.metaDescription ?? data.excerpt ?? '';
+const primaryCtaLabel = `Start ${pageTitle}`;
+const hasVideo = Boolean(data.videoUrl);
+const hasRelatedGuides = Array.isArray(data.relatedGuides) && data.relatedGuides.length > 0;
+
+// Check if optional overview panels have content
+const hasWhoThisIsFor = data.whoThisIsFor && data.whoThisIsFor.length > 0;
+const hasBenefits = data.benefits && data.benefits.length > 0;
 ---
 
-<Layout title={pageTitle} description={pageDescription}>
-  <div class="agent-container">
-    <a href="/smart-guides" class="back-link">← Back to Smart Guides</a>
+<BaseLayout title={metaTitle} description={metaDescription}>
+  <main class="kbm-page kbm-agent-landing">
+    
+    <!-- 1. Hero Section -->
+    <section class="kbm-hero kbm-hero--agent">
+      <div class="kbm-hero__content">
+        <p class="kbm-eyebrow">Smart Guide · AI Agent</p>
+        <h1 class="kbm-hero__title">{pageTitle}</h1>
+        {subheading && <p class="kbm-hero__subtitle">{subheading}</p>}
 
-    <div class="hero-section">
-      {entry.iconUrl && (
-        <div class="hero-icon-wrapper">
-          <img src={entry.iconUrl} alt={entry.title} class="hero-icon" />
-        </div>
-      )}
-      <h1 class="hero-title">{entry.title}</h1>
-      {entry.excerpt && (
-        <p class="hero-excerpt">{entry.excerpt}</p>
-      )}
-    </div>
+        {onboardingMode && (
+          <div class="kbm-hero__reassurance">
+            <h2>You don't have to figure this out alone.</h2>
+            <p>
+              {data.onboardingIntroBody ?? "This Smart Guide will ask you simple questions and help you decide what to do next at the machine."}
+            </p>
+          </div>
+        )}
 
-    <div class="content-section">
-      <div class="description-column">
-        <h2 class="section-heading">About This Guide</h2>
-        <div class="description-text" set:html={entry.description}></div>
-        
-        {entry.iframeUrl && (
-          <a href={entry.iframeUrl} target="_blank" rel="noopener noreferrer" class="launch-button">
-            Launch {entry.title}
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
-              <polyline points="15 3 21 3 21 9"></polyline>
-              <line x1="10" y1="14" x2="21" y2="3"></line>
-            </svg>
+        <div class="kbm-hero__ctas">
+          <a href="#agent-engine" class="kbm-button kbm-button--primary">
+            {primaryCtaLabel}
           </a>
+          {data.showSecondaryCta !== false && (
+            <a href="/smart-guides" class="kbm-button kbm-button--ghost">
+              See all Smart Guides
+            </a>
+          )}
+        </div>
+
+        {onboardingMode && (
+          <p class="kbm-hero__small-note">
+            When you're ready, click "Start" and I'll walk you through this one clear step at a time.
+          </p>
         )}
       </div>
-      
-      {entry.htmlContent && (
-        <div class="page-content-column">
-          <div class="html-content" set:html={entry.htmlContent}></div>
+
+      {hasVideo && (
+        <div class="kbm-hero__media">
+          <div class="kbm-video-embed">
+            <iframe
+              src={data.videoUrl}
+              title={`${pageTitle} overview video`}
+              loading="lazy"
+              allowfullscreen
+            ></iframe>
+          </div>
         </div>
       )}
-    </div>
+    </section>
 
-    {(entry.relatedAnas.length > 0 || entry.relatedWorkshops.length > 0) && (
-      <div class="related-section">
-        <h2 class="related-heading">Related Resources</h2>
-        <div class="related-links">
-          {entry.relatedAnas.map((anaSlug: string) => (
-            <a href={`/ana/${anaSlug}`} class="related-link">
-              <span class="arrow">→</span> {anaSlug.replace(/-/g, ' ')}
-            </a>
-          ))}
-          {entry.relatedWorkshops.map((workshopSlug: string) => (
-            <a href={`/workshops/${workshopSlug}`} class="related-link">
-              <span class="arrow">→</span> {workshopSlug.replace(/-/g, ' ')}
-            </a>
-          ))}
+    <!-- 2. Overview: who / why / what -->
+    <section class="kbm-section kbm-section--agent-overview">
+      <div class="kbm-section__grid">
+        {hasWhoThisIsFor && (
+          <div class="kbm-panel">
+            <h2>Who this is for</h2>
+            <ul>
+              {data.whoThisIsFor!.map((item: string) => <li>{item}</li>)}
+            </ul>
+          </div>
+        )}
+
+        <div class="kbm-panel">
+          <h2>Why this Smart Guide matters</h2>
+          <p>
+            {data.whyItMatters ?? "A small decision early in a project can make the difference between a confident finish and a frustrating do-over. This Smart Guide helps you make those choices before you cast on."}
+          </p>
         </div>
+
+        {hasBenefits && (
+          <div class="kbm-panel">
+            <h2>What this Smart Guide will walk you through</h2>
+            <ul>
+              {data.benefits!.map((benefit: string) => <li>{benefit}</li>)}
+            </ul>
+          </div>
+        )}
       </div>
+    </section>
+
+    <!-- 3. Optional related guides -->
+    {hasRelatedGuides && (
+      <section class="kbm-section kbm-section--related">
+        <header class="kbm-section__header">
+          <h2>Related Smart Guides</h2>
+          <p>Keep building your confidence, one small win at a time.</p>
+        </header>
+        <ul class="kbm-related-list">
+          {data.relatedGuides!.map((guideSlug: string) => (
+            <li>
+              <a href={`/agents/${guideSlug}`}>{guideSlug.replace(/-/g, ' ')}</a>
+            </li>
+          ))}
+        </ul>
+      </section>
     )}
-  </div>
-</Layout>
+
+    <!-- 4. Mid-page CTA -->
+    <section class="kbm-section kbm-section--cta">
+      <div class="kbm-section__inner">
+        <h2>Ready to start?</h2>
+        <p>Click the button below and follow the prompts. You can pause, take notes, or print your plan when you're done.</p>
+        <a href="#agent-engine" class="kbm-button kbm-button--primary">
+          {primaryCtaLabel}
+        </a>
+      </div>
+    </section>
+
+    <!-- 5. Agent engine / iframe -->
+    <section id="agent-engine" class="kbm-section kbm-section--engine">
+      <div class="kbm-section__inner">
+        <h2 class="kbm-visually-hidden">Smart Guide</h2>
+
+        {data.iframeUrl ? (
+          <iframe
+            src={data.iframeUrl}
+            title={pageTitle}
+            style={`width: 100%; border: 0; height: ${data.iframeHeight ?? '700'}px;`}
+            loading="lazy"
+          ></iframe>
+        ) : data.htmlContent ? (
+          <div class="kbm-agent-html" set:html={data.htmlContent}></div>
+        ) : (
+          <div class="kbm-engine-placeholder">
+            This is where the interactive agent will appear.
+          </div>
+        )}
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>
 
 <style>
-  .agent-container {
-    max-width: 1100px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 4rem;
-  }
-
-  .back-link {
-    display: inline-block;
-    margin-bottom: 2rem;
-    color: #52682D;
-    font-size: 0.95rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .back-link:hover {
-    color: #3E5524;
-    text-decoration: underline;
+  /* Agent Landing Page Styles */
+  .kbm-agent-landing {
+    padding-top: 100px;
+    background: var(--page-bg, #fafaf8);
   }
 
   /* Hero Section */
-  .hero-section {
-    text-align: center;
-    margin-bottom: 3rem;
-    padding-bottom: 2rem;
-    border-bottom: 2px solid #e5e8e0;
+  .kbm-hero--agent {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+    display: grid;
+    gap: 2rem;
   }
 
-  .hero-icon-wrapper {
-    margin-bottom: 1.5rem;
+  @media (min-width: 768px) {
+    .kbm-hero--agent {
+      grid-template-columns: 1fr 1fr;
+      align-items: start;
+      padding: 3rem 2rem 4rem;
+    }
   }
 
-  .hero-icon {
-    width: 100px;
-    height: 100px;
-    object-fit: contain;
+  .kbm-hero__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
   }
 
-  .hero-title {
-    color: #52682D;
+  .kbm-hero__title {
+    color: var(--kbm-green, #52682D);
     font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
-    margin: 0 0 1rem 0;
+    margin: 0;
     line-height: 1.2;
   }
 
-  .hero-excerpt {
+  .kbm-hero__subtitle {
     color: #6b7280;
-    font-size: clamp(1.1rem, 2.5vw, 1.25rem);
-    font-style: italic;
+    font-size: clamp(1.05rem, 2.5vw, 1.2rem);
+    line-height: 1.6;
     margin: 0;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
-  /* Content Section - Two Columns */
-  .content-section {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    margin-bottom: 3rem;
+  .kbm-hero__reassurance {
+    background: rgba(82, 104, 45, 0.08);
+    border-left: 4px solid var(--kbm-green, #52682D);
+    padding: 1.25rem;
+    border-radius: 0 8px 8px 0;
+    margin: 0.5rem 0;
   }
 
-  .description-column {
+  .kbm-hero__reassurance h2 {
+    color: var(--kbm-green, #52682D);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .kbm-hero__reassurance p {
+    color: #374151;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .kbm-hero__ctas {
     display: flex;
-    flex-direction: column;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
   }
 
-  .section-heading {
-    color: #52682D;
-    font-size: 1.25rem;
+  .kbm-hero__small-note {
+    color: #6b7280;
+    font-size: 0.9rem;
+    font-style: italic;
+    margin: 0.5rem 0 0 0;
+  }
+
+  .kbm-hero__media {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Video Embed */
+  .kbm-video-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    border-radius: 12px;
+    overflow: hidden;
+    background: #1a1a1a;
+  }
+
+  .kbm-video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  /* Agent Overview Section */
+  .kbm-section--agent-overview {
+    background: white;
+    padding: 3rem 1.5rem;
+  }
+
+  .kbm-section__grid {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-section__grid {
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    }
+  }
+
+  .kbm-panel {
+    background: #f9fdf5;
+    border: 1px solid #e5e8e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .kbm-panel h2 {
+    color: var(--kbm-green, #52682D);
+    font-size: 1.15rem;
     font-weight: 600;
     margin: 0 0 1rem 0;
   }
 
-  .description-text {
-    color: #374151;
-    font-size: 1.05rem;
-    line-height: 1.7;
-    margin: 0 0 2rem 0;
-    flex-grow: 1;
-  }
-
-  .launch-button {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    background-color: #52682D;
-    color: white;
-    padding: 1rem 1.75rem;
-    border-radius: 8px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    align-self: flex-start;
-  }
-
-  .launch-button:hover {
-    background-color: #3E5524;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.3);
-  }
-
-  .launch-button svg {
-    flex-shrink: 0;
-  }
-
-  /* Page Content Column */
-  .page-content-column {
-    background-color: #f9fdf5;
-    border-radius: 12px;
-    padding: 2rem;
-    border: 1px solid #e5e8e0;
-  }
-
-  .html-content {
+  .kbm-panel p {
     color: #374151;
     font-size: 1rem;
     line-height: 1.7;
+    margin: 0;
   }
 
-  .html-content :global(h1),
-  .html-content :global(h2),
-  .html-content :global(h3) {
-    color: #52682D;
-    margin-top: 1.5rem;
-    margin-bottom: 0.75rem;
+  .kbm-panel ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: #374151;
   }
 
-  .html-content :global(h1) {
-    font-size: 1.5rem;
-  }
-
-  .html-content :global(h2) {
-    font-size: 1.25rem;
-  }
-
-  .html-content :global(h3) {
-    font-size: 1.1rem;
-  }
-
-  .html-content :global(p) {
-    margin-bottom: 1rem;
-  }
-
-  .html-content :global(a) {
-    color: #52682D;
-    text-decoration: underline;
-  }
-
-  .html-content :global(a:hover) {
-    color: #3E5524;
-  }
-
-  .html-content :global(ul),
-  .html-content :global(ol) {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
-  }
-
-  .html-content :global(li) {
+  .kbm-panel li {
     margin-bottom: 0.5rem;
+    line-height: 1.6;
   }
 
-  .html-content :global(img) {
-    max-width: 100%;
-    height: auto;
+  .kbm-panel li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Related Guides Section */
+  .kbm-section--related {
+    padding: 3rem 1.5rem;
+    background: var(--page-bg, #fafaf8);
+  }
+
+  .kbm-section__header {
+    max-width: 1100px;
+    margin: 0 auto 1.5rem;
+    text-align: center;
+  }
+
+  .kbm-section__header h2 {
+    color: var(--kbm-green, #52682D);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .kbm-section__header p {
+    color: #6b7280;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .kbm-related-list {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    list-style: none;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .kbm-related-list li a {
+    display: inline-block;
+    padding: 0.75rem 1.25rem;
+    background: white;
+    border: 2px solid #e5e8e0;
     border-radius: 8px;
-    margin: 1rem 0;
+    color: var(--kbm-green, #52682D);
+    text-decoration: none;
+    font-weight: 500;
+    text-transform: capitalize;
+    transition: all 0.2s ease;
   }
 
-  /* Related Section */
-  .related-section {
-    padding-top: 2rem;
-    border-top: 2px solid #e5e8e0;
+  .kbm-related-list li a:hover {
+    border-color: var(--kbm-green, #52682D);
+    background: rgba(82, 104, 45, 0.05);
+    transform: translateY(-2px);
   }
 
-  .related-heading {
-    color: #52682D;
-    font-size: 1.25rem;
-    font-weight: 600;
+  /* Mid-page CTA Section */
+  .kbm-section--cta {
+    background: rgba(82, 104, 45, 0.08);
+    padding: 3rem 1.5rem;
+    text-align: center;
+  }
+
+  .kbm-section--cta .kbm-section__inner {
+    max-width: 700px;
+  }
+
+  .kbm-section--cta h2 {
+    color: var(--kbm-green, #52682D);
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .kbm-section--cta p {
+    color: #374151;
+    font-size: 1.05rem;
+    line-height: 1.6;
     margin: 0 0 1.5rem 0;
   }
 
-  .related-links {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
+  /* Engine Section */
+  .kbm-section--engine {
+    padding: 3rem 1.5rem 4rem;
+    background: white;
   }
 
-  .related-link {
-    color: #52682D;
-    font-size: 1rem;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: all 0.2s ease;
-    text-transform: capitalize;
+  .kbm-section--engine .kbm-section__inner {
+    max-width: 900px;
   }
 
-  .related-link:hover {
-    color: #3E5524;
+  .kbm-section--engine iframe {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
-  .related-link:hover .arrow {
-    transform: translateX(4px);
+  .kbm-agent-html {
+    background: #f9fdf5;
+    border: 1px solid #e5e8e0;
+    border-radius: 12px;
+    padding: 2rem;
+    color: #374151;
+    line-height: 1.7;
   }
 
-  .arrow {
-    transition: transform 0.2s ease;
+  .kbm-engine-placeholder {
+    background: #f3f4f6;
+    border: 2px dashed #d1d5db;
+    border-radius: 12px;
+    padding: 4rem 2rem;
+    text-align: center;
+    color: #6b7280;
+    font-size: 1.1rem;
+  }
+
+  /* Visually Hidden (for screen readers) */
+  .kbm-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   /* Mobile Responsive */
-  @media (max-width: 768px) {
-    .agent-container {
-      padding: 1.5rem 1rem 3rem;
+  @media (max-width: 767px) {
+    .kbm-agent-landing {
+      padding-top: 80px;
     }
 
-    .hero-icon {
-      width: 80px;
-      height: 80px;
+    .kbm-hero--agent {
+      padding: 1.5rem 1rem 2rem;
     }
 
-    .content-section {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+    .kbm-hero__ctas {
+      flex-direction: column;
     }
 
-    .page-content-column {
-      padding: 1.5rem;
-    }
-
-    .html-content {
-      font-size: 0.95rem;
-    }
-
-    .html-content :global(h1) {
-      font-size: 1.25rem;
-    }
-
-    .html-content :global(h2) {
-      font-size: 1.1rem;
-    }
-
-    .html-content :global(h3) {
-      font-size: 1rem;
-    }
-
-    .launch-button {
+    .kbm-hero__ctas .kbm-button {
       width: 100%;
+      text-align: center;
       justify-content: center;
+    }
+
+    .kbm-section--agent-overview,
+    .kbm-section--related,
+    .kbm-section--cta,
+    .kbm-section--engine {
+      padding: 2rem 1rem;
+    }
+
+    .kbm-panel {
+      padding: 1.25rem;
     }
   }
 </style>
