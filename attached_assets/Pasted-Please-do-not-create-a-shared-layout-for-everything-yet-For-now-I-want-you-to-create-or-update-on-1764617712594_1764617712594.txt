@@ -1,0 +1,69 @@
+Please do not create a shared layout for everything yet.
+
+For now, I want you to create or update only this file:
+astro-site/src/pages/ai-agents/[slug].astro
+
+This page should:
+
+Load the AI Agent entry using getEntryBySlug('ai-agents', slug) from astro:content.
+
+Use the landing-page fields we added (onboardingMode, whoThisIsFor, whyItMatters, benefits, etc.).
+
+Render the sections in this order:
+
+Hero (title, subheading, onboarding reassurance, primary + secondary CTA, optional video)
+
+“Who this is for”
+
+“Why this Smart Guide matters”
+
+“What this Smart Guide will walk you through” (benefits list)
+
+Optional “Related Smart Guides” (using relatedGuides slugs as a simple list for now)
+
+Mid-page CTA (“Ready to start?”)
+
+Agent engine section (iframe or HTML embed using iframeUrl / iframeHeight or htmlContent)
+
+Mode logic:
+
+Use const url = Astro.url; and const { slug } = Astro.params;.
+
+Determine onboarding vs tool mode like this:
+
+const fromParam = url.searchParams.get('from');
+const forcedOnboarding = fromParam === 'home' || fromParam === 'onboarding';
+const onboardingMode = forcedOnboarding || data.onboardingMode === true;
+
+
+Subheading:
+
+const pageTitle = data.title;
+const subheading = onboardingMode
+  ? (data.onboardingIntroTitle ?? data.excerpt ?? '')
+  : (data.toolSubheading ?? data.excerpt ?? '');
+
+
+Meta:
+
+const metaTitle = data.metaTitle ?? pageTitle;
+const metaDescription = data.metaDescription ?? data.excerpt ?? '';
+
+
+Layout:
+
+Wrap the content in my existing site layout (e.g. BaseLayout.astro or whatever you find is used for other detail pages) and pass title={metaTitle} and description={metaDescription}.
+
+Use my existing class naming style (kbm-hero, kbm-section, kbm-button, etc.) where possible so it matches the rest of the site.
+
+Important constraints:
+
+Only create/update astro-site/src/pages/ai-agents/[slug].astro and any minimal CSS needed for this page.
+
+Do not create or modify wizards/[slug].astro yet.
+
+Do not try to build a “shared layout” component yet. We will reuse this structure manually for wizards later.
+
+Don’t throw errors if optional fields are missing; just skip those sections or use sensible defaults.
+
+At the end, show me the full contents of [slug].astro and mention any CSS file you updated.
