@@ -1,10 +1,12 @@
 {
   "title": "Ready ● Set ● Knit: Projects",
   "slug": "ready-set-knit-projects",
-  "description": "<p>Ready ● Set ● Knit: Projects is your guided helper for choosing what to knit next. <br><br>With a few simple questions, this Smart Guide learns your confidence, your time, your machine, and your yarn situation - then suggests a project that fits you right now. <br><br>You'll get gentle guidance, clear next steps, and direct links to the right Knit by Machine tools, patterns, and resources to get started without overwhelm.</p>",
+  "description": "<p>Ready ● Set ● Knit: Projects is your guided helper for choosing what to knit next. <br><br>With a few simple questions, this Smart Guide learns your confidence, your time, your machine, and your yarn situation - then suggests a project that fits you right now. <br><br>You'll get gentle guidance, clear next steps</p>",
   "excerpt": "The shortest path to your next project",
   "category": "Smart Guides",
-  "tags": ["beginner"],
+  "tags": [
+    "beginner"
+  ],
   "iframeUrl": "https://chatbot.getmindpal.com/ready-set-knit-projects-copy-6a3",
   "iframeHeight": "700",
   "provider": "mindpal",
@@ -18,25 +20,6 @@
   "schemaMarkup": null,
   "relatedAnas": [],
   "relatedWorkshops": [],
-  "onboardingMode": true,
-  "whoThisIsFor": [
-    "Knitters who feel overwhelmed by too many project choices",
-    "Beginners unsure what to tackle first",
-    "Anyone returning to machine knitting after a break"
-  ],
-  "whyItMatters": "Choosing the right project at the right time makes the difference between a confident finish and a frustrating do-over. This Smart Guide helps you pick something that actually fits your life right now.",
-  "benefits": [
-    "Identify your current skill level and confidence",
-    "Match projects to the time you actually have",
-    "Find patterns that work with your yarn stash",
-    "Get direct links to the tools and resources you need"
-  ],
-  "onboardingIntroTitle": "Let's find your next perfect project",
-  "onboardingIntroBody": "No pressure, no judgment. Just a few quick questions to help you discover a project that fits your time, your yarn, and your confidence level right now.",
-  "toolSubheading": "Your guided project finder",
-  "relatedGuides": [],
-  "showSecondaryCta": true,
-  "videoUrl": "",
   "isDraft": false,
   "publishedDate": "2025-11-25",
   "pendingPublish": false
