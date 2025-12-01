@@ -1,0 +1,138 @@
+You are editing my Knit by Machine Astro site.
+
+Goal:
+Update the “Guided Start” band on the home page (the section with the text “Not sure which one fits?” and the “Try the Guided Start” button) so that:
+
+1. The background uses my new image `images/knitting-machine-needlebed.webp`.
+2. A tinted overlay keeps the text readable.
+3. A centered text box sits on top with the existing CTA text and button.
+4. All of this lives inside the `.kbm-guided-cta` section and is fully responsive.
+
+Important:
+- Keep all existing copy and button behavior the same:
+  - Heading: “Not sure which one fits?”
+  - Body: “Answer a couple of quick questions and I'll recommend your best next step.”
+  - Button label: “Try the Guided Start”
+  - Button link: unchanged.
+- Use my existing button classes/components (do NOT create a new button style).
+- Use my light green/cream background color (#F1F6EC or the closest token already in the CSS) for the tint/overlay.
+
+------------------------------------------------------------
+1. Locate the guided CTA section
+------------------------------------------------------------
+
+- Find the section currently rendered as the pale rounded rectangle with:
+  - `Not sure which one fits?`
+  - `Answer a couple of quick questions…`
+  - `Try the Guided Start` button.
+- This section should have a wrapper with a class like `.kbm-guided-cta` (or similar). If it doesn’t yet, wrap it in a `<section class="kbm-guided-cta">` and keep the existing content inside.
+
+Do NOT change any routing or button functionality, just the layout/styling.
+
+------------------------------------------------------------
+2. Update the Astro markup
+------------------------------------------------------------
+
+Inside the `kbm-guided-cta` section:
+
+- Create a structure similar to this (adjust names to my current patterns, but keep the idea):
+
+<section class="kbm-guided-cta">
+  <div class="kbm-guided-cta__overlay"></div>
+  <div class="kbm-guided-cta__content">
+    <h2 class="kbm-guided-cta__title">Not sure which one fits?</h2>
+    <p class="kbm-guided-cta__text">
+      Answer a couple of quick questions and I'll recommend your best next step.
+    </p>
+    <!-- reuse my existing button component or classes -->
+    <a href="<!-- existing href -->" class="kbm-button kbm-button--primary">
+      Try the Guided Start
+    </a>
+  </div>
+</section>
+
+Notes:
+- `.kbm-guided-cta__overlay` will be used for the tint/vignette layer via CSS.
+- `.kbm-guided-cta__content` should hold the text and button, centered both horizontally and vertically inside the section.
+
+------------------------------------------------------------
+3. Add / update CSS for .kbm-guided-cta
+------------------------------------------------------------
+
+In the appropriate stylesheet for the home page (where `.kbm-guided-cta` is already styled, or in the main layout CSS), update/add styles as follows. Use my existing variables where possible, but this is the behavior I want:
+
+.kbm-guided-cta {
+  position: relative;
+  overflow: hidden;
+  /* background image */
+  background: url('/images/knitting-machine-needlebed.webp') center/cover no-repeat;
+  padding: 4rem 1.5rem; /* adjust based on my scale */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.kbm-guided-cta__overlay {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* light green tint with soft vignette */
+  background:
+    radial-gradient(
+      ellipse at center,
+      rgba(241, 246, 236, 0.0) 40%,
+      rgba(241, 246, 236, 1.0) 100%
+    ),
+    rgba(241, 246, 236, 0.85);
+  pointer-events: none;
+}
+
+.kbm-guided-cta__content {
+  position: relative;
+  text-align: center;
+  max-width: 720px;
+  margin: 0 auto;
+  color: var(--kbm-text-color, #2C3A57); /* or my existing body text color */
+}
+
+.kbm-guided-cta__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.kbm-guided-cta__text {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Ensure the button looks like my existing primary button */
+.kbm-guided-cta__content .kbm-button {
+  /* reuse existing kbm-button styles;
+     only add spacing tweaks if necessary */
+}
+
+/* Responsive tweaks */
+@media (min-width: 768px) {
+  .kbm-guided-cta {
+    padding: 5rem 2rem;
+  }
+  .kbm-guided-cta__title {
+    font-size: 2rem;
+  }
+  .kbm-guided-cta__text {
+    font-size: 1.1rem;
+  }
+}
+
+Notes:
+- Make sure the background image path is `/images/knitting-machine-needlebed.webp`.
+- The overlay uses my light tint (#F1F6EC) with a subtle radial vignette. Adjust exact rgba values slightly if needed so that the text remains readable but the machine image is still visible.
+- Keep the section full width and centered like it is now.
+
+------------------------------------------------------------
+4. Clean up old styling
+------------------------------------------------------------
+
+- Remove any old background-color, border, or rounded-rectangle styles that made this section look like a standalone pale box. The CTA should now read as text on top of a tinted machine image, not a separate card.
+- Make sure there’s still good vertical spacing above and below the section so it doesn’t crash into the cards or the next section.
