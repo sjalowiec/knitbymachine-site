@@ -1,0 +1,236 @@
+I need you to create or update this file in my Astro project:
+astro-site/src/pages/ai-agents/[slug].astro
+
+Purpose
+
+This page is the global landing page template for all AI Agents / Smart Guides in my ai-agents content collection. It should support:
+
+Onboarding mode (warming, reassuring)
+
+Standard tool mode (efficient, straight to the point)
+
+The page layout should include:
+
+Hero section
+
+“Who this is for”
+
+“Why it matters”
+
+“What this Smart Guide will walk you through” (benefits)
+
+Optional related guides
+
+Mid-page CTA
+
+Section where the actual agent (iframe or HTML) renders
+
+Data
+
+Use getEntryBySlug('ai-agents', slug) from astro:content.
+The ai-agents collection has at least these fields (all optional except title/slug):
+
+title, slug, excerpt, metaTitle, metaDescription
+
+iframeUrl, iframeHeight, htmlContent
+
+videoUrl, category, tags
+
+onboardingMode (boolean)
+
+whoThisIsFor (string[])
+
+whyItMatters (string)
+
+benefits (string[])
+
+onboardingIntroTitle, onboardingIntroBody
+
+toolSubheading
+
+relatedGuides (string[])
+
+showSecondaryCta (boolean)
+
+Mode logic
+
+At the top of [slug].astro, do something like:
+
+import { getEntryBySlug } from 'astro:content';
+import Layout from '@/layouts/BaseLayout.astro'; // or whatever layout is used elsewhere
+
+const { slug } = Astro.params;
+const url = Astro.url;
+const agent = await getEntryBySlug('ai-agents', slug);
+if (!agent) throw new Error(`AI Agent not found for slug: ${slug}`);
+const data = agent.data;
+
+const fromParam = url.searchParams.get('from');
+const forcedOnboarding = fromParam === 'home' || fromParam === 'onboarding';
+const onboardingMode = forcedOnboarding || data.onboardingMode === true;
+
+const pageTitle = data.title;
+const subheading = onboardingMode
+  ? (data.onboardingIntroTitle ?? data.excerpt ?? '')
+  : (data.toolSubheading ?? data.excerpt ?? '');
+
+const metaTitle = data.metaTitle ?? pageTitle;
+const metaDescription = data.metaDescription ?? data.excerpt ?? '';
+const primaryCtaLabel = `Start ${pageTitle}`;
+const hasVideo = Boolean(data.videoUrl);
+const hasRelatedGuides = Array.isArray(data.relatedGuides) && data.relatedGuides.length > 0;
+
+
+Wrap everything in my main layout:
+
+<Layout title={metaTitle} description={metaDescription}>
+  <main class="kbm-page kbm-agent-landing">
+    <!-- sections go here -->
+  </main>
+</Layout>
+
+Sections to build
+
+Please build the following sections inside <main> using my existing class naming style (kbm-*). If you see similar components/styles elsewhere (for wizards, tools, etc.), reuse that structure.
+
+1. Hero section
+
+<section class="kbm-hero kbm-hero--agent">
+
+Left column .kbm-hero__content:
+
+Eyebrow: “Smart Guide · AI Agent”
+
+<h1> with pageTitle
+
+Optional <p> subtitle with subheading
+
+If onboardingMode is true, show a reassurance block:
+
+{onboardingMode && (
+  <div class="kbm-hero__reassurance">
+    <h2>You don’t have to figure this out alone.</h2>
+    <p>
+      {data.onboardingIntroBody ?? "This Smart Guide will ask you simple questions and help you decide what to do next at the machine."}
+    </p>
+  </div>
+)}
+
+
+CTA row .kbm-hero__ctas with:
+
+Primary button: kbm-button kbm-button--primary, linking to #agent-engine, text {primaryCtaLabel}
+
+Secondary button (only if data.showSecondaryCta !== false): kbm-button kbm-button--ghost, linking to /wizards-catalog?category=smart%20guide, label “See all Smart Guides”
+
+In onboarding mode, an extra small note under the CTAs:
+
+{onboardingMode && (
+  <p class="kbm-hero__small-note">
+    When you’re ready, click “Start” and I’ll walk you through this one clear step at a time.
+  </p>
+)}
+
+
+Right column .kbm-hero__media:
+
+If data.videoUrl exists, embed it with a responsive wrapper:
+
+{hasVideo && (
+  <div class="kbm-hero__media">
+    <div class="kbm-video-embed">
+      <iframe
+        src={data.videoUrl}
+        title={`${pageTitle} overview video`}
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+)}
+
+2. Overview (“who / why / what”)
+<section class="kbm-section kbm-section--agent-overview">
+  <div class="kbm-section__grid">
+    {data.whoThisIsFor && data.whoThisIsFor.length > 0 && (
+      <div class="kbm-panel">
+        <h2>Who this is for</h2>
+        <ul>
+          {data.whoThisIsFor.map((item) => <li>{item}</li>)}
+        </ul>
+      </div>
+    )}
+
+    <div class="kbm-panel">
+      <h2>Why this Smart Guide matters</h2>
+      <p>
+        {data.whyItMatters ?? "A small decision early in a project can make the difference between a confident finish and a frustrating do-over. This Smart Guide helps you make those choices before you cast on."}
+      </p>
+    </div>
+
+    {data.benefits && data.benefits.length > 0 && (
+      <div class="kbm-panel">
+        <h2>What this Smart Guide will walk you through</h2>
+        <ul>
+          {data.benefits.map((benefit) => <li>{benefit}</li>)}
+        </ul>
+      </div>
+    )}
+  </div>
+</section>
+
+3. Optional related guides
+{hasRelatedGuides && (
+  <section class="kbm-section kbm-section--related">
+    <header class="kbm-section__header">
+      <h2>Related Smart Guides</h2>
+      <p>Keep building your confidence, one small win at a time.</p>
+    </header>
+    <ul class="kbm-related-list">
+      {data.relatedGuides.map((slug) => <li>{slug}</li>)}
+    </ul>
+  </section>
+)}
+
+4. Mid-page CTA
+<section class="kbm-section kbm-section--cta">
+  <div class="kbm-section__inner">
+    <h2>Ready to start?</h2>
+    <p>Click the button below and follow the prompts. You can pause, take notes, or print your plan when you’re done.</p>
+    <a href="#agent-engine" class="kbm-button kbm-button--primary">
+      {primaryCtaLabel}
+    </a>
+  </div>
+</section>
+
+5. Agent engine (iframe / HTML)
+<section id="agent-engine" class="kbm-section kbm-section--engine">
+  <div class="kbm-section__inner">
+    <h2 class="kbm-visually-hidden">Smart Guide</h2>
+
+    {data.iframeUrl ? (
+      <iframe
+        src={data.iframeUrl}
+        title={pageTitle}
+        style={`width: 100%; border: 0; height: ${data.iframeHeight ?? '700'}px;`}
+        loading="lazy"
+      ></iframe>
+    ) : data.htmlContent ? (
+      <div class="kbm-agent-html" set:html={data.htmlContent}></div>
+    ) : (
+      <div class="kbm-engine-placeholder">
+        This is where the interactive agent will appear.
+      </div>
+    )}
+  </div>
+</section>
+
+Important
+
+Do not throw errors if optional fields are missing. Just skip those sections or fall back to defaults as in the examples.
+
+Reuse my existing layout component and button styles (kbm-button, kbm-button--primary, etc.).
+
+If needed, add minimal CSS for .kbm-hero--agent, .kbm-video-embed, .kbm-section--agent-overview, .kbm-section--engine, and .kbm-engine-placeholder in the same stylesheet used for wizard/tool styles, keeping the look consistent with the rest of the site.
+
+At the end, show me the full contents of astro-site/src/pages/ai-agents/[slug].astro and any CSS you added or changed.
