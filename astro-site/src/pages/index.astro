@@ -106,17 +106,6 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
         </div>
       </section>
 
-      <section class="kbm-guided-cta" data-testid="section-guided-cta">
-        <div class="kbm-guided-cta__overlay"></div>
-        <div class="kbm-guided-cta__content">
-          <h2 class="kbm-guided-cta__title">Not sure which one fits?</h2>
-          <p class="kbm-guided-cta__text">
-            Answer a couple of quick questions and I'll recommend your best next step.
-          </p>
-          <a href="/start-here" class="btn primary" data-testid="button-guided-start">Try the Guided Start</a>
-        </div>
-      </section>
-
       <section class="about-kbm">
         <h2>What Knit by Machine is all about</h2>
         <p>
@@ -427,68 +416,6 @@ import ActiveCampaignForm from "../components/ActiveCampaignForm.astro";
     .hero-actions .btn {
       width: 100%;
       text-align: center;
-    }
-  }
-
-  /* ========== GUIDED CTA SECTION ========== */
-  .kbm-guided-cta {
-    position: relative;
-    overflow: hidden;
-    background: url('/images/knitting-machine-needlebed.webp') center/cover no-repeat;
-    padding: 4rem 1.5rem;
-    margin: 2.5rem -1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .kbm-guided-cta__overlay {
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(
-        ellipse at center,
-        rgba(241, 246, 236, 0.0) 40%,
-        rgba(241, 246, 236, 1.0) 100%
-      ),
-      rgba(241, 246, 236, 0.85);
-    pointer-events: none;
-  }
-
-  .kbm-guided-cta__content {
-    position: relative;
-    text-align: center;
-    max-width: 720px;
-    margin: 0 auto;
-    color: #2c3a57;
-  }
-
-  .kbm-guided-cta__title {
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin: 0 0 0.75rem;
-    color: #2c3a57;
-  }
-
-  .kbm-guided-cta__text {
-    font-size: 1rem;
-    margin: 0 0 1.5rem;
-    line-height: 1.5;
-    color: #4f5a4b;
-  }
-
-  @media (min-width: 768px) {
-    .kbm-guided-cta {
-      padding: 5rem 2rem;
-      margin: 2.5rem -2rem;
-    }
-
-    .kbm-guided-cta__title {
-      font-size: 2rem;
-    }
-
-    .kbm-guided-cta__text {
-      font-size: 1.1rem;
     }
   }
 </style>
