@@ -155,12 +155,14 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
         <h2 class="kbm-visually-hidden">Smart Guide</h2>
 
         {data.iframeUrl ? (
-          <iframe
-            src={data.iframeUrl}
-            title={pageTitle}
-            style={`width: 100%; border: 0; height: ${data.iframeHeight ?? '700'}px;`}
-            loading="lazy"
-          ></iframe>
+          <div class="kbm-agent-frame">
+            <iframe
+              src={data.iframeUrl}
+              title={pageTitle}
+              loading="lazy"
+              style={`width: 100%; border: 0; height: ${data.iframeHeight ?? '900'}px;`}
+            ></iframe>
+          </div>
         ) : data.htmlContent ? (
           <div class="kbm-agent-html" set:html={data.htmlContent}></div>
         ) : (
@@ -419,13 +421,15 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
   .kbm-section--engine {
     padding: 3rem 1.5rem 4rem;
     background: white;
+    overflow: visible;
   }
 
   .kbm-section--engine .kbm-section__inner {
     max-width: 900px;
   }
 
-  .kbm-section--engine iframe {
+  .kbm-agent-frame iframe {
+    display: block;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
