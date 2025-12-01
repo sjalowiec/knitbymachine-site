@@ -1,0 +1,61 @@
+Open astro-site/src/content/config.ts and completely replace the aiAgents collection schema with one that matches my actual JSON files in astro-site/src/content/ai-agents/.
+
+Use this exact schema for the ai-agents collection:
+
+const aiAgents = defineCollection({
+  type: 'data',
+  schema: z.object({
+    // Core identity
+    title: z.string(),
+    slug: z.string(),
+
+    // Existing content fields from my JSON files
+    description: z.string().optional(),
+    excerpt: z.string().optional(),
+    category: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    iframeUrl: z.string().optional(),
+    iframeHeight: z.string().optional(),
+    provider: z.string().optional(),
+    accessLevel: z.string().optional(),
+    iconUrl: z.string().optional(),
+    htmlContent: z.string().optional(),
+    imageUrl: z.string().optional(),
+    imageAlt: z.string().optional(),
+    metaTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
+    schemaMarkup: z.any().nullable().optional(),
+    relatedAnas: z.array(z.string()).default([]),
+    relatedWorkshops: z.array(z.string()).default([]),
+    isDraft: z.boolean().optional(),
+    publishedDate: z.string().optional(),
+    pendingPublish: z.boolean().optional(),
+
+    // New fields for the global landing page
+    onboardingMode: z.boolean().optional(),
+    whoThisIsFor: z.array(z.string()).optional(),
+    whyItMatters: z.string().optional(),
+    benefits: z.array(z.string()).optional(),
+    onboardingIntroTitle: z.string().optional(),
+    onboardingIntroBody: z.string().optional(),
+    toolSubheading: z.string().optional(),
+    videoUrl: z.string().optional(),
+    relatedGuides: z.array(z.string()).optional(),
+    showSecondaryCta: z.boolean().optional()
+  })
+});
+
+export const collections = {
+  'ai-agents': aiAgents
+};
+
+
+Important:
+
+Remove the old id, cardTitle, status, meta, ui, and steps fields from this collection — they do NOT exist in my current JSON files.
+
+Do not define a wizards collection yet. Just fix ai-agents.
+
+Make sure all the new landing-page fields are optional, so existing JSON files still validate even if they don’t have those keys yet.
+
+After updating, confirm that the TypeScript / Astro content LSP error for ai-agents goes away.
