@@ -1,0 +1,150 @@
+You are editing my Knit by Machine Astro site.
+
+Goal:
+Update the “Guided Start” band on the start-here page so that:
+
+1. The entire section (with the knitting machine image) has softly rounded corners.
+2. A centered, rounded box sits on top of the image with:
+   - the existing heading “Not sure which one fits?”
+   - the existing body text
+   - the existing “Try the Guided Start” button
+3. The background image remains `images/knitting-machine-needlebed.webp`.
+4. All of this lives in the `.kbm-guided-cta` section and is fully responsive.
+
+Do NOT change:
+- The text copy.
+- The button’s destination or component; re-use my existing button styles.
+- Any routing or logic.
+
+------------------------------------------------------------
+1. Locate the guided CTA section
+------------------------------------------------------------
+
+Find the section that currently contains:
+
+- Heading: “Not sure which one fits?”
+- Text: “Answer a couple of quick questions and I'll recommend your best next step.”
+- Button: “Try the Guided Start”
+
+This section should already be using the background image `images/knitting-machine-needlebed.webp`.
+
+Wrap this content in a `<section>` with class `kbm-guided-cta` (if not already), and we’ll add an inner “content box” element.
+
+------------------------------------------------------------
+2. Update the Astro markup
+------------------------------------------------------------
+
+Inside the `kbm-guided-cta` section, use structure like this (adjust to match my existing components, but keep the class names):
+
+<section class="kbm-guided-cta">
+  <div class="kbm-guided-cta__overlay"></div>
+
+  <div class="kbm-guided-cta__inner">
+    <div class="kbm-guided-cta__box">
+      <h2 class="kbm-guided-cta__title">
+        Not sure which one fits?
+      </h2>
+      <p class="kbm-guided-cta__text">
+        Answer a couple of quick questions and I'll recommend your best next step.
+      </p>
+      <!-- Reuse my existing button component / classes -->
+      <a href="<!-- keep existing href -->" class="kbm-button kbm-button--primary">
+        Try the Guided Start
+      </a>
+    </div>
+  </div>
+</section>
+
+Notes:
+- `.kbm-guided-cta__overlay` will be used for the tint layer over the image.
+- `.kbm-guided-cta__inner` will center the box.
+- `.kbm-guided-cta__box` is the rounded white/cream box that sits on top of the image.
+
+------------------------------------------------------------
+3. Style the section + rounded image corners
+------------------------------------------------------------
+
+In the stylesheet that handles the home page sections (where `.kbm-guided-cta` is currently styled), update/add CSS like this. Use my existing variables where available.
+
+.kbm-guided-cta {
+  position: relative;
+  overflow: hidden; /* important for rounded corners */
+  border-radius: 20px; /* round the whole band */
+  background: url('/images/knitting-machine-needlebed.webp') center/cover no-repeat;
+  padding: 3rem 1.5rem;
+  margin-inline: auto;
+  /* keep it full-width within the content container */
+}
+
+.kbm-guided-cta__overlay {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* light green/cream tint over the image */
+  background-color: rgba(241, 246, 236, 0.85); /* adjust alpha if needed */
+  pointer-events: none;
+}
+
+/* Center the box */
+.kbm-guided-cta__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The text box on top of the image */
+.kbm-guided-cta__box {
+  max-width: 720px;
+  width: 100%;
+  margin: 2rem auto;
+  padding: 2.5rem 3rem;
+  border-radius: 32px; /* rounded box corners */
+  background-color: #F1F6EC; /* or use my light background token */
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.kbm-guided-cta__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  color: var(--kbm-heading-color, #2C3A57);
+}
+
+.kbm-guided-cta__text {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: var(--kbm-body-color, #2C3A57);
+}
+
+/* Ensure the button uses my existing style, with spacing */
+.kbm-guided-cta__box .kbm-button {
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .kbm-guided-cta {
+    padding: 4rem 2rem;
+  }
+
+  .kbm-guided-cta__title {
+    font-size: 1.9rem;
+  }
+
+  .kbm-guided-cta__text {
+    font-size: 1.05rem;
+  }
+
+  .kbm-guided-cta__box {
+    padding: 3rem 3.5rem;
+  }
+}
+
+------------------------------------------------------------
+4. Clean up old styles
+------------------------------------------------------------
+
+- Remove the old flat pale background and border from this section if they still exist (so the image + overlay are visible edge-to-edge inside the rounded band).
+- Make sure there’s still vertical spacing above and below the `.kbm-guided-cta` so it doesn’t touch the sections next to it.
