@@ -43,6 +43,54 @@ const aiAgents = defineCollection({
   })
 });
 
+const wizards = defineCollection({
+  type: 'data',
+  schema: z.object({
+    // Core identity
+    title: z.string(),
+    slug: z.string(),
+
+    // Existing wizard fields (from JSON files)
+    hero: z.string().optional(),
+    description: z.string().optional(),
+    excerpt: z.string().optional(),
+    whyUseThisTool: z.string().optional(),
+    category: z.string().optional(),
+    categoryId: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    keywords: z.array(z.string()).default([]),
+    aliases: z.array(z.string()).default([]),
+    videoUrl: z.string().optional(),
+    accessLevel: z.string().optional(),
+    price: z.string().optional(),
+    relatedAnas: z.array(z.string()).default([]),
+    relatedWorkshops: z.array(z.string()).default([]),
+    imageUrl: z.string().optional(),
+    imageAlt: z.string().optional(),
+    iconUrl: z.string().optional(),
+    metaTitle: z.string().optional(),
+    metaDescription: z.string().optional(),
+    schemaMarkup: z.any().nullable().optional(),
+    isDraft: z.boolean().optional(),
+    pendingPublish: z.boolean().optional(),
+    publishedDate: z.string().optional(),
+    createdAt: z.string().optional(),
+    updatedAt: z.string().optional(),
+
+    // Landing page fields (shared with ai-agents)
+    onboardingMode: z.boolean().optional(),
+    whoThisIsFor: z.array(z.string()).optional(),
+    whyItMatters: z.string().optional(),
+    benefits: z.array(z.string()).optional(),
+    onboardingIntroTitle: z.string().optional(),
+    onboardingIntroBody: z.string().optional(),
+    toolSubheading: z.string().optional(),
+    relatedGuides: z.array(z.string()).optional(),
+    showSecondaryCta: z.boolean().optional()
+  })
+});
+
 export const collections = {
-  'ai-agents': aiAgents
+  'ai-agents': aiAgents,
+  'wizards': wizards
 };

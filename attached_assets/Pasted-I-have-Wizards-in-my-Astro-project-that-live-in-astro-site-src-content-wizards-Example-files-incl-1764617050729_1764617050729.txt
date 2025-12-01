@@ -1,0 +1,199 @@
+I have Wizards in my Astro project that live in:
+astro-site/src/content/wizards/
+
+Example files include:
+
+corner-to-corner.json
+
+diy-blanket.json
+
+dropped-stitch-troubleshooter.json
+
+magic-formula-measurement.json
+
+magic-formula-stitches-rows.json
+
+I also have a Wizards table in my admin/database with fields like:
+
+id (UUID)
+
+title (wizard name)
+
+slug (URL path)
+
+hero
+
+description
+
+excerpt
+
+whyUseThisTool
+
+categoryId
+
+tags (text[])
+
+keywords (text[])
+
+aliases (text[])
+
+videoUrl
+
+accessLevel
+
+price
+
+relatedAnas (text[])
+
+relatedWorkshops (text[])
+
+imageUrl
+
+imageAlt
+
+iconUrl
+
+metaTitle
+
+metaDescription
+
+schemaMarkup (jsonb)
+
+isDraft
+
+pendingPublish
+
+publishedDate
+
+createdAt
+
+updatedAt
+
+I want Wizards to support the same landing-page fields as my ai-agents collection so I can use a shared Smart Guide layout.
+
+Step 1 – Define a wizards content collection in config.ts
+
+Open astro-site/src/content/config.ts.
+
+If there is no wizards collection yet, create one using defineCollection({ type: 'data', ... }).
+
+Infer the base schema from the existing JSON in astro-site/src/content/wizards/*.json (similar to what you did earlier for ai-agents) and include at least:
+
+title: z.string()
+
+slug: z.string()
+
+description: z.string().optional()
+
+excerpt: z.string().optional()
+
+hero: z.string().optional()
+
+whyUseThisTool: z.string().optional()
+
+categoryId: z.string().optional()
+
+tags: z.array(z.string()).optional()
+
+keywords: z.array(z.string()).optional()
+
+aliases: z.array(z.string()).optional()
+
+videoUrl: z.string().optional()
+
+accessLevel: z.string().optional()
+
+price: z.string().optional()
+
+relatedAnas: z.array(z.string()).optional()
+
+relatedWorkshops: z.array(z.string()).optional()
+
+imageUrl: z.string().optional()
+
+imageAlt: z.string().optional()
+
+iconUrl: z.string().optional()
+
+metaTitle: z.string().optional()
+
+metaDescription: z.string().optional()
+
+schemaMarkup: z.any().optional()
+
+isDraft: z.boolean().optional()
+
+pendingPublish: z.boolean().optional()
+
+publishedDate: z.string().optional()
+
+createdAt: z.string().optional()
+
+updatedAt: z.string().optional()
+
+Then extend the wizards schema with these new optional landing-page fields (matching ai-agents):
+
+onboardingMode: z.boolean().optional(),
+whoThisIsFor: z.array(z.string()).optional(),
+whyItMatters: z.string().optional(),
+benefits: z.array(z.string()).optional(),
+onboardingIntroTitle: z.string().optional(),
+onboardingIntroBody: z.string().optional(),
+toolSubheading: z.string().optional(),
+relatedGuides: z.array(z.string()).optional(),
+showSecondaryCta: z.boolean().optional()
+
+
+Add the wizards collection to the exported collections:
+
+export const collections = {
+  'ai-agents': aiAgents,
+  'wizards': wizards
+};
+
+
+Make sure all new fields are optional so existing wizard JSON files still validate.
+
+Step 2 – Update the Wizard admin editor to expose landing-page fields
+
+Find the admin UI/editor used to create and edit Wizards (not AI Agents).
+
+It will be the place where I can edit wizard title, slug, description, etc.
+
+In that editor, add a new section or group called “Landing Page Settings” that maps to these fields:
+
+onboardingMode – boolean toggle
+
+whoThisIsFor – repeatable list (array of short text strings)
+
+whyItMatters – multi-line textarea
+
+benefits – repeatable list (array of short text strings)
+
+onboardingIntroTitle – single-line text
+
+onboardingIntroBody – multi-line textarea
+
+toolSubheading – single-line text
+
+relatedGuides – repeatable list (array of slugs as strings)
+
+showSecondaryCta – boolean toggle
+
+Requirements:
+
+Bind these fields directly to the wizard JSON / data model so they are saved and exported into astro-site/src/content/wizards/*.json.
+
+Do not remove or rename any existing wizard fields.
+
+All these fields should be optional — if left blank, the wizard should still save and publish.
+
+Place the “Landing Page Settings” group near the other display/metadata fields (excerpt, metaTitle, metaDescription, etc.).
+
+Step 3 – Report back
+
+Show me the new wizards collection definition you added to config.ts.
+
+Show me the updated wizard admin editor file where you added the “Landing Page Settings” fields, with the file path.
+
+Please keep changes tightly scoped to Wizards and do not modify the ai-agents collection.
