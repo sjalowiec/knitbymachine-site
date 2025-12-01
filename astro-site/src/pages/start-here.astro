@@ -21,7 +21,6 @@ import Footer from "../components/footer.astro";
       <section class="kbm-hero">
         <div class="kbm-hero__grid">
           <div class="kbm-hero__content">
-            <span class="kbm-hero__eyebrow">Start Here</span>
             <h1>Machine knitting doesn’t have to be overwhelming - I’ll guide your next step.</h1>
             <p class="kbm-hero__text">
               You don’t need to figure it out alone — I’ll help you move forward, one clear step at a time.
@@ -158,6 +157,10 @@ import Footer from "../components/footer.astro";
 </html>
 
 <style>
+  html {
+    scroll-behavior: smooth;
+  }
+
   :root {
     --kbm-green: #52682d;
     --kbm-green-hover: #445626;
@@ -318,6 +321,7 @@ import Footer from "../components/footer.astro";
   .kbm-where-section {
     margin-bottom: 3rem;
     padding-top: 1rem;
+    scroll-margin-top: calc(var(--header-height, 160px) + 1rem);
   }
 
   .kbm-hex-grid {
