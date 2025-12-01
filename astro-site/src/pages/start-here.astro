@@ -82,10 +82,7 @@ import Footer from "../components/footer.astro";
             <h3>I want to knit an actual project.</h3>
             <p>You're in the <strong>Make Projects</strong> phase.</p>
             <p class="kbm-highlight">Next step: choose one easy win.</p>
-            <ul class="kbm-link-list">
-              <li><a href="/wizards/diy-blanket" data-testid="link-diy-blanket">DIY Blanket Wizard</a> – your easiest first success.</li>
-              <li><a href="/rsk/projects" data-testid="link-rsk-projects">Ready | Set | Knit: Choose a Project</a> – answer a few questions and get a plan.</li>
-            </ul>
+            <a href="/rsk/projects" class="btn primary" data-testid="button-rsk">Ready ● Set ● Knit</a>
           </div>
 
           <!-- Card 4: Troubleshoot Phase -->
@@ -96,10 +93,7 @@ import Footer from "../components/footer.astro";
             <h3>Something went wrong.</h3>
             <p>You're in the <strong>Troubleshoot</strong> phase.</p>
             <p class="kbm-highlight">Next step: get a quick answer.</p>
-            <ul class="kbm-link-list">
-              <li><a href="/smart-guides/dropped-stitch" data-testid="link-dropped-stitch">Dropped Stitch Troubleshooter</a></li>
-              <li><a href="/ask" data-testid="link-ask-ana">Ask a Question (ANA)</a> – tell me what's happening and I'll point you in the right direction.</li>
-            </ul>
+            <a href="/troubleshoot" class="btn primary" data-testid="button-troubleshoot">Troubleshoot</a>
           </div>
         </div>
 
@@ -223,7 +217,7 @@ import Footer from "../components/footer.astro";
 
   /* ========== HERO SECTION ========== */
   .kbm-hero {
-    margin-bottom: 3rem;
+    margin-bottom: 1.5rem;
   }
 
   .kbm-hero__grid {
@@ -360,6 +354,8 @@ import Footer from "../components/footer.astro";
     width: 56px;
     height: 56px;
     margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -369,9 +365,6 @@ import Footer from "../components/footer.astro";
     width: 100%;
     height: 100%;
     object-fit: contain;
-    background: linear-gradient(135deg, #e8ede2 0%, #d4dfc7 100%);
-    border-radius: 12px;
-    padding: 8px;
   }
 
   .kbm-hex-card h3 {
