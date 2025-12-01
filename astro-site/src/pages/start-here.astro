@@ -103,64 +103,36 @@ import Footer from "../components/footer.astro";
             </ul>
           </div>
         </div>
-      </section>
 
-      <!-- MACHINE KNITTING PATH SECTION -->
-      <section class="kbm-path-section">
-        <div class="kbm-section-header">
-          <h2>The Machine Knitting Path</h2>
-          <p class="kbm-section-subtitle">You'll cycle through these four stages with every project. You don't have to master them all before you begin.</p>
-        </div>
-
-        <div class="kbm-path-steps">
-          <div class="kbm-path-step" data-testid="step-start">
-            <div class="kbm-path-icon">
-              <img src="/images/knit.svg" alt="Start icon" />
-            </div>
-            <div class="kbm-path-content">
-              <h4>1. Start</h4>
-              <p>Unpack your machine, set it up, and knit your first swatch.</p>
-            </div>
-          </div>
-
-          <div class="kbm-path-step" data-testid="step-skills">
-            <div class="kbm-path-icon">
-              <img src="/images/practice-icon.svg" alt="Build Skills icon" />
-            </div>
-            <div class="kbm-path-content">
-              <h4>2. Build Skills</h4>
-              <p>Practice edges, shaping, tension, and handling your machine with small exercises.</p>
-            </div>
-          </div>
-
-          <div class="kbm-path-step" data-testid="step-projects">
-            <div class="kbm-path-icon">
-              <img src="/images/wizard.svg" alt="Make Projects icon" />
-            </div>
-            <div class="kbm-path-content">
-              <h4>3. Make Projects</h4>
-              <p>Choose simple, success-first projects like blankets, scarves, and hats.</p>
-            </div>
-          </div>
-
-          <div class="kbm-path-step" data-testid="step-troubleshoot">
-            <div class="kbm-path-icon">
-              <img src="/images/troubleshooter-wizard-logo.svg" alt="Troubleshoot icon" />
-            </div>
-            <div class="kbm-path-content">
-              <h4>4. Troubleshoot & Adjust</h4>
-              <p>Fix issues, adjust fit, and refine your projects one small change at a time.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- GUIDED START CTA SECTION -->
-      <section class="kbm-guided-cta">
-        <div class="kbm-guided-cta__inner">
-          <h2>Not sure where you fit?</h2>
-          <p class="kbm-section-subtitle">Answer a couple of quick questions and I'll recommend your best next step.</p>
+        <!-- GUIDED START CTA - Immediately after cards -->
+        <div class="kbm-guided-cta-inline">
+          <h3>Not sure which one fits?</h3>
+          <p>Answer a couple of quick questions and I'll recommend your best next step.</p>
           <a href="/smart-guides/guided-start" class="btn primary" data-testid="button-guided-start">Try the Guided Start</a>
+        </div>
+      </section>
+
+      <!-- WHAT YOU'LL FIND SECTION -->
+      <section class="kbm-reassurance-section">
+        <div class="kbm-section-header">
+          <h2>What you'll find at Knit by Machine</h2>
+        </div>
+
+        <div class="kbm-reassurance-grid">
+          <div class="kbm-reassurance-item" data-testid="reassurance-next-steps">
+            <h4>Clear next steps</h4>
+            <p>You don't have to figure it out alone. I'll point you to the one thing to do next so you can keep moving without overwhelm.</p>
+          </div>
+
+          <div class="kbm-reassurance-item" data-testid="reassurance-tools">
+            <h4>Tools that do the hard parts</h4>
+            <p>Let the site handle the math, shaping, and planning. You focus on knitting, not calculations.</p>
+          </div>
+
+          <div class="kbm-reassurance-item" data-testid="reassurance-support">
+            <h4>Support when you get stuck</h4>
+            <p>Troubleshooters, Smart Guides, and Ask 'n Answer are here to help you fix problems and finish more projects.</p>
+          </div>
         </div>
       </section>
 
@@ -453,90 +425,73 @@ import Footer from "../components/footer.astro";
     text-underline-offset: 2px;
   }
 
-  /* ========== MACHINE KNITTING PATH SECTION ========== */
-  .kbm-path-section {
-    margin-bottom: 3rem;
-    padding: 2rem 0;
-    border-top: 1px solid #e0e5d8;
-    border-bottom: 1px solid #e0e5d8;
-  }
-
-  .kbm-path-steps {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.25rem;
-  }
-
-  @media (min-width: 768px) {
-    .kbm-path-steps {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 900px) {
-    .kbm-path-steps {
-      grid-template-columns: repeat(4, 1fr);
-    }
-  }
-
-  .kbm-path-step {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  /* ========== GUIDED START CTA (INLINE) ========== */
+  .kbm-guided-cta-inline {
+    margin-top: 2.5rem;
+    padding: 2rem 1.5rem;
     text-align: center;
-    padding: 1rem;
-  }
-
-  .kbm-path-icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 0.75rem;
-  }
-
-  .kbm-path-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    background: linear-gradient(135deg, #e8ede2 0%, #d4dfc7 100%);
-    border-radius: 10px;
-    padding: 6px;
-  }
-
-  .kbm-path-content h4 {
-    font-size: 1rem;
-    color: #2c3a57;
-    margin: 0 0 0.35rem;
-    font-weight: 600;
-  }
-
-  .kbm-path-content p {
-    font-size: 0.88rem;
-    color: #4d5a48;
-    margin: 0;
-    line-height: 1.5;
-  }
-
-  /* ========== GUIDED START CTA SECTION ========== */
-  .kbm-guided-cta {
-    margin-bottom: 3rem;
-  }
-
-  .kbm-guided-cta__inner {
     background: linear-gradient(135deg, #f0f4eb 0%, #e5ebe0 100%);
-    border-radius: 1.5rem;
-    padding: 2.5rem 2rem;
-    text-align: center;
+    border-radius: 1rem;
     border: 1px solid #d4dfc7;
   }
 
-  .kbm-guided-cta h2 {
-    font-size: clamp(1.3rem, 2.5vw, 1.6rem);
+  .kbm-guided-cta-inline h3 {
+    font-size: 1.15rem;
     color: #2c3a57;
     margin: 0 0 0.5rem;
   }
 
-  .kbm-guided-cta .kbm-section-subtitle {
-    margin-bottom: 1.5rem;
+  .kbm-guided-cta-inline p {
+    font-size: 0.95rem;
+    color: #4d5a48;
+    margin: 0 0 1.25rem;
+    max-width: 480px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========== REASSURANCE SECTION ========== */
+  .kbm-reassurance-section {
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+  }
+
+  .kbm-reassurance-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-reassurance-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .kbm-reassurance-item {
+    text-align: center;
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-reassurance-item {
+      text-align: left;
+    }
+  }
+
+  .kbm-reassurance-item h4 {
+    font-size: 1.05rem;
+    color: #2c3a57;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .kbm-reassurance-item p {
+    font-size: 0.9rem;
+    color: #4d5a48;
+    line-height: 1.55;
+    margin: 0;
   }
 
   /* ========== ABOUT-LITE STRIP ========== */
@@ -622,8 +577,12 @@ import Footer from "../components/footer.astro";
       padding: 1.25rem 1rem;
     }
 
-    .kbm-guided-cta__inner {
-      padding: 2rem 1.25rem;
+    .kbm-guided-cta-inline {
+      padding: 1.5rem 1rem;
+    }
+
+    .kbm-reassurance-item {
+      padding: 1rem 0.5rem;
     }
   }
 </style>

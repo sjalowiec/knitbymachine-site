@@ -1,0 +1,66 @@
+I already have a draft “Start Here” home-style page (likely at src/pages/start-here.astro) with:
+
+- A hero section
+- A “Where are you right now?” section with 4 cards
+- A “Machine Knitting Path” section
+- A “Guided Start” CTA section
+- An about-lite strip about Sue
+
+I want to SIMPLIFY this page so it feels less repetitive and more like a clear “Guide on the Side” entry point.
+
+Please update ONLY the Start Here draft page (do NOT modify index.astro):
+
+1) KEEP:
+   - The hero section as-is (or with only minor text tweaks if needed).
+   - The “Where are you right now?” section with the 4 cards. This is the main way users choose their next step.
+   - The about-lite / Sue strip at the bottom.
+
+2) MOVE & SIMPLIFY the Guided Start CTA:
+   - Remove any separate, standalone “Guided Start” section that’s far away from the cards.
+   - Immediately BELOW the 4 cards section, add a simple centered CTA block:
+
+     Section layout:
+     - Short heading: “Not sure which one fits?”
+     - Short line: “Answer a couple of quick questions and I’ll recommend your best next step.”
+     - Button using my primary button style:
+       Text: “Try the Guided Start”
+       href: "/smart-guides/guided-start" (placeholder is fine)
+
+     Keep this section visually simple and clearly connected to the 4 cards, so it feels like “If these options aren’t obvious, click here.”
+
+3) REMOVE the “Machine Knitting Path” section:
+   - Completely delete the section that explains the 4 stages (Start, Build Skills, Make Projects, Troubleshoot & Adjust) in a second, separate layout.
+   - The content is good, but it’s repetitive with the 4 cards; I don’t want it on the Start Here page anymore.
+   - Do not replace it with another big diagram.
+
+4) ADD a simple 3-point reassurance section instead of the Path:
+   - Below the Guided Start CTA and above the about-lite strip, add a new section that briefly explains what Knit by Machine offers, in a non-repetitive way.
+
+   Section title:
+   - H2: “What you’ll find at Knit by Machine”
+
+   Then 3 short items in a simple layout (stacked on mobile, side-by-side on desktop if there’s room). Each item has a short heading and 1–2 sentence description:
+
+   Item 1:
+   - Heading: “Clear next steps”
+   - Text: “You don’t have to figure it out alone. I’ll point you to the one thing to do next so you can keep moving without overwhelm.”
+
+   Item 2:
+   - Heading: “Tools that do the hard parts”
+   - Text: “Let the site handle the math, shaping, and planning. You focus on knitting, not calculations.”
+
+   Item 3:
+   - Heading: “Support when you get stuck”
+   - Text: “Troubleshooters, Smart Guides, and Ask ’n Answer are here to help you fix problems and finish more projects.”
+
+   Use my existing section and text styles if possible (e.g. kbm-section, kbm-section__title, etc.). If you need new classes, use a kbm- prefix and keep the CSS minimal.
+
+5) STYLING / STRUCTURE NOTES:
+   - Do NOT change the header, nav, or footer.
+   - Do NOT touch index.astro (my current real home page). Only update the draft Start Here page.
+   - Keep the overall page light and easy to scan: hero → 4 cards → Guided Start CTA → “What you’ll find” reassurance → Sue/about-lite.
+   - Make sure spacing between sections is consistent and not too tight.
+
+After you update the file:
+- Show me the full updated start-here.astro file (or whatever file you changed for this page).
+- If you had to add or edit CSS, show me that as well so I can tweak wording and spacing later.
