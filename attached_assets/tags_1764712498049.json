@@ -1,0 +1,68 @@
+{
+  "tags": [
+    { "tag": "tension", "group": "machine", "description": "Stitch-size dials, mast tension, yarn flow, and tension adjustments." },
+    { "tag": "gauge", "group": "machine", "description": "Stitch and row gauge, measurement, and fabric accuracy." },
+    { "tag": "yarn-feeding", "group": "machine", "description": "Yarn path, mast settings, and feeder behavior." },
+    { "tag": "carriage-settings", "group": "machine", "description": "Carriage levers, buttons, and knitting modes." },
+    { "tag": "machine-basics", "group": "machine", "description": "Foundational machine setup, threading, and operation." },
+    { "tag": "needle-selection", "group": "machine", "description": "Needle positions, selection tools, and patterning setups." },
+    { "tag": "row-counter", "group": "machine", "description": "Row counter use, resets, and row tracking." },
+    { "tag": "needle-bed", "group": "machine", "description": "Working with the needle bed, center positions, and spacing." },
+    { "tag": "yarn-choice", "group": "machine", "description": "Fiber selection, yarn weight, and machine suitability." },
+    { "tag": "blocking", "group": "machine", "description": "Steam, wet-blocking, shaping, and finishing techniques." },
+
+    { "tag": "increases", "group": "technique", "description": "All increase methods (automatic, full-fashioned, e-wrap, etc.)." },
+    { "tag": "decreases", "group": "technique", "description": "Simple, full-fashioned, transfer-based, or shaped reductions." },
+    { "tag": "shaping", "group": "technique", "description": "Using increases, decreases, and stitch-size changes to shape fabric." },
+    { "tag": "short-rows", "group": "technique", "description": "Hold position, wrapping, and shaping with short rows." },
+    { "tag": "transfer", "group": "technique", "description": "Transferring stitches to shape or reorganize fabric." },
+    { "tag": "fashioning", "group": "technique", "description": "Full-fashioned increases and decreases using tools." },
+    { "tag": "e-wrap", "group": "technique", "description": "E-wrap and cast-on edge-based increases." },
+
+    { "tag": "cast-on", "group": "technique", "description": "All types of cast-ons: e-wrap, weaving, crochet, mock rib, etc." },
+    { "tag": "bind-off", "group": "technique", "description": "Crochet BO, latch-tool BO, wrap BO, and decorative finishes." },
+    { "tag": "hung-hem", "group": "technique", "description": "Creating and folding hems neatly and consistently." },
+
+    { "tag": "stockinette", "group": "fabric", "description": "Plain knitting, smooth fabric, and baseline structure." },
+    { "tag": "ribbing", "group": "fabric", "description": "1x1, 2x1, 2x2, and custom rib structures." },
+    { "tag": "tuck", "group": "fabric", "description": "Single-color and multi-color tuck stitches." },
+    { "tag": "slip-stitch", "group": "fabric", "description": "Slip stitch patterns and texture techniques." },
+    { "tag": "fair-isle", "group": "fabric", "description": "Colorwork using stranded patterns." },
+    { "tag": "weaving", "group": "fabric", "description": "Weaving yarn into stitches for decorative effects." },
+    { "tag": "plating", "group": "fabric", "description": "Holding two yarns in different feeders to create plating effects." },
+    { "tag": "texture", "group": "fabric", "description": "Cables, mock ribs, textures, and patterning." },
+    { "tag": "cables", "group": "fabric", "description": "Single, double, serpentine, and complex cable structures." },
+    { "tag": "lace", "group": "fabric", "description": "Automatic lace, hand-manipulated lace, eyelets." },
+
+    { "tag": "repair", "group": "support", "description": "Fixing errors, dropped stitches, knots, holes." },
+    { "tag": "dropped-stitches", "group": "support", "description": "Diagnosing and repairing dropped stitches cleanly." },
+    { "tag": "color-change-tails", "group": "support", "description": "Managing knots, tails, and joining yarn cleanly." },
+    { "tag": "machine-glitches", "group": "support", "description": "Troubleshooting mechanical or operator mistakes." },
+    { "tag": "edge-behavior", "group": "support", "description": "Curling, rolling, edge treatments, and stabilization." },
+    { "tag": "yarn-issues", "group": "support", "description": "Yarn breakage, feeding issues, inconsistent tension." },
+    { "tag": "troubleshooting", "group": "support", "description": "Root-cause problem solving for fabric or machine issues." },
+
+    { "tag": "planning", "group": "project", "description": "Thinking through projects before knitting." },
+    { "tag": "measurement", "group": "project", "description": "Measuring body, garment pieces, and swatches." },
+    { "tag": "fit", "group": "project", "description": "Ensuring fitted garments match intended measurements." },
+    { "tag": "pattern-reading", "group": "project", "description": "Understanding and converting pattern instructions." },
+    { "tag": "schematics", "group": "project", "description": "Reading and drafting schematic diagrams." },
+
+    { "tag": "beginner", "group": "level", "description": "Brand-new or returning knitters." },
+    { "tag": "intermediate", "group": "level", "description": "Users familiar with basic operation and ready for refinement." },
+    { "tag": "experienced", "group": "level", "description": "Advanced knitters looking for mastery-level skills." },
+    { "tag": "returner", "group": "level", "description": "Someone coming back after time away from their machine." },
+
+    { "tag": "blankets", "group": "project-type", "description": "Blanket-related skills and patterns." },
+    { "tag": "hats", "group": "project-type", "description": "Headwear techniques or practice." },
+    { "tag": "mittens", "group": "project-type", "description": "Mitten shaping, thumbs, and construction." },
+    { "tag": "garments", "group": "project-type", "description": "Sweaters, cardigans, tops, and wearable items." },
+    { "tag": "socks", "group": "project-type", "description": "Sock construction and short-row heels/toes." },
+    { "tag": "accessories", "group": "project-type", "description": "General accessories like scarves, cowls, headbands." },
+
+    { "tag": "practice", "group": "purpose", "description": "Short, structured exercises to build confidence." },
+    { "tag": "fundamentals", "group": "purpose", "description": "Core concepts every machine knitter should understand." },
+    { "tag": "fabric-exploration", "group": "purpose", "description": "Trying different stitch types to understand their behavior." },
+    { "tag": "confidence", "group": "purpose", "description": "Encouraging, supportive skill-building content." }
+  ]
+}

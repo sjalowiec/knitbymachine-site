@@ -1,0 +1,134 @@
+2. Load global tags into the admin UI
+
+Find the code that powers my admin interface for editing content (Skill Builders, blog posts, etc.). This might be React, plain HTML/JS, or another UI layer. Inspect where forms for each content type are defined.
+
+Implement a Tag Management utility in the admin that reads global-tags.json and exposes:
+
+tag (string, canonical ID)
+
+group (displayed as a grouping/filter)
+
+description (tooltip or helper text)
+
+Make sure this loader is reusable so multiple admin screens can access the same tag list.
+
+3. Add a “Global Tag Manager” screen in the admin
+
+Create a new admin page, something like:
+
+Route / file name example: admin/tags or src/pages/admin/tags.[jsx|tsx|astro|... depending on stack]
+
+On this screen:
+
+Display tags grouped by group (machine, technique, fabric, support, project, level, project-type, purpose).
+
+Show columns for:
+
+Tag name (tag)
+
+Group
+
+Description
+
+Allow:
+
+Adding a new tag (tag string, group select, optional description)
+
+Editing an existing tag (all three fields)
+
+Deleting a tag (with a confirmation step)
+
+Persist all changes back into global-tags.json.
+
+Implementation details:
+
+If you already have utilities for writing JSON files (e.g. in Node/Express or an API route), reuse them.
+
+If writes are not currently supported, add a simple backend endpoint or serverless function that:
+
+reads current global-tags.json
+
+applies changes from the admin
+
+writes the updated JSON back to disk
+
+Keep the UI minimal but clean and consistent with the rest of the admin styling.
+
+4. Integrate tags into Skill Builder editing
+
+Locate the UI/component that edits Skill Builder JSON objects. You already have fields like:
+
+slug
+
+title
+
+description
+
+tagline
+
+prepChecklist
+
+modules
+
+reflection
+
+isDraft
+
+publishedDate
+
+pendingPublish
+
+Add a new top-level field in the Skill Builder JSON schema (if not already present):
+
+"tags": ["tension", "gauge", "fundamentals"]
+
+
+In the Skill Builder edit form:
+
+Load the global tags from global-tags.json.
+
+Show a multi-select control (or checkbox list) where I can choose tags from the global list.
+
+Group them visually by group (e.g. headings in the selector: “Machine”, “Technique”, “Fabric”, etc.).
+
+When I save the Skill Builder, write the selected tag IDs into the tags array for that JSON.
+
+Prevent free-form tag creation from the Skill Builder form. All new tags should be added through the dedicated Tag Manager screen to keep the vocabulary controlled.
+
+5. Integrate tags into blog posts and other content (if present)
+
+If my admin supports other content types like blog posts, Smart Guides, etc.:
+
+For each content editing form, add the same tags array field.
+
+Reuse the same tag multi-select component you built for Skill Builders.
+
+Ensure tags are always read from global-tags.json so the vocabulary stays consistent.
+
+6. Implementation priorities and constraints
+
+Do NOT break existing content or JSON structures. If there are Skill Builder files without tags yet, treat tags as optional and default to an empty array.
+
+Keep the new Tag Manager UI simple and clean, consistent with my existing admin layout.
+
+Organize the code so that:
+
+the global tag loader is in a shared utility
+
+the multi-select tag UI is a reusable component
+
+any future content type can easily adopt the same tag system
+
+7. After changes
+
+Show me where:
+
+global-tags.json lives
+
+the Tag Manager admin route is
+
+the Skill Builder edit UI now exposes tag selection
+
+Make sure at least one example Skill Builder JSON file is updated to include a real tags array, so I can see the structure in practice.
+
+Use my existing style and code patterns. Don’t rewrite the whole admin—just extend it to support this global tag system and tag editing from the admin.
