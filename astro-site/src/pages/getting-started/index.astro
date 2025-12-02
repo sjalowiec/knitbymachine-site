@@ -107,12 +107,12 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       </div>
 
       <div class="kbm-agent-wrapper">
-        <!-- TODO: Replace this placeholder with the actual MindPal embed code -->
-        <div class="kbm-agent-placeholder" data-testid="placeholder-mindpal-agent">
-          <p>
-            The Getting Started Helper will appear here. Once you have your MindPal embed code, paste it inside this box.
-          </p>
-        </div>
+        <iframe 
+          src="https://chatbot.getmindpal.com/getting-started-helper-gdl"
+          allow="clipboard-read; clipboard-write; microphone"
+          class="kbm-mindpal-iframe"
+          data-testid="iframe-mindpal-agent"
+        ></iframe>
       </div>
     </section>
   </main>
@@ -363,29 +363,17 @@ const pageDescription = 'A simple starting point to get your knitting machine se
   /* ========== AGENT WRAPPER ========== */
   .kbm-agent-wrapper {
     margin-top: 1.5rem;
-  }
-
-  /* ========== AGENT PLACEHOLDER ========== */
-  .kbm-agent-placeholder {
-    margin-top: 1.5rem;
     width: 100%;
-    min-height: 300px;
-    background: linear-gradient(135deg, #ffffff 0%, #f7f8f7 100%);
-    border: 2px dashed #a8b89c;
-    border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    text-align: center;
   }
 
-  .kbm-agent-placeholder p {
-    color: #5a6b4e;
-    font-size: 0.95rem;
-    font-style: italic;
-    margin: 0;
-    max-width: 400px;
+  /* ========== MINDPAL IFRAME ========== */
+  .kbm-mindpal-iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 700px;
+    border: none;
+    border-radius: 0.75rem;
+    background-color: #ffffff;
   }
 
   /* ========== SECTION-SPECIFIC ADJUSTMENTS ========== */
@@ -417,11 +405,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
 
     .kbm-hero-image-placeholder {
       min-height: 200px;
-      padding: 1.5rem;
-    }
-
-    .kbm-agent-placeholder {
-      min-height: 250px;
       padding: 1.5rem;
     }
   }
