@@ -30,39 +30,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       </div>
     </section>
 
-    <!-- WHAT YOU CAN DO HERE SECTION -->
-    <section class="kbm-section" data-testid="section-features">
-      <div class="kbm-container">
-        <h2>What you can do here</h2>
-        <p class="kbm-section-intro">
-          Use this page as a simple starting point with your machine — no pressure, just clear next steps.
-        </p>
-
-        <div class="kbm-feature-grid">
-          <article class="kbm-feature-card" data-testid="card-feature-setup">
-            <h3>Set up your machine with confidence</h3>
-            <p>
-              Practical steps to get your machine on the table, checked, and ready to use.
-            </p>
-          </article>
-
-          <article class="kbm-feature-card" data-testid="card-feature-first-rows">
-            <h3>Make your first rows</h3>
-            <p>
-              Move the carriage, form stitches, and see fabric grow — even if this is your first time touching the machine.
-            </p>
-          </article>
-
-          <article class="kbm-feature-card" data-testid="card-feature-next-steps">
-            <h3>Get personalized next steps</h3>
-            <p>
-              The Getting Started Helper at the bottom of this page asks a few quick questions and points you to your next clear move, based on your machine and your experience.
-            </p>
-          </article>
-        </div>
-      </div>
-    </section>
-
     <!-- YOUR NEXT STEP SECTION -->
     <section class="kbm-section" data-testid="section-next-step">
       <div class="kbm-container">
@@ -79,22 +46,18 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       </div>
     </section>
 
-    <!-- GETTING STARTED HELPER SECTION (MindPal Embed Placeholder) -->
+    <!-- GETTING STARTED HELPER SECTION (MindPal Embed) -->
     <section id="getting-started-helper" class="kbm-section kbm-section--agent" data-testid="section-helper">
-      <div class="kbm-container">
-        <h2>Getting Started Helper</h2>
-        <p class="kbm-section-intro">
-          Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
-        </p>
+      <h2>Getting Started Helper</h2>
+      <p class="kbm-section-intro">
+        Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
+      </p>
 
-        <div class="kbm-agent-wrapper">
-          <!-- TODO: Replace this placeholder with the actual MindPal embed code -->
-          <div class="kbm-agent-placeholder" data-testid="placeholder-mindpal-agent">
-            <p>
-              The Getting Started Helper will appear here. Once you have your MindPal embed code, paste it inside this box.
-            </p>
-          </div>
-        </div>
+      <!-- TODO: Replace this placeholder with the actual MindPal embed code -->
+      <div class="kbm-agent-placeholder" data-testid="placeholder-mindpal-agent">
+        <p>
+          The Getting Started Helper will appear here. Once you have your MindPal embed code, paste it inside this box.
+        </p>
       </div>
     </section>
   </main>
@@ -247,49 +210,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     margin: 0 auto 2rem;
   }
 
-  /* ========== FEATURE GRID ========== */
-  .kbm-feature-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 600px) {
-    .kbm-feature-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-    }
-  }
-
-  .kbm-feature-card {
-    background-color: #ffffff;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    border: 1px solid #e0e5d8;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    transition: all 0.25s ease;
-  }
-
-  .kbm-feature-card:hover {
-    border-color: #c7d8a4;
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.08);
-    transform: translateY(-2px);
-  }
-
-  .kbm-feature-card h3 {
-    font-size: 1.05rem;
-    color: #2c3a57;
-    margin: 0 0 0.5rem;
-    line-height: 1.35;
-  }
-
-  .kbm-feature-card p {
-    font-size: 0.9rem;
-    color: #4d5a48;
-    line-height: 1.55;
-    margin: 0;
-  }
-
   /* ========== NEXT STEP CTA ========== */
   .kbm-next-step-cta {
     text-align: center;
@@ -317,12 +237,9 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     background-color: #445626;
   }
 
-  /* ========== AGENT WRAPPER / PLACEHOLDER ========== */
-  .kbm-agent-wrapper {
-    margin-top: 1.5rem;
-  }
-
+  /* ========== AGENT PLACEHOLDER ========== */
   .kbm-agent-placeholder {
+    margin-top: 1.5rem;
     width: 100%;
     min-height: 300px;
     background: linear-gradient(135deg, #ffffff 0%, #f7f8f7 100%);
@@ -368,10 +285,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
 
     .kbm-section--agent {
       padding: 1.5rem 1rem;
-    }
-
-    .kbm-feature-card {
-      padding: 1.25rem;
     }
 
     .kbm-hero-image-placeholder {
