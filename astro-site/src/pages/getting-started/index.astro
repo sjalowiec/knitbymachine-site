@@ -17,6 +17,16 @@ const pageDescription = 'A simple starting point to get your knitting machine se
               Whether this is your first session or your first session in a while, this guide helps you get oriented and choose your next step.
             </p>
           </header>
+
+          <p class="kbm-hero-cta-text">
+            When you're ready, scroll to the Ready ● Set ● Knit helper below. Tell it where you're starting — new, returning, or unsure — and it will guide you one simple step at a time.
+          </p>
+
+          <div class="kbm-next-step-cta">
+            <a href="#getting-started-helper" class="kbm-button kbm-button--primary" data-testid="button-go-to-helper">
+              Ready ● Set ● Knit
+            </a>
+          </div>
         </div>
 
         <div class="kbm-hero-media">
@@ -28,22 +38,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
               data-testid="img-hero-collage"
             />
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- YOUR NEXT STEP SECTION -->
-    <section class="kbm-section" data-testid="section-next-step">
-      <div class="kbm-container">
-        <h2>Your next step</h2>
-        <p>
-          When you're ready, scroll to the Ready ● Set ● Knit helper below. Tell it where you're starting — new, returning, or unsure — and it will guide you one simple step at a time.
-        </p>
-
-        <div class="kbm-next-step-cta">
-          <a href="#getting-started-helper" class="kbm-button kbm-button--primary" data-testid="button-go-to-helper">
-            Ready ● Set ● Knit
-          </a>
         </div>
       </div>
     </section>
@@ -185,6 +179,21 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     }
   }
 
+  .kbm-hero-cta-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4d5a48;
+    margin: 1.25rem 0 0;
+    max-width: 500px;
+  }
+
+  @media (max-width: 767px) {
+    .kbm-hero-cta-text {
+      text-align: center;
+      margin: 1.25rem auto 0;
+    }
+  }
+
   /* ========== HERO MEDIA / IMAGE ========== */
   .kbm-hero-media {
     display: flex;
@@ -223,8 +232,14 @@ const pageDescription = 'A simple starting point to get your knitting machine se
 
   /* ========== NEXT STEP CTA ========== */
   .kbm-next-step-cta {
-    text-align: center;
+    text-align: left;
     margin-top: 1.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .kbm-next-step-cta {
+      text-align: center;
+    }
   }
 
   .kbm-button {
