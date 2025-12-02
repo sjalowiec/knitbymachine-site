@@ -12,7 +12,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       <div class="kbm-container kbm-page-layout">
         <div class="kbm-hero-text">
           <header class="kbm-page-header">
-            <p class="kbm-eyebrow" data-testid="text-eyebrow">Start here</p>
             <h1 data-testid="text-page-title">Getting Started with Your Knitting Machine</h1>
             <p class="kbm-lede" data-testid="text-lede">
               Machine knitting can feel unfamiliar at first — that's normal. This page gives you a simple place to begin so you can get your machine set up, moving smoothly, and ready for real knitting.
@@ -21,12 +20,14 @@ const pageDescription = 'A simple starting point to get your knitting machine se
         </div>
 
         <div class="kbm-hero-media">
-          <img 
-            src="/images/knitting-machine-collage.webp" 
-            alt="Four photos showing different types of knitting machines to reassure beginners that any machine will work"
-            class="kbm-hero-image"
-            data-testid="img-hero-collage"
-          />
+          <div class="kbm-image-grid">
+            <img 
+              src="/images/knitting-machine-collage.webp" 
+              alt="Four photos showing different types of knitting machines to reassure beginners that any machine will work"
+              class="kbm-hero-image"
+              data-testid="img-hero-collage"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -259,12 +260,17 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     justify-content: center;
   }
 
+  .kbm-image-grid {
+    border: 2px solid #52682D;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 450px;
+  }
+
   .kbm-hero-image {
     width: 100%;
-    max-width: 450px;
     height: auto;
-    border-radius: 1rem;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    display: block;
   }
 
   /* ========== SECTION HEADINGS ========== */
