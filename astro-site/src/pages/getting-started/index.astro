@@ -53,14 +53,100 @@ const pageDescription = 'A simple starting point to get your knitting machine se
         Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
       </p>
 
-      <!-- TODO: Replace this placeholder with the actual MindPal embed code -->
-      <div class="kbm-agent-placeholder" data-testid="placeholder-mindpal-agent">
-        <p>
-          The Getting Started Helper will appear here. Once you have your MindPal embed code, paste it inside this box.
+      <div class="kbm-starter-chips">
+        <p class="kbm-starter-label">
+          Pick a starting point, or type your own question:
         </p>
+
+        <div class="kbm-starter-chip-row">
+          <button
+            type="button"
+            class="kbm-chip kbm-chip--starter"
+            data-starter="Where do I start with my knitting machine?"
+            data-testid="chip-where-start"
+          >
+            Where do I start?
+          </button>
+
+          <button
+            type="button"
+            class="kbm-chip kbm-chip--starter"
+            data-starter="Help me get my machine ready to use."
+            data-testid="chip-machine-ready"
+          >
+            Get my machine ready
+          </button>
+
+          <button
+            type="button"
+            class="kbm-chip kbm-chip--starter"
+            data-starter="It's been a while — how do I get going again?"
+            data-testid="chip-rusty"
+          >
+            I'm rusty
+          </button>
+
+          <button
+            type="button"
+            class="kbm-chip kbm-chip--starter"
+            data-starter="Show me how to make my first rows."
+            data-testid="chip-first-rows"
+          >
+            Make my first rows
+          </button>
+
+          <button
+            type="button"
+            class="kbm-chip kbm-chip--starter"
+            data-starter="I'm unsure what to do next."
+            data-testid="chip-not-sure"
+          >
+            Not sure what to do
+          </button>
+        </div>
+      </div>
+
+      <div class="kbm-agent-wrapper">
+        <!-- TODO: Replace this placeholder with the actual MindPal embed code -->
+        <div class="kbm-agent-placeholder" data-testid="placeholder-mindpal-agent">
+          <p>
+            The Getting Started Helper will appear here. Once you have your MindPal embed code, paste it inside this box.
+          </p>
+        </div>
       </div>
     </section>
   </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const chips = document.querySelectorAll('.kbm-chip--starter');
+
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const starterText = chip.getAttribute('data-starter');
+          if (!starterText) return;
+
+          const agentWrapper = document.querySelector('.kbm-agent-wrapper');
+          if (!agentWrapper) return;
+
+          const iframe = agentWrapper.querySelector('iframe');
+          if (!iframe || !iframe.contentWindow) {
+            console.warn('MindPal iframe not found inside .kbm-agent-wrapper');
+            return;
+          }
+
+          iframe.contentWindow.postMessage(
+            {
+              type: 'kbm_starter_message',
+              text: starterText,
+              source: 'kbm-getting-started-page'
+            },
+            '*'
+          );
+        });
+      });
+    });
+  </script>
 </BaseLayout>
 
 <style>
@@ -235,6 +321,48 @@ const pageDescription = 'A simple starting point to get your knitting machine se
 
   .kbm-button--primary:hover {
     background-color: #445626;
+  }
+
+  /* ========== STARTER CHIPS ========== */
+  .kbm-starter-chips {
+    margin: 1.5rem 0;
+  }
+
+  .kbm-starter-label {
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+    color: #4d5a48;
+  }
+
+  .kbm-starter-chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .kbm-chip {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    border: 2px solid #52682D;
+    background-color: #ffffff;
+    color: #2C3A57;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease, transform 0.08s ease;
+  }
+
+  .kbm-chip:hover {
+    background-color: #F0F4EC;
+    transform: translateY(-1px);
+  }
+
+  .kbm-chip:active {
+    transform: translateY(0);
+  }
+
+  /* ========== AGENT WRAPPER ========== */
+  .kbm-agent-wrapper {
+    margin-top: 1.5rem;
   }
 
   /* ========== AGENT PLACEHOLDER ========== */

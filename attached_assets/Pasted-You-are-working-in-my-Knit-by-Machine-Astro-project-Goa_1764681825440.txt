@@ -1,0 +1,233 @@
+You are working in my Knit by Machine Astro project.
+
+Goal
+
+Upgrade the Getting Started landing page at
+src/pages/getting-started/index.astro to include Level 2 “starter chips” that:
+
+Appear above the Getting Started Helper agent, inside the helper section.
+
+When clicked, send a starter message into the embedded MindPal iframe using postMessage.
+
+Still fall back gracefully if the iframe or messaging API changes.
+
+Do not change other pages or layouts.
+
+1. Find the Getting Started Helper section
+
+In src/pages/getting-started/index.astro, locate the helper section that looks similar to this (or whatever the current version is):
+
+<section id="getting-started-helper" class="kbm-section kbm-section--agent">
+  <div class="kbm-container">
+    <h2>Getting Started Helper</h2>
+    <p class="kbm-section-intro">
+      Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
+    </p>
+
+    <div class="kbm-agent-wrapper">
+      <!-- MindPal embed will live here -->
+    </div>
+  </div>
+</section>
+
+
+If the structure differs slightly, adjust selectors in the next steps but keep the same intent:
+
+h2 and intro text
+
+kbm-agent-wrapper as the container around the embed
+
+2. Insert starter chips above the agent wrapper
+
+Right above the <div class="kbm-agent-wrapper">, insert this block:
+
+    <div class="kbm-starter-chips">
+      <p class="kbm-starter-label">
+        Pick a starting point, or type your own question:
+      </p>
+
+      <div class="kbm-starter-chip-row">
+        <button
+          type="button"
+          class="kbm-chip kbm-chip--starter"
+          data-starter="Where do I start with my knitting machine?"
+        >
+          Where do I start?
+        </button>
+
+        <button
+          type="button"
+          class="kbm-chip kbm-chip--starter"
+          data-starter="Help me get my machine ready to use."
+        >
+          Get my machine ready
+        </button>
+
+        <button
+          type="button"
+          class="kbm-chip kbm-chip--starter"
+          data-starter="It’s been a while — how do I get going again?"
+        >
+          I’m rusty
+        </button>
+
+        <button
+          type="button"
+          class="kbm-chip kbm-chip--starter"
+          data-starter="Show me how to make my first rows."
+        >
+          Make my first rows
+        </button>
+
+        <button
+          type="button"
+          class="kbm-chip kbm-chip--starter"
+          data-starter="I’m unsure what to do next."
+        >
+          Not sure what to do
+        </button>
+      </div>
+    </div>
+
+    <div class="kbm-agent-wrapper">
+      <!-- MindPal embed stays here -->
+
+
+So the full section should now look like:
+
+<section id="getting-started-helper" class="kbm-section kbm-section--agent">
+  <div class="kbm-container">
+    <h2>Getting Started Helper</h2>
+    <p class="kbm-section-intro">
+      Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
+    </p>
+
+    <div class="kbm-starter-chips">
+      <p class="kbm-starter-label">
+        Pick a starting point, or type your own question:
+      </p>
+
+      <div class="kbm-starter-chip-row">
+        <!-- buttons as above -->
+      </div>
+    </div>
+
+    <div class="kbm-agent-wrapper">
+      <!-- MindPal embed will appear here -->
+    </div>
+  </div>
+</section>
+
+
+Use the exact class names (kbm-chip, kbm-chip--starter, etc.) as hooks; I will style them in my CSS.
+
+3. Add JavaScript to send starter text into the MindPal iframe
+
+At the bottom of getting-started/index.astro, just before the closing </Layout> (but still inside it), add a <script> block that:
+
+Finds all .kbm-chip--starter buttons
+
+On click, reads their data-starter text
+
+Locates the iframe inside .kbm-agent-wrapper
+
+Sends a postMessage into the iframe with that text
+
+Add this:
+
+  <script>
+    // Attach click handlers to starter chips once the DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const chips = document.querySelectorAll('.kbm-chip--starter');
+
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const starterText = chip.getAttribute('data-starter');
+          if (!starterText) return;
+
+          // Find the MindPal iframe inside the agent wrapper
+          const agentWrapper = document.querySelector('.kbm-agent-wrapper');
+          if (!agentWrapper) return;
+
+          const iframe = agentWrapper.querySelector('iframe');
+          if (!iframe || !iframe.contentWindow) {
+            console.warn('MindPal iframe not found inside .kbm-agent-wrapper');
+            return;
+          }
+
+          // TODO: adjust this message format to match MindPal's embed API
+          // This is a generic postMessage you can update later.
+          iframe.contentWindow.postMessage(
+            {
+              type: 'kbm_starter_message',
+              text: starterText,
+              source: 'kbm-getting-started-page'
+            },
+            '*'
+          );
+        });
+      });
+    });
+  </script>
+</Layout>
+
+
+If Astro complains about JSX-style comments, replace // with standard JS comments exactly as shown; don’t use {/* */} because this is plain HTML <script>, not JSX.
+
+⚠ Important:
+This postMessage payload is a placeholder.
+Once you know MindPal’s exact embed API, you can:
+
+Change type: 'kbm_starter_message' to whatever MindPal expects.
+
+Or, if MindPal auto-focuses the input on incoming messages, plug into that.
+
+For now, this gives you a clean, single place to adjust later.
+
+4. Add basic chip styling hooks (optional, if there isn’t already CSS)
+
+If there isn’t already CSS for these classes, create or update a relevant CSS file (for example src/styles/wizard.css or a global styles file) and add:
+
+.kbm-starter-chips {
+  margin: 1.5rem 0;
+}
+
+.kbm-starter-label {
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+}
+
+.kbm-starter-chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.kbm-chip {
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  border: 2px solid #52682D; /* KBM green */
+  background-color: #ffffff;
+  color: #2C3A57; /* KBM navy */
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.08s ease;
+}
+
+.kbm-chip:hover {
+  background-color: #F0F4EC; /* soft green */
+  transform: translateY(-1px);
+}
+
+
+If you already have chip/button styling, reuse those classes instead of duplicating.
+
+5. Do not change MindPal embed code yet
+
+Leave the existing MindPal embed (the iframe or script snippet) exactly as it is inside .kbm-agent-wrapper.
+
+The only change is:
+
+Starter chips above it
+
+postMessage hook that you can connect to MindPal’s API later
