@@ -54,7 +54,9 @@ const description = "Interactive step-by-step journeys to master knitting machin
   <div class="page-container">
     <!-- Header -->
     <div class="header-panel fade-in">
-      <div class="intro-icon">🛠️</div>
+      <div class="intro-icon">
+        <img src="/images/practice-icon.svg" alt="Skill Builders" class="header-icon" />
+      </div>
       <div class="intro-content">
         <h1 class="intro-title">Skill Builders</h1>
         <p class="intro-tagline">Master your machine one skill at a time.</p>
@@ -125,9 +127,15 @@ const description = "Interactive step-by-step journeys to master knitting machin
   }
 
   .intro-icon {
-    font-size: 120px;
     flex-shrink: 0;
-    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .header-icon {
+    width: 120px;
+    height: auto;
   }
 
   .intro-content {
@@ -373,8 +381,8 @@ const description = "Interactive step-by-step journeys to master knitting machin
       padding: 1.5rem;
     }
 
-    .intro-icon {
-      font-size: 80px;
+    .header-icon {
+      width: 80px;
     }
 
     .intro-title {
