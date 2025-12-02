@@ -1,0 +1,387 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageTitle = 'Getting Started with Your Knitting Machine';
+const pageDescription = 'A simple starting point to get your knitting machine set up, moving smoothly, and ready for real knitting.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main class="kbm-getting-started">
+    <!-- HERO SECTION -->
+    <section class="kbm-section kbm-section--soft">
+      <div class="kbm-container kbm-page-layout">
+        <div class="kbm-hero-text">
+          <header class="kbm-page-header">
+            <p class="kbm-eyebrow" data-testid="text-eyebrow">Start here</p>
+            <h1 data-testid="text-page-title">Getting Started with Your Knitting Machine</h1>
+            <p class="kbm-lede" data-testid="text-lede">
+              Machine knitting can feel unfamiliar at first — that's normal. This page gives you a simple place to begin so you can get your machine set up, moving smoothly, and ready for real knitting.
+            </p>
+          </header>
+        </div>
+
+        <div class="kbm-hero-media">
+          <div class="kbm-hero-image-placeholder" data-testid="placeholder-hero-image">
+            <p>
+              Image or collage of different knitting machines will go here.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- WHAT YOU CAN DO HERE SECTION -->
+    <section class="kbm-section" data-testid="section-features">
+      <div class="kbm-container">
+        <h2>What you can do here</h2>
+        <p class="kbm-section-intro">
+          Use this page as a simple starting point with your machine — no pressure, just clear next steps.
+        </p>
+
+        <div class="kbm-feature-grid">
+          <article class="kbm-feature-card" data-testid="card-feature-setup">
+            <h3>Set up your machine with confidence</h3>
+            <p>
+              Practical steps to get your machine on the table, checked, and ready to use.
+            </p>
+          </article>
+
+          <article class="kbm-feature-card" data-testid="card-feature-first-rows">
+            <h3>Make your first rows</h3>
+            <p>
+              Move the carriage, form stitches, and see fabric grow — even if this is your first time touching the machine.
+            </p>
+          </article>
+
+          <article class="kbm-feature-card" data-testid="card-feature-next-steps">
+            <h3>Get personalized next steps</h3>
+            <p>
+              The Getting Started Helper at the bottom of this page asks a few quick questions and points you to your next clear move, based on your machine and your experience.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- YOUR NEXT STEP SECTION -->
+    <section class="kbm-section" data-testid="section-next-step">
+      <div class="kbm-container">
+        <h2>Your next step</h2>
+        <p>
+          When you're ready, scroll to the Getting Started Helper below. Tell it where you're starting — new, returning, or unsure — and it will guide you one simple step at a time.
+        </p>
+
+        <div class="kbm-next-step-cta">
+          <a href="#getting-started-helper" class="kbm-button kbm-button--primary" data-testid="button-go-to-helper">
+            Go to the Getting Started Helper
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- GETTING STARTED HELPER SECTION (MindPal Embed Placeholder) -->
+    <section id="getting-started-helper" class="kbm-section kbm-section--agent" data-testid="section-helper">
+      <div class="kbm-container">
+        <h2>Getting Started Helper</h2>
+        <p class="kbm-section-intro">
+          Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
+        </p>
+
+        <div class="kbm-agent-wrapper">
+          <!-- TODO: Replace this placeholder with the actual MindPal embed code -->
+          <div class="kbm-agent-placeholder" data-testid="placeholder-mindpal-agent">
+            <p>
+              The Getting Started Helper will appear here. Once you have your MindPal embed code, paste it inside this box.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ========== GETTING STARTED PAGE STYLES ========== */
+  
+  .kbm-getting-started {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+  }
+
+  /* ========== SECTIONS ========== */
+  .kbm-section {
+    padding: 2rem 0;
+  }
+
+  .kbm-section--soft {
+    background: linear-gradient(180deg, #f1f6ec 0%, transparent 100%);
+    border-radius: 1.5rem;
+    padding: 2.5rem 0;
+    margin-bottom: 1rem;
+  }
+
+  .kbm-section--agent {
+    background-color: #f7f8f7;
+    border: 2px solid #c7d8a4;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    scroll-margin-top: calc(var(--header-height, 6rem) + 1rem);
+  }
+
+  .kbm-container {
+    width: 100%;
+  }
+
+  /* ========== HERO LAYOUT ========== */
+  .kbm-page-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-page-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* ========== HERO TEXT ========== */
+  .kbm-hero-text {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-hero-text {
+      text-align: left;
+    }
+  }
+
+  .kbm-page-header {
+    margin: 0;
+  }
+
+  .kbm-eyebrow {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #738c52;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 1rem;
+    background: rgba(115, 140, 82, 0.12);
+    border-radius: 999px;
+  }
+
+  .kbm-page-header h1 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    margin: 0 0 1rem;
+    color: #2c3a57;
+    line-height: 1.25;
+  }
+
+  .kbm-lede {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: #4d5a48;
+    margin: 0;
+    max-width: 500px;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-lede {
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .kbm-lede {
+      margin: 0 auto;
+    }
+  }
+
+  /* ========== HERO MEDIA / IMAGE PLACEHOLDER ========== */
+  .kbm-hero-media {
+    display: flex;
+    justify-content: center;
+  }
+
+  .kbm-hero-image-placeholder {
+    width: 100%;
+    max-width: 400px;
+    min-height: 250px;
+    background: linear-gradient(135deg, #e8ede2 0%, #d4dcc8 100%);
+    border: 2px dashed #a8b89c;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .kbm-hero-image-placeholder p {
+    color: #5a6b4e;
+    font-size: 0.95rem;
+    font-style: italic;
+    margin: 0;
+  }
+
+  /* ========== SECTION HEADINGS ========== */
+  .kbm-section h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    text-align: center;
+  }
+
+  .kbm-section-intro {
+    font-size: 1rem;
+    color: #4d5a48;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  /* ========== FEATURE GRID ========== */
+  .kbm-feature-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .kbm-feature-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+  }
+
+  .kbm-feature-card {
+    background-color: #ffffff;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    border: 1px solid #e0e5d8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+  }
+
+  .kbm-feature-card:hover {
+    border-color: #c7d8a4;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.08);
+    transform: translateY(-2px);
+  }
+
+  .kbm-feature-card h3 {
+    font-size: 1.05rem;
+    color: #2c3a57;
+    margin: 0 0 0.5rem;
+    line-height: 1.35;
+  }
+
+  .kbm-feature-card p {
+    font-size: 0.9rem;
+    color: #4d5a48;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ========== NEXT STEP CTA ========== */
+  .kbm-next-step-cta {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .kbm-button {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .kbm-button--primary {
+    background-color: #52682d;
+    color: #ffffff;
+  }
+
+  .kbm-button--primary:hover {
+    background-color: #445626;
+  }
+
+  /* ========== AGENT WRAPPER / PLACEHOLDER ========== */
+  .kbm-agent-wrapper {
+    margin-top: 1.5rem;
+  }
+
+  .kbm-agent-placeholder {
+    width: 100%;
+    min-height: 300px;
+    background: linear-gradient(135deg, #ffffff 0%, #f7f8f7 100%);
+    border: 2px dashed #a8b89c;
+    border-radius: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .kbm-agent-placeholder p {
+    color: #5a6b4e;
+    font-size: 0.95rem;
+    font-style: italic;
+    margin: 0;
+    max-width: 400px;
+  }
+
+  /* ========== SECTION-SPECIFIC ADJUSTMENTS ========== */
+  .kbm-section--agent h2 {
+    text-align: left;
+  }
+
+  .kbm-section--agent .kbm-section-intro {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* ========== MOBILE ADJUSTMENTS ========== */
+  @media (max-width: 480px) {
+    .kbm-getting-started {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .kbm-section--soft {
+      padding: 1.5rem 1rem;
+      border-radius: 1rem;
+    }
+
+    .kbm-section--agent {
+      padding: 1.5rem 1rem;
+    }
+
+    .kbm-feature-card {
+      padding: 1.25rem;
+    }
+
+    .kbm-hero-image-placeholder {
+      min-height: 200px;
+      padding: 1.5rem;
+    }
+
+    .kbm-agent-placeholder {
+      min-height: 250px;
+      padding: 1.5rem;
+    }
+  }
+</style>
