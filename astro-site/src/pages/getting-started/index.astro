@@ -112,8 +112,12 @@ const pageDescription = 'A simple starting point to get your knitting machine se
           data-testid="iframe-mindpal-agent"
         ></iframe>
       </div>
+
+      <button id="finish" class="kbm-confetti-btn" data-testid="button-next-step">I'm ready for my next step!</button>
     </section>
   </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -143,6 +147,18 @@ const pageDescription = 'A simple starting point to get your knitting machine se
           );
         });
       });
+
+      // Confetti button
+      const finishBtn = document.getElementById('finish');
+      if (finishBtn) {
+        finishBtn.addEventListener('click', () => {
+          confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.7 }
+          });
+        });
+      }
     });
   </script>
 </BaseLayout>
@@ -364,6 +380,30 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     border: none;
     border-radius: 0.75rem;
     background-color: #ffffff;
+  }
+
+  /* ========== CONFETTI BUTTON ========== */
+  .kbm-confetti-btn {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #52682d;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .kbm-confetti-btn:hover {
+    background-color: #6e8b3d;
+    transform: translateY(-2px);
+  }
+
+  .kbm-confetti-btn:active {
+    transform: translateY(0);
   }
 
   /* ========== SECTION-SPECIFIC ADJUSTMENTS ========== */
