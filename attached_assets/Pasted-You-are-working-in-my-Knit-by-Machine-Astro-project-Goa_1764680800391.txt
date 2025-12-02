@@ -1,0 +1,217 @@
+You are working in my Knit by Machine Astro project.
+
+Goal
+
+Create a soft welcome landing page for my first “Getting Started” agent:
+
+Path: src/pages/getting-started/index.astro
+
+Tone: clear, respectful, practical (no condescension, no jargon)
+
+Structure: hero + short explanation + clear “next step” pointing to the agent
+
+Include a placeholder area for a collage or image of different machines in the hero.
+
+The Getting Started Helper (MindPal agent) is the only interactive next step on this page.
+
+Do not change or replace the current home page.
+
+1. New page file
+
+Create a new page at:
+
+src/pages/getting-started/index.astro
+
+If this file already exists, keep the layout import but replace the main content with what follows.
+
+Use my standard layout (adjust the import to match my project):
+
+---
+import Layout from '@/layouts/Layout.astro';
+
+const pageTitle = 'Getting Started with Your Knitting Machine';
+const pageDescription = 'A simple starting point to get your knitting machine set up, moving smoothly, and ready for real knitting.';
+---
+
+<Layout title={pageTitle} description={pageDescription}>
+  {/* Page content goes here */}
+</Layout>
+
+
+If the layout path/name is slightly different in my project, use the correct existing layout import and props.
+
+2. Overall structure
+
+Inside <Layout>, build:
+
+<main>
+
+Hero / intro section with:
+
+Text on one side
+
+A collage/image placeholder on the other side
+
+“What you can do here” section with three short points
+
+“Your next step” section that clearly points to the helper
+
+Final “Getting Started Helper” section with an anchor ID and an embed placeholder
+
+Use semantic HTML and these class hooks (don’t worry if they’re not defined yet):
+
+kbm-section
+
+kbm-section--soft
+
+kbm-container
+
+kbm-page-layout
+
+kbm-page-header
+
+kbm-hero-text
+
+kbm-hero-media
+
+kbm-section-intro
+
+kbm-next-step-cta
+
+kbm-button
+
+kbm-button--primary
+
+kbm-agent-wrapper
+
+kbm-agent-placeholder
+
+I’ll style these later.
+
+3. Hero section with collage placeholder
+
+Create a hero section at the top with text + image placeholder, something like:
+
+<main>
+  <section class="kbm-section kbm-section--soft">
+    <div class="kbm-container kbm-page-layout">
+      <div class="kbm-hero-text">
+        <header class="kbm-page-header">
+          <p class="kbm-eyebrow">Start here</p>
+          <h1>Getting Started with Your Knitting Machine</h1>
+          <p class="kbm-lede">
+            Machine knitting can feel unfamiliar at first — that’s normal. This page gives you a simple place to begin so you can get your machine set up, moving smoothly, and ready for real knitting.
+          </p>
+        </header>
+      </div>
+
+      <div class="kbm-hero-media">
+        {/* Placeholder for a collage or image of different machines */}
+        <div class="kbm-hero-image-placeholder">
+          <p>
+            Image or collage of different knitting machines will go here.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+Make the layout responsive: on larger screens the text and image can sit side by side; on smaller screens they can stack.
+
+4. “What you can do here” section
+
+Below the hero, add a section with a heading and three short points. Use this copy:
+
+<section class="kbm-section">
+  <div class="kbm-container">
+    <h2>What you can do here</h2>
+    <p class="kbm-section-intro">
+      Use this page as a simple starting point with your machine — no pressure, just clear next steps.
+    </p>
+
+    <div class="kbm-feature-grid">
+      <article class="kbm-feature-card">
+        <h3>Set up your machine with confidence</h3>
+        <p>
+          Practical steps to get your machine on the table, checked, and ready to use.
+        </p>
+      </article>
+
+      <article class="kbm-feature-card">
+        <h3>Make your first rows</h3>
+        <p>
+          Move the carriage, form stitches, and see fabric grow — even if this is your first time touching the machine.
+        </p>
+      </article>
+
+      <article class="kbm-feature-card">
+        <h3>Get personalized next steps</h3>
+        <p>
+          The Getting Started Helper at the bottom of this page asks a few quick questions and points you to your next clear move, based on your machine and your experience.
+        </p>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+If kbm-feature-grid / kbm-feature-card don’t exist yet, still use them as class hooks.
+
+5. “Your next step” section
+
+This section should make it very clear that the helper below is the next step:
+
+<section class="kbm-section">
+  <div class="kbm-container">
+    <h2>Your next step</h2>
+    <p>
+      When you’re ready, scroll to the Getting Started Helper below. Tell it where you’re starting — new, returning, or unsure — and it will guide you one simple step at a time.
+    </p>
+
+    <div class="kbm-next-step-cta">
+      <a href="#getting-started-helper" class="kbm-button kbm-button--primary">
+        Go to the Getting Started Helper
+      </a>
+    </div>
+  </div>
+</section>
+
+6. Getting Started Helper section (MindPal embed placeholder)
+
+At the bottom, add a dedicated section with an ID for scrolling and a clear placeholder for the MindPal embed:
+
+<section id="getting-started-helper" class="kbm-section kbm-section--agent">
+  <div class="kbm-container">
+    <h2>Getting Started Helper</h2>
+    <p class="kbm-section-intro">
+      Use this helper for calm, simple guidance. It will ask a few questions and suggest one clear next step at a time.
+    </p>
+
+    <div class="kbm-agent-wrapper">
+      {/* TODO: Replace this placeholder with the actual MindPal embed code */}
+      <div class="kbm-agent-placeholder">
+        <p>
+          The Getting Started Helper will appear here. Once you have your MindPal embed code,
+          paste it inside this box.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+
+Do not embed an iframe yet; just leave the placeholder and TODO comment.
+
+7. General rules
+
+Do not modify other pages, layouts, or global styles.
+
+Do not use the phrase “guide on the side”.
+
+Keep the HTML clean and easy to read.
+
+Focus on structure and copy; I will handle detailed styling (spacing, colors, fonts) via CSS/Tailwind.
+
+When you’re done, briefly summarize what you created (file path, main sections, and the collage placeholder) so I can review it.
