@@ -1,0 +1,79 @@
+You are editing the Knit by Machine ADMIN dashboard project.
+
+Goal:
+Add a clear, skimmable "KBM Priority Map" section to the main admin dashboard so Sue can quickly see her current business priorities (Now / Next / Later) without hunting through notes.
+
+Assumptions:
+- The main admin dashboard page is something like `src/pages/admin/index.astro` (or similar). If that file doesn’t exist, create it as the main dashboard.
+- Reuse any existing admin layout and card styles if you can find them (e.g. `.admin-section`, `.admin-card`, `.grid`, etc.).
+- If no styles exist, add minimal, clean Tailwind-like utility classes or simple CSS that fits an admin layout: light background, subtle borders, readable headings.
+
+Instructions:
+
+1. Open the main admin dashboard page (likely `src/pages/admin/index.astro`). DO NOT remove existing content; just add a new section.
+
+2. Add a new section near the top (but under the main page title) with:
+   - A heading: "KBM Priority Map"
+   - A short description: "A quick view of what to focus on now, what comes next, and what belongs in the parking lot."
+
+3. Present the priorities in a simple, at-a-glance layout:
+   - Either a 2x2 grid of cards
+   - Or a vertical stack of collapsible sections
+   Use whichever pattern matches the existing admin UI best.
+
+4. Inside this section, insert the following content as four tiers.
+
+Use these EXACT labels and bullet points, but format them as headings + bullet lists, not as one big paragraph.
+
+TIER 1 — MUST-HAVES (Launch Foundation)
+- Home Page:
+  - Clean, calm, clear
+  - Help the user pick a path without overwhelm
+- Core Navigation:
+  - Tools / Learn / Connect
+  - Finalize structure so new ideas have a clear place
+- Smart Guide + Wizard Infrastructure:
+  - Tighten naming, categories, global catalog
+- Ask ’n Answer (ANA):
+  - Simple but functional submission and admin flow
+
+TIER 2 — REVENUE BUILDERS (Make Money While KBM Grows)
+- 1:1 Help / Project Sprint Coaching:
+  - Fast to ship, high value, no heavy tech
+  - Lives under: Connect → 1:1 Help
+- Ready | Set | Knit Planners:
+  - Low-ticket, high-value PDF + wizard integration
+- Workshops:
+  - 1–2 focused workshops (e.g., C2C Blanket, Sweater Basics)
+
+TIER 3 — PLATFORM GROWTH (Later, Not Now)
+- Membership / Outseta:
+  - Recurring revenue engine
+  - Only after core content + structure feel solid
+- Shop (Machines, DK, Accessories):
+  - Needs real structure, SKUs, logistics, margins
+- User Storage / Pattern Library:
+  - Saved patterns, notes, history = future feature
+
+TIER 4 — PARKING LOT (Not No — Just “Not Now”)
+- Full AI Agent Ecosystem:
+  - Keep 1–2 key agents now, park the rest
+- Complex Data Layers (Sanity, full JSON admin, etc.):
+  - Important later, not required for launch
+- Complex Tool Variants / Duplicates:
+  - Avoid multiple overlapping versions until core tools are stable
+
+5. Add a small “focus summary” at the top or bottom of the section with this text, styled as a small note or callout:
+
+"Now: finalize home, navigation, Smart Guides/Wizards, ANA, and launch 1:1 Help.
+Next (6–10 weeks): RSK planners, 1–2 workshops, grow ANA, refine catalog, gather testimonials.
+Later (2025+): membership, shop, user dashboards, expanded AI agents, advanced tools."
+
+6. Make sure the new section:
+   - Uses semantic HTML (section, h2, h3, ul/li)
+   - Is readable on desktop and tablet
+   - Does not break any existing layout.
+
+7. Do not change any business logic or data. This is a purely presentational, static “admin notes” section embedded in the dashboard.
+
+When you are done, show me the updated Astro/HTML for the admin dashboard page so I can review it.
