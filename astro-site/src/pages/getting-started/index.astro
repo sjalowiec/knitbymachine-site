@@ -21,11 +21,12 @@ const pageDescription = 'A simple starting point to get your knitting machine se
         </div>
 
         <div class="kbm-hero-media">
-          <div class="kbm-hero-image-placeholder" data-testid="placeholder-hero-image">
-            <p>
-              Image or collage of different knitting machines will go here.
-            </p>
-          </div>
+          <img 
+            src="/images/knitting-machine-collage.webp" 
+            alt="Four photos showing different types of knitting machines to reassure beginners that any machine will work"
+            class="kbm-hero-image"
+            data-testid="img-hero-collage"
+          />
         </div>
       </div>
     </section>
@@ -252,31 +253,18 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     }
   }
 
-  /* ========== HERO MEDIA / IMAGE PLACEHOLDER ========== */
+  /* ========== HERO MEDIA / IMAGE ========== */
   .kbm-hero-media {
     display: flex;
     justify-content: center;
   }
 
-  .kbm-hero-image-placeholder {
+  .kbm-hero-image {
     width: 100%;
-    max-width: 400px;
-    min-height: 250px;
-    background: linear-gradient(135deg, #e8ede2 0%, #d4dcc8 100%);
-    border: 2px dashed #a8b89c;
+    max-width: 450px;
+    height: auto;
     border-radius: 1rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    text-align: center;
-  }
-
-  .kbm-hero-image-placeholder p {
-    color: #5a6b4e;
-    font-size: 0.95rem;
-    font-style: italic;
-    margin: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   }
 
   /* ========== SECTION HEADINGS ========== */
@@ -403,9 +391,8 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       padding: 1.5rem 1rem;
     }
 
-    .kbm-hero-image-placeholder {
-      min-height: 200px;
-      padding: 1.5rem;
+    .kbm-hero-image {
+      max-width: 100%;
     }
   }
 </style>
