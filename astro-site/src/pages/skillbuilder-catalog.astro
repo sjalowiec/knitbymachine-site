@@ -228,6 +228,7 @@ const levels = [
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     gap: 0.35rem;
     text-decoration: none;
     padding: 0.5rem 0.4rem;
@@ -237,6 +238,7 @@ const levels = [
     box-shadow: 0 2px 6px rgba(82, 104, 45, 0.08);
     transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
     width: 5.5rem;
+    height: 6.5rem;
     text-align: center;
     cursor: pointer;
   }
@@ -276,20 +278,25 @@ const levels = [
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
     text-align: center;
     line-height: 1.2;
+    height: 2rem;
+    overflow: hidden;
   }
 
   .level-chip__line1 {
     font-size: 0.75rem;
     color: #52682D;
     font-weight: 600;
+    white-space: nowrap;
   }
 
   .level-chip__line2 {
     font-size: 0.65rem;
     color: #738C52;
     font-weight: 600;
+    white-space: nowrap;
   }
 
   /* Search input */
@@ -519,11 +526,16 @@ const levels = [
 
     .level-chip {
       width: 5rem;
+      height: 6rem;
     }
 
     .level-chip__icon {
       width: 40px;
       height: 40px;
+    }
+
+    .level-chip__label {
+      height: 1.8rem;
     }
 
     .level-chip__line1 {
@@ -565,12 +577,17 @@ const levels = [
 
     .level-chip {
       width: 4.25rem;
+      height: 5.25rem;
       padding: 0.35rem 0.25rem;
     }
 
     .level-chip__icon {
       width: 32px;
       height: 32px;
+    }
+
+    .level-chip__label {
+      height: 1.5rem;
     }
 
     .level-chip__line1 {
