@@ -52,9 +52,9 @@ const description = "Interactive step-by-step journeys to master knitting machin
 
 // Level definitions for the selector (line1 = "Level X", line2 = description)
 const levels = [
-  { id: 'all', icon: '/images/practice-icon.svg', line1: 'All', line2: '', href: '/skillbuilder-catalog' },
+  { id: 'all', icon: '/images/practice-icon.svg', line1: 'All', line2: 'Levels', href: '/skillbuilder-catalog' },
   { id: 'level-1', icon: '/images/level-1.svg', line1: 'Level 1', line2: 'Basics', href: '/skillbuilder/level-1' },
-  { id: 'level-2', icon: '/images/level-2.svg', line1: 'Level 2', line2: 'Hand Techniques', href: '/skillbuilder/level-2' },
+  { id: 'level-2', icon: '/images/level-2.svg', line1: 'Level 2', line2: 'Hand Manipulation', href: '/skillbuilder/level-2' },
   { id: 'level-3', icon: '/images/level-3.svg', line1: 'Level 3', line2: 'Stitch Patterns', href: '/skillbuilder/level-3' },
   { id: 'level-4', icon: '/images/level-4.svg', line1: 'Level 4', line2: 'Ribber', href: '/skillbuilder/level-4' },
 ];
@@ -85,12 +85,12 @@ const levels = [
               <a 
                 href={level.href} 
                 class={`level-chip ${level.id === 'all' ? 'active' : ''}`}
-                aria-label={`${level.line1}${level.line2 ? ' ' + level.line2 : ''}`}
+                aria-label={`${level.line1} ${level.line2}`}
               >
                 <img src={level.icon} alt="" class="level-chip__icon" />
                 <span class="level-chip__label">
                   <span class="level-chip__line1">{level.line1}</span>
-                  {level.line2 && <span class="level-chip__line2">{level.line2}</span>}
+                  <span class="level-chip__line2">{level.line2}</span>
                 </span>
               </a>
             ))}
@@ -220,8 +220,8 @@ const levels = [
 
   .level-chips {
     display: flex;
-    align-items: center;
-    gap: 1.5rem;
+    align-items: flex-start;
+    gap: 0.5rem;
   }
 
   .level-chip {
@@ -230,11 +230,12 @@ const levels = [
     align-items: center;
     gap: 0.35rem;
     text-decoration: none;
-    padding: 0.5rem 0.6rem;
+    padding: 0.5rem 0.4rem;
     border: 2px solid transparent;
     border-radius: 12px;
     transition: all 0.3s ease;
-    flex-shrink: 0;
+    width: 5.5rem;
+    text-align: center;
   }
 
   .level-chip:hover {
@@ -516,8 +517,12 @@ const levels = [
 
     .level-chips {
       justify-content: center;
-      gap: 1rem;
+      gap: 0.35rem;
       flex-wrap: wrap;
+    }
+
+    .level-chip {
+      width: 5rem;
     }
 
     .level-chip__icon {
@@ -559,24 +564,25 @@ const levels = [
     .level-chips {
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.75rem;
+      gap: 0.25rem;
     }
 
     .level-chip {
-      padding: 0.35rem 0.4rem;
+      width: 4.25rem;
+      padding: 0.35rem 0.25rem;
     }
 
     .level-chip__icon {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
     }
 
     .level-chip__line1 {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
     }
 
     .level-chip__line2 {
-      font-size: 0.55rem;
+      font-size: 0.5rem;
     }
 
     .level-hint {
