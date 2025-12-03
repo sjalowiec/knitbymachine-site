@@ -231,16 +231,26 @@ const levels = [
     gap: 0.35rem;
     text-decoration: none;
     padding: 0.5rem 0.4rem;
-    border: 2px solid transparent;
+    border: 2px solid #c7d8a4;
     border-radius: 12px;
-    transition: all 0.3s ease;
+    background-color: #ffffff;
+    box-shadow: 0 2px 6px rgba(82, 104, 45, 0.08);
+    transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease, transform 0.12s ease;
     width: 5.5rem;
     text-align: center;
+    cursor: pointer;
   }
 
   .level-chip:hover {
-    transform: scale(1.05);
-    filter: drop-shadow(0 4px 12px rgba(82, 104, 45, 0.2));
+    background-color: #f7f9f3;
+    border-color: #6e8b3d;
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(82, 104, 45, 0.20);
+  }
+
+  .level-chip:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(82, 104, 45, 0.15);
   }
 
   .level-chip:hover .level-chip__line1,
