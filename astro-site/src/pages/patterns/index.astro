@@ -115,9 +115,6 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
             data-testid={`card-pattern-${entry.slug}`}
             style={`animation-delay: ${index * 0.1}s`}
           >
-            {entry.iconUrl && (
-              <img src={entry.iconUrl} alt="" class="guide-card-icon" />
-            )}
             <h2 class="guide-card-title">{entry.title}</h2>
             {displayText && (
               <p class="guide-card-description">{displayText}</p>
