@@ -1,0 +1,59 @@
+I’m working on the Skill Builders catalog page of my Knit by Machine Astro site. The layout is close, but I want a few small visual cleanups to make the hero and controls look more polished and consistent with the rest of the site.
+
+Please apply ALL of the following changes ONLY to the Skill Builders catalog page:
+
+1) REMOVE THE DIVIDER LINE INSIDE THE HERO
+- Inside the Skill Builders hero card (the big rounded card with the Skill Builders icon, heading, and intro text), remove the horizontal rule / divider line that appears between the intro paragraph and the level selector row.
+- Remove the <hr>, <Divider> component, border, or any element responsible for drawing that line.
+- After removal, ensure there is still a comfortable vertical gap between the intro paragraph and the controls row (see spacing instructions below).
+
+2) ADJUST VERTICAL SPACING INSIDE THE HERO
+- Between the intro paragraph and the controls row (level selector + search), set a modest top margin on the controls container, something around:
+  - `mt-4` on small screens
+  - `mt-6` on medium+ screens
+- Make sure the bottom padding of the hero card feels balanced, something like `pb-8`, so there’s a clear but not excessive gap before the card grid below.
+
+3) TIGHTEN THE LEVEL SELECTOR ROW HORIZONTAL GAP
+- In the flex/grid container that lays out the five hex buttons (All + Level 1–4):
+  - Use more modest gaps, for example:
+    - `gap-6 md:gap-10`
+  - Avoid very large gaps that push the icons too far apart on wide screens.
+- The result should look like a single, cohesive row of related buttons.
+
+4) NORMALIZE ICON SIZES (ALL + LEVEL 1–4)
+- Ensure the “All” icon and the numeric level icons (1–4) use the same height and width.
+- For example, if “All” uses something like `h-10 w-10`, make the Level icons match that size.
+- The goal is that all five icons feel like one consistent set.
+
+5) SLIGHTLY STRENGTHEN LABEL TEXT UNDER ICONS
+- Under each icon, keep the existing text labels, but:
+  - Use `font-semibold` (or equivalent) for the label lines so they are a bit more legible and consistent.
+  - Keep the color and base font size consistent with current styling; this is just a weight tweak.
+- Make sure the labels remain centered under each icon.
+
+6) SOFT “CHOOSE YOUR LEVEL” HINT TEXT (OPTIONAL BUT PREFERRED)
+- Directly above the row of hex buttons, add a very small hint label, for example:
+  - Text: “Choose your level” OR “Start with Level 1”
+- Style suggestion:
+  - `text-sm` with a slightly muted green such as the same color you use for secondary text (e.g. your darker green at reduced opacity).
+- Keep the hint centered above the row of hex icons and aligned with the overall hero content.
+
+7) ALIGN SEARCH FIELD STYLE WITH GLOBAL SEARCH
+- The small search input on this page (to the right of the level selector) should visually match the main site search style as much as possible:
+  - Similar height, border radius, and font size to the global search field in the header.
+- You don’t need to copy it exactly, but ensure:
+  - Rounded pill shape is consistent
+  - Border weight and color match existing form styling on this page.
+- Keep its current placement: on large screens it should sit to the right of the level icons in the same row; on small screens it should stack below the icons.
+
+8) PRESERVE ALL EXISTING BEHAVIOR
+- Do NOT change:
+  - The navigation targets for All / Level 1 / Level 2 / Level 3 / Level 4.
+  - The behavior of the search input.
+- Only adjust layout, spacing, and minor text styling as described above.
+
+When you’re done, the Skill Builders page should show:
+- A unified hero card with icon, title, intro, and controls (level selector + search), with no divider line.
+- A compact, cohesive row of five hex buttons with consistent icon sizes and clear labels.
+- A search field that feels visually aligned with the rest of the KBM design.
+- Clean, balanced vertical spacing above and below the controls row.
