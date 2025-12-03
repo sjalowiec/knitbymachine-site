@@ -108,7 +108,7 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     }
 
     // -------------------------------------------
-    // Reveal button, trigger confetti, scroll
+    // Button click handler: confetti + scroll
     function handleGettingStartedComplete() {
       // Confetti - use canvas-confetti if available, otherwise use window.triggerConfetti or fallback
       if (typeof confetti === "function") {
@@ -123,7 +123,7 @@ const pageDescription = 'A simple starting point to get your knitting machine se
         triggerConfettiFallback();
       }
 
-      // Scroll to "What's Next?"
+      // Smooth scroll to the "What's Next?" section
       const section = document.getElementById("whats-next");
       if (section) {
         section.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -135,14 +135,33 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     // Show the hidden button
     window.showGettingStartedCompleteButton = function () {
       const btn = document.getElementById("getting-started-complete-btn");
-      if (btn) btn.classList.remove("hidden");
+      if (btn) {
+        console.log("[KBM] Showing Getting Started complete button");
+        btn.classList.remove("hidden");
+      } else {
+        console.warn("[KBM] Button with id 'getting-started-complete-btn' not found");
+      }
     };
 
     // -------------------------------------------
-    // MINDPAL COMPLETION HOOK
-    // Listen for postMessage event: "mindpal-chat-completed"
+    // MindPal completion hook with logging
     window.addEventListener("message", (event) => {
-      if (event.data === "mindpal-chat-completed") {
+      console.log("[KBM] window message received:", event.data);
+
+      const data = event.data;
+
+      const isMindPalCompleted =
+        data === "mindpal-chat-completed" ||
+        (data &&
+          typeof data === "object" &&
+          (
+            data.type === "mindpal-chat-completed" ||
+            data.event === "mindpal-chat-completed" ||
+            data.action === "mindpal-chat-completed"
+          ));
+
+      if (isMindPalCompleted) {
+        console.log("[KBM] MindPal reported chat completed – revealing button");
         window.showGettingStartedCompleteButton?.();
       }
     });
