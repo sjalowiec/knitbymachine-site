@@ -1,0 +1,42 @@
+On the Skill Builders catalog page of my Knit by Machine Astro site, I want to use the empty space in the hero card more effectively and avoid stacking so many separate blocks.
+
+Right now the structure is:
+- A large “Skill Builders” hero card (icon + heading + intro text)
+- A separate white card below that contains the 5 hex buttons (All, Level 1–4)
+- The “Search skill builders…” input in its own row below that
+
+Please change this so that the hero becomes a single integrated panel with both the level selector and the search inside it.
+
+Make these changes:
+
+1) MOVE LEVEL SELECTOR INTO HERO
+- Take the existing 5 hex buttons (All, Level 1–4) out of their separate card and place them inside the Skill Builders hero container.
+- Place them in a “controls row” below the title/intro text, but still inside the same rounded hero card.
+- On desktop, the hero should roughly look like:
+  - Top: icon on the left, title + intro on the right (as it is now)
+  - Bottom: a row with the 5 hex buttons on the left and the search bar on the right.
+
+2) MOVE SEARCH INPUT INTO THE SAME HERO CONTROLS ROW
+- Move the “Search skill builders…” input so that it sits to the RIGHT of the 5 hex buttons on larger screens.
+- Use a responsive layout, for example a flex container:
+  - On md+ screens: `flex-row` with the hex buttons aligned left and the search input aligned right.
+  - On small screens: `flex-col` with the hex buttons on top and the search input full width underneath.
+- Keep the existing styling of the search input (rounded pill, border, etc.), just change its placement so it lives inside the hero card rather than in a separate row below.
+
+3) REMOVE THE NOW-EMPTY CARD/SECTION
+- After moving the selector and search into the hero, remove the extra white card/section that previously contained the hex buttons.
+- The structure after your changes should be:
+  - Skill Builders hero card (icon, heading, intro text, level selector, search)
+  - Then directly below that, the grid/list of Skill Builder cards.
+
+4) STYLING / SPACING
+- Adjust padding/margins inside the hero so it doesn’t look too tall:
+  - Keep comfortable vertical spacing between:
+    - the title/introduction
+    - the new controls row (hex selector + search)
+  - Use Tailwind classes consistent with the rest of the site (similar spacing to the “Get knitting” hero).
+- Make sure the 5 hex buttons keep their current appearance, and that the search field still looks and behaves the same—only the layout changes.
+
+When you’re done:
+- The Skill Builders hero card should contain the icon, text, level selector, and search all together.
+- There should no longer be an extra card between the hero and the Skill Builder grid.
