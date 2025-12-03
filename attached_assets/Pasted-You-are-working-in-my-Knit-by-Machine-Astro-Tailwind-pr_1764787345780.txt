@@ -1,0 +1,95 @@
+You are working in my Knit by Machine Astro/Tailwind project.
+
+IMPORTANT:
+Do NOT change the layout, styling, HTML structure, Tailwind classes, or card design on the Skill Builder catalog page.  
+I only want you to COPY the *functionality* from the Wizard Catalog:
+
+- Chips act as FILTERS on the same page
+- Clicking a chip filters the visible cards
+- Chips do NOT navigate to other pages
+
+GOAL
+Update ONLY the SKILL BUILDER catalog page so that its chips filter the cards exactly the way the chips work on the WIZARD catalog page. Nothing else changes.
+
+----------------------------------------------------
+1. Locate the Skill Builder catalog page
+----------------------------------------------------
+Find the file for the Skill Builder catalog, likely:
+- src/pages/skill-builders/index.astro
+(or similar)
+
+We will update *only this file* unless a tiny helper JS file is needed.
+
+----------------------------------------------------
+2. Locate the Wizard catalog’s filter functionality
+----------------------------------------------------
+Find the Wizard catalog implementation where chips already work correctly:
+- They filter items on the page
+- They do not navigate
+- They update active state visually
+
+Identify:
+- How chips are wired to filtering logic
+- How items are shown/hidden
+- How the active filter is stored
+
+You will REUSE this logic.
+
+----------------------------------------------------
+3. Apply the SAME functionality to the Skill Builder catalog
+----------------------------------------------------
+Without changing ANY existing HTML structure or CSS classes, do the following:
+
+1. Convert the Skill Builder chips from navigational links into filter controls:
+   - If they are currently <a href=""> tags that open landing pages, remove the navigation behavior.
+   - Replace with <button> OR add JS that prevents navigation.
+   - Keep all existing classes so nothing looks different.
+
+2. Add client-side filtering logic identical to the Wizard catalog:
+   - Set up an “activeFilter” variable.
+   - When a chip is clicked, update activeFilter.
+   - Show only cards whose category/tag matches the filter.
+   - When “All” is selected, show all cards.
+
+3. Use a data attribute or class already present on each Skill Builder card (if available), or add a neutral attribute like:
+   - data-category="start-here"
+   - data-category="hand-techniques"
+   - data-category="stitch-patterns"
+   - data-category="ribber-double-bed"
+   ONLY if needed — do not visually affect the layout.
+
+4. Use the SAME show/hide method the Wizard catalog uses:
+   - e.g., adding/removing `hidden`
+   - or toggling classes
+   - or manipulating the DOM with JS
+
+5. Use the SAME “active chip” behavior from the Wizard catalog:
+   - same active class
+   - same visual state
+   - but DO NOT modify the existing chip styles or CSS classes on the Skill Builder catalog.
+
+----------------------------------------------------
+4. No visual changes allowed
+----------------------------------------------------
+You must NOT:
+- change card layout
+- change chip layout
+- add/remove Tailwind classes affecting appearance
+- modify spacing
+- modify grid behavior
+- modify typography
+- modify icons
+
+ONLY add or adjust JS to filter cards on click.
+
+----------------------------------------------------
+5. Deliverables
+----------------------------------------------------
+When finished, show me:
+- The updated Skill Builder catalog file
+- Any small JS module required for filtering (if used)
+- A short summary of which lines were added or modified
+
+Again:  
+Only functionality changes.  
+No styling or layout changes.
