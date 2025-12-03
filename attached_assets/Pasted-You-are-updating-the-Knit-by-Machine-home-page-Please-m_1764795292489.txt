@@ -1,0 +1,82 @@
+You are updating the Knit by Machine home page. 
+Please modify the hero → card section in `src/pages/index.astro` as follows:
+
+1. **Improve clarity of the card section header.**
+   - Find the heading that currently says: “Where are you right now?”
+   - Directly beneath it, add this subheading in a `<p>` tag, styled with the existing text-muted or secondary-text class:
+     “Pick the path that fits you best.”
+
+2. **Insert a downward-floating hex icon cue.**
+   - After the hero section and BEFORE the “Where are you right now?” heading, 
+     insert a small decorative hex icon using the existing KBM icon component (or a simple inline SVG hex if that is easier).
+   - Wrap it in a `<div class="floating-hex">`.
+   - The icon should be centered and placed with ~1.5rem vertical margin above and below.
+
+3. **Add CSS animation for the hex:**
+   In the same file (or the global stylesheet), add:
+
+   ```css
+   .floating-hex {
+     animation: floatDown 2.5s ease-in-out infinite;
+     opacity: 0.8;
+   }
+
+   @keyframes floatDown {
+     0%   { transform: translateY(-6px); opacity: 0.8; }
+     50%  { transform: translateY(0px); opacity: 1; }
+     100% { transform: translateY(-6px); opacity: 0.8; }
+   }
+The animation should be subtle, slow, and not distracting.
+
+Add a one-time pulse animation to the first card only.
+
+Locate the container that renders the four “journey” cards.
+
+Wrap ONLY the first card in a <div class="card pulse-once">.
+
+Then add this CSS:
+
+css
+Copy code
+.pulse-once {
+  animation: pulseOnce 1.2s ease-out 0.8s 1;
+}
+
+@keyframes pulseOnce {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+The pulse should happen ONCE, after a short delay, to draw attention gently.
+
+Match brand styling:
+
+Use KBM green (#52682D) as the default stroke color for the hex icon.
+
+Do not increase border thickness.
+
+Do not alter card colors, shadows, or borders.
+
+Ensure accessibility:
+
+The floating hex should be aria-hidden="true".
+
+It should not interfere with keyboard focus.
+
+Make only these changes and nothing else.
+Return the updated Astro code snippet for the inserted floating hex block and the modified card block so I can review.
+
+yaml
+Copy code
+
+---
+
+# 🎨 Notes
+- This prompt keeps everything subtle and classy — exactly KBM.  
+- It won’t clutter the home page, but will **gently guide the user downward** and encourage them to choose a path.  
+- The animation pulses **once** so it feels intentional, not gimmicky.  
+
+If you want, I can also:
+- write the exact hex SVG,  
+- refine spacing for mobile,  
+- or generate the full updated Astro code block.
