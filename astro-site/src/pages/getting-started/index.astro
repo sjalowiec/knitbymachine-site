@@ -53,124 +53,24 @@ const pageDescription = 'A simple starting point to get your knitting machine se
         ></iframe>
       </div>
 
-      <!-- Hidden button - revealed when MindPal agent finishes -->
-      <div class="kbm-complete-btn-wrapper">
-        <button 
-          id="getting-started-complete-btn" 
-          class="kbm-confetti-btn hidden" 
-          data-testid="button-next-step"
-        >
-          I'm ready for my next step!
-        </button>
-      </div>
-    </section>
-
-    <!-- WHAT'S NEXT SECTION -->
-    <section id="whats-next" class="kbm-section kbm-whats-next" data-testid="section-whats-next">
-      <h2 data-testid="text-whats-next-title">What's next with your machine?</h2>
-      <p class="kbm-section-intro" data-testid="text-whats-next-intro">
-        You've taken a solid first step. From here, you can get quick answers, build skills, or reach out for more help.
-      </p>
-
-      <div class="kbm-next-cards">
-        <a href="/ana-catalog" class="kbm-next-card" data-testid="link-ana">
-          <h3>Get quick answers (ANA)</h3>
-          <p>Browse clear answers to common machine knitting questions.</p>
-        </a>
-
-        <a href="/skill-builders" class="kbm-next-card" data-testid="link-skill-builders">
-          <h3>Build skills (Skill Builders)</h3>
-          <p>Start a small practice exercise to get more confident with your machine.</p>
-        </a>
-
-        <a href="/contact" class="kbm-next-card" data-testid="link-contact">
-          <h3>Need more help? (Contact Sue)</h3>
-          <p>Have something more specific? Send Sue a note on the contact page.</p>
-        </a>
-      </div>
+      <button id="finish" class="kbm-confetti-btn" data-testid="button-next-step">I'm ready for my next step!</button>
     </section>
   </main>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    // -------------------------------------------
-    // Confetti fallback (if no existing confetti lib)
-    function triggerConfettiFallback() {
-      document.body.animate(
-        [
-          { transform: 'translateY(0px)' },
-          { transform: 'translateY(-10px)' },
-          { transform: 'translateY(0px)' },
-        ],
-        { duration: 300, iterations: 1 }
-      );
-    }
-
-    // -------------------------------------------
-    // Button click handler: confetti + scroll
-    function handleGettingStartedComplete() {
-      // Confetti - use canvas-confetti if available, otherwise use window.triggerConfetti or fallback
-      if (typeof confetti === "function") {
-        confetti({
-          particleCount: 120,
-          spread: 70,
-          origin: { y: 0.7 }
-        });
-      } else if (typeof window.triggerConfetti === "function") {
-        window.triggerConfetti();
-      } else {
-        triggerConfettiFallback();
-      }
-
-      // Smooth scroll to the "What's Next?" section
-      const section = document.getElementById("whats-next");
-      if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-      }
-    }
-    window.handleGettingStartedComplete = handleGettingStartedComplete;
-
-    // -------------------------------------------
-    // Show the hidden button
-    window.showGettingStartedCompleteButton = function () {
-      const btn = document.getElementById("getting-started-complete-btn");
-      if (btn) {
-        console.log("[KBM] Showing Getting Started complete button");
-        btn.classList.remove("hidden");
-      } else {
-        console.warn("[KBM] Button with id 'getting-started-complete-btn' not found");
-      }
-    };
-
-    // -------------------------------------------
-    // MindPal completion hook with logging
-    window.addEventListener("message", (event) => {
-      console.log("[KBM] window message received:", event.data);
-
-      const data = event.data;
-
-      const isMindPalCompleted =
-        data === "mindpal-chat-completed" ||
-        (data &&
-          typeof data === "object" &&
-          (
-            data.type === "mindpal-chat-completed" ||
-            data.event === "mindpal-chat-completed" ||
-            data.action === "mindpal-chat-completed"
-          ));
-
-      if (isMindPalCompleted) {
-        console.log("[KBM] MindPal reported chat completed – revealing button");
-        window.showGettingStartedCompleteButton?.();
-      }
-    });
-
-    // Attach click handler when DOM is ready
     document.addEventListener('DOMContentLoaded', () => {
-      const completeBtn = document.getElementById('getting-started-complete-btn');
-      if (completeBtn) {
-        completeBtn.addEventListener('click', handleGettingStartedComplete);
+      // Confetti button
+      const finishBtn = document.getElementById('finish');
+      if (finishBtn) {
+        finishBtn.addEventListener('click', () => {
+          confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.7 }
+          });
+        });
       }
     });
   </script>
@@ -408,76 +308,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     margin-right: 0;
   }
 
-  /* ========== HIDDEN UTILITY ========== */
-  .hidden {
-    display: none !important;
-  }
-
-  /* ========== COMPLETE BUTTON WRAPPER ========== */
-  .kbm-complete-btn-wrapper {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-  }
-
-  /* ========== WHAT'S NEXT SECTION ========== */
-  .kbm-whats-next {
-    margin-top: 3rem;
-    padding-top: 2.5rem;
-    border-top: 2px solid #c7d8a4;
-    scroll-margin-top: calc(var(--header-height, 6rem) + 1rem);
-  }
-
-  .kbm-whats-next h2 {
-    color: #2c3a57;
-    margin-bottom: 0.5rem;
-  }
-
-  /* ========== NEXT STEP CARDS GRID ========== */
-  .kbm-next-cards {
-    display: grid;
-    gap: 1rem;
-    grid-template-columns: 1fr;
-  }
-
-  @media (min-width: 768px) {
-    .kbm-next-cards {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.25rem;
-    }
-  }
-
-  /* ========== INDIVIDUAL NEXT CARD ========== */
-  .kbm-next-card {
-    display: block;
-    padding: 1.25rem;
-    background-color: #ffffff;
-    border: 1px solid #c7d8a4;
-    border-radius: 0.75rem;
-    text-decoration: none;
-    transition: box-shadow 0.2s ease, transform 0.15s ease, border-color 0.2s ease;
-  }
-
-  .kbm-next-card:hover {
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.12);
-    transform: translateY(-2px);
-    border-color: #52682d;
-  }
-
-  .kbm-next-card h3 {
-    font-size: 1.1rem;
-    color: #2c3a57;
-    margin: 0 0 0.5rem;
-    font-weight: 600;
-  }
-
-  .kbm-next-card p {
-    font-size: 0.925rem;
-    color: #4d5a48;
-    margin: 0;
-    line-height: 1.5;
-  }
-
   /* ========== MOBILE ADJUSTMENTS ========== */
   @media (max-width: 480px) {
     .kbm-getting-started {
@@ -496,15 +326,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
 
     .kbm-hero-image {
       max-width: 100%;
-    }
-
-    .kbm-next-card {
-      padding: 1rem;
-    }
-
-    .kbm-whats-next {
-      margin-top: 2rem;
-      padding-top: 2rem;
     }
   }
 </style>
