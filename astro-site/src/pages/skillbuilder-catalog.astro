@@ -281,9 +281,8 @@ const levels = [
     align-items: center;
     justify-content: flex-start;
     text-align: center;
-    line-height: 1.2;
-    height: 2rem;
-    overflow: hidden;
+    line-height: 1.15;
+    min-height: 2.2rem;
   }
 
   .level-chip__line1 {
@@ -294,10 +293,11 @@ const levels = [
   }
 
   .level-chip__line2 {
-    font-size: 0.65rem;
+    font-size: 0.6rem;
     color: #738C52;
     font-weight: 600;
-    white-space: nowrap;
+    word-wrap: break-word;
+    max-width: 100%;
   }
 
   /* Search input */
@@ -536,7 +536,7 @@ const levels = [
     }
 
     .level-chip__label {
-      height: 1.8rem;
+      min-height: 2rem;
     }
 
     .level-chip__line1 {
@@ -544,7 +544,7 @@ const levels = [
     }
 
     .level-chip__line2 {
-      font-size: 0.6rem;
+      font-size: 0.55rem;
     }
 
     .search-wrapper {
@@ -588,7 +588,7 @@ const levels = [
     }
 
     .level-chip__label {
-      height: 1.5rem;
+      min-height: 1.6rem;
     }
 
     .level-chip__line1 {
