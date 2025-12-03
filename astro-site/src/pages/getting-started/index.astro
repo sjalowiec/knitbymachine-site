@@ -94,41 +94,65 @@ const pageDescription = 'A simple starting point to get your knitting machine se
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const completeBtn = document.getElementById('getting-started-complete-btn');
-      
-      // Handle button click: confetti + smooth scroll
-      function handleGettingStartedComplete() {
-        // Trigger confetti
-        if (typeof confetti === 'function') {
-          confetti({
-            particleCount: 120,
-            spread: 70,
-            origin: { y: 0.7 }
-          });
-        }
+    // -------------------------------------------
+    // Confetti fallback (if no existing confetti lib)
+    function triggerConfettiFallback() {
+      document.body.animate(
+        [
+          { transform: 'translateY(0px)' },
+          { transform: 'translateY(-10px)' },
+          { transform: 'translateY(0px)' },
+        ],
+        { duration: 300, iterations: 1 }
+      );
+    }
 
-        // Smooth scroll to the "What's Next?" section
-        const whatsNext = document.getElementById('whats-next');
-        if (whatsNext) {
-          whatsNext.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }
+    // -------------------------------------------
+    // Reveal button, trigger confetti, scroll
+    function handleGettingStartedComplete() {
+      // Confetti - use canvas-confetti if available, otherwise use window.triggerConfetti or fallback
+      if (typeof confetti === "function") {
+        confetti({
+          particleCount: 120,
+          spread: 70,
+          origin: { y: 0.7 }
+        });
+      } else if (typeof window.triggerConfetti === "function") {
+        window.triggerConfetti();
+      } else {
+        triggerConfettiFallback();
       }
 
-      // Attach click handler
+      // Scroll to "What's Next?"
+      const section = document.getElementById("whats-next");
+      if (section) {
+        section.scrollIntoView({ behavior: "smooth", block: "start" });
+      }
+    }
+    window.handleGettingStartedComplete = handleGettingStartedComplete;
+
+    // -------------------------------------------
+    // Show the hidden button
+    window.showGettingStartedCompleteButton = function () {
+      const btn = document.getElementById("getting-started-complete-btn");
+      if (btn) btn.classList.remove("hidden");
+    };
+
+    // -------------------------------------------
+    // MINDPAL COMPLETION HOOK
+    // Listen for postMessage event: "mindpal-chat-completed"
+    window.addEventListener("message", (event) => {
+      if (event.data === "mindpal-chat-completed") {
+        window.showGettingStartedCompleteButton?.();
+      }
+    });
+
+    // Attach click handler when DOM is ready
+    document.addEventListener('DOMContentLoaded', () => {
+      const completeBtn = document.getElementById('getting-started-complete-btn');
       if (completeBtn) {
         completeBtn.addEventListener('click', handleGettingStartedComplete);
       }
-
-      // Expose global function for MindPal to call when conversation finishes
-      window.showGettingStartedCompleteButton = function() {
-        if (completeBtn) {
-          completeBtn.classList.remove('hidden');
-        }
-      };
-
-      // Expose click handler globally (for inline onclick if needed)
-      window.handleGettingStartedComplete = handleGettingStartedComplete;
     });
   </script>
 </BaseLayout>
