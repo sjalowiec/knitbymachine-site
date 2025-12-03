@@ -314,6 +314,7 @@ const levels = [
     font-size: 0.9rem;
     background-color: #fafcf7;
     transition: all 0.3s ease;
+    box-sizing: border-box;
   }
 
   .search-input:focus {
@@ -601,6 +602,15 @@ const levels = [
 
     .level-hint {
       font-size: 0.75rem;
+    }
+
+    .search-wrapper {
+      width: 100%;
+    }
+
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
     }
   }
 </style>
