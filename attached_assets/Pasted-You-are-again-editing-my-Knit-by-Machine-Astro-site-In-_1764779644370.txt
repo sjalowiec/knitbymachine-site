@@ -1,0 +1,108 @@
+You are again editing my Knit by Machine Astro site. In a previous step you created 4 new Level landing pages for Skill Builders that live at URLs like:
+
+- /skill-builders/level-1/
+- /skill-builders/level-2/
+- /skill-builders/level-3/
+- /skill-builders/level-4/
+
+Now I want to enhance the main Skill Builders catalog page with a level selector row AND add sorting similar to my Wizards catalog.
+
+PROJECT CONTEXT
+
+- Tech stack: Astro + Tailwind.
+- There is a Skill Builders catalog page (with a “Skill Builders” heading and a grid of skill cards).
+- There is a Wizards catalog page that already has a sorting UI I like.
+- Skill Builders are backed by JSON (or similar data) with a numeric "level" field (1–4).
+- I have SVG icons:
+  - /practice-icon.svg        (for the "All" option)
+  - /level-1.svg
+  - /level-2.svg
+  - /level-3.svg
+  - /level-4.svg
+
+PART 1: ADD SORTING TO SKILL BUILDERS CATALOG (COPY WIZARDS BEHAVIOR)
+
+1. Locate the file that renders the Wizards catalog page and identify:
+   - The sorting UI (dropdown or chips).
+   - The state or logic that handles sort options (e.g. "Newest", "A–Z", etc.).
+   - Any helper functions used to sort the list of wizards.
+
+2. Locate the file that renders the Skill Builders catalog page.
+
+3. On the Skill Builders catalog page:
+   - Add a sorting control that matches the Wizards catalog visually and behaviorally.
+   - Reuse the same sort options as the Wizards catalog (for example, sort by name, newest, etc.), adapting field names if necessary to match the Skill Builder data.
+   - Place the sort control near the top of the page: alongside or just below the search input (if there is one), mirroring the layout from the Wizards page.
+   - Make sure the Tailwind classes (spacing, text size, alignment) closely match the Wizards catalog.
+
+4. Implement the actual sort logic for Skill Builders:
+   - Use the same approach as the Wizards page, but applied to the Skill Builder data array.
+   - If the Wizards catalog uses an array sort with a comparator, create a similar function for Skill Builders.
+   - Make sure the sorted result is what’s rendered in the Skill Builder card grid.
+
+PART 2: ADD A 5-HEX LEVEL SELECTOR ROW ABOVE THE CATALOG
+
+Now add a row of five hex-style icon buttons at the top of the Skill Builders catalog that link to the Level landing pages and to the overall catalog.
+
+1. On the Skill Builders catalog page, directly under the hero section (the “Skill Builders” title and intro) and above the list/grid of cards, insert a new section containing FIVE clickable items.
+
+2. Each item should be a hex-style icon button consistent with the hex buttons used elsewhere on the site (for example, the ones used to switch between Patterns / Tools / Skill Builders on the “Get knitting” page). Reuse the same hex button component or Tailwind classes if one already exists.
+
+3. Use the following icons and labels, in this exact order from left to right:
+
+   a) FIRST hex:
+      - Icon: /practice-icon.svg
+      - Text label: "All"
+      - Behavior: link to the main Skill Builders catalog page (this current page), so the user can always get back to "All Skill Builders".
+
+   b) SECOND hex:
+      - Icon: /level-1.svg
+      - Text label: "Level 1: Basics"
+      - Behavior: link to the Level 1 landing page at /skill-builders/level-1/
+
+   c) THIRD hex:
+      - Icon: /level-2.svg
+      - Text label: "Level 2: Hand Techniques"
+      - Behavior: link to the Level 2 landing page at /skill-builders/level-2/
+
+   d) FOURTH hex:
+      - Icon: /level-3.svg
+      - Text label: "Level 3: Stitch Patterns"
+      - Behavior: link to the Level 3 landing page at /skill-builders/level-3/
+
+   e) FIFTH hex:
+      - Icon: /level-4.svg
+      - Text label: "Level 4: Ribber & Double Bed"
+      - Behavior: link to the Level 4 landing page at /skill-builders/level-4/
+
+4. Under each hex, display the corresponding text label centered, using the same typography and spacing as other hex selectors on the site (for instance, the labels under the “Patterns / Tools / Skill Builders” icons).
+
+5. Make sure the whole selector row is responsive:
+   - On desktop, display all five hex buttons in a single row with even spacing.
+   - On small screens, allow them to wrap to multiple lines while retaining consistent padding and alignment.
+
+6. Apply hover/focus states consistent with the rest of the site’s hex buttons (e.g., a subtle background change or border color change). Reuse existing Tailwind classes and styles rather than inventing new ones.
+
+GENERAL REQUIREMENTS
+
+- Do not rename existing components or break imports used by other pages.
+- Keep styling consistent with the existing KBM design system: same colors, font families, font sizes, borders, and spacing as used in the Wizards catalog and other hex selectors.
+- Ensure the Skill Builders catalog still renders correctly:
+  - Sorting works.
+  - The hex selector row shows above the grid.
+  - Each hex navigates to the correct route.
+  - The "All" hex button reloads or navigates back to the main Skill Builders catalog.
+
+When you’re finished, I should see on the Skill Builders catalog page:
+
+- A sorting UI that behaves like the Wizards sorting.
+- A 5-hex selector row:
+  All / Level 1: Basics / Level 2: Hand Techniques / Level 3: Stitch Patterns / Level 4: Ribber & Double Bed
+- Each hex icon using the correct SVG.
+- Each hex label centered under the icon.
+- Working links to:
+  - the main catalog (All)
+  - /skill-builders/level-1/
+  - /skill-builders/level-2/
+  - /skill-builders/level-3/
+  - /skill-builders/level-4/

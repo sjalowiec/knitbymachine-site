@@ -25,6 +25,7 @@ try {
             title: data.title,
             description: data.description,
             tagline: data.tagline,
+            level: data.level,
             moduleCount: data.modules?.length || 0,
             prepCount: data.prepChecklist?.length || 0,
             isDraft: data.isDraft,
@@ -48,6 +49,15 @@ try {
 
 const title = "Skill Builders";
 const description = "Interactive step-by-step journeys to master knitting machine techniques. Learn at your own pace with hands-on practice.";
+
+// Level definitions for the selector
+const levels = [
+  { id: 'all', icon: '/images/practice-icon.svg', label: 'All', href: '/skillbuilder-catalog' },
+  { id: 'level-1', icon: '/images/level-1.svg', label: 'Level 1: Basics', href: '/skillbuilder/level-1' },
+  { id: 'level-2', icon: '/images/level-2.svg', label: 'Level 2: Hand Techniques', href: '/skillbuilder/level-2' },
+  { id: 'level-3', icon: '/images/level-3.svg', label: 'Level 3: Stitch Patterns', href: '/skillbuilder/level-3' },
+  { id: 'level-4', icon: '/images/level-4.svg', label: 'Level 4: Ribber & Double Bed', href: '/skillbuilder/level-4' },
+];
 ---
 
 <BaseLayout {title} {description}>
@@ -62,24 +72,44 @@ const description = "Interactive step-by-step journeys to master knitting machin
         <p class="intro-tagline">Master your machine one skill at a time.</p>
         <p class="intro-subtitle">Step-by-step interactive journeys designed to build your confidence and expertise with hands-on practice.</p>
       </div>
-      <div class="controls-wrapper">
-        <div class="search-wrapper">
-          <input 
-            type="text" 
-            class="search-input" 
-            id="searchInput" 
-            placeholder="Search skill builders..."
-            aria-label="Search skill builders"
+    </div>
+
+    <!-- Level Selector Row -->
+    <div class="level-selector fade-in">
+      <div class="level-selector__items">
+        {levels.map((level) => (
+          <a 
+            href={level.href} 
+            class={`level-hex ${level.id === 'all' ? 'active' : ''}`}
+            aria-label={level.label}
           >
-        </div>
-        <div class="sort-wrapper">
-          <label for="sortSelect" class="sort-label">Sort by:</label>
-          <select id="sortSelect" class="sort-select" aria-label="Sort order">
-            <option value="newest">Newest</option>
-            <option value="oldest">Oldest</option>
-            <option value="alphabetical">Alphabetical</option>
-          </select>
-        </div>
+            <div class="level-hex__icon-wrapper">
+              <img src={level.icon} alt="" class="level-hex__icon" />
+            </div>
+            <span class="level-hex__label">{level.label}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <!-- Controls Row -->
+    <div class="controls-row fade-in">
+      <div class="search-wrapper">
+        <input 
+          type="text" 
+          class="search-input" 
+          id="searchInput" 
+          placeholder="Search skill builders..."
+          aria-label="Search skill builders"
+        >
+      </div>
+      <div class="sort-wrapper">
+        <label for="sortSelect" class="sort-label">Sort by:</label>
+        <select id="sortSelect" class="sort-select" aria-label="Sort order">
+          <option value="newest">Newest</option>
+          <option value="oldest">Oldest</option>
+          <option value="alphabetical">A–Z</option>
+        </select>
       </div>
     </div>
 
@@ -167,16 +197,95 @@ const description = "Interactive step-by-step journeys to master knitting machin
     max-width: 580px;
   }
 
-  /* Search and Sort Controls */
-  .controls-wrapper {
+  /* Level Selector Row */
+  .level-selector {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+    padding: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .level-selector__items {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .level-hex {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 0.75rem;
-    min-width: 280px;
+    text-decoration: none;
+    padding: 0.75rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    min-width: 100px;
+    max-width: 140px;
+  }
+
+  .level-hex:hover {
+    transform: translateY(-4px);
+  }
+
+  .level-hex:hover .level-hex__icon-wrapper {
+    border-color: #52682D;
+    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.2);
+  }
+
+  .level-hex.active .level-hex__icon-wrapper {
+    border-color: #52682D;
+    background-color: #f7f8f7;
+    box-shadow: 0 0 0 4px rgba(82, 104, 45, 0.15);
+  }
+
+  .level-hex__icon-wrapper {
+    width: 72px;
+    height: 72px;
+    border-radius: 16px;
+    border: 2px solid #e6eddc;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.08);
+  }
+
+  .level-hex__icon {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+  }
+
+  .level-hex__label {
+    color: #52682D;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .level-hex:hover .level-hex__label {
+    color: #3e5023;
+  }
+
+  /* Controls Row */
+  .controls-row {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
   }
 
   .search-wrapper {
-    width: 100%;
+    flex: 1;
+    min-width: 200px;
+    max-width: 400px;
   }
 
   .search-input {
@@ -216,7 +325,6 @@ const description = "Interactive step-by-step journeys to master knitting machin
     background-color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    flex: 1;
   }
 
   .sort-select:focus {
@@ -235,7 +343,7 @@ const description = "Interactive step-by-step journeys to master knitting machin
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 1.5rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
   }
 
   :global(.builder-card) {
@@ -255,17 +363,45 @@ const description = "Interactive step-by-step journeys to master knitting machin
     transform: translateY(-3px);
   }
 
+  :global(.builder-card-header) {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
   :global(.builder-title) {
     color: #52682D;
     font-size: 1.35rem;
     font-weight: 700;
-    margin: 0 0 0.5rem 0;
+    margin: 0;
     text-decoration: none;
     display: block;
+    flex: 1;
   }
 
   :global(.builder-title:hover) {
     color: #738C52;
+  }
+
+  :global(.builder-level-badge) {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.25rem 0.6rem;
+    background-color: #f0f4e8;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #52682D;
+  }
+
+  :global(.builder-level-badge img) {
+    width: 16px;
+    height: 16px;
+    object-fit: contain;
   }
 
   :global(.builder-tagline) {
@@ -389,12 +525,75 @@ const description = "Interactive step-by-step journeys to master knitting machin
       font-size: 1.75rem;
     }
 
-    .controls-wrapper {
-      width: 100%;
+    .level-selector {
+      padding: 1.25rem 1rem;
+    }
+
+    .level-selector__items {
+      gap: 1rem;
+    }
+
+    .level-hex {
+      min-width: 80px;
+      max-width: 110px;
+    }
+
+    .level-hex__icon-wrapper {
+      width: 60px;
+      height: 60px;
+    }
+
+    .level-hex__icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .level-hex__label {
+      font-size: 0.75rem;
+    }
+
+    .controls-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .search-wrapper {
+      max-width: 100%;
+    }
+
+    .sort-wrapper {
+      justify-content: flex-start;
     }
 
     :global(.builder-grid) {
       grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .level-selector__items {
+      gap: 0.75rem;
+    }
+
+    .level-hex {
+      min-width: 65px;
+      max-width: 85px;
+      padding: 0.5rem;
+    }
+
+    .level-hex__icon-wrapper {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+    }
+
+    .level-hex__icon {
+      width: 30px;
+      height: 30px;
+    }
+
+    .level-hex__label {
+      font-size: 0.65rem;
     }
   }
 </style>
@@ -406,6 +605,16 @@ const description = "Interactive step-by-step journeys to master knitting machin
   const catalogueContent = document.getElementById('catalogueContent');
 
   let currentBuilders = [...buildersData];
+
+  function getLevelInfo(level) {
+    const levels = {
+      1: { label: 'Level 1', icon: '/images/level-1.svg' },
+      2: { label: 'Level 2', icon: '/images/level-2.svg' },
+      3: { label: 'Level 3', icon: '/images/level-3.svg' },
+      4: { label: 'Level 4', icon: '/images/level-4.svg' },
+    };
+    return levels[level] || null;
+  }
 
   function renderBuilders(builders) {
     if (builders.length === 0) {
@@ -425,8 +634,19 @@ const description = "Interactive step-by-step journeys to master knitting machin
       const card = document.createElement('div');
       card.className = 'builder-card';
       
+      const levelInfo = getLevelInfo(builder.level);
+      const levelBadgeHtml = levelInfo 
+        ? `<span class="builder-level-badge">
+             <img src="${levelInfo.icon}" alt="" />
+             ${levelInfo.label}
+           </span>`
+        : '';
+      
       card.innerHTML = `
-        <a href="/skillbuilder/${builder.slug}" class="builder-title">${builder.title}</a>
+        <div class="builder-card-header">
+          <a href="/skillbuilder/${builder.slug}" class="builder-title">${builder.title}</a>
+          ${levelBadgeHtml}
+        </div>
         ${builder.tagline ? `<p class="builder-tagline">${builder.tagline}</p>` : ''}
         <p class="builder-description">${builder.description}</p>
         <div class="builder-meta">
@@ -442,6 +662,32 @@ const description = "Interactive step-by-step journeys to master knitting machin
     catalogueContent.appendChild(grid);
   }
 
+  function sortBuilders(builders, sortBy) {
+    const sorted = [...builders];
+    
+    switch(sortBy) {
+      case 'newest':
+        sorted.sort((a, b) => {
+          const dateA = a.publishedDate ? new Date(a.publishedDate) : new Date(0);
+          const dateB = b.publishedDate ? new Date(b.publishedDate) : new Date(0);
+          return dateB - dateA;
+        });
+        break;
+      case 'oldest':
+        sorted.sort((a, b) => {
+          const dateA = a.publishedDate ? new Date(a.publishedDate) : new Date(0);
+          const dateB = b.publishedDate ? new Date(b.publishedDate) : new Date(0);
+          return dateA - dateB;
+        });
+        break;
+      case 'alphabetical':
+        sorted.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+    }
+    
+    return sorted;
+  }
+
   function filterAndSort() {
     const searchTerm = searchInput.value.toLowerCase();
     const sortValue = sortSelect.value;
@@ -452,16 +698,9 @@ const description = "Interactive step-by-step journeys to master knitting machin
       (builder.tagline && builder.tagline.toLowerCase().includes(searchTerm))
     );
 
-    if (sortValue === 'alphabetical') {
-      filtered.sort((a, b) => a.title.localeCompare(b.title));
-    } else if (sortValue === 'newest') {
-      filtered.sort((a, b) => new Date(b.publishedDate || 0) - new Date(a.publishedDate || 0));
-    } else if (sortValue === 'oldest') {
-      filtered.sort((a, b) => new Date(a.publishedDate || 0) - new Date(b.publishedDate || 0));
-    }
-
-    currentBuilders = filtered;
-    renderBuilders(filtered);
+    const sorted = sortBuilders(filtered, sortValue);
+    currentBuilders = sorted;
+    renderBuilders(sorted);
   }
 
   searchInput.addEventListener('input', filterAndSort);
@@ -482,6 +721,5 @@ const description = "Interactive step-by-step journeys to master knitting machin
   });
 
   // Initial render
-  renderBuilders(currentBuilders);
+  filterAndSort();
 </script>
-</BaseLayout>
