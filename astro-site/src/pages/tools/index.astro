@@ -1,0 +1,153 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHero from '../../components/SectionHero.astro';
+
+const title = "Tools";
+const description = "Machine-knitting tools that do the math for you. Let the wizards handle the numbers so you can stay at the machine.";
+---
+
+<BaseLayout {title} {description}>
+  <div class="page-container">
+    <SectionHero 
+      title="Machine-knitting tools that do the math for you" 
+      iconPath="/images/tools_icon.png"
+      iconAlt="Tools icon"
+    />
+
+    <div class="intro-section">
+      <p class="intro-headline">Let the wizards handle the numbers so you can stay at the machine.</p>
+      <p class="intro-text">
+        Knit by Machine tools turn the "fussy bits" into clear, simple steps. You choose your yarn, gauge, and size; the wizards take care of the shaping, counts, and measurements. You get exactly what you need for your machine, without staring at a spreadsheet.
+      </p>
+    </div>
+
+    <div class="content-section">
+      <h2 class="content-title">What these tools can help you do</h2>
+      <ul class="bullet-list" data-testid="tools-bullet-list">
+        <li>Plan shaping without a calculator</li>
+        <li>Adjust patterns to your gauge</li>
+        <li>Resize projects for different recipients</li>
+        <li>Test ideas before you cast on</li>
+      </ul>
+    </div>
+
+    <div class="cta-section">
+      <a href="/wizards-catalog" class="cta-button" data-testid="button-browse-tools">
+        Browse all tools
+      </a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .intro-section {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
+  }
+
+  .intro-headline {
+    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    color: #52682D;
+    line-height: 1.4;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    color: #5a6b47;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .content-section {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    background-color: #f9fdf5;
+    border-radius: 16px;
+    padding: 2rem 2.5rem;
+  }
+
+  .content-title {
+    font-size: clamp(1.4rem, 2.5vw, 1.6rem);
+    font-weight: 700;
+    color: #52682D;
+    margin: 0 0 1.5rem 0;
+    text-align: center;
+  }
+
+  .bullet-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .bullet-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    color: #5a6b47;
+    line-height: 1.6;
+  }
+
+  .bullet-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .bullet-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 10px;
+    height: 10px;
+    background-color: #C7D8A4;
+    border-radius: 50%;
+  }
+
+  .cta-section {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .cta-button {
+    display: inline-block;
+    background-color: #52682D;
+    color: white;
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    font-weight: 600;
+    padding: 1rem 2.5rem;
+    border-radius: 50px;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.2);
+  }
+
+  .cta-button:hover {
+    background-color: #3e5023;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.3);
+  }
+
+  @media (max-width: 768px) {
+    .page-container {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .content-section {
+      padding: 1.5rem;
+    }
+
+    .intro-section {
+      margin-bottom: 2rem;
+    }
+  }
+</style>
