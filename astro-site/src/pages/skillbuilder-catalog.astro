@@ -52,11 +52,11 @@ const description = "Interactive step-by-step journeys to master knitting machin
 
 // Level definitions for the selector (line1 = "Level X", line2 = description)
 const levels = [
-  { id: 'all', icon: '/images/practice-icon.svg', line1: 'All', line2: 'Levels', href: '/skillbuilder-catalog' },
-  { id: 'level-1', icon: '/images/level-1.svg', line1: 'Level 1', line2: 'Basics', href: '/skillbuilder/level-1' },
-  { id: 'level-2', icon: '/images/level-2.svg', line1: 'Level 2', line2: 'Hand Manipulation', href: '/skillbuilder/level-2' },
-  { id: 'level-3', icon: '/images/level-3.svg', line1: 'Level 3', line2: 'Stitch Patterns', href: '/skillbuilder/level-3' },
-  { id: 'level-4', icon: '/images/level-4.svg', line1: 'Level 4', line2: 'Ribber', href: '/skillbuilder/level-4' },
+  { id: 'all', level: 'all', icon: '/images/practice-icon.svg', line1: 'All', line2: 'Levels' },
+  { id: 'level-1', level: '1', icon: '/images/level-1.svg', line1: 'Level 1', line2: 'Basics' },
+  { id: 'level-2', level: '2', icon: '/images/level-2.svg', line1: 'Level 2', line2: 'Hand Manipulation' },
+  { id: 'level-3', level: '3', icon: '/images/level-3.svg', line1: 'Level 3', line2: 'Stitch Patterns' },
+  { id: 'level-4', level: '4', icon: '/images/level-4.svg', line1: 'Level 4', line2: 'Ribber' },
 ];
 ---
 
@@ -82,8 +82,9 @@ const levels = [
           <span class="level-hint">Choose your level</span>
           <div class="level-chips">
             {levels.map((level) => (
-              <a 
-                href={level.href} 
+              <button 
+                type="button"
+                data-level={level.level}
                 class={`level-chip ${level.id === 'all' ? 'active' : ''}`}
                 aria-label={`${level.line1} ${level.line2}`}
               >
@@ -92,7 +93,7 @@ const levels = [
                   <span class="level-chip__line1">{level.line1}</span>
                   <span class="level-chip__line2">{level.line2}</span>
                 </span>
-              </a>
+              </button>
             ))}
           </div>
         </div>
