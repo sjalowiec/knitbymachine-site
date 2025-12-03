@@ -387,24 +387,10 @@ const levels = [
     color: #555;
     font-size: 0.95rem;
     line-height: 1.6;
-    margin: 0 0 1rem 0;
+    margin: 0;
     flex-grow: 1;
   }
 
-  :global(.builder-meta) {
-    display: flex;
-    gap: 1rem;
-    font-size: 0.85rem;
-    color: #666;
-    padding-top: 1rem;
-    border-top: 1px solid #e6eddc;
-  }
-
-  :global(.builder-meta-item) {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-  }
 
   /* Error State */
   .error {
@@ -639,10 +625,6 @@ const levels = [
         </div>
         ${builder.tagline ? `<p class="builder-tagline">${builder.tagline}</p>` : ''}
         <p class="builder-description">${builder.description}</p>
-        <div class="builder-meta">
-          <span class="builder-meta-item">📚 ${builder.moduleCount} ${builder.moduleCount === 1 ? 'module' : 'modules'}</span>
-          ${builder.prepCount > 0 ? `<span class="builder-meta-item">✓ ${builder.prepCount} prep ${builder.prepCount === 1 ? 'item' : 'items'}</span>` : ''}
-        </div>
       `;
       
       grid.appendChild(card);
