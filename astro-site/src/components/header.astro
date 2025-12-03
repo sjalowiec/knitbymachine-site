@@ -138,7 +138,8 @@ html, body {
   font-family: "Poppins", sans-serif;
 }
 
-.kbm-menu > li > a {
+.kbm-menu > li > a,
+.kbm-menu > li > .dd-trigger {
   color: var(--kbm-green);
   text-decoration: none;
   font-weight: 600;
@@ -149,9 +150,11 @@ html, body {
   gap: 4px;
   transition: color 0.2s ease;
   white-space: nowrap;
+  cursor: pointer;
 }
 
-.kbm-menu > li > a:hover {
+.kbm-menu > li > a:hover,
+.kbm-menu > li > .dd-trigger:hover {
   color: var(--kbm-green-hover);
 }
 
@@ -338,7 +341,8 @@ html, body {
     border-bottom: none;
   }
 
-  .kbm-menu > li > a {
+  .kbm-menu > li > a,
+  .kbm-menu > li > .dd-trigger {
     padding: 16px 0;
     display: block;
   }
@@ -457,7 +461,7 @@ html, body {
         <ul class="kbm-menu">
           <!-- KNIT dropdown -->
           <li class="dd">
-            <a href="/patterns" data-testid="nav-knit">KNIT <span class="caret">▾</span></a>
+            <span class="dd-trigger" data-testid="nav-knit">KNIT <span class="caret">▾</span></span>
             <ul class="dd-panel">
               <li><a href="/patterns" data-testid="nav-knit-patterns">Patterns</a></li>
               <li><a href="/tools" data-testid="nav-knit-tools">Tools</a></li>
@@ -547,7 +551,7 @@ html, body {
       // Setup touch/mobile click behavior
       if (touchMode) {
         dds.forEach(li => {
-          const trigger = li.querySelector(':scope > a');
+          const trigger = li.querySelector(':scope > a, :scope > .dd-trigger');
           const handler = (e) => {
             e.preventDefault();
             const nowOpen = li.classList.toggle('open');
