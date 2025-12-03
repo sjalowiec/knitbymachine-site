@@ -74,43 +74,31 @@ const levels = [
       </div>
     </div>
 
-    <!-- Level Selector Row -->
+    <!-- Compact Level Selector Row -->
     <div class="level-selector fade-in">
       <div class="level-selector__items">
         {levels.map((level) => (
           <a 
             href={level.href} 
-            class={`level-hex ${level.id === 'all' ? 'active' : ''}`}
+            class={`level-chip ${level.id === 'all' ? 'active' : ''}`}
             aria-label={level.label}
           >
-            <div class="level-hex__icon-wrapper">
-              <img src={level.icon} alt="" class="level-hex__icon" />
-            </div>
-            <span class="level-hex__label">{level.label}</span>
+            <img src={level.icon} alt="" class="level-chip__icon" />
+            <span class="level-chip__label">{level.label}</span>
           </a>
         ))}
       </div>
     </div>
 
-    <!-- Controls Row -->
-    <div class="controls-row fade-in">
-      <div class="search-wrapper">
-        <input 
-          type="text" 
-          class="search-input" 
-          id="searchInput" 
-          placeholder="Search skill builders..."
-          aria-label="Search skill builders"
-        >
-      </div>
-      <div class="sort-wrapper">
-        <label for="sortSelect" class="sort-label">Sort by:</label>
-        <select id="sortSelect" class="sort-select" aria-label="Sort order">
-          <option value="newest">Newest</option>
-          <option value="oldest">Oldest</option>
-          <option value="alphabetical">A–Z</option>
-        </select>
-      </div>
+    <!-- Search Row (No Sort) -->
+    <div class="search-row fade-in">
+      <input 
+        type="text" 
+        class="search-input" 
+        id="searchInput" 
+        placeholder="Search skill builders..."
+        aria-label="Search skill builders"
+      >
     </div>
 
     <!-- Catalogue Content -->
@@ -146,14 +134,11 @@ const levels = [
     border-radius: 16px;
     box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
     padding: 1.8rem 2.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
     display: flex;
     align-items: center;
     gap: 1.5rem;
     flex-wrap: wrap;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
   }
 
   .intro-icon {
@@ -164,133 +149,110 @@ const levels = [
   }
 
   .header-icon {
-    width: 120px;
+    width: 100px;
     height: auto;
   }
 
   .intro-content {
     flex: 1;
-    min-width: 300px;
+    min-width: 280px;
   }
 
   .intro-title {
     color: #52682D;
     font-size: 2rem;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 0.4rem 0;
     font-weight: 700;
   }
 
   .intro-tagline {
     color: #52682D;
-    font-size: 1.25rem;
+    font-size: 1.15rem;
     line-height: 1.5;
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.5rem 0;
     opacity: 0.85;
   }
 
   .intro-subtitle {
     color: #52682D;
-    font-size: 1rem;
+    font-size: 0.95rem;
     line-height: 1.6;
     margin: 0;
     opacity: 0.7;
-    max-width: 580px;
+    max-width: 550px;
   }
 
-  /* Level Selector Row */
+  /* Compact Level Selector Row - matches Wizards filter chips */
   .level-selector {
-    background-color: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
-    padding: 1.5rem 2rem;
-    margin-bottom: 1.5rem;
+    background: white;
+    border-bottom: 1px solid rgba(82, 104, 45, 0.1);
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    border-radius: 12px;
   }
 
   .level-selector__items {
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    gap: 1.5rem;
+    align-items: center;
+    gap: 0.5rem;
     flex-wrap: wrap;
   }
 
-  .level-hex {
+  .level-chip {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.3rem;
     text-decoration: none;
-    padding: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border: 2px solid transparent;
     border-radius: 12px;
     transition: all 0.3s ease;
-    min-width: 100px;
-    max-width: 140px;
+    flex-shrink: 0;
   }
 
-  .level-hex:hover {
-    transform: translateY(-4px);
+  .level-chip:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 4px 12px rgba(82, 104, 45, 0.2));
   }
 
-  .level-hex:hover .level-hex__icon-wrapper {
-    border-color: #52682D;
-    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.2);
-  }
-
-  .level-hex.active .level-hex__icon-wrapper {
-    border-color: #52682D;
-    background-color: #f7f8f7;
-    box-shadow: 0 0 0 4px rgba(82, 104, 45, 0.15);
-  }
-
-  .level-hex__icon-wrapper {
-    width: 72px;
-    height: 72px;
-    border-radius: 16px;
-    border: 2px solid #e6eddc;
-    background-color: #ffffff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.08);
-  }
-
-  .level-hex__icon {
-    width: 44px;
-    height: 44px;
-    object-fit: contain;
-  }
-
-  .level-hex__label {
-    color: #52682D;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-align: center;
-    line-height: 1.3;
-  }
-
-  .level-hex:hover .level-hex__label {
+  .level-chip:hover .level-chip__label {
     color: #3e5023;
   }
 
-  /* Controls Row */
-  .controls-row {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
+  .level-chip.active {
+    border-color: #52682D;
+    background: #f7f8f7;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.15);
   }
 
-  .search-wrapper {
-    flex: 1;
-    min-width: 200px;
-    max-width: 400px;
+  .level-chip__icon {
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+    display: block;
+    transition: all 0.3s ease;
+  }
+
+  .level-chip__label {
+    font-size: 0.75rem;
+    color: #52682D;
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  /* Search Row */
+  .search-row {
+    margin-bottom: 1.25rem;
   }
 
   .search-input {
     width: 100%;
-    padding: 0.875rem 1.25rem;
+    max-width: 500px;
+    padding: 0.75rem 1.25rem;
     border: 2px solid #c7d8a4;
     border-radius: 50px;
     font-size: 1rem;
@@ -299,35 +261,6 @@ const levels = [
   }
 
   .search-input:focus {
-    outline: none;
-    border-color: #52682D;
-    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
-  }
-
-  .sort-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .sort-label {
-    color: #52682D;
-    font-weight: 600;
-    font-size: 0.9rem;
-    white-space: nowrap;
-  }
-
-  .sort-select {
-    padding: 0.75rem 1rem;
-    border: 2px solid #c7d8a4;
-    border-radius: 50px;
-    font-size: 0.95rem;
-    background-color: white;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .sort-select:focus {
     outline: none;
     border-color: #52682D;
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
@@ -343,7 +276,7 @@ const levels = [
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
     gap: 1.5rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
   }
 
   :global(.builder-card) {
@@ -518,7 +451,7 @@ const levels = [
     }
 
     .header-icon {
-      width: 80px;
+      width: 70px;
     }
 
     .intro-title {
@@ -526,43 +459,28 @@ const levels = [
     }
 
     .level-selector {
-      padding: 1.25rem 1rem;
+      padding: 0.5rem 0.75rem;
     }
 
     .level-selector__items {
-      gap: 1rem;
+      gap: 0.4rem;
     }
 
-    .level-hex {
-      min-width: 80px;
-      max-width: 110px;
+    .level-chip {
+      padding: 0.4rem 0.6rem;
     }
 
-    .level-hex__icon-wrapper {
-      width: 60px;
-      height: 60px;
+    .level-chip__icon {
+      width: 32px;
+      height: 32px;
     }
 
-    .level-hex__icon {
-      width: 36px;
-      height: 36px;
+    .level-chip__label {
+      font-size: 0.7rem;
     }
 
-    .level-hex__label {
-      font-size: 0.75rem;
-    }
-
-    .controls-row {
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .search-wrapper {
+    .search-input {
       max-width: 100%;
-    }
-
-    .sort-wrapper {
-      justify-content: flex-start;
     }
 
     :global(.builder-grid) {
@@ -572,28 +490,20 @@ const levels = [
 
   @media (max-width: 640px) {
     .level-selector__items {
-      gap: 0.75rem;
+      gap: 0.25rem;
     }
 
-    .level-hex {
-      min-width: 65px;
-      max-width: 85px;
-      padding: 0.5rem;
+    .level-chip {
+      padding: 0.35rem 0.5rem;
     }
 
-    .level-hex__icon-wrapper {
-      width: 50px;
-      height: 50px;
-      border-radius: 12px;
+    .level-chip__icon {
+      width: 28px;
+      height: 28px;
     }
 
-    .level-hex__icon {
-      width: 30px;
-      height: 30px;
-    }
-
-    .level-hex__label {
-      font-size: 0.65rem;
+    .level-chip__label {
+      font-size: 0.6rem;
     }
   }
 </style>
@@ -601,10 +511,7 @@ const levels = [
 <script>
   const buildersData = JSON.parse(document.getElementById('catalogueContent').dataset.builders || '[]');
   const searchInput = document.getElementById('searchInput');
-  const sortSelect = document.getElementById('sortSelect');
   const catalogueContent = document.getElementById('catalogueContent');
-
-  let currentBuilders = [...buildersData];
 
   function getLevelInfo(level) {
     const levels = {
@@ -662,49 +569,19 @@ const levels = [
     catalogueContent.appendChild(grid);
   }
 
-  function sortBuilders(builders, sortBy) {
-    const sorted = [...builders];
-    
-    switch(sortBy) {
-      case 'newest':
-        sorted.sort((a, b) => {
-          const dateA = a.publishedDate ? new Date(a.publishedDate) : new Date(0);
-          const dateB = b.publishedDate ? new Date(b.publishedDate) : new Date(0);
-          return dateB - dateA;
-        });
-        break;
-      case 'oldest':
-        sorted.sort((a, b) => {
-          const dateA = a.publishedDate ? new Date(a.publishedDate) : new Date(0);
-          const dateB = b.publishedDate ? new Date(b.publishedDate) : new Date(0);
-          return dateA - dateB;
-        });
-        break;
-      case 'alphabetical':
-        sorted.sort((a, b) => a.title.localeCompare(b.title));
-        break;
-    }
-    
-    return sorted;
-  }
-
-  function filterAndSort() {
+  function filterBuilders() {
     const searchTerm = searchInput.value.toLowerCase();
-    const sortValue = sortSelect.value;
 
-    let filtered = buildersData.filter(builder => 
+    const filtered = buildersData.filter(builder => 
       builder.title.toLowerCase().includes(searchTerm) ||
       builder.description.toLowerCase().includes(searchTerm) ||
       (builder.tagline && builder.tagline.toLowerCase().includes(searchTerm))
     );
 
-    const sorted = sortBuilders(filtered, sortValue);
-    currentBuilders = sorted;
-    renderBuilders(sorted);
+    renderBuilders(filtered);
   }
 
-  searchInput.addEventListener('input', filterAndSort);
-  sortSelect.addEventListener('change', filterAndSort);
+  searchInput.addEventListener('input', filterBuilders);
 
   // Scroll to top button
   const scrollToTopBtn = document.getElementById('scrollToTop');
@@ -721,5 +598,5 @@ const levels = [
   });
 
   // Initial render
-  filterAndSort();
+  filterBuilders();
 </script>

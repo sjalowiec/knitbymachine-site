@@ -1,0 +1,55 @@
+I’m working on the Skill Builders catalog page of my Knit by Machine Astro site.
+
+Right now this page has:
+- A big hero block ("Skill Builders")
+- A large, tall row of 5 hex buttons (All, Level 1–4)
+- A separate section below with a “Search skill builders…” input AND a “Sort by: Newest” dropdown
+
+This layout feels too tall and spaced out. The selector row on this page should visually match the smaller hex buttons used on my Wizards catalog / “Get knitting” UI, and I don’t need sorting for Skill Builders right now.
+
+Please make the following changes ONLY on the Skill Builders catalog page:
+
+1) SHRINK THE LEVEL SELECTOR ROW
+
+- Find the container that renders the 5 hex buttons:
+  - All
+  - Level 1: Basics
+  - Level 2: Hand Techniques
+  - Level 3: Stitch Patterns
+  - Level 4: Ribber & Double Bed
+
+- Reduce the vertical padding and overall size so this row looks similar to the smaller hex/chip buttons used on:
+  - The “Get knitting” page (Patterns / Tools / Skill Builders selector), OR
+  - The Wizards catalog selector, if there is one.
+
+- Concretely:
+  - Use the same hex button component or Tailwind class combination that is used for those smaller chips (smaller padding, icon size, border radius, etc.).
+  - Decrease the top/bottom padding on the container that wraps the 5 buttons (for example, change large `py-8` or similar to something closer to `py-4` or whatever matches the other selector bars).
+  - Keep the labels under each hex, but tighten the spacing between icon and label so the whole block is more compact.
+
+2) REMOVE THE SORT DROPDOWN FOR SKILL BUILDERS
+
+- In the “controls” row below the selector, remove the “Sort by: Newest” dropdown entirely for the Skill Builders catalog.
+- Leave the search input in place; I still want to be able to search skill builders by name or text.
+- After removing the sort dropdown:
+  - Center or left-align the search bar in a way that looks balanced and consistent with the rest of the site.
+  - On larger screens, it’s fine for the search bar to stretch across most of the width like on other pages.
+
+3) KEEP BEHAVIOR THE SAME (EXCEPT SORTING)
+
+- Do NOT change the functionality of:
+  - The All / Level 1 / Level 2 / Level 3 / Level 4 links (they should still navigate to the correct pages).
+  - The search behavior (it should still filter Skill Builders as before).
+- Only remove the sort dropdown and any associated logic for Skill Builders. It’s OK if the Skill Builders list is simply in its default order.
+
+4) STYLE CONSISTENCY
+
+- Make sure the updated selector row:
+  - Uses the same font weights, border styles, hover/focus states, and icon sizes as other hex/chip selectors already in the project.
+  - Looks visually lighter and takes up less vertical space, more like the wizards/patterns/tools selectors.
+
+When you’re done, the Skill Builders catalog should show:
+- Hero block
+- A compact 5-hex selector row (All + Level 1–4) styled like my other smaller hex buttons
+- A single “Search skill builders…” input under that area (no sort dropdown)
+- The grid of Skill Builder cards below, unchanged in content.
