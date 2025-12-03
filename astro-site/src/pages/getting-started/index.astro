@@ -53,7 +53,56 @@ const pageDescription = 'A simple starting point to get your knitting machine se
         ></iframe>
       </div>
 
-      <button id="finish" class="kbm-confetti-btn" data-testid="button-next-step">I'm ready for my next step!</button>
+      <button id="getting-started-complete-btn" class="kbm-confetti-btn" data-testid="button-next-step">I'm ready for my next step!</button>
+
+      <!-- WHAT'S NEXT SECTION (hidden until button click) -->
+      <section
+        id="whats-next"
+        class="hidden mt-16 border-t border-slate-200 pt-10"
+        data-testid="section-whats-next"
+      >
+        <h2 class="text-2xl font-semibold text-slate-900 mb-3">
+          What's next with your machine?
+        </h2>
+        <p class="text-slate-600 mb-6 max-w-xl">
+          You've taken a solid first step. From here, you can get quick answers, build skills, or reach out for more help.
+        </p>
+
+        <div class="grid gap-4 md:grid-cols-3">
+          <a
+            href="/skill-builders"
+            class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+            data-testid="link-skill-builders"
+          >
+            <h3 class="text-lg font-semibold mb-1">Explore Skill Builders</h3>
+            <p class="text-sm text-slate-600">
+              Start a small practice exercise to get more confident with your machine.
+            </p>
+          </a>
+
+          <a
+            href="/ana-catalog"
+            class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+            data-testid="link-ana"
+          >
+            <h3 class="text-lg font-semibold mb-1">Browse ANA</h3>
+            <p class="text-sm text-slate-600">
+              See clear answers to common machine knitting questions.
+            </p>
+          </a>
+
+          <a
+            href="/contact"
+            class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+            data-testid="link-contact"
+          >
+            <h3 class="text-lg font-semibold mb-1">Contact Sue</h3>
+            <p class="text-sm text-slate-600">
+              Need something more specific? Send Sue a note on the contact page.
+            </p>
+          </a>
+        </div>
+      </section>
     </section>
   </main>
 
@@ -62,14 +111,27 @@ const pageDescription = 'A simple starting point to get your knitting machine se
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       // Confetti button
-      const finishBtn = document.getElementById('finish');
+      const finishBtn = document.getElementById('getting-started-complete-btn');
+      const whatsNextSection = document.getElementById('whats-next');
+      
       if (finishBtn) {
         finishBtn.addEventListener('click', () => {
+          // Trigger confetti
           confetti({
             particleCount: 120,
             spread: 70,
             origin: { y: 0.7 }
           });
+          
+          // Reveal the "What's next?" section and scroll to it
+          if (whatsNextSection) {
+            whatsNextSection.classList.remove('hidden');
+            
+            // Small delay to let the confetti start, then scroll
+            setTimeout(() => {
+              whatsNextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+          }
         });
       }
     });

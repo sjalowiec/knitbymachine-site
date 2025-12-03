@@ -1,0 +1,145 @@
+You are editing my Astro + Tailwind project.
+
+GOAL
+On my Getting Started page:
+- Keep my existing big green “completion” button exactly as it is (including its confetti behavior).
+- When that button is clicked, reveal a hidden “What’s next?” section with 3 cards:
+  1) Explore Skill Builders
+  2) Browse ANA (Ask ’n Answer)
+  3) Contact Sue
+- Smoothly scroll to that section after it becomes visible.
+
+Do NOT remove or change any existing confetti code. Just add the “reveal next steps” behavior.
+
+--------------------------------------------------
+STEP 1 — OPEN THE GETTING STARTED PAGE
+
+Open the Astro page that contains my Getting Started helper and the big green button, for example:
+- src/pages/getting-started.astro
+or
+- src/pages/learn/getting-started.astro
+
+Use the correct file in my project.
+
+--------------------------------------------------
+STEP 2 — TAG THE BIG GREEN BUTTON WITH AN ID
+
+Find the big green “completion” button under the chatbot (the one that currently triggers confetti).
+
+1. Add an id attribute: id="getting-started-complete-btn"
+2. IMPORTANT: Keep any existing onclick or other attributes exactly as they are.
+
+For example, if it currently looks like this:
+
+<button
+  class="...existing classes..."
+  type="button"
+  onclick="startConfetti()"
+>
+  I’m ready for my next step
+</button>
+
+Change it to:
+
+<button
+  id="getting-started-complete-btn"
+  class="...existing classes..."
+  type="button"
+  onclick="startConfetti()"
+>
+  I’m ready for my next step
+</button>
+
+Only add the id, do NOT remove or replace the onclick.
+
+--------------------------------------------------
+STEP 3 — ADD A HIDDEN “WHAT’S NEXT?” SECTION
+
+Below the button, add this section markup:
+
+<section
+  id="whats-next"
+  class="hidden mt-16 border-t border-slate-200 pt-10"
+>
+  <h2 class="text-2xl font-semibold text-slate-900 mb-3">
+    What’s next with your machine?
+  </h2>
+  <p class="text-slate-600 mb-6 max-w-xl">
+    You’ve taken a solid first step. From here, you can get quick answers, build skills, or reach out for more help.
+  </p>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    <a
+      href="/knit/skill-builders"
+      class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+    >
+      <h3 class="text-lg font-semibold mb-1">Explore Skill Builders</h3>
+      <p class="text-sm text-slate-600">
+        Start a small practice exercise to get more confident with your machine.
+      </p>
+    </a>
+
+    <a
+      href="/learn/ask-n-answer"
+      class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+    >
+      <h3 class="text-lg font-semibold mb-1">Browse ANA</h3>
+      <p class="text-sm text-slate-600">
+        See clear answers to common machine knitting questions.
+      </p>
+    </a>
+
+    <a
+      href="/contact"
+      class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+    >
+      <h3 class="text-lg font-semibold mb-1">Contact Sue</h3>
+      <p class="text-sm text-slate-600">
+        Need something more specific? Send Sue a note on the contact page.
+      </p>
+    </a>
+  </div>
+</section>
+
+If your actual routes differ, adjust the href values but keep the structure.
+
+--------------------------------------------------
+STEP 4 — ADD A SMALL SCRIPT TO REVEAL THE SECTION ON BUTTON CLICK
+
+At the bottom of the same Astro page (but outside the frontmatter), add this <script> block.
+If a <script> block already exists on this page, you may append this code to it instead of creating a second one.
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const completeBtn = document.getElementById("getting-started-complete-btn");
+    const whatsNextSection = document.getElementById("whats-next");
+
+    if (!completeBtn || !whatsNextSection) return;
+
+    // Add extra behavior on top of any existing onclick/confetti
+    completeBtn.addEventListener("click", function () {
+      // Reveal the hidden section
+      whatsNextSection.classList.remove("hidden");
+
+      // Smooth scroll to it
+      whatsNextSection.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  });
+</script>
+
+IMPORTANT:
+- Do NOT remove the button’s existing onclick; this listener is in addition to it.
+- Do NOT remove the "hidden" class from the section in the HTML; it should be removed only by this script.
+
+--------------------------------------------------
+STEP 5 — VERIFY
+
+1) Run the site and open the Getting Started page.
+2) Confirm on initial load:
+   - The big green button is visible.
+   - The “What’s next?” section is NOT visible (it should be hidden).
+3) Click the big green button:
+   - Existing confetti behavior should still happen.
+   - The “What’s next?” section should appear and the page should scroll down to it.
+
+END OF INSTRUCTIONS
