@@ -1,0 +1,177 @@
+You are editing my Astro + Tailwind project.
+
+GOAL  
+On my Getting Started page, I want:
+1. A “Complete” button that is HIDDEN at first.
+2. The button should only appear after my MindPal Getting Started agent finishes its conversation (I’ll hook the callback on the MindPal side).
+3. When the user clicks the button:
+   - Trigger an existing or new confetti animation.
+   - Smooth scroll down to a “What’s Next?” section with 3 simple options:
+     • Get quick answers (ANA)
+     • Build skills (Skill Builders)
+     • Contact Sue
+
+Please make the following changes.
+
+---
+
+1) EDIT THE GETTING STARTED PAGE
+
+Open the Getting Started page. It will be something like:
+
+- src/pages/getting-started.astro
+OR
+- src/pages/learn/getting-started.astro
+
+Use whichever file already contains my Getting Started helper chatbot embed.
+
+Right *below* the chatbot block, add this hidden button:
+
+```astro
+<div class="mt-8 flex justify-center">
+  <button
+    id="getting-started-complete-btn"
+    class="hidden px-6 py-3 rounded-full text-base font-medium bg-kbm-green text-white shadow-md hover:shadow-lg transition focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-kbm-green"
+    type="button"
+    onclick="handleGettingStartedComplete()"
+  >
+    I’m ready for my next step
+  </button>
+</div>
+NOTE:
+
+If bg-kbm-green doesn’t exist, use a suitable existing green utility class instead.
+
+ADD THE “WHAT’S NEXT?” SECTION
+
+On the same page, below the chatbot + button area, add this section:
+
+astro
+Copy code
+<section
+  id="whats-next"
+  class="mt-16 border-t border-slate-200 pt-10"
+>
+  <h2 class="text-2xl font-semibold text-slate-900 mb-3">
+    What’s next with your machine?
+  </h2>
+  <p class="text-slate-600 mb-6 max-w-xl">
+    You’ve taken a solid first step. From here, you can get quick answers, build skills, or reach out for more help.
+  </p>
+
+  <div class="grid gap-4 md:grid-cols-3">
+    <a
+      href="/learn/ask-n-answer"
+      class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+    >
+      <h3 class="text-lg font-semibold mb-1">Get quick answers (ANA)</h3>
+      <p class="text-sm text-slate-600">
+        Browse clear answers to common machine knitting questions.
+      </p>
+    </a>
+
+    <a
+      href="/knit/skill-builders"
+      class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+    >
+      <h3 class="text-lg font-semibold mb-1">Build skills (Skill Builders)</h3>
+      <p class="text-sm text-slate-600">
+        Start a small practice exercise to get more confident with your machine.
+      </p>
+    </a>
+
+    <a
+      href="/contact"
+      class="block rounded-xl border border-slate-200 bg-white p-4 shadow-sm hover:shadow-md transition"
+    >
+      <h3 class="text-lg font-semibold mb-1">Need more help? (Contact Sue)</h3>
+      <p class="text-sm text-slate-600">
+        Have something more specific? Send Sue a note on the contact page.
+      </p>
+    </a>
+  </div>
+</section>
+Adjust the href values to match my actual ANA, Skill Builders, and Contact URLs.
+
+ADD SCRIPT FOR BUTTON VISIBILITY + CONFETTI + SCROLL
+
+On the same Astro page, add a <script> block at the bottom of the file, inside the HTML (NOT in the frontmatter). This script should:
+
+Expose a global function window.showGettingStartedCompleteButton() that reveals the button when MindPal calls it.
+
+Provide handleGettingStartedComplete() which:
+
+Triggers confetti (uses existing triggerConfetti if present, otherwise a basic fallback).
+
+Smooth-scrolls to the “What’s Next?” section.
+
+Add this:
+
+astro
+Copy code
+<script>
+  // If you already have a confetti library / function, reuse it by replacing triggerConfetti()
+  function triggerConfettiFallback() {
+    // Very simple fallback: use the Web Animations API on the body (no external lib)
+    // You can replace this with canvas-confetti or your existing confetti implementation.
+    document.body.animate(
+      [
+        { transform: 'translateY(0px)' },
+        { transform: 'translateY(-10px)' },
+        { transform: 'translateY(0px)' },
+      ],
+      { duration: 300, iterations: 1 }
+    );
+  }
+
+  function handleGettingStartedComplete() {
+    // Trigger confetti: use existing function if defined, otherwise fallback
+    if (typeof window !== 'undefined') {
+      if (typeof window.triggerConfetti === 'function') {
+        window.triggerConfetti();
+      } else {
+        triggerConfettiFallback();
+      }
+
+      // Smooth scroll to the "What’s Next?" section
+      const whatsNext = document.getElementById('whats-next');
+      if (whatsNext) {
+        whatsNext.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+  }
+
+  // Expose the click handler to the button's inline onclick
+  window.handleGettingStartedComplete = handleGettingStartedComplete;
+
+  // This function will be called by the MindPal agent when it finishes.
+  // I will wire this up on the MindPal side.
+  window.showGettingStartedCompleteButton = function () {
+    const btn = document.getElementById('getting-started-complete-btn');
+    if (btn) {
+      btn.classList.remove('hidden');
+    }
+  };
+</script>
+MINDPAL CALLBACK HOOK (INFO FOR ME)
+
+Do NOT hard-code MindPal specifics here. Just make sure the global function exists.
+
+I will go into my MindPal / chatbot configuration and, in the “on conversation finished / on flow completed” callback, I will call:
+
+js
+Copy code
+window.showGettingStartedCompleteButton?.();
+This will reveal the button only when the agent is done.
+
+SUMMARY
+
+Hidden button with id "getting-started-complete-btn" below the chatbot.
+
+“What’s Next?” section with id "whats-next" and 3 cards.
+
+Script that:
+• Exposes window.showGettingStartedCompleteButton() to show the button.
+• Handles confetti + smooth scroll on click via handleGettingStartedComplete().
+
+Please implement all of the above and ensure the page builds without TypeScript / ESLint errors.
