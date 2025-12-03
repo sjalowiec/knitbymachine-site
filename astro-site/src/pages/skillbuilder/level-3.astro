@@ -3,7 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const LEVEL = 3;
 const LEVEL_TITLE = "Stitch Patterns";
-const LEVEL_INTRO = "Ready for more texture and interest? This level focuses on stitch patterns—tuck, slip, lace, and more—so you can add variety to your knitting.";
+const LEVEL_SUBHEAD = "Add texture, variety, and interest to your knitting.";
+const LEVEL_DESCRIPTION = "Explore tuck, slip, lace, and other stitch effects—all presented in simple, structured practice steps. These Skill Builders help you add personality and dimension to your knitting while keeping the learning curve manageable.";
 
 let builders = [];
 let errorMessage = '';
@@ -54,7 +55,7 @@ try {
 }
 
 const title = `${LEVEL_TITLE} - Skill Builders`;
-const description = LEVEL_INTRO;
+const description = LEVEL_SUBHEAD;
 ---
 
 <BaseLayout {title} {description}>
@@ -75,7 +76,8 @@ const description = LEVEL_INTRO;
       <div class="hero-content">
         <span class="level-pill">Level {LEVEL}</span>
         <h1 class="hero-title">{LEVEL_TITLE}</h1>
-        <p class="hero-intro">{LEVEL_INTRO}</p>
+        <p class="hero-subhead">{LEVEL_SUBHEAD}</p>
+        <p class="hero-description">{LEVEL_DESCRIPTION}</p>
       </div>
     </div>
 
@@ -192,9 +194,18 @@ const description = LEVEL_INTRO;
     font-weight: 700;
   }
 
-  .hero-intro {
+  .hero-subhead {
+    color: #52682D;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+    max-width: 700px;
+  }
+
+  .hero-description {
     color: #555;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.7;
     margin: 0;
     max-width: 700px;
