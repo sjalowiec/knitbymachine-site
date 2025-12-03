@@ -3,7 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const LEVEL = 2;
 const LEVEL_TITLE = "Hand Techniques";
-const LEVEL_INTRO = "When you're comfortable with the basics, these hand techniques help you shape, decrease, increase, and work more intentionally with your fabric.";
+const LEVEL_SUBHEAD = "Shape your fabric and build practical control.";
+const LEVEL_DESCRIPTION = "This level introduces increases, decreases, and hand-manipulation techniques you'll use in almost every project. These guided steps help you understand how your machine responds so you can create fabric that behaves the way you want.";
 
 let builders = [];
 let errorMessage = '';
@@ -54,7 +55,7 @@ try {
 }
 
 const title = `${LEVEL_TITLE} - Skill Builders`;
-const description = LEVEL_INTRO;
+const description = LEVEL_SUBHEAD;
 ---
 
 <BaseLayout {title} {description}>
@@ -75,7 +76,8 @@ const description = LEVEL_INTRO;
       <div class="hero-content">
         <span class="level-pill">Level {LEVEL}</span>
         <h1 class="hero-title">{LEVEL_TITLE}</h1>
-        <p class="hero-intro">{LEVEL_INTRO}</p>
+        <p class="hero-subhead">{LEVEL_SUBHEAD}</p>
+        <p class="hero-description">{LEVEL_DESCRIPTION}</p>
       </div>
     </div>
 
@@ -192,9 +194,18 @@ const description = LEVEL_INTRO;
     font-weight: 700;
   }
 
-  .hero-intro {
+  .hero-subhead {
+    color: #52682D;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+    max-width: 700px;
+  }
+
+  .hero-description {
     color: #555;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.7;
     margin: 0;
     max-width: 700px;
