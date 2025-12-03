@@ -1,0 +1,115 @@
+You are updating the Knit by Machine home page (`src/pages/index.astro`).
+
+Goal:
+Replace the single floating hex between the hero and the cards with a "journey track":
+- A soft, horizontal line above the four cards.
+- A small hex icon that travels from left to right along that line once when the page loads.
+
+Please do the following:
+
+1. Remove the existing standalone floating hex between the hero and the 
+   "Where are you right now?" heading (and any `.floating-hex` CSS you added before).
+
+2. Around the heading + cards section, create a wrapper like:
+
+   <section class="journey-section">
+     <h2>Where are you right now?</h2>
+     <p>Pick the path that fits you best.</p>
+
+     <div class="journey-track" aria-hidden="true">
+       <div class="journey-line"></div>
+       <div class="journey-hex">
+         <!-- Use the existing hex icon SVG or KBM icon component here -->
+       </div>
+     </div>
+
+     <!-- existing cards container goes here -->
+   </section>
+
+   - Keep the existing h2 and paragraph; just wrap them as shown.
+   - Place the `.journey-track` directly above the cards container.
+
+3. Add CSS for the line and the traveling hex.
+   You can put this in the same file in a `<style>` block or in the appropriate global stylesheet.
+
+   ```css
+   .journey-section {
+     margin-top: 3rem;
+   }
+
+   .journey-track {
+     position: relative;
+     max-width: 960px;
+     margin: 1.25rem auto 1.5rem;
+     height: 24px;
+   }
+
+   .journey-line {
+     position: absolute;
+     top: 50%;
+     left: 5%;
+     right: 5%;
+     height: 5px; /* "thick line behind the cards" */
+     background: #d8e0cb; /* soft KBM-ish neutral */
+     border-radius: 999px;
+     z-index: 0;
+   }
+
+   .journey-hex {
+     position: absolute;
+     top: 50%;
+     left: 5%;
+     transform: translate(-50%, -50%);
+     z-index: 1;
+     animation: journeyTravel 3s ease-out 0.5s 1 forwards;
+     opacity: 0.95;
+   }
+
+   @keyframes journeyTravel {
+     0%   { left: 5%; }
+     100% { left: 95%; }
+   }
+
+   /* Make sure the cards sit visually "on" the line */
+   .journey-section .cards-container {
+     position: relative;
+     z-index: 2;
+   }
+
+   @media (max-width: 640px) {
+     .journey-track {
+       margin-bottom: 1rem;
+     }
+     .journey-line {
+       left: 8%;
+       right: 8%;
+     }
+   }
+Replace .cards-container in the CSS with whatever class is used for your
+four card wrapper (e.g. .journey-cards, .phase-cards, etc.).
+
+The line should appear behind/between the cards visually, but not overlap text.
+
+For the hex icon inside .journey-hex:
+
+Use your existing hex icon component if possible, in its outline style.
+
+Stroke / main color should be KBM green (#52682D).
+
+Keep it small (around 24–32px).
+
+Accessibility:
+
+Keep aria-hidden="true" on .journey-track.
+
+Do not change focus order or add any interactive behavior; this is purely decorative.
+
+Return the updated Astro snippet for:
+
+the <section class="journey-section">...</section> block
+
+and the CSS you added.
+Do not modify anything else on the home page.
+
+pgsql
+Copy code

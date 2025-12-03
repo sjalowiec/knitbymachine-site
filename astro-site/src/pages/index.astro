@@ -43,18 +43,20 @@ import Footer from "../components/footer.astro";
         </div>
       </section>
 
-      <!-- FLOATING HEX CUE -->
-      <div class="floating-hex" aria-hidden="true">
-        <svg width="32" height="36" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M16 0L30.9282 9V27L16 36L1.0718 27V9L16 0Z" stroke="#52682D" stroke-width="1.5" fill="none"/>
-        </svg>
-      </div>
-
       <!-- WHERE ARE YOU RIGHT NOW? SECTION -->
-      <section id="where-are-you" class="kbm-where-section">
+      <section id="where-are-you" class="kbm-where-section journey-section">
         <div class="kbm-section-header">
           <h2>Where are you right now?</h2>
           <p class="kbm-section-subtitle">Pick the path that fits you best.</p>
+        </div>
+
+        <div class="journey-track" aria-hidden="true">
+          <div class="journey-line"></div>
+          <div class="journey-hex">
+            <svg width="28" height="32" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M16 0L30.9282 9V27L16 36L1.0718 27V9L16 0Z" stroke="#52682D" stroke-width="1.5" fill="none"/>
+            </svg>
+          </div>
         </div>
 
         <div class="kbm-hex-grid">
@@ -653,19 +655,58 @@ import Footer from "../components/footer.astro";
     }
   }
 
-  /* ========== FLOATING HEX ANIMATION ========== */
-  .floating-hex {
-    display: flex;
-    justify-content: center;
-    margin: 1.5rem 0;
-    animation: floatDown 2.5s ease-in-out infinite;
-    opacity: 0.8;
+  /* ========== JOURNEY TRACK ANIMATION ========== */
+  .journey-section {
+    margin-top: 1rem;
   }
 
-  @keyframes floatDown {
-    0%   { transform: translateY(-6px); opacity: 0.8; }
-    50%  { transform: translateY(0px); opacity: 1; }
-    100% { transform: translateY(-6px); opacity: 0.8; }
+  .journey-track {
+    position: relative;
+    max-width: 960px;
+    margin: 1.25rem auto 1.5rem;
+    height: 24px;
+  }
+
+  .journey-line {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 5px;
+    background: #d8e0cb;
+    border-radius: 999px;
+    z-index: 0;
+    transform: translateY(-50%);
+  }
+
+  .journey-hex {
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    animation: journeyTravel 3s ease-out 0.5s 1 forwards;
+    opacity: 0.95;
+  }
+
+  @keyframes journeyTravel {
+    0%   { left: 5%; }
+    100% { left: 95%; }
+  }
+
+  .journey-section .kbm-hex-grid {
+    position: relative;
+    z-index: 2;
+  }
+
+  @media (max-width: 640px) {
+    .journey-track {
+      margin-bottom: 1rem;
+    }
+    .journey-line {
+      left: 8%;
+      right: 8%;
+    }
   }
 
   /* ========== FIRST CARD PULSE ANIMATION ========== */
