@@ -1,0 +1,113 @@
+You are editing my Knit by Machine Astro site. I’ve just added a numeric "level" field to my Skill Builder JSON, and now I want 4 new Level landing pages that filter by that field.
+
+PROJECT CONTEXT
+
+- Tech stack: Astro + Tailwind + my custom KBM components.
+- There is already a Skill Builders catalog page that lists all Skill Builders.
+- There is a JSON (or similar data source) that defines Skill Builders. Each item now has a numeric "level" property with values 1, 2, 3, or 4.
+- I have a reusable card component that is already used to display Skill Builders on the catalog page. Please reuse that.
+
+YOUR TASK
+
+Create FOUR new landing pages, one for each level:
+
+- Level 1: Basics
+- Level 2: Hand Techniques
+- Level 3: Stitch Patterns
+- Level 4: Ribber & Double Bed
+
+ROUTING & FILES
+
+1. Inspect the existing Skill Builders catalog page to see where it lives in the project (likely under src/pages or a similar directory).
+2. Create four new Astro pages with URLs like:
+
+   - /skill-builders/level-1/
+   - /skill-builders/level-2/
+   - /skill-builders/level-3/
+   - /skill-builders/level-4/
+
+   Use the existing routing structure and naming conventions in the project. For example, if the skill builders catalog is at src/pages/skill-builders/index.astro, then create:
+   - src/pages/skill-builders/level-1.astro
+   - src/pages/skill-builders/level-2.astro
+   - src/pages/skill-builders/level-3.astro
+   - src/pages/skill-builders/level-4.astro
+
+PAGE LAYOUT (ALL FOUR)
+
+Each Level page should:
+
+1. Use the same base layout / shell as the Skill Builders catalog page (header, footer, container widths, etc.).
+
+2. Have a hero section at the top with:
+
+   - A small breadcrumb-style link at the top:
+     "← Back to Skill Builders" linking to the main Skill Builders catalog page.
+   - A main title that is the plain English name:
+     - Level 1 page: "Basics"
+     - Level 2 page: "Hand Techniques"
+     - Level 3 page: "Stitch Patterns"
+     - Level 4 page: "Ribber & Double Bed"
+   - A small pill or subtitle that shows the level, for example:
+     "Level 1", "Level 2", etc.
+   - A short intro paragraph under the title explaining who this level is for and what they’ll get.
+
+   Use Tailwind classes consistent with the existing hero on the Skill Builders catalog page (font sizes, margins, etc.).
+
+3. Below the hero, render a grid of Skill Builder cards filtered by the "level" field:
+
+   - Import the same data source used on the Skill Builders catalog page.
+   - Filter the items by `level === 1` for Level 1, `level === 2` for Level 2, and so on.
+   - Use the same Skill Builder card component (or same HTML structure) that the catalog uses.
+   - Use the same grid layout (columns, gaps, responsive behavior) as the Skill Builders catalog page.
+
+4. Add a section heading above the grid such as:
+
+   - "Skills in this level"
+
+   Use existing heading styles (font size, weight, spacing) for consistency.
+
+CONTENT GUIDANCE (SIMPLE PLACEHOLDERS ARE OK)
+
+Use simple placeholder copy for now:
+
+- Level 1 page:
+  Title: "Basics"
+  Subtitle / pill: "Level 1"
+  Paragraph: Something like:
+  "Start here. These foundational skills are perfect if you're new to machine knitting or returning after a long break. One small, confidence-building skill at a time."
+
+- Level 2 page:
+  Title: "Hand Techniques"
+  Subtitle: "Level 2"
+  Paragraph:
+  "When you’re comfortable with the basics, these hand techniques help you shape, decrease, increase, and work more intentionally with your fabric."
+
+- Level 3 page:
+  Title: "Stitch Patterns"
+  Subtitle: "Level 3"
+  Paragraph:
+  "Ready for more texture and interest? This level focuses on stitch patterns—tuck, slip, lace, and more—so you can add variety to your knitting."
+
+- Level 4 page:
+  Title: "Ribber & Double Bed"
+  Subtitle: "Level 4"
+  Paragraph:
+  "For knitters using a ribber or double-bed machine, these skills introduce working with both beds to create ribbing, double knits, and more advanced fabrics."
+
+GENERAL REQUIREMENTS
+
+- Do not break existing imports or layouts.
+- Reuse existing layout components, container classes, and card components wherever possible.
+- Ensure all four pages build successfully and can be visited at their respective URLs without errors.
+- Keep styles consistent with the existing Skill Builders catalog page and the rest of the site.
+
+When you’re done, I should be able to visit:
+- /skill-builders/level-1/
+- /skill-builders/level-2/
+- /skill-builders/level-3/
+- /skill-builders/level-4/
+
+and see:
+- A hero with title, level pill, and intro paragraph.
+- A list/grid of Skill Builders filtered by the correct numeric level.
+- A link back to the main Skill Builders catalog.
