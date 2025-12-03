@@ -3,7 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const LEVEL = 4;
 const LEVEL_TITLE = "Ribber & Double Bed";
-const LEVEL_INTRO = "For knitters using a ribber or double-bed machine, these skills introduce working with both beds to create ribbing, double knits, and more advanced fabrics.";
+const LEVEL_SUBHEAD = "Expand your machine with two-bed knitting.";
+const LEVEL_DESCRIPTION = "Learn the fundamentals of working with a ribber or double bed, including ribbing, double-knit fabrics, and more advanced structures. These small, skill-focused exercises open up a whole new range of possibilities at your machine.";
 
 let builders = [];
 let errorMessage = '';
@@ -54,7 +55,7 @@ try {
 }
 
 const title = `${LEVEL_TITLE} - Skill Builders`;
-const description = LEVEL_INTRO;
+const description = LEVEL_SUBHEAD;
 ---
 
 <BaseLayout {title} {description}>
@@ -75,7 +76,8 @@ const description = LEVEL_INTRO;
       <div class="hero-content">
         <span class="level-pill">Level {LEVEL}</span>
         <h1 class="hero-title">{LEVEL_TITLE}</h1>
-        <p class="hero-intro">{LEVEL_INTRO}</p>
+        <p class="hero-subhead">{LEVEL_SUBHEAD}</p>
+        <p class="hero-description">{LEVEL_DESCRIPTION}</p>
       </div>
     </div>
 
@@ -192,9 +194,18 @@ const description = LEVEL_INTRO;
     font-weight: 700;
   }
 
-  .hero-intro {
+  .hero-subhead {
+    color: #52682D;
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.5;
+    margin: 0 0 0.75rem 0;
+    max-width: 700px;
+  }
+
+  .hero-description {
     color: #555;
-    font-size: 1.1rem;
+    font-size: 1rem;
     line-height: 1.7;
     margin: 0;
     max-width: 700px;
