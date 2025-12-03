@@ -609,6 +609,9 @@ const levels = [
   const buildersData = JSON.parse(document.getElementById('catalogueContent').dataset.builders || '[]');
   const searchInput = document.getElementById('searchInput');
   const catalogueContent = document.getElementById('catalogueContent');
+  const levelChips = document.querySelectorAll('.level-chip');
+  
+  let currentLevel = 'all';
 
   function getLevelInfo(level) {
     const levels = {
@@ -637,6 +640,7 @@ const levels = [
     builders.forEach(builder => {
       const card = document.createElement('div');
       card.className = 'builder-card';
+      card.dataset.level = builder.level;
       
       const levelInfo = getLevelInfo(builder.level);
       const levelBadgeHtml = levelInfo 
@@ -665,7 +669,15 @@ const levels = [
   function filterBuilders() {
     const searchTerm = searchInput.value.toLowerCase();
 
-    const filtered = buildersData.filter(builder => 
+    let filtered = buildersData;
+    
+    // Filter by level first
+    if (currentLevel !== 'all') {
+      filtered = filtered.filter(builder => String(builder.level) === currentLevel);
+    }
+    
+    // Then filter by search term
+    filtered = filtered.filter(builder => 
       builder.title.toLowerCase().includes(searchTerm) ||
       builder.description.toLowerCase().includes(searchTerm) ||
       (builder.tagline && builder.tagline.toLowerCase().includes(searchTerm))
@@ -673,6 +685,21 @@ const levels = [
 
     renderBuilders(filtered);
   }
+
+  // Level chip click handlers
+  levelChips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      const level = chip.dataset.level;
+      
+      // Update active state on all chips
+      levelChips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      
+      // Update current level and re-filter
+      currentLevel = level;
+      filterBuilders();
+    });
+  });
 
   searchInput.addEventListener('input', filterBuilders);
 
