@@ -1,0 +1,115 @@
+You’re working in my Knit by Machine Astro/Tailwind project.
+
+GOAL  
+Create TWO new landing pages for my wizard “sorts”:
+1) Tools
+2) Patterns
+
+IMPORTANT:
+- Do NOT change the existing Wizard Catalog page or chip behavior.
+- Do NOT change the existing Smart Guides landing page.
+- Reuse the SAME layout and styling as the Smart Guides landing page (hero + intro + simple body + CTA).
+- Only create new pages with new copy.
+
+-----------------------------
+1. Use Smart Guides landing as the template
+-----------------------------
+1. Find the existing Smart Guides landing page file. It might be something like:
+   - src/pages/smart-guides/index.astro
+   - or src/pages/wizards/smart-guides.astro
+   - or similar.
+
+2. Identify its structure:
+   - Hero section (headline, subhead, short description)
+   - One or more content sections
+   - A call-to-action button that links to the wizard catalog
+
+We will reuse this structure and styling for the new pages.
+
+-----------------------------
+2. Create Tools landing page
+-----------------------------
+1. Create a new page file, e.g.:
+   - src/pages/tools/index.astro
+   or, if it fits my routing better:
+   - src/pages/wizards/tools/index.astro
+
+2. Use the SAME layout and classes as the Smart Guides landing page, just change the text content.
+
+Use this content:
+
+- H1:
+  "Machine-knitting tools that do the math for you"
+
+- Subhead:
+  "Let the wizards handle the numbers so you can stay at the machine."
+
+- Short description paragraph (under hero):
+  "Knit by Machine tools turn the “fussy bits” into clear, simple steps. You choose your yarn, gauge, and size; the wizards take care of the shaping, counts, and measurements. You get exactly what you need for your machine, without staring at a spreadsheet."
+
+- Optional bullet list section title:
+  "What these tools can help you do"
+
+- Bullets:
+  - "Plan shaping without a calculator"
+  - "Adjust patterns to your gauge"
+  - "Resize projects for different recipients"
+  - "Test ideas before you cast on"
+
+- CTA button text:
+  "Browse all tools"
+
+- CTA button link:
+  Point this to my existing wizard catalog page (whatever route is currently used).
+  Example: href="/wizards" (adjust to my actual route).
+
+-----------------------------
+3. Create Patterns landing page
+-----------------------------
+1. Create a new page file, e.g.:
+   - src/pages/patterns/index.astro
+   or:
+   - src/pages/wizards/patterns/index.astro
+
+2. Again, reuse the SAME structure and classes from the Smart Guides landing page.
+
+Use this content:
+
+- H1:
+  "Custom-fit patterns for your knitting machine"
+
+- Subhead:
+  "Tell the wizard what you want to knit — get a plan that fits your yarn, gauge, and style."
+
+- Short description:
+  "Pattern wizards help you move from “I’d love to make this” to “Here’s exactly how.” You set the basics — size, style, yarn, and gauge — and the wizard builds a roadmap you can follow at the machine. No guessing, no rewriting hand-knitting patterns on the fly."
+
+- Optional bullet list section title:
+  "What you can use these for"
+
+- Bullets:
+  - "Simple, everyday sweaters"
+  - "Blankets in the sizes you actually want"
+  - "Hats, scarves, and quick gifts"
+  - "Practice projects that build your confidence"
+
+- CTA button text:
+  "Browse all pattern wizards"
+
+- CTA button link:
+  Same wizard catalog route as above.
+
+-----------------------------
+4. Keep everything visually consistent
+-----------------------------
+- Use the same wrapper, spacing, fonts, and alignment as the Smart Guides landing page.
+- Do NOT alter global styles.
+- Do NOT change the Smart Guides page itself.
+
+-----------------------------
+5. Show me your changes
+-----------------------------
+When finished, show:
+- The new Tools landing page file path and code.
+- The new Patterns landing page file path and code.
+- Confirm that the wizard catalog page remains unchanged and still works with filter chips.
