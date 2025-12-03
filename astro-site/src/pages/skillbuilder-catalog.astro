@@ -690,13 +690,21 @@ const levels = [
   levelChips.forEach(chip => {
     chip.addEventListener('click', () => {
       const level = chip.dataset.level;
+      const isAlreadyActive = chip.classList.contains('active');
       
-      // Update active state on all chips
+      // Remove active from all chips
       levelChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
       
-      // Update current level and re-filter
-      currentLevel = level;
+      // Toggle behavior: if clicking already-active chip, reset to 'all'
+      if (isAlreadyActive && level !== 'all') {
+        currentLevel = 'all';
+        // Set active on the 'All' chip
+        document.querySelector('.level-chip[data-level="all"]').classList.add('active');
+      } else {
+        chip.classList.add('active');
+        currentLevel = level;
+      }
+      
       filterBuilders();
     });
   });
