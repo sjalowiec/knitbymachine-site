@@ -1,0 +1,67 @@
+{
+"slug": "swatch-12-cable-sampler",
+"title": "Cable Sampler with Mock Rib Hem and Serpentine Panel",
+"description": "Knit a cable sampler swatch that combines a mock rib hem, three classic cable types, and a serpentine cable panel with a twined contrast cord so you can practice planning, crossing, and finishing cables neatly on your machine. ",
+"tagline": "Practice three cable styles plus a showpiece serpentine cable.",
+"level": 2,
+"tags": ["cables", "hand manipulation", "mock rib", "texture", "intermediate"],
+"prepChecklist": [
+"Choose a smooth, light colored yarn that shows cable texture clearly and works well at a medium tension on your machine.",
+"Gather a contrasting yarn to use later as a decorative cord through the serpentine cable.",
+"Have your cable tools or transfer tools ready for 1 x 1, 2 x 2, and 3 x 3 cable crosses.",
+"Review how to work a mock rib hem on your specific machine model.",
+"Research or choose a serpentine or rope cable motif you want to use for the final panel of the swatch."
+],
+"modules": [
+{
+"title": "Cast On and Work the Mock Rib Hem",
+"htmlDescription": "<p>Begin by creating a neat mock rib hem that will anchor the cable sampler.</p><ol><li>Cast on 50 stitches (25-0-25) using your preferred mock rib hem setup for this machine.</li><li>Knit 20 rows for the hem.</li><li>Hang the mock rib hem onto the needles to create a doubled edge.</li><li>Knit 6 rows in plain stockinette above the hem so you have a flat surface before the cables begin.</li></ol><p>This gives you a tidy lower edge and enough stockinette to highlight the cables that follow.</p>",
+"media": "/media/skill-builders/swatch-12-cable-sampler/mock-rib-hem.webp",
+"microQuestion": "Is your mock rib hem hanging evenly with 6 smooth rows of stockinette above it and no twisted or missed stitches?",
+"microResponses": {
+"yes": "Great. A clean hem and smooth base will help your cable sections look intentional and professional.",
+"no": "Take a moment to adjust or rehang any uneven areas before you continue; fixing the foundation now will improve the whole swatch."
+}
+},
+{
+"title": "Set Up Three Cable Panels with Purl Outlines",
+"htmlDescription": "<p>Now you will position three different cable types across the swatch and frame each one with purl stitches so the texture stands out.</p><ol><li>Identify the needle groups for each cable: needles R16 and R17 for a 1 x 1 cable, needles R1 to R4 for a 2 x 2 cable, and needles L12 to L17 for a 3 x 3 cable.</li><li>On this setup row, begin working a single purl stitch on each side of every cable panel so each cable is outlined by purl stitches.</li><li>Maintain these purl stitches as you knit the cable section so the cables remain clearly framed in the fabric.</li></ol><p>Double check that the cable groups sit where you expect them to be across the width and that each one has a purl stitch on both sides.</p>",
+"media": "/media/skill-builders/swatch-12-cable-sampler/cable-setup.webp",
+"microQuestion": "Are your 1 x 1, 2 x 2, and 3 x 3 cable sections clearly positioned and outlined by a single purl stitch on each side?",
+"microResponses": {
+"yes": "Excellent. Clear purl outlines will make each cable easy to see and evaluate when the swatch is finished.",
+"no": "Pause and adjust your needle selection or purl stitches now so each cable panel has a neat, matching outline."
+}
+},
+{
+"title": "Work Repeating Crosses on All Three Cables",
+"htmlDescription": "<p>With the panels set up, you will now work a series of cable crosses to build height and texture.</p><ol><li>Knit 4 rows in pattern, keeping the purl outlines in place around each cable.</li><li>On the next row, cross each of the three cables using the appropriate transfer method for 1 x 1, 2 x 2, and 3 x 3 cables.</li><li>Repeat the sequence of knit 4 rows, then cross all cables a total of 5 times, counting the first set as one repeat.</li><li>After the final cross, knit 4 more rows while still maintaining the purl outlines, then end the purl stitches so the fabric returns to plain stockinette.</li></ol><p>Keep your tension even and watch that each cross is mirrored correctly so the cables grow in a consistent, rhythmic pattern.</p>",
+"media": "/media/skill-builders/swatch-12-cable-sampler/repeating-crosses.webp",
+"microQuestion": "Do the three cable columns show evenly spaced crosses with consistent direction and neat purl outlines from bottom to top?",
+"microResponses": {
+"yes": "Nice work. Consistent crossings and outlines mean you are managing both your tools and tension well.",
+"no": "Look for any crosses that twist the wrong way or purl outlines that drift; noting these now will help you correct them in your next cable swatch."
+}
+},
+{
+"title": "Knit the Serpentine Cable Panel and Finish the Swatch",
+"htmlDescription": "<p>To complete the sampler, you will add a serpentine or rope cable that can hold a contrast cord for extra dimension.</p><ol><li>After ending the purl outlines, knit 10 rows in plain stockinette across all 50 stitches to separate the first cable section from the serpentine panel.</li><li>Over the next 20 rows, work your chosen serpentine or rope cable design somewhere in the fabric, following the chart or plan you researched earlier.</li><li>Maintain smooth background stitches so the cable path is easy to see and does not distort the rest of the swatch.</li><li>When the serpentine section is complete, knit a final 10 rows of plain stockinette and bind off neatly.</li><li>After the swatch is off the machine, twine a contrasting knit cord through the serpentine cable path so the movement of the cable is easy to follow.</li></ol><p>This last panel shows how cables can be used decoratively and how a contrast cord can emphasize their shape.</p>",
+"media": "/media/skill-builders/swatch-12-cable-sampler/serpentine-panel.webp",
+"microQuestion": "Does your serpentine cable create a clear path that the contrast cord can follow without fighting tight or distorted stitches?",
+"microResponses": {
+"yes": "Wonderful. A smooth serpentine path with a twined cord makes this sampler both a learning tool and a design idea for future projects.",
+"no": "Note where the cable feels tight, crowded, or unclear; on your next try, you can widen the cable area, adjust tension, or space the crosses differently."
+}
+}
+],
+"reflection": {
+"question": "After completing this cable sampler, do you feel more confident setting up, crossing, and finishing different cable styles on your machine?",
+"responses": {
+"yes": "That confidence will serve you well. You now have experience with multiple cable types plus a decorative serpentine panel you can adapt to garments and accessories.",
+"no": "That is completely fine. Cables are a skill that grows with practice; repeating one section of this sampler or working a simpler cable again can build your comfort step by step."
+}
+},
+"isDraft": true,
+"publishedDate": "",
+"pendingPublish": false
+}
