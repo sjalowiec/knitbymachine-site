@@ -1,0 +1,155 @@
+{
+    "slug": "get-acquainted-swatch",
+    "title": "Get-Acquainted Swatch",
+    "description": "Use this low-pressure practice swatch to meet a new-to-you yarn on your knitting machine. Instead of worrying about exact gauge, you’ll explore how the yarn feels, how it behaves at different tensions, and which settings produce fabric you actually like. By the end, you’ll know where to start when you’re ready to knit a proper gauge swatch and a real project.",
+    "tagline": "Meet your yarn before you measure your gauge.",
+    "level": 1,
+    "tags": [
+"basics",
+"tension",
+"swatching",
+"yarn",
+"fabric behavior",
+"confidence"
+],
+    "prepChecklist": [
+"Choose a new or unfamiliar yarn you’d like to try on your machine.",
+"Set up your knitting machine and make sure it’s clean and ready to knit.",
+"Have a small amount of smooth waste yarn available (optional but helpful).",
+"Decide where you’ll record notes about this yarn (tag on the swatch, notebook, or digital notes).",
+"Have a way to mark tension changes on the swatch, such as eyelets or a simple eyelet pattern."
+],
+    "modules": [
+        {
+            "title": "What Is a Get-Acquainted Swatch?",
+            "htmlDescription": "<p>When you have a new-to-you yarn, the ball band is written for hand knitters—it lists needle sizes and hand-knit gauge. Machine knitters need different information.</p> <
+                p > A < strong > Get - Acquainted Swatch < /strong> is a small, no-pressure practice swatch you knit just to see how the yarn behaves on <em>your</em > machine: < /p> <
+                ul >
+                <
+                li > How it feels as you knit < /li> <
+                li > How it looks at different tensions < /li> <
+                li > Whether it biases,
+            curls,
+            or misbehaves < /li> <
+            /ul> <
+            p > This is < strong > not < /strong> your final gauge swatch. It’s simply a way to play with the yarn, experiment with tension, and notice what you like before you commit to a project.</p > ",
+            "media": "/media/skill-builders/get-acquainted/overview.webp",
+            "microQuestion": "Does the idea of a low-pressure practice swatch (with no strict rules) feel like a relief?",
+            "microResponses": {
+                "yes": "Perfect. That’s exactly the point of this exercise—no pressure, just curiosity about your yarn and machine.",
+                "no": "That’s okay. You can still think of this as a quick test drive for your yarn so you’re not guessing later."
+            }
+},
+        {
+            "title": "Cast On and Start at a Mid-Range Tension",
+            "htmlDescription": "<p>For this swatch, you only need enough stitches to see how the fabric behaves—no large panel required.</p> <
+                ol >
+                <
+                li > Cast on < strong > 20– 30 stitches < /strong> in stockinette. Use your usual cast-on method and waste yarn if you like.</li >
+                <
+                li > Set your tension dial somewhere in the < strong > middle of the range < /strong> for this yarn and machine. For example, on a 0–10 dial, start around 6–7.</li >
+                <
+                li > Knit about < strong > 1– 2 inches < /strong> at this starting tension.</li >
+                <
+                /ol> <
+                p > As you’ re knitting,
+            notice how the carriage feels and how the yarn feeds.Don’ t judge the fabric yet;just get a first impression. < /p>",
+            "media": "/media/skill-builders/get-acquainted/cast-on.webp",
+            "microQuestion": "As you knit the first inch or so, does this starting tension feel obviously too loose or too tight?",
+            "microResponses": {
+                "yes": "Great observation. Make a quick note of what feels wrong—too loose, too tight, or hard to knit. That feedback will guide your next tension choices.",
+                "no": "Nice. That means this middle setting is a reasonable starting point. You’ll still explore other tensions so you can compare."
+            }
+},
+        {
+            "title": "Explore and Mark Multiple Tensions",
+            "htmlDescription": "<p>Now you’ll work your way through a few tension settings so you can compare how the fabric changes.</p> <
+                ol >
+                <
+                li > Before changing tension,
+            knit a short row of < strong > eyelets < /strong> (or use another clear marker). This separates one tension section from the next.</li >
+            <
+            li > < strong > Change the tension by one full number < /strong> (for example, from 7 down to 6, or from 6 down to 5).</li >
+            <
+            li > Knit another < strong > 1– 2 inches < /strong> at the new tension.</li >
+            <
+            li > Repeat the process
+            for < strong > 3– 4 different tensions < /strong>, marking each section with eyelets or another clear marker.</li >
+            <
+            li > Bind off and remove the swatch from the machine. < /li> <
+            /ol> <
+            p > If you plan to knit in a stitch pattern(like tuck or slip),
+            you can repeat this same idea using that stitch pattern instead of plain stockinette. < /p>",
+            "media": "/media/skill-builders/get-acquainted/tension-bands.webp",
+            "microQuestion": "Did you clearly mark each tension section so you’ll know which part of the swatch matches which tension setting?",
+            "microResponses": {
+                "yes": "Excellent. Future-you will thank you—clear markings make this swatch truly useful.",
+                "no": "No problem. Pause and add some simple markers now (eyelets, contrasting rows, or even safety pins) so you can read the swatch later."
+            }
+},
+        {
+            "title": "Evaluate the Fabric and Optional Wash Test",
+            "htmlDescription": "<p>With the swatch off the machine, it’s time to listen to what the fabric is telling you.</p> <
+                ul >
+                <
+                li > Which section < strong > feels best < /strong> in your hands?</li >
+                <
+                li > Which section looks the most < strong > balanced < /strong>—not too open, not too tight?</li >
+                <
+                li > Does any section < strong > bias or twist < /strong> more than the others?</li >
+                <
+                li > Is any section so loose that it looks sloppy,
+            or so tight that it feels stiff ? < /li> <
+            /ul> <
+            p > If you want to go further,
+            try a small wash or steam test : < /p> <
+                ol >
+                <
+                li > Gently wash or steam the swatch the way you plan to treat the finished item. < /li> <
+                li > Let it dry or relax completely. < /li> <
+                li > Check again: did one tension hold its shape and feel better than the others ? < /li> <
+                /ol>",
+            "media": "/media/skill-builders/get-acquainted/evaluate.webp",
+            "microQuestion": "Looking at and feeling the different sections, did one tension clearly stand out as your favorite?",
+            "microResponses": {
+                "yes": "Great. That “favorite” section is the tension you’ll probably want to use for your gauge swatch and future projects with this yarn.",
+                "no": "That’s okay. Try eliminating the sections you definitely don’t like first (too loose or too tight). What’s left is your best starting range."
+            }
+},
+        {
+            "title": "Record What You Learned and Plan Your Next Step",
+            "htmlDescription": "<p>This swatch is most valuable if you capture what you learned so you don’t have to repeat the experiment every time.</p> <
+                p > Add a small tag or note with as much detail as you find helpful: < /p> <
+                ul >
+                <
+                li > Machine and bed you used < /li> <
+                li > Yarn name,
+            brand,
+            and fiber content < /li> <
+            li > Tension settings you tested and the one you liked best < /li> <
+            li > Whether you washed or steamed the swatch and what happened < /li> <
+            li > Any special notes(biasing, great drape, feels sturdy, etc.) < /li> <
+            /ul> <
+            p > Store the swatch with the yarn or in a small swatch library.When you’ re ready to knit with this yarn again,
+            you can pull out the swatch,
+            choose your favorite tension,
+            and then knit a proper < strong > gauge swatch < /strong> at that setting for your project.</p > ",
+            "media": "/media/skill-builders/get-acquainted/tagged-swatch.webp",
+            "microQuestion": "Did you record the key details (machine, yarn, and preferred tension) somewhere you can find them later?",
+            "microResponses": {
+                "yes": "Perfect. You’ve just created a reference swatch that will save you time and guesswork the next time you use this yarn.",
+                "no": "Take a moment to jot down at least the machine, yarn name, and the tension you liked best. Even a quick note will be helpful later."
+            }
+}
+],
+    "reflection": {
+        "question": "After knitting this Get-Acquainted Swatch, do you feel more confident about how this yarn will behave on your machine?",
+        "responses": {
+            "yes": "That’s a big win. You’ve moved from guessing to knowing—and you can repeat this same process with any new yarn you bring to your machine.",
+            "no": "That’s okay. You can repeat this exercise with fewer or more tension changes, or try it again in a stitch pattern you plan to use. Each swatch builds your experience and confidence."
+        }
+    },
+    "isDraft": true,
+    "publishedDate": "2025-12-04",
+    "pendingPublish": false
+}
