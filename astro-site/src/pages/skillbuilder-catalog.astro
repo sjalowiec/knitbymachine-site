@@ -64,7 +64,7 @@ const levels = [
   <div class="page-container">
     <!-- Integrated Hero Panel with Controls -->
     <div class="hero-panel fade-in">
-      <!-- Top row: Icon + Title/Intro -->
+      <!-- Top row: 3 columns - Icon | Text | Search -->
       <div class="hero-top">
         <div class="hero-icon">
           <img src="/images/practice-icon.svg" alt="Skill Builders" class="header-icon" />
@@ -74,9 +74,18 @@ const levels = [
           <p class="hero-tagline">Master your machine one skill at a time.</p>
           <p class="hero-subtitle">Step-by-step interactive journeys designed to build your confidence and expertise with hands-on practice.</p>
         </div>
+        <div class="search-wrapper">
+          <input 
+            type="text" 
+            class="search-input" 
+            id="searchInput" 
+            placeholder="Search..."
+            aria-label="Search skill builders"
+          >
+        </div>
       </div>
 
-      <!-- Bottom row: Level chips + Search -->
+      <!-- Bottom row: Level chips -->
       <div class="hero-controls">
         <div class="level-selector-area">
           <span class="level-hint">Choose your level</span>
@@ -96,15 +105,6 @@ const levels = [
               </button>
             ))}
           </div>
-        </div>
-        <div class="search-wrapper">
-          <input 
-            type="text" 
-            class="search-input" 
-            id="searchInput" 
-            placeholder="Search..."
-            aria-label="Search skill builders"
-          >
         </div>
       </div>
     </div>
@@ -145,13 +145,13 @@ const levels = [
     margin-bottom: 1.25rem;
   }
 
-  /* Top row: Icon + Title */
+  /* Top row: 3-column grid - Icon | Text | Search */
   .hero-top {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 1.25rem;
-    margin-bottom: 1rem;
-    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
   }
 
   .hero-icon {
@@ -167,8 +167,7 @@ const levels = [
   }
 
   .hero-content {
-    flex: 1;
-    min-width: 250px;
+    min-width: 0;
   }
 
   .hero-title {
@@ -195,19 +194,14 @@ const levels = [
     max-width: 520px;
   }
 
-  /* Bottom row: Controls (chips + search) */
+  /* Bottom row: Level chips */
   .hero-controls {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1.5rem;
-    margin-top: 1.25rem;
-    flex-wrap: wrap;
+    padding-top: 1rem;
+    border-top: 1px solid #e6eddc;
   }
 
   .level-selector-area {
-    flex: 1;
-    min-width: 0;
+    width: 100%;
   }
 
   .level-hint {
@@ -302,13 +296,13 @@ const levels = [
 
   /* Search input */
   .search-wrapper {
-    flex-shrink: 0;
-    align-self: flex-end;
+    display: flex;
+    align-items: center;
   }
 
   .search-input {
-    width: 160px;
-    padding: 0.6rem 1rem;
+    width: 180px;
+    padding: 0.65rem 1.1rem;
     border: 1px solid #c7d8a4;
     border-radius: 50px;
     font-size: 0.9rem;
@@ -321,7 +315,7 @@ const levels = [
     outline: none;
     border-color: #52682D;
     box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
-    width: 200px;
+    width: 220px;
     background-color: white;
   }
 
@@ -493,9 +487,21 @@ const levels = [
     }
 
     .hero-top {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.75rem;
+      grid-template-columns: auto 1fr;
+      gap: 1rem;
+    }
+
+    .search-wrapper {
+      grid-column: 1 / -1;
+      margin-top: 0.5rem;
+    }
+
+    .search-input {
+      width: 100%;
+    }
+
+    .search-input:focus {
+      width: 100%;
     }
 
     .header-icon {
@@ -508,12 +514,6 @@ const levels = [
 
     .hero-tagline {
       font-size: 1rem;
-    }
-
-    .hero-controls {
-      flex-direction: column;
-      align-items: stretch;
-      margin-top: 1rem;
     }
 
     .level-hint {
@@ -548,19 +548,6 @@ const levels = [
       font-size: 0.55rem;
     }
 
-    .search-wrapper {
-      width: 100%;
-      margin-top: 0.75rem;
-    }
-
-    .search-input {
-      width: 100%;
-    }
-
-    .search-input:focus {
-      width: 100%;
-    }
-
     :global(.builder-grid) {
       grid-template-columns: 1fr;
     }
@@ -569,6 +556,28 @@ const levels = [
   @media (max-width: 640px) {
     .hero-panel {
       padding: 1rem 1rem 1.5rem;
+    }
+
+    .hero-top {
+      grid-template-columns: 1fr;
+      gap: 0.75rem;
+      text-align: center;
+    }
+
+    .hero-icon {
+      justify-content: center;
+    }
+
+    .header-icon {
+      width: 56px;
+    }
+
+    .hero-subtitle {
+      max-width: none;
+    }
+
+    .search-wrapper {
+      justify-content: center;
     }
 
     .level-chips {
@@ -602,15 +611,6 @@ const levels = [
 
     .level-hint {
       font-size: 0.75rem;
-    }
-
-    .search-wrapper {
-      width: 100%;
-    }
-
-    .search-input {
-      width: 100%;
-      box-sizing: border-box;
     }
   }
 </style>
