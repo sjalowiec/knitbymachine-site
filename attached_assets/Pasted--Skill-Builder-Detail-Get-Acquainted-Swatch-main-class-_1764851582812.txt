@@ -1,0 +1,247 @@
+<!-- Skill Builder Detail: Get-Acquainted Swatch -->
+<main class="kbm-skill-builder-page">
+
+  <!-- Back link -->
+  <div class="kbm-breadcrumb">
+    <a href="/skill-builders" class="kbm-link-back">← Back to Skill Builders</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="kbm-skill-hero">
+    <div class="kbm-skill-hero__text">
+      <h1 class="kbm-skill-hero__title">Get-Acquainted Swatch</h1>
+      <p class="kbm-skill-hero__tagline">
+        A low-pressure first swatch to explore your machine, yarn, and tension.
+      </p>
+      <p class="kbm-skill-hero__summary">
+        Knit a simple test swatch where the only goal is to get comfortable:
+        threading, casting on, changing tension, and watching how your fabric responds.
+      </p>
+
+      <div class="kbm-skill-hero__meta">
+        <span class="kbm-level-pill kbm-level-pill--1">
+          <span class="kbm-level-pill__number">1</span>
+          <span class="kbm-level-pill__label">Level 1 · Basics</span>
+        </span>
+
+        <a
+          href="/skill-builders/get-acquainted-swatch/print"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="kbm-button kbm-button--outline kbm-button--sm kbm-skill-hero__print"
+        >
+          🖨️ Print practice sheet
+        </a>
+      </div>
+    </div>
+
+    <div class="kbm-skill-hero__visual">
+      <!-- Placeholder image area – swap for real swatch photo or illustration -->
+      <div class="kbm-skill-hero__image-placeholder">
+        <span class="kbm-skill-hero__image-label">Get-Acquainted Swatch</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- AT A GLANCE -->
+  <section class="kbm-skill-ataglance">
+    <h2 class="kbm-section-title">What you’ll practice</h2>
+    <div class="kbm-skill-ataglance__grid">
+      <article class="kbm-pill-card">
+        <h3>Threading & Setup</h3>
+        <p>Walk through threading the yarn and setting basic tension without feeling rushed.</p>
+      </article>
+      <article class="kbm-pill-card">
+        <h3>Simple Cast-On</h3>
+        <p>Use a straightforward cast-on to get stitches safely on the needles.</p>
+      </article>
+      <article class="kbm-pill-card">
+        <h3>Playing with Tension</h3>
+        <p>Change the tension dial and see how it changes your fabric in real time.</p>
+      </article>
+      <article class="kbm-pill-card">
+        <h3>Observation, Not Perfection</h3>
+        <p>Notice what your machine does, without worrying about “getting it right.”</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- PREP CHECKLIST -->
+  <section class="kbm-skill-prep">
+    <h2 class="kbm-section-title">Before you begin</h2>
+    <div class="kbm-skill-prep__card">
+      <h3>Prep Checklist</h3>
+      <ul class="kbm-checklist">
+        <li>Choose a smooth, light-colored yarn that matches your machine’s recommended weight.</li>
+        <li>Make sure your machine is clamped, needles are centered, and the carriage moves freely.</li>
+        <li>Have your cast-on combs, weights, and a basic tool (needle pusher or transfer tool) nearby.</li>
+        <li>Set your tension dial somewhere in the middle of the range as a starting point.</li>
+      </ul>
+      <p class="kbm-skill-prep__hint">
+        You don’t need to know everything yet. This swatch is for curiosity and confidence.
+      </p>
+    </div>
+  </section>
+
+  <!-- STEP NAV (CHIPS) -->
+  <section class="kbm-skill-steps">
+    <div class="kbm-skill-steps__header">
+      <h2 class="kbm-section-title">Your practice steps</h2>
+      <p class="kbm-skill-steps__intro">
+        Move through the steps in order, or jump to the part you’re ready for.
+      </p>
+    </div>
+
+    <div class="kbm-step-chips" aria-label="Swatch steps">
+      <button class="kbm-step-chip kbm-step-chip--active" data-step-target="#step-1">1 · Getting Oriented</button>
+      <button class="kbm-step-chip" data-step-target="#step-2">2 · Cast On & First Rows</button>
+      <button class="kbm-step-chip" data-step-target="#step-3">3 · Play with Tension</button>
+      <button class="kbm-step-chip" data-step-target="#step-4">4 · Add a Simple Pattern</button>
+      <button class="kbm-step-chip" data-step-target="#step-5">5 · Finish & Label</button>
+    </div>
+
+    <!-- STEP CARDS -->
+    <div class="kbm-step-panels">
+      <!-- Step 1 -->
+      <article id="step-1" class="kbm-step-card kbm-step-card--active">
+        <header class="kbm-step-card__header">
+          <span class="kbm-step-card__step-number">Step 1</span>
+          <h3 class="kbm-step-card__title">Getting Oriented</h3>
+        </header>
+        <p class="kbm-step-card__why">
+          Take a moment to notice where everything is before yarn ever touches a needle.
+        </p>
+        <ul class="kbm-step-card__list">
+          <li>Slide the carriage gently from left to right and back to feel the resistance.</li>
+          <li>Look at the needle bed and find the position marks (A, B, C, D if your machine has them).</li>
+          <li>Check that your yarn mast and tension unit are assembled and upright.</li>
+          <li>Place your yarn cone or ball where it can feed smoothly without snagging.</li>
+        </ul>
+      </article>
+
+      <!-- Step 2 -->
+      <article id="step-2" class="kbm-step-card">
+        <header class="kbm-step-card__header">
+          <span class="kbm-step-card__step-number">Step 2</span>
+          <h3 class="kbm-step-card__title">Cast On & First Rows</h3>
+        </header>
+        <p class="kbm-step-card__why">
+          Get stitches on the machine with a simple, forgiving cast-on.
+        </p>
+        <ul class="kbm-step-card__list">
+          <li>Thread your yarn through the mast and carriage following your machine manual.</li>
+          <li>Bring out 30–40 needles to working position in the center of the bed.</li>
+          <li>Use your preferred simple cast-on (e-wrap, weaving, or a comb cast-on).</li>
+          <li>Knit 6–8 rows at your starting tension, watching for clean, even stitches.</li>
+        </ul>
+      </article>
+
+      <!-- Step 3 -->
+      <article id="step-3" class="kbm-step-card">
+        <header class="kbm-step-card__header">
+          <span class="kbm-step-card__step-number">Step 3</span>
+          <h3 class="kbm-step-card__title">Play with Tension</h3>
+        </header>
+        <p class="kbm-step-card__why">
+          See how the same yarn behaves at different settings so you can choose confidently later.
+        </p>
+        <ul class="kbm-step-card__list">
+          <li>Knit 10 rows at your current tension and note how the fabric looks and feels.</li>
+          <li>Change the tension dial one full number tighter and knit another 10 rows.</li>
+          <li>Change the tension dial one full number looser than your original and knit 10 rows.</li>
+          <li>Compare the three sections: which looks most balanced for this yarn and machine?</li>
+        </ul>
+      </article>
+
+      <!-- Step 4 -->
+      <article id="step-4" class="kbm-step-card">
+        <header class="kbm-step-card__header">
+          <span class="kbm-step-card__step-number">Step 4</span>
+          <h3 class="kbm-step-card__title">Add a Simple Pattern</h3>
+        </header>
+        <p class="kbm-step-card__why">
+          Try one very simple texture so you can see how your machine handles stitch changes.
+        </p>
+        <ul class="kbm-step-card__list">
+          <li>Choose a basic pattern your machine can do easily: tuck, slip, or every-other-needle.</li>
+          <li>Set up the needles or patterning as directed in your manual.</li>
+          <li>Knit 10–20 rows in the pattern, watching for any problem areas.</li>
+          <li>Return to plain knitting for a few rows to stabilize before finishing.</li>
+        </ul>
+      </article>
+
+      <!-- Step 5 -->
+      <article id="step-5" class="kbm-step-card">
+        <header class="kbm-step-card__header">
+          <span class="kbm-step-card__step-number">Step 5</span>
+          <h3 class="kbm-step-card__title">Finish & Label Your Swatch</h3>
+        </header>
+        <p class="kbm-step-card__why">
+          Capture what you learned so this swatch becomes a reference, not just a practice piece.
+        </p>
+        <ul class="kbm-step-card__list">
+          <li>Knit a few final plain rows, then bind off loosely.</li>
+          <li>Steam or block the swatch lightly if your yarn allows.</li>
+          <li>On a tag or small note, record yarn, machine, and the tension settings you tried.</li>
+          <li>Attach the note to the swatch so future-you can use this as a guide.</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- SUCCESS + CONFETTI -->
+  <section class="kbm-skill-complete">
+    <div class="kbm-skill-complete__card">
+      <h2 class="kbm-section-title">You did it 🎉</h2>
+      <p>
+        You’ve taken your first calm, curious pass with your machine. You threaded, cast on,
+        changed tension, and watched your fabric respond. That’s real progress.
+      </p>
+      <div class="kbm-skill-complete__actions">
+        <button id="kbm-celebrate-btn" class="kbm-button kbm-button--primary">
+          I finished this swatch – celebrate!
+        </button>
+        <a href="/skill-builders" class="kbm-button kbm-button--ghost">
+          Choose your next Skill Builder
+        </a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- SIMPLE CONFETTI HOOK -->
+<script>
+  (function () {
+    const chips = document.querySelectorAll('.kbm-step-chip');
+    const cards = document.querySelectorAll('.kbm-step-card');
+
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const target = chip.getAttribute('data-step-target');
+
+        chips.forEach(c => c.classList.remove('kbm-step-chip--active'));
+        chip.classList.add('kbm-step-chip--active');
+
+        cards.forEach(card => {
+          card.classList.toggle('kbm-step-card--active', card.id === target.substring(1));
+        });
+      });
+    });
+
+    const celebrateBtn = document.getElementById('kbm-celebrate-btn');
+    if (celebrateBtn) {
+      celebrateBtn.addEventListener('click', () => {
+        // If you already have a confetti library, call it here instead.
+        // Example for canvas-confetti:
+        // confetti({ particleCount: 120, spread: 70, origin: { y: 0.7 } });
+
+        // Simple fallback: basic emoji burst
+        const burst = document.createElement('div');
+        burst.textContent = '🎉🎉🎉';
+        burst.className = 'kbm-confetti-burst';
+        document.body.appendChild(burst);
+        setTimeout(() => burst.remove(), 1200);
+      });
+    }
+  })();
+</script>

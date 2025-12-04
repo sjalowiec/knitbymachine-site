@@ -1,7 +1,6 @@
 ---
 import { Octokit } from '@octokit/rest';
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import Tooltip from "../../components/Tooltip.astro";
 
 export const prerender = false;
 
@@ -34,461 +33,680 @@ if (!skillBuilder || skillBuilder.isDraft === true || skillBuilder.pendingPublis
   return Astro.redirect('/404');
 }
 
-const { title, description, tagline, prepChecklist = [], modules = [], reflection, level } = skillBuilder;
+const { title, description, tagline, prepChecklist = [], modules = [], reflection, level, featuredImage } = skillBuilder;
 
-const levelInfo = {
-  1: { label: 'Level 1 - Basics', icon: '/images/level-1.svg' },
-  2: { label: 'Level 2 - Hand Manipulation', icon: '/images/level-2.svg' },
-  3: { label: 'Level 3 - Stitch Patterns', icon: '/images/level-3.svg' },
-  4: { label: 'Level 4 - Ribber', icon: '/images/level-4.svg' },
+const levelInfo: Record<number, { label: string; shortLabel: string }> = {
+  1: { label: 'Level 1 · Basics', shortLabel: 'Basics' },
+  2: { label: 'Level 2 · Hand Manipulation', shortLabel: 'Hand Manipulation' },
+  3: { label: 'Level 3 · Stitch Patterns', shortLabel: 'Stitch Patterns' },
+  4: { label: 'Level 4 · Ribber', shortLabel: 'Ribber' },
 };
 const currentLevel = levelInfo[level] || null;
 ---
 
 <BaseLayout title={`${title} | Skill Builder`} description={description}>
-  <div class="sb-page">
-    <div class="sb-hero">
-      <div class="sb-hero-content">
-        <a href="/skillbuilder-catalog" class="sb-back-link" data-testid="link-back-catalog">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m15 18-6-6 6-6"/>
-          </svg>
-          Back to Skill Builders
-        </a>
-        
-        <div class="sb-hero-header">
-          <div class="sb-hero-text">
-            <h1 class="sb-title" data-testid="text-title">{title}</h1>
-            {tagline && <p class="sb-tagline" data-testid="text-tagline">{tagline}</p>}
-            <p class="sb-description" data-testid="text-description">{description}</p>
-          </div>
-          
+  <main class="kbm-skill-builder-page">
+    <div class="kbm-breadcrumb">
+      <a href="/skillbuilder-catalog" class="kbm-link-back" data-testid="link-back-catalog">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        Back to Skill Builders
+      </a>
+    </div>
+
+    <section class="kbm-skill-hero">
+      <div class="kbm-skill-hero__text">
+        <h1 class="kbm-skill-hero__title" data-testid="text-title">{title}</h1>
+        {tagline && (
+          <p class="kbm-skill-hero__tagline" data-testid="text-tagline">{tagline}</p>
+        )}
+        <p class="kbm-skill-hero__summary" data-testid="text-description">{description}</p>
+
+        <div class="kbm-skill-hero__meta">
           {currentLevel && (
-            <div class="sb-level-badge" data-testid="badge-level">
-              <img src={currentLevel.icon} alt="" class="sb-level-icon" />
-              <span>{currentLevel.label}</span>
-            </div>
+            <span class={`kbm-level-pill kbm-level-pill--${level}`} data-testid="badge-level">
+              <span class="kbm-level-pill__number">{level}</span>
+              <span class="kbm-level-pill__label">{currentLevel.label}</span>
+            </span>
           )}
+
+          <a
+            href={`/skillbuilder/${slug}/print`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="kbm-button kbm-button--outline kbm-button--sm kbm-skill-hero__print"
+            data-testid="link-print"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Print practice sheet
+          </a>
         </div>
       </div>
-    </div>
 
-    <div class="sb-container">
-      <div class="sb-nav-top">
-        <button class="sb-btn-nav" id="prevBtn" data-testid="button-prev">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m15 18-6-6 6-6"/>
-          </svg>
-          Previous
-        </button>
-        <div class="sb-progress" id="progressText" data-testid="text-progress">Step 1 of {modules.length + 2}</div>
-        <button class="sb-btn-nav sb-btn-primary" id="nextBtn" data-testid="button-next">
-          Next
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </button>
-      </div>
-
-      <section class="sb-section active" id="section0" data-testid="section-intro">
-        <h2 class="sb-section-title">Getting Started</h2>
-        
-        {prepChecklist.length > 0 && (
-          <div class="sb-prep-checklist">
-            <h3>Before You Begin</h3>
-            <ul>
-              {prepChecklist.map((item) => (
-                <li>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-                    <polyline points="22 4 12 14.01 9 11.01"/>
-                  </svg>
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
+      <div class="kbm-skill-hero__visual">
+        {featuredImage ? (
+          <img src={featuredImage} alt={title} class="kbm-skill-hero__image" />
+        ) : (
+          <div class="kbm-skill-hero__image-placeholder">
+            <span class="kbm-skill-hero__image-label">{title}</span>
           </div>
         )}
-        
-        <p class="sb-intro-text">Click <strong>Next</strong> when you're ready to begin!</p>
-      </section>
-
-      {modules.map((module, index) => (
-        <section class="sb-section hidden" id={`section${index + 1}`} data-testid={`section-module-${index}`}>
-          <h2 class="sb-section-title">{module.title}</h2>
-          <div class="sb-module-content" set:html={module.htmlDescription} />
-
-          {module.media && (
-            <div class="sb-media-container">
-              {module.media.includes('youtube.com') || module.media.includes('vimeo.com') ? (
-                <iframe
-                  src={module.media}
-                  width="560"
-                  height="315"
-                  frameborder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowfullscreen
-                ></iframe>
-              ) : module.media.endsWith('.mp4') || module.media.endsWith('.webm') ? (
-                <video controls>
-                  <source src={module.media} type={module.media.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}>
-                  Your browser does not support the video tag.
-                </video>
-              ) : (
-                <img src={module.media} alt={module.title} />
-              )}
-            </div>
-          )}
-
-          {module.microQuestion && (
-            <div class="sb-micro-section">
-              <div class="sb-micro-question">{module.microQuestion}</div>
-              <div class="sb-micro-buttons" data-module={index}>
-                <button class="sb-micro-btn" data-response="yes" data-testid={`button-micro-yes-${index}`}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"/>
-                  </svg>
-                  Yes
-                </button>
-                <button class="sb-micro-btn" data-response="no" data-testid={`button-micro-no-${index}`}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="18" y1="6" x2="6" y2="18"/>
-                    <line x1="6" y1="6" x2="18" y2="18"/>
-                  </svg>
-                  No
-                </button>
-              </div>
-              <div class="sb-response" id={`resp${index}`}></div>
-            </div>
-          )}
-        </section>
-      ))}
-
-      {reflection && reflection.question && (
-        <section class="sb-section hidden" id={`section${modules.length + 1}`} data-testid="section-reflection">
-          <h2 class="sb-section-title">Reflection</h2>
-          <p class="sb-reflection-question">{reflection.question}</p>
-          
-          <div class="sb-micro-section">
-            <div class="sb-micro-buttons" data-reflection="true">
-              <button class="sb-micro-btn" data-response="yes" data-testid="button-reflection-yes">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="20 6 9 17 4 12"/>
-                </svg>
-                Yes
-              </button>
-              <button class="sb-micro-btn" data-response="no" data-testid="button-reflection-no">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="18" y1="6" x2="6" y2="18"/>
-                  <line x1="6" y1="6" x2="18" y2="18"/>
-                </svg>
-                No
-              </button>
-            </div>
-            <div class="sb-response" id="respReflection"></div>
-          </div>
-
-          <p class="sb-share-prompt">
-            Want to share your experience? Join the discussion below!
-          </p>
-        </section>
-      )}
-
-      <div class="sb-nav-bottom">
-        <button class="sb-btn-nav" id="prevBtn2" data-testid="button-prev-bottom">
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m15 18-6-6 6-6"/>
-          </svg>
-          Previous
-        </button>
-        <button class="sb-btn-nav sb-btn-primary" id="nextBtn2" data-testid="button-next-bottom">
-          Next
-          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </button>
       </div>
-    </div>
-  </div>
+    </section>
+
+    {modules.length > 0 && (
+      <section class="kbm-skill-ataglance">
+        <h2 class="kbm-section-title">What you'll practice</h2>
+        <div class="kbm-skill-ataglance__grid">
+          {modules.slice(0, 4).map((module: any) => (
+            <article class="kbm-pill-card">
+              <h3>{module.title}</h3>
+              {module.summary && <p>{module.summary}</p>}
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {prepChecklist.length > 0 && (
+      <section class="kbm-skill-prep">
+        <h2 class="kbm-section-title">Before you begin</h2>
+        <div class="kbm-skill-prep__card">
+          <h3>Prep Checklist</h3>
+          <ul class="kbm-checklist">
+            {prepChecklist.map((item: string) => (
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="kbm-skill-prep__hint">
+            You don't need to know everything yet. This skill builder is for curiosity and confidence.
+          </p>
+        </div>
+      </section>
+    )}
+
+    {modules.length > 0 && (
+      <section class="kbm-skill-steps">
+        <div class="kbm-skill-steps__header">
+          <h2 class="kbm-section-title">Your practice steps</h2>
+          <p class="kbm-skill-steps__intro">
+            Move through the steps in order, or jump to the part you're ready for.
+          </p>
+        </div>
+
+        <div class="kbm-step-chips" aria-label="Practice steps">
+          {modules.map((module: any, index: number) => (
+            <button 
+              class={`kbm-step-chip ${index === 0 ? 'kbm-step-chip--active' : ''}`} 
+              data-step-target={`#step-${index + 1}`}
+              data-testid={`chip-step-${index + 1}`}
+            >
+              {index + 1} · {module.title}
+            </button>
+          ))}
+        </div>
+
+        <div class="kbm-step-panels">
+          {modules.map((module: any, index: number) => (
+            <article 
+              id={`step-${index + 1}`} 
+              class={`kbm-step-card ${index === 0 ? 'kbm-step-card--active' : ''}`}
+              data-testid={`panel-step-${index + 1}`}
+            >
+              <header class="kbm-step-card__header">
+                <span class="kbm-step-card__step-number">Step {index + 1}</span>
+                <h3 class="kbm-step-card__title">{module.title}</h3>
+              </header>
+              
+              {module.summary && (
+                <p class="kbm-step-card__why">{module.summary}</p>
+              )}
+              
+              <div class="kbm-step-card__content" set:html={module.htmlDescription} />
+
+              {module.media && (
+                <div class="kbm-step-card__media">
+                  {module.media.includes('youtube.com') || module.media.includes('vimeo.com') ? (
+                    <iframe
+                      src={module.media}
+                      width="560"
+                      height="315"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  ) : module.media.endsWith('.mp4') || module.media.endsWith('.webm') ? (
+                    <video controls>
+                      <source src={module.media} type={module.media.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}>
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img src={module.media} alt={module.title} />
+                  )}
+                </div>
+              )}
+
+              {module.microQuestion && (
+                <div class="kbm-micro-section">
+                  <div class="kbm-micro-question">{module.microQuestion}</div>
+                  <div class="kbm-micro-buttons" data-module={index}>
+                    <button class="kbm-micro-btn" data-response="yes" data-testid={`button-micro-yes-${index}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      Yes
+                    </button>
+                    <button class="kbm-micro-btn" data-response="no" data-testid={`button-micro-no-${index}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                      No
+                    </button>
+                  </div>
+                  <div class="kbm-response" id={`resp${index}`}></div>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {reflection && reflection.question && (
+      <section class="kbm-skill-reflection">
+        <h2 class="kbm-section-title">Reflection</h2>
+        <div class="kbm-skill-reflection__card">
+          <p class="kbm-reflection-question">{reflection.question}</p>
+          
+          <div class="kbm-micro-buttons" data-reflection="true">
+            <button class="kbm-micro-btn" data-response="yes" data-testid="button-reflection-yes">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Yes
+            </button>
+            <button class="kbm-micro-btn" data-response="no" data-testid="button-reflection-no">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              No
+            </button>
+          </div>
+          <div class="kbm-response" id="respReflection"></div>
+        </div>
+      </section>
+    )}
+
+    <section class="kbm-skill-complete">
+      <div class="kbm-skill-complete__card">
+        <h2 class="kbm-section-title">You did it!</h2>
+        <p>
+          You've completed this skill builder. Take a moment to appreciate your progress and the new skills you've practiced.
+        </p>
+        <div class="kbm-skill-complete__actions">
+          <button id="kbm-celebrate-btn" class="kbm-button kbm-button--primary" data-testid="button-celebrate">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            I finished this – celebrate!
+          </button>
+          <a href="/skillbuilder-catalog" class="kbm-button kbm-button--ghost" data-testid="link-next-skillbuilder">
+            Choose your next Skill Builder
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
 </BaseLayout>
 
 <style>
-  .sb-page {
+  .kbm-skill-builder-page {
     min-height: 100vh;
-    background: #f7f8f7;
-  }
-
-  .sb-hero {
-    background: #f7f8f7;
-    padding: calc(var(--header-height, 120px) + 2rem) 1.5rem 2rem;
-  }
-
-  .sb-hero-content {
-    max-width: 900px;
+    background: var(--page-bg, #f7f8f7);
+    padding: calc(var(--header-height, 120px) + 1.5rem) 1.5rem 3rem;
+    max-width: 1000px;
     margin: 0 auto;
   }
 
-  .sb-back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.35rem;
-    color: #738C52;
-    text-decoration: none;
-    font-size: 0.95rem;
-    margin-bottom: 1.25rem;
-    transition: color 0.2s ease;
-  }
-
-  .sb-back-link:hover {
-    color: #52682D;
-  }
-
-  .sb-hero-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-
-  .sb-hero-text {
-    flex: 1;
-    min-width: 280px;
-  }
-
-  .sb-title {
-    font-size: 2.25rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.2;
-    color: #52682D;
-  }
-
-  .sb-tagline {
-    font-size: 1.15rem;
-    font-style: italic;
-    margin: 0 0 0.75rem 0;
-    color: #738C52;
-  }
-
-  .sb-description {
-    font-size: 1.05rem;
-    line-height: 1.6;
-    margin: 0;
-    color: #555;
-    max-width: 600px;
-  }
-
-  .sb-level-badge {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: #f0f4e8;
-    padding: 0.6rem 1rem;
-    border-radius: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: #52682D;
-    white-space: nowrap;
-  }
-
-  .sb-level-icon {
-    width: 28px;
-    height: 28px;
-  }
-
-  .sb-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem 3rem;
-  }
-
-  .sb-nav-top,
-  .sb-nav-bottom {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
+  .kbm-breadcrumb {
     margin-bottom: 1.5rem;
   }
 
-  .sb-nav-bottom {
-    margin-top: 1.5rem;
-    margin-bottom: 0;
-    padding-top: 1.5rem;
-    border-top: 1px solid #e1e4e8;
-  }
-
-  .sb-progress {
-    font-size: 0.95rem;
-    color: #555;
-    font-weight: 500;
-  }
-
-  .sb-btn-nav {
+  .kbm-link-back {
     display: inline-flex;
     align-items: center;
-    gap: 0.4rem;
-    border: 2px solid #738C52;
-    background: white;
-    color: #52682D;
-    border-radius: 10px;
-    padding: 0.6rem 1.25rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    font-family: inherit;
+    gap: 0.35rem;
+    color: var(--kbm-green-2, #738C52);
+    text-decoration: none;
     font-size: 0.95rem;
-    font-weight: 600;
+    font-weight: 500;
+    transition: color 0.2s ease;
   }
 
-  .sb-btn-nav:hover:not(:disabled) {
+  .kbm-link-back:hover {
+    color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-skill-hero {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-hero__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .kbm-skill-hero__tagline {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--kbm-green-2, #738C52);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .kbm-skill-hero__summary {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #555;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .kbm-skill-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-level-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0f4e8;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-level-pill__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--kbm-green, #52682D);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .kbm-skill-hero__visual {
+    position: sticky;
+    top: calc(var(--header-height, 120px) + 1rem);
+  }
+
+  .kbm-skill-hero__image-placeholder {
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #e6eddc 0%, #d4e0c4 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .kbm-skill-hero__image-label {
+    color: var(--kbm-green, #52682D);
+    font-weight: 600;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  .kbm-skill-hero__image {
+    width: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+
+  .kbm-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    font-family: inherit;
+  }
+
+  .kbm-button--primary {
+    background: var(--kbm-green, #52682D);
+    color: white;
+    border-color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-button--primary:hover {
+    background: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+    transform: translateY(-1px);
+  }
+
+  .kbm-button--outline {
+    background: white;
+    color: var(--kbm-green, #52682D);
+    border-color: var(--kbm-green-2, #738C52);
+  }
+
+  .kbm-button--outline:hover {
     background: #f0f4e8;
     transform: translateY(-1px);
   }
 
-  .sb-btn-nav:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
+  .kbm-button--ghost {
+    background: transparent;
+    color: var(--kbm-green, #52682D);
+    border-color: transparent;
   }
 
-  .sb-btn-primary {
-    background: #52682D;
-    color: white;
-    border-color: #52682D;
+  .kbm-button--ghost:hover {
+    background: #f0f4e8;
   }
 
-  .sb-btn-primary:hover:not(:disabled) {
-    background: #445626;
-    border-color: #445626;
+  .kbm-button--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
   }
 
-  .sb-section {
-    background: white;
-    border: 1px solid #e1e4e8;
-    border-radius: 16px;
-    padding: 2rem;
-    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
-    transition: opacity 0.4s ease, transform 0.4s ease;
-  }
-
-  .sb-section.hidden {
-    display: none;
-  }
-
-  .sb-section.active {
-    display: block;
-  }
-
-  .sb-section-title {
-    color: #52682D;
+  .kbm-section-title {
     font-size: 1.5rem;
     font-weight: 700;
+    color: var(--kbm-green, #52682D);
     margin: 0 0 1.25rem 0;
   }
 
-  .sb-prep-checklist {
-    background: #f6f8f3;
-    border-left: 4px solid #52682D;
-    padding: 1.25rem 1.5rem;
-    border-radius: 0 12px 12px 0;
-    margin: 1.25rem 0;
+  .kbm-skill-ataglance {
+    margin-bottom: 2.5rem;
   }
 
-  .sb-prep-checklist h3 {
-    color: #52682D;
-    font-size: 1.1rem;
-    margin: 0 0 0.75rem 0;
+  .kbm-skill-ataglance__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
   }
 
-  .sb-prep-checklist ul {
+  .kbm-pill-card {
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .kbm-pill-card:hover {
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .kbm-pill-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .kbm-pill-card p {
+    font-size: 0.9rem;
+    color: #666;
     margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .sb-prep-checklist li {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.6rem;
-    margin: 0.5rem 0;
-    color: #555;
     line-height: 1.5;
   }
 
-  .sb-prep-checklist li svg {
+  .kbm-skill-prep {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-prep__card {
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-left: 4px solid var(--kbm-green, #52682D);
+    border-radius: 0 12px 12px 0;
+    padding: 1.5rem;
+  }
+
+  .kbm-skill-prep__card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 1rem 0;
+  }
+
+  .kbm-checklist {
+    list-style: none;
+    margin: 0 0 1rem 0;
+    padding: 0;
+  }
+
+  .kbm-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin: 0.6rem 0;
+    color: #444;
+    line-height: 1.5;
+  }
+
+  .kbm-checklist li svg {
     flex-shrink: 0;
-    color: #738C52;
+    color: var(--kbm-green-2, #738C52);
     margin-top: 2px;
   }
 
-  .sb-intro-text {
-    color: #555;
-    font-size: 1rem;
-    margin: 1.25rem 0 0 0;
+  .kbm-skill-prep__hint {
+    font-size: 0.9rem;
+    color: #777;
+    font-style: italic;
+    margin: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--ring, #e5e8e0);
   }
 
-  .sb-module-content {
+  .kbm-skill-steps {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-steps__header {
+    margin-bottom: 1.25rem;
+  }
+
+  .kbm-skill-steps__intro {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .kbm-step-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .kbm-step-chip {
+    background: white;
+    border: 2px solid var(--ring, #e5e8e0);
+    border-radius: 50px;
+    padding: 0.6rem 1.1rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    white-space: nowrap;
+  }
+
+  .kbm-step-chip:hover {
+    border-color: var(--kbm-green-2, #738C52);
+    color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-step-chip--active {
+    background: var(--kbm-green, #52682D);
+    border-color: var(--kbm-green, #52682D);
+    color: white;
+  }
+
+  .kbm-step-chip--active:hover {
+    background: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+    color: white;
+  }
+
+  .kbm-step-panels {
+    position: relative;
+  }
+
+  .kbm-step-card {
+    display: none;
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .kbm-step-card--active {
+    display: block;
+  }
+
+  .kbm-step-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-step-card__step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--kbm-green, #52682D);
+    color: white;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .kbm-step-card__title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0;
+  }
+
+  .kbm-step-card__why {
+    font-size: 1rem;
+    color: #666;
+    font-style: italic;
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--ring, #e5e8e0);
+  }
+
+  .kbm-step-card__content {
     color: #333;
     line-height: 1.7;
   }
 
-  .sb-module-content :global(p) {
+  .kbm-step-card__content :global(p) {
     margin: 0 0 1rem 0;
   }
 
-  .sb-module-content :global(ul),
-  .sb-module-content :global(ol) {
+  .kbm-step-card__content :global(ul),
+  .kbm-step-card__content :global(ol) {
     margin: 0 0 1rem 0;
     padding-left: 1.5rem;
   }
 
-  .sb-module-content :global(li) {
-    margin: 0.35rem 0;
+  .kbm-step-card__content :global(li) {
+    margin: 0.5rem 0;
   }
 
-  .sb-media-container {
+  .kbm-step-card__media {
     margin: 1.5rem 0;
   }
 
-  .sb-media-container video,
-  .sb-media-container iframe,
-  .sb-media-container img {
+  .kbm-step-card__media video,
+  .kbm-step-card__media iframe,
+  .kbm-step-card__media img {
     max-width: 100%;
     border-radius: 12px;
   }
 
-  .sb-media-container iframe {
+  .kbm-step-card__media iframe {
     aspect-ratio: 16/9;
     width: 100%;
     height: auto;
   }
 
-  .sb-micro-section {
-    margin-top: 1.75rem;
+  .kbm-micro-section {
+    margin-top: 1.5rem;
     padding-top: 1.5rem;
     border-top: 2px solid #e6eddc;
   }
 
-  .sb-micro-question {
+  .kbm-micro-question {
     font-weight: 600;
-    color: #52682D;
+    color: var(--kbm-green, #52682D);
     font-size: 1.05rem;
     margin-bottom: 1rem;
   }
 
-  .sb-micro-buttons {
+  .kbm-micro-buttons {
     display: flex;
     gap: 0.75rem;
     flex-wrap: wrap;
   }
 
-  .sb-micro-btn {
+  .kbm-micro-btn {
     display: inline-flex;
     align-items: center;
     gap: 0.4rem;
     border: 2px solid #c7d8a4;
     background: #f8faf6;
-    color: #52682D;
+    color: var(--kbm-green, #52682D);
     border-radius: 10px;
     padding: 0.6rem 1.25rem;
     cursor: pointer;
@@ -498,19 +716,19 @@ const currentLevel = levelInfo[level] || null;
     font-weight: 500;
   }
 
-  .sb-micro-btn:hover {
+  .kbm-micro-btn:hover {
     background: #e6eddc;
-    border-color: #738C52;
+    border-color: var(--kbm-green-2, #738C52);
     transform: translateY(-1px);
   }
 
-  .sb-response {
+  .kbm-response {
     margin-top: 1rem;
     min-height: 20px;
   }
 
-  .sb-response :global(.sb-tip) {
-    border-left: 4px solid #52682D;
+  .kbm-response :global(.kbm-tip) {
+    border-left: 4px solid var(--kbm-green, #52682D);
     background: #f6f8f3;
     padding: 1rem 1.25rem;
     border-radius: 0 10px 10px 0;
@@ -519,17 +737,65 @@ const currentLevel = levelInfo[level] || null;
     line-height: 1.6;
   }
 
-  .sb-reflection-question {
+  .kbm-skill-reflection {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-reflection__card {
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 16px;
+    padding: 1.75rem;
+  }
+
+  .kbm-reflection-question {
     font-size: 1.1rem;
     color: #333;
     line-height: 1.6;
     margin: 0 0 1.25rem 0;
   }
 
-  .sb-share-prompt {
-    margin-top: 2rem;
-    color: #666;
-    font-size: 0.95rem;
+  .kbm-skill-complete {
+    margin-bottom: 2rem;
+  }
+
+  .kbm-skill-complete__card {
+    background: linear-gradient(135deg, #e6eddc 0%, #d4e0c4 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .kbm-skill-complete__card .kbm-section-title {
+    margin-bottom: 0.75rem;
+  }
+
+  .kbm-skill-complete__card p {
+    color: #555;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .kbm-skill-complete__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-confetti-burst {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    animation: confettiBurst 1.2s ease-out forwards;
+    pointer-events: none;
+    z-index: 9999;
   }
 
   @keyframes fadeIn {
@@ -543,142 +809,159 @@ const currentLevel = levelInfo[level] || null;
     }
   }
 
-  @media (max-width: 768px) {
-    .sb-hero {
-      padding: calc(var(--header-height, 100px) + 1.5rem) 1rem 2rem;
+  @keyframes confettiBurst {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
     }
-
-    .sb-title {
-      font-size: 1.75rem;
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.5);
     }
-
-    .sb-description {
-      font-size: 1rem;
-    }
-
-    .sb-hero-header {
-      flex-direction: column;
-    }
-
-    .sb-level-badge {
-      align-self: flex-start;
-    }
-
-    .sb-container {
-      padding: 1.5rem 1rem 2rem;
-    }
-
-    .sb-section {
-      padding: 1.5rem 1.25rem;
-    }
-
-    .sb-btn-nav {
-      padding: 0.5rem 1rem;
-      font-size: 0.9rem;
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(2);
     }
   }
 
-  @media (max-width: 480px) {
-    .sb-nav-top,
-    .sb-nav-bottom {
-      flex-wrap: wrap;
-      justify-content: center;
+  @media (max-width: 768px) {
+    .kbm-skill-builder-page {
+      padding: calc(var(--header-height, 100px) + 1rem) 1rem 2rem;
     }
 
-    .sb-progress {
+    .kbm-skill-hero {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .kbm-skill-hero__visual {
+      position: static;
       order: -1;
-      width: 100%;
-      text-align: center;
-      margin-bottom: 0.5rem;
+    }
+
+    .kbm-skill-hero__title {
+      font-size: 1.75rem;
+    }
+
+    .kbm-step-chips {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      padding-bottom: 0.5rem;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .kbm-step-card {
+      padding: 1.25rem;
+    }
+
+    .kbm-step-card__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .kbm-skill-complete__card {
+      padding: 1.5rem;
+    }
+  }
+
+  @media print {
+    .kbm-skill-builder-page {
+      padding-top: 1rem;
+    }
+
+    .kbm-breadcrumb,
+    .kbm-step-chips,
+    .kbm-skill-complete,
+    .kbm-micro-buttons,
+    .kbm-skill-hero__print {
+      display: none !important;
+    }
+
+    .kbm-step-card {
+      display: block !important;
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      box-shadow: none;
+      border: 1px solid #ccc;
     }
   }
 </style>
 
 <script define:vars={{ modules, reflection }}>
-const sections = Array.from(document.querySelectorAll(".sb-section"));
-let current = 0;
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const prevBtn2 = document.getElementById("prevBtn2");
-const nextBtn2 = document.getElementById("nextBtn2");
-const progress = document.getElementById("progressText");
+  (function () {
+    const chips = document.querySelectorAll('.kbm-step-chip');
+    const cards = document.querySelectorAll('.kbm-step-card');
 
-function showSection(i) {
-  sections.forEach((s, idx) => {
-    s.classList.toggle("active", idx === i);
-    s.classList.toggle("hidden", idx !== i);
-  });
-  progress.textContent = `Step ${i + 1} of ${sections.length}`;
-  
-  const isFirst = i === 0;
-  const isLast = i === sections.length - 1;
-  
-  prevBtn.disabled = isFirst;
-  prevBtn2.disabled = isFirst;
-  
-  const nextText = isLast ? "Finish" : "Next";
-  const nextIcon = isLast 
-    ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
-    : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
-  
-  nextBtn.innerHTML = `${nextText} ${nextIcon}`;
-  nextBtn2.innerHTML = `${nextText} ${nextIcon}`;
-  
-  window.scrollTo({ top: 0, behavior: 'smooth' });
-}
+    chips.forEach(chip => {
+      chip.addEventListener('click', () => {
+        const target = chip.getAttribute('data-step-target');
 
-function goPrev() {
-  if (current > 0) {
-    current--;
-    showSection(current);
-  }
-}
+        chips.forEach(c => c.classList.remove('kbm-step-chip--active'));
+        chip.classList.add('kbm-step-chip--active');
 
-function goNext() {
-  if (current < sections.length - 1) {
-    current++;
-    showSection(current);
-  } else {
-    alert("Great job! You've completed this Skill Builder.");
-  }
-}
-
-prevBtn.addEventListener("click", goPrev);
-nextBtn.addEventListener("click", goNext);
-prevBtn2.addEventListener("click", goPrev);
-nextBtn2.addEventListener("click", goNext);
-
-showSection(current);
-
-modules.forEach((module, index) => {
-  const buttons = document.querySelectorAll(`[data-module="${index}"] .sb-micro-btn`);
-  const responseDiv = document.getElementById(`resp${index}`);
-  
-  buttons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const responseType = btn.dataset.response;
-      const responseText = module.microResponses?.[responseType];
-      
-      if (responseText) {
-        responseDiv.innerHTML = `<div class='sb-tip'>${responseText}</div>`;
-      }
+        cards.forEach(card => {
+          card.classList.toggle('kbm-step-card--active', card.id === target.substring(1));
+        });
+      });
     });
-  });
-});
 
-if (reflection && reflection.question) {
-  const reflectionButtons = document.querySelectorAll('[data-reflection="true"] .sb-micro-btn');
-  const reflectionResponseDiv = document.getElementById('respReflection');
-  
-  reflectionButtons.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const responseType = btn.dataset.response;
-      const responseText = reflection.responses?.[responseType];
+    const celebrateBtn = document.getElementById('kbm-celebrate-btn');
+    if (celebrateBtn) {
+      celebrateBtn.addEventListener('click', () => {
+        const burst = document.createElement('div');
+        burst.textContent = 'Congratulations!';
+        burst.className = 'kbm-confetti-burst';
+        burst.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 2rem;
+          font-weight: 700;
+          color: var(--kbm-green, #52682D);
+          background: white;
+          padding: 1.5rem 2.5rem;
+          border-radius: 16px;
+          box-shadow: 0 8px 32px rgba(82, 104, 45, 0.25);
+          z-index: 9999;
+          animation: confettiBurst 2s ease-out forwards;
+        `;
+        document.body.appendChild(burst);
+        setTimeout(() => burst.remove(), 2000);
+      });
+    }
+
+    modules.forEach((module, index) => {
+      const buttons = document.querySelectorAll(`[data-module="${index}"] .kbm-micro-btn`);
+      const responseDiv = document.getElementById(`resp${index}`);
       
-      if (responseText) {
-        reflectionResponseDiv.innerHTML = `<div class='sb-tip'>${responseText}</div>`;
-      }
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const responseType = btn.dataset.response;
+          const responseText = module.microResponses?.[responseType];
+          
+          if (responseText) {
+            responseDiv.innerHTML = `<div class='kbm-tip'>${responseText}</div>`;
+          }
+        });
+      });
     });
-  });
-}
+
+    if (reflection && reflection.question) {
+      const reflectionButtons = document.querySelectorAll('[data-reflection="true"] .kbm-micro-btn');
+      const reflectionResponseDiv = document.getElementById('respReflection');
+      
+      reflectionButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const responseType = btn.dataset.response;
+          const responseText = reflection.responses?.[responseType];
+          
+          if (responseText) {
+            reflectionResponseDiv.innerHTML = `<div class='kbm-tip'>${responseText}</div>`;
+          }
+        });
+      });
+    }
+  })();
 </script>
