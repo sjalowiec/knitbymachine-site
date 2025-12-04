@@ -1,0 +1,242 @@
+You are working in my Knit by Machine Astro site.
+I want to change the step navigation on the Skill Builder detail/slug page from “pills” to a more obvious flipbook/stepper.
+
+What I want
+
+On each Skill Builder detail page (the one that shows “Your practice steps” and the Step 1–4 cards):
+
+Replace the current pill-style navigation with:
+
+A header bar with Previous / Next buttons and “Step X of Y” + the current step title.
+
+A simple row of numbered progress items (1, 2, 3, 4) underneath the header.
+
+Keep the existing step content/cards, but wire them to this new navigation.
+
+Use plain vanilla JS in the page (no frameworks) to handle:
+
+Clicking Previous / Next
+
+Clicking a numbered progress item
+
+Updating the “Step X of Y” and step title
+
+Showing only the active step card
+
+Where to change
+
+In the Astro site, find the component or page that renders the Skill Builder detail/slug view.
+
+Search for the text "Your practice steps" in the repo.
+
+That file is the one you should edit.
+
+In that file, you’ll find:
+
+The heading “Your practice steps”
+
+The current pill-style step navigation
+
+The step cards (each card currently shows “STEP X” and its content)
+
+Step 1 – Replace the pill navigation markup
+
+Around the “Your practice steps” heading, replace the existing pill navigation block with this structure (adapt it to Astro syntax as needed, but keep the class names and structure):
+
+<section class="kbm-skill-steps">
+  <header class="kbm-stepper-header">
+    <button
+      type="button"
+      class="kbm-stepper-nav kbm-stepper-nav--prev"
+      data-direction="prev"
+      disabled
+    >
+      ‹ Previous
+    </button>
+
+    <div class="kbm-stepper-current">
+      <p class="kbm-stepper-current__label">
+        Step <span id="kbm-current-step">1</span> of <span id="kbm-total-steps">4</span>
+      </p>
+      <h2 class="kbm-stepper-current__title" id="kbm-current-step-title">
+        <!-- This text will be updated by JS based on the active step card -->
+      </h2>
+    </div>
+
+    <button
+      type="button"
+      class="kbm-stepper-nav kbm-stepper-nav--next"
+      data-direction="next"
+    >
+      Next ›
+    </button>
+  </header>
+
+  <ol class="kbm-stepper-progress" aria-label="Step progress">
+    <!-- These items will be created or updated to match the number of steps -->
+  </ol>
+
+  <!-- Keep the existing step cards, but add data attributes as described below -->
+  <div class="kbm-step-panels">
+    <!-- step cards stay here -->
+  </div>
+</section>
+
+Step 2 – Update the step cards
+
+For each step card (article) that currently represents a step (STEP 1, STEP 2, etc.):
+
+Add:
+
+data-step="{index}" (1-based index)
+
+data-step-title="{the visible title of the step}" (e.g. “Cast On and Work the Mock Rib Hem”)
+
+Add the class kbm-step-card--active to the first card only; remove it from others.
+
+Example of a single step card after update (adapt to the actual Astro markup):
+
+<article
+  class="kbm-step-card kbm-step-card--active"
+  data-step="1"
+  data-step-title="Cast On and Work the Mock Rib Hem"
+>
+  <!-- existing STEP 1 content stays the same -->
+</article>
+
+<article
+  class="kbm-step-card"
+  data-step="2"
+  data-step-title="Set Up Three Cable Panels with Purl Outlines"
+>
+  <!-- existing STEP 2 content -->
+</article>
+
+
+Do this for all steps on the page.
+
+Step 3 – Add the JavaScript that powers the flipbook
+
+At the bottom of this Skill Builder detail page/component, add a <script> block with is:inline (so Astro will include it as raw JS). This script should:
+
+Read all .kbm-step-card elements into an array.
+
+Dynamically populate the .kbm-stepper-progress list (<ol>) with one <li> per step.
+
+Handle:
+
+Clicking Previous / Next buttons
+
+Clicking progress items
+
+Updating the current step number (#kbm-current-step)
+
+Updating the total (#kbm-total-steps)
+
+Updating the current step title (#kbm-current-step-title)
+
+Showing/hiding cards via the kbm-step-card--active class
+
+Enabling/disabling arrows at first and last step
+
+Use this logic (you can adapt variable names, but keep behavior the same):
+
+<script is:inline>
+  (function () {
+    const stepCards = Array.from(document.querySelectorAll('.kbm-step-card'));
+    if (!stepCards.length) return;
+
+    const prevBtn = document.querySelector('.kbm-stepper-nav--prev');
+    const nextBtn = document.querySelector('.kbm-stepper-nav--next');
+    const currentStepEl = document.getElementById('kbm-current-step');
+    const totalStepsEl = document.getElementById('kbm-total-steps');
+    const currentTitleEl = document.getElementById('kbm-current-step-title');
+    const progressList = document.querySelector('.kbm-stepper-progress');
+
+    const totalSteps = stepCards.length;
+    let currentStep = 1;
+
+    if (totalStepsEl) totalStepsEl.textContent = String(totalSteps);
+
+    // Build progress items dynamically so they match the number of steps
+    if (progressList) {
+      progressList.innerHTML = '';
+      stepCards.forEach((card, index) => {
+        const step = index + 1;
+        const li = document.createElement('li');
+        li.className = 'kbm-stepper-progress__item' + (step === 1 ? ' kbm-stepper-progress__item--active' : '');
+        li.dataset.step = String(step);
+        li.textContent = String(step);
+        li.addEventListener('click', () => showStep(step));
+        progressList.appendChild(li);
+      });
+    }
+
+    const progressItems = Array.from(document.querySelectorAll('.kbm-stepper-progress__item'));
+
+    function showStep(step) {
+      currentStep = step;
+
+      stepCards.forEach(card => {
+        const cardStep = Number(card.getAttribute('data-step'));
+        card.classList.toggle('kbm-step-card--active', cardStep === currentStep);
+      });
+
+      progressItems.forEach(item => {
+        const itemStep = Number(item.getAttribute('data-step'));
+        item.classList.toggle('kbm-stepper-progress__item--active', itemStep === currentStep);
+      });
+
+      if (currentStepEl) currentStepEl.textContent = String(currentStep);
+
+      const activeCard = stepCards.find(card => Number(card.getAttribute('data-step')) === currentStep);
+      if (activeCard && currentTitleEl) {
+        currentTitleEl.textContent = activeCard.getAttribute('data-step-title') || '';
+      }
+
+      if (prevBtn) prevBtn.disabled = currentStep === 1;
+      if (nextBtn) nextBtn.disabled = currentStep === totalSteps;
+    }
+
+    function handleNavClick(evt) {
+      const direction = evt.currentTarget.getAttribute('data-direction');
+      if (direction === 'prev' && currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+      if (direction === 'next' && currentStep < totalSteps) {
+        showStep(currentStep + 1);
+      }
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', handleNavClick);
+    if (nextBtn) nextBtn.addEventListener('click', handleNavClick);
+
+    // Optional: keyboard arrow navigation
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'ArrowRight' && currentStep < totalSteps) {
+        showStep(currentStep + 1);
+      } else if (evt.key === 'ArrowLeft' && currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+    });
+
+    // Initialize
+    showStep(1);
+  })();
+</script>
+
+Step 4 – Keep styling consistent
+
+Do NOT change any existing global layout, header, or footer.
+Only adjust the markup and behavior around the existing “Your practice steps” area.
+You can add new CSS classes (kbm-stepper-header, kbm-stepper-nav, kbm-stepper-progress__item, etc.), but don’t remove or rename the classes already used for the step content cards.
+
+Make these changes so that on the Skill Builder detail page, the steps feel like a flipbook:
+
+Clear “Step X of Y”
+
+Big Previous / Next buttons with arrows
+
+Clickable numbered progress items
+
+Only one step card visible at a time, with smooth navigation back and forth.
