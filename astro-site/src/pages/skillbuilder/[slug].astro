@@ -219,9 +219,8 @@ const currentLevel = levelInfo[level] || null;
   }
 
   .sb-hero {
-    background: linear-gradient(135deg, #52682D 0%, #738C52 100%);
-    padding: calc(var(--header-height, 120px) + 2rem) 1.5rem 2.5rem;
-    color: white;
+    background: #f7f8f7;
+    padding: calc(var(--header-height, 120px) + 2rem) 1.5rem 2rem;
   }
 
   .sb-hero-content {
@@ -233,7 +232,7 @@ const currentLevel = levelInfo[level] || null;
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
-    color: rgba(255, 255, 255, 0.85);
+    color: #738C52;
     text-decoration: none;
     font-size: 0.95rem;
     margin-bottom: 1.25rem;
@@ -241,7 +240,7 @@ const currentLevel = levelInfo[level] || null;
   }
 
   .sb-back-link:hover {
-    color: white;
+    color: #52682D;
   }
 
   .sb-hero-header {
@@ -262,21 +261,21 @@ const currentLevel = levelInfo[level] || null;
     font-weight: 700;
     margin: 0 0 0.5rem 0;
     line-height: 1.2;
-    color: white;
+    color: #52682D;
   }
 
   .sb-tagline {
     font-size: 1.15rem;
     font-style: italic;
     margin: 0 0 0.75rem 0;
-    opacity: 0.9;
+    color: #738C52;
   }
 
   .sb-description {
     font-size: 1.05rem;
     line-height: 1.6;
     margin: 0;
-    opacity: 0.9;
+    color: #555;
     max-width: 600px;
   }
 
@@ -284,19 +283,18 @@ const currentLevel = levelInfo[level] || null;
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.15);
-    backdrop-filter: blur(10px);
+    background: #f0f4e8;
     padding: 0.6rem 1rem;
     border-radius: 10px;
     font-size: 0.9rem;
     font-weight: 600;
+    color: #52682D;
     white-space: nowrap;
   }
 
   .sb-level-icon {
     width: 28px;
     height: 28px;
-    filter: brightness(0) invert(1);
   }
 
   .sb-container {
