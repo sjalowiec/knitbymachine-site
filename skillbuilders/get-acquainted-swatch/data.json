@@ -56,7 +56,7 @@
       "media": "/media/skill-builders/get-acquainted/evaluate.webp",
       "microQuestion": "Looking at and feeling the different sections, did one tension clearly stand out as your favorite?",
       "microResponses": {
-        "yes": "Great. That "favorite" section is the tension you'll probably want to use for your gauge swatch and future projects with this yarn.",
+        "yes": "Great. That 'favorite' section is the tension you'll probably want to use for your gauge swatch and future projects with this yarn.",
         "no": "That's okay. Try eliminating the sections you definitely don't like first (too loose or too tight). What's left is your best starting range."
       }
     },
@@ -79,6 +79,6 @@
     }
   },
   "isDraft": true,
-  "publishedDate": "2025-12-04",
+  "publishedDate": "",
   "pendingPublish": false
 }
