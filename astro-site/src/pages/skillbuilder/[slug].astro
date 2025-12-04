@@ -1,12 +1,12 @@
 ---
 import { Octokit } from '@octokit/rest';
+import BaseLayout from "../../layouts/BaseLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 
 export const prerender = false;
 
 const { slug } = Astro.params;
 
-// Fetch the skill builder JSON from GitHub
 const octokit = new Octokit({
   auth: import.meta.env.GITHUB_TOKEN
 });
@@ -30,304 +30,579 @@ try {
   console.error('Error fetching skill builder:', e);
 }
 
-// Filter out drafts and pending publish entries
 if (!skillBuilder || skillBuilder.isDraft === true || skillBuilder.pendingPublish === true) {
   return Astro.redirect('/404');
 }
 
-const { title, description, tagline, prepChecklist = [], modules = [], reflection } = skillBuilder;
+const { title, description, tagline, prepChecklist = [], modules = [], reflection, level } = skillBuilder;
+
+const levelInfo = {
+  1: { label: 'Level 1 - Basics', icon: '/images/level-1.svg' },
+  2: { label: 'Level 2 - Hand Manipulation', icon: '/images/level-2.svg' },
+  3: { label: 'Level 3 - Stitch Patterns', icon: '/images/level-3.svg' },
+  4: { label: 'Level 4 - Ribber', icon: '/images/level-4.svg' },
+};
+const currentLevel = levelInfo[level] || null;
 ---
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{title} | Skill Builder | Knit by Machine</title>
-<meta name="description" content={description}>
-<style>
-:root{
-  --kbm-green:#52682D;
-  --kbm-olive:#738C52;
-  --kbm-gray:#f6f7f8;
-}
-body{
-  margin:0;
-  font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  color:#333;
-  background:#fff;
-  overflow-x:hidden;
-}
-.container{
-  max-width:900px;
-  margin:0 auto;
-  padding:40px 20px;
-}
-h1,h2,h3{
-  color:var(--kbm-green);
-  margin-top:0;
-}
-.btn-nav{
-  border:1px solid var(--kbm-olive);
-  background:#fff;
-  color:var(--kbm-olive);
-  border-radius:8px;
-  padding:8px 16px;
-  cursor:pointer;
-  transition:background .2s;
-  font-family:inherit;
-  font-size:1rem;
-}
-.btn-nav:hover{
-  background:#eef3e4;
-}
-.btn-nav:disabled{
-  opacity:0.5;
-  cursor:not-allowed;
-}
-section{
-  border:1px solid #e1e4e8;
-  border-radius:14px;
-  background:#fff;
-  padding:24px;
-  margin:20px 0;
-  box-shadow:0 2px 10px rgba(0,0,0,.05);
-  transform-origin:left center;
-  transform-style:preserve-3d;
-  transition:transform .6s ease,opacity .6s ease;
-}
-section.hidden{
-  opacity:0;
-  transform:rotateY(-90deg);
-  pointer-events:none;
-  position:absolute;
-  top:0;
-  width:100%;
-}
-section.active{
-  opacity:1;
-  transform:rotateY(0deg);
-  position:relative;
-}
-
-.prep-checklist{
-  background:#f6f7f8;
-  border-left:4px solid var(--kbm-green);
-  padding:16px;
-  border-radius:8px;
-  margin:16px 0;
-}
-.prep-checklist ul{
-  margin:8px 0;
-  padding-left:24px;
-}
-.prep-checklist li{
-  margin:6px 0;
-  color:#555;
-}
-
-.media-container{
-  margin:16px 0;
-}
-.media-container video,
-.media-container iframe{
-  max-width:100%;
-  border-radius:8px;
-}
-
-/* Micro Interaction */
-.micro-section{
-  margin-top:20px;
-  padding-top:20px;
-  border-top:2px solid #e1e4e8;
-}
-.micro-question{
-  font-weight:600;
-  color:var(--kbm-green);
-  margin-bottom:10px;
-}
-.micro-buttons{
-  display:flex;
-  gap:10px;
-  margin:14px 0;
-  flex-wrap:wrap;
-}
-.micro-btn{
-  border:1px solid var(--kbm-olive);
-  background:#f8faf6;
-  color:#333;
-  border-radius:8px;
-  padding:8px 14px;
-  cursor:pointer;
-  transition:background .2s,transform .2s;
-  font-family:inherit;
-  font-size:0.95rem;
-}
-.micro-btn:hover{
-  background:#e6eddc;
-  transform:translateY(-1px);
-}
-.response{
-  min-height:40px;
-  margin-top:10px;
-}
-.micro-tip{
-  border-left:4px solid var(--kbm-green);
-  background:#f6f7f8;
-  padding:10px 14px;
-  border-radius:4px;
-  animation:fadeIn .5s ease;
-}
-@keyframes fadeIn{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-/* Navigation area */
-.nav-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  margin-bottom:20px;
-  gap:16px;
-}
-.progress{
-  font-size:.9rem;
-  color:#555;
-  text-align:center;
-}
-
-.tagline{
-  font-style:italic;
-  color:var(--kbm-olive);
-  font-size:1.1rem;
-  margin:12px 0;
-}
-
-.reflection-textarea{
-  width:100%;
-  min-height:120px;
-  border:2px solid #e1e4e8;
-  border-radius:10px;
-  padding:12px;
-  font-family:inherit;
-  font-size:1rem;
-  resize:vertical;
-}
-.reflection-textarea:focus{
-  outline:none;
-  border-color:var(--kbm-green);
-}
-
-@media (max-width: 640px) {
-  .container{
-    padding:20px 12px;
-  }
-  .nav-top{
-    flex-wrap:wrap;
-  }
-  .btn-nav{
-    font-size:0.9rem;
-    padding:6px 12px;
-  }
-}
-</style>
-</head>
-<body>
-
-<div class="container">
-  <!-- Navigation -->
-  <div class="nav-top">
-    <button class="btn-nav" id="prevBtn" data-testid="button-prev">← Previous</button>
-    <div class="progress" id="progressText" data-testid="text-progress">Step 1 of {modules.length + 2}</div>
-    <button class="btn-nav" id="nextBtn" data-testid="button-next">Next →</button>
-  </div>
-
-  <!-- Intro Section -->
-  <section class="active" id="section0" data-testid="section-intro">
-    <h1>{title}</h1>
-    {tagline && <p class="tagline">{tagline}</p>}
-    <p>{description}</p>
-    
-    {prepChecklist.length > 0 && (
-      <div class="prep-checklist">
-        <h3>Before You Begin</h3>
-        <ul>
-          {prepChecklist.map((item) => (
-            <li>{item}</li>
-          ))}
-        </ul>
-      </div>
-    )}
-  </section>
-
-  <!-- Module Sections -->
-  {modules.map((module, index) => (
-    <section class="hidden" id={`section${index + 1}`} data-testid={`section-module-${index}`}>
-      <h2>{module.title}</h2>
-      <div set:html={module.htmlDescription} />
-
-      {module.media && (
-        <div class="media-container">
-          {module.media.includes('youtube.com') || module.media.includes('vimeo.com') ? (
-            <iframe
-              src={module.media}
-              width="560"
-              height="315"
-              frameborder="0"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowfullscreen
-            ></iframe>
-          ) : module.media.endsWith('.mp4') || module.media.endsWith('.webm') ? (
-            <video controls>
-              <source src={module.media} type={module.media.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}>
-              Your browser does not support the video tag.
-            </video>
-          ) : (
-            <img src={module.media} alt={module.title} style="max-width:100%;border-radius:8px;">
+<BaseLayout title={`${title} | Skill Builder`} description={description}>
+  <div class="sb-page">
+    <div class="sb-hero">
+      <div class="sb-hero-content">
+        <a href="/skillbuilder-catalog" class="sb-back-link" data-testid="link-back-catalog">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Back to Skill Builders
+        </a>
+        
+        <div class="sb-hero-header">
+          <div class="sb-hero-text">
+            <h1 class="sb-title" data-testid="text-title">{title}</h1>
+            {tagline && <p class="sb-tagline" data-testid="text-tagline">{tagline}</p>}
+            <p class="sb-description" data-testid="text-description">{description}</p>
+          </div>
+          
+          {currentLevel && (
+            <div class="sb-level-badge" data-testid="badge-level">
+              <img src={currentLevel.icon} alt="" class="sb-level-icon" />
+              <span>{currentLevel.label}</span>
+            </div>
           )}
         </div>
-      )}
+      </div>
+    </div>
 
-      {module.microQuestion && (
-        <div class="micro-section">
-          <div class="micro-question">{module.microQuestion}</div>
-          <div class="micro-buttons" data-module={index}>
-            <button class="micro-btn" data-response="yes" data-testid={`button-micro-yes-${index}`}>Yes ✓</button>
-            <button class="micro-btn" data-response="no" data-testid={`button-micro-no-${index}`}>No ✗</button>
-          </div>
-          <div class="response" id={`resp${index}`}></div>
-        </div>
-      )}
-    </section>
-  ))}
-
-  <!-- Reflection Section -->
-  {reflection && reflection.question && (
-    <section class="hidden" id={`section${modules.length + 1}`} data-testid="section-reflection">
-      <h2>Reflection</h2>
-      <p>{reflection.question}</p>
-      
-      <div class="micro-section">
-        <div class="micro-buttons" data-reflection="true">
-          <button class="micro-btn" data-response="yes" data-testid="button-reflection-yes">Yes ✓</button>
-          <button class="micro-btn" data-response="no" data-testid="button-reflection-no">No ✗</button>
-        </div>
-        <div class="response" id="respReflection"></div>
+    <div class="sb-container">
+      <div class="sb-nav-top">
+        <button class="sb-btn-nav" id="prevBtn" data-testid="button-prev">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Previous
+        </button>
+        <div class="sb-progress" id="progressText" data-testid="text-progress">Step 1 of {modules.length + 2}</div>
+        <button class="sb-btn-nav sb-btn-primary" id="nextBtn" data-testid="button-next">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </button>
       </div>
 
-      <p style="margin-top:24px;color:#666;font-size:0.95rem;">
-        Want to share your experience? Join the discussion below!
-      </p>
-    </section>
-  )}
-</div>
+      <section class="sb-section active" id="section0" data-testid="section-intro">
+        <h2 class="sb-section-title">Getting Started</h2>
+        
+        {prepChecklist.length > 0 && (
+          <div class="sb-prep-checklist">
+            <h3>Before You Begin</h3>
+            <ul>
+              {prepChecklist.map((item) => (
+                <li>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                    <polyline points="22 4 12 14.01 9 11.01"/>
+                  </svg>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        
+        <p class="sb-intro-text">Click <strong>Next</strong> when you're ready to begin!</p>
+      </section>
+
+      {modules.map((module, index) => (
+        <section class="sb-section hidden" id={`section${index + 1}`} data-testid={`section-module-${index}`}>
+          <h2 class="sb-section-title">{module.title}</h2>
+          <div class="sb-module-content" set:html={module.htmlDescription} />
+
+          {module.media && (
+            <div class="sb-media-container">
+              {module.media.includes('youtube.com') || module.media.includes('vimeo.com') ? (
+                <iframe
+                  src={module.media}
+                  width="560"
+                  height="315"
+                  frameborder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowfullscreen
+                ></iframe>
+              ) : module.media.endsWith('.mp4') || module.media.endsWith('.webm') ? (
+                <video controls>
+                  <source src={module.media} type={module.media.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}>
+                  Your browser does not support the video tag.
+                </video>
+              ) : (
+                <img src={module.media} alt={module.title} />
+              )}
+            </div>
+          )}
+
+          {module.microQuestion && (
+            <div class="sb-micro-section">
+              <div class="sb-micro-question">{module.microQuestion}</div>
+              <div class="sb-micro-buttons" data-module={index}>
+                <button class="sb-micro-btn" data-response="yes" data-testid={`button-micro-yes-${index}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                  Yes
+                </button>
+                <button class="sb-micro-btn" data-response="no" data-testid={`button-micro-no-${index}`}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                  No
+                </button>
+              </div>
+              <div class="sb-response" id={`resp${index}`}></div>
+            </div>
+          )}
+        </section>
+      ))}
+
+      {reflection && reflection.question && (
+        <section class="sb-section hidden" id={`section${modules.length + 1}`} data-testid="section-reflection">
+          <h2 class="sb-section-title">Reflection</h2>
+          <p class="sb-reflection-question">{reflection.question}</p>
+          
+          <div class="sb-micro-section">
+            <div class="sb-micro-buttons" data-reflection="true">
+              <button class="sb-micro-btn" data-response="yes" data-testid="button-reflection-yes">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Yes
+              </button>
+              <button class="sb-micro-btn" data-response="no" data-testid="button-reflection-no">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"/>
+                  <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+                No
+              </button>
+            </div>
+            <div class="sb-response" id="respReflection"></div>
+          </div>
+
+          <p class="sb-share-prompt">
+            Want to share your experience? Join the discussion below!
+          </p>
+        </section>
+      )}
+
+      <div class="sb-nav-bottom">
+        <button class="sb-btn-nav" id="prevBtn2" data-testid="button-prev-bottom">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Previous
+        </button>
+        <button class="sb-btn-nav sb-btn-primary" id="nextBtn2" data-testid="button-next-bottom">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m9 18 6-6-6-6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .sb-page {
+    min-height: 100vh;
+    background: #f7f8f7;
+  }
+
+  .sb-hero {
+    background: linear-gradient(135deg, #52682D 0%, #738C52 100%);
+    padding: calc(var(--header-height, 120px) + 2rem) 1.5rem 2.5rem;
+    color: white;
+  }
+
+  .sb-hero-content {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .sb-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    margin-bottom: 1.25rem;
+    transition: color 0.2s ease;
+  }
+
+  .sb-back-link:hover {
+    color: white;
+  }
+
+  .sb-hero-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .sb-hero-text {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .sb-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+    color: white;
+  }
+
+  .sb-tagline {
+    font-size: 1.15rem;
+    font-style: italic;
+    margin: 0 0 0.75rem 0;
+    opacity: 0.9;
+  }
+
+  .sb-description {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+    max-width: 600px;
+  }
+
+  .sb-level-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .sb-level-icon {
+    width: 28px;
+    height: 28px;
+    filter: brightness(0) invert(1);
+  }
+
+  .sb-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 3rem;
+  }
+
+  .sb-nav-top,
+  .sb-nav-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sb-nav-bottom {
+    margin-top: 1.5rem;
+    margin-bottom: 0;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e1e4e8;
+  }
+
+  .sb-progress {
+    font-size: 0.95rem;
+    color: #555;
+    font-weight: 500;
+  }
+
+  .sb-btn-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 2px solid #738C52;
+    background: white;
+    color: #52682D;
+    border-radius: 10px;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+  }
+
+  .sb-btn-nav:hover:not(:disabled) {
+    background: #f0f4e8;
+    transform: translateY(-1px);
+  }
+
+  .sb-btn-nav:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .sb-btn-primary {
+    background: #52682D;
+    color: white;
+    border-color: #52682D;
+  }
+
+  .sb-btn-primary:hover:not(:disabled) {
+    background: #445626;
+    border-color: #445626;
+  }
+
+  .sb-section {
+    background: white;
+    border: 1px solid #e1e4e8;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+  }
+
+  .sb-section.hidden {
+    display: none;
+  }
+
+  .sb-section.active {
+    display: block;
+  }
+
+  .sb-section-title {
+    color: #52682D;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .sb-prep-checklist {
+    background: #f6f8f3;
+    border-left: 4px solid #52682D;
+    padding: 1.25rem 1.5rem;
+    border-radius: 0 12px 12px 0;
+    margin: 1.25rem 0;
+  }
+
+  .sb-prep-checklist h3 {
+    color: #52682D;
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .sb-prep-checklist ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sb-prep-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0.5rem 0;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .sb-prep-checklist li svg {
+    flex-shrink: 0;
+    color: #738C52;
+    margin-top: 2px;
+  }
+
+  .sb-intro-text {
+    color: #555;
+    font-size: 1rem;
+    margin: 1.25rem 0 0 0;
+  }
+
+  .sb-module-content {
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .sb-module-content :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .sb-module-content :global(ul),
+  .sb-module-content :global(ol) {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .sb-module-content :global(li) {
+    margin: 0.35rem 0;
+  }
+
+  .sb-media-container {
+    margin: 1.5rem 0;
+  }
+
+  .sb-media-container video,
+  .sb-media-container iframe,
+  .sb-media-container img {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  .sb-media-container iframe {
+    aspect-ratio: 16/9;
+    width: 100%;
+    height: auto;
+  }
+
+  .sb-micro-section {
+    margin-top: 1.75rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e6eddc;
+  }
+
+  .sb-micro-question {
+    font-weight: 600;
+    color: #52682D;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  .sb-micro-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .sb-micro-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 2px solid #c7d8a4;
+    background: #f8faf6;
+    color: #52682D;
+    border-radius: 10px;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .sb-micro-btn:hover {
+    background: #e6eddc;
+    border-color: #738C52;
+    transform: translateY(-1px);
+  }
+
+  .sb-response {
+    margin-top: 1rem;
+    min-height: 20px;
+  }
+
+  .sb-response :global(.sb-tip) {
+    border-left: 4px solid #52682D;
+    background: #f6f8f3;
+    padding: 1rem 1.25rem;
+    border-radius: 0 10px 10px 0;
+    animation: fadeIn 0.4s ease;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .sb-reflection-question {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .sb-share-prompt {
+    margin-top: 2rem;
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .sb-hero {
+      padding: calc(var(--header-height, 100px) + 1.5rem) 1rem 2rem;
+    }
+
+    .sb-title {
+      font-size: 1.75rem;
+    }
+
+    .sb-description {
+      font-size: 1rem;
+    }
+
+    .sb-hero-header {
+      flex-direction: column;
+    }
+
+    .sb-level-badge {
+      align-self: flex-start;
+    }
+
+    .sb-container {
+      padding: 1.5rem 1rem 2rem;
+    }
+
+    .sb-section {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .sb-btn-nav {
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .sb-nav-top,
+    .sb-nav-bottom {
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .sb-progress {
+      order: -1;
+      width: 100%;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+  }
+</style>
 
 <script define:vars={{ modules, reflection }}>
-const sections = Array.from(document.querySelectorAll("section"));
+const sections = Array.from(document.querySelectorAll(".sb-section"));
 let current = 0;
 const prevBtn = document.getElementById("prevBtn");
 const nextBtn = document.getElementById("nextBtn");
+const prevBtn2 = document.getElementById("prevBtn2");
+const nextBtn2 = document.getElementById("nextBtn2");
 const progress = document.getElementById("progressText");
 
 function showSection(i) {
@@ -336,62 +611,76 @@ function showSection(i) {
     s.classList.toggle("hidden", idx !== i);
   });
   progress.textContent = `Step ${i + 1} of ${sections.length}`;
-  prevBtn.disabled = (i === 0);
-  nextBtn.textContent = i === sections.length - 1 ? "Finish" : "Next →";
+  
+  const isFirst = i === 0;
+  const isLast = i === sections.length - 1;
+  
+  prevBtn.disabled = isFirst;
+  prevBtn2.disabled = isFirst;
+  
+  const nextText = isLast ? "Finish" : "Next";
+  const nextIcon = isLast 
+    ? '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+    : '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>';
+  
+  nextBtn.innerHTML = `${nextText} ${nextIcon}`;
+  nextBtn2.innerHTML = `${nextText} ${nextIcon}`;
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-prevBtn.addEventListener("click", () => {
+function goPrev() {
   if (current > 0) {
     current--;
     showSection(current);
   }
-});
+}
 
-nextBtn.addEventListener("click", () => {
+function goNext() {
   if (current < sections.length - 1) {
     current++;
     showSection(current);
   } else {
     alert("Great job! You've completed this Skill Builder.");
   }
-});
+}
+
+prevBtn.addEventListener("click", goPrev);
+nextBtn.addEventListener("click", goNext);
+prevBtn2.addEventListener("click", goPrev);
+nextBtn2.addEventListener("click", goNext);
 
 showSection(current);
 
-// Micro interactions for modules
 modules.forEach((module, index) => {
-  const buttons = document.querySelectorAll(`[data-module="${index}"] .micro-btn`);
+  const buttons = document.querySelectorAll(`[data-module="${index}"] .sb-micro-btn`);
   const responseDiv = document.getElementById(`resp${index}`);
   
   buttons.forEach(btn => {
     btn.addEventListener("click", () => {
       const responseType = btn.dataset.response;
-      const responseText = module.microResponses[responseType];
+      const responseText = module.microResponses?.[responseType];
       
       if (responseText) {
-        responseDiv.innerHTML = `<div class='micro-tip'>${responseText}</div>`;
+        responseDiv.innerHTML = `<div class='sb-tip'>${responseText}</div>`;
       }
     });
   });
 });
 
-// Reflection micro interaction
 if (reflection && reflection.question) {
-  const reflectionButtons = document.querySelectorAll('[data-reflection="true"] .micro-btn');
+  const reflectionButtons = document.querySelectorAll('[data-reflection="true"] .sb-micro-btn');
   const reflectionResponseDiv = document.getElementById('respReflection');
   
   reflectionButtons.forEach(btn => {
     btn.addEventListener("click", () => {
       const responseType = btn.dataset.response;
-      const responseText = reflection.responses[responseType];
+      const responseText = reflection.responses?.[responseType];
       
       if (responseText) {
-        reflectionResponseDiv.innerHTML = `<div class='micro-tip'>${responseText}</div>`;
+        reflectionResponseDiv.innerHTML = `<div class='sb-tip'>${responseText}</div>`;
       }
     });
   });
 }
 </script>
-
-</body>
-</html>
