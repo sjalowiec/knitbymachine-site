@@ -361,6 +361,7 @@ p {
 .kbm-intro-wrapper {
   position: relative;
   z-index: 30;
+  margin-top: var(--header-height); /* Push below fixed header */
 }
 
 .hidden {
