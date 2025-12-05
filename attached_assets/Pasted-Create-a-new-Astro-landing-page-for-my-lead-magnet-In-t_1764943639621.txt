@@ -1,0 +1,106 @@
+Create a new Astro landing page for my lead magnet.
+
+In the src/pages folder, create a new file named project-inspiration.astro.
+
+Use the same base layout and frontmatter pattern as my other simple content pages (for example, whatever page is used for “Getting Started”). Import that layout at the top and pass a title and description prop.
+
+Page title: Ready ● Set ● Knit: Project Inspiration
+
+Meta description: Not sure what to make next on your knitting machine? Ready ● Set ● Knit: Project Inspiration asks a few simple questions and gives you project ideas that fit your machine, yarn, and experience.
+
+Inside the main layout slot, build a clean, centered landing page with one main column on mobile and a two-column layout on larger screens (copy on the left, form on the right). Match the existing site styles (same container width, fonts, spacing, and button styles as the home page).
+
+Use this exact text content for the page:
+
+Hero / top section
+
+Small eyebrow above the main heading:
+Free interactive tool
+
+Main heading (H1):
+Ready ● Set ● Knit: Project Inspiration
+
+Subhead paragraph under the H1:
+Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
+
+Three short benefit bullets below the subhead (use an unordered list with simple bullet styling):
+
+Choose a project that makes sense for where you are right now.
+
+Avoid overwhelm with clear, realistic options—no endless scrolling.
+
+Use your machine, your yarn, and your time instead of starting from scratch.
+
+Form area (to the side on desktop, below on mobile)
+
+Create a visually distinct card or panel with a soft background and rounded corners. Inside that panel:
+
+Short intro line above the form fields:
+Enter your email to open Project Inspiration. I’ll also send the link to your inbox so you can come back to it anytime.
+
+Fields:
+
+First name (text input)
+
+Email address (email input)
+
+Button text (use my existing primary button styling):
+Get Project Inspiration
+
+Tiny reassurance line under the button in smaller, lighter text:
+Instant access. No spam. Unsubscribe anytime.
+
+For now, make the <form> use method="post" and a placeholder action="#" with a TODO comment where I can later paste in my ActiveCampaign form or redirect logic. Do not add any JavaScript beyond what is already used on other forms in the site.
+
+“Is this for you?” section
+
+Below the hero/form area, add another section with:
+
+Section heading (H2):
+Is Project Inspiration for you?
+
+Intro line:
+Yes—if any of this sounds familiar:
+
+Bulleted list:
+
+Your machine is ready, but you’re not sure what to make next.
+
+You keep collecting patterns without actually starting one.
+
+You’d like a realistic project that fits your time, yarn, and current skills.
+
+“How it works” section
+
+Add another section below:
+
+Section heading (H2):
+How Ready ● Set ● Knit: Project Inspiration works
+
+An ordered list with three steps:
+
+Tell me a bit about your machine, your yarn, and your experience.
+
+I’ll suggest project ideas that match where you are right now.
+
+Pick one, get started, and come back anytime when you’re ready for the next step.
+
+Short trust / about line
+
+At the bottom, add a small section:
+
+Small heading (H3 or styled small):
+Why Ready ● Set ● Knit?
+
+Paragraph:
+I’ve helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
+
+Make sure the page is fully responsive:
+
+On mobile, everything stacks in a single column with comfortable padding.
+
+On larger screens, the hero text and form panel sit side-by-side.
+
+Use my existing button classes and text styles so this page visually matches the rest of the site.
+
+Save the file and ensure the new page is accessible at /project-inspiration.

@@ -1,0 +1,377 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const pageTitle = 'Ready ● Set ● Knit: Project Inspiration';
+const pageDescription = 'Not sure what to make next on your knitting machine? Ready ● Set ● Knit: Project Inspiration asks a few simple questions and gives you project ideas that fit your machine, yarn, and experience.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="pi-page">
+    <!-- HERO SECTION -->
+    <section class="pi-hero">
+      <div class="pi-hero__grid">
+        <div class="pi-hero__content">
+          <span class="pi-eyebrow" data-testid="text-eyebrow">Free interactive tool</span>
+          <h1 data-testid="text-page-title">Ready ● Set ● Knit: Project Inspiration</h1>
+          <p class="pi-subhead" data-testid="text-subhead">
+            Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
+          </p>
+          <ul class="pi-benefits" data-testid="list-benefits">
+            <li>Choose a project that makes sense for where you are right now.</li>
+            <li>Avoid overwhelm with clear, realistic options—no endless scrolling.</li>
+            <li>Use your machine, your yarn, and your time instead of starting from scratch.</li>
+          </ul>
+        </div>
+
+        <div class="pi-hero__form">
+          <div class="pi-form-card" data-testid="container-form-card">
+            <p class="pi-form-intro">
+              Enter your email to open Project Inspiration. I'll also send the link to your inbox so you can come back to it anytime.
+            </p>
+            <!-- TODO: Replace action="#" with your ActiveCampaign form action URL or redirect logic -->
+            <form method="post" action="#" class="pi-form" data-testid="form-project-inspiration">
+              <div class="pi-form-group">
+                <label for="first-name" class="pi-label">First name</label>
+                <input 
+                  type="text" 
+                  id="first-name" 
+                  name="first_name" 
+                  class="pi-input" 
+                  required
+                  data-testid="input-first-name"
+                />
+              </div>
+              <div class="pi-form-group">
+                <label for="email" class="pi-label">Email address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  class="pi-input" 
+                  required
+                  data-testid="input-email"
+                />
+              </div>
+              <button type="submit" class="btn primary pi-submit" data-testid="button-submit">
+                Get Project Inspiration
+              </button>
+              <p class="pi-reassurance">Instant access. No spam. Unsubscribe anytime.</p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- IS THIS FOR YOU? SECTION -->
+    <section class="pi-section" data-testid="section-is-this-for-you">
+      <h2>Is Project Inspiration for you?</h2>
+      <p class="pi-section-intro">Yes—if any of this sounds familiar:</p>
+      <ul class="pi-checklist">
+        <li>Your machine is ready, but you're not sure what to make next.</li>
+        <li>You keep collecting patterns without actually starting one.</li>
+        <li>You'd like a realistic project that fits your time, yarn, and current skills.</li>
+      </ul>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="pi-section" data-testid="section-how-it-works">
+      <h2>How Ready ● Set ● Knit: Project Inspiration works</h2>
+      <ol class="pi-steps">
+        <li>Tell me a bit about your machine, your yarn, and your experience.</li>
+        <li>I'll suggest project ideas that match where you are right now.</li>
+        <li>Pick one, get started, and come back anytime when you're ready for the next step.</li>
+      </ol>
+    </section>
+
+    <!-- TRUST / ABOUT SECTION -->
+    <section class="pi-section pi-section--trust" data-testid="section-trust">
+      <h3>Why Ready ● Set ● Knit?</h3>
+      <p>
+        I've helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
+      </p>
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  /* ========== PAGE WRAPPER ========== */
+  .pi-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+  }
+
+  /* ========== HERO SECTION ========== */
+  .pi-hero {
+    padding: 2rem 0 3rem;
+  }
+
+  .pi-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+
+  @media (min-width: 768px) {
+    .pi-hero__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* ========== HERO CONTENT ========== */
+  .pi-hero__content {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .pi-hero__content {
+      text-align: left;
+    }
+  }
+
+  .pi-eyebrow {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #738c52;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 1rem;
+    background: rgba(115, 140, 82, 0.12);
+    border-radius: 999px;
+  }
+
+  .pi-hero__content h1 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    margin: 0 0 1rem;
+    color: #2c3a57;
+    line-height: 1.25;
+  }
+
+  .pi-subhead {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: #4d5a48;
+    margin: 0 0 1.5rem;
+    max-width: 500px;
+  }
+
+  @media (max-width: 767px) {
+    .pi-subhead {
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  .pi-benefits {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0;
+    color: #4d5a48;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .pi-benefits li {
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 767px) {
+    .pi-benefits {
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  /* ========== FORM CARD ========== */
+  .pi-hero__form {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .pi-hero__form {
+      justify-content: flex-end;
+    }
+  }
+
+  .pi-form-card {
+    background-color: #f6f8f2;
+    border: 2px solid #c7d8a4;
+    border-radius: 1.25rem;
+    padding: 1.75rem;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .pi-form-intro {
+    font-size: 0.95rem;
+    color: #4d5a48;
+    line-height: 1.55;
+    margin: 0 0 1.25rem;
+  }
+
+  .pi-form-group {
+    margin-bottom: 1rem;
+  }
+
+  .pi-label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #2c3a57;
+    margin-bottom: 0.35rem;
+  }
+
+  .pi-input {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    font-size: 1rem;
+    border: 1.5px solid #c7d8a4;
+    border-radius: 0.5rem;
+    background-color: #ffffff;
+    color: #2c3a57;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .pi-input:focus {
+    outline: none;
+    border-color: #52682d;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.15);
+  }
+
+  .pi-submit {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+
+  .pi-reassurance {
+    font-size: 0.8rem;
+    color: #6b7565;
+    text-align: center;
+    margin: 0.75rem 0 0;
+    font-style: italic;
+  }
+
+  /* ========== SHARED BUTTON STYLES ========== */
+  .btn {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .btn.primary {
+    background-color: #52682d;
+    color: #ffffff;
+  }
+
+  .btn.primary:hover {
+    background-color: #445626;
+  }
+
+  /* ========== SECTIONS ========== */
+  .pi-section {
+    padding: 2.5rem 0;
+    border-top: 1px solid #e0e5d8;
+  }
+
+  .pi-section h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    text-align: center;
+  }
+
+  .pi-section-intro {
+    font-size: 1rem;
+    color: #4d5a48;
+    text-align: center;
+    margin: 0 0 1.25rem;
+  }
+
+  .pi-checklist {
+    list-style: disc;
+    padding-left: 1.5rem;
+    max-width: 600px;
+    margin: 0 auto;
+    color: #4d5a48;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .pi-checklist li {
+    margin-bottom: 0.5rem;
+  }
+
+  .pi-steps {
+    list-style: decimal;
+    padding-left: 1.5rem;
+    max-width: 600px;
+    margin: 1rem auto 0;
+    color: #4d5a48;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
+
+  .pi-steps li {
+    margin-bottom: 0.75rem;
+  }
+
+  /* ========== TRUST SECTION ========== */
+  .pi-section--trust {
+    background-color: #f6f8f2;
+    border-radius: 1rem;
+    padding: 2rem;
+    border: none;
+    margin-top: 1rem;
+  }
+
+  .pi-section--trust h3 {
+    font-size: 1.1rem;
+    color: #52682d;
+    margin: 0 0 0.75rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .pi-section--trust p {
+    font-size: 0.95rem;
+    color: #4d5a48;
+    line-height: 1.65;
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  /* ========== MOBILE ADJUSTMENTS ========== */
+  @media (max-width: 480px) {
+    .pi-page {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .pi-form-card {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .pi-section {
+      padding: 2rem 0;
+    }
+
+    .pi-section--trust {
+      padding: 1.5rem;
+    }
+  }
+</style>
