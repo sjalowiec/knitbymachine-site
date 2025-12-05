@@ -486,6 +486,7 @@ p {
   display: flex;
   flex-wrap: wrap;
   gap: 0.6rem;
+  justify-content: center;
 }
 
 .kbm-intro-primary,
@@ -530,6 +531,7 @@ p {
   padding: 0 1rem;
   font-size: 0.85rem;
   color: #6b7280;
+  text-align: center;
 }
 
 /* Responsive tweaks for Welcome Intro */
