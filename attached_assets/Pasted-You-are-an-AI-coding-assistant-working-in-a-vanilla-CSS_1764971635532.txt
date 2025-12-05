@@ -1,0 +1,126 @@
+You are an AI coding assistant working in a vanilla CSS Astro project (no Tailwind).
+
+I want to fix the layout of the agent embed on my Project Inspiration session page so:
+
+The visible embed area is larger (taller).
+
+There is one smooth scroll on the page (no tiny inner scrollbars).
+
+It behaves the same way as the working embed on my Smart Guides {slug} page.
+
+1. Files to open
+
+src/pages/smart-guides/[slug].astro
+
+src/pages/project-inspiration/session.astro
+
+2. Copy the working embed pattern from Smart Guides
+
+In src/pages/smart-guides/[slug].astro:
+
+Find the section that renders the AI agent / MindPal embed.
+It will likely contain an <iframe> or <script> inside a wrapper (for example .sg-agent-wrapper, .agent-embed-wrapper, etc.).
+
+Identify:
+
+The HTML structure around the embed (wrapper <div>s and their classes).
+
+Any CSS classes or <style> rules that control the height and scrolling for that wrapper and iframe.
+
+Do not change anything in the Smart Guides file; just use it as a reference.
+
+Typical things I expect you to find (names may differ – use the actual names in the code):
+
+<div class="agent-embed-wrapper">
+  <iframe src={someUrl} class="agent-embed-iframe"></iframe>
+</div>
+
+
+with CSS like:
+
+.agent-embed-wrapper {
+  max-width: 1100px;
+  margin: 0 auto;
+  height: 75vh;
+  min-height: 600px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid #e0e4ea;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+}
+
+.agent-embed-iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+
+(Use the actual class names and values from my Smart Guides file, not these placeholders.)
+
+3. Apply the same structure to /project-inspiration/session
+
+Now open src/pages/project-inspiration/session.astro.
+
+This page already contains my agent embed for the Project Inspiration session (likely another <iframe> or embed <script>).
+
+Refactor that embed so that:
+
+The outer HTML structure matches the Smart Guides page:
+
+<section class="pi-session">
+  <div class="pi-session-inner">
+    <!-- heading / intro text for the session page, if present -->
+
+    <div class="agent-embed-wrapper">
+      <!-- my Project Inspiration agent iframe or embed goes here -->
+    </div>
+  </div>
+</section>
+
+
+Keep my existing iframe / embed code exactly the same, just move it inside the agent-embed-wrapper or equivalent container class you copied from Smart Guides.
+
+If Smart Guides uses a different wrapper class name, reuse that same name here for consistency.
+
+Use the same classes on the iframe that Smart Guides uses for its agent iframe (e.g. agent-embed-iframe).
+
+4. Reuse / add the CSS for height and scroll behavior
+
+Check where the Smart Guides embed CSS lives:
+
+It might be inside a <style> block at the bottom of src/pages/smart-guides/[slug].astro, or
+
+In a shared stylesheet (e.g. src/styles/agents.css or similar).
+
+Do the following:
+
+Ensure the same CSS rules that control:
+
+The wrapper height (e.g. height: 75vh; min-height: 600px;)
+
+overflow: hidden;
+
+The iframe width: 100%; height: 100%; border: none;
+
+are also applied on the Project Inspiration session page.
+
+If the CSS is page-scoped inside [slug].astro, copy those rules into a <style> block in session.astro and:
+
+Either keep the same class names (.agent-embed-wrapper, .agent-embed-iframe), or
+
+If you renamed them for pi-session, update them consistently in both the HTML and the CSS.
+
+Make sure no extra container around the iframe is adding its own scroll (remove overflow: auto / overflow-y: scroll from any intermediate wrappers on the session page).
+
+5. Final behavior
+
+After these changes, the /project-inspiration/session page should:
+
+Show the agent embed in a single, large card similar to the Smart Guides page.
+
+Use one outer scroll for the page (the iframe fills its container vertically; no separate tiny scrollbar for the iframe container).
+
+Keep the functionality of the agent exactly the same — only layout/height/scroll behavior is changed.
+
+Please make these changes and save the files.
