@@ -1,0 +1,122 @@
+You are an AI coding assistant working on an Astro + Tailwind project called Knit by Machine.
+
+Goal: Clean up the "Ready ● Set ● Knit: Project Inspiration" lead magnet page.
+
+Right now, under the hero (headline + body text + icon) and the email signup form, there are three blocks of text that feel like random paragraphs. I want you to:
+
+1. Replace those three blocks with a single, clean “What you’ll get inside” section.
+2. Style it so it feels intentional and on-brand.
+3. Automatically HIDE that section whenever the agent embed is present on the page.
+
+--------------------------------
+FILES / LOCATION
+--------------------------------
+
+Find the Astro page that renders the Project Inspiration lead magnet. You can locate it by searching for the text:
+
+"Ready ● Set ● Knit: Project Inspiration"
+
+Make all of the changes below in that file.
+
+--------------------------------
+STEP 1 – REPLACE THE 3 TEXT BLOCKS
+--------------------------------
+
+Currently, under the hero and form, there are three paragraphs/list blocks that explain things like:
+- “Choose a project that makes sense for where you are right now.”
+- “Avoid overwhelm with clear, realistic options…”
+- “Use your machine, your yarn, and your time instead of starting from scratch.”
+
+Remove that existing “3 blocks” section entirely and replace it with a single section like this, placed directly under the hero+form layout (and above any footer):
+
+<section
+  id="project-inspiration-benefits"
+  class="mt-10 border-t border-[#D5DFC5] pt-8 max-w-3xl"
+>
+  <h2 class="text-xl font-semibold text-[#2C3A57] mb-4">
+    What you’ll get inside
+  </h2>
+  <ul class="space-y-2 text-base leading-relaxed text-[#455065] list-disc pl-5">
+    <li>A project that makes sense for where you are right now.</li>
+    <li>Clear, realistic options—no endless scrolling.</li>
+    <li>A simple, doable next step you can actually see yourself knitting.</li>
+    <li>A way to use your yarn, your machine, and your time instead of starting from scratch.</li>
+  </ul>
+</section>
+
+Notes:
+- If the page uses container / grid wrappers, keep this section inside the same main content container so widths line up with the headline.
+- You can adjust the colors to use existing Tailwind utility classes if these exact hex values already have semantic classes defined in the project (for example text-kbm-navy, text-kbm-slate, border-kbm-soft, etc.), but keep the overall look similar: calm, clean, and easy to scan.
+
+--------------------------------
+STEP 2 – PREPARE FOR THE AGENT EMBED
+--------------------------------
+
+On this page there will be (now or in the near future) an embedded Project Inspiration agent. Wrap that embed (or the container where the embed is rendered) in a div with this ID:
+
+<div id="project-inspiration-agent">
+  <!-- existing agent embed or placeholder goes here -->
+</div>
+
+If the embed already exists without this wrapper, add this wrapper around it. Do not change the embed code itself, just the container.
+
+If the agent embed is not implemented yet, you can still add an empty placeholder container in the appropriate spot for now:
+
+<div id="project-inspiration-agent">
+  <!-- agent embed will be injected here -->
+</div>
+
+Place this container where the agent will appear after signup (likely where the form content will be swapped out or just below the hero).
+
+--------------------------------
+STEP 3 – HIDE BENEFITS WHEN THE AGENT IS PRESENT
+--------------------------------
+
+At the bottom of this Astro file (but still inside the main component), add a small script block that:
+
+- Looks for the benefits section (#project-inspiration-benefits).
+- Checks whether the agent container (#project-inspiration-agent) exists and has any child nodes (i.e., the embed is actually present).
+- Hides the benefits section when the agent is present.
+- Shows the benefits section when the agent is not present.
+
+Use this script:
+
+<script>
+  if (typeof window !== "undefined") {
+    const benefits = document.getElementById("project-inspiration-benefits");
+
+    function updateBenefitsVisibility() {
+      const agent = document.getElementById("project-inspiration-agent");
+      const hasAgentContent = agent && agent.childElementCount > 0;
+      if (benefits) {
+        benefits.classList.toggle("hidden", !!hasAgentContent);
+      }
+    }
+
+    // Run once on load
+    updateBenefitsVisibility();
+
+    // Watch for changes in the DOM (for when the agent embed is injected later)
+    const observer = new MutationObserver(updateBenefitsVisibility);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
+</script>
+
+Notes:
+- Do NOT change the rest of the layout or other sections on this page.
+- Do NOT remove the email form logic.
+- The only conditional behavior we want is: when the agent embed is actually present in #project-inspiration-agent, hide the “What you’ll get inside” benefits section; otherwise show it.
+
+--------------------------------
+FINAL CHECKS
+--------------------------------
+
+1. Before the agent embed is present:
+   - The hero + form should display as they do now.
+   - The new “What you’ll get inside” section should appear under the hero/form, aligned with the main content and easy to scan.
+
+2. After the agent embed is present inside #project-inspiration-agent:
+   - The “What you’ll get inside” section should automatically be hidden (via the .hidden class).
+   - The rest of the page layout should remain unchanged.
+
+Make sure the page still builds without TypeScript/Astro errors and that there are no unused imports introduced by this change.
