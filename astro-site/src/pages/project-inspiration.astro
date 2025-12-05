@@ -80,13 +80,13 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     flex-direction: column;
   }
 
-  /* Pill + arrow container */
+  /* Position the arrow above the pill */
   .pi-pill-wrap {
     position: relative;
-    display: inline-flex; /* keep arrow close to pill */
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    margin: 0 auto 0.75rem;
+    margin: 0 auto 1.5rem; /* a bit more space under the arrow */
   }
 
   /* Narrow, centered pill */
@@ -104,13 +104,48 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     text-transform: uppercase;
   }
 
-  /* Curved arrow tucked just above/right of the pill */
+  /* Big curved arrow above the pill */
   .pi-pill-arrow {
     position: absolute;
-    top: -22px;
-    right: -18px;
-    width: 52px;
-    height: 28px;
+    top: -80px;   /* height above pill */
+    right: 10px;  /* shift horizontally so the tip points at the pill */
+    width: 150px;
+    height: 90px;
+  }
+
+  /* Curved line */
+  .pi-pill-arrow::before {
+    content: "";
+    position: absolute;
+    width: 150px;
+    height: 90px;
+    border-radius: 999px;
+    border: 3px solid #52682D;
+    border-color: #52682D transparent transparent transparent; /* only top arc */
+    transform: rotate(8deg); /* slight tilt like the mock */
+  }
+
+  /* Arrowhead pointing down toward the pill */
+  .pi-pill-arrow::after {
+    content: "";
+    position: absolute;
+    right: 8px;
+    bottom: 18px;
+    width: 14px;
+    height: 14px;
+    border-top: 3px solid #52682D;
+    border-right: 3px solid #52682D;
+    transform: rotate(135deg);
+  }
+
+  /* Tweak for small screens so it doesn't feel cramped */
+  @media (max-width: 768px) {
+    .pi-pill-arrow {
+      top: -70px;
+      right: 0;
+      width: 130px;
+      height: 80px;
+    }
   }
 
   .pi-form-card {
@@ -223,24 +258,7 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       <div class="pi-hero-right">
         <div class="pi-pill-wrap">
           <span class="pi-pill">Free interactive tool</span>
-          <svg
-            class="pi-pill-arrow"
-            viewBox="0 0 80 40"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <path
-              d="M75 5 C 55 5, 40 15, 25 26"
-              fill="none"
-              stroke="#52682D"
-              stroke-width="2.2"
-              stroke-linecap="round"
-            />
-            <path
-              d="M28 24 L20 24 L23 32 Z"
-              fill="#52682D"
-            />
-          </svg>
+          <span class="pi-pill-arrow" aria-hidden="true"></span>
         </div>
 
         <div class="pi-form-card" data-testid="container-form-card">

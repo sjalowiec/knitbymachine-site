@@ -1,0 +1,98 @@
+You are an AI coding assistant working in a vanilla CSS Astro project (no Tailwind).
+
+On the /project-inspiration page, I want the arrow above the “Free interactive tool” pill to look like a large, loose, curved arrow (like a hand-drawn swoop) sitting above the pill and pointing down toward it.
+
+1. Open file
+
+Edit:
+
+src/pages/project-inspiration.astro
+
+There is already a wrapper around the pill, similar to:
+
+<div class="pi-pill-wrap">
+  <span class="pi-pill">FREE INTERACTIVE TOOL</span>
+  <span class="pi-pill-arrow" aria-hidden="true"></span>
+</div>
+
+
+If the structure is slightly different, adjust it to match this exactly, but do not change any copy.
+
+2. Update the arrow CSS to be a big swoopy arc
+
+In the <style> block for this page:
+
+Keep the .pi-pill-wrap and .pi-pill styling that’s already working.
+
+Replace any existing rules for .pi-pill-arrow, .pi-pill-arrow::before, and .pi-pill-arrow::after with the following:
+
+/* Position the arrow above the pill */
+.pi-pill-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem; /* a bit more space under the arrow */
+}
+
+/* Big curved arrow above the pill */
+.pi-pill-arrow {
+  position: absolute;
+  top: -80px;   /* height above pill */
+  right: 10px;  /* shift horizontally so the tip points at the pill */
+  width: 150px;
+  height: 90px;
+}
+
+/* Curved line */
+.pi-pill-arrow::before {
+  content: "";
+  position: absolute;
+  width: 150px;
+  height: 90px;
+  border-radius: 999px;
+  border: 3px solid #52682D;
+  border-color: #52682D transparent transparent transparent; /* only top arc */
+  transform: rotate(8deg); /* slight tilt like the mock */
+}
+
+/* Arrowhead pointing down toward the pill */
+.pi-pill-arrow::after {
+  content: "";
+  position: absolute;
+  right: 8px;
+  bottom: 18px;
+  width: 14px;
+  height: 14px;
+  border-top: 3px solid #52682D;
+  border-right: 3px solid #52682D;
+  transform: rotate(45deg);
+}
+
+/* Tweak for small screens so it doesn't feel cramped */
+@media (max-width: 768px) {
+  .pi-pill-arrow {
+    top: -70px;
+    right: 0;
+    width: 130px;
+    height: 80px;
+  }
+}
+
+3. Don’t change anything else
+
+Do not touch the ActiveCampaign form or scripts.
+
+Do not change the pill text or card layout.
+
+Only update the pill wrapper + arrow styling as above.
+
+Save the file when you’re done.
+
+After this, the arrow should:
+
+Sit well above the pill
+
+Form a large, graceful arc
+
+Have a clear arrowhead pointing down toward the pill, very similar to the reference image.
