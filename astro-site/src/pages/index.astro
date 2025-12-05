@@ -120,6 +120,26 @@ import "../styles/global.css";
         </div>
       </section>
 
+      <!-- PROJECT PICKER CTA - Rounded section with background image -->
+      <section class="kbm-guided-cta" data-testid="section-project-picker-cta">
+        <div class="kbm-guided-cta__overlay"></div>
+        <div class="kbm-guided-cta__inner">
+          <div class="kbm-guided-cta__box">
+            <h2 class="kbm-guided-cta__title">Ready | Set | Knit: Projects — free project picker</h2>
+            <p class="kbm-guided-cta__text">Answer a few quick questions and I'll recommend a confidence-building next project that fits your machine, yarn, and experience.</p>
+            <button
+              type="button"
+              id="lead-magnet-trigger"
+              class="btn primary"
+              data-testid="button-project-picker"
+            >
+              Start the free Project Picker
+            </button>
+            <p class="kbm-guided-cta__microcopy">Takes about a minute. No spam, ever.</p>
+          </div>
+        </div>
+      </section>
+
       <!-- WHERE ARE YOU RIGHT NOW? SECTION -->
       <section id="where-are-you" class="kbm-where-section journey-section">
         <div class="kbm-section-header">
@@ -186,18 +206,6 @@ import "../styles/global.css";
 
       </section>
 
-      <!-- GUIDED START CTA - Rounded section with background image -->
-      <section class="kbm-guided-cta" data-testid="section-guided-cta">
-        <div class="kbm-guided-cta__overlay"></div>
-        <div class="kbm-guided-cta__inner">
-          <div class="kbm-guided-cta__box">
-            <h2 class="kbm-guided-cta__title">Not sure which one fits?</h2>
-            <p class="kbm-guided-cta__text">Answer a couple of quick questions and I'll recommend your best next step.</p>
-            <a href="https://knitbymachine.com/getting-started" class="btn primary" data-testid="button-guided-start">Try the Guided Start</a>
-          </div>
-        </div>
-      </section>
-
       <!-- WHAT YOU'LL FIND SECTION -->
       <section class="kbm-reassurance-section">
         <div class="kbm-section-header">
@@ -239,16 +247,6 @@ import "../styles/global.css";
         </div>
       </section>
     </main>
-
-    <!-- Lead Magnet Floating Button -->
-    <button
-      id="lead-magnet-trigger"
-      type="button"
-      class="fixed bottom-10 right-8 z-40 px-4 py-2 rounded-full bg-[#6E8B3D] text-white text-sm font-medium shadow-lg hover:bg-[#52682D] hover:scale-105 transition-transform transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6E8B3D]"
-      data-testid="button-lead-magnet-trigger"
-    >
-      Free Project Tool
-    </button>
 
     <!-- Lead Magnet Modal -->
     <div
@@ -717,6 +715,13 @@ import "../styles/global.css";
     margin: 0 0 1.5rem;
     line-height: 1.5;
     color: #4f5a4b;
+  }
+
+  .kbm-guided-cta__microcopy {
+    font-size: 0.8rem;
+    color: #6b7565;
+    margin: 0.75rem 0 0;
+    font-style: italic;
   }
 
   @media (min-width: 768px) {
