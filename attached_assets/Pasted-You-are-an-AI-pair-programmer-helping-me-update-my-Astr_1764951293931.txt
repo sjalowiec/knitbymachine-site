@@ -1,0 +1,51 @@
+You are an AI pair programmer helping me update my Astro + Tailwind site for Knit by Machine (KBM).
+
+GOAL  
+Add my new decorative speech bubble graphic (speech_bubble.svg) to the top of my *Project Inspiration Lead Magnet page*.  
+This is the page that contains my ActiveCampaign signup form.
+
+INSTRUCTIONS  
+1. Locate the file for my lead magnet landing page.  
+   It should be something like:
+   - src/pages/project-inspiration.astro
+   - or src/pages/lead-magnet/...
+   - or another file that contains the text:
+       “Ready • Set • Knit: Project Inspiration”
+       and the ActiveCampaign embed container.
+   DO NOT modify any other pages.
+
+2. At the top of the main content area of THIS page only, right above the “FREE INTERACTIVE TOOL” label and main heading, insert the decorative SVG:
+
+   File: /public/speech_bubble.svg  
+   (If the public folder is different, place the file using the site’s existing static asset conventions.)
+
+3. The bubble should be centered above the heading, with balanced spacing.  
+   Use Tailwind classes to achieve this layout.
+
+   Use this exact markup (adjusting the file path if needed):
+   <div class="flex justify-center pb-4">
+     <img
+       src="/speech_bubble.svg"
+       alt="Decorative speech bubble"
+       class="h-20 w-auto opacity-95 drop-shadow-md"
+       loading="lazy"
+     />
+   </div>
+
+   Notes:
+   - h-20 is a good starting size; scale proportionally.
+   - drop-shadow-md should match the soft shadow aesthetic.
+   - opacity-95 keeps it soft and not overpowering.
+   - Adjust margin/padding only if needed to match spacing on the page.
+
+4. DO NOT alter:
+   - the ActiveCampaign form
+   - any global layout
+   - the header, footer, or nav
+   - any content outside this specific page
+
+5. Ensure the bubble appears *above* the “FREE INTERACTIVE TOOL” badge and main title, centered in the reading column.
+
+6. Show me the FULL updated page file with no omissions and no “…” truncation so I can review it.
+
+Only modify this one page and insert the decorative bubble as described.
