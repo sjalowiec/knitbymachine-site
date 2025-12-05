@@ -1,0 +1,277 @@
+Please update my Getting Started page as follows.
+
+1. Open the Getting Started page file
+
+Locate and open the file that contains the heading:
+
+Get Started with Your Knitting Machine
+
+This is usually:
+
+src/pages/getting-started.astro
+
+If that’s not the path, search for that exact heading text and edit the file that contains it.
+
+2. Remove the knitting-machine collage
+
+In the hero section, find the right-hand column that currently displays a 4-image knitting machine collage.
+
+Delete that entire collage block (including its container).
+
+3. Insert my circular thumbnail + button (keep hover action)
+
+In the place where the collage was, insert this markup.
+
+⚠️ Do NOT add CSS to round the image or add borders/shadows — the PNG (sue-intro.png) is already circular with a green border.
+
+<div class="flex justify-center md:justify-end">
+  <button
+    id="open-welcome-video"
+    type="button"
+    class="group flex flex-col items-center gap-3 focus:outline-none transition"
+  >
+    <img
+      src="/images/sue-intro.png"
+      alt="Sue from Knit by Machine"
+      class="w-40 h-40 md:w-56 md:h-56"
+    />
+
+    <span
+      class="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-1.5 text-sm font-medium text-[#52682D] shadow-md group-hover:bg-[#E7F0E1] transition"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M8 5v14l11-7z" />
+      </svg>
+      Watch a quick hello from Sue
+    </span>
+  </button>
+</div>
+
+
+This preserves the hover animation Replit already added to the button.
+
+4. Add the modal HTML near the bottom of the page
+
+Below the main page content (but before any closing layout tags), add this modal structure:
+
+<div id="welcome-video-modal" aria-hidden="true">
+  <div class="modal-content">
+    <button
+      class="close-video-btn"
+      id="close-welcome-video"
+      aria-label="Close video"
+    >
+      ✕
+    </button>
+
+    <div class="modal-inner">
+      <div class="modal-title">
+        <span>👋 A quick hello from Sue</span>
+      </div>
+
+      <div class="video-wrapper">
+        <iframe
+          id="welcome-video-iframe"
+          src=""
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+5. Add custom modal CSS (with fade-in + KBM border)
+
+Add this CSS to your global stylesheet, e.g.:
+
+src/styles/global.css
+
+If you already have any #welcome-video-modal CSS, replace it with this version.
+
+/* Backdrop */
+#welcome-video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;                 /* Hidden by default */
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55); /* Darker, but still soft */
+  backdrop-filter: blur(4px);    /* Gentle blur behind modal */
+  padding: 1rem;
+}
+
+/* Modal container */
+#welcome-video-modal .modal-content {
+  position: relative;
+  width: 100%;
+  max-width: 760px;
+  border-radius: 1.5rem;
+  background: #ffffff;
+  border: 3px solid #6E8B3D;     /* KBM soft green border */
+  overflow: hidden;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+  animation: kbmModalIn 180ms ease-out;
+}
+
+/* Inner padding wrapper */
+#welcome-video-modal .modal-inner {
+  padding: 1.25rem 1.25rem 1.5rem;
+}
+
+/* Title row */
+#welcome-video-modal .modal-title {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2C3A57;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Close button */
+#welcome-video-modal .close-video-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: rgba(255, 255, 255, 0.95);
+  color: #2C3A57;
+  border: none;
+  border-radius: 9999px;
+  padding: 0.35rem 0.55rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+  transition: background 120ms ease-out, transform 120ms ease-out;
+}
+
+#welcome-video-modal .close-video-btn:hover {
+  background: #E7F0E1;           /* soft green hover */
+  transform: translateY(-1px);
+}
+
+/* Video aspect ratio */
+#welcome-video-modal .video-wrapper {
+  position: relative;
+  padding-bottom: 56.25%;        /* 16:9 */
+  height: 0;
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+#welcome-video-modal iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 1rem;
+}
+
+/* Fade-in / scale animation */
+@keyframes kbmModalIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+6. Add JavaScript to open/close the modal with autoplay + ESC
+
+Immediately after the modal HTML, add this script block:
+
+<script>
+  const modal = document.getElementById("welcome-video-modal");
+  const iframe = document.getElementById("welcome-video-iframe");
+  const openBtn = document.getElementById("open-welcome-video");
+  const closeBtn = document.getElementById("close-welcome-video");
+
+  const videoUrl =
+    "https://player.vimeo.com/video/1143645774?autoplay=1&title=0&byline=0&portrait=0";
+
+  function openModal() {
+    if (!modal || !iframe) return;
+    modal.style.display = "flex";
+    iframe.src = videoUrl;
+  }
+
+  function closeModal() {
+    if (!modal || !iframe) return;
+    modal.style.display = "none";
+    iframe.src = "";
+  }
+
+  if (openBtn) {
+    openBtn.addEventListener("click", openModal);
+  }
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeModal);
+  }
+
+  if (modal) {
+    // close when clicking the dark backdrop
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        closeModal();
+      }
+    });
+  }
+
+  // close on ESC key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal && modal.style.display === "flex") {
+      closeModal();
+    }
+  });
+</script>
+
+
+Behavior:
+
+Clicking the thumbnail/button opens the modal and autoplays the Vimeo video
+
+Clicking the ✕ button closes the modal and stops the video (by clearing src)
+
+Clicking outside the modal (on the dark backdrop) closes it
+
+Pressing Esc closes it
+
+7. Keep the image styling minimal
+
+Make sure the <img> tag uses only sizing classes (w-40 h-40 md:w-56 md:h-56) and no rounded, shadow, ring, or border classes. The PNG already contains the circular crop and green outline.
+
+8. Final check
+
+When you’re done, please confirm:
+
+The 4-image machine collage is gone
+
+The circular thumbnail + “Watch a quick hello from Sue” button appears on the right side of the hero
+
+Hover interaction on the button still works
+
+Clicking the button opens the new styled modal with:
+
+soft dark backdrop
+
+green-bordered, rounded modal
+
+“👋 A quick hello from Sue” title
+
+The video autoplays when the modal opens
+
+Closing the modal (✕, backdrop click, or Esc) stops the video
