@@ -252,29 +252,80 @@ import "../styles/global.css";
       <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
         <button
           type="button"
-          class="absolute right-3 top-3 text-slate-500 hover:text-slate-700 focus:outline-none"
+          class="absolute right-3 top-3 text-slate-500 hover:text-slate-700 focus:outline-none z-10"
           aria-label="Close"
           data-lead-magnet-close
           data-testid="button-lead-magnet-close"
         >
           &#10005;
         </button>
-        <h2
-          id="lead-magnet-title"
-          class="text-xl font-semibold text-slate-900 mb-2"
-        >
-          Get Your Free MSK Project Tool
-        </h2>
-        <p class="text-sm text-slate-600 mb-4">
-          Share your email and I'll send you a simple "My Starting Knit" (MSK) project based on your machine, yarn, and confidence level. It's a small, do-able project to help you get knitting right away.
-        </p>
 
-        <!-- ActiveCampaign form goes here -->
-        <div id="lead-magnet-form" class="mt-4" data-testid="container-lead-magnet-form">
-          <!-- TODO: Paste ActiveCampaign embed form code here -->
-          <p class="text-xs text-slate-400">
-            Sign-up form will appear here when you paste your ActiveCampaign embed code.
-          </p>
+        <!-- ActiveCampaign Form -->
+        <div id="lead-magnet-form" data-testid="container-lead-magnet-form">
+          <style>
+            #_form_1_{font-size:14px;line-height:1.6;font-family:arial, helvetica, sans-serif;margin:0}
+            ._form_hide{display:none;visibility:hidden}
+            ._form_show{display:block;visibility:visible}
+            #_form_1_ input[type="text"],#_form_1_ input[type="tel"],#_form_1_ input[type="date"],#_form_1_ textarea{padding:10px;height:auto;border:#979797 1px solid;border-radius:6px;color:#000 !important;font-size:14px;box-sizing:border-box;width:100%}
+            #_form_1_ textarea{resize:none}
+            #_form_1_ ._submit{-webkit-appearance:none;cursor:pointer;font-family:arial, sans-serif;font-size:14px;text-align:center;background:#6E8B3D !important;border:0 !important;border-radius:8px !important;color:#FFFFFF !important;padding:12px 24px !important;width:100%;font-weight:600;margin-top:0.5rem}
+            #_form_1_ ._submit:hover{background:#5a7232 !important}
+            #_form_1_ ._submit:disabled{cursor:not-allowed;opacity:0.4}
+            #_form_1_ ._submit.processing{position:relative}
+            #_form_1_ ._submit.processing::before{content:"";width:1em;height:1em;position:absolute;z-index:1;top:50%;left:50%;border:double 3px transparent;border-radius:50%;background-image:linear-gradient(#6E8B3D, #6E8B3D), conic-gradient(#6E8B3D, #FFFFFF);background-origin:border-box;background-clip:content-box, border-box;animation:1200ms ease 0s infinite normal none running _spin}
+            #_form_1_ ._submit.processing::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0}
+            @keyframes _spin{0%{transform:translate(-50%, -50%) rotate(90deg)}100%{transform:translate(-50%, -50%) rotate(450deg)}}
+            #_form_1_ ._form-label{display:block;margin-bottom:4px;font-weight:500;color:#333}
+            #_form_1_ ._form_element{margin-bottom:1rem}
+            #_form_1_ ._form-title{font-size:1.25rem;font-weight:600;color:#1e293b;margin-bottom:0.5rem;text-align:center}
+            #_form_1_ ._field-wrapper{margin-top:4px}
+            #_form_1_ .field-required{color:#dc2626;margin-left:2px}
+            #_form_1_ ._form-thank-you{text-align:center;padding:2rem 1rem;color:#1e293b}
+            #_form_1_ ._form-branding{display:none}
+            #_form_1_ ._error{color:#dc2626;font-size:12px;margin-top:4px}
+            #_form_1_ ._error-inner{background:#fef2f2;border:1px solid #fecaca;border-radius:4px;padding:8px 12px;color:#dc2626;font-size:13px}
+            #_form_1_ input._has_error{border-color:#dc2626}
+          </style>
+          <form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_1_" class="_form _form_1 _inline-form _dark" novalidate data-styles-version="5">
+            <input type="hidden" name="u" value="1" />
+            <input type="hidden" name="f" value="1" />
+            <input type="hidden" name="s" />
+            <input type="hidden" name="c" value="0" />
+            <input type="hidden" name="m" value="0" />
+            <input type="hidden" name="act" value="sub" />
+            <input type="hidden" name="v" value="2" />
+            <input type="hidden" name="or" value="dc606db2-daa8-4067-8615-c5a1021874f8" />
+            <div class="_form-content">
+              <div class="_form_element _full_width _clear">
+                <h2 class="_form-title" id="lead-magnet-title">
+                  Get Your Free Project Starter
+                </h2>
+              </div>
+              <div class="_form_element _full_width">
+                <label for="fullname" class="_form-label">
+                  Full Name
+                </label>
+                <div class="_field-wrapper">
+                  <input type="text" id="fullname" name="fullname" placeholder="Type your name" data-testid="input-fullname" />
+                </div>
+              </div>
+              <div class="_form_element _full_width">
+                <label for="email" class="_form-label">
+                  Email<span class="field-required">*</span>
+                </label>
+                <div class="_field-wrapper">
+                  <input type="text" id="email" name="email" placeholder="Type your email" required data-testid="input-email" />
+                </div>
+              </div>
+              <div class="_button-wrapper _full_width">
+                <button id="_form_1_submit" class="_submit" type="submit" data-testid="button-form-submit">
+                  Get Your Free Project Starter
+                </button>
+              </div>
+              <div class="_clear-element"></div>
+            </div>
+            <div class="_form-thank-you" style="display:none;"></div>
+          </form>
         </div>
       </div>
     </div>
@@ -307,7 +358,6 @@ import "../styles/global.css";
           });
 
           backdrop.addEventListener('click', (event) => {
-            // Close if clicking on the backdrop, not inside the card
             if (event.target === backdrop) {
               closeLeadMagnetModal();
             }
@@ -320,6 +370,160 @@ import "../styles/global.css";
           });
         });
       }
+    </script>
+
+    <!-- ActiveCampaign Form Script -->
+    <script is:inline>
+      window.cfields = [];
+      window._show_thank_you = function(id, message, trackcmp_url, email) {
+        var form = document.getElementById('_form_' + id + '_'), thank_you = form.querySelector('._form-thank-you');
+        form.querySelector('._form-content').style.display = 'none';
+        thank_you.innerHTML = message || '<h3 style="margin-bottom:0.5rem">Thanks for signing up!</h3><p>Check your inbox for your free project starter.</p>';
+        thank_you.style.display = 'block';
+        if (typeof window._form_callback !== 'undefined') window._form_callback(id);
+        thank_you.setAttribute('tabindex', '-1');
+        thank_you.focus();
+      };
+      window._show_error = function(id, message, html) {
+        var form = document.getElementById('_form_' + id + '_'),
+            err = document.createElement('div'),
+            button = form.querySelector('button[type="submit"]'),
+            old_error = form.querySelector('._form_error');
+        if (old_error) old_error.parentNode.removeChild(old_error);
+        err.innerHTML = message;
+        err.className = '_error-inner _form_error';
+        var wrapper = document.createElement('div');
+        wrapper.className = '_form-inner _show_be_error';
+        wrapper.appendChild(err);
+        button.parentNode.insertBefore(wrapper, button);
+        var submitButton = form.querySelector('[id^="_form"][id$="_submit"]');
+        submitButton.disabled = false;
+        submitButton.classList.remove('processing');
+      };
+      window._load_script = function(url, callback, isSubmit) {
+        var head = document.querySelector('head'), script = document.createElement('script'), r = false;
+        var submitButton = document.querySelector('#_form_1_submit');
+        script.charset = 'utf-8';
+        script.src = url;
+        if (callback) {
+          script.onload = script.onreadystatechange = function() {
+            if (!r && (!this.readyState || this.readyState == 'complete')) {
+              r = true;
+              callback();
+            }
+          };
+        }
+        script.onerror = function() {
+          if (isSubmit) {
+            _show_error("1", "Sorry, your submission failed. Please try again.");
+            submitButton.disabled = false;
+            submitButton.classList.remove('processing');
+          }
+        }
+        head.appendChild(script);
+      };
+      (function() {
+        if (window.location.search.search("excludeform") !== -1) return false;
+        var form_to_submit = document.getElementById('_form_1_');
+        if (!form_to_submit) return;
+        var allInputs = form_to_submit.querySelectorAll('input, select, textarea'), tooltips = [], submitted = false;
+
+        var remove_tooltips = function() {
+          for (var i = 0; i < tooltips.length; i++) {
+            tooltips[i].tip.parentNode.removeChild(tooltips[i].tip);
+          }
+          tooltips = [];
+        };
+        var create_tooltip = function(elem, text) {
+          var tooltip = document.createElement('div'), inner = document.createElement('div'), new_tooltip = {};
+          tooltip.className = '_error';
+          inner.className = '_error-inner';
+          inner.innerHTML = text;
+          tooltip.appendChild(inner);
+          elem.parentNode.appendChild(tooltip);
+          new_tooltip.tip = tooltip;
+          new_tooltip.elem = elem;
+          tooltips.push(new_tooltip);
+          return new_tooltip;
+        };
+        var validate_field = function(elem, remove) {
+          var value = elem.value, no_error = true;
+          if (remove) {
+            var old_tooltip = elem.parentNode.querySelector('._error');
+            if (old_tooltip) old_tooltip.parentNode.removeChild(old_tooltip);
+          }
+          elem.className = elem.className.replace(/ ?_has_error ?/g, '');
+          if (elem.getAttribute('required') !== null) {
+            if (value === undefined || value === null || value === '') {
+              elem.className = elem.className + ' _has_error';
+              no_error = false;
+              create_tooltip(elem, "This field is required.");
+            }
+          }
+          if (no_error && elem.name == 'email') {
+            if (!value.match(/^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i)) {
+              elem.className = elem.className + ' _has_error';
+              no_error = false;
+              create_tooltip(elem, "Enter a valid email address.");
+            }
+          }
+          return no_error;
+        };
+        var validate_form = function(e) {
+          var err = form_to_submit.querySelector('._form_error'), no_error = true;
+          if (!submitted) {
+            submitted = true;
+            for (var i = 0, len = allInputs.length; i < len; i++) {
+              var input = allInputs[i];
+              if (input.getAttribute('required') !== null || input.name === 'email') {
+                if (input.type == 'text') {
+                  input.addEventListener('blur', function() {
+                    this.value = this.value.trim();
+                    validate_field(this, true);
+                  });
+                  input.addEventListener('input', function() {
+                    validate_field(this, true);
+                  });
+                }
+              }
+            }
+          }
+          remove_tooltips();
+          for (var i = 0, len = allInputs.length; i < len; i++) {
+            var elem = allInputs[i];
+            if (elem.getAttribute('required') !== null || elem.name === 'email') {
+              if (!validate_field(elem)) {
+                no_error = false;
+              }
+            }
+          }
+          if (!no_error && e) {
+            e.preventDefault();
+          }
+          return no_error;
+        };
+        var form_submit = function(e) {
+          e.preventDefault();
+          if (validate_form()) {
+            var serialized = '';
+            for (var i = 0; i < allInputs.length; i++) {
+              var input = allInputs[i];
+              if (input.type === 'hidden' || input.type === 'text' || input.type === 'email') {
+                serialized += (serialized ? '&' : '') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value);
+              }
+            }
+            var submitButton = form_to_submit.querySelector('#_form_1_submit');
+            submitButton.disabled = true;
+            submitButton.classList.add('processing');
+            var url = form_to_submit.getAttribute('action') + '?' + serialized;
+            _load_script(url, function() {
+              // Success handled by _show_thank_you callback
+            }, true);
+          }
+          return false;
+        };
+        form_to_submit.addEventListener('submit', form_submit);
+      })();
     </script>
 
     <Footer />
