@@ -141,22 +141,14 @@ import "../styles/global.css";
       </section>
 
       <!-- WHERE ARE YOU RIGHT NOW? SECTION -->
-      <section id="where-are-you" class="kbm-where-section journey-section">
-        <div class="kbm-section-header">
-          <h2>Where are you right now?</h2>
-          <p class="kbm-section-subtitle">Pick the path that fits you best.</p>
-        </div>
-
-        <div class="journey-track" aria-hidden="true">
-          <div class="journey-line"></div>
-          <div class="journey-hex">
-            <svg width="28" height="32" viewBox="0 0 32 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M16 0L30.9282 9V27L16 36L1.0718 27V9L16 0Z" stroke="#52682D" stroke-width="1.5" fill="none"/>
-            </svg>
+      <section id="where-are-you" class="kbm-where-section">
+        <div class="kbm-where-inner">
+          <div class="kbm-section-header">
+            <h2>Where are you right now?</h2>
+            <p class="kbm-section-subtitle">Pick the path that fits you best.</p>
           </div>
-        </div>
 
-        <div class="kbm-hex-grid">
+          <div class="kbm-hex-grid">
           <!-- Card 1: Start Phase -->
           <div class="pulse-once">
             <a href="/getting-started" class="kbm-hex-card kbm-hex-card--link" data-testid="card-start-phase">
@@ -202,8 +194,8 @@ import "../styles/global.css";
             <p class="kbm-highlight">Next step: get a quick answer.</p>
             <span class="btn primary" data-testid="button-troubleshoot">Troubleshoot</span>
           </a>
+          </div>
         </div>
-
       </section>
 
       <!-- WHAT YOU'LL FIND SECTION -->
@@ -554,9 +546,27 @@ import "../styles/global.css";
 
   /* ========== WHERE ARE YOU SECTION ========== */
   .kbm-where-section {
-    margin-bottom: 3rem;
-    padding-top: 1rem;
+    background-color: #ffffff;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
     scroll-margin-top: calc(var(--header-height, 160px) + 1rem);
+  }
+
+  .kbm-where-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .kbm-where-section .kbm-section-header {
+    margin-bottom: 2rem;
+  }
+
+  .kbm-where-section .kbm-section-header h2 {
+    margin-bottom: 0.5rem;
   }
 
   .kbm-hex-grid {
@@ -884,59 +894,14 @@ import "../styles/global.css";
     .kbm-reassurance-item {
       padding: 1rem 0.5rem;
     }
-  }
 
-  /* ========== JOURNEY TRACK ANIMATION ========== */
-  .journey-section {
-    margin-top: 1rem;
-  }
-
-  .journey-track {
-    position: relative;
-    max-width: 960px;
-    margin: 1.25rem auto 1.5rem;
-    height: 24px;
-  }
-
-  .journey-line {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    right: 5%;
-    height: 5px;
-    background: #d8e0cb;
-    border-radius: 999px;
-    z-index: 0;
-    transform: translateY(-50%);
-  }
-
-  .journey-hex {
-    position: absolute;
-    top: 50%;
-    left: 5%;
-    transform: translate(-50%, -50%);
-    z-index: 1;
-    animation: journeyTravel 3s ease-out 0.5s 1 forwards;
-    opacity: 0.95;
-  }
-
-  @keyframes journeyTravel {
-    0%   { left: 5%; }
-    100% { left: 95%; }
-  }
-
-  .journey-section .kbm-hex-grid {
-    position: relative;
-    z-index: 2;
-  }
-
-  @media (max-width: 640px) {
-    .journey-track {
-      margin-bottom: 1rem;
-    }
-    .journey-line {
-      left: 8%;
-      right: 8%;
+    .kbm-where-section {
+      margin-left: -1rem;
+      margin-right: -1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
     }
   }
 

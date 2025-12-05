@@ -1,0 +1,47 @@
+Update the styling for the “Where are you right now?” section on the home page.
+
+Open the home page file (src/pages/index.astro or whichever file contains the home page content).
+
+Locate the entire section that starts with the heading:
+Where are you right now?
+
+Wrap this section in a container <section> (if not already wrapped) and apply a white background to that section only. Do not add a card, box, or framed panel — the section itself should simply have:
+
+background-color: #ffffff;
+padding-top: 4rem;
+padding-bottom: 4rem;
+
+
+Use Tailwind classes if the project uses Tailwind (e.g., bg-white py-16).
+Keep padding consistent with your other major sections.
+
+Ensure the H2 heading (“Where are you right now?”) uses the same dark navy color and font weight as other section headers. If needed, apply the same class or style used for the header “What you’ll find at Knit by Machine.”
+
+Update the subheading (“Pick the path that fits you best.”) to use the same light text color used for secondary text across the home page.
+
+Keep all existing card elements EXACTLY as they are — same layout, same padding, same icons, same grid.
+Do not change the design of the cards themselves.
+
+Adjust spacing between the H2 and the cards to ensure good hierarchy. Apply approximately:
+
+margin-top: 1rem under the H2
+
+margin-bottom: 2rem before the card grid
+
+Remove or significantly lighten the horizontal decorative line and the small slider icon above the cards (the horizontal line that currently appears before the cards). If removing, delete it cleanly from the DOM. If lightening, use a subtle neutral border like:
+
+border-color: #e5e7eb;
+opacity: 0.4;
+
+
+(Remove it entirely if it crowds the header.)
+
+Do not add borders, shadows, boxes, or rounded panels around the whole section. The improvement should come only from:
+
+clean white background
+
+good spacing
+
+clear typography hierarchy
+
+Save the file and ensure the updated section blends naturally between the “Project Inspiration” lead magnet section and the next section below it.
