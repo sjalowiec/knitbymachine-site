@@ -1,0 +1,191 @@
+You are an AI pair programmer helping me update my Astro + Tailwind CSS project for Knit by Machine (KBM).
+
+GOAL
+Add a gentle, uncluttered lead-magnet sign-up to my HOME PAGE ONLY using:
+1) A small floating “Free Project Tool” button in the lower-right corner
+2) A modal that opens when the button is clicked and contains my ActiveCampaign form embed
+
+IMPORTANT CONSTRAINTS
+- Do NOT change the layout, spacing, or content of my existing hero section or the “choose your path” journey cards on the home page.
+- Do NOT change the header, navigation, or footer.
+- Do NOT remove or alter any existing modals (for example, the video modal on the home page, if present).
+- Keep all new markup, classes, and IDs clearly named and scoped so they don’t conflict with other components.
+- Use Tailwind utility classes where possible. Only add custom CSS if absolutely necessary.
+- Keep the implementation simple and accessible.
+
+TECH STACK / CONTEXT
+- Astro front-end
+- Tailwind CSS for styling
+- ActiveCampaign for email forms (I will paste the actual embed code myself)
+- The home page is my main KBM home. If you see multiple home-like pages, treat `src/pages/index.astro` (or equivalent) as the main home page.
+
+TASKS
+
+1) ADD FLOATING BUTTON TO HOME PAGE
+In my main home page Astro file (likely `src/pages/index.astro`):
+
+- Add a floating button that is:
+  - Fixed to the bottom-right corner of the viewport
+  - Above the footer (not overlapping it)
+  - Visible on both desktop and mobile
+  - Labelled: “Free Project Tool”
+  - Styled to match KBM’s look:
+    - Use a KBM-like green background (e.g., `bg-[#6E8B3D]`)
+    - Rounded-full / pill shape
+    - Small drop shadow
+    - Subtle hover state (slightly darker background + slight scale)
+  - Example Tailwind class idea (you can adjust as needed):
+    - `class="fixed bottom-6 right-4 z-40 px-4 py-2 rounded-full bg-[#6E8B3D] text-white text-sm font-medium shadow-lg hover:bg-[#52682D] hover:scale-105 transition-transform transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6E8B3D]"`
+
+- Give the button an ID:
+  - `id="lead-magnet-trigger"`
+
+- Place the button near the end of the `index.astro` page inside the `<Layout>` component but outside the main page content so it doesn’t affect layout flow. For example (pseudo-structure):
+
+  <Layout>
+    <main>
+      <!-- existing hero, journey cards, content -->
+    </main>
+
+    <!-- Add button + modal here -->
+  </Layout>
+
+2) ADD MODAL MARKUP FOR LEAD MAGNET
+Still in the home page file, add a modal element that:
+- Is initially hidden.
+- Fills the viewport with a semi-transparent backdrop when open.
+- Centers a white card with my lead magnet copy + form.
+- Can be closed by:
+  - Clicking an “X” close button
+  - Clicking on the backdrop
+  - Pressing the Escape key
+
+Use IDs and data attributes so the JavaScript can find them easily:
+- Modal wrapper: `id="lead-magnet-modal"`
+- Backdrop uses `data-lead-magnet-backdrop`
+- Close buttons use `data-lead-magnet-close`
+
+Use Tailwind classes for styling and transitions; you can start the modal as `hidden` and toggle that class in JavaScript.
+
+Here is an example of the structure I want you to integrate (feel free to adjust classes to match the rest of my site, but keep IDs and data attributes):
+
+<div
+  id="lead-magnet-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="lead-magnet-title"
+  data-lead-magnet-backdrop
+>
+  <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+    <button
+      type="button"
+      class="absolute right-3 top-3 text-slate-500 hover:text-slate-700 focus:outline-none"
+      aria-label="Close"
+      data-lead-magnet-close
+    >
+      ✕
+    </button>
+    <h2
+      id="lead-magnet-title"
+      class="text-xl font-semibold text-slate-900 mb-2"
+    >
+      Get Your Free MSK Project Tool
+    </h2>
+    <p class="text-sm text-slate-600 mb-4">
+      Share your email and I’ll send you a simple “My Starting Knit” (MSK) project based on your machine, yarn, and confidence level. It’s a small, do-able project to help you get knitting right away.
+    </p>
+
+    <!-- ActiveCampaign form goes here -->
+    <div id="lead-magnet-form" class="mt-4">
+      <!-- TODO: Paste ActiveCampaign embed form code here -->
+      <p class="text-xs text-slate-400">
+        Sign-up form will appear here when you paste your ActiveCampaign embed code.
+      </p>
+    </div>
+  </div>
+</div>
+
+Integrate this modal near the floating button in the Astro file.
+
+3) ADD INTERACTIVITY WITH VANILLA JS
+At the bottom of the same Astro file (inside the component, after the markup), add an inline script to wire up the button and modal.
+
+Use a `<script is:inline>` tag for Astro, and use vanilla JavaScript to:
+- Grab references to:
+  - `#lead-magnet-trigger`
+  - `#lead-magnet-modal`
+  - All `[data-lead-magnet-close]` elements
+  - The backdrop `[data-lead-magnet-backdrop]`
+- Implement functions:
+  - `openLeadMagnetModal()`:
+    - Remove `hidden` from the modal.
+    - Optionally add a small scale/opacity transition using Tailwind classes.
+  - `closeLeadMagnetModal()`:
+    - Add `hidden` back to the modal.
+- Attach event listeners:
+  - Click on the floating button → open the modal.
+  - Click on any `[data-lead-magnet-close]` → close the modal.
+  - Click on the backdrop (but not the inner card) → close the modal.
+  - Listen for `keydown` events on `window` and close on `Escape`.
+
+Make sure the script guards against `document` being undefined by wrapping logic in a `typeof window !== 'undefined'` check.
+
+Example skeleton (you should adapt and complete):
+
+<script is:inline>
+  if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => {
+      const trigger = document.getElementById('lead-magnet-trigger');
+      const modal = document.getElementById('lead-magnet-modal');
+      if (!trigger || !modal) return;
+
+      const closeButtons = modal.querySelectorAll('[data-lead-magnet-close]');
+      const backdrop = modal;
+
+      const openLeadMagnetModal = () => {
+        modal.classList.remove('hidden');
+      };
+
+      const closeLeadMagnetModal = () => {
+        modal.classList.add('hidden');
+      };
+
+      trigger.addEventListener('click', openLeadMagnetModal);
+
+      closeButtons.forEach((btn) => {
+        btn.addEventListener('click', closeLeadMagnetModal);
+      });
+
+      backdrop.addEventListener('click', (event) => {
+        // close if clicking on the backdrop, not inside the card
+        if (event.target === backdrop) {
+          closeLeadMagnetModal();
+        }
+      });
+
+      window.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+          closeLeadMagnetModal();
+        }
+      });
+    });
+  }
+</script>
+
+4) ACCESSIBILITY / RESPONSIVENESS
+- Ensure the modal uses `role="dialog"` and `aria-modal="true"`, and is labeled with `aria-labelledby`.
+- Make sure it looks good on mobile:
+  - Card width: `max-w-lg` with `w-full` and `px-4` on the outer container.
+  - Button should not overlap critical content; bottom offset like `bottom-6` is fine.
+
+5) CLEAN UP & CONFIRM
+- Do NOT break any existing behavior on the home page (hero, journey cards, existing modals).
+- Ensure there are no JavaScript console errors.
+- Keep all changes limited to:
+  - The home page Astro file (e.g., `src/pages/index.astro`).
+  - No other components or pages should be modified.
+
+Finally:
+- Show me the COMPLETE updated `index.astro` (or whichever file you modified for the home page) so I can review the exact markup and script.
+- Do not abbreviate with “…”. I want the full file content.
