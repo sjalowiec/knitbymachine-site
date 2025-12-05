@@ -131,6 +131,9 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     border: 1px solid #e0e4ea;
     padding: 1.75rem 2rem;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+    /* Add subtle left border + structure */
+    border-left: 4px solid rgba(82, 104, 45, 0.25); /* KBM green @ 25% opacity */
+    padding-left: 1.5rem; /* Space between border and text */
   }
 
   .pi-bottom-inner h2,
@@ -147,15 +150,25 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     margin-top: 0;
   }
 
-  .pi-bottom-inner ul,
-  .pi-bottom-inner ol {
+  /* Indent unordered lists */
+  .pi-bottom-inner ul {
+    margin-left: 1.25rem;
+    padding-left: 0; /* remove default browser padding */
     margin-top: 0.25rem;
     margin-bottom: 0.75rem;
-    padding-left: 1.25rem;
   }
 
+  /* Indent ordered lists */
+  .pi-bottom-inner ol {
+    margin-left: 1rem;
+    padding-left: 0;
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Slightly tighten list item spacing */
   .pi-bottom-inner li {
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.35rem;
   }
 
   .pi-bottom-inner p {
