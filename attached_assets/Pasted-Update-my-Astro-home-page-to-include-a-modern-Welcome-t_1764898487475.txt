@@ -1,0 +1,334 @@
+Update my Astro home page to include a modern “Welcome to the new Knit by Machine” drawer that slides down from the top of the page when the user clicks a small banner. Use my brand’s calm, modern feel.
+1. Where to put it
+Find the file that renders my home page hero (likely src/pages/index.astro or similar).
+Right below the main site header/nav component (for example <Header />, <SiteHeader />, or similar) and above the main hero section, insert this new block:
+<div class="kbm-intro-wrapper" data-kbm-intro-wrapper>
+  <div class="kbm-intro-banner" data-kbm-intro-banner>
+    <div class="kbm-intro-banner-inner">
+      <span class="kbm-intro-banner-text">
+        👋 Welcome! Knit by Machine is new — want a 10-second intro?
+      </span>
+      <div class="kbm-intro-banner-actions">
+        <button type="button" class="kbm-intro-banner-button" data-kbm-intro-open>
+          Show me around
+        </button>
+        <button type="button" class="kbm-intro-banner-link" data-kbm-intro-dismiss>
+          Skip for now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <section
+    class="kbm-intro-drawer"
+    data-kbm-intro-drawer
+    aria-hidden="true"
+  >
+    <div class="kbm-intro-drawer-header">
+      <h2 class="kbm-intro-drawer-title">
+        Hi, I’m Sue — welcome to the new Knit by Machine.
+      </h2>
+      <button
+        type="button"
+        class="kbm-intro-drawer-close"
+        aria-label="Close intro"
+        data-kbm-intro-close
+      >
+        ×
+      </button>
+    </div>
+
+    <p class="kbm-intro-drawer-body">
+      Knit by Machine is a fresh, modern home for machine knitters. I’m rebuilding everything to be clearer, calmer, and more confidence-boosting.
+    </p>
+    <p class="kbm-intro-drawer-body">
+      You’ll find smart tools, Skill Builders, Ask ’n Answer, and simple next steps to help you feel successful with your machine.
+    </p>
+
+    <div class="kbm-intro-drawer-actions">
+      <a href="/getting-started" class="kbm-intro-primary">
+        Start here
+      </a>
+      <a href="/about" class="kbm-intro-secondary">
+        About Knit by Machine
+      </a>
+    </div>
+
+    <p class="kbm-intro-subtext">
+      Just browsing? You can close this and explore on your own.
+    </p>
+  </section>
+</div>
+
+If my actual routes are different, update the href values to match my real Getting Started and About pages.
+2. Add styling for the banner + drawer
+In my global stylesheet (for example src/styles/global.css or wherever site-wide styles live), add these CSS rules. Keep the styles clean, modern, and in line with my KBM branding (greens, soft shadows, rounded corners):
+.kbm-intro-wrapper {
+  position: relative;
+  z-index: 30;
+}
+
+/* Basic utility in case .hidden is not already defined */
+.hidden {
+  display: none !important;
+}
+
+.kbm-intro-banner {
+  background: #f3f7ec; /* soft, calm green-tinted background */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+}
+
+.kbm-intro-banner-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.kbm-intro-banner-text {
+  font-weight: 500;
+  color: #2c3a57;
+}
+
+.kbm-intro-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.kbm-intro-banner-button {
+  border: none;
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: #6e8b3d; /* KBM green */
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(82, 104, 45, 0.25);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.kbm-intro-banner-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(82, 104, 45, 0.28);
+  background-color: #52682d;
+}
+
+.kbm-intro-banner-link {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #52682d;
+  text-decoration: underline;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Drawer */
+
+.kbm-intro-drawer {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 220ms ease;
+}
+
+.kbm-intro-drawer.kbm-intro-drawer--open {
+  max-height: 400px; /* enough to reveal all content; adjust if needed */
+}
+
+.kbm-intro-drawer-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 0.5rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.kbm-intro-drawer-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2c3a57;
+}
+
+.kbm-intro-drawer-close {
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #8891a6;
+  padding: 0.1rem 0.3rem;
+}
+
+.kbm-intro-drawer-close:hover {
+  color: #2c3a57;
+}
+
+.kbm-intro-drawer-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  color: #424a5d;
+}
+
+.kbm-intro-drawer-body + .kbm-intro-drawer-body {
+  margin-top: 0.4rem;
+}
+
+.kbm-intro-drawer-actions {
+  max-width: 1100px;
+  margin: 0.9rem auto 0.25rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.kbm-intro-primary,
+.kbm-intro-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.kbm-intro-primary {
+  background: #6e8b3d;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(82, 104, 45, 0.25);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.kbm-intro-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(82, 104, 45, 0.28);
+  background-color: #52682d;
+}
+
+.kbm-intro-secondary {
+  background: #f5f6fa;
+  color: #2c3a57;
+  border: 1px solid rgba(44, 58, 87, 0.15);
+}
+
+.kbm-intro-secondary:hover {
+  background: #e9ecf5;
+}
+
+.kbm-intro-subtext {
+  max-width: 1100px;
+  margin: 0 0 1rem 0;
+  padding: 0 1rem 1.1rem 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .kbm-intro-banner-inner {
+    align-items: flex-start;
+  }
+
+  .kbm-intro-drawer-header,
+  .kbm-intro-drawer-body,
+  .kbm-intro-drawer-actions,
+  .kbm-intro-subtext {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+
+  .kbm-intro-drawer-title {
+    font-size: 1rem;
+  }
+}
+
+3. Add the open/close behavior with vanilla JS
+In the same Astro home page file where you inserted the HTML, add a small inline script at the bottom of the file (before the closing </body> if it exists, or inside the Astro template near the end). Use is:inline so it runs client-side:
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.querySelector('[data-kbm-intro-wrapper]');
+    const banner = document.querySelector('[data-kbm-intro-banner]');
+    const drawer = document.querySelector('[data-kbm-intro-drawer]');
+    const openButtons = document.querySelectorAll('[data-kbm-intro-open]');
+    const closeButtons = document.querySelectorAll('[data-kbm-intro-close]');
+    const dismissButtons = document.querySelectorAll('[data-kbm-intro-dismiss]');
+
+    if (!wrapper || !banner || !drawer) return;
+
+    const introDismissed = window.localStorage.getItem('kbmIntroDismissed') === 'true';
+
+    // If the user has previously dismissed it, hide the whole thing
+    if (introDismissed) {
+      wrapper.classList.add('hidden');
+      return;
+    }
+
+    const openDrawer = () => {
+      drawer.classList.add('kbm-intro-drawer--open');
+      drawer.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeDrawer = () => {
+      drawer.classList.remove('kbm-intro-drawer--open');
+      drawer.setAttribute('aria-hidden', 'true');
+    };
+
+    openButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        openDrawer();
+      });
+    });
+
+    closeButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // Close the drawer but keep the banner visible so they can reopen it
+        closeDrawer();
+      });
+    });
+
+    dismissButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // User doesn’t want to see this again
+        window.localStorage.setItem('kbmIntroDismissed', 'true');
+        wrapper.classList.add('hidden');
+      });
+    });
+  });
+</script>
+
+4. Overall behavior
+
+
+On first visit, the banner appears under the main header with the “Show me around” button.
+
+
+Clicking “Show me around” smoothly slides down the top drawer with the short intro, copy, and buttons.
+
+
+Clicking the “×” in the drawer closes the drawer, but leaves the banner so they can open it again.
+
+
+Clicking “Skip for now” hides the entire welcome UI and sets localStorage.kbmIntroDismissed = "true", so the banner/drawer won’t show on future visits (for the next few months while I leave this in place).
+
+
+Make sure everything compiles and the home page still loads cleanly on mobile and desktop.
