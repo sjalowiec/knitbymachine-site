@@ -1,0 +1,123 @@
+Please update my Astro home page implementation with the following changes to the intro banner, drawer, and hero spacing. Make sure these updates replace the existing styles and markup where needed.
+
+1. Reduce the spacing between the banner and the hero section
+
+Find the CSS for the home page hero section (likely .home-hero or .hero).
+Reduce the top padding slightly so the hero sits closer to the banner.
+
+Use:
+
+.home-hero,
+.hero {
+  padding-top: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .home-hero,
+  .hero {
+    padding-top: 1.25rem;
+  }
+}
+
+
+(Use whichever selector matches the actual hero container.)
+
+2. Align the “Just browsing?…” text in the drawer
+
+Right now the subtext is left-aligned.
+It should align with the main drawer content width.
+
+Update .kbm-intro-subtext to:
+
+.kbm-intro-subtext {
+  max-width: 1100px;
+  margin: 0 auto 1.2rem auto;
+  padding: 0 1rem;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+
+(Remove any previous margin/padding definitions to avoid conflicts.)
+
+3. Update the banner text
+
+Replace the banner sentence with:
+
+Welcome! Knit by Machine is brand new —
+<inline link> see what’s here and what’s coming.</inline link>
+
+Use this exact markup for the banner text:
+
+<span class="kbm-intro-banner-text">
+  Welcome! Knit by Machine is brand new —
+  <button
+    type="button"
+    class="kbm-intro-banner-inline-link"
+    data-kbm-intro-open
+  >
+    see what’s here and what’s coming.
+  </button>
+</span>
+
+4. Update the drawer text (“Ask ’n Answer Answers”)
+
+In the drawer body text, change:
+
+Ask ’n Answer → Ask ’n Answer Answers
+
+So this sentence becomes:
+
+<p class="kbm-intro-drawer-body">
+  You’ll find smart tools, Skill Builders, Ask ’n Answer Answers, and simple next steps to help you feel successful with your machine.
+</p>
+
+5. Increase banner text size
+
+Update .kbm-intro-banner-text:
+
+.kbm-intro-banner-text {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #2c3a57;
+}
+
+
+Also update .kbm-intro-banner-inline-link:
+
+.kbm-intro-banner-inline-link {
+  font-size: 1.05rem;
+}
+
+6. Change banner background color to #dce8b8
+
+Update:
+
+.kbm-intro-banner {
+  background: #dce8b8;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.8rem 1.2rem; /* Also handles item #7 */
+}
+
+7. Add banner padding
+
+This is combined with #6:
+
+padding: 0.8rem 1.2rem;
+
+
+In .kbm-intro-banner.
+
+🔍 Final Check — With these updates, the banner should now:
+
+Look more intentional and readable
+
+Have stronger contrast
+
+Have larger, more confident text
+
+Use your updated message
+
+Fit more cleanly above the hero
+
+Have drawer text aligned perfectly with the rest

@@ -370,10 +370,9 @@ p {
 
 /* Banner */
 .kbm-intro-banner {
-  background: #e2edc6;
+  background: #dce8b8;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  padding: 0.6rem 1rem;
-  font-size: 0.95rem;
+  padding: 0.8rem 1.2rem;
 }
 
 .kbm-intro-banner-inner {
@@ -386,7 +385,8 @@ p {
 }
 
 .kbm-intro-banner-text {
-  font-weight: 500;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: #2c3a57;
 }
 
@@ -394,7 +394,8 @@ p {
 .kbm-intro-banner-inline-link {
   border: none;
   background: transparent;
-  font: inherit;
+  font-size: 1.05rem;
+  font-weight: 600;
   color: #2c3a57;
   text-decoration: underline;
   cursor: pointer;
@@ -525,9 +526,9 @@ p {
 
 .kbm-intro-subtext {
   max-width: 1100px;
-  margin: 0 0 1rem 0;
-  padding: 0 1rem 1.1rem 1rem;
-  font-size: 0.8rem;
+  margin: 0 auto 1.2rem auto;
+  padding: 0 1rem;
+  font-size: 0.85rem;
   color: #6b7280;
 }
 
