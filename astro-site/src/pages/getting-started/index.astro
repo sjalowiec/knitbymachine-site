@@ -123,28 +123,33 @@ const pageDescription = 'A simple starting point to get your knitting machine se
     </section>
   </main>
 
-  <!-- VIDEO MODAL -->
+  <!-- Modal Backdrop -->
   <div
     id="welcome-video-modal"
-    class="kbm-video-modal hidden"
+    class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm p-4"
     aria-hidden="true"
     data-testid="modal-welcome-video"
   >
-    <div class="kbm-modal-content">
+    <!-- Modal Container -->
+    <div class="relative w-full max-w-2xl rounded-2xl bg-white shadow-2xl overflow-hidden">
+
+      <!-- Close Button -->
       <button
         id="close-welcome-video"
         type="button"
-        class="kbm-modal-close"
+        class="absolute top-3 right-3 rounded-full bg-white/70 hover:bg-white text-[#2C3A57] shadow p-2 transition z-10"
         aria-label="Close video"
         data-testid="button-close-video"
       >
-        &times;
+        ✕
       </button>
-      <div class="kbm-video-wrapper">
+
+      <!-- Video Aspect Ratio Box -->
+      <div class="relative pb-[56.25%] h-0">
         <iframe
           id="welcome-video-iframe"
           src=""
-          class="kbm-video-iframe"
+          class="absolute top-0 left-0 h-full w-full"
           frameborder="0"
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen
@@ -194,7 +199,7 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       function openModal() {
         if (!modal || !iframe) return;
         modal.classList.remove('hidden');
-        modal.classList.add('visible');
+        modal.classList.add('flex');
         modal.setAttribute('aria-hidden', 'false');
         // Set src when opened so autoplay works
         iframe.src = videoUrl;
@@ -205,7 +210,7 @@ const pageDescription = 'A simple starting point to get your knitting machine se
       function closeModal() {
         if (!modal || !iframe) return;
         modal.classList.add('hidden');
-        modal.classList.remove('visible');
+        modal.classList.remove('flex');
         modal.setAttribute('aria-hidden', 'true');
         // Clear src to stop playback when closed
         iframe.src = '';
