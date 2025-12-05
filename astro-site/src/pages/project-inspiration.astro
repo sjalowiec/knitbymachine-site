@@ -209,28 +209,6 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     }
   }
 
-  .pi-benefits {
-    list-style: disc;
-    padding-left: 1.25rem;
-    margin: 0;
-    color: #4d5a48;
-    font-size: 0.95rem;
-    line-height: 1.7;
-  }
-
-  .pi-benefits li {
-    margin-bottom: 0.5rem;
-  }
-
-  @media (max-width: 767px) {
-    .pi-benefits {
-      text-align: left;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-
   /* ========== FORM CARD ========== */
   .pi-hero__form {
     display: flex;
@@ -480,4 +458,26 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       }, 1500);
     });
   })();
+</script>
+
+<!-- Benefits visibility toggle based on agent presence -->
+<script is:inline>
+  if (typeof window !== "undefined") {
+    const benefits = document.getElementById("project-inspiration-benefits");
+
+    function updateBenefitsVisibility() {
+      const agent = document.getElementById("project-inspiration-agent");
+      const hasAgentContent = agent && agent.childElementCount > 0;
+      if (benefits) {
+        benefits.classList.toggle("hidden", !!hasAgentContent);
+      }
+    }
+
+    // Run once on load
+    updateBenefitsVisibility();
+
+    // Watch for changes in the DOM (for when the agent embed is injected later)
+    const observer = new MutationObserver(updateBenefitsVisibility);
+    observer.observe(document.body, { childList: true, subtree: true });
+  }
 </script>
