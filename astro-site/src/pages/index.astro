@@ -240,6 +240,99 @@ import "../styles/global.css";
       </section>
     </main>
 
+    <!-- Lead Magnet Floating Button -->
+    <button
+      id="lead-magnet-trigger"
+      type="button"
+      class="fixed bottom-6 right-4 z-40 px-4 py-2 rounded-full bg-[#6E8B3D] text-white text-sm font-medium shadow-lg hover:bg-[#52682D] hover:scale-105 transition-transform transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#6E8B3D]"
+      data-testid="button-lead-magnet-trigger"
+    >
+      Free Project Tool
+    </button>
+
+    <!-- Lead Magnet Modal -->
+    <div
+      id="lead-magnet-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lead-magnet-title"
+      data-lead-magnet-backdrop
+      data-testid="modal-lead-magnet"
+    >
+      <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+        <button
+          type="button"
+          class="absolute right-3 top-3 text-slate-500 hover:text-slate-700 focus:outline-none"
+          aria-label="Close"
+          data-lead-magnet-close
+          data-testid="button-lead-magnet-close"
+        >
+          &#10005;
+        </button>
+        <h2
+          id="lead-magnet-title"
+          class="text-xl font-semibold text-slate-900 mb-2"
+        >
+          Get Your Free MSK Project Tool
+        </h2>
+        <p class="text-sm text-slate-600 mb-4">
+          Share your email and I'll send you a simple "My Starting Knit" (MSK) project based on your machine, yarn, and confidence level. It's a small, do-able project to help you get knitting right away.
+        </p>
+
+        <!-- ActiveCampaign form goes here -->
+        <div id="lead-magnet-form" class="mt-4" data-testid="container-lead-magnet-form">
+          <!-- TODO: Paste ActiveCampaign embed form code here -->
+          <p class="text-xs text-slate-400">
+            Sign-up form will appear here when you paste your ActiveCampaign embed code.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Magnet Modal Script -->
+    <script is:inline>
+      if (typeof window !== 'undefined') {
+        window.addEventListener('DOMContentLoaded', () => {
+          const trigger = document.getElementById('lead-magnet-trigger');
+          const modal = document.getElementById('lead-magnet-modal');
+          if (!trigger || !modal) return;
+
+          const closeButtons = modal.querySelectorAll('[data-lead-magnet-close]');
+          const backdrop = modal;
+
+          const openLeadMagnetModal = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+          };
+
+          const closeLeadMagnetModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          };
+
+          trigger.addEventListener('click', openLeadMagnetModal);
+
+          closeButtons.forEach((btn) => {
+            btn.addEventListener('click', closeLeadMagnetModal);
+          });
+
+          backdrop.addEventListener('click', (event) => {
+            // Close if clicking on the backdrop, not inside the card
+            if (event.target === backdrop) {
+              closeLeadMagnetModal();
+            }
+          });
+
+          window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+              closeLeadMagnetModal();
+            }
+          });
+        });
+      }
+    </script>
+
     <Footer />
 
     <script is:inline>
