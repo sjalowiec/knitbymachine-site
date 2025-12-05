@@ -80,10 +80,21 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     flex-direction: column;
   }
 
+  /* Wrap for pill + arrow */
+  .pi-pill-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  /* Pill styling – narrow + centered */
   .pi-pill {
-    display: inline-block;
-    margin-bottom: 0.6rem;
-    padding: 0.3rem 0.9rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 1.1rem;
     border-radius: 999px;
     background-color: #E6F0D8;
     color: #52682D;
@@ -91,6 +102,29 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     font-weight: 600;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+  }
+
+  /* Curved arrow pointing to pill */
+  .pi-pill-arrow {
+    position: absolute;
+    right: -8px;
+    top: -26px;
+    width: 80px;
+    height: 40px;
+    transform: rotate(6deg);
+  }
+
+  /* Mobile: arrow below pill, pointing down */
+  @media (max-width: 768px) {
+    .pi-pill-wrap {
+      flex-direction: column;
+    }
+
+    .pi-pill-arrow {
+      position: static;
+      margin-top: 0.35rem;
+      transform: rotate(90deg);
+    }
   }
 
   .pi-form-card {
@@ -123,17 +157,16 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     padding: 0 1.5rem 2.5rem;
   }
 
+  /* Inner card: subtle left border + padding */
   .pi-bottom-inner {
     max-width: 800px;
     margin: 1.75rem auto 0;
-    background: rgba(255, 255, 255, 0.95);
+    background: #ffffff;
     border-radius: 20px;
     border: 1px solid #e0e4ea;
-    padding: 1.75rem 2rem;
     box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
-    /* Add subtle left border + structure */
-    border-left: 4px solid rgba(82, 104, 45, 0.25); /* KBM green @ 25% opacity */
-    padding-left: 1.5rem; /* Space between border and text */
+    border-left: 4px solid rgba(82, 104, 45, 0.25); /* KBM green at 25% */
+    padding: 1.75rem 2rem 1.75rem 1.75rem; /* extra left padding for border */
   }
 
   .pi-bottom-inner h2,
@@ -206,7 +239,27 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
 
       <!-- RIGHT COLUMN: Pill, Form Card, Disclaimer -->
       <div class="pi-hero-right">
-        <span class="pi-pill">Free interactive tool</span>
+        <div class="pi-pill-wrap">
+          <span class="pi-pill">Free interactive tool</span>
+          <svg
+            class="pi-pill-arrow"
+            viewBox="0 0 80 40"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <path
+              d="M75 5 C 55 5, 40 15, 25 26"
+              fill="none"
+              stroke="#52682D"
+              stroke-width="2.2"
+              stroke-linecap="round"
+            />
+            <path
+              d="M28 24 L20 24 L23 32 Z"
+              fill="#52682D"
+            />
+          </svg>
+        </div>
 
         <div class="pi-form-card" data-testid="container-form-card">
           <p id="pi-email-instructions" class="pi-form-intro">

@@ -1,0 +1,198 @@
+You are an AI coding assistant working in a vanilla CSS Astro project (no Tailwind).
+
+Please update the /project-inspiration page to:
+
+Add a curved arrow that points to the “Free interactive tool” pill.
+
+Add a subtle left border and list indent to the bottom text block (“What you’ll get inside” etc.).
+
+1. Open the file
+
+Edit:
+
+src/pages/project-inspiration.astro
+
+PART A – Add arrow pointing to the pill
+A.1 Wrap the pill and add an inline SVG
+
+In the right-hand column where the pill and form card are rendered, find the pill text:
+
+<span class="pi-pill">FREE INTERACTIVE TOOL</span>
+
+
+(If the text casing differs, keep the text exactly as it is; only change structure.)
+
+Wrap this in a container and add an inline SVG arrow immediately after the pill:
+
+<div class="pi-pill-wrap">
+  <span class="pi-pill">FREE INTERACTIVE TOOL</span>
+
+  <svg
+    class="pi-pill-arrow"
+    viewBox="0 0 80 40"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <path
+      d="M75 5 C 55 5, 40 15, 25 26"
+      fill="none"
+      stroke="#52682D"
+      stroke-width="2.2"
+      stroke-linecap="round"
+    />
+    <path
+      d="M28 24 L20 24 L23 32 Z"
+      fill="#52682D"
+    />
+  </svg>
+</div>
+
+
+Make sure the form card still appears after this wrapper, with no other changes to the form markup.
+
+A.2 Add / update CSS for pill + arrow
+
+In the <style> block for this page (or create one at the bottom if it doesn’t exist), add or update the following rules.
+
+If these selectors already exist, replace their contents with what’s below so we don’t have conflicting styles.
+
+/* Wrap for pill + arrow */
+.pi-pill-wrap {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+/* Pill styling – narrow + centered */
+.pi-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 1.1rem;
+  border-radius: 999px;
+  background-color: #E6F0D8;
+  color: #52682D;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Curved arrow pointing to pill */
+.pi-pill-arrow {
+  position: absolute;
+  right: -8px;
+  top: -26px;
+  width: 80px;
+  height: 40px;
+  transform: rotate(6deg);
+}
+
+/* Mobile: arrow below pill, pointing down */
+@media (max-width: 768px) {
+  .pi-pill-wrap {
+    flex-direction: column;
+  }
+
+  .pi-pill-arrow {
+    position: static;
+    margin-top: 0.35rem;
+    transform: rotate(90deg);
+  }
+}
+
+
+This should result in:
+
+A centered, narrow pill
+
+A thin, curved arrow above/right on desktop
+
+Arrow repositioned below the pill on mobile
+
+PART B – Style the bottom text block (border + list indent)
+
+We want the section that starts with:
+“What you’ll get inside”
+down through “Why Ready • Set • Knit?” to be in a structured block.
+
+B.1 Wrap the bottom content if not already
+
+Find the markup that contains:
+
+What you'll get inside
+
+Is Project Inspiration for you?
+
+How Ready • Set • Knit: Project Inspiration works
+
+Why Ready • Set • Knit?
+
+Wrap that entire group in:
+
+<section class="pi-bottom">
+  <div class="pi-bottom-inner">
+    <!-- existing headings, paragraphs, lists stay exactly the same -->
+  </div>
+</section>
+
+
+Do not change the text or headings, only add the wrapper if it’s missing.
+
+B.2 Add CSS for left border + list indent
+
+In the same <style> block, add or update these rules:
+
+/* Outer bottom section spacing */
+.pi-bottom {
+  padding: 0 1.5rem 2.5rem;
+}
+
+/* Inner card: subtle left border + padding */
+.pi-bottom-inner {
+  max-width: 800px;
+  margin: 1.75rem auto 0;
+  background: #ffffff;
+  border-radius: 20px;
+  border: 1px solid #e0e4ea;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+
+  border-left: 4px solid rgba(82, 104, 45, 0.25); /* KBM green at 25% */
+  padding: 1.75rem 2rem 1.75rem 1.75rem; /* extra left padding for border */
+}
+
+/* Indent unordered lists */
+.pi-bottom-inner ul {
+  margin-left: 1.25rem;
+  padding-left: 0;
+}
+
+/* Indent ordered lists */
+.pi-bottom-inner ol {
+  margin-left: 1rem;
+  padding-left: 0;
+}
+
+/* Slightly tightened list spacing */
+.pi-bottom-inner li {
+  margin-bottom: 0.35rem;
+}
+
+
+Do not change heading margins; leave them as they are now.
+
+3. Do not modify
+
+Any ActiveCampaign embed code
+
+Form behavior scripts
+
+Text copy in headings or paragraphs
+
+Other page layouts
+
+Only apply the HTML wrappers and CSS specified.
+
+Save and run the project.
