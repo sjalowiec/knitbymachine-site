@@ -1,0 +1,380 @@
+I’ve already added a “Welcome to the new Knit by Machine” banner + drawer on my home page, but I want to clean it up and modernize it.
+
+Please update my Astro home page implementation as follows.
+
+1. Update the banner markup (no big button, inline link, tiny close)
+
+In the file that renders the home page (likely src/pages/index.astro), find the existing kbm-intro-wrapper / banner block you added earlier and replace ONLY the banner portion (the part that includes kbm-intro-banner and the “Show me around” / “Skip for now” controls) with this markup:
+
+<div class="kbm-intro-wrapper" data-kbm-intro-wrapper>
+  <div class="kbm-intro-banner" data-kbm-intro-banner>
+    <div class="kbm-intro-banner-inner">
+      <span class="kbm-intro-banner-text">
+        👋 Welcome! Knit by Machine is new — 
+        <button
+          type="button"
+          class="kbm-intro-banner-inline-link"
+          data-kbm-intro-open
+        >
+          see a quick intro
+        </button>.
+      </span>
+      <button
+        type="button"
+        class="kbm-intro-banner-close"
+        data-kbm-intro-dismiss
+        aria-label="Hide this message"
+      >
+        ×
+      </button>
+    </div>
+  </div>
+
+  <section
+    class="kbm-intro-drawer"
+    data-kbm-intro-drawer
+    aria-hidden="true"
+  >
+    <div class="kbm-intro-drawer-header">
+      <h2 class="kbm-intro-drawer-title">
+        Hi, I’m Sue — welcome to the new Knit by Machine.
+      </h2>
+      <button
+        type="button"
+        class="kbm-intro-drawer-close"
+        aria-label="Close intro"
+        data-kbm-intro-close
+      >
+        ×
+      </button>
+    </div>
+
+    <p class="kbm-intro-drawer-body">
+      Knit by Machine is a fresh, modern home for machine knitters. I’m rebuilding everything to be clearer, calmer, and more confidence-boosting.
+    </p>
+    <p class="kbm-intro-drawer-body">
+      You’ll find smart tools, Skill Builders, Ask ’n Answer, and simple next steps to help you feel successful with your machine.
+    </p>
+
+    <div class="kbm-intro-drawer-actions">
+      <a href="/getting-started" class="kbm-intro-primary">
+        Start here
+      </a>
+      <a href="/about" class="kbm-intro-secondary">
+        About Knit by Machine
+      </a>
+    </div>
+
+    <p class="kbm-intro-subtext">
+      Just browsing? You can close this and explore on your own.
+    </p>
+  </section>
+</div>
+
+
+Notes:
+
+The drawer stays the same.
+
+Only the banner is now: message + inline link + tiny close.
+
+If my actual routes differ, keep the structure but adjust the href values.
+
+2. Update the banner styles (stronger color, inline link, close button)
+
+In my global styles (for example src/styles/global.css), update/add these rules:
+
+Replace the existing .kbm-intro-banner, .kbm-intro-banner-inner, and related button styles with the ones below.
+
+Remove any old styles for .kbm-intro-banner-actions, .kbm-intro-banner-button, .kbm-intro-banner-link from the previous version.
+
+.kbm-intro-wrapper {
+  position: relative;
+  z-index: 30;
+}
+
+/* If not already defined */
+.hidden {
+  display: none !important;
+}
+
+/* Banner */
+.kbm-intro-banner {
+  /* slightly stronger, more visible than the header/hero background */
+  background: #e2edc6; /* light, noticeable KBM green tint */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+}
+
+.kbm-intro-banner-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.kbm-intro-banner-text {
+  font-weight: 500;
+  color: #2c3a57;
+}
+
+/* inline link inside the sentence */
+.kbm-intro-banner-inline-link {
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: #2c3a57;
+  text-decoration: underline;
+  cursor: pointer;
+  padding: 0;
+}
+
+.kbm-intro-banner-inline-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Tiny close button on the right */
+.kbm-intro-banner-close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.1rem 0.3rem;
+  color: #758099;
+}
+
+.kbm-intro-banner-close:hover {
+  color: #2c3a57;
+}
+
+/* Drawer (keep existing styles but ensure these are present) */
+.kbm-intro-drawer {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 220ms ease;
+}
+
+.kbm-intro-drawer.kbm-intro-drawer--open {
+  max-height: 400px; /* adjust if needed */
+}
+
+.kbm-intro-drawer-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 0.5rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.kbm-intro-drawer-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2c3a57;
+}
+
+.kbm-intro-drawer-close {
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #8891a6;
+  padding: 0.1rem 0.3rem;
+}
+
+.kbm-intro-drawer-close:hover {
+  color: #2c3a57;
+}
+
+.kbm-intro-drawer-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  color: #424a5d;
+}
+
+.kbm-intro-drawer-body + .kbm-intro-drawer-body {
+  margin-top: 0.4rem;
+}
+
+.kbm-intro-drawer-actions {
+  max-width: 1100px;
+  margin: 0.9rem auto 0.25rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.kbm-intro-primary,
+.kbm-intro-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.kbm-intro-primary {
+  background: #6e8b3d;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(82, 104, 45, 0.25);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.kbm-intro-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(82, 104, 45, 0.28);
+  background-color: #52682d;
+}
+
+.kbm-intro-secondary {
+  background: #f5f6fa;
+  color: #2c3a57;
+  border: 1px solid rgba(44, 58, 87, 0.15);
+}
+
+.kbm-intro-secondary:hover {
+  background: #e9ecf5;
+}
+
+.kbm-intro-subtext {
+  max-width: 1100px;
+  margin: 0 0 1rem 0;
+  padding: 0 1rem 1.1rem 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Responsive tweaks */
+@media (max-width: 640px) {
+  .kbm-intro-banner-inner {
+    align-items: flex-start;
+  }
+
+  .kbm-intro-drawer-header,
+  .kbm-intro-drawer-body,
+  .kbm-intro-drawer-actions,
+  .kbm-intro-subtext {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+
+  .kbm-intro-drawer-title {
+    font-size: 1rem;
+  }
+}
+
+
+Key goals:
+
+Banner color is now more distinct from the header + hero.
+
+The message reads as one sentence with an inline “see a quick intro” link.
+
+Tiny × close lives on the right.
+
+3. Update the JavaScript behavior (inline link open, close hides permanently)
+
+In the same home page Astro file, update the inline script that handles the intro drawer so it matches this behavior:
+
+Clicking “see a quick intro” opens the drawer.
+
+Clicking the drawer × closes the drawer but keeps the banner.
+
+Clicking the banner × closes the entire wrapper and sets localStorage.kbmIntroDismissed = "true" so the banner + drawer stay hidden on future visits.
+
+Replace the existing script with this:
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', () => {
+    const wrapper = document.querySelector('[data-kbm-intro-wrapper]');
+    const banner = document.querySelector('[data-kbm-intro-banner]');
+    const drawer = document.querySelector('[data-kbm-intro-drawer]');
+    const openButtons = document.querySelectorAll('[data-kbm-intro-open]');
+    const drawerCloseButtons = document.querySelectorAll('[data-kbm-intro-close]');
+    const bannerDismissButtons = document.querySelectorAll('[data-kbm-intro-dismiss]');
+
+    if (!wrapper || !banner || !drawer) return;
+
+    const introDismissed = window.localStorage.getItem('kbmIntroDismissed') === 'true';
+
+    if (introDismissed) {
+      wrapper.classList.add('hidden');
+      return;
+    }
+
+    const openDrawer = () => {
+      drawer.classList.add('kbm-intro-drawer--open');
+      drawer.setAttribute('aria-hidden', 'false');
+    };
+
+    const closeDrawer = () => {
+      drawer.classList.remove('kbm-intro-drawer--open');
+      drawer.setAttribute('aria-hidden', 'true');
+    };
+
+    openButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        openDrawer();
+      });
+    });
+
+    drawerCloseButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // Close only the drawer, keep the banner visible
+        closeDrawer();
+      });
+    });
+
+    bannerDismissButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        // Hide banner + drawer permanently for this browser
+        window.localStorage.setItem('kbmIntroDismissed', 'true');
+        wrapper.classList.add('hidden');
+      });
+    });
+  });
+</script>
+
+4. Adjust hero padding so it doesn’t feel squashed under the banner
+
+Right now the new banner visually hugs the hero.
+Please slightly increase the top padding on the main hero section on the home page.
+
+Find the main hero wrapper for the home page (the section that contains the H1 text “Machine knitting doesn’t have to be overwhelming – I’ll guide your next step.”).
+It might be something like .home-hero, .hero, or a similar class.
+
+In my CSS, add/update a rule so that hero has a bit more breathing room under the banner:
+
+/* Adjust selector to match the actual hero container on the home page */
+.home-hero,
+.hero {
+  padding-top: 2.5rem;
+}
+
+/* On small screens, slightly less but still room to breathe */
+@media (max-width: 640px) {
+  .home-hero,
+  .hero {
+    padding-top: 1.75rem;
+  }
+}
+
+
+Use whichever selector matches the actual home hero container (if only one of .home-hero or .hero exists, just use that one to avoid affecting other pages).

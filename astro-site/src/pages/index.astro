@@ -31,16 +31,25 @@ import "../styles/global.css";
       <div class="kbm-intro-banner" data-kbm-intro-banner data-testid="welcome-intro-banner">
         <div class="kbm-intro-banner-inner">
           <span class="kbm-intro-banner-text">
-            Welcome! Knit by Machine is new — want a 10-second intro?
+            Welcome! Knit by Machine is new — 
+            <button
+              type="button"
+              class="kbm-intro-banner-inline-link"
+              data-kbm-intro-open
+              data-testid="button-see-intro"
+            >
+              see a quick intro
+            </button>.
           </span>
-          <div class="kbm-intro-banner-actions">
-            <button type="button" class="kbm-intro-banner-button" data-kbm-intro-open data-testid="button-show-me-around">
-              Show me around
-            </button>
-            <button type="button" class="kbm-intro-banner-link" data-kbm-intro-dismiss data-testid="button-skip-intro">
-              Skip for now
-            </button>
-          </div>
+          <button
+            type="button"
+            class="kbm-intro-banner-close"
+            data-kbm-intro-dismiss
+            aria-label="Hide this message"
+            data-testid="button-dismiss-banner"
+          >
+            ×
+          </button>
         </div>
       </div>
 
@@ -242,14 +251,13 @@ import "../styles/global.css";
         const banner = document.querySelector('[data-kbm-intro-banner]');
         const drawer = document.querySelector('[data-kbm-intro-drawer]');
         const openButtons = document.querySelectorAll('[data-kbm-intro-open]');
-        const closeButtons = document.querySelectorAll('[data-kbm-intro-close]');
-        const dismissButtons = document.querySelectorAll('[data-kbm-intro-dismiss]');
+        const drawerCloseButtons = document.querySelectorAll('[data-kbm-intro-close]');
+        const bannerDismissButtons = document.querySelectorAll('[data-kbm-intro-dismiss]');
 
         if (!wrapper || !banner || !drawer) return;
 
         const introDismissed = window.localStorage.getItem('kbmIntroDismissed') === 'true';
 
-        // If the user has previously dismissed it, hide the whole thing
         if (introDismissed) {
           wrapper.classList.add('hidden');
           return;
@@ -271,16 +279,14 @@ import "../styles/global.css";
           });
         });
 
-        closeButtons.forEach((btn) => {
+        drawerCloseButtons.forEach((btn) => {
           btn.addEventListener('click', () => {
-            // Close the drawer but keep the banner visible so they can reopen it
             closeDrawer();
           });
         });
 
-        dismissButtons.forEach((btn) => {
+        bannerDismissButtons.forEach((btn) => {
           btn.addEventListener('click', () => {
-            // User doesn't want to see this again
             window.localStorage.setItem('kbmIntroDismissed', 'true');
             wrapper.classList.add('hidden');
           });
@@ -361,6 +367,13 @@ import "../styles/global.css";
   /* ========== HERO SECTION ========== */
   .kbm-hero {
     margin-bottom: 1.5rem;
+    padding-top: 2.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .kbm-hero {
+      padding-top: 1.75rem;
+    }
   }
 
   .kbm-hero__grid {

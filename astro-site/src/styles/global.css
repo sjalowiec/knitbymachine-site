@@ -359,20 +359,18 @@ p {
    ============================================ */
 
 .kbm-intro-wrapper {
-  position: fixed;
-  top: var(--header-height, 6rem);
-  left: 0;
-  right: 0;
-  z-index: 900;
+  position: relative;
+  z-index: 30;
 }
 
 .hidden {
   display: none !important;
 }
 
+/* Banner */
 .kbm-intro-banner {
-  background: #f3f7ec;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  background: #e2edc6;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
   padding: 0.6rem 1rem;
   font-size: 0.95rem;
 }
@@ -382,9 +380,8 @@ p {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 0.75rem;
   justify-content: space-between;
-  flex-wrap: wrap;
+  gap: 0.75rem;
 }
 
 .kbm-intro-banner-text {
@@ -392,41 +389,34 @@ p {
   color: #2c3a57;
 }
 
-.kbm-intro-banner-actions {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.kbm-intro-banner-button {
+/* Inline link inside the sentence */
+.kbm-intro-banner-inline-link {
   border: none;
-  cursor: pointer;
-  border-radius: 9999px;
-  padding: 0.35rem 0.9rem;
-  font-size: 0.9rem;
-  font-weight: 500;
-  background: #6e8b3d;
-  color: #ffffff;
-  box-shadow: 0 4px 10px rgba(82, 104, 45, 0.25);
-  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
-}
-
-.kbm-intro-banner-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(82, 104, 45, 0.28);
-  background-color: #52682d;
-}
-
-.kbm-intro-banner-link {
   background: transparent;
-  border: none;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 400;
-  color: #52682d;
+  font: inherit;
+  color: #2c3a57;
   text-decoration: underline;
-  padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.kbm-intro-banner-inline-link:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Tiny close button on the right */
+.kbm-intro-banner-close {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.1rem 0.3rem;
+  color: #758099;
+}
+
+.kbm-intro-banner-close:hover {
+  color: #2c3a57;
 }
 
 /* Drawer */
