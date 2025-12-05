@@ -1,0 +1,110 @@
+You are an AI coding assistant working in an Astro + Tailwind project.
+Fix the layout and styling of the /project-inspiration page.
+
+1. File to edit
+
+Open src/pages/project-inspiration.astro (the page that renders /project-inspiration).
+
+2. Create a two-column hero layout
+
+In the top hero section of this page:
+
+Use a container like:
+
+<section class="max-w-6xl mx-auto px-4 py-12">
+  <div class="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
+    <!-- LEFT COLUMN -->
+    <!-- RIGHT COLUMN -->
+  </div>
+</section>
+
+
+Left column should contain:
+
+Hex icon
+
+Heading: “Ready ● Set ● Knit: Project Inspiration”
+
+Intro paragraph (“Not sure what to make next? …”)
+
+Right column should contain:
+
+“Free interactive tool” pill
+
+The AC form inside a card (instructions below)
+
+Example structure:
+
+<div class="space-y-4">
+  <!-- hex icon, h1, intro paragraph -->
+</div>
+
+<div class="space-y-4">
+  <div class="inline-block rounded-full bg-[#E6F0D8] px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#52682D]">
+    Free interactive tool
+  </div>
+
+  <div class="rounded-2xl border border-[#d7e2c2] bg-white shadow-sm p-6">
+    <!-- ActiveCampaign embed goes here -->
+  </div>
+
+  <p class="text-xs text-slate-600">
+    Instant access. No spam. Unsubscribe anytime.
+  </p>
+</div>
+
+3. Adjust the AC form CSS so it doesn’t fight the card
+
+Inside this same file you already have the AC embed with a <style> block that targets #_form_1_.
+
+Edit that CSS so that #_form_1_ no longer behaves like its own card. Specifically, in the rule that starts:
+
+#_form_1_{position:relative;text-align:left;margin:25px auto 0;padding:20px;/* ... */}
+
+
+change it to something like:
+
+#_form_1_{
+  position:relative;
+  text-align:left;
+  margin:0;
+  padding:0;
+  background:transparent !important;
+  border:0;
+  max-width:100%;
+  color:#000000;
+}
+
+
+Key points:
+
+Remove the margin and padding (set to 0).
+
+Remove its own background card (background: transparent, border:0, max-width:100%).
+
+Keep everything else in the AC CSS as-is.
+
+Do not change the form markup, IDs, or the large JavaScript block; just adjust the #_form_1_ rule so the outer div we added can be the visual card.
+
+4. Keep the rest of the page content below
+
+Below the hero section, keep the text sections:
+
+“What you’ll get inside”
+
+“Is Project Inspiration for you?”
+
+“How Ready ● Set ● Knit: Project Inspiration works”
+
+“Why Ready ● Set ● Knit?”
+
+Wrap them in a single container so they feel cohesive:
+
+<section class="max-w-4xl mx-auto px-4 pb-16 mt-10">
+  <div class="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm space-y-8">
+    <!-- existing headings, lists, and paragraphs -->
+  </div>
+</section>
+
+
+Don’t change the wording, just the wrappers and classes for spacing.
