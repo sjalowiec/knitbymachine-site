@@ -378,16 +378,13 @@ const pageDescription = 'A simple starting point to get your knitting machine se
   }
 
   .kbm-video-trigger:focus-visible .kbm-headshot {
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25), 0 0 0 3px rgba(82, 104, 45, 0.3);
+    /* Image already has built-in border/shadow */
   }
 
   .kbm-headshot {
     width: 160px;
     height: 160px;
-    border-radius: 50%;
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.2);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-    object-fit: cover;
+    transition: transform 0.2s ease;
   }
 
   @media (min-width: 768px) {
@@ -399,7 +396,6 @@ const pageDescription = 'A simple starting point to get your knitting machine se
 
   .kbm-video-trigger:hover .kbm-headshot {
     transform: scale(1.03);
-    box-shadow: 0 6px 16px rgba(82, 104, 45, 0.3);
   }
 
   .kbm-video-label {
