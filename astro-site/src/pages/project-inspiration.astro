@@ -28,34 +28,50 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
             <p class="pi-form-intro">
               Enter your email to open Project Inspiration. I'll also send the link to your inbox so you can come back to it anytime.
             </p>
-            <!-- TODO: Replace action="#" with your ActiveCampaign form action URL or redirect logic -->
-            <form method="post" action="#" class="pi-form" data-testid="form-project-inspiration">
-              <div class="pi-form-group">
-                <label for="first-name" class="pi-label">First name</label>
-                <input 
-                  type="text" 
-                  id="first-name" 
-                  name="first_name" 
-                  class="pi-input" 
-                  required
-                  data-testid="input-first-name"
-                />
+            <!-- ActiveCampaign Form -->
+            <form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_1_" class="pi-form _form _form_1" novalidate data-testid="form-project-inspiration">
+              <input type="hidden" name="u" value="1" />
+              <input type="hidden" name="f" value="1" />
+              <input type="hidden" name="s" />
+              <input type="hidden" name="c" value="0" />
+              <input type="hidden" name="m" value="0" />
+              <input type="hidden" name="act" value="sub" />
+              <input type="hidden" name="v" value="2" />
+              <input type="hidden" name="or" value="dc606db2-daa8-4067-8615-c5a1021874f8" />
+              <div class="_form-content">
+                <div class="pi-form-group">
+                  <label for="fullname" class="pi-label">First name</label>
+                  <input 
+                    type="text" 
+                    id="fullname" 
+                    name="fullname" 
+                    class="pi-input" 
+                    placeholder="Type your name"
+                    data-testid="input-first-name"
+                  />
+                </div>
+                <div class="pi-form-group">
+                  <label for="email" class="pi-label">Email address</label>
+                  <input 
+                    type="text" 
+                    id="email" 
+                    name="email" 
+                    class="pi-input" 
+                    placeholder="Type your email"
+                    required
+                    data-testid="input-email"
+                  />
+                </div>
+                <button type="submit" id="_form_1_submit" class="btn primary pi-submit _submit" data-testid="button-submit">
+                  Get Project Inspiration
+                </button>
+                <p class="pi-reassurance">Instant access. No spam. Unsubscribe anytime.</p>
               </div>
-              <div class="pi-form-group">
-                <label for="email" class="pi-label">Email address</label>
-                <input 
-                  type="email" 
-                  id="email" 
-                  name="email" 
-                  class="pi-input" 
-                  required
-                  data-testid="input-email"
-                />
+              <div class="_form-thank-you" style="display:none;"></div>
+              <div class="_form-branding" style="text-align:center;margin-top:0.75rem;font-size:11px;color:#94a3b8;">
+                <span>Marketing by </span>
+                <a href="https://www.activecampaign.com/?utm_medium=referral&utm_campaign=acforms" style="color:#64748b;text-decoration:none;" target="_blank" rel="noopener">ActiveCampaign</a>
               </div>
-              <button type="submit" class="btn primary pi-submit" data-testid="button-submit">
-                Get Project Inspiration
-              </button>
-              <p class="pi-reassurance">Instant access. No spam. Unsubscribe anytime.</p>
             </form>
           </div>
         </div>
@@ -375,3 +391,152 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     }
   }
 </style>
+
+<!-- ActiveCampaign Form Script -->
+<script is:inline>
+  window.cfields = [];
+  window._show_thank_you = function(id, message, trackcmp_url, email) {
+    var form = document.getElementById('_form_' + id + '_'), thank_you = form.querySelector('._form-thank-you');
+    form.querySelector('._form-content').style.display = 'none';
+    thank_you.innerHTML = message || '<h3 style="margin-bottom:0.5rem;color:#2c3a57;">Thanks for signing up!</h3><p style="color:#4d5a48;">Check your inbox for your Project Inspiration link.</p>';
+    thank_you.style.display = 'block';
+    thank_you.style.padding = '1rem 0';
+    thank_you.style.textAlign = 'center';
+    var branding = form.querySelector('._form-branding');
+    if (branding) branding.style.display = 'none';
+    if (typeof window._form_callback !== 'undefined') window._form_callback(id);
+    thank_you.setAttribute('tabindex', '-1');
+    thank_you.focus();
+  };
+  window._show_error = function(id, message, html) {
+    var form = document.getElementById('_form_' + id + '_'),
+        err = document.createElement('div'),
+        button = form.querySelector('button[type="submit"]'),
+        old_error = form.querySelector('._form_error');
+    if (old_error) old_error.parentNode.removeChild(old_error);
+    err.innerHTML = message;
+    err.className = '_error-inner _form_error';
+    err.style.cssText = 'background:#fef2f2;border:1px solid #fecaca;border-radius:0.5rem;padding:0.75rem;color:#dc2626;font-size:0.9rem;margin-bottom:1rem;';
+    button.parentNode.insertBefore(err, button);
+    var submitButton = form.querySelector('[id^="_form"][id$="_submit"]');
+    submitButton.disabled = false;
+    submitButton.classList.remove('processing');
+  };
+  window._load_script = function(url, callback, isSubmit) {
+    var head = document.querySelector('head'), script = document.createElement('script'), r = false;
+    var submitButton = document.querySelector('#_form_1_submit');
+    script.charset = 'utf-8';
+    script.src = url;
+    if (callback) {
+      script.onload = script.onreadystatechange = function() {
+        if (!r && (!this.readyState || this.readyState == 'complete')) {
+          r = true;
+          callback();
+        }
+      };
+    }
+    script.onerror = function() {
+      if (isSubmit) {
+        _show_error("1", "Sorry, your submission failed. Please try again.");
+        submitButton.disabled = false;
+        submitButton.classList.remove('processing');
+      }
+    }
+    head.appendChild(script);
+  };
+  (function() {
+    if (window.location.search.search("excludeform") !== -1) return false;
+    var form_to_submit = document.getElementById('_form_1_');
+    if (!form_to_submit) return;
+    var allInputs = form_to_submit.querySelectorAll('input, select, textarea'), tooltips = [], submitted = false;
+
+    var remove_tooltips = function() {
+      var errors = form_to_submit.querySelectorAll('._error');
+      errors.forEach(function(e) { e.parentNode.removeChild(e); });
+    };
+    var create_tooltip = function(elem, text) {
+      var tooltip = document.createElement('div');
+      tooltip.className = '_error';
+      tooltip.innerHTML = text;
+      tooltip.style.cssText = 'color:#dc2626;font-size:0.8rem;margin-top:0.25rem;';
+      elem.parentNode.appendChild(tooltip);
+    };
+    var validate_field = function(elem, remove) {
+      var value = elem.value, no_error = true;
+      if (remove) {
+        var old_tooltip = elem.parentNode.querySelector('._error');
+        if (old_tooltip) old_tooltip.parentNode.removeChild(old_tooltip);
+      }
+      elem.style.borderColor = '';
+      if (elem.getAttribute('required') !== null) {
+        if (value === undefined || value === null || value === '') {
+          elem.style.borderColor = '#dc2626';
+          no_error = false;
+          create_tooltip(elem, "This field is required.");
+        }
+      }
+      if (no_error && elem.name == 'email') {
+        if (!value.match(/^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i)) {
+          elem.style.borderColor = '#dc2626';
+          no_error = false;
+          create_tooltip(elem, "Enter a valid email address.");
+        }
+      }
+      return no_error;
+    };
+    var validate_form = function(e) {
+      var no_error = true;
+      if (!submitted) {
+        submitted = true;
+        for (var i = 0, len = allInputs.length; i < len; i++) {
+          var input = allInputs[i];
+          if (input.getAttribute('required') !== null || input.name === 'email') {
+            if (input.type == 'text') {
+              input.addEventListener('blur', function() {
+                this.value = this.value.trim();
+                validate_field(this, true);
+              });
+              input.addEventListener('input', function() {
+                validate_field(this, true);
+              });
+            }
+          }
+        }
+      }
+      remove_tooltips();
+      for (var i = 0, len = allInputs.length; i < len; i++) {
+        var elem = allInputs[i];
+        if (elem.getAttribute('required') !== null || elem.name === 'email') {
+          if (!validate_field(elem)) {
+            no_error = false;
+          }
+        }
+      }
+      if (!no_error && e) {
+        e.preventDefault();
+      }
+      return no_error;
+    };
+    var form_submit = function(e) {
+      e.preventDefault();
+      if (validate_form()) {
+        var serialized = '';
+        for (var i = 0; i < allInputs.length; i++) {
+          var input = allInputs[i];
+          if (input.type === 'hidden' || input.type === 'text' || input.type === 'email') {
+            serialized += (serialized ? '&' : '') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value);
+          }
+        }
+        var submitButton = form_to_submit.querySelector('#_form_1_submit');
+        submitButton.disabled = true;
+        submitButton.textContent = 'Submitting...';
+        var url = form_to_submit.getAttribute('action') + '?' + serialized;
+        _load_script(url, function() {
+          // Success handled by _show_thank_you callback
+        }, true);
+      }
+      return false;
+    };
+    form_to_submit.addEventListener('submit', form_submit);
+  })();
+</script>
