@@ -1,0 +1,100 @@
+You are an AI pair programmer helping me with my Astro + Tailwind site for Knit by Machine.
+
+GOAL
+Create a NEW public-facing page that delivers my Project Inspiration experience AFTER someone signs up.
+
+I already have:
+- A lead magnet landing page with an ActiveCampaign signup form for Project Inspiration.
+- I now need a separate “delivery” page, linked from my welcome email, that ONLY shows the Project Inspiration helper (no signup form).
+
+This new page should:
+- Reuse the same layout as my other pages (same header/footer as the home page).
+- Reuse the same general styling and content tone as my existing Project Inspiration landing page.
+- NOT include any email signup form.
+- Contain a clear heading, short intro, and an embed container for my agent/wizard.
+
+ROUTE / FILE
+Create a new Astro page at:
+- Route: /project-inspiration/session
+- File: src/pages/project-inspiration-session.astro
+(Adjust the exact path if my project uses a slightly different structure, but the final URL must be /project-inspiration/session.)
+
+LAYOUT
+- Use the same Layout component that the home page (`index.astro`) uses.
+- Do NOT modify Layout itself, only use it.
+
+CONTENT & STRUCTURE
+The structure should be:
+
+<Layout>
+  <main class="bg-slate-50">
+    <section class="mx-auto flex min-h-[60vh] max-w-3xl flex-col gap-6 px-4 py-12 sm:py-16">
+      <!-- Header -->
+      <header class="space-y-3 text-center">
+        <!-- Small overline -->
+        <p class="text-xs font-semibold uppercase tracking-wide text-[#6E8B3D]">
+          Ready • Set • Knit
+        </p>
+        <!-- Main title -->
+        <h1 class="text-3xl font-semibold text-slate-900 sm:text-4xl">
+          Your Project Inspiration Session
+        </h1>
+        <!-- Short intro -->
+        <p class="text-sm text-slate-600 sm:text-base">
+          You’re in the right place. This short session will help you choose one small, do-able project idea based on your machine and how you’re feeling about getting started.
+        </p>
+      </header>
+
+      <!-- Helper container -->
+      <section
+        aria-label="Project Inspiration helper"
+        class="rounded-2xl bg-white p-5 shadow-md sm:p-6"
+      >
+        <h2 class="mb-2 text-base font-semibold text-slate-900">
+          Start your Project Inspiration
+        </h2>
+        <p class="mb-4 text-sm text-slate-600">
+          Answer a few simple questions below. At the end, you’ll get a gentle, realistic project idea you can feel good about starting.
+        </p>
+
+        <!-- EMBED CONTAINER: I will paste my agent/wizard embed here -->
+        <div
+          id="project-inspiration-embed"
+          class="min-h-[320px] rounded-xl border border-slate-200 bg-slate-50/60 p-3 sm:p-4"
+          data-testid="container-project-inspiration-embed"
+        >
+          <p class="text-xs text-slate-400">
+            The Project Inspiration experience will appear here once I paste the embed code.
+          </p>
+        </div>
+      </section>
+
+      <!-- Gentle footer note -->
+      <section class="border-t border-slate-200 pt-4 text-center text-xs text-slate-500">
+        <p>
+          You can always return to this page using the link in your email.
+        </p>
+      </section>
+    </section>
+  </main>
+</Layout>
+
+NOTES / REQUIREMENTS
+
+1. This page MUST NOT include:
+   - Any email signup form
+   - Any ActiveCampaign embed
+   - Any “enter your email” text
+
+2. Do NOT remove or alter my existing Project Inspiration lead magnet page (the one with the signup form). This new page is in addition to that one.
+
+3. Use Tailwind utility classes consistent with the rest of my site. You can adjust spacing slightly to match the existing style, but keep the overall structure as shown.
+
+4. SEO / META:
+   - If my layout supports frontmatter or props for title/description, set:
+     - title: "Project Inspiration Session · Knit by Machine"
+     - description: "A calm space to walk through your Project Inspiration session and choose one small, do-able machine knitting project idea."
+
+5. Do not change any other pages, components, or routes.
+
+Finally, show me the COMPLETE contents of the new src/pages/project-inspiration-session.astro file with no truncation or "..." so I can review it.
