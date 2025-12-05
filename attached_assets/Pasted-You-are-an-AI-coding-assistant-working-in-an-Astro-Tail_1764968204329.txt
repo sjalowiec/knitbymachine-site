@@ -1,0 +1,112 @@
+You are an AI coding assistant working in an Astro + Tailwind project.
+
+I need you to fix and restyle the /project-inspiration page. Replit’s last edit broke the styling of my embedded ActiveCampaign form. It now looks like plain, unstyled HTML.
+
+1. File to edit
+
+Open the Astro page that powers this route:
+
+src/pages/project-inspiration.astro
+(if the file name is slightly different, use the page that serves /project-inspiration).
+
+Make all changes in this file only.
+
+2. Restore the original ActiveCampaign embed (DO NOT “simplify” it)
+
+In the section where the email signup form appears:
+
+Replace whatever stripped-down AC form is there with my full original embed, including:
+
+the <style> block with all the #_form_1_ rules
+
+the <form ...> markup
+
+the big <script>...</script> block
+
+Do not modify or delete anything inside that AC embed except class names on wrappers you add around it. Keep all IDs, input names, and scripts exactly as they are so ActiveCampaign’s styling and behavior work correctly.
+
+The embed should look like this block (exactly this, copy–paste):
+
+<!-- BEGIN ActiveCampaign embed (do not modify inside) -->
+<style>@import url(https://fonts.bunny.net/css?family=ibm-plex-sans:400,600);</style>
+<style>
+  /* full #_form_1_ CSS from ActiveCampaign goes here */
+</style>
+
+<form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_1_" class="_form _form_1 _inline-form  _dark" novalidate data-styles-version="5">
+  <!-- full original AC form markup here (inputs, labels, button, thank-you container, branding, etc.) -->
+</form>
+
+<script>
+  // full original ActiveCampaign JavaScript here (all the functions and IIFE)
+</script>
+<!-- END ActiveCampaign embed -->
+
+
+Use the exact full embed I provided above – don’t trim out the styles or scripts.
+
+3. Wrap the AC form in a simple card layout
+
+Around the AC embed, add a wrapper so the form appears as a centered card under the hero copy.
+
+Structure:
+
+<section class="max-w-5xl mx-auto px-4 py-10 space-y-6">
+  <!-- hero text stays above -->
+  <div class="space-y-3">
+    <!-- main heading and intro paragraphs that are already on the page -->
+  </div>
+
+  <!-- FREE INTERACTIVE TOOL pill just above the form -->
+  <div class="inline-block rounded-full bg-[#E6F0D8] px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#52682D]">
+    Free interactive tool
+  </div>
+
+  <!-- form card -->
+  <div class="mt-3 rounded-2xl border border-slate-200 bg-white/95 p-6 shadow-sm">
+    <!-- AC embed goes here exactly as provided -->
+    <!-- BEGIN ActiveCampaign embed ... END ActiveCampaign embed -->
+  </div>
+
+  <p class="text-xs text-slate-600">
+    Instant access. No spam. Unsubscribe anytime.
+  </p>
+</section>
+
+
+Important:
+
+Do not remove or override the internal AC styles; just let them style the form inside the white card.
+
+The card (div with border, bg-white, padding) is ours; the inputs and button inside are styled by AC’s CSS.
+
+4. Keep the bottom content grouped and readable
+
+Below the form section, keep the existing text content (“What you’ll get inside”, “Is Project Inspiration for you?”, etc.), but make sure:
+
+It’s wrapped in a container like:
+
+<section class="max-w-4xl mx-auto px-4 pb-16 mt-10">
+  <div class="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm space-y-8">
+    <!-- existing headings and lists -->
+  </div>
+</section>
+
+
+Don’t change the actual wording, just the layout wrappers and utility classes for spacing.
+
+5. Do NOT change any redirect/thank-you behavior
+
+Do not add redirects or extra JS for form submission.
+
+Leave all submission behavior to the ActiveCampaign script we restored.
+
+The main goal of this edit is:
+
+Restore the original ActiveCampaign styling for the form.
+
+Place that form inside a clean, centered card with a “Free interactive tool” pill above it.
+
+Keep the rest of the page content grouped in a single styled panel at the bottom.
+
+When you’re done, the form should look like an AC-styled card again, not raw browser inputs.
