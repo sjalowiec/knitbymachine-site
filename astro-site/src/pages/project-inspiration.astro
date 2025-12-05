@@ -6,401 +6,160 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
-  <div class="pi-page">
-    <!-- HERO SECTION -->
-    <section class="pi-hero">
-      <!-- Decorative Speech Bubble -->
-      <div class="flex justify-center">
+  <!-- HERO SECTION -->
+  <section class="max-w-5xl mx-auto px-4 py-12">
+    <div class="grid gap-8 md:grid-cols-2 items-start">
+      <!-- Left column: icon + heading + intro -->
+      <div class="space-y-4 text-center md:text-left">
         <img
           src="/images/troubleshoot.svg"
-          alt="Decorative illustration"
-          class="opacity-95 drop-shadow-md mb-4"
-          style="width: 180px; max-width: 180px; height: auto;"
+          alt="Project Inspiration"
+          class="mx-auto md:mx-0 opacity-95 drop-shadow-md"
+          style="width: 120px; height: auto;"
           loading="lazy"
         />
+        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight" data-testid="text-page-title">
+          Ready ● Set ● Knit: Project Inspiration
+        </h1>
+        <p class="text-base text-slate-600 leading-relaxed max-w-md mx-auto md:mx-0" data-testid="text-subhead">
+          Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
+        </p>
       </div>
-      <div class="pi-hero__grid">
-        <div class="pi-hero__content">
-          <span class="pi-eyebrow" data-testid="text-eyebrow">Free interactive tool</span>
-          <h1 data-testid="text-page-title">Ready ● Set ● Knit: Project Inspiration</h1>
-          <p class="pi-subhead" data-testid="text-subhead">
-            Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
-          </p>
-        </div>
 
-        <div class="pi-hero__form">
-          <div class="pi-form-card" data-testid="container-form-card">
-            <p class="pi-form-intro">
-              Enter your email to open Project Inspiration. I'll also send the link to your inbox so you can come back to it anytime.
-            </p>
-            <!-- Hidden iframe for form submission -->
-            <iframe name="ac_form_target" id="ac_form_target" style="display:none;"></iframe>
-            <!-- ActiveCampaign Form -->
-            <form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_1_" class="pi-form _form _form_1" target="ac_form_target" data-testid="form-project-inspiration">
-              <input type="hidden" name="u" value="1" />
-              <input type="hidden" name="f" value="1" />
-              <input type="hidden" name="s" />
-              <input type="hidden" name="c" value="0" />
-              <input type="hidden" name="m" value="0" />
-              <input type="hidden" name="act" value="sub" />
-              <input type="hidden" name="v" value="2" />
-              <input type="hidden" name="or" value="dc606db2-daa8-4067-8615-c5a1021874f8" />
-              <div class="_form-content">
-                <div class="pi-form-group">
-                  <label for="fullname" class="pi-label">First name</label>
-                  <input 
-                    type="text" 
-                    id="fullname" 
-                    name="fullname" 
-                    class="pi-input" 
-                    placeholder="Type your name"
-                    data-testid="input-first-name"
-                  />
-                </div>
-                <div class="pi-form-group">
-                  <label for="email" class="pi-label">Email address</label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    name="email" 
-                    class="pi-input" 
-                    placeholder="Type your email"
-                    required
-                    data-testid="input-email"
-                  />
-                </div>
-                <button type="submit" id="_form_1_submit" class="btn primary pi-submit _submit" data-testid="button-submit">
-                  Get Project Inspiration
-                </button>
-                <p class="pi-reassurance">Instant access. No spam. Unsubscribe anytime.</p>
-              </div>
-              <div class="_form-thank-you" style="display:none;"></div>
-              <div class="_form-branding" style="display:none;"></div>
-            </form>
+      <!-- Right column: pill + form card -->
+      <div class="flex justify-center md:justify-end">
+        <div class="w-full max-w-sm rounded-2xl border border-slate-200 bg-white p-6 shadow-sm" data-testid="container-form-card">
+          <!-- Pill badge at top of form -->
+          <div class="inline-block rounded-full px-4 py-1 text-xs font-semibold uppercase tracking-wide mb-4" style="background: rgba(115, 140, 82, 0.12); color: #738c52;">
+            Free interactive tool
           </div>
+          
+          <p class="text-sm text-slate-600 leading-relaxed mb-4">
+            Enter your email to open Project Inspiration. I'll also send the link to your inbox so you can come back to it anytime.
+          </p>
+          
+          <!-- 
+            NOTE: Thank-you timing and redirect after form submit are configured 
+            in ActiveCampaign. Do not modify redirect logic here.
+          -->
+          <!-- Hidden iframe for form submission -->
+          <iframe name="ac_form_target" id="ac_form_target" style="display:none;"></iframe>
+          <!-- ActiveCampaign Form -->
+          <form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_1_" class="_form _form_1" target="ac_form_target" data-testid="form-project-inspiration">
+            <input type="hidden" name="u" value="1" />
+            <input type="hidden" name="f" value="1" />
+            <input type="hidden" name="s" />
+            <input type="hidden" name="c" value="0" />
+            <input type="hidden" name="m" value="0" />
+            <input type="hidden" name="act" value="sub" />
+            <input type="hidden" name="v" value="2" />
+            <input type="hidden" name="or" value="dc606db2-daa8-4067-8615-c5a1021874f8" />
+            <div class="_form-content space-y-4">
+              <div>
+                <label for="fullname" class="block text-sm font-medium text-slate-700 mb-1">First name</label>
+                <input 
+                  type="text" 
+                  id="fullname" 
+                  name="fullname" 
+                  class="pi-input w-full px-3 py-2 text-base border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-700 transition-colors"
+                  placeholder="Type your name"
+                  data-testid="input-first-name"
+                />
+              </div>
+              <div>
+                <label for="email" class="block text-sm font-medium text-slate-700 mb-1">Email address</label>
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email" 
+                  class="pi-input w-full px-3 py-2 text-base border border-slate-300 rounded-lg bg-white text-slate-900 focus:outline-none focus:ring-2 focus:ring-green-600/20 focus:border-green-700 transition-colors"
+                  placeholder="Type your email"
+                  required
+                  data-testid="input-email"
+                />
+              </div>
+              <button type="submit" id="_form_1_submit" class="w-full py-3 px-4 rounded-full text-base font-medium text-white transition-colors cursor-pointer" style="background-color: #52682d;" data-testid="button-submit">
+                Get Project Inspiration
+              </button>
+              <p class="text-xs text-slate-500 text-center italic">Instant access. No spam. Unsubscribe anytime.</p>
+            </div>
+            <div class="_form-thank-you" style="display:none;"></div>
+            <div class="_form-branding" style="display:none;"></div>
+          </form>
         </div>
       </div>
-    </section>
-
-    <!-- AGENT EMBED CONTAINER (will be populated after signup) -->
-    <div id="project-inspiration-agent">
-      <!-- agent embed will be injected here -->
     </div>
+  </section>
 
-    <!-- WHAT YOU'LL GET INSIDE SECTION -->
-    <section
-      id="project-inspiration-benefits"
-      class="mt-10 border-t pt-8 max-w-3xl"
-      style="border-color: #D5DFC5;"
-      data-testid="section-benefits"
-    >
-      <h2 class="text-xl font-semibold mb-4" style="color: #2C3A57;">
-        What you'll get inside
-      </h2>
-      <ul class="space-y-2 text-base leading-relaxed list-disc pl-5" style="color: #455065;">
-        <li>A project that makes sense for where you are right now.</li>
-        <li>Clear, realistic options—no endless scrolling.</li>
-        <li>A simple, doable next step you can actually see yourself knitting.</li>
-        <li>A way to use your yarn, your machine, and your time instead of starting from scratch.</li>
-      </ul>
-    </section>
-
-    <!-- IS THIS FOR YOU? SECTION -->
-    <section class="pi-section" data-testid="section-is-this-for-you">
-      <h2>Is Project Inspiration for you?</h2>
-      <p class="pi-section-intro">Yes—if any of this sounds familiar:</p>
-      <ul class="pi-checklist">
-        <li>Your machine is ready, but you're not sure what to make next.</li>
-        <li>You keep collecting patterns without actually starting one.</li>
-        <li>You'd like a realistic project that fits your time, yarn, and current skills.</li>
-      </ul>
-    </section>
-
-    <!-- HOW IT WORKS SECTION -->
-    <section class="pi-section" data-testid="section-how-it-works">
-      <h2>How Ready ● Set ● Knit: Project Inspiration works</h2>
-      <ol class="pi-steps">
-        <li>Tell me a bit about your machine, your yarn, and your experience.</li>
-        <li>I'll suggest project ideas that match where you are right now.</li>
-        <li>Pick one, get started, and come back anytime when you're ready for the next step.</li>
-      </ol>
-    </section>
-
-    <!-- TRUST / ABOUT SECTION -->
-    <section class="pi-section pi-section--trust" data-testid="section-trust">
-      <h3>Why Ready ● Set ● Knit?</h3>
-      <p>
-        I've helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
-      </p>
-    </section>
+  <!-- AGENT EMBED CONTAINER (will be populated after signup) -->
+  <div id="project-inspiration-agent">
+    <!-- agent embed will be injected here -->
   </div>
+
+  <!-- COMBINED INFO PANEL -->
+  <section id="project-inspiration-benefits" class="max-w-4xl mx-auto px-4 pt-8 pb-16" data-testid="section-info-panel">
+    <div class="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm space-y-8">
+      
+      <!-- What you'll get inside -->
+      <div class="space-y-3">
+        <h2 class="text-xl font-semibold text-slate-900">What you'll get inside</h2>
+        <ul class="list-disc pl-5 text-sm leading-relaxed text-slate-700 space-y-1">
+          <li>A project that makes sense for where you are right now.</li>
+          <li>Clear, realistic options—no endless scrolling.</li>
+          <li>A simple, doable next step you can actually see yourself knitting.</li>
+          <li>A way to use your yarn, your machine, and your time instead of starting from scratch.</li>
+        </ul>
+      </div>
+
+      <!-- Is this for you? -->
+      <div class="space-y-3">
+        <h2 class="text-xl font-semibold text-slate-900">Is Project Inspiration for you?</h2>
+        <p class="text-sm text-slate-700 italic">Yes—if any of this sounds familiar:</p>
+        <ul class="list-disc pl-5 text-sm leading-relaxed text-slate-700 space-y-1">
+          <li>Your machine is ready, but you're not sure what to make next.</li>
+          <li>You keep collecting patterns without actually starting one.</li>
+          <li>You'd like a realistic project that fits your time, yarn, and current skills.</li>
+        </ul>
+      </div>
+
+      <!-- How it works -->
+      <div class="space-y-3">
+        <h2 class="text-xl font-semibold text-slate-900">How Ready ● Set ● Knit: Project Inspiration works</h2>
+        <ol class="list-decimal pl-5 text-sm leading-relaxed text-slate-700 space-y-1">
+          <li>Tell me a bit about your machine, your yarn, and your experience.</li>
+          <li>I'll suggest project ideas that match where you are right now.</li>
+          <li>Pick one, get started, and come back anytime when you're ready for the next step.</li>
+        </ol>
+      </div>
+
+      <!-- Why Ready Set Knit -->
+      <div class="space-y-3">
+        <h2 class="text-xl font-semibold text-slate-900">Why Ready ● Set ● Knit?</h2>
+        <p class="text-sm leading-relaxed text-slate-700">
+          I've helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
+        </p>
+      </div>
+
+    </div>
+  </section>
 </BaseLayout>
 
 <style>
-  /* ========== PAGE WRAPPER ========== */
-  .pi-page {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 0 1.5rem 3rem;
+  /* Button hover state */
+  button[type="submit"]:hover {
+    background-color: #445626 !important;
   }
-
-  /* ========== HERO SECTION ========== */
-  .pi-hero {
-    padding: 2rem 0 3rem;
-  }
-
-  .pi-hero__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2.5rem;
-    align-items: start;
-  }
-
-  @media (min-width: 768px) {
-    .pi-hero__grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-  }
-
-  /* ========== HERO CONTENT ========== */
-  .pi-hero__content {
-    text-align: center;
-  }
-
-  @media (min-width: 768px) {
-    .pi-hero__content {
-      text-align: left;
-    }
-  }
-
-  .pi-eyebrow {
-    display: inline-block;
-    font-size: 0.85rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-    color: #738c52;
-    margin-bottom: 0.75rem;
-    padding: 0.35rem 1rem;
-    background: rgba(115, 140, 82, 0.12);
-    border-radius: 999px;
-  }
-
-  .pi-hero__content h1 {
-    font-size: clamp(1.5rem, 3vw, 2.25rem);
-    margin: 0 0 1rem;
-    color: #2c3a57;
-    line-height: 1.25;
-  }
-
-  .pi-subhead {
-    font-size: 1.05rem;
-    line-height: 1.65;
-    color: #4d5a48;
-    margin: 0 0 1.5rem;
-    max-width: 500px;
-  }
-
-  @media (max-width: 767px) {
-    .pi-subhead {
-      margin-left: auto;
-      margin-right: auto;
-    }
-  }
-
-  /* ========== FORM CARD ========== */
-  .pi-hero__form {
-    display: flex;
-    justify-content: center;
-  }
-
-  @media (min-width: 768px) {
-    .pi-hero__form {
-      justify-content: flex-end;
-    }
-  }
-
-  .pi-form-card {
-    background-color: #f6f8f2;
-    border: 2px solid #c7d8a4;
-    border-radius: 1.25rem;
-    padding: 1.75rem;
-    width: 100%;
-    max-width: 400px;
-    box-sizing: border-box;
-    overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  }
-
-  .pi-form-intro {
-    font-size: 0.95rem;
-    color: #4d5a48;
-    line-height: 1.55;
-    margin: 0 0 1.25rem;
-  }
-
-  .pi-form-group {
-    margin-bottom: 1rem;
-  }
-
-  .pi-label {
-    display: block;
-    font-size: 0.9rem;
-    font-weight: 500;
-    color: #2c3a57;
-    margin-bottom: 0.35rem;
-  }
-
-  .pi-input {
-    width: 100%;
-    max-width: 100%;
-    box-sizing: border-box;
-    padding: 0.7rem 0.9rem;
-    font-size: 1rem;
-    border: 1.5px solid #c7d8a4;
-    border-radius: 0.5rem;
-    background-color: #ffffff;
-    color: #2c3a57;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  }
-
+  
+  /* Input focus states */
   .pi-input:focus {
-    outline: none;
     border-color: #52682d;
-    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.15);
-  }
-
-  .pi-submit {
-    width: 100%;
-    margin-top: 0.5rem;
-  }
-
-  .pi-reassurance {
-    font-size: 0.8rem;
-    color: #6b7565;
-    text-align: center;
-    margin: 0.75rem 0 0;
-    font-style: italic;
-  }
-
-  /* ========== SHARED BUTTON STYLES ========== */
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    border-radius: 999px;
-    font-size: 1rem;
-    text-decoration: none;
-    font-weight: 500;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.15s ease;
-  }
-
-  .btn.primary {
-    background-color: #52682d;
-    color: #ffffff;
-  }
-
-  .btn.primary:hover {
-    background-color: #445626;
-  }
-
-  /* ========== SECTIONS ========== */
-  .pi-section {
-    padding: 2.5rem 0;
-    border-top: 1px solid #e0e5d8;
-  }
-
-  .pi-section h2 {
-    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-    color: #2c3a57;
-    margin: 0 0 0.75rem;
-    text-align: center;
-  }
-
-  .pi-section-intro {
-    font-size: 1rem;
-    color: #4d5a48;
-    text-align: center;
-    margin: 0 0 1.25rem;
-  }
-
-  .pi-checklist {
-    list-style: disc;
-    padding-left: 1.5rem;
-    max-width: 600px;
-    margin: 0 auto;
-    color: #4d5a48;
-    font-size: 0.95rem;
-    line-height: 1.7;
-  }
-
-  .pi-checklist li {
-    margin-bottom: 0.5rem;
-  }
-
-  .pi-steps {
-    list-style: decimal;
-    padding-left: 1.5rem;
-    max-width: 600px;
-    margin: 1rem auto 0;
-    color: #4d5a48;
-    font-size: 0.95rem;
-    line-height: 1.7;
-  }
-
-  .pi-steps li {
-    margin-bottom: 0.75rem;
-  }
-
-  /* ========== TRUST SECTION ========== */
-  .pi-section--trust {
-    background-color: #f6f8f2;
-    border-radius: 1rem;
-    padding: 2rem;
-    border: none;
-    margin-top: 1rem;
-  }
-
-  .pi-section--trust h3 {
-    font-size: 1.1rem;
-    color: #52682d;
-    margin: 0 0 0.75rem;
-    text-align: center;
-    font-weight: 600;
-  }
-
-  .pi-section--trust p {
-    font-size: 0.95rem;
-    color: #4d5a48;
-    line-height: 1.65;
-    text-align: center;
-    max-width: 650px;
-    margin: 0 auto;
-  }
-
-  /* ========== MOBILE ADJUSTMENTS ========== */
-  @media (max-width: 480px) {
-    .pi-page {
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
-    .pi-form-card {
-      padding: 1.5rem 1.25rem;
-    }
-
-    .pi-section {
-      padding: 2rem 0;
-    }
-
-    .pi-section--trust {
-      padding: 1.5rem;
-    }
   }
 </style>
 
+<!-- 
+  NOTE: Thank-you timing and redirect after form submit are configured 
+  in ActiveCampaign, not in this Astro file. Do not modify redirect logic here.
+-->
 <!-- ActiveCampaign Form Script -->
 <script is:inline>
   (function() {
@@ -422,6 +181,7 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       thankYou.style.display = 'block';
       thankYou.style.padding = '1rem 0';
       thankYou.style.textAlign = 'center';
+      // NOTE: Redirect timing is intentional. Thank-you duration is controlled in ActiveCampaign.
       setTimeout(function() {
         window.location.href = '/project-inspiration/session';
       }, 1000);

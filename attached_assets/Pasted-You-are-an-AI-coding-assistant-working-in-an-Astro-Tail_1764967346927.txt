@@ -1,0 +1,181 @@
+You are an AI coding assistant working in an Astro + Tailwind project for knitbymachine.com. I need you to clean up and restyle the /project-inspiration signup page.
+
+Important context
+
+This page is the lead magnet landing page for “Ready ● Set ● Knit: Project Inspiration.”
+
+The ActiveCampaign form on this page:
+
+Shows a very quick thank-you
+
+Then redirects to /project-inspiration/session, which contains the embedded agent.
+
+Do not change the redirect behavior in the code. The “thank you is too quick” issue is handled inside ActiveCampaign, not in this Astro file. You can add comments to the code to remind me, but do not break the redirect.
+
+File to edit
+
+Open the Astro page for this route (likely src/pages/project-inspiration.astro). Make all of the changes below in that file only.
+
+1. Hero layout & pill placement
+
+The current hero has:
+
+Left column: hex icon, “FREE INTERACTIVE TOOL” pill, large title, short intro paragraph.
+
+Right column: sign-up form card.
+
+Update the hero so that:
+
+Left column content
+
+Keep the hex lightbulb icon and the main heading:
+
+Ready ● Set ● Knit: Project Inspiration
+
+Keep the short intro paragraph that explains what the tool does.
+
+Remove the “FREE INTERACTIVE TOOL” pill from the left column.
+
+Right column form card
+
+At the very top of the form card, add the “FREE INTERACTIVE TOOL” pill so it visually sits above the body text and inputs.
+
+The pill should be a small rounded badge using existing brand utility classes, for example:
+
+<div class="inline-block rounded-full bg-kbm-light-green/10 px-4 py-1 text-xs font-semibold uppercase tracking-wide text-kbm-green mb-3">
+  Free interactive tool
+</div>
+
+
+Adjust class names to match the existing KBM design tokens if there are already utility classes for pills/badges.
+
+Below the pill, keep the text that says something like:
+“Enter your email to open Project Inspiration. I’ll also send the link to your inbox so you can come back to it anytime.”
+
+Keep the form fields and submit button as they are, but ensure the card has good padding and rounded corners, e.g.:
+
+<section class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+  <!-- pill + copy + form -->
+</section>
+
+
+Overall hero layout
+
+Use a responsive two-column grid, something like:
+
+<section class="max-w-5xl mx-auto px-4 py-12">
+  <div class="grid gap-8 md:grid-cols-2 items-start">
+    <!-- left column: icon + heading + intro -->
+    <!-- right column: pill + form card -->
+  </div>
+</section>
+
+
+On mobile, the form should stack below the heading and intro, with reasonable spacing (space-y-6).
+
+2. Combine and restyle the text sections at the bottom
+
+Currently, the page has several separate sections with a lot of white space:
+
+“What you’ll get inside”
+
+“Is Project Inspiration for you?”
+
+“How Ready ● Set ● Knit: Project Inspiration works”
+
+“Why Ready ● Set ● Knit?”
+
+They feel like three or four floating blocks of text.
+
+Refactor these into one cohesive info panel at the bottom of the page:
+
+Wrap all four sub-sections in a single container:
+
+<section class="max-w-4xl mx-auto px-4 pb-16">
+  <div class="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm space-y-8">
+    <!-- all the text content lives in here -->
+  </div>
+</section>
+
+
+Inside that container, keep the existing headings and text but:
+
+Remove extra <hr> lines or overly heavy separators.
+
+Use consistent typography classes for headings, e.g.:
+
+<h2 class="text-xl font-semibold text-slate-900">What you’ll get inside</h2>
+
+
+Use space-y-3 or space-y-4 on each block to keep things airy but not too spread out.
+
+Suggested structure inside the panel (keep the actual copy text as-is, just reorganize):
+
+<div class="space-y-3">
+  <h2>What you’ll get inside</h2>
+  <ul class="list-disc pl-5 text-sm leading-relaxed text-slate-700">
+    <!-- existing bullet points -->
+  </ul>
+</div>
+
+<div class="space-y-3">
+  <h2>Is Project Inspiration for you?</h2>
+  <p class="text-sm text-slate-700 italic">
+    Yes—if any of this sounds familiar:
+  </p>
+  <ul class="list-disc pl-5 text-sm leading-relaxed text-slate-700">
+    <!-- existing bullet points -->
+  </ul>
+</div>
+
+<div class="space-y-3">
+  <h2>How Ready ● Set ● Knit: Project Inspiration works</h2>
+  <ol class="list-decimal pl-5 text-sm leading-relaxed text-slate-700">
+    <!-- existing steps -->
+  </ol>
+</div>
+
+<div class="space-y-3">
+  <h2>Why Ready ● Set ● Knit?</h2>
+  <p class="text-sm leading-relaxed text-slate-700">
+    <!-- existing paragraph about your experience -->
+  </p>
+</div>
+
+
+Make sure the typography matches the rest of the KBM site (use existing text and heading classes if they exist rather than inventing new ones).
+
+3. Spacing and visual polish
+
+Reduce the vertical gap between the hero section and the bottom info panel so the page feels connected. For example, hero padding py-12 and bottom panel pt-8 pb-16.
+
+Ensure there is a clear visual hierarchy:
+
+Main page title remains the largest text.
+
+Section headings in the bottom panel are smaller but bold.
+
+Body text uses a comfortable line height and a slightly smaller size.
+
+On mobile, ensure:
+
+The form card stretches full-width with w-full.
+
+The bottom info panel still has 16–20px side padding.
+
+4. Comments and cleanup
+
+Add a short comment near the AC form indicating that the thank-you timing and redirect are controlled in ActiveCampaign, not in this Astro file. Example:
+
+<!-- NOTE: Thank-you timing and redirect after form submit are configured in ActiveCampaign. Do not modify redirect logic here. -->
+
+
+Remove any unused CSS or redundant wrappers that were only supporting the old, “floating” sections.
+
+When you’re done, the /project-inspiration page should:
+
+Show the “FREE INTERACTIVE TOOL” pill above the signup form.
+
+Have a clean, two-column hero with the icon and heading on the left and the form on the right.
+
+Present all the explanatory text in a single, styled info box at the bottom, instead of multiple floating sections.
