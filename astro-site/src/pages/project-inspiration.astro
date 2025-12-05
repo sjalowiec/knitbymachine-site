@@ -422,10 +422,13 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
 
     function showThankYou() {
       formContent.style.display = 'none';
-      thankYou.innerHTML = '<h3 style="margin-bottom:0.5rem;color:#2c3a57;">Thanks for signing up!</h3><p style="color:#4d5a48;">Check your inbox for your Project Inspiration link.</p>';
+      thankYou.innerHTML = '<h3 style="margin-bottom:0.5rem;color:#2c3a57;">Thanks for signing up!</h3><p style="color:#4d5a48;">Redirecting to Project Inspiration...</p>';
       thankYou.style.display = 'block';
       thankYou.style.padding = '1rem 0';
       thankYou.style.textAlign = 'center';
+      setTimeout(function() {
+        window.location.href = '/project-inspiration/session';
+      }, 1000);
     }
 
     function showError(message) {
