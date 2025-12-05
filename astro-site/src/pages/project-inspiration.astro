@@ -80,16 +80,16 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     flex-direction: column;
   }
 
-  /* Wrap for pill + arrow */
+  /* Pill + arrow container */
   .pi-pill-wrap {
     position: relative;
-    display: flex;
-    justify-content: center;
+    display: inline-flex; /* keep arrow close to pill */
     align-items: center;
-    margin-bottom: 0.75rem;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
   }
 
-  /* Pill styling – narrow + centered */
+  /* Narrow, centered pill */
   .pi-pill {
     display: inline-flex;
     align-items: center;
@@ -104,27 +104,13 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     text-transform: uppercase;
   }
 
-  /* Curved arrow pointing to pill */
+  /* Curved arrow tucked just above/right of the pill */
   .pi-pill-arrow {
     position: absolute;
-    right: -8px;
-    top: -26px;
-    width: 80px;
-    height: 40px;
-    transform: rotate(6deg);
-  }
-
-  /* Mobile: arrow below pill, pointing down */
-  @media (max-width: 768px) {
-    .pi-pill-wrap {
-      flex-direction: column;
-    }
-
-    .pi-pill-arrow {
-      position: static;
-      margin-top: 0.35rem;
-      transform: rotate(90deg);
-    }
+    top: -22px;
+    right: -18px;
+    width: 52px;
+    height: 28px;
   }
 
   .pi-form-card {
@@ -183,23 +169,19 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     margin-top: 0;
   }
 
-  /* Indent unordered lists */
+  /* Indent unordered lists inside the bottom card */
   .pi-bottom-inner ul {
-    margin-left: 1.25rem;
-    padding-left: 0; /* remove default browser padding */
-    margin-top: 0.25rem;
-    margin-bottom: 0.75rem;
-  }
-
-  /* Indent ordered lists */
-  .pi-bottom-inner ol {
-    margin-left: 1rem;
+    margin-left: 1.5rem; /* deeper than headings */
     padding-left: 0;
-    margin-top: 0.25rem;
-    margin-bottom: 0.75rem;
   }
 
-  /* Slightly tighten list item spacing */
+  /* Indent ordered lists inside the bottom card */
+  .pi-bottom-inner ol {
+    margin-left: 1.4rem;
+    padding-left: 0;
+  }
+
+  /* Slightly tightened spacing between list items */
   .pi-bottom-inner li {
     margin-bottom: 0.35rem;
   }

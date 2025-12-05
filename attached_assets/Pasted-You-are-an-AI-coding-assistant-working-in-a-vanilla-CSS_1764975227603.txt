@@ -1,0 +1,89 @@
+You are an AI coding assistant working in a vanilla CSS Astro project (no Tailwind).
+
+Please make two small layout fixes on the /project-inspiration page.
+
+1. Open the file
+
+Edit:
+
+src/pages/project-inspiration.astro
+
+There are already:
+
+A pill wrapper: .pi-pill-wrap with the “Free interactive tool” text.
+
+An inline SVG arrow with class: .pi-pill-arrow.
+
+A bottom card wrapper: .pi-bottom-inner that contains the headings “What you’ll get inside”, “Is Project Inspiration for you?”, etc.
+
+Do not change any text or HTML structure, only adjust CSS.
+
+PART A – Fix the arrow position so it hugs the pill
+
+In the <style> block for this page, locate any existing rules for .pi-pill-wrap and .pi-pill-arrow and replace them with exactly this:
+
+/* Pill + arrow container */
+.pi-pill-wrap {
+  position: relative;
+  display: inline-flex; /* keep arrow close to pill */
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 0.75rem;
+}
+
+/* Narrow, centered pill */
+.pi-pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.3rem 1.1rem;
+  border-radius: 999px;
+  background-color: #E6F0D8;
+  color: #52682D;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Curved arrow tucked just above/right of the pill */
+.pi-pill-arrow {
+  position: absolute;
+  top: -22px;
+  right: -18px;
+  width: 52px;
+  height: 28px;
+}
+
+
+Remove any previous transform rules on .pi-pill-arrow so we don’t rotate it off to the side.
+
+Do not change the SVG <path> itself — only its positioning via CSS.
+
+PART B – Indent lists inside the bottom card
+
+In the same <style> block, locate .pi-bottom-inner. Keep the existing card styling, but add list rules so bullets sit further in than the headings.
+
+Add these rules (or update them if they already exist):
+
+/* Indent unordered lists inside the bottom card */
+.pi-bottom-inner ul {
+  margin-left: 1.5rem;  /* deeper than headings */
+  padding-left: 0;
+}
+
+/* Indent ordered lists inside the bottom card */
+.pi-bottom-inner ol {
+  margin-left: 1.4rem;
+  padding-left: 0;
+}
+
+/* Slightly tightened spacing between list items */
+.pi-bottom-inner li {
+  margin-bottom: 0.35rem;
+}
+
+
+Do not add any extra margin to the headings — they should stay aligned with the left padding of .pi-bottom-inner, and only the lists should appear pushed in.
+
+Save the file when you’re done.
