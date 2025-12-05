@@ -1,0 +1,80 @@
+<style>@import url(https://fonts.bunny.net/css?family=ibm-plex-sans:400,600);</style>
+<style>
+  /* lots of CSS for #_form_6_ ... */
+</style>
+
+<form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_6_" class="_form _form_6 _inline-form  _dark" novalidate data-styles-version="5">
+  <!-- AC fields -->
+</form>
+
+<script>
+  // large ActiveCampaign script that defines window._show_thank_you, window._load_script, etc.
+</script>
+Do not edit or delete anything inside that existing <script> block.
+
+3. Add a new script after the AC embed to override _show_thank_you
+Immediately after the existing ActiveCampaign <script>...</script> block, insert this new script:
+
+html
+Copy code
+<script>
+  (function () {
+    // Override ActiveCampaign's default thank-you behavior for form 6
+    window._show_thank_you = function (id, message, trackcmp_url, email) {
+      var form = document.getElementById('_form_' + id + '_');
+      if (!form) return;
+
+      var content = form.querySelector('._form-content');
+      var thankYou = form.querySelector('._form-thank-you');
+
+      if (content) content.style.display = 'none';
+      if (!thankYou) return;
+
+      thankYou.style.display = 'block';
+
+      // Custom thank-you content with a button to the session page
+      thankYou.innerHTML = `
+        <p style="margin-bottom: 0.75rem; font-size: 0.95rem;">
+          Thanks for signing up! Your Ready • Set • Knit: Project Inspiration session is ready.
+        </p>
+        <a
+          href="/project-inspiration/session"
+          style="
+            display: inline-block;
+            margin-top: 0.75rem;
+            padding: 0.6rem 1.4rem;
+            border-radius: 9999px;
+            background-color: #52682D;
+            color: #ffffff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+          "
+        >
+          Continue to your Project Inspiration session
+        </a>
+        <p style="margin-top: 0.75rem; font-size: 0.85rem; color: #555;">
+          I’ve also sent the link to your inbox so you can come back anytime.
+        </p>
+      `;
+    };
+  })();
+</script>
+Important details:
+
+This script must come after the original AC script so it overrides the default window._show_thank_you function.
+
+Do not change anything else in the file.
+
+Do not add any redirects or extra logic; just this override.
+
+4. Expected behavior
+After this change:
+
+When the form is submitted successfully, the form content (._form-content) is hidden.
+
+The thank-you area (._form-thank-you) is shown with the custom message and button.
+
+There is no automatic redirect; the user clicks the button to go to /project-inspiration/session.
+
+Make these edits and save the file.
