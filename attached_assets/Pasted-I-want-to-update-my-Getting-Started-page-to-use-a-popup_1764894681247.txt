@@ -1,0 +1,185 @@
+I want to update my Getting Started page to use a popup video instead of the 4-image machine collage.
+
+Overall goal
+
+Remove the 4-image knitting machine collage from the hero on my Getting Started page.
+
+Replace it with my circular headshot PNG (no play button over my face).
+
+When someone clicks the headshot area/button, open a popup (modal) with my Vimeo video embedded.
+
+The video should autoplay when the popup opens.
+
+The main focus of the page should still be the “Ready ● Set ● Knit” helper, not the video.
+
+File + asset details
+
+Page file: src/pages/getting-started.astro
+(If that’s not the exact path, search for the heading text: Get Started with Your Knitting Machine and edit that file.)
+
+Headshot image: I will place this file in public/images/sue-intro.png (circular PNG with transparent background).
+
+Vimeo video URL: https://vimeo.com/1143645774
+Use the player URL version: https://player.vimeo.com/video/1143645774
+
+1. Remove the machine collage
+
+In the hero section at the top of the Getting Started page, find the layout where the content is in two columns (text on the left, 4 machine photos on the right).
+
+It will look something like a grid or flex with 2 columns, where the right-hand side contains four <img> tags or a grid of images.
+
+Delete the entire block that renders the 4-image knitting machine collage.
+
+2. Add the circular headshot + “watch” button in place of the collage
+
+In the same spot where the collage was, add this markup instead:
+
+<div class="flex justify-center md:justify-end">
+  <button
+    id="open-welcome-video"
+    type="button"
+    class="group flex flex-col items-center gap-3 focus:outline-none"
+  >
+    <img
+      src="/images/sue-intro.png"
+      alt="Sue from Knit by Machine smiling in front of a knitting machine"
+      class="w-40 h-40 md:w-56 md:h-56 rounded-full shadow-md"
+    />
+    <span
+      class="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-1.5 text-sm font-medium text-[#52682D] shadow group-hover:bg-[#E7F0E1] transition"
+    >
+      <!-- small play icon, NOT on her face, just next to the text -->
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-4 w-4"
+        viewBox="0 0 24 24"
+        fill="currentColor"
+        aria-hidden="true"
+      >
+        <path d="M8 5v14l11-7z" />
+      </svg>
+      <span>Watch a quick hello from Sue</span>
+    </span>
+  </button>
+</div>
+
+
+Notes:
+
+The play icon is not over the face; it’s in the pill-shaped label under the image.
+
+The whole button (image + label) should be clickable.
+
+3. Add the popup (modal) markup near the bottom of the page
+
+Still in getting-started.astro, near the bottom of the page (but before the closing </body>/layout wrapper, if there is one), add this modal HTML:
+
+<div
+  id="welcome-video-modal"
+  class="fixed inset-0 z-50 hidden items-center justify-center bg-black/60 p-4"
+  aria-hidden="true"
+>
+  <div class="relative w-full max-w-2xl">
+    <button
+      id="close-welcome-video"
+      type="button"
+      class="absolute -top-3 -right-3 rounded-full bg-white text-[#2C3A57] shadow px-2 py-1 text-xl leading-none"
+      aria-label="Close video"
+    >
+      ×
+    </button>
+    <div class="relative pb-[56.25%] h-0 overflow-hidden rounded-2xl bg-black">
+      <iframe
+        id="welcome-video-iframe"
+        src=""
+        class="absolute top-0 left-0 h-full w-full rounded-2xl"
+        frameborder="0"
+        allow="autoplay; fullscreen; picture-in-picture"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </div>
+</div>
+
+
+This modal should:
+
+be hidden by default (hidden)
+
+use flex when open (flex items-center justify-center)
+
+dim the background with bg-black/60
+
+4. Add the JavaScript to open/close the popup and autoplay the video
+
+In the same Astro file, add this <script> block at the bottom of the page (after the modal markup). Use inline JS:
+
+<script>
+  if (typeof window !== "undefined") {
+    const openBtn = document.getElementById("open-welcome-video");
+    const modal = document.getElementById("welcome-video-modal");
+    const closeBtn = document.getElementById("close-welcome-video");
+    const iframe = document.getElementById("welcome-video-iframe");
+
+    const videoUrl =
+      "https://player.vimeo.com/video/1143645774?autoplay=1&title=0&byline=0&portrait=0";
+
+    function openModal() {
+      if (!modal || !iframe) return;
+      modal.classList.remove("hidden");
+      modal.classList.add("flex");
+      // set src when opened so autoplay works
+      iframe.src = videoUrl;
+    }
+
+    function closeModal() {
+      if (!modal || !iframe) return;
+      modal.classList.add("hidden");
+      modal.classList.remove("flex");
+      // clear src to stop playback when closed
+      iframe.src = "";
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener("click", openModal);
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeModal);
+    }
+
+    if (modal) {
+      // close when clicking the dark background
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+    }
+  }
+</script>
+
+
+Important:
+
+The autoplay=1 parameter in the Vimeo URL should cause the video to autoplay once the modal opens, since it’s triggered by a user click on the button.
+
+Clearing iframe.src on close stops the video audio when the modal is dismissed.
+
+5. Keep everything else the same
+
+Do not change the main hero text or the “Ready ● Set ● Knit” helper button.
+
+Do not add any extra play button overlay on Sue’s face.
+
+Just replace the machine collage with the headshot + button and wire up the popup video as described.
+
+When you’re finished, show me the updated hero section HTML and confirm that:
+
+The machine collage is gone.
+
+The circular headshot + “Watch a quick hello from Sue” button is in its place.
+
+Clicking the button opens the modal and the video autoplays.
+
+Closing the modal stops the video.
