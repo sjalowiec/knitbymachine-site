@@ -5,36 +5,162 @@ const pageTitle = 'Ready ● Set ● Knit: Project Inspiration';
 const pageDescription = 'Not sure what to make next on your knitting machine? Ready ● Set ● Knit: Project Inspiration asks a few simple questions and gives you project ideas that fit your machine, yarn, and experience.';
 ---
 
+<style>
+  /* Page layout styles */
+  .hero-section {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+  @media (max-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+  .left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .hero-icon {
+    width: 120px;
+    height: auto;
+    opacity: 0.95;
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+  }
+  .hero-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1e293b;
+    line-height: 1.2;
+    margin: 0;
+  }
+  @media (min-width: 768px) {
+    .hero-title {
+      font-size: 2rem;
+    }
+  }
+  .hero-subhead {
+    font-size: 1rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .pill {
+    display: inline-block;
+    background: #E6F0D8;
+    color: #52682D;
+    padding: 0.25rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .form-card {
+    background: #fff;
+    border: 1px solid #d7e2c2;
+    border-radius: 1rem;
+    padding: 1.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .form-intro {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+  }
+  .disclaimer {
+    font-size: 0.75rem;
+    color: #64748b;
+    margin: 0;
+  }
+  /* Benefits section */
+  .benefits-section {
+    max-width: 56rem;
+    margin: 0 auto;
+    padding: 0 1rem 4rem;
+    margin-top: 2.5rem;
+  }
+  .benefits-card {
+    background: rgba(255,255,255,0.9);
+    border: 1px solid #e2e8f0;
+    border-radius: 1.5rem;
+    padding: 2rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  }
+  .benefits-block {
+    margin-bottom: 2rem;
+  }
+  .benefits-block:last-child {
+    margin-bottom: 0;
+  }
+  .benefits-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #1e293b;
+    margin: 0 0 0.75rem 0;
+  }
+  .benefits-text {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.6;
+    margin: 0;
+  }
+  .benefits-text.italic {
+    font-style: italic;
+  }
+  .benefits-list {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.6;
+    padding-left: 1.25rem;
+    margin: 0.5rem 0 0 0;
+  }
+  .benefits-list li {
+    margin-bottom: 0.25rem;
+  }
+</style>
+
 <BaseLayout title={pageTitle} description={pageDescription}>
   <!-- TWO-COLUMN HERO SECTION -->
-  <section class="max-w-6xl mx-auto px-4 py-12">
-    <div class="grid gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
+  <section class="hero-section">
+    <div class="hero-grid">
       
       <!-- LEFT COLUMN: Icon, Heading, Intro -->
-      <div class="space-y-4">
+      <div class="left-column">
         <img
           src="/images/troubleshoot.svg"
           alt="Project Inspiration"
-          class="opacity-95 drop-shadow-md"
-          style="width: 120px; height: auto;"
+          class="hero-icon"
           loading="lazy"
         />
-        <h1 class="text-2xl md:text-3xl font-bold text-slate-900 leading-tight" data-testid="text-page-title">
+        <h1 class="hero-title" data-testid="text-page-title">
           Ready ● Set ● Knit: Project Inspiration
         </h1>
-        <p class="text-base text-slate-600 leading-relaxed" data-testid="text-subhead">
+        <p class="hero-subhead" data-testid="text-subhead">
           Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
         </p>
       </div>
 
       <!-- RIGHT COLUMN: Pill, Form Card, Disclaimer -->
-      <div class="space-y-4">
-        <div class="inline-block rounded-full bg-[#E6F0D8] px-4 py-1 text-xs font-semibold uppercase tracking-wide text-[#52682D]">
-          Free interactive tool
-        </div>
+      <div class="right-column">
+        <span class="pill">Free interactive tool</span>
 
-        <div class="rounded-2xl border border-[#d7e2c2] bg-white shadow-sm p-6" data-testid="container-form-card">
-          <p class="text-sm text-slate-600 leading-relaxed mb-4">
+        <div class="form-card" data-testid="container-form-card">
+          <p class="form-intro">
             Enter your email to open Project Inspiration. I'll also send the link to your inbox so you can come back to it anytime.
           </p>
 
@@ -162,7 +288,7 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
           <!-- END ActiveCampaign embed -->
         </div>
 
-        <p class="text-xs text-slate-600">
+        <p class="disclaimer">
           Instant access. No spam. Unsubscribe anytime.
         </p>
       </div>
@@ -176,13 +302,13 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
   </div>
 
   <!-- COMBINED INFO PANEL -->
-  <section id="project-inspiration-benefits" class="max-w-4xl mx-auto px-4 pb-16 mt-10" data-testid="section-info-panel">
-    <div class="rounded-3xl border border-slate-200 bg-white/80 p-8 shadow-sm space-y-8">
+  <section id="project-inspiration-benefits" class="benefits-section" data-testid="section-info-panel">
+    <div class="benefits-card">
       
       <!-- What you'll get inside -->
-      <div class="space-y-3">
-        <h2 class="text-xl font-semibold text-slate-900">What you'll get inside</h2>
-        <ul class="list-disc pl-5 text-sm leading-relaxed text-slate-700 space-y-1">
+      <div class="benefits-block">
+        <h2 class="benefits-title">What you'll get inside</h2>
+        <ul class="benefits-list">
           <li>A project that makes sense for where you are right now.</li>
           <li>Clear, realistic options—no endless scrolling.</li>
           <li>A simple, doable next step you can actually see yourself knitting.</li>
@@ -191,10 +317,10 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       </div>
 
       <!-- Is this for you? -->
-      <div class="space-y-3">
-        <h2 class="text-xl font-semibold text-slate-900">Is Project Inspiration for you?</h2>
-        <p class="text-sm text-slate-700 italic">Yes—if any of this sounds familiar:</p>
-        <ul class="list-disc pl-5 text-sm leading-relaxed text-slate-700 space-y-1">
+      <div class="benefits-block">
+        <h2 class="benefits-title">Is Project Inspiration for you?</h2>
+        <p class="benefits-text italic">Yes—if any of this sounds familiar:</p>
+        <ul class="benefits-list">
           <li>Your machine is ready, but you're not sure what to make next.</li>
           <li>You keep collecting patterns without actually starting one.</li>
           <li>You'd like a realistic project that fits your time, yarn, and current skills.</li>
@@ -202,9 +328,9 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       </div>
 
       <!-- How it works -->
-      <div class="space-y-3">
-        <h2 class="text-xl font-semibold text-slate-900">How Ready ● Set ● Knit: Project Inspiration works</h2>
-        <ol class="list-decimal pl-5 text-sm leading-relaxed text-slate-700 space-y-1">
+      <div class="benefits-block">
+        <h2 class="benefits-title">How Ready ● Set ● Knit: Project Inspiration works</h2>
+        <ol class="benefits-list">
           <li>Tell me a bit about your machine, your yarn, and your experience.</li>
           <li>I'll suggest project ideas that match where you are right now.</li>
           <li>Pick one, get started, and come back anytime when you're ready for the next step.</li>
@@ -212,9 +338,9 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       </div>
 
       <!-- Why Ready Set Knit -->
-      <div class="space-y-3">
-        <h2 class="text-xl font-semibold text-slate-900">Why Ready ● Set ● Knit?</h2>
-        <p class="text-sm leading-relaxed text-slate-700">
+      <div class="benefits-block">
+        <h2 class="benefits-title">Why Ready ● Set ● Knit?</h2>
+        <p class="benefits-text">
           I've helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
         </p>
       </div>
