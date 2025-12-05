@@ -80,13 +80,13 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     flex-direction: column;
   }
 
-  /* Position the arrow above the pill */
+  /* Pill + arrow wrapper */
   .pi-pill-wrap {
     position: relative;
     display: inline-flex;
-    align-items: center;
     justify-content: center;
-    margin: 0 auto 1.5rem; /* a bit more space under the arrow */
+    align-items: center;
+    margin: 0 auto 1rem;
   }
 
   /* Narrow, centered pill */
@@ -104,47 +104,21 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     text-transform: uppercase;
   }
 
-  /* Big curved arrow above the pill */
-  .pi-pill-arrow {
+  /* Swoop arrow positioned above/left of pill */
+  .pi-swoop-arrow {
     position: absolute;
-    top: -80px;   /* height above pill */
-    right: 10px;  /* shift horizontally so the tip points at the pill */
-    width: 150px;
-    height: 90px;
+    top: -65px;
+    left: -40px;
+    width: 120px;
+    pointer-events: none;
   }
 
-  /* Curved line */
-  .pi-pill-arrow::before {
-    content: "";
-    position: absolute;
-    width: 150px;
-    height: 90px;
-    border-radius: 999px;
-    border: 3px solid #52682D;
-    border-color: #52682D transparent transparent transparent; /* only top arc */
-    transform: rotate(8deg); /* slight tilt like the mock */
-  }
-
-  /* Arrowhead pointing down toward the pill */
-  .pi-pill-arrow::after {
-    content: "";
-    position: absolute;
-    right: 8px;
-    bottom: 18px;
-    width: 14px;
-    height: 14px;
-    border-top: 3px solid #52682D;
-    border-right: 3px solid #52682D;
-    transform: rotate(135deg);
-  }
-
-  /* Tweak for small screens so it doesn't feel cramped */
-  @media (max-width: 768px) {
-    .pi-pill-arrow {
-      top: -70px;
-      right: 0;
-      width: 130px;
-      height: 80px;
+  /* Mobile adjustments */
+  @media (max-width: 640px) {
+    .pi-swoop-arrow {
+      top: -55px;
+      left: -20px;
+      width: 95px;
     }
   }
 
@@ -258,7 +232,11 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
       <div class="pi-hero-right">
         <div class="pi-pill-wrap">
           <span class="pi-pill">Free interactive tool</span>
-          <span class="pi-pill-arrow" aria-hidden="true"></span>
+          <img 
+            src="/swoop_arrow.svg" 
+            alt="" 
+            class="pi-swoop-arrow"
+          />
         </div>
 
         <div class="pi-form-card" data-testid="container-form-card">
