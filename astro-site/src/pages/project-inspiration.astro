@@ -6,161 +6,197 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
 ---
 
 <style>
-  /* Page layout styles */
-  .hero-section {
-    max-width: 72rem;
+  /* HERO LAYOUT */
+  .pi-hero {
+    padding: 2.5rem 1.5rem 1.5rem;
+  }
+
+  .pi-hero-inner {
+    max-width: 1120px;
     margin: 0 auto;
-    padding: 3rem 1rem;
   }
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1.4fr 1fr;
-    gap: 2.5rem;
-    align-items: start;
-  }
-  @media (max-width: 768px) {
-    .hero-grid {
-      grid-template-columns: 1fr;
-      gap: 2rem;
+
+  @media (min-width: 900px) {
+    .pi-hero-inner {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      column-gap: 2.25rem;
+      align-items: flex-start;
     }
   }
-  .left-column {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+
+  .pi-hero-left {
+    margin-bottom: 1.75rem;
   }
-  .hero-icon {
+
+  @media (min-width: 900px) {
+    .pi-hero-left {
+      margin-bottom: 0;
+    }
+  }
+
+  .pi-hero-icon {
     width: 120px;
     height: auto;
     opacity: 0.95;
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    margin-bottom: 1rem;
   }
-  .hero-title {
+
+  .pi-hero-title {
     font-size: 1.75rem;
     font-weight: 700;
     color: #1e293b;
     line-height: 1.2;
-    margin: 0;
+    margin: 0 0 0.75rem 0;
   }
+
   @media (min-width: 768px) {
-    .hero-title {
+    .pi-hero-title {
       font-size: 2rem;
     }
   }
-  .hero-subhead {
+
+  /* Intro + email line */
+  .pi-intro {
     font-size: 1rem;
     color: #475569;
     line-height: 1.6;
-    margin: 0;
+    margin: 0 0 0.75rem 0;
   }
-  .right-column {
+
+  .pi-email-instructions {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.6;
+    margin-top: 0;
+    margin-bottom: 1.25rem;
+    max-width: 36rem;
+  }
+
+  /* Right column */
+  .pi-hero-right {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
   }
-  .pill {
+
+  .pi-pill {
     display: inline-block;
-    background: #E6F0D8;
+    margin-bottom: 0.6rem;
+    padding: 0.3rem 0.9rem;
+    border-radius: 999px;
+    background-color: #E6F0D8;
     color: #52682D;
-    padding: 0.25rem 1rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 600;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
-  .form-card {
-    background: #fff;
+
+  .pi-form-card {
+    background: #ffffff;
     border: 1px solid #d7e2c2;
-    border-radius: 1rem;
-    padding: 1.5rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    border-radius: 18px;
+    padding: 1.4rem 1.6rem;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
   }
-  .form-intro {
+
+  .pi-form-card p:last-child {
+    margin-bottom: 0;
+  }
+
+  .pi-form-intro {
     font-size: 0.9rem;
     color: #475569;
     line-height: 1.6;
     margin: 0 0 1rem 0;
   }
-  .disclaimer {
-    font-size: 0.75rem;
-    color: #64748b;
-    margin: 0;
+
+  .pi-small-note {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #555;
   }
-  /* Benefits section */
-  .benefits-section {
-    max-width: 56rem;
-    margin: 0 auto;
-    padding: 0 1rem 4rem;
-    margin-top: 2.5rem;
+
+  /* BOTTOM BLOCK */
+  .pi-bottom {
+    padding: 0 1.5rem 2.5rem;
   }
-  .benefits-card {
-    background: rgba(255,255,255,0.9);
-    border: 1px solid #e2e8f0;
-    border-radius: 1.5rem;
-    padding: 2rem;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+
+  .pi-bottom-inner {
+    max-width: 800px;
+    margin: 1.75rem auto 0;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    border: 1px solid #e0e4ea;
+    padding: 1.75rem 2rem;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
   }
-  .benefits-block {
-    margin-bottom: 2rem;
-  }
-  .benefits-block:last-child {
-    margin-bottom: 0;
-  }
-  .benefits-title {
-    font-size: 1.25rem;
+
+  .pi-bottom-inner h2,
+  .pi-bottom-inner h3 {
+    margin-top: 1.25rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: #1e293b;
-    margin: 0 0 0.75rem 0;
   }
-  .benefits-text {
-    font-size: 0.9rem;
-    color: #475569;
-    line-height: 1.6;
-    margin: 0;
+
+  .pi-bottom-inner h2:first-child,
+  .pi-bottom-inner h3:first-child {
+    margin-top: 0;
   }
-  .benefits-text.italic {
-    font-style: italic;
-  }
-  .benefits-list {
-    font-size: 0.9rem;
-    color: #475569;
-    line-height: 1.6;
+
+  .pi-bottom-inner ul,
+  .pi-bottom-inner ol {
+    margin-top: 0.25rem;
+    margin-bottom: 0.75rem;
     padding-left: 1.25rem;
-    margin: 0.5rem 0 0 0;
   }
-  .benefits-list li {
+
+  .pi-bottom-inner li {
     margin-bottom: 0.25rem;
+  }
+
+  .pi-bottom-inner p {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #475569;
+  }
+
+  .pi-bottom-inner p.italic {
+    font-style: italic;
   }
 </style>
 
 <BaseLayout title={pageTitle} description={pageDescription}>
   <!-- TWO-COLUMN HERO SECTION -->
-  <section class="hero-section">
-    <div class="hero-grid">
+  <section class="pi-hero">
+    <div class="pi-hero-inner">
       
       <!-- LEFT COLUMN: Icon, Heading, Intro -->
-      <div class="left-column">
+      <div class="pi-hero-left">
         <img
           src="/images/troubleshoot.svg"
           alt="Project Inspiration"
-          class="hero-icon"
+          class="pi-hero-icon"
           loading="lazy"
         />
-        <h1 class="hero-title" data-testid="text-page-title">
+        <h1 class="pi-hero-title" data-testid="text-page-title">
           Ready ● Set ● Knit: Project Inspiration
         </h1>
-        <p class="hero-subhead" data-testid="text-subhead">
+        <p class="pi-intro" data-testid="text-subhead">
           Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
         </p>
       </div>
 
       <!-- RIGHT COLUMN: Pill, Form Card, Disclaimer -->
-      <div class="right-column">
-        <span class="pill">Free interactive tool</span>
+      <div class="pi-hero-right">
+        <span class="pi-pill">Free interactive tool</span>
 
-        <div class="form-card" data-testid="container-form-card">
-          <p class="form-intro">
+        <div class="pi-form-card" data-testid="container-form-card">
+          <p id="pi-email-instructions" class="pi-form-intro">
             Enter your email to open Project Inspiration. I'll also send the link to your inbox so you can come back to it anytime.
           </p>
 
@@ -288,7 +324,7 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
           <!-- END ActiveCampaign embed -->
         </div>
 
-        <p class="disclaimer">
+        <p class="pi-small-note">
           Instant access. No spam. Unsubscribe anytime.
         </p>
       </div>
@@ -302,48 +338,40 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
   </div>
 
   <!-- COMBINED INFO PANEL -->
-  <section id="project-inspiration-benefits" class="benefits-section" data-testid="section-info-panel">
-    <div class="benefits-card">
+  <section id="project-inspiration-benefits" class="pi-bottom" data-testid="section-info-panel">
+    <div class="pi-bottom-inner">
       
       <!-- What you'll get inside -->
-      <div class="benefits-block">
-        <h2 class="benefits-title">What you'll get inside</h2>
-        <ul class="benefits-list">
-          <li>A project that makes sense for where you are right now.</li>
-          <li>Clear, realistic options—no endless scrolling.</li>
-          <li>A simple, doable next step you can actually see yourself knitting.</li>
-          <li>A way to use your yarn, your machine, and your time instead of starting from scratch.</li>
-        </ul>
-      </div>
+      <h2>What you'll get inside</h2>
+      <ul>
+        <li>A project that makes sense for where you are right now.</li>
+        <li>Clear, realistic options—no endless scrolling.</li>
+        <li>A simple, doable next step you can actually see yourself knitting.</li>
+        <li>A way to use your yarn, your machine, and your time instead of starting from scratch.</li>
+      </ul>
 
       <!-- Is this for you? -->
-      <div class="benefits-block">
-        <h2 class="benefits-title">Is Project Inspiration for you?</h2>
-        <p class="benefits-text italic">Yes—if any of this sounds familiar:</p>
-        <ul class="benefits-list">
-          <li>Your machine is ready, but you're not sure what to make next.</li>
-          <li>You keep collecting patterns without actually starting one.</li>
-          <li>You'd like a realistic project that fits your time, yarn, and current skills.</li>
-        </ul>
-      </div>
+      <h2>Is Project Inspiration for you?</h2>
+      <p class="italic">Yes—if any of this sounds familiar:</p>
+      <ul>
+        <li>Your machine is ready, but you're not sure what to make next.</li>
+        <li>You keep collecting patterns without actually starting one.</li>
+        <li>You'd like a realistic project that fits your time, yarn, and current skills.</li>
+      </ul>
 
       <!-- How it works -->
-      <div class="benefits-block">
-        <h2 class="benefits-title">How Ready ● Set ● Knit: Project Inspiration works</h2>
-        <ol class="benefits-list">
-          <li>Tell me a bit about your machine, your yarn, and your experience.</li>
-          <li>I'll suggest project ideas that match where you are right now.</li>
-          <li>Pick one, get started, and come back anytime when you're ready for the next step.</li>
-        </ol>
-      </div>
+      <h2>How Ready ● Set ● Knit: Project Inspiration works</h2>
+      <ol>
+        <li>Tell me a bit about your machine, your yarn, and your experience.</li>
+        <li>I'll suggest project ideas that match where you are right now.</li>
+        <li>Pick one, get started, and come back anytime when you're ready for the next step.</li>
+      </ol>
 
       <!-- Why Ready Set Knit -->
-      <div class="benefits-block">
-        <h2 class="benefits-title">Why Ready ● Set ● Knit?</h2>
-        <p class="benefits-text">
-          I've helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
-        </p>
-      </div>
+      <h2>Why Ready ● Set ● Knit?</h2>
+      <p>
+        I've helped thousands of knitters get unstuck with their machines. Knit by Machine is designed to give you clear, manageable next steps—without the overwhelm. Project Inspiration is one simple way to get you moving again.
+      </p>
 
     </div>
   </section>
@@ -361,6 +389,12 @@ window._show_thank_you = function(id, message, trackcmp_url, email) {
 
     var content = form.querySelector('._form-content');
     var thankYou = form.querySelector('._form-thank-you');
+
+    // Hide the "Enter your email…" instruction line once they've signed up
+    var emailInstructions = document.getElementById('pi-email-instructions');
+    if (emailInstructions) {
+      emailInstructions.style.display = 'none';
+    }
 
     if (content) content.style.display = 'none';
     if (!thankYou) return;

@@ -1,0 +1,224 @@
+You are an AI coding assistant working in a vanilla CSS Astro project (no Tailwind).
+
+Please update the /project-inspiration page.
+
+1. Open the file
+
+Edit:
+
+src/pages/project-inspiration.astro
+
+All changes below are in this file.
+
+2. Hide the “Enter your email…” line after a successful signup
+
+In the hero area, find the paragraph that currently says:
+
+Enter your email to open Project Inspiration. I’ll also send the link to your inbox so you can come back to it anytime.
+
+Wrap that in its own <p> with an ID and class, for example:
+
+<p class="pi-intro">
+  Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.
+</p>
+
+<p id="pi-email-instructions" class="pi-email-instructions">
+  Enter your email to open Project Inspiration. I’ll also send the link to your inbox so you can come back to it anytime.
+</p>
+
+
+(Keep the actual text the same; just add the id and class.)
+
+Now, in the custom _show_thank_you override script you already added for form 6 (the small script after the big AC embed), insert a line to hide that paragraph.
+
+Find:
+
+window._show_thank_you = function (id, message, trackcmp_url, email) {
+  var form = document.getElementById('_form_' + id + '_');
+  if (!form) return;
+
+  var content = form.querySelector('._form-content');
+  var thankYou = form.querySelector('._form-thank-you');
+
+
+Right after those lines, add:
+
+  // Hide the “Enter your email…” instruction line once they’ve signed up
+  var emailInstructions = document.getElementById('pi-email-instructions');
+  if (emailInstructions) {
+    emailInstructions.style.display = 'none';
+  }
+
+
+Leave the rest of _show_thank_you exactly as it is.
+
+3. Wrap and style the long text block at the bottom
+
+Below the hero section + form card, there are headings like:
+
+“What you’ll get inside”
+
+“Is Project Inspiration for you?”
+
+“How Ready • Set • Knit: Project Inspiration works”
+
+“Why Ready • Set • Knit?”
+
+Wrap all of those existing elements in a container:
+
+<section class="pi-bottom">
+  <div class="pi-bottom-inner">
+    <!-- existing headings, paragraphs, and lists for those sections go here, unchanged -->
+  </div>
+</section>
+
+
+Do not change the wording, just move the existing markup inside .pi-bottom-inner.
+
+4. Tighten spacing and card layout (CSS only)
+
+In the <style> block for this page (or create one at the bottom if there isn’t one yet), ensure/merge the following styles:
+
+/* HERO LAYOUT */
+
+.pi-hero {
+  padding: 2.5rem 1.5rem 1.5rem; /* slightly tighter top/bottom */
+}
+
+.pi-hero-inner {
+  max-width: 1120px;
+  margin: 0 auto;
+}
+
+@media (min-width: 900px) {
+  .pi-hero-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+    column-gap: 2.25rem;
+    align-items: flex-start;
+  }
+}
+
+.pi-hero-left {
+  margin-bottom: 1.75rem;
+}
+
+@media (min-width: 900px) {
+  .pi-hero-left {
+    margin-bottom: 0;
+  }
+}
+
+/* Intro + email line */
+
+.pi-intro {
+  margin-bottom: 0.75rem;
+}
+
+.pi-email-instructions {
+  margin-top: 0;
+  margin-bottom: 1.25rem;
+  max-width: 36rem;
+}
+
+/* Right column */
+
+.pi-pill {
+  display: inline-block;
+  margin-bottom: 0.6rem;
+  padding: 0.3rem 0.9rem;
+  border-radius: 999px;
+  background-color: #E6F0D8;
+  color: #52682D;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.pi-form-card {
+  background: #ffffff;
+  border: 1px solid #d7e2c2;
+  border-radius: 18px;
+  padding: 1.4rem 1.6rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.06);
+}
+
+.pi-form-card p:last-child {
+  margin-bottom: 0;
+}
+
+.pi-small-note {
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #555;
+}
+
+/* AC form container tweak so it doesn’t add extra box inside the card */
+#_form_6_{
+  position: relative;
+  text-align: left;
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background: transparent !important;
+  border: 0;
+  max-width: 100%;
+  color: #000000;
+}
+
+/* BOTTOM BLOCK */
+
+.pi-bottom {
+  padding: 0 1.5rem 2.5rem;
+}
+
+.pi-bottom-inner {
+  max-width: 800px;
+  margin: 1.75rem auto 0;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  border: 1px solid #e0e4ea;
+  padding: 1.75rem 2rem;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.04);
+}
+
+.pi-bottom-inner h2,
+.pi-bottom-inner h3 {
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+.pi-bottom-inner ul {
+  margin-top: 0.25rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1.25rem;
+}
+
+.pi-bottom-inner li {
+  margin-bottom: 0.25rem;
+}
+
+/* Slightly smaller body text in the bottom block for a denser feel */
+.pi-bottom-inner p {
+  margin-bottom: 0.75rem;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+
+If a .pi-hero, .pi-hero-inner, .pi-pill, .pi-form-card, .pi-small-note, .pi-bottom, or .pi-bottom-inner rule already exists, update it to match the values above instead of duplicating.
+
+Expected result
+
+After these changes:
+
+When the form is submitted, the “Enter your email…” line disappears along with the form, leaving only the thank-you message and button inside the card.
+
+The long text block at the bottom appears in a single, clean panel with tighter spacing and slightly smaller body text, so the page feels more compact and intentional.
+
+Overall vertical spacing in the hero and between sections is tighter but still readable.
+
+Please make these edits and save the file.
