@@ -353,3 +353,208 @@ p {
   max-width: 650px;
   align-self: flex-end; /* Right-aligned */
 }
+
+/* ============================================
+   Welcome Intro Banner + Drawer Styles
+   ============================================ */
+
+.kbm-intro-wrapper {
+  position: fixed;
+  top: var(--header-height, 6rem);
+  left: 0;
+  right: 0;
+  z-index: 900;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.kbm-intro-banner {
+  background: #f3f7ec;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 0.6rem 1rem;
+  font-size: 0.95rem;
+}
+
+.kbm-intro-banner-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.kbm-intro-banner-text {
+  font-weight: 500;
+  color: #2c3a57;
+}
+
+.kbm-intro-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.kbm-intro-banner-button {
+  border: none;
+  cursor: pointer;
+  border-radius: 9999px;
+  padding: 0.35rem 0.9rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  background: #6e8b3d;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(82, 104, 45, 0.25);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.kbm-intro-banner-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(82, 104, 45, 0.28);
+  background-color: #52682d;
+}
+
+.kbm-intro-banner-link {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: #52682d;
+  text-decoration: underline;
+  padding: 0.25rem 0.5rem;
+}
+
+/* Drawer */
+
+.kbm-intro-drawer {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  max-height: 0;
+  transition: max-height 220ms ease;
+}
+
+.kbm-intro-drawer.kbm-intro-drawer--open {
+  max-height: 400px;
+}
+
+.kbm-intro-drawer-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1.25rem 1rem 0.5rem 1rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.kbm-intro-drawer-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0;
+  color: #2c3a57;
+}
+
+.kbm-intro-drawer-close {
+  border: none;
+  background: transparent;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #8891a6;
+  padding: 0.1rem 0.3rem;
+}
+
+.kbm-intro-drawer-close:hover {
+  color: #2c3a57;
+}
+
+.kbm-intro-drawer-body {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1rem;
+  font-size: 0.95rem;
+  color: #424a5d;
+}
+
+.kbm-intro-drawer-body + .kbm-intro-drawer-body {
+  margin-top: 0.4rem;
+}
+
+.kbm-intro-drawer-actions {
+  max-width: 1100px;
+  margin: 0.9rem auto 0.25rem auto;
+  padding: 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.kbm-intro-primary,
+.kbm-intro-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.kbm-intro-primary {
+  background: #6e8b3d;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(82, 104, 45, 0.25);
+  transition: transform 150ms ease, box-shadow 150ms ease, background-color 150ms ease;
+}
+
+.kbm-intro-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(82, 104, 45, 0.28);
+  background-color: #52682d;
+}
+
+.kbm-intro-secondary {
+  background: #f5f6fa;
+  color: #2c3a57;
+  border: 1px solid rgba(44, 58, 87, 0.15);
+}
+
+.kbm-intro-secondary:hover {
+  background: #e9ecf5;
+}
+
+.kbm-intro-subtext {
+  max-width: 1100px;
+  margin: 0 0 1rem 0;
+  padding: 0 1rem 1.1rem 1rem;
+  font-size: 0.8rem;
+  color: #6b7280;
+}
+
+/* Responsive tweaks for Welcome Intro */
+@media (max-width: 640px) {
+  .kbm-intro-banner-inner {
+    align-items: flex-start;
+  }
+
+  .kbm-intro-drawer-header,
+  .kbm-intro-drawer-body,
+  .kbm-intro-drawer-actions,
+  .kbm-intro-subtext {
+    padding-left: 0.9rem;
+    padding-right: 0.9rem;
+  }
+
+  .kbm-intro-drawer-title {
+    font-size: 1rem;
+  }
+}
