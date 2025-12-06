@@ -78,13 +78,13 @@ const description = "Join our live and on-demand workshops to develop your machi
               <img src="/images/all_icon.svg" alt="All" class="filter-icon-img" />
               <span class="filter-text">All</span>
             </button>
-            <button class="filter-btn" data-category="learn" aria-label="Filter by Learn">
-              <img src="/images/play_icon.svg" alt="Learn" class="filter-icon-img" />
-              <span class="filter-text">Learn</span>
+            <button class="filter-btn" data-category="projects" aria-label="Filter by Projects">
+              <img src="/images/knit_icon1.svg" alt="Projects" class="filter-icon-img" />
+              <span class="filter-text">Projects</span>
             </button>
-            <button class="filter-btn" data-category="knit" aria-label="Filter by Knit">
-              <img src="/images/knit_icon.svg" alt="Knit" class="filter-icon-img" />
-              <span class="filter-text">Knit</span>
+            <button class="filter-btn" data-category="skills" aria-label="Filter by Skills">
+              <img src="/images/workshop_skills_light.svg" alt="Skills" class="filter-icon-img" />
+              <span class="filter-text">Skills</span>
             </button>
           </div>
         </div>
@@ -332,8 +332,8 @@ const description = "Join our live and on-demand workshops to develop your machi
     flex-shrink: 0;
   }
 
-  :global(.category-icon.learn) { background-color: #4a90a4; }
-  :global(.category-icon.knit) { background-color: #738c52; }
+  :global(.category-icon.projects) { background-color: #738c52; }
+  :global(.category-icon.skills) { background-color: #4a90a4; }
   :global(.category-icon.other) { background-color: #8b7355; }
 
   :global(.category-icon svg) {
@@ -604,18 +604,18 @@ const description = "Join our live and on-demand workshops to develop your machi
   let currentCategory = 'all';
 
   const CATEGORY_LABELS = {
-    learn: 'Learn',
-    knit: 'Knit'
+    projects: 'Projects',
+    skills: 'Skills'
   };
 
-  const CATEGORY_ORDER = ['learn', 'knit'];
+  const CATEGORY_ORDER = ['projects', 'skills'];
 
   function getCategoryIcon(category) {
     const icons = {
-      learn: `<img src="/images/play_icon.svg" alt="Learn" style="width: 32px; height: 32px;" />`,
-      knit: `<img src="/images/knit_icon.svg" alt="Knit" style="width: 32px; height: 32px;" />`
+      projects: `<img src="/images/knit_icon1.svg" alt="Projects" style="width: 32px; height: 32px;" />`,
+      skills: `<img src="/images/workshop_skills_light.svg" alt="Skills" style="width: 32px; height: 32px;" />`
     };
-    return icons[category] || icons.learn;
+    return icons[category] || icons.projects;
   }
 
   function formatDate(dateTime) {
