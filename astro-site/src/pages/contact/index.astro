@@ -11,32 +11,50 @@ const supportEmail = "sue@knitbymachine.com";
       margin: 0 auto;
     }
 
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #2C3A57;
-      margin-bottom: 1.5rem;
-      text-align: left;
-    }
-
     h2 {
       font-size: 1.5rem;
       color: var(--kbm-green);
       margin-bottom: 0.5rem;
     }
 
-    .intro-row {
+    .page-header {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       gap: 1.5rem;
-      align-items: flex-start;
+      margin-bottom: 2rem;
+    }
+
+    .page-header-icon {
+      width: clamp(80px, 8vw, 96px);
+      height: clamp(80px, 8vw, 96px);
+      flex-shrink: 0;
+      object-fit: contain;
+    }
+
+    .page-header h1 {
+      font-size: clamp(2.25rem, 4vw, 3rem);
+      font-weight: 700;
+      color: var(--kbm-green, #52682d);
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .intro-copy {
       margin-bottom: 1rem;
     }
 
-    .intro-icon img {
-      width: 100%;
-      max-width: 120px;
-      display: block;
+    @media (max-width: 768px) {
+      .page-header {
+        flex-direction: column;
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      .page-header-icon {
+        align-self: center;
+        width: clamp(64px, 15vw, 80px);
+        height: clamp(64px, 15vw, 80px);
+      }
     }
 
     .direct-email {
@@ -151,7 +169,7 @@ const supportEmail = "sue@knitbymachine.com";
       width: 72px;
       height: 72px;
       margin: 0 auto 1rem;
-      background-image: url("/envelope.png");
+      background-image: url("/images/envelope.svg");
       background-size: contain;
       background-repeat: no-repeat;
       background-position: center;
@@ -180,18 +198,16 @@ const supportEmail = "sue@knitbymachine.com";
     }
   </style>
 
-  <h1>Contact Us</h1>
-  <div class="intro-row">
-    <div class="intro-icon">
-      <img src="/envelope.png" alt="Envelope icon" />
-    </div>
-    <div class="intro-copy">
-      <p>We'd love to hear from you! Whether you have a question about Knit by Machine, need help with your membership, or just want to say hello, you can reach us using the form below.</p>
-      <p>We try to respond within 1–2 business days.</p>
-      <div class="direct-email">
-        Prefer email? Reach us directly at
-        <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
-      </div>
+  <div class="page-header">
+    <img src="/images/envelope.svg" alt="Contact icon" class="page-header-icon" />
+    <h1>Contact Us</h1>
+  </div>
+  <div class="intro-copy">
+    <p>We'd love to hear from you! Whether you have a question about Knit by Machine, need help with your membership, or just want to say hello, you can reach us using the form below.</p>
+    <p>We try to respond within 1–2 business days.</p>
+    <div class="direct-email">
+      Prefer email? Reach us directly at
+      <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
     </div>
   </div>
 
