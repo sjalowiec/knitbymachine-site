@@ -1,0 +1,178 @@
+You are editing my Knit by Machine admin app for managing workshops.
+
+CONTEXT
+
+I have an admin interface where I create/edit workshop records.
+
+Those records are saved as JSON (or similar) and then uploaded/published to my front-end site.
+
+Right now, the category field for workshops is not correctly set up for my new structure.
+
+I want two workshop categories only:
+
+"skills"
+
+"projects"
+
+Every time I change this, something breaks: the admin input, the schema, or the JSON that gets saved, and then my upload/publish process fails.
+
+I need you to update everything end-to-end so this change is clean and stable.
+
+GOAL
+
+Update the workshops category system so that:
+
+In the admin UI, the workshop form has a Category field that is a dropdown/select with exactly these two values:
+
+Label: “Skills workshop” → value stored: "skills"
+
+Label: “Project workshop” → value stored: "projects"
+
+In the data model / types / validation, the workshop category field is strictly typed/validated as:
+
+"skills" or "projects" (no other values allowed).
+
+In the saved JSON (or records), every workshop has a field like:
+
+"category": "skills"
+
+
+or
+
+"category": "projects"
+
+
+And this format matches exactly what the front end expects so the upload/publish process does not break.
+
+Anywhere that filters, sorts, or displays workshops by category should now use "skills" and "projects" consistently.
+
+WHAT TO CHANGE (STEP BY STEP)
+
+Find all workshop-related schemas and types
+
+Search the project for things like:
+
+workshop
+
+WorkshopCategory
+
+category near workshop fields
+
+Update any TypeScript interfaces, Zod schemas, or validation logic so the category field is:
+
+type WorkshopCategory = "skills" | "projects";
+
+
+or equivalent (enum, union, etc.).
+
+Make sure any required/optional flags still make sense. Category should be required for a valid workshop.
+
+Update the admin form UI
+
+Find the workshop create/edit form component.
+
+It might be called something like WorkshopForm, WorkshopEditor, WorkshopAdminForm, etc.
+
+Replace any free-text category input or old categories with a select/dropdown with:
+
+Option 1:
+
+Label: Skills workshop
+
+Value: skills
+
+Option 2:
+
+Label: Project workshop
+
+Value: projects
+
+Ensure the selected value is bound to the correct field used in the JSON (category).
+
+Update JSON serialization / save logic
+
+Find where the form data is converted to a JSON object or record (e.g. onSubmit, saveWorkshop, toJSON).
+
+Confirm the category is written exactly as:
+
+"category": "skills"
+
+
+or
+
+"category": "projects"
+
+
+Make sure there aren’t any legacy fields like type, kind, or workshopType that are still being used for category logic. If they exist, either:
+
+Map them to the new category field, or
+
+Remove them if they’re no longer needed.
+
+Migrate existing workshop records
+
+Find any existing workshop JSON files or seed data.
+
+For each workshop, update the category to one of the two allowed values:
+
+"skills" for skill-based, technique-focused workshops.
+
+"projects" for project-based workshops.
+
+Make sure the JSON keys and values exactly match the new schema.
+
+Update any filtering / listing logic
+
+Search for:
+
+"Skill workshops", "Project workshops", old category names, or hard-coded labels.
+
+Update any code that:
+
+Filters workshops by category.
+
+Groups workshops into sections.
+
+Builds URLs or slugs based on category.
+
+Make sure all of those now use "skills" and "projects".
+
+Protect the upload/publish process
+
+Find whatever code validates workshops before uploading/publishing.
+
+Update validation so it expects category to be "skills" or "projects" only.
+
+If there are tests or a build step that validates content:
+
+Update or add tests to confirm that invalid categories cause an error and valid ones pass.
+
+Do a full search and cleanup
+
+Run a project-wide search for:
+
+category near workshop
+
+Any old category names that might still be in the code.
+
+Fix any leftover references so everything is consistent and nothing points to outdated fields or values.
+
+OUTPUT EXPECTATIONS
+
+Show me all modified files in full, not just fragments, so I can copy/paste them.
+
+For any critical type or schema changes, briefly comment in the code what changed (e.g. // category now limited to "skills" | "projects").
+
+Make sure the final result is internally consistent so my admin can:
+
+Create/edit a workshop with category = skills or projects.
+
+Save the workshop.
+
+Generate the JSON/record.
+
+Upload/publish without errors.
+
+If anything in the current codebase conflicts with this plan, adjust it in a sensible way but keep the core requirement:
+
+Workshops must have a category field that is either "skills" or "projects", and all admin, JSON, and publish logic must respect that.
