@@ -206,6 +206,106 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
   .pi-bottom-inner p.italic {
     font-style: italic;
   }
+
+  /* ========== CONFETTI BUTTON ========== */
+  .pi-confetti-btn {
+    display: block;
+    width: 100%;
+    margin-top: 1.25rem;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #52682d;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .pi-confetti-btn:hover {
+    background-color: #6e8b3d;
+    transform: translateY(-2px);
+  }
+
+  .pi-confetti-btn:active {
+    transform: translateY(0);
+  }
+
+  /* ========== WHAT'S NEXT SECTION ========== */
+  .pi-hidden {
+    display: none !important;
+  }
+
+  .pi-whats-next {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #c7d8a4;
+  }
+
+  .pi-whats-next-title {
+    font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+    color: #52682D;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .pi-whats-next-intro {
+    font-size: 0.95rem;
+    color: #5a6b47;
+    line-height: 1.6;
+    margin: 0 0 1.25rem;
+    max-width: 600px;
+  }
+
+  .pi-whats-next-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+  }
+
+  .pi-next-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    background-color: #ffffff;
+    color: #52682D;
+    border: 2px solid #c7d8a4;
+    padding: 1.25rem;
+    border-radius: 14px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+  }
+
+  .pi-next-card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(82, 104, 45, 0.15);
+    border-color: #52682D;
+  }
+
+  .pi-next-card-title {
+    font-size: clamp(1rem, 2vw, 1.1rem);
+    font-weight: 600;
+    color: #52682D;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .pi-next-card-desc {
+    font-size: 0.9rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 480px) {
+    .pi-whats-next-grid {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -367,6 +467,60 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
             </div>
           </form>
           <!-- END ActiveCampaign embed -->
+
+          <!-- CONFETTI BUTTON (hidden until form submission) -->
+          <button id="pi-confetti-btn" class="pi-confetti-btn pi-hidden" data-testid="button-confetti">
+            I'm ready for my next step!
+          </button>
+
+          <!-- WHAT'S NEXT SECTION (hidden until confetti button click) -->
+          <section
+            id="pi-whats-next"
+            class="pi-whats-next pi-hidden"
+            data-testid="section-whats-next"
+          >
+            <h2 class="pi-whats-next-title">
+              What's next with your machine?
+            </h2>
+            <p class="pi-whats-next-intro">
+              You've taken a solid first step. From here, you can get quick answers, build skills, or reach out for more help.
+            </p>
+
+            <div class="pi-whats-next-grid">
+              <a
+                href="/skill-builders"
+                class="pi-next-card"
+                data-testid="link-skill-builders"
+              >
+                <h3 class="pi-next-card-title">Explore Skill Builders</h3>
+                <p class="pi-next-card-desc">
+                  Start a small practice exercise to get more confident with your machine.
+                </p>
+              </a>
+
+              <a
+                href="/ana-catalog"
+                class="pi-next-card"
+                data-testid="link-ana"
+              >
+                <h3 class="pi-next-card-title">Browse Ask 'n Answer (ANA)</h3>
+                <p class="pi-next-card-desc">
+                  See clear answers to common machine knitting questions.
+                </p>
+              </a>
+
+              <a
+                href="/contact"
+                class="pi-next-card"
+                data-testid="link-contact"
+              >
+                <h3 class="pi-next-card-title">Contact Sue</h3>
+                <p class="pi-next-card-desc">
+                  Need something more specific? Send Sue a note on the contact page.
+                </p>
+              </a>
+            </div>
+          </section>
         </div>
 
         <p class="pi-small-note">
@@ -421,6 +575,39 @@ const pageDescription = 'Not sure what to make next on your knitting machine? Re
     </div>
   </section>
 </BaseLayout>
+
+<!-- Confetti library -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+<!-- Confetti button and What's Next section handler -->
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var confettiBtn = document.getElementById('pi-confetti-btn');
+    var whatsNextSection = document.getElementById('pi-whats-next');
+
+    if (confettiBtn) {
+      confettiBtn.addEventListener('click', function() {
+        // Trigger confetti
+        if (typeof confetti === 'function') {
+          confetti({
+            particleCount: 100,
+            spread: 70,
+            origin: { y: 0.6 }
+          });
+        }
+
+        // Reveal the "What's next?" section with small delay
+        setTimeout(function() {
+          if (whatsNextSection) {
+            whatsNextSection.classList.remove('pi-hidden');
+            // Scroll to it
+            whatsNextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }, 300);
+      });
+    }
+  });
+</script>
 
 <!-- 
   NOTE: Custom thank-you behavior shows a button to continue to the session page.
@@ -480,6 +667,12 @@ window._show_thank_you = function(id, message, trackcmp_url, email) {
     } else if (typeof(trackcmp_url) != 'undefined' && trackcmp_url) {
         _load_script(trackcmp_url);
     }
+    // Show the confetti button after form submission
+    var confettiBtn = document.getElementById('pi-confetti-btn');
+    if (confettiBtn) {
+      confettiBtn.classList.remove('pi-hidden');
+    }
+
     thankYou.setAttribute('tabindex', '-1');
     thankYou.focus();
 };
