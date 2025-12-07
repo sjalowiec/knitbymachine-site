@@ -1,0 +1,80 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout 
+  title="Community | Knit by Machine" 
+  description="Ask questions, share progress, and connect with other machine knitters in our community forum."
+>
+  <section class="community-hero">
+    <h1>Community</h1>
+    <p>Ask questions, share progress, and connect with other machine knitters.</p>
+  </section>
+
+  <section class="community-forum">
+    <iframe
+      src="https://sues-machine-knitting.discourse.group"
+      title="Knit by Machine Community Forum"
+      class="discourse-iframe"
+      loading="lazy"
+      allowfullscreen
+    ></iframe>
+  </section>
+</BaseLayout>
+
+<style>
+  .community-hero {
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .community-hero h1 {
+    font-size: var(--text-xxl);
+    margin-bottom: 0.75rem;
+    color: var(--kbm-green);
+  }
+
+  .community-hero p {
+    font-size: var(--text-lg);
+    color: #555;
+    margin: 0;
+  }
+
+  .community-forum {
+    width: 100%;
+    max-width: var(--max-content-width);
+    margin: 0 auto 2rem;
+    padding: 0 1rem;
+  }
+
+  .discourse-iframe {
+    width: 100%;
+    min-height: 900px;
+    height: calc(100vh - 300px);
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+  }
+
+  @media (max-width: 768px) {
+    .community-hero {
+      padding: 1.5rem 1rem 1rem;
+    }
+
+    .community-hero h1 {
+      font-size: var(--text-xl);
+    }
+
+    .community-hero p {
+      font-size: var(--text-base);
+    }
+
+    .discourse-iframe {
+      min-height: 700px;
+      height: calc(100vh - 250px);
+      border-radius: 4px;
+    }
+  }
+</style>
