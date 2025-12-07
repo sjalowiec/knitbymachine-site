@@ -6,75 +6,162 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   title="Community | Knit by Machine" 
   description="Ask questions, share progress, and connect with other machine knitters in our community forum."
 >
-  <section class="community-hero">
-    <h1>Community</h1>
-    <p>Ask questions, share progress, and connect with other machine knitters.</p>
-  </section>
+  <section class="community-page">
+    <div class="community-content">
+      <h1>Join the Conversation</h1>
+      <p class="intro">
+        Connect with fellow machine knitters, ask questions, share your projects, 
+        and learn from a friendly community of makers just like you.
+      </p>
+      
+      <div class="features">
+        <div class="feature">
+          <span class="feature-icon">?</span>
+          <h3>Ask Questions</h3>
+          <p>Get help with techniques, troubleshooting, and pattern questions from experienced knitters.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">&#9733;</span>
+          <h3>Share Your Work</h3>
+          <p>Show off your finished projects and works in progress to an appreciative audience.</p>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">&#9825;</span>
+          <h3>Learn Together</h3>
+          <p>Discover tips, tricks, and resources shared by the community.</p>
+        </div>
+      </div>
 
-  <section class="community-forum">
-    <iframe
-      src="https://sues-machine-knitting.discourse.group"
-      title="Knit by Machine Community Forum"
-      class="discourse-iframe"
-      loading="lazy"
-      allowfullscreen
-    ></iframe>
+      <a href="https://knitbymachine.discourse.group" class="forum-button" target="_blank" rel="noopener noreferrer">
+        Visit the Community Forum
+        <span class="arrow">&#8594;</span>
+      </a>
+      
+      <p class="note">
+        Opens in a new tab. Free to browse, sign up to participate!
+      </p>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .community-hero {
-    text-align: center;
-    padding: 2rem 1rem 1.5rem;
-    max-width: 700px;
+  .community-page {
+    padding: 3rem 1rem 4rem;
+    max-width: 800px;
     margin: 0 auto;
   }
 
-  .community-hero h1 {
-    font-size: var(--text-xxl);
-    margin-bottom: 0.75rem;
-    color: var(--kbm-green);
+  .community-content {
+    text-align: center;
   }
 
-  .community-hero p {
+  h1 {
+    font-size: var(--text-xxl);
+    color: var(--kbm-green);
+    margin-bottom: 1rem;
+  }
+
+  .intro {
     font-size: var(--text-lg);
     color: #555;
-    margin: 0;
+    max-width: 600px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.6;
   }
 
-  .community-forum {
-    width: 100%;
-    max-width: var(--max-content-width);
-    margin: 0 auto 2rem;
-    padding: 0 1rem;
+  .features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
   }
 
-  .discourse-iframe {
-    width: 100%;
-    min-height: 900px;
-    height: calc(100vh - 300px);
-    border: none;
+  .feature {
+    background: #f9f9f9;
     border-radius: 8px;
-    background: #fff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+
+  .feature-icon {
+    display: block;
+    font-size: 1.75rem;
+    color: var(--kbm-green);
+    margin-bottom: 0.75rem;
+  }
+
+  .feature h3 {
+    font-size: var(--text-base);
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .feature p {
+    font-size: var(--text-sm);
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .forum-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--kbm-green);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    font-size: var(--text-lg);
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease, transform 0.1s ease;
+  }
+
+  .forum-button:hover {
+    background: var(--kbm-dark-green);
+    transform: translateY(-2px);
+  }
+
+  .forum-button:active {
+    transform: translateY(0);
+  }
+
+  .forum-button .arrow {
+    font-size: 1.25rem;
+  }
+
+  .note {
+    margin-top: 1rem;
+    font-size: var(--text-sm);
+    color: #888;
   }
 
   @media (max-width: 768px) {
-    .community-hero {
-      padding: 1.5rem 1rem 1rem;
+    .community-page {
+      padding: 2rem 1rem 3rem;
     }
 
-    .community-hero h1 {
+    h1 {
       font-size: var(--text-xl);
     }
 
-    .community-hero p {
+    .intro {
       font-size: var(--text-base);
+      margin-bottom: 2rem;
     }
 
-    .discourse-iframe {
-      min-height: 700px;
-      height: calc(100vh - 250px);
-      border-radius: 4px;
+    .features {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .feature {
+      padding: 1.25rem 1rem;
+    }
+
+    .forum-button {
+      padding: 0.875rem 1.5rem;
+      font-size: var(--text-base);
     }
   }
 </style>
