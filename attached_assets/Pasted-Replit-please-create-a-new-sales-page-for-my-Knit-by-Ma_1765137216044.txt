@@ -1,0 +1,112 @@
+Replit, please create a new sales page for my Knit by Machine site for a 1:1, call-free coaching offer.
+
+1. Create a new page file at:
+- If this is an Astro project: src/pages/finish-it-with-sue.astro
+- If it's a plain HTML project: finish-it-with-sue.html in the root or pages folder (follow the existing routing pattern in the project).
+
+2. Use my existing site layout and styles:
+- Use the same header, footer, fonts, and general layout structure as the other main pages.
+- Do NOT add Tailwind or any new CSS frameworks.
+- Reuse my standard content container classes and heading styles from the rest of the site.
+- For buttons, use the same button classes and styling already used on my existing CTAs.
+
+3. The page title in the <title> tag should be:
+"10-Day No-Call Finish-It with Sue | Knit by Machine"
+
+4. Inside the main content area, add the following structured content with semantic HTML (section, h1–h3, p, ul, etc.). Use my existing text styles, and keep the HTML clean and simple:
+
+- Hero section with:
+  - H1: "10-Day No-Call Finish-It with Sue"
+  - Subheading / tagline: "Get unstuck, get moving, and finally finish—one doable step at a time."
+  - Short intro paragraph:
+    "If your project is sitting half-done—and you’re tired of feeling stuck—this 10-day, call-free sprint gives you a clear plan and gentle accountability. You choose the project, Sue breaks it into simple steps, and you move forward at your own pace. No calls. No pressure. Just progress you can feel."
+  - Primary CTA button near the top that says: "Begin the 10-Day Finish"
+
+- Section: "Who This Is For"
+  - Intro paragraph.
+  - Bulleted list with:
+    - "You have a project that’s been sitting half-done for weeks (or months)."
+    - "You’re overwhelmed, frustrated, or not sure what the next step should be."
+    - "You want support—but not calls, meetings, or pressure."
+    - "You work best at your own pace and on your own schedule."
+    - "You want a short, structured plan to help you build momentum and actually finish."
+
+- Section: "What You’ll Get"
+  - A short intro sentence.
+  - Subpoints with short headings in bold and paragraphs, for example:
+    - "A clear, custom plan for your project"
+    - "Daily guidance (without calls)"
+    - "Gentle accountability"
+    - "Practical help when you get stuck"
+    - "A real finish (or unstoppable momentum toward it)"
+
+- Section: "Why No-Call Coaching Works So Well"
+  - One intro paragraph.
+  - A short bulleted list:
+    - "Time to think"
+    - "A clear path"
+    - "Someone who can spot the next best step"
+    - "Encouragement that fits their pace"
+  - Closing paragraph reinforcing that this format removes pressure from scheduling and Zoom.
+
+- Section: "How It Works"
+  - Intro sentence, then a numbered list of 5 steps:
+    1. "Sign Up & Tell Sue About Your Project"
+    2. "Receive Your Custom 10-Day Plan"
+    3. "Share Updates When You’re Ready"
+    4. "Get Clear, Simple Next Steps"
+    5. "Keep Moving Forward"
+
+- Section: "What You Can Work On"
+  - One paragraph intro.
+  - Bulleted list of example project types (sweater pieces needing assembly, project stuck on shaping, off-gauge project, stalled blanket or scarf, restart you’ve been avoiding, technique you’re hesitating to try alone).
+
+- Section: "What You Won’t Need"
+  - Short paragraph then bullet list:
+    - "No Zoom"
+    - "No phone calls"
+    - "No scheduling"
+    - "No long lessons"
+    - "No pressure"
+
+- Section: "Results You Can Expect"
+  - Short intro line.
+  - Bulleted list:
+    - "A clearer understanding of your machine"
+    - "Confidence in what to do next"
+    - "A finished project—or the momentum to reach the finish"
+    - "Less clutter on your needles"
+    - "More joy in your knitting"
+
+- Section: "Pricing"
+  - Use an <h2> heading: "10 Days of Private, No-Call Coaching — $___"
+  - One short paragraph:
+    "A short, focused sprint designed to help you finish with clarity, momentum, and support that fits your schedule."
+  - A bulleted list:
+    - "A personalized plan for your project"
+    - "Private, asynchronous guidance from Sue"
+    - "Clear next steps each time you check in"
+    - "Troubleshooting when something doesn’t look or feel right"
+    - "Gentle accountability so you keep moving forward"
+  - Place a prominent CTA button under this section that also says: "Begin the 10-Day Finish"
+
+- Section: "Frequently Asked Questions"
+  - Use an <h2> for the section, then for each question:
+    - Use <h3> for the question and <p> for the answer.
+    - Questions:
+      - "How often do I need to check in?"
+      - "What if life gets busy?"
+      - "Can I do more than one project?"
+      - "Is this good for beginners?"
+      - "What if I feel embarrassed about my progress?"
+
+- Final Section: closing CTA
+  - Short heading and paragraph:
+    - Heading: "Ready to finally finish?"
+    - Paragraph: "10-Day No-Call Finish-It with Sue — Get unstuck, get moving, and finally finish—one doable step at a time."
+  - CTA button: "Begin the 10-Day Finish"
+
+5. Make sure:
+- The page is responsive and matches the spacing, typography, and general visual style of my existing pages.
+- The CTAs use the same button style as my other call-to-action buttons.
+- Do not introduce new colors outside my existing brand palette.
