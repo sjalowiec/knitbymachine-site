@@ -6,28 +6,75 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   title="Community | Knit by Machine" 
   description="Ask questions, share progress, and connect with other machine knitters in our community forum."
 >
-  <section class="community-hero">
-    <h1>Community</h1>
-    <p>Ask questions, share progress, and connect with other machine knitters.</p>
-  </section>
+  <section class="community-page">
+    <div class="community-hero">
+      <h1>Community</h1>
+      <p class="intro">Ask questions, share progress, and connect with other machine knitters.</p>
+    </div>
 
-  <section class="community-forum">
-    <iframe
-      src="https://sues-machine-knitting.discourse.group"
-      title="Knit by Machine Community Forum"
-      class="discourse-iframe"
-      loading="lazy"
-      allowfullscreen
-    ></iframe>
+    <div class="community-card">
+      <div class="card-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+          <circle cx="9" cy="7" r="4"/>
+          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+        </svg>
+      </div>
+      
+      <h2>Join the Conversation</h2>
+      <p>Our community forum is the place to get help, share your projects, and learn from fellow machine knitters.</p>
+      
+      <ul class="feature-list">
+        <li>Get answers to your machine knitting questions</li>
+        <li>Share your work and get feedback</li>
+        <li>Connect with knitters at all skill levels</li>
+        <li>Learn tips and techniques from the community</li>
+      </ul>
+
+      <a 
+        href="https://sues-machine-knitting.discourse.group" 
+        target="_blank" 
+        rel="noopener noreferrer"
+        class="forum-button"
+      >
+        Visit the Forum
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+      </a>
+
+      <p class="forum-note">Opens in a new tab</p>
+    </div>
+
+    <div class="quick-links">
+      <h3>Quick Links</h3>
+      <div class="links-grid">
+        <a href="https://sues-machine-knitting.discourse.group/latest" target="_blank" rel="noopener noreferrer" class="quick-link">
+          <span class="link-title">Latest Discussions</span>
+          <span class="link-desc">See what's new</span>
+        </a>
+        <a href="https://sues-machine-knitting.discourse.group/categories" target="_blank" rel="noopener noreferrer" class="quick-link">
+          <span class="link-title">Categories</span>
+          <span class="link-desc">Browse by topic</span>
+        </a>
+      </div>
+    </div>
   </section>
 </BaseLayout>
 
 <style>
-  .community-hero {
-    text-align: center;
-    padding: 2rem 1rem 1.5rem;
+  .community-page {
     max-width: 700px;
     margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .community-hero {
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
   .community-hero h1 {
@@ -36,45 +83,162 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     color: var(--kbm-green);
   }
 
-  .community-hero p {
+  .community-hero .intro {
     font-size: var(--text-lg);
     color: #555;
     margin: 0;
   }
 
-  .community-forum {
-    width: 100%;
-    max-width: var(--max-content-width);
-    margin: 0 auto 2rem;
-    padding: 0 1rem;
-  }
-
-  .discourse-iframe {
-    width: 100%;
-    min-height: 900px;
-    height: calc(100vh - 300px);
-    border: none;
-    border-radius: 8px;
+  .community-card {
     background: #fff;
+    border-radius: 1rem;
+    padding: 2.5rem 2rem;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+    margin-bottom: 2rem;
   }
 
-  @media (max-width: 768px) {
-    .community-hero {
-      padding: 1.5rem 1rem 1rem;
+  .card-icon {
+    color: var(--kbm-green-2);
+    margin-bottom: 1rem;
+  }
+
+  .community-card h2 {
+    font-size: 1.5rem;
+    color: var(--kbm-green);
+    margin-bottom: 0.75rem;
+  }
+
+  .community-card > p {
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .feature-list {
+    text-align: left;
+    list-style: none;
+    padding: 0;
+    margin: 0 auto 2rem;
+    max-width: 400px;
+  }
+
+  .feature-list li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.75rem;
+    color: #444;
+    font-size: 0.95rem;
+  }
+
+  .feature-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.45rem;
+    width: 8px;
+    height: 8px;
+    background: var(--kbm-green-2);
+    border-radius: 50%;
+  }
+
+  .forum-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.9rem 2rem;
+    border-radius: 999px;
+    text-decoration: none;
+    font-size: 1.05rem;
+    font-weight: 600;
+    background: var(--kbm-green-2);
+    color: #fff;
+    box-shadow: 0 8px 20px rgba(82, 104, 45, 0.3);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  }
+
+  .forum-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(82, 104, 45, 0.35);
+    background: var(--kbm-green);
+  }
+
+  .forum-note {
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: #888;
+  }
+
+  .quick-links {
+    text-align: center;
+  }
+
+  .quick-links h3 {
+    font-size: 1.1rem;
+    color: var(--kbm-green);
+    margin-bottom: 1rem;
+  }
+
+  .links-grid {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .quick-link {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem 1.5rem;
+    background: #fff;
+    border-radius: 0.75rem;
+    text-decoration: none;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.15s ease, transform 0.15s ease;
+    min-width: 160px;
+  }
+
+  .quick-link:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .link-title {
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin-bottom: 0.25rem;
+  }
+
+  .link-desc {
+    font-size: 0.85rem;
+    color: #777;
+  }
+
+  @media (max-width: 600px) {
+    .community-page {
+      padding: 1.5rem 1rem 2rem;
     }
 
     .community-hero h1 {
       font-size: var(--text-xl);
     }
 
-    .community-hero p {
-      font-size: var(--text-base);
+    .community-card {
+      padding: 2rem 1.5rem;
     }
 
-    .discourse-iframe {
-      min-height: 700px;
-      height: calc(100vh - 250px);
-      border-radius: 4px;
+    .community-card h2 {
+      font-size: 1.25rem;
+    }
+
+    .links-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .quick-link {
+      width: 100%;
+      max-width: 280px;
     }
   }
 </style>
