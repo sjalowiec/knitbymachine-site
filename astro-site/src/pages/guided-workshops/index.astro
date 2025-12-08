@@ -41,6 +41,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
           <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-hero">
             Start Your Guided Workshop
           </a>
+          <div class="how-it-works-link">
+            <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+          </div>
           <p class="hero-note">
             You'll start by filling out a simple project planner so we can choose
             the right project and build your personal plan.
@@ -274,6 +277,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
           <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-included">
             Start Your Guided Workshop
           </a>
+          <div class="how-it-works-link">
+            <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+          </div>
         </div>
       </div>
     </section>
@@ -366,6 +372,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
           <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-fit">
             Start Your Guided Workshop
           </a>
+          <div class="how-it-works-link">
+            <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+          </div>
         </div>
       </div>
     </section>
@@ -413,10 +422,30 @@ const description = "A hands-on, personal workshop designed to help you make rea
         <a class="button button--primary button--large" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-final">
           Start Your Guided Workshop
         </a>
+        <div class="how-it-works-link">
+          <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+        </div>
       </div>
     </section>
 
   </main>
+
+  <!-- How It Works Modal -->
+  <div id="how-it-works-modal" class="modal hidden">
+    <div class="modal-overlay" data-modal-close="how-it-works"></div>
+    <div class="modal-content">
+      <button class="modal-close" data-modal-close="how-it-works">×</button>
+      <h2>How Your Guided Workshop Works</h2>
+
+      <ol class="modal-steps">
+        <li><strong>Join the workshop.</strong> You'll complete checkout and get immediate access to the intake form.</li>
+        <li><strong>Choose when to begin.</strong> Your 10 days do NOT start at payment. They begin when you submit your intake form—so you can start today, tomorrow, or whenever you're ready.</li>
+        <li><strong>Tell Sue about your project.</strong> Share what you want to finish (or begin) and where you need support.</li>
+        <li><strong>Get your first step.</strong> Sue reviews your intake and sends your personalized starting point.</li>
+        <li><strong>Move forward at your pace.</strong> Check in when you're ready. Sue responds with your next steps—no calls, no pressure, no overwhelm.</li>
+      </ol>
+    </div>
+  </div>
 </BaseLayout>
 
 <style>
@@ -794,4 +823,81 @@ const description = "A hands-on, personal workshop designed to help you make rea
       padding: 2rem 1.5rem;
     }
   }
+
+  /* How It Works Modal Link */
+  .how-it-works-link {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .how-it-works-link a {
+    font-size: 0.95rem;
+    text-decoration: underline;
+    color: #2C3A57;
+    cursor: pointer;
+  }
+
+  /* Modal Styles */
+  .modal.hidden {
+    display: none;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    position: relative;
+    background: white;
+    padding: 2rem;
+    max-width: 500px;
+    border-radius: 12px;
+    z-index: 10000;
+    margin: 1rem;
+  }
+
+  .modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .modal-steps {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .modal-steps li {
+    margin-bottom: 0.75rem;
+  }
 </style>
+
+<script>
+  document.querySelectorAll('[data-modal-open="how-it-works"]').forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      document.getElementById("how-it-works-modal").classList.remove("hidden");
+    });
+  });
+
+  document.querySelectorAll('[data-modal-close="how-it-works"]').forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("how-it-works-modal").classList.add("hidden");
+    });
+  });
+</script>
