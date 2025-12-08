@@ -1,0 +1,143 @@
+Replit, please update the file located at:
+
+/guided-workshops/index.astro
+
+Make the following changes ONLY:
+
+------------------------------------
+1) ADD A MODAL TRIGGER LINK UNDER ALL CTA BUTTONS
+------------------------------------
+
+Find every CTA button on this page. These are the buttons that currently say things like:
+
+"Start Your Guided Workshop"
+"Join the Guided Workshop"
+(or any similar CTA wording)
+
+Immediately AFTER each CTA button element, insert the following HTML block:
+
+<div class="how-it-works-link">
+  <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+</div>
+
+Notes:
+- Do NOT alter the CTA button markup.
+- Insert the above block directly beneath each CTA.
+- There should be exactly three inserted links (one for each CTA button).
+- Keep indentation consistent with surrounding code.
+
+------------------------------------
+2) ADD THE MODAL ITSELF AT THE BOTTOM OF THE FILE
+------------------------------------
+
+Before the closing </BaseLayout> or equivalent closing tag, insert this modal component:
+
+<div id="how-it-works-modal" class="modal hidden">
+  <div class="modal-overlay" data-modal-close="how-it-works"></div>
+  <div class="modal-content">
+    <button class="modal-close" data-modal-close="how-it-works">×</button>
+    <h2>How Your Guided Workshop Works</h2>
+
+    <ol class="modal-steps">
+      <li><strong>Join the workshop.</strong> You'll complete checkout and get immediate access to the intake form.</li>
+      <li><strong>Choose when to begin.</strong> Your 10 days do NOT start at payment. They begin when you submit your intake form—so you can start today, tomorrow, or whenever you're ready.</li>
+      <li><strong>Tell Sue about your project.</strong> Share what you want to finish (or begin) and where you need support.</li>
+      <li><strong>Get your first step.</strong> Sue reviews your intake and sends your personalized starting point.</li>
+      <li><strong>Move forward at your pace.</strong> Check in when you're ready. Sue responds with your next steps—no calls, no pressure, no overwhelm.</li>
+    </ol>
+  </div>
+</div>
+
+------------------------------------
+3) ADD MINIMAL CSS (INLINE OR IN EXISTING STYLE BLOCK)
+------------------------------------
+
+Add this inside the existing <style> tag OR create a new one at the bottom:
+
+<style>
+  .how-it-works-link {
+    text-align: center;
+    margin-top: 0.5rem;
+  }
+  .how-it-works-link a {
+    font-size: 0.95rem;
+    text-decoration: underline;
+    color: #2C3A57; /* KBM dark blue */
+    cursor: pointer;
+  }
+
+  .modal.hidden {
+    display: none;
+  }
+
+  .modal {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+  }
+
+  .modal-content {
+    position: relative;
+    background: white;
+    padding: 2rem;
+    max-width: 500px;
+    border-radius: 12px;
+    z-index: 10000;
+  }
+
+  .modal-close {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  .modal-steps {
+    margin-top: 1rem;
+    padding-left: 1.25rem;
+    line-height: 1.6;
+  }
+</style>
+
+------------------------------------
+4) ADD VERY SIMPLE JS TO OPEN/CLOSE THE MODAL
+------------------------------------
+
+Insert this at the bottom of the file, before the closing body/layout tag:
+
+<script>
+  document.querySelectorAll('[data-modal-open="how-it-works"]').forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      document.getElementById("how-it-works-modal").classList.remove("hidden");
+    });
+  });
+
+  document.querySelectorAll('[data-modal-close="how-it-works"]').forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.getElementById("how-it-works-modal").classList.add("hidden");
+    });
+  });
+</script>
+
+------------------------------------
+DO NOT:
+- Modify other text or sections.
+- Change CTA wording.
+- Change layout structure.
+- Rename files.
+- Alter routing.
+
+Only insert the modal triggers, modal HTML, minimal CSS, and JS as described.
