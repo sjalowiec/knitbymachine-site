@@ -1,0 +1,51 @@
+You are updating the KBM site.
+Create a new file at:
+/src/pages/guided-workshops/30-day-finish-flow/welcome.astro
+
+This page is the post-payment welcome page for the Guided Workshop.
+
+Requirements:
+
+Use the existing KBM layout structure and global styles.
+
+Include the KBM logo /images/guided_workshops.svg near the top as a small decorative element (not oversized).
+
+Use clean, semantic HTML with classes that match the site's current conventions (container, section spacing, h1, h2, p, button).
+
+Add two CTA buttons linking to:
+/guided-workshops/30-day-finish-flow/intake
+
+Include the following exact copy:
+
+H1:
+Welcome to Your Guided Workshop
+
+Subtitle paragraph:
+You’re officially in — I’m so glad you’re here.
+
+Section: What Happens Next
+This workshop is built around your project. Before we begin, I’ll ask a few simple questions so I can understand what you want to knit, what machine you’re using, and where you’d like extra support.
+
+This helps me create a plan that fits your goals, your machine, and your schedule.
+
+[Primary Button] Start Your Intake →
+Links to /guided-workshops/30-day-finish-flow/intake
+
+Section: A Quick Overview
+Here’s what you can expect next:
+
+Tell me about your project. A short form helps me understand your experience level and what you want to finish.
+
+I build your personal roadmap. You’ll receive clear, manageable steps — designed to help you make steady progress.
+
+You check in when you’re ready. No pressure, no deadlines. I respond to your updates and questions as soon as you complete each step.
+
+Section: You're in good hands
+If you’re feeling a mix of excitement and nerves, that’s completely normal. You’re not doing this alone — you’ll have guidance, encouragement, and a straightforward path forward.
+
+If anything feels unclear, just send a message through the Contact Sue page.
+
+[Primary Button] Start Your Intake →
+Links to /guided-workshops/30-day-finish-flow/intake
+
+Ensure the page is clean, responsive, and consistent with the KBM design system.
