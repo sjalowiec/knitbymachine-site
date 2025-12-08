@@ -12,12 +12,14 @@ const description = "A hands-on, personal workshop designed to help you make rea
     <section class="section section--hero">
       <div class="section-inner">
         <div class="hero-header">
-          <img
-            src="/images/guided_workshops.svg"
-            alt="Guided Workshops logo"
-            class="hero-logo"
-          />
-          <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
+          <div class="hero-title-row">
+            <img
+              src="/images/guided_workshops.svg"
+              alt="Guided Workshops logo"
+              class="hero-logo"
+            />
+            <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
+          </div>
           <p class="hero-subtitle">
             A hands-on, personal workshop designed to help you make real progress on a project you’re excited about—at a pace that feels calm and doable.
           </p>
@@ -37,7 +39,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
         <div class="hero-cta">
           <!-- TODO: Update href to the actual intake / sign-up page -->
           <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-hero">
-            Start My 30-Day Finish Flow
+            Start Your Guided Workshop
           </a>
           <p class="hero-note">
             You'll start by filling out a simple project planner so we can choose
@@ -267,6 +269,12 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
         <!-- ICONS PLACEHOLDER -->
         <!-- TODO: Optionally add small icons for plan, steps, feedback, quick cards, diagnostics -->
+
+        <div class="section-cta">
+          <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-included">
+            Start Your Guided Workshop
+          </a>
+        </div>
       </div>
     </section>
 
@@ -353,6 +361,12 @@ const description = "A hands-on, personal workshop designed to help you make rea
             </ul>
           </div>
         </div>
+
+        <div class="section-cta">
+          <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-fit">
+            Start Your Guided Workshop
+          </a>
+        </div>
       </div>
     </section>
 
@@ -397,7 +411,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
         </p>
         <!-- TODO: Update href to the actual intake / sign-up page -->
         <a class="button button--primary button--large" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-final">
-          Start My 30-Day Finish Flow
+          Start Your Guided Workshop
         </a>
       </div>
     </section>
@@ -433,10 +447,26 @@ const description = "A hands-on, personal workshop designed to help you make rea
     margin-bottom: 2rem;
   }
 
+  .hero-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
   .hero-logo {
-    width: 80px;
-    height: 80px;
-    margin-bottom: 1.5rem;
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    .hero-logo {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   .section--hero h1 {
@@ -471,6 +501,13 @@ const description = "A hands-on, personal workshop designed to help you make rea
     color: #5a6b47;
     margin-top: 1rem;
     font-style: italic;
+  }
+
+  /* Section CTA */
+  .section-cta {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
   }
 
   /* Placeholder Images */
