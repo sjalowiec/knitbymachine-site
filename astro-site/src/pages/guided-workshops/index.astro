@@ -1,92 +1,760 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import SectionHero from '../../components/SectionHero.astro';
 
-const title = "Guided Workshops";
-const description = "Premium, guided, no-call workshops where Sue supports you through your project.";
+const title = "The 30-Day Finish Flow: Studio Edition | Knit by Machine";
+const description = "A calm, personalized knitting plan that helps you make real progress — without overwhelm, wasted yarn, or pressure to keep up.";
 ---
 
 <BaseLayout {title} {description}>
-  <div class="page-container">
-    <SectionHero 
-      title="Guided Workshops" 
-      iconPath="/images/one-on-one_icon.png"
-      iconAlt="Guided Workshops icon"
-    />
+  <main class="page page--guided-workshop">
+    
+    <!-- Hero Section -->
+    <section class="section section--hero">
+      <div class="section-inner">
+        <div class="hero-header">
+          <img
+            src="/images/guided_workshops.svg"
+            alt="Guided Workshops logo"
+            class="hero-logo"
+          />
+          <h1 data-testid="text-page-title">The 30-Day Finish Flow: Studio Edition</h1>
+          <p class="hero-subtitle">
+            A calm, personalized knitting plan that helps you make real progress —
+            without overwhelm, wasted yarn, or pressure to keep up.
+          </p>
+        </div>
 
-    <div class="coming-soon-section">
-      <div class="coming-soon-badge">Coming Soon</div>
-      <h2 class="coming-soon-headline">Premium, guided support for your machine knitting projects</h2>
-      <p class="coming-soon-text">
-        Premium, guided, no-call workshops where Sue supports you through your project. Get personalized advice, troubleshooting help, and step-by-step guidance without scheduling calls.
-      </p>
-      <p class="coming-soon-text">
-        Whether you're working through a challenging pattern or starting a new project, guided workshops give you the support you need at your own pace.
-      </p>
-      <p class="coming-soon-note">
-        Check back soon for booking information and availability.
-      </p>
-    </div>
-  </div>
+        <!-- HERO IMAGE PLACEHOLDER -->
+        <!-- TODO: Replace the placeholder image below with a real photo:
+            - Sue at a knitting machine, or
+            - a clean, inviting machine setup
+        -->
+        <div class="hero-media">
+          <div class="placeholder-image">
+            <span>Hero Image Placeholder</span>
+          </div>
+        </div>
+
+        <div class="hero-cta">
+          <!-- TODO: Update href to the actual intake / sign-up page -->
+          <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-hero">
+            Start My 30-Day Finish Flow
+          </a>
+          <p class="hero-note">
+            You'll start by filling out a simple project planner so we can choose
+            the right project and build your personal plan.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- Problem / Fit Section -->
+    <section class="section section--problem">
+      <div class="section-inner">
+        <h2>If your machine has been sitting quietly…</h2>
+        <p>
+          …and you're not sure what to knit next — or how to start without messing
+          things up — this is for you.
+        </p>
+        <div class="grid grid--two">
+          <div>
+            <h3>You don't need:</h3>
+            <ul>
+              <li>Another giant course</li>
+              <li>Endless YouTube rabbit holes</li>
+              <li>Weekly Zoom calls</li>
+              <li>A basket of half-finished projects</li>
+            </ul>
+          </div>
+          <div>
+            <h3>You do need:</h3>
+            <ul>
+              <li>A clear project choice</li>
+              <li>A simple, realistic plan</li>
+              <li>One small step at a time</li>
+              <li>Expert eyes when it matters</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- What This Is / Is Not -->
+    <section class="section section--what-it-is">
+      <div class="section-inner">
+        <h2>What This Is (and What It's Not)</h2>
+        <p>
+          <strong>The 30-Day Finish Flow: Studio Edition</strong> is a
+          personalized, step-by-step knitting experience designed to help you:
+        </p>
+        <ul>
+          <li>Choose the <strong>right</strong> next project</li>
+          <li>Avoid wasted yarn and frustrating mistakes</li>
+          <li>Follow clear, doable steps</li>
+          <li>Get private guidance on your schedule</li>
+          <li>Feel calmer and more confident at your machine</li>
+        </ul>
+
+        <div class="callout callout--contrast">
+          <p><strong>This is not:</strong></p>
+          <ul>
+            <li>A cohort or group program</li>
+            <li>A weekly Zoom commitment</li>
+            <li>A big video library you're left to figure out alone</li>
+          </ul>
+          <p>
+            You work in small steps, at a pace that fits real life. No "falling
+            behind." No pressure to show up on camera.
+          </p>
+        </div>
+
+        <!-- THREE SMALL WINS GRAPHIC PLACEHOLDER -->
+        <!-- TODO: Replace with a simple graphic or icons showing:
+            1) Choose project
+            2) Follow steps
+            3) Build confidence
+        -->
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- You Choose the Project -->
+    <section class="section section--choose-project">
+      <div class="section-inner">
+        <h2>You Choose What You Want to Knit</h2>
+        <p>
+          You're not handed a random project. You begin with the
+          <strong> Ready • Set • Knit Project Planner</strong> — a quick, simple
+          way to tell me:
+        </p>
+        <ul>
+          <li>What machine you're using (LK150, Silver Reed, Brother, etc.)</li>
+          <li>What yarn you have (or want to use)</li>
+          <li>What you'd love to knit next</li>
+          <li>Where you feel unsure or stuck</li>
+        </ul>
+
+        <!-- PROJECT PLANNER IMAGE PLACEHOLDER -->
+        <!-- TODO: Replace the placeholder image with a mockup or screenshot of the planner -->
+        <div class="media media--planner">
+          <div class="placeholder-image">
+            <span>Project Planner Preview</span>
+          </div>
+        </div>
+
+        <p>
+          From there, I map out a <strong>custom 30-day plan</strong> built around
+          your project — not a generic one.
+        </p>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- How It Works -->
+    <section class="section section--how-it-works">
+      <div class="section-inner">
+        <h2>How It Works (Simple + Calm)</h2>
+        <ol class="steps-list">
+          <li>
+            <h3>1. Start with the Project Planner</h3>
+            <p>
+              Your private intake helps me understand your machine, your yarn, and
+              what you want to knit.
+            </p>
+          </li>
+          <li>
+            <h3>2. Receive Your Personalized Finish Plan</h3>
+            <p>
+              I translate your project into small, realistic steps designed for
+              success. No overwhelm. No guessing.
+            </p>
+          </li>
+          <li>
+            <h3>3. Work Through One Step at a Time</h3>
+            <p>
+              You focus on just one thing: <em>"What's my next small win?"</em>
+              When you finish a step, you send a quick photo or note.
+            </p>
+          </li>
+          <li>
+            <h3>4. Get Private Feedback — On Your Schedule</h3>
+            <p>
+              I review your work and send you clear corrections (if needed),
+              gentle adjustments, encouragement, and your next step. No meetings.
+              No camera. No pressure.
+            </p>
+          </li>
+          <li>
+            <h3>5. End the Month With Real Momentum</h3>
+            <p>
+              By the end of your 30-day flow, you'll have clear forward momentum
+              on a project you care about, understand your machine setup with more
+              confidence, and know exactly what to do next — without guessing.
+            </p>
+          </li>
+        </ol>
+
+        <!-- FINISHED PROJECT IMAGE PLACEHOLDER -->
+        <!-- TODO: Replace with a photo of a simple finished project or a tidy close-up of stitches -->
+        <div class="media media--finished-project">
+          <div class="placeholder-image">
+            <span>Finished Project Image</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- What You'll Learn -->
+    <section class="section section--skills">
+      <div class="section-inner">
+        <h2>What You'll Learn Along the Way</h2>
+        <p>Depending on your project, you may learn how to:</p>
+        <ul>
+          <li>Work clean cast-ons with waste yarn and ravel cord</li>
+          <li>Set tension in a way that actually works for your yarn</li>
+          <li>Check sponge bars so you don't waste time and yarn</li>
+          <li>Place weights for better, more even stitches</li>
+          <li>Create edge finishes that look tidy and intentional</li>
+          <li>Approach shaping without panic</li>
+          <li>Bind off in ways that behave and match your fabric</li>
+        </ul>
+        <p>
+          This is <strong>applied skill building</strong> — focused on what you're
+          actually knitting, not just theory.
+        </p>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- What's Included -->
+    <section class="section section--included">
+      <div class="section-inner">
+        <h2>What's Included</h2>
+        <ul class="included-list">
+          <li>
+            <strong>Personalized 30-Day Finish Plan</strong><br />
+            Built from your Project Planner intake.
+          </li>
+          <li>
+            <strong>One-step-at-a-time guidance</strong><br />
+            You always know your next small step.
+          </li>
+          <li>
+            <strong>Private written/video feedback</strong><br />
+            You choose your level of support.
+          </li>
+          <li>
+            <strong>Machine Quick Cards</strong><br />
+            LK150, Silver Reed, and Brother reference notes at a glance.
+          </li>
+          <li>
+            <strong>Fix-It-First diagnostics</strong><br />
+            Simple checks for sponge bar, tension mast, weights, and setup.
+          </li>
+          <li>
+            <strong>A project chosen with success in mind</strong><br />
+            We choose something realistic and meaningful — not overwhelming.
+          </li>
+        </ul>
+
+        <!-- ICONS PLACEHOLDER -->
+        <!-- TODO: Optionally add small icons for plan, steps, feedback, quick cards, diagnostics -->
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- Pricing / Levels -->
+    <section class="section section--pricing" id="pricing">
+      <div class="section-inner">
+        <h2>Choose Your Studio Level</h2>
+        <div class="grid grid--two pricing-grid">
+          <div class="card card--pricing" data-testid="card-pricing-core">
+            <h3>Studio Core — $297</h3>
+            <p>Perfect if you want structure, clarity, and expert eyes when it counts.</p>
+            <ul>
+              <li>Personalized 30-Day Finish Plan</li>
+              <li>Step-by-step guidance</li>
+              <li><strong>2 private feedback submissions</strong></li>
+              <li>Machine Quick Cards</li>
+              <li>Diagnostics + checklists</li>
+            </ul>
+            <a class="button button--secondary" href="/guided-workshops/30-day-finish-flow/intake?level=core" data-testid="button-pricing-core">
+              Choose Studio Core
+            </a>
+          </div>
+          <div class="card card--pricing card--featured" data-testid="card-pricing-plus">
+            <div class="featured-badge">Most Popular</div>
+            <h3>Studio Plus — $497</h3>
+            <p>For knitters who want deeper support.</p>
+            <ul>
+              <li>Everything in Studio Core</li>
+              <li><strong>4 private feedback submissions</strong></li>
+              <li>Priority response</li>
+              <li>Extended studio access</li>
+            </ul>
+            <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake?level=plus" data-testid="button-pricing-plus">
+              Choose Studio Plus
+            </a>
+          </div>
+        </div>
+
+        <!-- COMPARISON CHART PLACEHOLDER -->
+        <!-- TODO: If you prefer, replace the two cards above with a simple comparison table -->
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- Guarantee -->
+    <section class="section section--guarantee">
+      <div class="section-inner">
+        <h2>The First Steps Guarantee</h2>
+        <p>
+          Follow the early steps in your plan and send your progress as directed. If
+          you feel the experience isn't a good fit, email me within 30 days of
+          enrollment and I'll refund your registration.
+        </p>
+        <p class="guarantee-note">No drama. No hoops.</p>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- Fit / Not Fit -->
+    <section class="section section--fit">
+      <div class="section-inner">
+        <div class="grid grid--two">
+          <div>
+            <h2>This Is for You If…</h2>
+            <ul>
+              <li>You want confidence, not clutter</li>
+              <li>You want to finish, not flounder</li>
+              <li>You like calm guidance instead of busy groups</li>
+              <li>You value structure and clarity</li>
+              <li>You want knitting to feel good again</li>
+            </ul>
+          </div>
+          <div>
+            <h2>This Is Not for You If…</h2>
+            <ul>
+              <li>You want weekly group calls</li>
+              <li>You want to binge 40 videos</li>
+              <li>You don't want to take small steps</li>
+              <li>You prefer trends over steady skills</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- About Sue -->
+    <section class="section section--about">
+      <div class="section-inner">
+        <div class="grid grid--two about-grid">
+          <div class="about-image">
+            <!-- SUE PHOTO PLACEHOLDER -->
+            <!-- TODO: Replace with a real photo of Sue (ideally with a knitting machine) -->
+            <div class="placeholder-image placeholder-image--portrait">
+              <span>Sue Portrait</span>
+            </div>
+          </div>
+          <div class="about-content">
+            <h2>About Sue</h2>
+            <p>
+              I've spent decades helping machine knitters move from confusion to
+              confidence — not through pressure, but through clarity.
+            </p>
+            <p>
+              This Studio Edition is built the same way I teach: small wins, real
+              progress, and steady encouragement. You don't need to "keep up." You
+              just need the right next step.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="kbm-divider" />
+
+    <!-- Final CTA -->
+    <section class="section section--cta">
+      <div class="section-inner section-inner--center">
+        <h2>Ready to Begin?</h2>
+        <p>
+          Start with the Project Planner. Tell me what you want to knit — and I'll
+          create a calm, finishable path forward.
+        </p>
+        <!-- TODO: Update href to the actual intake / sign-up page -->
+        <a class="button button--primary button--large" href="/guided-workshops/30-day-finish-flow/intake" data-testid="button-cta-final">
+          Start My 30-Day Finish Flow
+        </a>
+      </div>
+    </section>
+
+  </main>
 </BaseLayout>
 
 <style>
-  .page-container {
-    max-width: 1200px;
+  .page--guided-workshop {
+    max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1.5rem 4rem;
   }
 
-  .coming-soon-section {
-    max-width: 700px;
-    margin: 0 auto;
-    text-align: center;
-    background-color: #f9fdf5;
-    border-radius: 16px;
-    padding: 3rem 2.5rem;
+  .section {
+    padding: 1.5rem 0;
   }
 
-  .coming-soon-badge {
-    display: inline-block;
-    background-color: #52682D;
-    color: white;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0.5rem 1.25rem;
-    border-radius: 50px;
+  .section-inner {
+    max-width: 100%;
+  }
+
+  .section-inner--center {
+    text-align: center;
+  }
+
+  /* Hero Section */
+  .section--hero {
+    text-align: center;
+  }
+
+  .hero-header {
+    margin-bottom: 2rem;
+  }
+
+  .hero-logo {
+    width: 80px;
+    height: 80px;
     margin-bottom: 1.5rem;
   }
 
-  .coming-soon-headline {
-    font-size: clamp(1.5rem, 3vw, 1.8rem);
+  .section--hero h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
     font-weight: 700;
-    color: #52682D;
-    line-height: 1.3;
-    margin: 0 0 1.5rem 0;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+    line-height: 1.2;
   }
 
-  .coming-soon-text {
-    font-size: clamp(1rem, 1.8vw, 1.15rem);
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    color: var(--kbm-green-2);
+    font-weight: 500;
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-media {
+    margin: 2rem 0;
+  }
+
+  .hero-cta {
+    margin-top: 2rem;
+  }
+
+  .hero-note {
+    font-size: 0.95rem;
+    color: #5a6b47;
+    margin-top: 1rem;
+    font-style: italic;
+  }
+
+  /* Placeholder Images */
+  .placeholder-image {
+    background: linear-gradient(135deg, #e9ece7 0%, #d4dbc8 100%);
+    border: 2px dashed var(--kbm-green-2);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+  }
+
+  .placeholder-image span {
+    color: var(--kbm-green);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  .placeholder-image--portrait {
+    min-height: 300px;
+  }
+
+  /* Buttons */
+  .button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button--primary {
+    background-color: var(--kbm-green);
+    color: #ffffff;
+    border-color: var(--kbm-green);
+  }
+
+  .button--primary:hover {
+    background-color: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+  }
+
+  .button--secondary {
+    background-color: transparent;
+    color: var(--kbm-green);
+    border-color: var(--kbm-green);
+  }
+
+  .button--secondary:hover {
+    background-color: var(--kbm-green);
+    color: #ffffff;
+  }
+
+  .button--large {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  /* Section Headings */
+  .section h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+  }
+
+  .section h3 {
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.75rem;
+  }
+
+  .section p {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
     color: #5a6b47;
     line-height: 1.7;
-    margin: 0 0 1rem 0;
+    margin-bottom: 1rem;
   }
 
-  .coming-soon-note {
-    font-size: clamp(0.95rem, 1.6vw, 1.05rem);
-    color: #738c52;
+  /* Lists */
+  .section ul,
+  .section ol {
+    padding-left: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .section li {
+    font-size: clamp(1rem, 1.5vw, 1.05rem);
+    color: #5a6b47;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Grid Layout */
+  .grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .grid--two {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Callout Box */
+  .callout {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .callout--contrast {
+    border-left: 4px solid var(--kbm-green-2);
+  }
+
+  .callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Steps List */
+  .steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .steps-list li {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--kbm-green-2);
+  }
+
+  .steps-list h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .steps-list p {
+    margin: 0;
+  }
+
+  /* Included List */
+  .included-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .included-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e8e0;
+  }
+
+  .included-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* Pricing Cards */
+  .pricing-grid {
+    margin-top: 1.5rem;
+  }
+
+  .card--pricing {
+    background: #ffffff;
+    border: 1px solid #e5e8e0;
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .card--featured {
+    border: 2px solid var(--kbm-green);
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.15);
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--kbm-green);
+    color: #ffffff;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .card--pricing h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card--pricing .button {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  /* Guarantee Section */
+  .section--guarantee {
+    text-align: center;
+  }
+
+  .section--guarantee .section-inner {
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  .guarantee-note {
+    font-weight: 600;
+    color: var(--kbm-green);
     font-style: italic;
-    margin: 2rem 0 0 0;
   }
 
+  /* About Section */
+  .about-grid {
+    align-items: center;
+  }
+
+  .about-content {
+    text-align: left;
+  }
+
+  /* Media Elements */
+  .media {
+    margin: 2rem 0;
+  }
+
+  /* Divider */
+  .kbm-divider {
+    border: none;
+    border-top: 1px solid #e5e8e0;
+    margin: 2rem 0;
+  }
+
+  /* Final CTA */
+  .section--cta {
+    background: linear-gradient(135deg, #f9fdf5 0%, #e9ece7 100%);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-top: 1rem;
+  }
+
+  .section--cta h2 {
+    margin-bottom: 1rem;
+  }
+
+  .section--cta p {
+    max-width: 550px;
+    margin: 0 auto 1.5rem;
+  }
+
+  /* Responsive Adjustments */
   @media (max-width: 768px) {
-    .page-container {
+    .page--guided-workshop {
       padding: 1.5rem 1rem 3rem;
     }
 
-    .coming-soon-section {
+    .hero-logo {
+      width: 60px;
+      height: 60px;
+    }
+
+    .card--pricing {
+      padding: 1.5rem;
+    }
+
+    .section--cta {
       padding: 2rem 1.5rem;
     }
   }
