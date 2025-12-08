@@ -49,17 +49,17 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Workshops";
-const description = "Join our live and on-demand workshops to develop your machine knitting skills. From beginner basics to advanced techniques.";
+const title = "Studio Sessions";
+const description = "Join our live and on-demand studio sessions to develop your machine knitting skills. From beginner basics to advanced techniques.";
 ---
 
 <BaseLayout {title} {description}>
   <div class="page-container">
     <SectionHero 
-      title="Workshops" 
+      title="Studio Sessions" 
       subtitle="Develop your machine knitting skills through guided instruction. Join live sessions or watch on-demand."
       iconPath="/images/workshop.svg"
-      iconAlt="Workshops"
+      iconAlt="Studio Sessions"
     >
       <div slot="toolbar" class="workshops-toolbar">
         <div class="search-wrapper">
@@ -701,7 +701,7 @@ const description = "Join our live and on-demand workshops to develop your machi
       : '';
     
     return `
-      <a href="/workshops/${entry.slug}" 
+      <a href="/studio-sessions/${entry.slug}" 
          class="workshop-card ${featuredClass}" 
          data-title="${entry.title.toLowerCase()}"
          data-tags="${(entry.tags || []).join(' ').toLowerCase()}">

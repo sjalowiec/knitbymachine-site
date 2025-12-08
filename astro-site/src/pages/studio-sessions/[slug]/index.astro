@@ -97,7 +97,7 @@ const ctaLabel = workshop.ctaLabel || "Watch the Workshop";
         )}
         
         <div class="hero-cta">
-          <a href={`/workshops/${slug}/watch`} class="cta-button primary" data-testid="link-watch-workshop">
+          <a href={`/studio-sessions/${slug}/watch`} class="cta-button primary" data-testid="link-watch-workshop">
             {ctaLabel}
           </a>
           {workshop.ctaNote && (
@@ -196,10 +196,10 @@ const ctaLabel = workshop.ctaLabel || "Watch the Workshop";
     <!-- Bottom CTA -->
     <section class="workshop-section bottom-cta-section">
       <div class="section-inner">
-        <a href={`/workshops/${slug}/watch`} class="cta-button primary large" data-testid="link-watch-bottom">
+        <a href={`/studio-sessions/${slug}/watch`} class="cta-button primary large" data-testid="link-watch-bottom">
           {ctaLabel}
         </a>
-        <a href="/workshops" class="back-to-catalog">← Back to All Workshops</a>
+        <a href="/studio-sessions" class="back-to-catalog">← Back to All Studio Sessions</a>
       </div>
     </section>
 

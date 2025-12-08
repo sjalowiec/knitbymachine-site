@@ -1,0 +1,84 @@
+Replit, please update my Knit by Machine site to reflect new naming for two sections. There are only two relevant folders with index files. I want the actual URLs, folders, and labels changed. DO NOT create redirects.
+
+GOAL
+- Change the public route /workshops to /studio-sessions
+- Change the public route /one-on-one to /guided-workshops
+- Update the MAIN MENU (header navigation) and page headings to match.
+- Do not add redirects.
+
+1) RENAME FOLDERS + INDEX FILES
+
+In my Astro pages directory (likely src/pages):
+
+- Find the folder and index file that currently serve /workshops:
+  - Most likely: src/pages/workshops/index.astro
+- Find the folder and index file that currently serve /one-on-one:
+  - Most likely: src/pages/one-on-one/index.astro
+
+Rename them as follows:
+
+- "workshops" folder -> "studio-sessions"
+  - Keep index.astro inside.
+- "one-on-one" folder -> "guided-workshops"
+  - Keep index.astro inside.
+
+After this change, the routes should be:
+/studio-sessions
+/guided-workshops
+
+2) UPDATE PAGE TITLES + HEADINGS
+
+In the file that now serves /studio-sessions (the renamed workshops page):
+- Change the main page title/heading from "Workshops" (or similar) to:
+  "Studio Sessions"
+- Update any intro text that describes “Workshops” so it now refers to “Studio Sessions” instead, keeping the meaning the same.
+
+In the file that now serves /guided-workshops (the renamed one-on-one page):
+- Change the main page title/heading from "1:1 with Sue" (or similar) to:
+  "Guided Workshops"
+- Update any intro text that describes “1:1 with Sue” so it now describes Guided Workshops instead. You can say something like:
+  "Premium, guided, no-call workshops where Sue supports you through your project."
+
+3) UPDATE THE MAIN MENU (HEADER NAVIGATION)
+
+Find my main navigation / header component. This is where the top-level site menu is defined. It may be in a layout file or a separate nav component.
+
+In the MAIN MENU under the Learn section:
+- Find the menu link that currently shows:
+  Label: "Workshops"
+  href: "/workshops"
+- Change it to:
+  Label: "Studio Sessions"
+  href: "/studio-sessions"
+
+In the MAIN MENU under the Connect (or similar) section:
+- Find the menu link that currently shows:
+  Label: "1:1 with Sue"
+  href: "/one-on-one"
+- Change it to:
+  Label: "Guided Workshops"
+  href: "/guided-workshops"
+
+4) UPDATE ANY OTHER INTERNAL LINKS
+
+Search the project for href="/workshops" and href="/one-on-one".
+
+- For any link that uses href="/workshops" and points to the old workshops page:
+  - Change it to href="/studio-sessions".
+
+- For any link that uses href="/one-on-one" and points to the old 1:1 page:
+  - Change it to href="/guided-workshops".
+
+Do NOT change these strings if they appear in comments or unused example code.
+
+5) IMPORTANT: NO REDIRECTS, NO EXTRA CHANGES
+
+- Do NOT add Netlify redirects or any redirect logic.
+- Do NOT introduce new pages.
+- Do NOT change styles, layouts, or components that are not directly involved in this change.
+
+Only:
+- rename the two folders for the routes,
+- update the main menu (header navigation),
+- update the page headings,
+- and fix any hrefs pointing to the old URLs.
