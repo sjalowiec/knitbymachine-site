@@ -11,12 +11,14 @@ const description = "You're officially in — get started with your personalized
     <!-- Hero Section -->
     <section class="section section--hero">
       <div class="section-inner section-inner--center">
-        <img
-          src="/images/guided_workshops.svg"
-          alt="Guided Workshops logo"
-          class="welcome-logo"
-        />
-        <h1 data-testid="text-page-title">Welcome to Your Guided Workshop</h1>
+        <div class="hero-title-row">
+          <img
+            src="/images/guided_workshops.svg"
+            alt="Guided Workshops logo"
+            class="welcome-logo"
+          />
+          <h1 data-testid="text-page-title">Welcome to Your Guided Workshop</h1>
+        </div>
         <p class="hero-subtitle">
           You're officially in — I'm so glad you're here.
         </p>
@@ -112,10 +114,26 @@ const description = "You're officially in — get started with your personalized
     padding-top: 2rem;
   }
 
+  .hero-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
   .welcome-logo {
     width: 64px;
     height: 64px;
-    margin-bottom: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    .welcome-logo {
+      width: 80px;
+      height: 80px;
+    }
   }
 
   .section--hero h1 {
