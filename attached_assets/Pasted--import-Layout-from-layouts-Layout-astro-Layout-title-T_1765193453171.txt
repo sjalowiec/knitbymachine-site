@@ -1,0 +1,373 @@
+---
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="The 30-Day Finish Flow: Studio Edition">
+  <main class="page page--guided-workshop">
+    {/* Hero Section */}
+    <section class="section section--hero">
+      <div class="section-inner">
+        <div class="hero-header">
+          <img
+            src="/images/guided_workshops.svg"
+            alt="Guided Workshops logo"
+            class="hero-logo"
+          />
+          <h1>The 30-Day Finish Flow: Studio Edition</h1>
+          <p class="hero-subtitle">
+            A calm, personalized knitting plan that helps you make real progress —
+            without overwhelm, wasted yarn, or pressure to keep up.
+          </p>
+        </div>
+
+        {/* HERO IMAGE PLACEHOLDER */}
+        {/* TODO: Replace the placeholder image below with a real photo:
+            - Sue at a knitting machine, or
+            - a clean, inviting machine setup
+        */}
+        <div class="hero-media">
+          <img
+            src="/images/placeholders/finish-flow-hero.jpg"
+            alt="Machine knitting workspace"
+          />
+        </div>
+
+        <div class="hero-cta">
+          {/* TODO: Update href to the actual intake / sign-up page */}
+          <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake">
+            Start My 30-Day Finish Flow
+          </a>
+          <p class="hero-note">
+            You’ll start by filling out a simple project planner so we can choose
+            the right project and build your personal plan.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Problem / Fit Section */}
+    <section class="section section--problem">
+      <div class="section-inner">
+        <h2>If your machine has been sitting quietly…</h2>
+        <p>
+          …and you're not sure what to knit next — or how to start without messing
+          things up — this is for you.
+        </p>
+        <div class="grid grid--two">
+          <div>
+            <h3>You don’t need:</h3>
+            <ul>
+              <li>Another giant course</li>
+              <li>Endless YouTube rabbit holes</li>
+              <li>Weekly Zoom calls</li>
+              <li>A basket of half-finished projects</li>
+            </ul>
+          </div>
+          <div>
+            <h3>You do need:</h3>
+            <ul>
+              <li>A clear project choice</li>
+              <li>A simple, realistic plan</li>
+              <li>One small step at a time</li>
+              <li>Expert eyes when it matters</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* What This Is / Is Not */}
+    <section class="section section--what-it-is">
+      <div class="section-inner">
+        <h2>What This Is (and What It’s Not)</h2>
+        <p>
+          <strong>The 30-Day Finish Flow: Studio Edition</strong> is a
+          personalized, step-by-step knitting experience designed to help you:
+        </p>
+        <ul>
+          <li>Choose the <strong>right</strong> next project</li>
+          <li>Avoid wasted yarn and frustrating mistakes</li>
+          <li>Follow clear, doable steps</li>
+          <li>Get private guidance on your schedule</li>
+          <li>Feel calmer and more confident at your machine</li>
+        </ul>
+
+        <div class="callout callout--contrast">
+          <p><strong>This is not:</strong></p>
+          <ul>
+            <li>A cohort or group program</li>
+            <li>A weekly Zoom commitment</li>
+            <li>A big video library you’re left to figure out alone</li>
+          </ul>
+          <p>
+            You work in small steps, at a pace that fits real life. No “falling
+            behind.” No pressure to show up on camera.
+          </p>
+        </div>
+
+        {/* THREE SMALL WINS GRAPHIC PLACEHOLDER */}
+        {/* TODO: Replace with a simple graphic or icons showing:
+            1) Choose project
+            2) Follow steps
+            3) Build confidence
+        */}
+      </div>
+    </section>
+
+    {/* You Choose the Project */}
+    <section class="section section--choose-project">
+      <div class="section-inner">
+        <h2>You Choose What You Want to Knit</h2>
+        <p>
+          You’re not handed a random project. You begin with the
+          <strong> Ready • Set • Knit Project Planner</strong> — a quick, simple
+          way to tell me:
+        </p>
+        <ul>
+          <li>What machine you’re using (LK150, Silver Reed, Brother, etc.)</li>
+          <li>What yarn you have (or want to use)</li>
+          <li>What you’d love to knit next</li>
+          <li>Where you feel unsure or stuck</li>
+        </ul>
+
+        {/* PROJECT PLANNER IMAGE PLACEHOLDER */}
+        {/* TODO: Replace the placeholder image with a mockup or screenshot of the planner */}
+        <div class="media media--planner">
+          <img
+            src="/images/placeholders/project-planner-preview.jpg"
+            alt="Ready • Set • Knit Project Planner preview"
+          />
+        </div>
+
+        <p>
+          From there, I map out a <strong>custom 30-day plan</strong> built around
+          your project — not a generic one.
+        </p>
+      </div>
+    </section>
+
+    {/* How It Works */}
+    <section class="section section--how-it-works">
+      <div class="section-inner">
+        <h2>How It Works (Simple + Calm)</h2>
+        <ol class="steps-list">
+          <li>
+            <h3>1. Start with the Project Planner</h3>
+            <p>
+              Your private intake helps me understand your machine, your yarn, and
+              what you want to knit.
+            </p>
+          </li>
+          <li>
+            <h3>2. Receive Your Personalized Finish Plan</h3>
+            <p>
+              I translate your project into small, realistic steps designed for
+              success. No overwhelm. No guessing.
+            </p>
+          </li>
+          <li>
+            <h3>3. Work Through One Step at a Time</h3>
+            <p>
+              You focus on just one thing: <em>“What’s my next small win?”</em>
+              When you finish a step, you send a quick photo or note.
+            </p>
+          </li>
+          <li>
+            <h3>4. Get Private Feedback — On Your Schedule</h3>
+            <p>
+              I review your work and send you clear corrections (if needed),
+              gentle adjustments, encouragement, and your next step. No meetings.
+              No camera. No pressure.
+            </p>
+          </li>
+          <li>
+            <h3>5. End the Month With Real Momentum</h3>
+            <p>
+              By the end of your 30-day flow, you’ll have clear forward momentum
+              on a project you care about, understand your machine setup with more
+              confidence, and know exactly what to do next — without guessing.
+            </p>
+          </li>
+        </ol>
+
+        {/* FINISHED PROJECT IMAGE PLACEHOLDER */}
+        {/* TODO: Replace with a photo of a simple finished project or a tidy close-up of stitches */}
+        <div class="media media--finished-project">
+          <img
+            src="/images/placeholders/finished-project.jpg"
+            alt="Finished machine knit project"
+          />
+        </div>
+      </div>
+    </section>
+
+    {/* What You’ll Learn */}
+    <section class="section section--skills">
+      <div class="section-inner">
+        <h2>What You’ll Learn Along the Way</h2>
+        <p>Depending on your project, you may learn how to:</p>
+        <ul>
+          <li>Work clean cast-ons with waste yarn and ravel cord</li>
+          <li>Set tension in a way that actually works for your yarn</li>
+          <li>Check sponge bars so you don’t waste time and yarn</li>
+          <li>Place weights for better, more even stitches</li>
+          <li>Create edge finishes that look tidy and intentional</li>
+          <li>Approach shaping without panic</li>
+          <li>Bind off in ways that behave and match your fabric</li>
+        </ul>
+        <p>
+          This is <strong>applied skill building</strong> — focused on what you’re
+          actually knitting, not just theory.
+        </p>
+      </div>
+    </section>
+
+    {/* What’s Included */}
+    <section class="section section--included">
+      <div class="section-inner">
+        <h2>What’s Included</h2>
+        <ul class="included-list">
+          <li>
+            <strong>Personalized 30-Day Finish Plan</strong><br />
+            Built from your Project Planner intake.
+          </li>
+          <li>
+            <strong>One-step-at-a-time guidance</strong><br />
+            You always know your next small step.
+          </li>
+          <li>
+            <strong>Private written/video feedback</strong><br />
+            You choose your level of support.
+          </li>
+          <li>
+            <strong>Machine Quick Cards</strong><br />
+            LK150, Silver Reed, and Brother reference notes at a glance.
+          </li>
+          <li>
+            <strong>Fix-It-First diagnostics</strong><br />
+            Simple checks for sponge bar, tension mast, weights, and setup.
+          </li>
+          <li>
+            <strong>A project chosen with success in mind</strong><br />
+            We choose something realistic and meaningful — not overwhelming.
+          </li>
+        </ul>
+
+        {/* ICONS PLACEHOLDER */}
+        {/* TODO: Optionally add small icons for plan, steps, feedback, quick cards, diagnostics */}
+      </div>
+    </section>
+
+    {/* Pricing / Levels */}
+    <section class="section section--pricing">
+      <div class="section-inner">
+        <h2>Choose Your Studio Level</h2>
+        <div class="grid grid--two">
+          <div class="card card--pricing">
+            <h3>Studio Core — $297</h3>
+            <p>Perfect if you want structure, clarity, and expert eyes when it counts.</p>
+            <ul>
+              <li>Personalized 30-Day Finish Plan</li>
+              <li>Step-by-step guidance</li>
+              <li><strong>2 private feedback submissions</strong></li>
+              <li>Machine Quick Cards</li>
+              <li>Diagnostics + checklists</li>
+            </ul>
+          </div>
+          <div class="card card--pricing card--featured">
+            <h3>Studio Plus — $497</h3>
+            <p>For knitters who want deeper support.</p>
+            <ul>
+              <li>Everything in Studio Core</li>
+              <li><strong>4 private feedback submissions</strong></li>
+              <li>Priority response</li>
+              <li>Extended studio access</li>
+            </ul>
+          </div>
+        </div>
+
+        {/* COMPARISON CHART PLACEHOLDER */}
+        {/* TODO: If you prefer, replace the two cards above with a simple comparison table */}
+      </div>
+    </section>
+
+    {/* Guarantee */}
+    <section class="section section--guarantee">
+      <div class="section-inner">
+        <h2>The First Steps Guarantee</h2>
+        <p>
+          Follow the early steps in your plan and send your progress as directed. If
+          you feel the experience isn’t a good fit, email me within 30 days of
+          enrollment and I’ll refund your registration.
+        </p>
+        <p>No drama. No hoops.</p>
+      </div>
+    </section>
+
+    {/* Fit / Not Fit */}
+    <section class="section section--fit">
+      <div class="section-inner grid grid--two">
+        <div>
+          <h2>This Is for You If…</h2>
+          <ul>
+            <li>You want confidence, not clutter</li>
+            <li>You want to finish, not flounder</li>
+            <li>You like calm guidance instead of busy groups</li>
+            <li>You value structure and clarity</li>
+            <li>You want knitting to feel good again</li>
+          </ul>
+        </div>
+        <div>
+          <h2>This Is Not for You If…</h2>
+          <ul>
+            <li>You want weekly group calls</li>
+            <li>You want to binge 40 videos</li>
+            <li>You don’t want to take small steps</li>
+            <li>You prefer trends over steady skills</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* About Sue */}
+    <section class="section section--about">
+      <div class="section-inner grid grid--two">
+        <div>
+          {/* SUE PHOTO PLACEHOLDER */}
+          {/* TODO: Replace with a real photo of Sue (ideally with a knitting machine) */}
+          <img
+            src="/images/placeholders/sue-portrait.jpg"
+            alt="Sue from Knit by Machine"
+          />
+        </div>
+        <div>
+          <h2>About Sue</h2>
+          <p>
+            I’ve spent decades helping machine knitters move from confusion to
+            confidence — not through pressure, but through clarity.
+          </p>
+          <p>
+            This Studio Edition is built the same way I teach: small wins, real
+            progress, and steady encouragement. You don’t need to “keep up.” You
+            just need the right next step.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* Final CTA */}
+    <section class="section section--cta">
+      <div class="section-inner section-inner--center">
+        <h2>Ready to Begin?</h2>
+        <p>
+          Start with the Project Planner. Tell me what you want to knit — and I’ll
+          create a calm, finishable path forward.
+        </p>
+        {/* TODO: Update href to the actual intake / sign-up page */}
+        <a class="button button--primary" href="/guided-workshops/30-day-finish-flow/intake">
+          Start My 30-Day Finish Flow
+        </a>
+      </div>
+    </section>
+  </main>
+</Layout>
