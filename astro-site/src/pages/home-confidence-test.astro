@@ -551,4 +551,145 @@ const description = "You can knit beautiful things on your machine. Knit by Mach
       font-size: 1.5rem;
     }
   }
+
+  /* ========== WHERE ARE YOU SECTION (4-Card Entry Tracks) ========== */
+  .kbm-where-section {
+    background-color: #ffffff;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .kbm-where-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .kbm-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .kbm-section-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-section-subtitle {
+    color: #4d5a48;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .kbm-hex-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .kbm-hex-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .kbm-hex-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .kbm-hex-card {
+    background-color: #ffffff;
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.25rem;
+    border: 2px solid #c7d8a4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kbm-hex-card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green);
+  }
+
+  .kbm-hex-card--link {
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .kbm-hex-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kbm-hex-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .kbm-hex-card h3 {
+    font-size: 1rem;
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    line-height: 1.35;
+  }
+
+  .kbm-hex-card p {
+    font-size: 0.9rem;
+    color: #4f5a4b;
+    line-height: 1.5;
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-highlight {
+    font-weight: 600;
+    color: var(--kbm-green);
+    font-style: italic;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn.primary {
+    background-color: var(--kbm-green);
+    color: #fff;
+  }
+
+  .btn.primary:hover {
+    background-color: #445626;
+  }
+
+  .kbm-hex-card .btn {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+  }
+
+  .pulse-once {
+    display: contents;
+  }
 </style>
