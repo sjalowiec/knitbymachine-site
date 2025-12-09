@@ -1,0 +1,264 @@
+You are an experienced Astro + HTML/CSS developer.
+
+File to edit:
+
+/src/pages/home-confidence-test.astro
+
+This file already contains:
+
+<section id="confidence-path" ...>
+
+An <ol> with Confidence Path pills inside
+
+A <p id="confidence-description"> under the pills
+
+A <script> that updates the description text
+
+A <style> block with .confidence- classes
+
+Goal
+
+Update only the Confidence Path section to:
+
+Show a horizontal line behind the pills so they look like a path.
+
+Spread the pills across the available width on larger screens.
+
+Soften the description animation (slower and less movement).
+
+Replace the circular number badges with SVG hex icons:
+
+/hex1.svg
+
+/hex2.svg
+
+/hex3.svg
+
+/hex4.svg
+
+/hex5.svg
+
+Do not change the “Choose Your Entry Track” card section or any other parts of the page.
+
+1) Update the HTML inside the Confidence Path <section>
+
+Locate:
+
+<section id="confidence-path" ...>
+  ...
+  <ol ...>
+    <li>
+      <button ...>
+        <span class="confidence-pill-number">1</span>
+        <span class="confidence-pill-label">Orientation</span>
+      </button>
+    </li>
+    <!-- etc. -->
+  </ol>
+
+  <p id="confidence-description" ...>...</p>
+  ...
+</section>
+
+
+Inside this <section>, replace only the contents of the <ol> with this markup that uses the new SVG icons:
+
+<ol class="confidence-path-list">
+  <li>
+    <button
+      type="button"
+      class="confidence-pill"
+      data-description="Get your bearings so you know exactly where you are and what support is available."
+    >
+      <img src="/hex1.svg" alt="Step 1" class="confidence-pill-icon" />
+      <span class="confidence-pill-label">Orientation</span>
+    </button>
+  </li>
+  <li>
+    <button
+      type="button"
+      class="confidence-pill"
+      data-description="Build the essential skills and setup that make everything else easier and more enjoyable."
+    >
+      <img src="/hex2.svg" alt="Step 2" class="confidence-pill-icon" />
+      <span class="confidence-pill-label">Foundations</span>
+    </button>
+  </li>
+  <li>
+    <button
+      type="button"
+      class="confidence-pill"
+      data-description="Pick the path that matches your goals, your machine, and your current comfort level."
+    >
+      <img src="/hex3.svg" alt="Step 3" class="confidence-pill-icon" />
+      <span class="confidence-pill-label">Choose Your Entry Track</span>
+    </button>
+  </li>
+  <li>
+    <button
+      type="button"
+      class="confidence-pill"
+      data-description="Complete a small, finishable project that builds trust in yourself and momentum at the machine."
+    >
+      <img src="/hex4.svg" alt="Step 4" class="confidence-pill-icon" />
+      <span class="confidence-pill-label">First Win</span>
+    </button>
+  </li>
+  <li>
+    <button
+      type="button"
+      class="confidence-pill"
+      data-description="Grow your skills with new tools, techniques, and projects at your own pace."
+    >
+      <img src="/hex5.svg" alt="Step 5" class="confidence-pill-icon" />
+      <span class="confidence-pill-label">Explore &amp; Expand</span>
+    </button>
+  </li>
+</ol>
+
+
+Leave the <p id="confidence-description"> and <script> in this section in place (the script was already updated earlier to handle the animation; don’t change it).
+
+2) Update / add CSS rules to style the line, spacing, icons, and softer animation
+
+In the <style> block at the bottom of home-confidence-test.astro, adjust/add the following:
+
+2a. Confidence path list (line behind + spacing + layering)
+
+If there is an existing .confidence-path-list rule, replace it with this; otherwise add it:
+
+.confidence-path-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.25rem 0 0.75rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;              /* more space between pills */
+  position: relative;
+}
+
+/* horizontal line behind the pills */
+.confidence-path-list::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 5%;
+  right: 5%;
+  height: 2px;
+  background-color: #c5cfb0;   /* soft green-gray line */
+  z-index: 0;
+}
+
+
+Make sure .confidence-pill has position: relative and z-index: 1 so it sits on top of the line. If it doesn’t, update/ensure this rule exists:
+
+.confidence-pill {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.4rem 1rem;
+  border-radius: 999px;
+  background-color: #ffffff;
+  border: 1px solid #d6dec6;
+  font-size: 0.9rem;
+  color: #2c3a57;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.confidence-pill:hover,
+.confidence-pill:focus {
+  border-color: #6e8b3d;
+  box-shadow: 0 0 0 2px rgba(110, 139, 61, 0.18);
+  outline: none;
+}
+
+
+To spread the pills across the width on larger screens, add this media query:
+
+@media (min-width: 900px) {
+  .confidence-path-list {
+    justify-content: space-between;
+    gap: 1.75rem;
+  }
+}
+
+2b. SVG icon styling
+
+Add a rule for the SVG icons used in the pills:
+
+.confidence-pill-icon {
+  width: 1.6rem;
+  height: 1.6rem;
+  display: block;
+}
+
+
+Keep .confidence-pill-label as:
+
+.confidence-pill-label {
+  white-space: nowrap;
+}
+
+
+(If it already exists, leave it.)
+
+2c. Softer description animation
+
+Find the .confidence-description + animation rules you added earlier and replace them with this more subtle version:
+
+.confidence-description {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2c3a57;
+  background-color: #ffffff;
+  border-left: 4px solid #6e8b3d;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.confidence-description-animate {
+  animation: confidenceDescriptionIn 280ms ease-out;
+}
+
+@keyframes confidenceDescriptionIn {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+This keeps the “fly in” effect but slower and with less vertical movement, so it doesn’t feel jumpy.
+
+Final Output
+
+Return the full updated contents of:
+
+/src/pages/home-confidence-test.astro
+
+with:
+
+Confidence Path <ol> updated to use the 5 SVG hex icons.
+
+.confidence-path-list showing a visible line behind pills and spreading pills across the strip (especially on larger screens).
+
+.confidence-pill layered above the line.
+
+.confidence-description animation softened.
+
+All other sections (hero, What You’ll Find Here, Choose Your Entry Track, etc.) unchanged.
