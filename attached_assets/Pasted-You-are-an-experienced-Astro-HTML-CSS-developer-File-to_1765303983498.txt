@@ -1,0 +1,134 @@
+You are an experienced Astro + HTML/CSS developer.
+
+File to edit:
+
+/src/pages/home-confidence-test.astro
+
+This file already contains a Confidence Path section with:
+
+<section id="confidence-path" ...>
+
+an <ol> of pills
+
+a <p id="confidence-description">
+
+a <script> that updates the description text
+
+Task
+
+Update only the Confidence Path behavior and styling:
+
+Make the description text under the pills animate in (fade + slide up) whenever it changes.
+
+Change the number badge background to a green color.
+
+Keep the HTML structure as-is (you do not need to change the pills or description markup).
+
+Do not edit the “Choose Your Entry Track” section or any other sections.
+
+1) Update the <script> inside the Confidence Path section
+
+In home-confidence-test.astro, find the <script> that targets #confidence-path and updates #confidence-description.
+
+Replace the entire script block with this:
+
+<script>
+  const section = document.getElementById('confidence-path');
+  if (section) {
+    const pills = section.querySelectorAll('[data-description]');
+    const desc = section.querySelector('#confidence-description');
+
+    pills.forEach((pill) => {
+      const update = () => {
+        if (!desc) return;
+
+        // change the text
+        desc.textContent = pill.dataset.description || '';
+
+        // retrigger animation
+        desc.classList.remove('confidence-description-animate');
+        // force reflow so the animation can restart
+        void desc.offsetWidth;
+        desc.classList.add('confidence-description-animate');
+      };
+
+      pill.addEventListener('mouseenter', update);
+      pill.addEventListener('focus', update);
+      pill.addEventListener('click', update);
+    });
+  }
+</script>
+
+2) Add / adjust CSS in the <style> block
+
+At the bottom of home-confidence-test.astro, inside your existing <style> block:
+
+Update the number badge color
+Find the .confidence-pill-number rule (if it exists) and make it:
+
+.confidence-pill-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: 50%;
+  background-color: #52682d; /* KBM green */
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+
+(If no .confidence-pill-number rule exists, add this one.)
+
+Later, when I provide an SVG hex icon, you can drop it inside this element or replace this element entirely and keep the rest of the layout unchanged.
+
+Add the description callout + animation
+
+Add these new rules (or replace the existing .confidence-description if it’s already there):
+
+.confidence-description {
+  margin-top: 0.75rem;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #2c3a57;
+  background-color: #ffffff;
+  border-left: 4px solid #6e8b3d;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.confidence-description-animate {
+  animation: confidenceDescriptionIn 220ms ease-out;
+}
+
+@keyframes confidenceDescriptionIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+Final Output
+
+Return the full updated contents of:
+
+/src/pages/home-confidence-test.astro
+
+with:
+
+The Confidence Path <script> replaced as shown above
+
+.confidence-pill-number updated to green
+
+.confidence-description + animation rules added
+
+All other sections and styling unchanged

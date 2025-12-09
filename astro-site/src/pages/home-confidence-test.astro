@@ -126,9 +126,13 @@ const description = "You can knit beautiful things on your machine. Knit by Mach
 
         pills.forEach((pill) => {
           const update = () => {
-            if (desc) {
-              desc.textContent = pill.dataset.description || '';
-            }
+            if (!desc) return;
+
+            desc.textContent = pill.dataset.description || '';
+
+            desc.classList.remove('confidence-description-animate');
+            void desc.offsetWidth;
+            desc.classList.add('confidence-description-animate');
           };
 
           pill.addEventListener('mouseenter', update);
@@ -421,8 +425,8 @@ const description = "You can knit beautiful things on your machine. Knit by Mach
     justify-content: center;
     width: 1.25rem;
     height: 1.25rem;
-    border-radius: 999px;
-    background-color: #2c3a57;
+    border-radius: 50%;
+    background-color: #52682d;
     color: #ffffff;
     font-size: 0.7rem;
     font-weight: 600;
@@ -434,8 +438,31 @@ const description = "You can knit beautiful things on your machine. Knit by Mach
 
   .confidence-description {
     margin-top: 0.75rem;
-    font-size: 0.9rem;
-    color: #333a2d;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #2c3a57;
+    background-color: #ffffff;
+    border-left: 4px solid #6e8b3d;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .confidence-description-animate {
+    animation: confidenceDescriptionIn 220ms ease-out;
+  }
+
+  @keyframes confidenceDescriptionIn {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   /* Legacy Hero Content Styles (for compatibility) */
