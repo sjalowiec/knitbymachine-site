@@ -1,0 +1,88 @@
+You are an experienced Astro + HTML/CSS developer.
+I’m building a site called Knit by Machine (KBM).
+
+Goal
+
+Update my Confidence Path test page so it also includes my existing 4 clickable “entry track” cards from the homepage.
+
+Do NOT modify the real homepage file.
+
+Only edit the test page.
+
+Files involved
+
+Real homepage: /src/pages/index.astro (read-only, do not change)
+
+Confidence Path test page: /src/pages/home-confidence-test.astro (edit this)
+
+Step 1 – Find the 4-card section on the homepage
+
+In /src/pages/index.astro:
+
+Locate the section that contains this text in the HTML:
+
+I just opened the box... where do I start?
+
+I know the basics. I want to build skills.
+
+I want to knit an actual project.
+
+Something went wrong.
+
+This section is my 4-card entry track block.
+It includes the headings, the short phase descriptions, and the buttons:
+
+Get Started
+
+Explore Skill Builders
+
+Ready Set Knit
+
+Troubleshoot
+
+Copy the entire section element, including its container div, grid, cards, buttons, and all existing classes and links.
+Do not change anything in this section’s markup when you copy it.
+
+Important: Do not modify or delete anything in index.astro. Use it only as a reference for copying.
+
+Step 2 – Insert the copied section into the Confidence Path test page
+
+Open /src/pages/home-confidence-test.astro.
+
+This file already has a <Layout> wrapper and a <main> element.
+
+Inside <main>, there is a section for “The Confidence Path” (the 5 informational boxes).
+
+Do the following:
+
+Find the section whose heading text is “The Confidence Path” (this is the 5-step Confidence Path area, possibly using id="confidence-path").
+
+Immediately after that Confidence Path section, insert a new <section> that contains the copied 4-card entry track block from index.astro.
+
+At the top of this new section, add a heading:
+
+<section class="py-10">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2 class="text-2xl font-semibold mb-4">Choose Your Entry Track</h2>
+    <!-- pasted 4-card grid goes here -->
+  </div>
+</section>
+
+
+Place the copied 4-card grid inside the inner <div> (below the <h2>), preserving the original card structure and classes exactly as they appear on the homepage.
+
+Do not remove or alter any other sections already on home-confidence-test.astro (hero, What You’ll Find Here, etc.).
+The only change should be adding this new “Choose Your Entry Track” section with the 4 cards.
+
+Step 3 – Final check
+
+When you’re done, /src/pages/home-confidence-test.astro should:
+
+Still import and use the same Layout component at the top.
+
+Still contain the hero, What You’ll Find Here, and The Confidence Path (5 boxes).
+
+Now also include a new “Choose Your Entry Track” section directly after The Confidence Path, using the exact same 4 cards (markup, classes, buttons, links) as the homepage.
+
+Return the full updated contents of /src/pages/home-confidence-test.astro only.
+Do not output or modify any other file.
