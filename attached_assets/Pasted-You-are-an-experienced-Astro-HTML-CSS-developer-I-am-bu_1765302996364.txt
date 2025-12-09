@@ -1,0 +1,376 @@
+You are an experienced Astro + HTML/CSS developer.
+I am building a new homepage test file called home-confidence-test.astro using a Confidence Path section and 4 entry-track cards.
+Goal
+Edit the file:
+/src/pages/home-confidence-test.astro
+Make three updates:
+
+
+Reduce the padding at the top of the hero section.
+
+
+Replace the hero image placeholder with a real image:
+https://knitbymachine.com/images/machine-knitting-cast-on.webp
+
+
+Replace the existing Confidence Path section with a pill-style strip where hovering or clicking each pill updates a single description line below.
+
+
+
+Important:
+
+
+Do not modify /src/pages/index.astro.
+
+
+Do not modify the “Choose Your Entry Track” 4-card section (leave its markup and classes exactly as they are).
+
+
+
+Use regular CSS classes, not Tailwind utility classes.
+If needed, define new CSS rules inside a <style> block in this Astro file.
+
+1) Update the hero section
+Inside <main>, locate the existing hero <section> near the top. It currently uses utility classes like py-16, grid layout, and a dashed “Image placeholder” box.
+Replace the entire hero <section> element with the following markup that uses named CSS classes instead of Tailwind utilities:
+<section class="hero-section">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Knit by Machine</p>
+      <h1 class="hero-heading">Machine Knitting Made Clear, Calm, and Doable</h1>
+      <p class="hero-subhead">
+        You can knit beautiful things on your machine.<br />
+        Knit by Machine gives you the tools, guidance, and confidence to make it happen.
+      </p>
+      <div class="hero-buttons">
+        <a href="#confidence-path" class="btn btn-primary">Start Your Confidence Path</a>
+        <a href="/tools" class="btn btn-secondary">Explore Tools &amp; Patterns</a>
+      </div>
+    </div>
+
+    <div class="hero-image">
+      <img
+        src="https://knitbymachine.com/images/machine-knitting-cast-on.webp"
+        alt="Machine knitting cast on"
+      />
+    </div>
+  </div>
+</section>
+
+Notes:
+
+
+The padding will be controlled via CSS on .hero-section (smaller than before).
+
+
+The placeholder box is replaced with the actual image in .hero-image.
+
+
+
+2) Replace the Confidence Path section with pills + dynamic description
+Find the section whose heading is currently “Your Confidence Path”.
+It may still be using your earlier pill markup.
+Replace that entire section (from <section ...> to </section>) with this version that uses CSS classes and a description paragraph:
+<section id="confidence-path" class="confidence-path">
+  <div class="confidence-inner">
+    <h2 class="confidence-heading">Your Confidence Path</h2>
+    <p class="confidence-intro">
+      You don’t have to do everything at once — you’re simply choosing your best next step.
+    </p>
+
+    <ol class="confidence-pill-list">
+      <li>
+        <button
+          type="button"
+          class="confidence-pill"
+          data-description="Get your bearings so you know exactly where you are and what support is available."
+        >
+          <span class="confidence-pill-number">1</span>
+          <span class="confidence-pill-label">Orientation</span>
+        </button>
+      </li>
+
+      <li>
+        <button
+          type="button"
+          class="confidence-pill"
+          data-description="Build the essential skills and setup that make everything else easier and more enjoyable."
+        >
+          <span class="confidence-pill-number">2</span>
+          <span class="confidence-pill-label">Foundations</span>
+        </button>
+      </li>
+
+      <li>
+        <button
+          type="button"
+          class="confidence-pill"
+          data-description="Pick the path that matches your goals, your machine, and your current comfort level."
+        >
+          <span class="confidence-pill-number">3</span>
+          <span class="confidence-pill-label">Choose Your Entry Track</span>
+        </button>
+      </li>
+
+      <li>
+        <button
+          type="button"
+          class="confidence-pill"
+          data-description="Complete a small, finishable project that builds trust in yourself and momentum at the machine."
+        >
+          <span class="confidence-pill-number">4</span>
+          <span class="confidence-pill-label">First Win</span>
+        </button>
+      </li>
+
+      <li>
+        <button
+          type="button"
+          class="confidence-pill"
+          data-description="Grow your skills with new tools, techniques, and projects at your own pace."
+        >
+          <span class="confidence-pill-number">5</span>
+          <span class="confidence-pill-label">Explore &amp; Expand</span>
+        </button>
+      </li>
+    </ol>
+
+    <p id="confidence-description" class="confidence-description">
+      Get your bearings so you know exactly where you are and what support is available.
+    </p>
+  </div>
+</section>
+
+<script>
+  const section = document.getElementById('confidence-path');
+  if (section) {
+    const pills = section.querySelectorAll('[data-description]');
+    const desc = section.querySelector('#confidence-description');
+
+    pills.forEach((pill) => {
+      const update = () => {
+        if (desc) {
+          desc.textContent = pill.dataset.description || '';
+        }
+      };
+
+      pill.addEventListener('mouseenter', update);
+      pill.addEventListener('focus', update);
+      pill.addEventListener('click', update);
+    });
+  }
+</script>
+
+This keeps the text light on the page and shows the full sentence when the user hovers, focuses, or taps a pill.
+
+3) Add CSS styles (no Tailwind utilities)
+At the bottom of home-confidence-test.astro, after the existing markup (but before any closing tags required by Astro), add a <style> block that defines the classes used above.
+If there is already a <style> block, you may append these rules to it; otherwise create a new one:
+<style>
+  .hero-section {
+    padding: 3rem 0 2.5rem;
+    background-color: #f5f7ee;
+  }
+
+  .hero-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-inner {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .hero-text {
+    flex: 1 1 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #52682d;
+  }
+
+  .hero-heading {
+    font-size: 2.1rem;
+    line-height: 1.2;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: #2c3a57;
+  }
+
+  .hero-subhead {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #455040;
+    margin: 0 0 1.5rem;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .btn-primary {
+    background-color: #6e8b3d;
+    color: #ffffff;
+    border-color: #6e8b3d;
+  }
+
+  .btn-primary:hover {
+    background-color: #52682d;
+    border-color: #52682d;
+  }
+
+  .btn-secondary {
+    background-color: #ffffff;
+    color: #2c3a57;
+    border-color: #c5cfb0;
+  }
+
+  .btn-secondary:hover {
+    background-color: #f5f7ee;
+  }
+
+  .hero-image {
+    flex: 1 1 0;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    min-height: 12rem;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .confidence-path {
+    padding: 2.5rem 0;
+    background-color: #f5f7ee;
+    border-top: 1px solid #e1e5d8;
+    border-bottom: 1px solid #e1e5d8;
+  }
+
+  .confidence-inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .confidence-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: #2c3a57;
+  }
+
+  .confidence-intro {
+    font-size: 0.9rem;
+    color: #555f4a;
+    margin: 0 0 0.75rem;
+  }
+
+  .confidence-pill-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .confidence-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.8rem;
+    border-radius: 999px;
+    background-color: #ffffff;
+    border: 1px solid #d6dec6;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    font-size: 0.85rem;
+    color: #2c3a57;
+    cursor: pointer;
+  }
+
+  .confidence-pill:hover,
+  .confidence-pill:focus {
+    border-color: #6e8b3d;
+    outline: none;
+  }
+
+  .confidence-pill-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 999px;
+    background-color: #2c3a57;
+    color: #ffffff;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  .confidence-pill-label {
+    white-space: nowrap;
+  }
+
+  .confidence-description {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #333a2d;
+  }
+</style>
+
+Do not remove or alter any existing styles that may already be in the file; just append these.
+
+Final Output
+Return the full updated contents of:
+/src/pages/home-confidence-test.astro
+with:
+
+
+New hero markup and smaller top padding
+
+
+Real image instead of placeholder
+
+
+New Confidence Path pills + description + script
+
+
+<style> block defining .hero-* and .confidence-* classes
+
+
+The “Choose Your Entry Track” 4-card section left exactly as it is
+
+
+No changes to any other file.
+
