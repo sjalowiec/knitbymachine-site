@@ -1,0 +1,220 @@
+You are an experienced Astro + HTML/CSS developer.
+I’m building a modern site called Knit by Machine (KBM) for machine knitters.
+
+I want to experiment with a new homepage concept centered on a 5-step Confidence Path, but I do not want to overwrite my existing homepage.
+
+Task
+
+Create a brand-new Astro page for testing the Confidence Path layout.
+Do NOT modify /src/pages/index.astro or any existing page.
+
+File to create:
+
+/src/pages/home-confidence-test.astro
+
+✅ STRUCTURE FOR THE NEW PAGE
+
+At the top of the file, include:
+
+---
+import Layout from '../layouts/BaseLayout.astro';
+---
+
+
+Wrap everything in:
+
+<Layout>
+  <main>
+    <!-- new content goes here -->
+  </main>
+</Layout>
+
+
+Do not remove or modify anything outside the new file.
+
+Use clean, semantic HTML and simple, responsive utility-style classes (Tailwind-like).
+No JavaScript.
+Keep all sections visually consistent using this pattern:
+
+<section class="py-10">
+  <div class="max-w-5xl mx-auto px-4">
+    <!-- content -->
+  </div>
+</section>
+
+✅ PAGE CONTENT TO GENERATE INSIDE <main>
+
+Create the following sections in this exact order:
+
+Hero
+
+What You’ll Find Here
+
+The Confidence Path (with 5 structured steps)
+
+Choose Your Entry Track
+
+Featured Tools & Skill Builders
+
+Guided Workshops With Sue
+
+Ask ’n Answer (ANA)
+
+From Sue’s Desk (Blog)
+
+Join the Community
+
+Each section gets its own <section> with the container pattern above.
+
+⭐ SECTION DETAILS AND COPY (Use EXACT wording)
+1. HERO SECTION
+
+Two-column layout on desktop (stacked on mobile).
+
+Left column:
+
+Eyebrow:
+Knit by Machine
+
+Headline:
+Machine Knitting Made Clear, Calm, and Doable
+
+Subhead:
+You can knit beautiful things on your machine.
+Knit by Machine gives you the tools, guidance, and confidence to make it happen.
+
+Buttons:
+
+Primary → Start Your Confidence Path (href="#confidence-path")
+
+Secondary → Explore Tools & Patterns (href="/tools")
+
+Right column:
+A rounded rectangle placeholder with a dashed border that says “Image placeholder”.
+
+2. WHAT YOU’LL FIND HERE
+
+Heading: What You’ll Find Here
+
+List items:
+
+Practical tools that take the guesswork out of machine knitting.
+
+Skill Builders that strengthen your foundation step by step.
+
+Smart Guides that help you choose and plan your projects.
+
+Guided Workshops for personalized, project-focused progress.
+
+Clear answers you can trust without overwhelm.
+
+3. THE CONFIDENCE PATH
+
+Use anchor: id="confidence-path"
+
+Heading: The Confidence Path
+
+Subhead:
+Your clear, encouraging roadmap for machine knitting success.
+
+Create a responsive grid of cards, one card per step.
+
+Steps (use exactly as written):
+
+Orientation — Get your bearings so you know exactly where you are and what support is available.
+
+Foundations — Build the essential skills and setup that make everything else easier and more enjoyable.
+
+Choose Your Entry Track — Pick the path that matches your goals, your machine, and your current comfort level.
+
+First Win — Complete a small, finishable project that builds trust in yourself and momentum at the machine.
+
+Explore and Expand — Grow your skills with new tools, techniques, and projects at your own pace.
+
+Under the grid, add a CTA button:
+
+Start Your Confidence Path → /start-here
+
+4. CHOOSE YOUR ENTRY TRACK
+
+Three rounded-card links:
+
+Getting Started — /getting-started
+
+Tools & Patterns — /tools
+
+Guided Workshops — /guided-workshops
+
+Each card gets:
+
+A <h3> title
+
+A short <p> description
+
+Entire card clickable (anchor wrapper)
+
+5. FEATURED TOOLS & SKILL BUILDERS
+
+Four cards in a 2×2 grid:
+
+Blanket Wizard — Build custom blankets in minutes.
+
+Gauge Wizard — Trust your numbers every time.
+
+Skill Builder: Cast Ons — Clear demonstrations without overwhelm.
+
+Skill Builder: Yarn Handling — Confidence at the carriage.
+
+Under grid:
+Small link → Explore All Tools (href="/tools")
+
+6. GUIDED WORKSHOPS WITH SUE
+
+Short description:
+A calm, personal way to make real progress — without schedules, overwhelm, or live calls.
+
+CTA:
+See Workshops → /guided-workshops
+
+7. ASK ’N ANSWER (ANA)
+
+Short description:
+Real questions from real knitters — with clear, confidence-building answers.
+
+CTA:
+Browse ANA Library → /ask-n-answer
+
+8. FROM SUE’S DESK (BLOG)
+
+Short description:
+Encouragement, clarity, and project inspiration — in Sue’s warm, steady voice.
+
+CTA:
+Read the Latest → /blog
+
+9. JOIN THE COMMUNITY
+
+Short description:
+A supportive space to share progress, ask questions, and stay motivated.
+
+CTA:
+Visit the Community → /community
+
+🔚 FINAL OUTPUT REQUIREMENT
+
+Return only the FULL contents of:
+
+/src/pages/home-confidence-test.astro
+
+
+with:
+
+The Layout import
+
+The <Layout> wrapper
+
+All sections coded
+
+Clean, semantic HTML
+
+No changes to /src/pages/index.astro
