@@ -1,0 +1,138 @@
+You are an experienced Astro + HTML/CSS developer.
+I’m building a site called Knit by Machine (KBM).
+
+Goal
+
+I already have a test homepage at:
+
+/src/pages/home-confidence-test.astro
+
+On this page I currently have:
+
+A hero at the top
+
+A Confidence Path section with 5 large cards
+
+A “Choose Your Entry Track” section with 4 large clickable cards
+
+I want you to:
+
+Keep the hero as-is
+
+Keep the 4 “Choose Your Entry Track” cards as-is
+
+Replace the current 5 large Confidence Path cards with a small horizontal strip (no big cards)
+
+Do not modify /src/pages/index.astro (my current real homepage).
+
+File to edit
+
+/src/pages/home-confidence-test.astro
+
+This file already:
+
+Imports Layout at the top
+
+Wraps everything in <Layout>…</Layout> and <main>…</main>
+
+Work only inside <main>.
+
+Step 1 – Find the current Confidence Path section
+
+In /src/pages/home-confidence-test.astro, find the section whose heading text is:
+
+<h2 class="text-2xl font-semibold mb-2">The Confidence Path</h2>
+
+
+or very similar.
+
+That section currently contains a grid of 5 large cards, one each for:
+
+Orientation
+
+Foundations
+
+Choose Your Entry Track
+
+First Win
+
+Explore and Expand
+
+Step 2 – Replace the inner content with a slim strip
+
+Completely remove the existing grid of cards and replace the entire section with this simpler strip:
+
+<section id="confidence-path" class="py-8 bg-gray-50 border-y border-gray-200">
+  <div class="max-w-5xl mx-auto px-4">
+    <h2 class="text-xl font-semibold mb-2">Your Confidence Path</h2>
+    <p class="text-sm text-gray-700 mb-4">
+      You don’t have to do everything at once — you’re simply choosing your best next step.
+    </p>
+    <ol class="flex flex-wrap gap-2 text-sm">
+      <li class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm">
+        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold bg-gray-800 text-white">1</span>
+        <span>Orientation</span>
+      </li>
+      <li class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm">
+        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold bg-gray-800 text-white">2</span>
+        <span>Foundations</span>
+      </li>
+      <li class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm">
+        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold bg-gray-800 text-white">3</span>
+        <span>Choose Your Entry Track</span>
+      </li>
+      <li class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm">
+        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold bg-gray-800 text-white">4</span>
+        <span>First Win</span>
+      </li>
+      <li class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white border border-gray-200 shadow-sm">
+        <span class="inline-flex h-5 w-5 items-center justify-center rounded-full text-[11px] font-semibold bg-gray-800 text-white">5</span>
+        <span>Explore &amp; Expand</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+
+Notes:
+
+This is no longer a grid of big cards — just a thin band with small pill-style items.
+
+Keep the id="confidence-path" so the hero button can still scroll here.
+
+Step 3 – Leave the 4 entry-track cards untouched
+
+Below this new slim Confidence Path section, you should still have the section that starts with a heading like:
+
+<h2 class="text-2xl font-semibold mb-4">Choose Your Entry Track</h2>
+
+
+and contains the 4 large clickable cards:
+
+I just opened the box…
+
+I know the basics…
+
+I want to knit an actual project.
+
+Something went wrong.
+
+Do not change the structure, copy, links, or classes of that 4-card section.
+
+Final Output
+
+Return the full updated contents of:
+
+/src/pages/home-confidence-test.astro
+
+with:
+
+Layout import and wrapper intact
+
+Hero unchanged
+
+Confidence Path now implemented as the slim strip above
+
+4 “Choose Your Entry Track” cards preserved exactly as they are
+
+No other sections added or removed and no other files modified.

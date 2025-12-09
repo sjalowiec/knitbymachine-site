@@ -47,43 +47,35 @@ const description = "You can knit beautiful things on your machine. Knit by Mach
       </div>
     </section>
 
-    <!-- The Confidence Path -->
-    <section class="section section--highlight" id="confidence-path">
+    <!-- The Confidence Path (Slim Strip) -->
+    <section id="confidence-path" class="confidence-strip">
       <div class="container">
-        <h2>The Confidence Path</h2>
-        <p class="section-subhead">Your clear, encouraging roadmap for machine knitting success.</p>
-        
-        <div class="path-grid">
-          <div class="path-card">
-            <span class="path-step">1</span>
-            <h3>Orientation</h3>
-            <p>Get your bearings so you know exactly where you are and what support is available.</p>
-          </div>
-          <div class="path-card">
-            <span class="path-step">2</span>
-            <h3>Foundations</h3>
-            <p>Build the essential skills and setup that make everything else easier and more enjoyable.</p>
-          </div>
-          <div class="path-card">
-            <span class="path-step">3</span>
-            <h3>Choose Your Entry Track</h3>
-            <p>Pick the path that matches your goals, your machine, and your current comfort level.</p>
-          </div>
-          <div class="path-card">
-            <span class="path-step">4</span>
-            <h3>First Win</h3>
-            <p>Complete a small, finishable project that builds trust in yourself and momentum at the machine.</p>
-          </div>
-          <div class="path-card">
-            <span class="path-step">5</span>
-            <h3>Explore and Expand</h3>
-            <p>Grow your skills with new tools, techniques, and projects at your own pace.</p>
-          </div>
-        </div>
-
-        <div class="section-cta">
-          <a href="/start-here" class="button button--primary">Start Your Confidence Path</a>
-        </div>
+        <h2 class="confidence-strip__title">Your Confidence Path</h2>
+        <p class="confidence-strip__subtitle">
+          You don't have to do everything at once — you're simply choosing your best next step.
+        </p>
+        <ol class="confidence-strip__list">
+          <li class="confidence-strip__item">
+            <span class="confidence-strip__number">1</span>
+            <span>Orientation</span>
+          </li>
+          <li class="confidence-strip__item">
+            <span class="confidence-strip__number">2</span>
+            <span>Foundations</span>
+          </li>
+          <li class="confidence-strip__item">
+            <span class="confidence-strip__number">3</span>
+            <span>Choose Your Entry Track</span>
+          </li>
+          <li class="confidence-strip__item">
+            <span class="confidence-strip__number">4</span>
+            <span>First Win</span>
+          </li>
+          <li class="confidence-strip__item">
+            <span class="confidence-strip__number">5</span>
+            <span>Explore &amp; Expand</span>
+          </li>
+        </ol>
       </div>
     </section>
 
@@ -202,6 +194,62 @@ const description = "You can knit beautiful things on your machine. Knit by Mach
     color: var(--kbm-green);
     text-decoration: underline;
     font-weight: 500;
+  }
+
+  /* Confidence Path Slim Strip */
+  .confidence-strip {
+    padding: 2rem 0;
+    background: #f5f7f2;
+    border-top: 1px solid #e0e5d8;
+    border-bottom: 1px solid #e0e5d8;
+  }
+
+  .confidence-strip__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .confidence-strip__subtitle {
+    font-size: 0.95rem;
+    color: #4d5a48;
+    margin: 0 0 1rem;
+  }
+
+  .confidence-strip__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .confidence-strip__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 999px;
+    background: white;
+    border: 1px solid #d4dbc8;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    font-size: 0.875rem;
+    color: #4a5a3d;
+  }
+
+  .confidence-strip__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    background: var(--kbm-green);
+    color: white;
+    font-size: 0.6875rem;
+    font-weight: 600;
   }
 
   /* Hero Section */
