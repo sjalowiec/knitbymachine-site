@@ -1,0 +1,64 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+Goal: In the hero, keep the CTA button and “How does this workshop work?” link
+in the left column, but move the hero note text so it becomes a single sentence
+centered under the entire hero (full width of the hero container).
+
+---------------------------------
+1) Move the hero-note below the grid
+---------------------------------
+
+In the hero section <section class="section section--hero">, I currently have a
+two-column layout (text on the left, image on the right) and a paragraph with
+class "hero-note" inside the left column.
+
+Refactor the structure so that:
+
+- The logo, page title, subtitle, CTA button, and “How does this workshop work?”
+  link all remain inside the left column.
+- The hero image placeholder remains in the right column.
+- The <p class="hero-note"> is moved OUT of the left column and placed directly
+  below the grid so it spans the full width of the hero container.
+
+Concretely, inside <div class="section-inner"> the structure should look like:
+
+  <div class="grid grid--two hero-grid">
+    <div class="hero-left">
+      <!-- logo, title, subtitle, CTA button, modal link -->
+    </div>
+    <div class="hero-right">
+      <!-- hero image placeholder -->
+    </div>
+  </div>
+
+  <p class="hero-note">
+    Your 10 days start when you submit your Project Planner—no calls, no time zones, just clear written guidance.
+  </p>
+
+Use the exact sentence above for the hero-note text. Remove any old hero-note
+text left inside the left column.
+
+---------------------------------
+2) Center the hero-note across the hero width
+---------------------------------
+
+In the same file, in an existing <style> block (or create one if needed),
+add/update CSS for .hero-note so it is centered under the hero:
+
+  .hero-note {
+    text-align: center;
+    max-width: 44rem;
+    margin: 1.5rem auto 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+If a .hero-note rule already exists, update it to match the values above
+rather than creating a duplicate.
+
+---------------------------------
+
+Do not change anything else in this file.
