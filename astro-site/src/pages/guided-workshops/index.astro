@@ -71,7 +71,10 @@ const description = "A hands-on, personal workshop designed to help you make rea
         </p>
         <div class="grid grid--two">
           <div>
-            <h3>You don't need:</h3>
+            <h3>
+              <i class="fa-solid fa-xmark fa-lg fit-icon"></i>
+              You don't need:
+            </h3>
             <ul>
               <li>Another giant course</li>
               <li>Endless YouTube rabbit holes</li>
@@ -80,7 +83,10 @@ const description = "A hands-on, personal workshop designed to help you make rea
             </ul>
           </div>
           <div>
-            <h3>You do need:</h3>
+            <h3>
+              <i class="fa-solid fa-check fa-lg fit-icon"></i>
+              You do need:
+            </h3>
             <ul>
               <li>A clear project choice</li>
               <li>A simple, realistic plan</li>
@@ -803,7 +809,23 @@ const description = "A hands-on, personal workshop designed to help you make rea
   .kbm-divider {
     border: none;
     border-top: 1px solid #e5e8e0;
-    margin: 2rem 0;
+    margin: 3rem auto;
+  }
+
+  /* Problem Section Styling */
+  .section--problem {
+    background-color: #F7F9F3;
+    padding: 2.5rem 1.5rem;
+    border-radius: 12px;
+  }
+
+  .fit-icon {
+    margin-right: 6px;
+    color: #C2614E;
+  }
+
+  .section--problem h3 .fa-check {
+    color: #6E8B3D;
   }
 
   /* Final CTA */
