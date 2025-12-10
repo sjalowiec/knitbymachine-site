@@ -20,9 +20,10 @@ import "../styles/global.css";
     <!-- Immediate localStorage check to prevent flash of content -->
     <script is:inline>
       (function() {
-        if (window.localStorage.getItem('kbmIntroDismissed') === 'true') {
-          document.write('<style>.kbm-intro-wrapper { display: none !important; }</style>');
-        }
+        // Temporarily disabled to show banner - uncomment to re-enable dismissal memory
+        // if (window.localStorage.getItem('kbmIntroDismissed') === 'true') {
+        //   document.write('<style>.kbm-intro-wrapper { display: none !important; }</style>');
+        // }
       })();
     </script>
 
