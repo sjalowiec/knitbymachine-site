@@ -148,17 +148,17 @@ import "../styles/global.css";
 
         <div class="kbm-reassurance-grid">
           <div class="kbm-reassurance-item" data-testid="reassurance-next-steps">
-            <h4>Clear next steps</h4>
+            <h4><img src="/images/hex-light.svg" alt="" class="kbm-reassurance-icon">Clear next steps</h4>
             <p>You don't have to figure it out alone. I'll point you to the one thing to do next so you can keep moving without overwhelm.</p>
           </div>
 
           <div class="kbm-reassurance-item" data-testid="reassurance-tools">
-            <h4>Tools that do the hard parts</h4>
+            <h4><img src="/images/hex-light.svg" alt="" class="kbm-reassurance-icon">Tools that do the hard parts</h4>
             <p>Let the site handle gauge math, stitch counts, and shaping plans. You focus on knitting. Whether you're just starting or refining advanced projects, these tools help you move faster with less trial and error.</p>
           </div>
 
           <div class="kbm-reassurance-item" data-testid="reassurance-support">
-            <h4>Support when you get stuck</h4>
+            <h4><img src="/images/hex-light.svg" alt="" class="kbm-reassurance-icon">Support when you get stuck</h4>
             <p>Troubleshooters, Smart Guides, and Ask 'n Answer are here to help you fix problems and finish more projects.</p>
           </div>
         </div>
@@ -600,10 +600,19 @@ import "../styles/global.css";
   }
 
   .kbm-reassurance-item h4 {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
     font-size: 1.05rem;
     color: #2c3a57;
     margin: 0 0 0.5rem;
     font-weight: 600;
+  }
+
+  .kbm-reassurance-icon {
+    width: 1.25rem;
+    height: auto;
+    flex-shrink: 0;
   }
 
   .kbm-reassurance-item p {
