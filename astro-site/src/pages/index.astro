@@ -17,81 +17,18 @@ import "../styles/global.css";
   <body>
     <Header />
 
-    <!-- Immediate localStorage check to prevent flash of content -->
-    <script is:inline>
-      (function() {
-        // Temporarily disabled to show banner - uncomment to re-enable dismissal memory
-        // if (window.localStorage.getItem('kbmIntroDismissed') === 'true') {
-        //   document.write('<style>.kbm-intro-wrapper { display: none !important; }</style>');
-        // }
-      })();
-    </script>
-
-    <!-- Welcome Intro Banner + Drawer -->
-    <div class="kbm-intro-wrapper" data-kbm-intro-wrapper data-testid="welcome-intro-wrapper">
-      <div class="kbm-intro-banner" data-kbm-intro-banner data-testid="welcome-intro-banner">
+    <!-- Welcome Banner -->
+    <div class="kbm-intro-wrapper" data-testid="welcome-intro-wrapper">
+      <div class="kbm-intro-banner" data-testid="welcome-intro-banner">
         <div class="kbm-intro-banner-inner">
           <span class="kbm-intro-banner-text">
-            Welcome! Knit by Machine is brand new —
-            <button
-              type="button"
-              class="kbm-intro-banner-inline-link"
-              data-kbm-intro-open
-              data-testid="button-see-intro"
-            >
+            Welcome! Knit by Machine is brand new -
+            <a href="/about" class="kbm-intro-banner-inline-link" data-testid="link-see-intro">
               see what's here and what's coming.
-            </button>
+            </a>
           </span>
-          <button
-            type="button"
-            class="kbm-intro-banner-close"
-            data-kbm-intro-dismiss
-            aria-label="Hide this message"
-            data-testid="button-dismiss-banner"
-          >
-            ×
-          </button>
         </div>
       </div>
-
-      <section
-        class="kbm-intro-drawer"
-        data-kbm-intro-drawer
-        aria-hidden="true"
-        data-testid="welcome-intro-drawer"
-      >
-        <div class="kbm-intro-drawer-header">
-          <h2 class="kbm-intro-drawer-title">
-            Hi, I'm Sue — welcome to the new Knit by Machine.
-          </h2>
-          <button
-            type="button"
-            class="kbm-intro-drawer-close"
-            aria-label="Close intro"
-            data-kbm-intro-close
-            data-testid="button-close-drawer"
-          >
-            ×
-          </button>
-        </div>
-
-        <p class="kbm-intro-drawer-body">
-          Knit by Machine is a fresh, modern home for machine knitters. I'm rebuilding everything to be clearer, calmer, and more confidence-boosting.
-        </p>
-        <p class="kbm-intro-drawer-body">
-          You'll find smart tools, Skill Builders, Ask 'n Answer Answers (ANA), and simple next steps to help you feel successful with your machine.
-        </p>
-
-        <div class="kbm-intro-drawer-actions">
-          <a href="/about" class="kbm-intro-secondary" data-testid="link-about-kbm">
-            About Knit by Machine
-          </a>
-        </div>
-
-        <p class="kbm-intro-subtext">
-          Just browsing? You can close this and explore on your own.
-        </p>
-      </section>
     </div>
 
     <main class="kbm-start-here">
