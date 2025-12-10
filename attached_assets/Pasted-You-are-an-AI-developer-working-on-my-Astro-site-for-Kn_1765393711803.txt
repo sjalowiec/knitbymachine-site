@@ -1,0 +1,90 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I want to make it very clear that this is a call-free, asynchronous workshop with no time zone issues.
+Please make the following content updates.
+
+1) Update the hero reassurance line to mention no calls / time zones
+
+In the hero section, find the paragraph with class hero-note.
+It currently explains that you start with the Project Planner and that the 10 days don’t begin until you submit it.
+
+Replace the entire text inside that <p class="hero-note"> with:
+
+You'll start by filling out a simple Project Planner so we can choose the right project and build your personal plan — your 10 days don't begin until you submit it. No calls, no time zones to juggle — just clear written guidance.
+
+
+Keep the <p class="hero-note"> element and attributes the same; only change its text content.
+
+2) Update the “What this is” bullets in the merged section
+
+In the merged section with class section section--what-it-is-merged, find the column that contains:
+
+<h3>What this is</h3>
+<ul> ... </ul>
+
+
+Replace the entire <ul> under “What this is” with:
+
+<ul>
+  <li>A 10-day, call-free, 1-1 workshop focused on one real project.</li>
+  <li>No Zoom calls or scheduling — everything happens through simple written check-ins.</li>
+  <li>Guided, realistic steps based on your machine, yarn, and goal.</li>
+  <li>A calm container where you can ask questions as you go.</li>
+</ul>
+
+
+Do not change the “What it’s not” or “What you’ll practice” content in this prompt.
+
+3) Add a “call-free / time zone friendly” bullet to both pricing cards
+
+In the pricing section (class="section section--pricing"):
+
+a. Workshop Core card
+
+In the card with data-testid="card-pricing-core", find the <ul> of bullets. You will see a bullet like:
+
+<li><strong>Up to 2 private feedback submissions over 10 days</strong></li>
+
+
+Directly after that list item, insert a new bullet:
+
+<li><strong>Call-free guidance</strong><br>
+Works in any time zone — no meetings or scheduling needed.
+</li>
+
+
+Leave the rest of the bullets as they are.
+
+b. Workshop Plus card
+
+In the card with data-testid="card-pricing-plus", find the <ul> of bullets. You will see a bullet like:
+
+<li><strong>Up to 4 private feedback submissions over 10 days</strong></li>
+
+
+Directly after that list item, insert the same new bullet:
+
+<li><strong>Call-free guidance</strong><br>
+Works in any time zone — no meetings or scheduling needed.
+</li>
+
+
+Leave the other bullets (including “Everything in Workshop Core,” “Priority response,” and “Extra support for bigger projects”) unchanged.
+
+4) Clarify time zones in “How It Works” Step 4
+
+In the “How It Works (Simple + Calm)” section, find Step 4 (“Get Private Feedback — On Your Schedule”). We previously updated its paragraph to include response time and “No meetings. No camera. No pressure.”
+
+Replace the entire <p> under Step 4 with:
+
+<p>
+  I review your work and send you clear corrections (if needed), gentle adjustments, encouragement, and your next step. No meetings. No camera. No pressure. I typically reply within one business day, Monday–Friday (Pacific time), so this works no matter where you live.
+</p>
+
+
+Keep the Step 4 heading and structure as-is; only change the paragraph text.
+
+Please make only the changes described above and do not modify any other content or layout in this file.
