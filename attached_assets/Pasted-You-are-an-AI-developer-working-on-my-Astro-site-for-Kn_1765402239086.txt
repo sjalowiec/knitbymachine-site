@@ -1,0 +1,56 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I want to shorten the page by removing the separate "What’s Included" section
+and replacing it with a single sentence near the pricing cards.
+
+--------------------------------
+1) Remove the "What’s Included" section
+--------------------------------
+
+Find the section that begins like this:
+
+  <section class="section section--included">
+    <div class="section-inner">
+      <h2>What's Included</h2>
+      ...
+
+Delete this entire <section class="section section--included">...</section> block,
+including all of its inner content and closing tags.
+
+If there is an <hr class="kbm-divider"> immediately before or after this section
+that was clearly tied to it, you may remove that single <hr> as well to avoid
+extra dividers. Do not remove dividers that belong to other sections.
+
+--------------------------------
+2) Add a single "what’s included" sentence in the pricing intro
+--------------------------------
+
+In the pricing section:
+
+  <section class="section section--pricing" id="pricing">
+
+there is an <h2> for the heading (currently "Choose Your Workshop Level")
+followed by a short <p> we previously added explaining that both options are
+10-day, call-free workshops.
+
+That paragraph should currently be something like:
+
+  <p>
+    Both options are 10-day, call-free workshops. Workshop Core is best for smaller, simpler projects; Workshop Plus is ideal for sweaters and more complex makes.
+  </p>
+
+Directly AFTER that paragraph, insert a new paragraph:
+
+  <p>
+    Every Guided Workshop includes a personalized 10-day plan, calm written guidance, and simple machine checklists so your setup behaves.
+  </p>
+
+Leave the pricing cards themselves (the two cards with data-testid="card-pricing-core"
+and data-testid="card-pricing-plus") unchanged.
+
+--------------------------------
+
+Do not modify any other sections or content on this page.
