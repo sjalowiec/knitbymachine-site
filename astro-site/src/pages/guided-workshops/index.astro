@@ -100,121 +100,44 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
     <hr class="kbm-divider" />
 
-    <!-- What This Is (merged) -->
-    <section class="section section--what-it-is-merged">
+    <!-- Overview Cards Section -->
+    <section class="section section--overview-cards">
       <div class="section-inner">
-        <h2>What this workshop is (and what you'll practice)</h2>
-        <div class="grid grid--two">
-          <div>
+        <h2>How this workshop works at a glance</h2>
+
+        <div class="workshop-overview-grid">
+          <!-- Card 1 -->
+          <div class="workshop-card">
             <h3>What this is</h3>
             <ul>
               <li>A 10-day, call-free, 1-1 workshop focused on one real project.</li>
               <li>No Zoom calls or scheduling — everything happens through simple written check-ins.</li>
-              <li>Guided, realistic steps based on your machine, yarn, and goal.</li>
-              <li>A calm container where you can ask questions as you go.</li>
-            </ul>
-            <h3>What it's not</h3>
-            <ul>
-              <li>Not a big course or video library to work through alone.</li>
-              <li>Not a weekly group call or camera-on commitment.</li>
-              <li>Not an endless coaching relationship with no clear focus.</li>
+              <li>You choose the project you want to work on.</li>
+              <li>A calm, steady plan tailored to your machine, yarn, and time.</li>
             </ul>
           </div>
-          <div>
+
+          <!-- Card 2 -->
+          <div class="workshop-card">
+            <h3>How it works</h3>
+            <ul>
+              <li>Start by filling out the Ready • Set • Knit Project Planner.</li>
+              <li>I send your personalized 10-day plan with clear, realistic steps.</li>
+              <li>You check in with quick notes or photos when you're ready.</li>
+              <li>I reply with corrections, encouragement, and your next step.</li>
+              <li>No calls. No camera. No time zone issues.</li>
+            </ul>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="workshop-card">
             <h3>What you'll practice</h3>
             <ul>
               <li>Choosing a project that fits your current skills and time.</li>
-              <li>Setting up your machine so it behaves (sponge bar, tension, weights).</li>
+              <li>Getting your machine behaving (sponge bar, tension, weights).</li>
               <li>Working clean cast-ons, edges, and bind-offs that match your fabric.</li>
               <li>Taking small, confident steps instead of getting stuck or overwhelmed.</li>
             </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
-    <!-- You Choose the Project -->
-    <section class="section section--choose-project">
-      <div class="section-inner">
-        <h2>You Choose What You Want to Knit</h2>
-        <p>
-          You're not handed a random project. You begin with the
-          <strong> Ready • Set • Knit Project Planner</strong> — a quick, simple
-          way to tell me:
-        </p>
-        <ul>
-          <li>What machine you're using (LK150, Silver Reed, Brother, etc.)</li>
-          <li>What yarn you have (or want to use)</li>
-          <li>What you'd love to knit next</li>
-          <li>Where you feel unsure or stuck</li>
-        </ul>
-
-        <!-- PROJECT PLANNER IMAGE PLACEHOLDER -->
-        <!-- TODO: Replace the placeholder image with a mockup or screenshot of the planner -->
-        <div class="media media--planner">
-          <div class="placeholder-image">
-            <span>Project Planner Preview</span>
-          </div>
-        </div>
-
-        <p>
-          From there, I map out a <strong>custom 10-day plan</strong> built around
-          your project — not a generic one.
-        </p>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
-    <!-- How It Works -->
-    <section class="section section--how-it-works">
-      <div class="section-inner">
-        <h2>How It Works (Simple + Calm)</h2>
-        <ol class="steps-list">
-          <li>
-            <h3>1. Start with the Project Planner</h3>
-            <p>
-              Your private intake helps me understand your machine, your yarn, and
-              what you want to knit.
-            </p>
-          </li>
-          <li>
-            <h3>2. Receive Your Personalized 10-Day Finish Plan</h3>
-            <p>
-              I translate your project into small, realistic steps designed for
-              success. No overwhelm. No guessing.
-            </p>
-          </li>
-          <li>
-            <h3>3. Work Through One Step at a Time</h3>
-            <p>
-              You focus on just one thing: <em>"What's my next small win?"</em>
-              When you finish a step, you send a quick photo or note.
-            </p>
-          </li>
-          <li>
-            <h3>4. Get Private Feedback — On Your Schedule</h3>
-            <p>
-              I review your work and send you clear corrections (if needed), gentle adjustments, encouragement, and your next step. No meetings. No camera. No pressure. I typically reply within one business day, Monday–Friday (Pacific time), so this works no matter where you live.
-            </p>
-          </li>
-          <li>
-            <h3>5. Finish Your 10 Days With Real Momentum</h3>
-            <p>
-              By the end of your 10 days, you'll have clear forward momentum
-              on a project you care about, understand your machine setup with more
-              confidence, and know exactly what to do next — without guessing.
-            </p>
-          </li>
-        </ol>
-
-        <!-- FINISHED PROJECT IMAGE PLACEHOLDER -->
-        <!-- TODO: Replace with a photo of a simple finished project or a tidy close-up of stitches -->
-        <div class="media media--finished-project">
-          <div class="placeholder-image">
-            <span>Finished Project Image</span>
           </div>
         </div>
       </div>
@@ -826,6 +749,41 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
   .section--problem h3 .fa-check {
     color: #6E8B3D;
+  }
+
+  /* Overview Cards */
+  .workshop-overview-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .workshop-overview-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .workshop-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .workshop-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .workshop-card ul {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .workshop-card li + li {
+    margin-top: 0.4rem;
   }
 
   /* Final CTA */

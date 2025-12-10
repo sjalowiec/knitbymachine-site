@@ -1,0 +1,139 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I want to shorten this page by replacing three long sections with a simple 3-card overview.
+
+Those sections are currently:
+- The merged "What this workshop is (and what you'll practice)" section
+- The "You Choose What You Want to Knit" section
+- The "How It Works (Simple + Calm)" section
+
+I want to replace them with a single 3-card row, placed immediately after the
+"If your machine has been sitting quietly…" section.
+
+------------------------------------------------
+1) Insert a new 3-card section after section--problem
+------------------------------------------------
+
+Find the section with:
+
+  <section class="section section--problem">
+
+Immediately AFTER the closing </section> for that section, insert this new section:
+
+  <section class="section section--overview-cards">
+    <div class="section-inner">
+      <h2>How this workshop works at a glance</h2>
+
+      <div class="workshop-overview-grid">
+        <!-- Card 1 -->
+        <div class="workshop-card">
+          <h3>What this is</h3>
+          <ul>
+            <li>A 10-day, call-free, 1-1 workshop focused on one real project.</li>
+            <li>No Zoom calls or scheduling — everything happens through simple written check-ins.</li>
+            <li>You choose the project you want to work on.</li>
+            <li>A calm, steady plan tailored to your machine, yarn, and time.</li>
+          </ul>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="workshop-card">
+          <h3>How it works</h3>
+          <ul>
+            <li>Start by filling out the Ready • Set • Knit Project Planner.</li>
+            <li>I send your personalized 10-day plan with clear, realistic steps.</li>
+            <li>You check in with quick notes or photos when you’re ready.</li>
+            <li>I reply with corrections, encouragement, and your next step.</li>
+            <li>No calls. No camera. No time zone issues.</li>
+          </ul>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="workshop-card">
+          <h3>What you’ll practice</h3>
+          <ul>
+            <li>Choosing a project that fits your current skills and time.</li>
+            <li>Getting your machine behaving (sponge bar, tension, weights).</li>
+            <li>Working clean cast-ons, edges, and bind-offs that match your fabric.</li>
+            <li>Taking small, confident steps instead of getting stuck or overwhelmed.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+Use the exact markup above so copy stays aligned with the rest of the page.
+
+------------------------------------------------
+2) Remove the three longer sections this replaces
+------------------------------------------------
+
+Delete these entire sections from the file:
+
+1. The merged "What this workshop is (and what you'll practice)" section,
+   which currently has:
+     <section class="section section--what-it-is-merged"> ... </section>
+
+2. The "You Choose What You Want to Knit" section, which has:
+     <section class="section section--choose-project"> ... </section>
+
+3. The "How It Works (Simple + Calm)" section, which has:
+     <section class="section section--how-it-works"> ... </section>
+
+Remove the full <section> blocks including their inner content and <hr class="kbm-divider">
+elements that were directly tied to them. Leave other sections (What’s Included, Pricing,
+Guarantee, Fit, About, Final CTA, modal, etc.) unchanged.
+
+------------------------------------------------
+3) Add CSS for the 3-card layout (style B: white cards with soft shadow)
+------------------------------------------------
+
+In this same file, inside an existing <style> block (or create one near the bottom of the file
+before </main> or </footer>), add the following CSS:
+
+  <style>
+    .workshop-overview-grid {
+      display: grid;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+
+    /* Stack on small screens, 3 columns on wider screens */
+    @media (min-width: 768px) {
+      .workshop-overview-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+    }
+
+    .workshop-card {
+      background-color: #ffffff;
+      border-radius: 12px;
+      padding: 1.75rem 1.5rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+    }
+
+    .workshop-card h3 {
+      margin-top: 0;
+      margin-bottom: 0.75rem;
+      font-weight: 600;
+    }
+
+    .workshop-card ul {
+      padding-left: 1.25rem;
+      margin: 0;
+    }
+
+    .workshop-card li + li {
+      margin-top: 0.4rem;
+    }
+  </style>
+
+If there is already a <style> block, just append these rules inside it instead of creating a new one.
+
+------------------------------------------------
+
+Do not change any other content or layout on this page. The existing “How does this workshop work?”
+modal at the bottom should remain as-is.
