@@ -1,0 +1,87 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I’ve standardized this offer as a 10-day, call-free, 1-1 workshop that starts when the knitter submits the Project Planner intake.
+Please make the following content updates to keep the page and modal consistent and clear.
+
+1) Update the hero note to mention the 10 days
+
+In the hero section, find the paragraph with class hero-note. It currently says something like:
+
+You'll start by filling out a simple project planner so we can choose
+            the right project and build your personal plan.
+
+
+Replace the entire sentence with:
+
+You'll start by filling out a simple Project Planner so we can choose the right project and build your personal plan — your 10 days don't begin until you submit it.
+
+
+(Keep the same <p> element and attributes; only change the text.)
+
+2) Clarify “How It Works” Step 2 title
+
+In the “How It Works (Simple + Calm)” section, find Step 2:
+
+<h3>2. Receive Your Personalized Finish Plan</h3>
+
+
+Change the heading text to:
+
+<h3>2. Receive Your Personalized 10-Day Finish Plan</h3>
+
+
+Leave the paragraph under it as-is.
+
+3) Standardize “Project Planner” vs “intake form” language in the modal
+
+At the bottom of the file there is a modal with id="how-it-works-modal".
+Inside the ordered list .modal-steps:
+
+Step 1 currently says:
+
+<li><strong>Join the workshop.</strong> You'll complete checkout and get immediate access to the intake form.</li>
+
+
+Replace the text after the <strong> so the whole list item reads:
+
+<li><strong>Join the workshop.</strong> You'll complete checkout and get immediate access to your Project Planner (intake form).</li>
+
+
+Step 3 currently begins:
+
+<li><strong>Tell Sue about your project.</strong> Share what you want to finish (or begin) and where you need support.</li>
+
+
+Replace the second sentence so the whole list item reads:
+
+<li><strong>Tell Sue about your project.</strong> Use the Project Planner to share what you want to finish (or begin) and where you need support.</li>
+
+4) Make the “10 days start at intake” line in the modal even clearer
+
+In Step 2 of the same modal, you’ll see text very close to:
+
+<li><strong>Choose when to begin.</strong> Your 10 days do NOT start at payment. They begin when you submit your intake form—so you can start today, tomorrow, or whenever you're ready.</li>
+
+
+Update the second sentence so the list item reads:
+
+<li><strong>Choose when to begin.</strong> Your 10 days do NOT start at payment. They begin when you submit your Project Planner—so you can start today, tomorrow, or whenever you're ready.</li>
+
+
+(Only change “intake form” to “Project Planner”.)
+
+5) Add response-time note to the modal (to match the main page)
+
+Still inside the modal, after the closing </ol> of the .modal-steps list, but before the closing </div> of .modal-content, add a short paragraph:
+
+<p class="modal-note">
+  I typically reply within one business day, Monday–Friday (Pacific time).
+</p>
+
+
+If there’s already a suitable existing text style (such as a small note or secondary text class) you can reuse instead of modal-note, feel free to use that; otherwise, modal-note is fine as a plain paragraph.
+
+Please make only the changes described above and do not modify any other content or layout in this file.
