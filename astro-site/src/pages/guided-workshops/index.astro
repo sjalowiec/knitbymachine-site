@@ -11,51 +11,54 @@ const description = "A hands-on, personal workshop designed to help you make rea
     <!-- Hero Section -->
     <section class="section section--hero">
       <div class="section-inner">
-        <div class="hero-header">
-          <div class="hero-title-row">
-            <img
-              src="/images/guided_workshops.svg"
-              alt="Guided Workshops logo"
-              class="hero-logo"
-            />
-            <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
-          </div>
-          <p class="hero-subtitle">
-            A hands-on, personal workshop designed to help you make real progress on a project you’re excited about—at a pace that feels calm and doable.
-          </p>
-        </div>
+        <div class="grid grid--two hero-grid">
+          <div class="hero-left">
+            <div class="hero-header">
+              <div class="hero-title-row">
+                <img
+                  src="/images/guided_workshops.svg"
+                  alt="Guided Workshops logo"
+                  class="hero-logo"
+                />
+                <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
+              </div>
+              <p class="hero-subtitle">
+                A hands-on, personal workshop designed to help you make real progress on a project you're excited about—at a pace that feels calm and doable.
+              </p>
+            </div>
 
-        <!-- HERO IMAGE PLACEHOLDER -->
-        <!-- TODO: Replace the placeholder image below with a real photo:
-            - Sue at a knitting machine, or
-            - a clean, inviting machine setup
-        -->
-        <div class="hero-media">
-          <div class="placeholder-image">
-            <span>Hero Image Placeholder</span>
-          </div>
-        </div>
+            <div class="hero-cta">
+              <a 
+                class="button button--primary" 
+                href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
+                data-testid="button-cta-hero"
+              >
+                Start Your Guided Workshop
+              </a>
 
-        <div class="hero-cta">
-          <!-- TODO: Update href to the actual intake / sign-up page -->
-        <a 
-  class="button button--primary" 
-  href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
-  data-testid="button-cta-hero"
->
-  Start Your Guided Workshop
-</a>
-
-          <div class="how-it-works-link">
-            <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+              <div class="how-it-works-link">
+                <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+              </div>
+              <p class="hero-note">
+                You'll start by filling out a simple Project Planner so we can choose the right project and build your personal plan — your 10 days don't begin until you submit it.
+              </p>
+            </div>
           </div>
-          <p class="hero-note">
-            You'll start by filling out a simple Project Planner so we can choose the right project and build your personal plan — your 10 days don't begin until you submit it.
-          </p>
+          <div class="hero-right">
+            <!-- HERO IMAGE PLACEHOLDER -->
+            <!-- TODO: Replace the placeholder image below with a real photo:
+                - Sue at a knitting machine, or
+                - a clean, inviting machine setup
+            -->
+            <div class="hero-media">
+              <div class="placeholder-image">
+                <span>Hero Image Placeholder</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
-
     <hr class="kbm-divider" />
 
     <!-- Problem / Fit Section -->
@@ -91,41 +94,35 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
     <hr class="kbm-divider" />
 
-    <!-- What This Is / Is Not -->
-    <section class="section section--what-it-is">
+    <!-- What This Is (merged) -->
+    <section class="section section--what-it-is-merged">
       <div class="section-inner">
-        <h2>What This Is (and What It's Not)</h2>
-        <p>
-          <strong>The Guided Workshop with Sue</strong> is a
-          personalized, step-by-step knitting experience designed to help you:
-        </p>
-        <ul>
-          <li>Choose the <strong>right</strong> next project</li>
-          <li>Avoid wasted yarn and frustrating mistakes</li>
-          <li>Follow clear, doable steps</li>
-          <li>Get private guidance on your schedule</li>
-          <li>Feel calmer and more confident at your machine</li>
-        </ul>
-
-        <div class="callout callout--contrast">
-          <p><strong>This is not:</strong></p>
-          <ul>
-            <li>A cohort or group program</li>
-            <li>A weekly Zoom commitment</li>
-            <li>A big video library you're left to figure out alone</li>
-          </ul>
-          <p>
-            You work in small steps, at a pace that fits real life. No "falling
-            behind." No pressure to show up on camera.
-          </p>
+        <h2>What this workshop is (and what you'll practice)</h2>
+        <div class="grid grid--two">
+          <div>
+            <h3>What this is</h3>
+            <ul>
+              <li>A 10-day, call-free, 1-1 workshop focused on one real project.</li>
+              <li>Guided, realistic steps based on your machine, yarn, and goal.</li>
+              <li>A calm container where you can ask questions as you go.</li>
+            </ul>
+            <h3>What it's not</h3>
+            <ul>
+              <li>Not a big course or video library to work through alone.</li>
+              <li>Not a weekly group call or camera-on commitment.</li>
+              <li>Not an endless coaching relationship with no clear focus.</li>
+            </ul>
+          </div>
+          <div>
+            <h3>What you'll practice</h3>
+            <ul>
+              <li>Choosing a project that fits your current skills and time.</li>
+              <li>Setting up your machine so it behaves (sponge bar, tension, weights).</li>
+              <li>Working clean cast-ons, edges, and bind-offs that match your fabric.</li>
+              <li>Taking small, confident steps instead of getting stuck or overwhelmed.</li>
+            </ul>
+          </div>
         </div>
-
-        <!-- THREE SMALL WINS GRAPHIC PLACEHOLDER -->
-        <!-- TODO: Replace with a simple graphic or icons showing:
-            1) Choose project
-            2) Follow steps
-            3) Build confidence
-        -->
       </div>
     </section>
 
@@ -213,29 +210,6 @@ const description = "A hands-on, personal workshop designed to help you make rea
             <span>Finished Project Image</span>
           </div>
         </div>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
-    <!-- What You'll Learn -->
-    <section class="section section--skills">
-      <div class="section-inner">
-        <h2>What You'll Learn Along the Way</h2>
-        <p>Depending on your project, you may learn how to:</p>
-        <ul>
-          <li>Work clean cast-ons with waste yarn and ravel cord</li>
-          <li>Set tension in a way that actually works for your yarn</li>
-          <li>Check sponge bars so you don't waste time and yarn</li>
-          <li>Place weights for better, more even stitches</li>
-          <li>Create edge finishes that look tidy and intentional</li>
-          <li>Approach shaping without panic</li>
-          <li>Bind off in ways that behave and match your fabric</li>
-        </ul>
-        <p>
-          This is <strong>applied skill building</strong> — focused on what you're
-          actually knitting, not just theory.
-        </p>
       </div>
     </section>
 

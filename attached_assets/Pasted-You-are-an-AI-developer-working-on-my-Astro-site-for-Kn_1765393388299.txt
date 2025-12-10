@@ -1,0 +1,100 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I want to:
+
+Change the hero into a 2-column layout with text on the left and the image placeholder on the right.
+
+Combine the “What This Is / What It’s Not / What You’ll Learn” content into one simpler section.
+
+1) Update the hero to a 2-column layout
+
+In the hero section (<section class="section section--hero">), there is currently a structure where:
+
+The title, logo, subtitle, and CTA live together, and
+
+The hero image placeholder is in its own <div class="hero-media"> below.
+
+Please refactor just the inner layout so that:
+
+<div class="section-inner">
+  <div class="grid grid--two hero-grid">
+    <div class="hero-left">
+      <!-- hero-header, hero-subtitle, hero-cta, hero-note go here -->
+    </div>
+    <div class="hero-right">
+      <!-- hero-media (the existing placeholder image) goes here -->
+    </div>
+  </div>
+</div>
+
+
+Concretely:
+
+Wrap the existing hero-header, hero-subtitle, hero-cta, and hero-note elements in a new <div class="hero-left"> inside a div with classes grid grid--two hero-grid.
+
+Move the existing hero-media <div> (with the placeholder image) so it sits inside a new <div class="hero-right"> as the second column of that same grid.
+
+Keep all existing classes (hero-header, hero-title-row, hero-logo, hero-subtitle, hero-cta, hero-note, hero-media, placeholder-image) intact; only change the container structure so this section uses your existing grid grid--two layout for two columns.
+
+The hero section markup should still be inside the same <section class="section section--hero"> and <div class="section-inner"> wrappers; we’re only reorganizing the layout inside.
+
+2) Combine “What This Is”, “What It’s Not”, and “What You’ll Learn” into one section
+
+Currently, there are separate sections:
+
+.section--what-it-is (What This Is / What It’s Not)
+
+.section--skills (What You'll Learn Along the Way)
+
+I want to merge these into a single, simpler section directly after the “Problem / Fit” section, with this structure:
+
+<section class="section section--what-it-is-merged">
+  <div class="section-inner">
+    <h2>What this workshop is (and what you’ll practice)</h2>
+    <div class="grid grid--two">
+      <div>
+        <h3>What this is</h3>
+        <ul>
+          <li>A 10-day, call-free, 1-1 workshop focused on one real project.</li>
+          <li>Guided, realistic steps based on your machine, yarn, and goal.</li>
+          <li>A calm container where you can ask questions as you go.</li>
+        </ul>
+        <h3>What it’s not</h3>
+        <ul>
+          <li>Not a big course or video library to work through alone.</li>
+          <li>Not a weekly group call or camera-on commitment.</li>
+          <li>Not an endless coaching relationship with no clear focus.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>What you’ll practice</h3>
+        <ul>
+          <li>Choosing a project that fits your current skills and time.</li>
+          <li>Setting up your machine so it behaves (sponge bar, tension, weights).</li>
+          <li>Working clean cast-ons, edges, and bind-offs that match your fabric.</li>
+          <li>Taking small, confident steps instead of getting stuck or overwhelmed.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+Implementation details:
+
+Remove the existing .section--what-it-is and .section--skills sections entirely.
+
+Insert the new merged section (shown above) in place of those two, in the same general position in the page flow (after the “Problem / Fit” section and before “You Choose What You Want to Knit” / “How It Works” / etc.).
+
+Keep existing CSS classes like section and section-inner so this section matches the site’s spacing and typography.
+
+Please:
+
+Make only the changes described above.
+
+Do not modify other sections (pricing, guarantee, fit, etc.) in this prompt.
+
+I will handle further condensation (modals, etc.) in later prompts.
