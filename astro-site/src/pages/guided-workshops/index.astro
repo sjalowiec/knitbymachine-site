@@ -233,7 +233,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
 </a>
           <div class="pricing-helper">
             <a href="#" data-modal-open="is-this-for-you">
-              Is this workshop right for you?
+              Is this guided workshop right for you?
             </a>
           </div>
 
@@ -265,7 +265,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
 </a>
           <div class="pricing-helper">
             <a href="#" data-modal-open="is-this-for-you">
-              Is this workshop right for you?
+              Is this guided workshop right for you?
             </a>
           </div>
 
@@ -310,7 +310,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
               confidence — not through pressure, but through clarity.
             </p>
             <p>
-              This Studio Edition is built the same way I teach: small wins, real
+              This Guided Workshop is built the same way I teach: small wins, real
               progress, and steady encouragement. You don't need to "keep up." You
               just need the right next step.
             </p>
@@ -351,7 +351,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
     <div class="modal-overlay" data-modal-close="is-this-for-you"></div>
     <div class="modal-content">
       <button class="modal-close" data-modal-close="is-this-for-you">×</button>
-      <h2>Is this workshop right for you?</h2>
+      <h2>Is a guided workshop right for you?</h2>
       <div class="modal-fit-grid">
         <div>
           <h3>This is for you if…</h3>
@@ -897,12 +897,27 @@ const description = "A hands-on, personal workshop designed to help you make rea
   .pricing-helper {
     margin-top: 0.5rem;
     font-size: 0.9rem;
+    text-align: center;
   }
 
   .pricing-helper a {
     text-decoration: underline;
     text-underline-offset: 2px;
     cursor: pointer;
+    color: #52682d;
+  }
+
+  .card--pricing {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card--pricing ul {
+    flex-grow: 1;
+  }
+
+  .card--pricing .button {
+    align-self: center;
   }
 
   .modal-fit-grid {
