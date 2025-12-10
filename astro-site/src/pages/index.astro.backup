@@ -100,14 +100,10 @@ import "../styles/global.css";
           <div class="kbm-hero__content">
             <h1>Machine knitting doesn’t have to be overwhelming - I’ll guide your next step.</h1>
             <p class="kbm-hero__text">
-              You don’t need to figure it out alone - I’ll help you move forward, one clear step at a time.
-            </p>
-            <p class="kbm-hero__text">
-              Knit by Machine is a clear, modern resource that helps you learn, practice, and make projects on your knitting machine.
+              You don’t need to figure it out alone — I’ll help you move forward, one clear step at a time.
             </p>
             <div class="kbm-hero__actions">
-              <a href="#where-are-you" class="btn primary" data-testid="button-find-next-step">Start here: find your path</a>
-              <p class="kbm-hero__helper">Pick your starting point</p>
+              <a href="#where-are-you" class="btn primary" data-testid="button-find-next-step">Find your next step</a>
             </div>
           </div>
           <div class="kbm-hero__image">
@@ -171,7 +167,7 @@ import "../styles/global.css";
             </div>
             <h3>I know the basics. I want to build skills.</h3>
             <p>You're in the <strong>Build Skills</strong> phase.</p>
-            <p class="kbm-highlight">Next step: Visit Skill Builders for small practice projects.</p>
+            <p class="kbm-highlight">Next step: Visit Skill Builders.</p>
             <span class="btn primary" data-testid="button-skill-builders">Explore Skill Builders</span>
           </a>
 
@@ -204,7 +200,6 @@ import "../styles/global.css";
       <section class="kbm-reassurance-section">
         <div class="kbm-section-header">
           <h2>What you'll find at Knit by Machine</h2>
-          <p class="kbm-section-framing">Knit by Machine is built to remove guesswork so you can feel confident and keep making progress.</p>
         </div>
 
         <div class="kbm-reassurance-grid">
@@ -215,7 +210,7 @@ import "../styles/global.css";
 
           <div class="kbm-reassurance-item" data-testid="reassurance-tools">
             <h4>Tools that do the hard parts</h4>
-            <p>Let the site handle gauge math, stitch counts, and shaping plans. You focus on knitting.</p>
+            <p>Let the site handle the math, shaping, and planning. You focus on knitting, not calculations.</p>
           </div>
 
           <div class="kbm-reassurance-item" data-testid="reassurance-support">
@@ -234,7 +229,8 @@ import "../styles/global.css";
           <div class="kbm-about-strip__content">
             <h3>You're not doing this alone.</h3>
             <p>
-              I'm Sue, your guide here at Knit by Machine. I've helped thousands of knitters feel confident using their machines. I'll walk with you one small win at a time.
+              I'm Sue, your guide here at Knit by Machine. I've helped thousands of knitters 
+              get comfortable at their machines. I'll walk with you one small win at a time.
             </p>
             <a href="/about" class="kbm-about-link" data-testid="link-about">Learn more about Knit by Machine</a>
           </div>
