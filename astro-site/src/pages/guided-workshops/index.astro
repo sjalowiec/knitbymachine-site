@@ -217,6 +217,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
               <li>Step-by-step guidance</li>
               <li>Machine Quick Cards</li>
               <li>Diagnostics + checklists</li>
+              <li><strong>Private written feedback during your 10 days</strong><br>
+              Check in with notes or photos and get calm, personalized guidance.
+              </li>
               <li><strong>Call-free guidance</strong><br>
               Works in any time zone — no meetings or scheduling needed.
               </li>
@@ -228,6 +231,11 @@ const description = "A hands-on, personal workshop designed to help you make rea
 >
   Workshop Core
 </a>
+          <div class="pricing-helper">
+            <a href="#" data-modal-open="is-this-for-you">
+              Is this workshop right for you?
+            </a>
+          </div>
 
           </div>
           <div class="card card--pricing card--featured" data-testid="card-pricing-plus">
@@ -238,6 +246,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
             </p>
             <ul>
               <li>Everything in Workshop Core</li>
+              <li><strong>More feedback when you need it</strong><br>
+              Extra written support throughout your 10 days.
+              </li>
               <li><strong>Extra support for bigger projects</strong><br>
               Space for shaping decisions, fit questions, and more moving pieces.
               </li>
@@ -252,6 +263,11 @@ const description = "A hands-on, personal workshop designed to help you make rea
 >
   Workshop Plus
 </a>
+          <div class="pricing-helper">
+            <a href="#" data-modal-open="is-this-for-you">
+              Is this workshop right for you?
+            </a>
+          </div>
 
           </div>
         </div>
@@ -271,50 +287,6 @@ const description = "A hands-on, personal workshop designed to help you make rea
           Follow the first steps in your plan and send your initial progress. If you feel the workshop isn't a good fit during your 10-day window, email me and I'll refund your registration.
         </p>
         <p class="guarantee-note">No drama. No hoops.</p>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
-    <!-- Fit / Not Fit -->
-    <section class="section section--fit">
-      <div class="section-inner">
-        <div class="grid grid--two">
-          <div>
-            <h2>This Is for You If…</h2>
-            <ul>
-              <li>Your machine has been sitting quietly and you're ready to use it again.</li>
-              <li>You want a realistic 10-day container with calm, written guidance.</li>
-              <li>You prefer clear steps and check-ins over long live calls.</li>
-              <li>You're willing to take small actions and send quick updates.</li>
-              <li>You want knitting to feel doable and encouraging, not overwhelming.</li>
-            </ul>
-          </div>
-          <div>
-            <h2>This Is Not for You If…</h2>
-            <ul>
-              <li>You want weekly group calls or live Zoom coaching.</li>
-              <li>You're looking for a big video course you can binge.</li>
-              <li>You don't want to work within a 10-day window.</li>
-              <li>You're not able to send occasional notes or photos of your progress.</li>
-              <li>You'd rather collect information than focus on one finishable project.</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="section-cta">
-<a 
-  class="button button--primary" 
-  href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
-  data-testid="button-cta-hero"
->
-  Start Your Guided Workshop
-</a>
-
-          <div class="how-it-works-link">
-            <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
-          </div>
-        </div>
       </div>
     </section>
 
@@ -373,6 +345,37 @@ const description = "A hands-on, personal workshop designed to help you make rea
     </section>
 
   </main>
+
+  <!-- Is This For You Modal -->
+  <div id="is-this-for-you-modal" class="modal hidden">
+    <div class="modal-overlay" data-modal-close="is-this-for-you"></div>
+    <div class="modal-content">
+      <button class="modal-close" data-modal-close="is-this-for-you">×</button>
+      <h2>Is this workshop right for you?</h2>
+      <div class="modal-fit-grid">
+        <div>
+          <h3>This is for you if…</h3>
+          <ul>
+            <li>Your machine has been sitting quietly and you're ready to use it again.</li>
+            <li>You want a realistic 10-day container with calm, written guidance.</li>
+            <li>You prefer clear steps and check-ins over long live calls.</li>
+            <li>You're willing to take small actions and send quick updates.</li>
+            <li>You want knitting to feel doable and encouraging, not overwhelming.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>This is not for you if…</h3>
+          <ul>
+            <li>You want weekly group calls or live Zoom coaching.</li>
+            <li>You're looking for a big video course you can binge.</li>
+            <li>You don't want to work within a 10-day window.</li>
+            <li>You're not able to send occasional notes or photos of your progress.</li>
+            <li>You'd rather collect information than focus on one finishable project.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- How It Works Modal -->
   <div id="how-it-works-modal" class="modal hidden">
@@ -890,6 +893,29 @@ const description = "A hands-on, personal workshop designed to help you make rea
   .modal-steps li {
     margin-bottom: 0.75rem;
   }
+
+  .pricing-helper {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .pricing-helper a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .modal-fit-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .modal-fit-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
 </style>
 
 <script>
@@ -903,6 +929,25 @@ const description = "A hands-on, personal workshop designed to help you make rea
   document.querySelectorAll('[data-modal-close="how-it-works"]').forEach(btn => {
     btn.addEventListener("click", () => {
       document.getElementById("how-it-works-modal").classList.add("hidden");
+    });
+  });
+
+  document.querySelectorAll('[data-modal-open="is-this-for-you"]').forEach(el => {
+    el.addEventListener("click", (event) => {
+      event.preventDefault();
+      const modal = document.getElementById("is-this-for-you-modal");
+      if (modal) {
+        modal.classList.remove("hidden");
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-modal-close="is-this-for-you"]').forEach(el => {
+    el.addEventListener("click", () => {
+      const modal = document.getElementById("is-this-for-you-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+      }
     });
   });
 </script>

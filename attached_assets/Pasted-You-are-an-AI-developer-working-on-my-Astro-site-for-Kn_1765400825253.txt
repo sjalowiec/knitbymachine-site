@@ -1,0 +1,203 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I want to:
+1) Stop promising specific numbers of feedback submissions in the pricing cards.
+2) Add a small “Is this workshop right for you?” link under each pricing button.
+3) Move the existing “This Is for You / This Is Not for You” section into a modal
+   that both links open, and remove that section from the main scroll.
+
+------------------------------------------------
+1) Remove fixed feedback counts from pricing cards
+------------------------------------------------
+
+In the pricing section (class="section section--pricing"):
+
+a) In the Workshop Core card (data-testid="card-pricing-core"):
+
+- Find the bullet that currently says something like:
+  <li><strong>Up to 2 private feedback submissions over 10 days</strong></li>
+
+- Replace that entire <li> with:
+
+  <li><strong>Private written feedback during your 10 days</strong><br>
+    Check in with notes or photos and get calm, personalized guidance.
+  </li>
+
+Leave the other bullets in this card as they are (Personalized 10-Day Finish Plan,
+Step-by-step guidance, Machine Quick Cards, Diagnostics + checklists).
+
+b) In the Workshop Plus card (data-testid="card-pricing-plus"):
+
+- Find the bullet that currently says something like:
+  <li><strong>Up to 4 private feedback submissions over 10 days</strong></li>
+
+- Replace that entire <li> with:
+
+  <li><strong>More feedback when you need it</strong><br>
+    Extra written support throughout your 10 days.
+  </li>
+
+Leave the other bullets in this card as they are (Everything in Workshop Core,
+Priority response, Extra support for bigger projects, etc.).
+
+------------------------------------------------
+2) Add “Is this workshop right for you?” links under each pricing button
+------------------------------------------------
+
+Still in the pricing section:
+
+a) In the Workshop Core card (data-testid="card-pricing-core"), find the CTA button:
+
+  <a class="button button--primary" ...>
+    ...
+  </a>
+
+Immediately AFTER this button, insert:
+
+  <div class="pricing-helper">
+    <a href="#" data-modal-open="is-this-for-you">
+      Is this workshop right for you?
+    </a>
+  </div>
+
+b) In the Workshop Plus card (data-testid="card-pricing-plus"), find its CTA button:
+
+  <a class="button button--primary" ...>
+    ...
+  </a>
+
+Immediately AFTER this button, insert the same helper link:
+
+  <div class="pricing-helper">
+    <a href="#" data-modal-open="is-this-for-you">
+      Is this workshop right for you?
+    </a>
+  </div>
+
+------------------------------------------------
+3) Move the “This Is for You / Not for You” section into a modal
+------------------------------------------------
+
+Currently there is a section like:
+
+  <section class="section section--fit">
+    <div class="section-inner">
+      <div class="grid grid--two">
+        <div>
+          <h2>This Is for You If…</h2>
+          <ul>...</ul>
+        </div>
+        <div>
+          <h2>This Is Not for You If…</h2>
+          <ul>...</ul>
+        </div>
+      </div>
+      <div class="section-cta">...</div> <!-- CTA + how-it-works link -->
+    </div>
+  </section>
+
+I want this content in a modal instead of a full section.
+
+a) REMOVE the entire <section class="section section--fit">...</section> block
+   from the main page, including its inner CTA and any divider <hr> that is
+   directly associated with it.
+
+b) Create a new modal block near the other modal (for “how-it-works”), using the
+   existing “This Is for You / This Is Not for You” content inside.
+
+Right before the existing <div id="how-it-works-modal" ...> block, insert:
+
+  <div id="is-this-for-you-modal" class="modal hidden">
+    <div class="modal-overlay" data-modal-close="is-this-for-you"></div>
+    <div class="modal-content">
+      <button class="modal-close" data-modal-close="is-this-for-you">×</button>
+      <h2>Is this workshop right for you?</h2>
+      <div class="modal-fit-grid">
+        <div>
+          <h3>This is for you if…</h3>
+          <!-- Use the existing “This Is for You If…” <ul> list from the old section here -->
+        </div>
+        <div>
+          <h3>This is not for you if…</h3>
+          <!-- Use the existing “This Is Not for You If…” <ul> list from the old section here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+When building this modal, reuse the SAME bullet content that was previously in the
+section--fit lists; just adapt the headings as shown (H2 + two H3s).
+
+------------------------------------------------
+4) Add basic styling for the modal’s layout and pricing-helper link
+------------------------------------------------
+
+In an existing <style> block in this file (or create one if there is none yet),
+add:
+
+  .pricing-helper {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .pricing-helper a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .modal-fit-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .modal-fit-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+
+This keeps the “Is this workshop right for you?” links small and subtle under
+the buttons, and arranges the modal content in two columns on larger screens.
+
+------------------------------------------------
+5) Add JS to open/close the new “is-this-for-you” modal
+------------------------------------------------
+
+At the bottom of the file there is already a <script type="module"> block that
+handles the “how-it-works” modal using data-modal-open="how-it-works" and
+data-modal-close="how-it-works".
+
+Inside that same <script type="module"> block, AFTER the existing modal code,
+add the following for the new modal:
+
+  document.querySelectorAll('[data-modal-open="is-this-for-you"]').forEach(el => {
+    el.addEventListener("click", (event) => {
+      event.preventDefault();
+      const modal = document.getElementById("is-this-for-you-modal");
+      if (modal) {
+        modal.classList.remove("hidden");
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-modal-close="is-this-for-you"]').forEach(el => {
+    el.addEventListener("click", () => {
+      const modal = document.getElementById("is-this-for-you-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  });
+
+Do not alter the existing “how-it-works” modal JS; just append this new block
+below it in the same script.
+
+------------------------------------------------
+
+Please make only the changes described above and do not modify any other content
+or layout in this file.
