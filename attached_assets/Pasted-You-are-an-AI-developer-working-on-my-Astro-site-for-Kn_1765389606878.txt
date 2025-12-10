@@ -1,0 +1,55 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I want the pricing section to clearly explain that:
+- Workshop Core is for smaller / simpler projects
+- Workshop Plus is for sweaters and more complex projects
+- Both are 10-day, call-free workshops
+
+1) Update the section heading and intro
+
+In the section with class="section section--pricing", find the <h2> that currently says:
+  Choose Your Studio Level
+
+Change the text inside that <h2> to:
+  Choose Your Workshop Level
+
+Directly under that <h2> there is a short paragraph we recently added that mentions 10-day, call-free workshops. Replace that paragraph’s content with:
+
+  <p>
+    Both options are 10-day, call-free workshops. Workshop Core is best for smaller, simpler projects; Workshop Plus is ideal for sweaters and more complex makes.
+  </p>
+
+2) Update the Workshop Core short description
+
+In the pricing card with data-testid="card-pricing-core" (Workshop Core), find the short description <p> under the heading. Replace the entire paragraph with:
+
+  <p>
+    Perfect for smaller, simpler projects—like scarves, , hats, blankets
+  </p>
+
+
+
+3) Update the Workshop Plus short description
+
+In the pricing card with data-testid="card-pricing-plus" (Workshop Plus), find the short description <p> under the heading. Replace the entire paragraph with:
+
+  <p>
+    Best for sweaters, multi-piece garments, or more complex projects where extra support and shaping decisions really matter.
+  </p>
+
+4) Update one Workshop Plus bullet to emphasize complex projects
+
+In the same Workshop Plus card, find the bullet that currently reads:
+
+  Extended studio access
+
+Replace the text inside that <li> so it becomes:
+
+  <li><strong>Extra support for bigger projects</strong><br>
+  Space for shaping decisions, fit questions, and more moving pieces.
+  </li>
+
+Do not change any other bullets or layout in this section.
