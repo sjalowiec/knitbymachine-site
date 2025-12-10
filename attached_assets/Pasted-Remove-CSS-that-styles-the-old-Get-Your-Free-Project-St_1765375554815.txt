@@ -1,0 +1,101 @@
+Remove CSS that styles the old “Get Your Free Project Starter” modal, now that the modal markup and script have been removed.
+Do not remove any shared or generic styles that might be used by other forms or modals.
+
+1. Find and remove rules that target the modal specifically
+
+In your CSS files (likely in the main site styles, e.g. index...css or similar), search for selectors that clearly belong only to the removed modal. Examples to look for:
+
+#lead-magnet-modal
+
+#lead-magnet-title
+
+[data-lead-magnet-backdrop]
+
+[data-lead-magnet-close]
+
+[data-lead-magnet-open]
+
+[data-testid="modal-lead-magnet"]
+
+For each of these:
+
+Remove the entire CSS rule block that targets those selectors.
+
+Example (to delete):
+
+#lead-magnet-modal {
+  /* any styles here */
+}
+
+#lead-magnet-modal ._form-title {
+  /* any styles here */
+}
+
+[data-lead-magnet-close] {
+  /* any styles here */
+}
+
+
+Delete all such blocks that are clearly tied only to the removed modal.
+
+2. Keep generic, reusable form and layout styles
+
+Do not remove or modify any of the following types of styles, even if they were visually used in the modal:
+
+Generic form classes from ActiveCampaign, for example:
+
+._form
+
+._form_1
+
+._form-content
+
+._form-thank-you
+
+._submit
+
+._error
+
+Sitewide layout utilities such as:
+
+.fixed, .inset-0, .flex, .items-center, .justify-center, .bg-black/50, .rounded-2xl, .shadow-2xl, etc., if present in your CSS.
+
+Any shared button styles like .btn, ._submit, or global heading styles.
+
+These are likely reused by other pages and forms and must remain intact.
+
+3. Remove any modal-specific animation or transition definitions
+
+If you have keyframes or transition helpers that are clearly used only for #lead-magnet-modal, such as:
+
+@keyframes specifically named for the lead magnet modal
+
+Classes like .lead-magnet-open, .lead-magnet-backdrop, etc.
+
+Remove those blocks only if they are not referenced anywhere else in the codebase.
+
+4. Confirm no broken references remain
+
+After CSS cleanup:
+
+Search the entire project for lead-magnet-modal, lead-magnet-trigger, data-lead-magnet- and confirm:
+
+No HTML references remain
+
+No JS references remain
+
+No CSS selectors remain
+
+The search should return zero matches for those modal-specific identifiers.
+
+5. Do not change anything related to Project Inspiration
+
+Make sure all CSS used by the /project-inspiration page remains unchanged, including:
+
+.pi-hero, .pi-form-card, .pi-pill, .pi-whats-next, etc.
+
+Any form styles on that page
+
+Any layout or typography rules there
+
+Only remove styles tied to the deleted “Get Your Free Project Starter” modal.
