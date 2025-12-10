@@ -1,0 +1,96 @@
+You are an AI developer working on my Astro site for Knit by Machine.
+Please update the Guided Workshop sales page file:
+
+/src/pages/guided-workshops/index.astro
+
+I’ve shifted this product to a 10-day, call-free workshop. I’d like to:
+
+Remove remaining “30-day” language
+
+Clarify the difference between Workshop Core and Workshop Plus
+
+Add a simple response-time + time zone note
+
+Remove any mention of “focused check-ins”
+
+1) Change remaining “30-Day” references to “10-Day”
+
+a. “What’s Included” section
+Find:
+
+<strong>Personalized 30-Day Finish Plan</strong>
+
+
+Replace with:
+
+<strong>Personalized 10-Day Finish Plan</strong>
+
+
+b. Workshop Core pricing card
+Find:
+
+Personalized 30-Day Finish Plan
+
+
+Replace with:
+
+Personalized 10-Day Finish Plan
+
+2) Sharpen Workshop Core vs Workshop Plus (without referencing check-ins)
+a. Workshop Core card
+
+In the card with data-testid="card-pricing-core":
+
+Update the short description <p> under the heading.
+Replace the entire paragraph with:
+
+<p>
+  A simple, clear 10-day experience with structure, guidance, and support when you need it.
+</p>
+
+
+Update the feedback bullet.
+Find:
+
+<li><strong>2 private feedback submissions</strong></li>
+
+
+Replace inner text with:
+
+<li><strong>Up to 2 private feedback submissions over 10 days</strong></li>
+
+b. Workshop Plus card
+
+In the card with data-testid="card-pricing-plus":
+
+Update the short description <p> under the heading.
+Replace the entire paragraph with:
+
+<p>
+  For knitters who want more personalized attention during their 10-day workshop.
+</p>
+
+
+Update the feedback bullet.
+Find:
+
+<li><strong>4 private feedback submissions</strong></li>
+
+
+Replace inner text with:
+
+<li><strong>Up to 4 private feedback submissions over 10 days</strong></li>
+
+
+Leave all other bullets unchanged (including “Everything in Workshop Core,” “Priority response,” “Extended studio access”).
+
+3) Add response-time + time zone note in Step 4 (How It Works)
+
+In Step 4 of the “How It Works” section, replace its <p> with:
+
+<p>
+  I review your work and send you clear corrections (if needed), gentle adjustments, encouragement, and your next step. No meetings. No camera. No pressure. I typically reply within one business day, Monday–Friday (Pacific time).
+</p>
+
+
+Please make only the changes described above and do not modify anything else.
