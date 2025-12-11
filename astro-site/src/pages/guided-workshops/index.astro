@@ -21,27 +21,6 @@ const description = "A hands-on, personal workshop designed to help you make rea
                 A 10-day, call-free workshop where you finish one real project on your machine — with calm, written guidance at each step.
               </p>
             </div>
-
-            <p>
-              In this guided, one-to-one workshop, we'll choose a realistic project, get your machine behaving, and walk through each step in writing so you're never left wondering what to do next.
-            </p>
-            <p>
-              You set the pace. You check in when you're ready. I reply with clear next steps, adjustments, and encouragement — no calls, no time zones, no pressure to "keep up."
-            </p>
-
-            <div class="hero-cta">
-              <a
-                class="button button--primary button--large"
-                href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
-                data-testid="button-cta-hero"
-              >
-                Start Your Guided Workshop
-              </a>
-            </div>
-
-            <p class="hero-note">
-              Your 10-day window begins when you submit your Project Planner — not at payment. Most knitters check in just a few times during their 10 days. You choose the pace that works for you.
-            </p>
           </div>
 
           <div class="hero-right">
@@ -52,6 +31,30 @@ const description = "A hands-on, personal workshop designed to help you make rea
               </div>
             </div>
           </div>
+        </div>
+
+        <!-- Full-width intro text -->
+        <div class="hero-intro-text">
+          <p>
+            In this guided, one-to-one workshop, we'll choose a realistic project, get your machine behaving, and walk through each step in writing so you're never left wondering what to do next.
+          </p>
+          <p>
+            You set the pace. You check in when you're ready. I reply with clear next steps, adjustments, and encouragement — no calls, no time zones, no pressure to "keep up."
+          </p>
+        </div>
+
+        <!-- Centered CTA -->
+        <div class="hero-cta hero-cta--centered">
+          <a
+            class="button button--primary button--large"
+            href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
+            data-testid="button-cta-hero"
+          >
+            Start Your Guided Workshop
+          </a>
+          <p class="hero-note hero-note--full-width">
+            Your 10-day window begins when you submit your Project Planner — not at payment. Most knitters check in just a few times during their 10 days. You choose the pace that works for you.
+          </p>
         </div>
       </div>
     </section>
@@ -276,35 +279,6 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
     <hr class="kbm-divider" />
 
-    <!-- About Sue -->
-    <section class="section section--about">
-      <div class="section-inner">
-        <div class="grid grid--two about-grid">
-          <div class="about-image">
-            <!-- SUE PHOTO PLACEHOLDER -->
-            <!-- TODO: Replace with a real photo of Sue (ideally with a knitting machine) -->
-            <div class="placeholder-image placeholder-image--portrait">
-              <span>Sue Portrait</span>
-            </div>
-          </div>
-          <div class="about-content">
-            <h2>About Sue</h2>
-            <p>
-              I've spent decades helping machine knitters move from confusion to
-              confidence — not through pressure, but through clarity.
-            </p>
-            <p>
-              This Guided Workshop is built the same way I teach: small wins, real
-              progress, and steady encouragement. You don't need to "keep up." You
-              just need the right next step.
-            </p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
     <!-- Final CTA -->
     <section class="section section--cta">
       <div class="section-inner section-inner--center">
@@ -467,6 +441,34 @@ const description = "A hands-on, personal workshop designed to help you make rea
     line-height: 1.5;
     color: #5a6b47;
     font-style: italic;
+  }
+
+  /* Full-width intro text below hero grid */
+  .hero-intro-text {
+    width: 100%;
+    margin-top: 2rem;
+    text-align: left;
+  }
+
+  .hero-intro-text p {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  /* Centered CTA */
+  .hero-cta--centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  .hero-note--full-width {
+    max-width: 100%;
+    width: 100%;
   }
 
   /* Section CTA */
