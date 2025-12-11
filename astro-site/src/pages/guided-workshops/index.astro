@@ -160,7 +160,7 @@ This helps me understand your project before I confirm it's a good fit.
             </p>
           </li>
           <li class="kbm-note">
-            <h3>You don't need to check in every day</h3>
+            <strong class="kbm-note-title">You don't need to check in every day</strong>
             <p>
               You choose your pace during your 10-day workshop. Check in when it makes sense for you, and Sue will be there with your next step.
             </p>
@@ -545,8 +545,12 @@ This helps me understand your project before I confirm it's a good fit.
     border-left-color: var(--kbm-green);
   }
 
-  .steps-list li.kbm-note h3 {
-    margin-top: 0;
+  .steps-list li.kbm-note .kbm-note-title {
+    display: block;
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin-bottom: 0.5rem;
   }
 
   /* Included List */
