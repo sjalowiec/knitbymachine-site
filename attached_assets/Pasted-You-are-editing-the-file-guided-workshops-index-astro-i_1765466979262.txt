@@ -1,0 +1,97 @@
+You are editing the file `/guided-workshops/index.astro` in an Astro project.
+
+Goal:
+- Keep the existing header, hero, “What a Guided Workshop really is” section, “How it works”, “Pricing at a glance”, and final CTA exactly as they are.
+- ONLY change the layout of:
+  1) “What we can work on together”
+  2) “What you get during your 10 days”
+- These two sections should be combined into a single, two-column layout on desktop, and stack vertically on smaller screens.
+
+Steps:
+
+1. Find the current markup for the two sections:
+   - The section with `<h2>What we can work on together</h2>` and its paragraph + bullet list.
+   - The section with `<h2>What you get during your 10 days</h2>` and its intro + bullet list + closing sentence.
+
+2. Remove those two separate sections and replace them with a single `<section>` that contains both headings side by side in two columns.
+
+3. Use this HTML structure for the new combined section (you can adapt class names to match existing conventions, but keep the structure the same):
+
+```html
+<section class="gw-two-col kbm-section">
+  <div class="gw-col">
+    <h2>What we can work on together</h2>
+    <p>
+      Your project can be simple, messy, or somewhere in between. 
+      A Guided Workshop is especially helpful if you want support with:
+    </p>
+    <ul>
+      <li>Getting started on a project you’ve been thinking about for too long</li>
+      <li>Moving again on something that’s been sitting half-finished</li>
+      <li>Sorting out shaping, fit, or construction details</li>
+      <li>Translating a pattern to your machine</li>
+      <li>Making confident yarn and gauge decisions</li>
+      <li>Working through “this part doesn’t look right and I don’t know why”</li>
+      <li>Finishing details so your project looks and feels the way you hoped</li>
+    </ul>
+    <p>
+      If you’re not sure whether your idea fits, that’s exactly what the “Tell Me About Your Project” step is for.
+    </p>
+  </div>
+
+  <div class="gw-col">
+    <h2>What you get during your 10 days</h2>
+    <p>
+      Everything is built around your project, but each Guided Workshop includes:
+    </p>
+    <ul>
+      <li><strong>10 days of focused support</strong> on one project</li>
+      <li><strong>Written, voice, and short video replies</strong> from me</li>
+      <li><strong>Clear, “doable” next steps</strong> instead of long lectures</li>
+      <li><strong>Feedback for your specific machine, yarn, and pattern</strong></li>
+      <li><strong>Gentle accountability</strong> so you don’t drift away from your project</li>
+      <li><strong>A simple plan for what to do next</strong> once our 10 days are done</li>
+    </ul>
+    <p>
+      You keep knitting at your pace. I’m in the background when you need support.
+    </p>
+  </div>
+</section>
+Add CSS for the new two-column layout.
+
+If this page already has a <style> block in index.astro, add the styles there.
+If not, add them to the appropriate global/page stylesheet where other .kbm- styles live.
+
+Use this CSS (adjust only if needed to match existing naming):
+
+css
+Copy code
+.gw-two-col {
+  display: flex;
+  gap: 3rem;
+  align-items: flex-start;
+  margin: 3rem 0;
+}
+
+.gw-col {
+  flex: 1;
+  min-width: 280px;
+}
+
+@media (max-width: 768px) {
+  .gw-two-col {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+Make sure:
+
+Typography (fonts, colors, bullet styles) matches the rest of the page.
+
+On desktop/tablet, the two sections appear side by side.
+
+On mobile, the columns stack vertically with good spacing.
+
+No other sections or content on the page are changed.
+
+/// REPLIT PROMPT END
