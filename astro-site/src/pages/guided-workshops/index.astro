@@ -33,7 +33,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
         <!-- Full-width intro text -->
         <div class="hero-intro-text">
           <p>
-            A 10-day workshop where you bring the project, and I help you move it forward with clear written guidance and short video replies. No calls, no time zones — just steady, practical support as you knit.
+            You bring the project, and I help you move it forward with clear written guidance, short video replies, and support that fits your pace. No calls, no time zones — just steady, practical help as you knit.
           </p>
         </div>
 
@@ -47,6 +47,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
             Apply for Your Guided Workshop
           </a>
           <p class="cta-note"><em>You won't pay yet — Sue reviews your project first and sends a custom quote.</em></p>
+          <p class="how-it-works-link">
+            <a href="#how-it-works">See how it works →</a>
+          </p>
         </div>
       </div>
     </section>
@@ -129,7 +132,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
     </div>
 
     <!-- How it works -->
-    <section class="section section--how-it-works">
+    <section class="section section--how-it-works" id="how-it-works">
       <div class="section-inner">
         <h2>How it works</h2>
         <ol class="steps-list">
@@ -551,6 +554,25 @@ This helps me understand your project before I confirm it's a good fit.
     font-weight: 600;
     color: var(--kbm-green);
     margin-bottom: 0.5rem;
+  }
+
+  /* How It Works Link */
+  .how-it-works-link {
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  .how-it-works-link a {
+    font-size: 0.95rem;
+    color: #2C3A57;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease;
+  }
+
+  .how-it-works-link a:hover {
+    opacity: 1;
   }
 
   /* Included List */
