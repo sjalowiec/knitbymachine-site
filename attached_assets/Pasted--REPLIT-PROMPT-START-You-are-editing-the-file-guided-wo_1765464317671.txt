@@ -1,0 +1,178 @@
+/// REPLIT PROMPT START
+
+You are editing the file `/guided-workshops/index.astro` in an Astro project.
+
+Goals:
+- KEEP the existing site header, footer, and overall layout.
+- DO NOT change the current hero section at the top of the page.
+- BELOW the hero, REMOVE the old sections (pricing tiers, “what’s included” block, “is this for you?” versions, and the old pricing section).
+- REPLACE them with new, simpler sections that match the copy below.
+- Use clean, semantic HTML with lightweight classes that fit the existing design system (e.g. container, section, h2, p, ul, li, etc.).
+- Make sure the page remains responsive and matches the general KBM styling already in use.
+
+Implementation notes:
+- Keep the main wrapper / container structure consistent with the rest of the site.
+- Use headings in order (h2 for main sections under the hero, h3 where needed).
+- Buttons should reuse the existing primary button class used elsewhere on the site for CTAs.
+- If there is already a main `<main>` element for the content, keep it and just replace the inner sections after the hero section.
+
+Here is the NEW content structure to implement UNDER the hero:
+
+------------------------------------------------
+SECTION: What a Guided Workshop really is
+------------------------------------------------
+
+<h2>What a Guided Workshop really is</h2>
+<p>
+  A Guided Workshop is a focused, 10-day container built around 
+  <strong>one project you care about right now</strong>.
+</p>
+<p>
+  You bring the project, your machine, and your questions.
+  I bring experience, clear next steps, and steady support
+  so you don’t have to figure it all out alone.
+</p>
+<p>
+  We’ll stay in touch with a mix of 
+  <strong>written messages, voice notes, and short videos</strong>—whatever makes it easiest for you to keep moving.
+</p>
+
+------------------------------------------------
+SECTION: What we can work on together
+------------------------------------------------
+
+<h2>What we can work on together</h2>
+<p>
+  Your project can be simple, messy, or somewhere in between. 
+  A Guided Workshop is especially helpful if you want support with:
+</p>
+<ul>
+  <li>Getting started on a project you’ve been thinking about for too long</li>
+  <li>Moving again on something that’s been sitting half-finished</li>
+  <li>Sorting out shaping, fit, or construction details</li>
+  <li>Translating a pattern to your machine</li>
+  <li>Making confident yarn and gauge decisions</li>
+  <li>Working through “this part doesn’t look right and I don’t know why”</li>
+  <li>Finishing details so your project looks and feels the way you hoped</li>
+</ul>
+<p>
+  If you’re not sure whether your idea fits, that’s exactly what the application is for.
+</p>
+
+------------------------------------------------
+SECTION: What you get during your 10 days
+------------------------------------------------
+
+<h2>What you get during your 10 days</h2>
+<p>
+  Everything is built around <em>your</em> project, but each Guided Workshop includes:
+</p>
+<ul>
+  <li><strong>10 days of focused support</strong> on one project</li>
+  <li><strong>Written, voice, and short video replies</strong> from me</li>
+  <li><strong>Clear, “doable” next steps</strong> instead of long lectures</li>
+  <li><strong>Feedback for your specific machine, yarn, and pattern</strong></li>
+  <li><strong>Gentle accountability</strong> so you don’t drift away from your project</li>
+  <li><strong>A simple plan for what to do next</strong> once our 10 days are done</li>
+</ul>
+<p>
+  You keep knitting at your pace. I’m in your corner in the background.
+</p>
+
+------------------------------------------------
+SECTION: How it works
+------------------------------------------------
+
+<h2>How it works</h2>
+<ol>
+  <li>
+    <strong>Apply</strong><br />
+    Tell me about your project, your machine, and where you’d like support. 
+    This helps me understand the scope before either of us commits.
+  </li>
+  <li>
+    <strong>I review your project</strong><br />
+    I’ll look at what you’ve shared and confirm whether it’s a good fit 
+    for a 10-day container.
+  </li>
+  <li>
+    <strong>You receive a custom quote</strong><br />
+    Pricing is based on project complexity. 
+    <strong>Workshops start at $297</strong>, and you’ll see your exact price before you pay.
+  </li>
+  <li>
+    <strong>You choose your start date</strong><br />
+    Once you accept the quote and complete payment, we set your 10-day window and get started.
+  </li>
+</ol>
+
+------------------------------------------------
+SECTION: Is a Guided Workshop right for you?
+------------------------------------------------
+
+<h2>Is a Guided Workshop right for you?</h2>
+
+<h3>This is likely a good fit if you:</h3>
+<ul>
+  <li>Have one project you’d really like to move forward</li>
+  <li>Prefer messaging, voice, and short videos over scheduling live calls</li>
+  <li>Want specific guidance, not a big course or library</li>
+  <li>Are willing to take small actions during the 10 days</li>
+  <li>Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
+</ul>
+
+<h3>It’s probably not a fit if you:</h3>
+<ul>
+  <li>Want a full pattern designed from scratch</li>
+  <li>Have a very large, open-ended, or long-term project</li>
+  <li>Prefer live, real-time coaching calls</li>
+</ul>
+<p>
+  If your project isn’t a good match, I’ll let you know before you’re asked to pay.
+</p>
+
+------------------------------------------------
+SECTION: Pricing at a glance
+------------------------------------------------
+
+<h2>Pricing at a glance</h2>
+<p>
+  Guided Workshops <strong>start at $297</strong>.
+</p>
+<p>
+  Your final price depends on the complexity of the project you describe in your application—things like:
+</p>
+<ul>
+  <li>How many parts are involved</li>
+  <li>How many moving pieces there are</li>
+  <li>How much we’ll realistically cover in 10 days</li>
+</ul>
+<p>
+  You’ll always see your <strong>personalized quote before payment</strong>, so there are no surprises.
+</p>
+
+------------------------------------------------
+SECTION: Final CTA
+------------------------------------------------
+
+<section class="gw-cta">
+  <h2>Ready to apply?</h2>
+  <p>
+    If you’re feeling a tug toward one particular project—and you’d like a calm, structured 
+    10 days with support along the way—fill out the short application and we’ll see if it’s a fit.
+  </p>
+  <a href="#guided-workshop-application" class="btn-primary">
+    Apply for a Guided Workshop
+  </a>
+  <p class="gw-cta-note">
+    I’ll review your application and send your custom quote within 1–2 business days.
+  </p>
+</section>
+
+Note:
+- If the application will live on this same page, you can place the actual form in a section with the id "guided-workshop-application" below this CTA.
+- If the application is on another page or Outseta/Typeform URL, update the CTA link href to point to that URL instead of "#guided-workshop-application".
+
+Make sure all new sections visually match the rest of the KBM site (spacing, fonts, colors, button styles).
+
+/// REPLIT PROMPT END

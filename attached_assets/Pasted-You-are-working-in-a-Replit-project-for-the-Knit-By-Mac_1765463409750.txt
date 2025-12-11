@@ -1,0 +1,78 @@
+You are working in a Replit project for the Knit By Machine website.
+
+I need you to update the Guided Workshops page with new copy, while keeping the hero section exactly as it currently is.
+
+YOUR TASKS:
+
+1. BACK UP THE CURRENT PAGE
+- Locate the file that defines the /guided-workshops page. It will likely be:
+    src/pages/guided-workshops/index.astro
+  or a similarly named file in src/pages/.
+- Make a full backup copy in the same directory named:
+    index.backup-guided-workshop.astro
+- The backup should contain the complete, unmodified original file.
+
+2. UPDATE ONLY THE MAIN CONTENT *AFTER THE HERO SECTION*
+Do NOT modify:
+- the hero section (leave all text and HTML exactly as-is)
+- the header, footer, or layout wrappers
+- class names, IDs, data-testids, or structure
+
+Inside the <main class="page page--guided-workshop">...</main>, update ONLY the following sections:
+
+A) "What This Is" section:
+Replace the existing copy in that section with this:
+
+---
+<h2>What a Guided Workshop Actually Is</h2>
+<p>
+  A Guided Workshop is a 10-day coaching window where you get personalized help with one real project. 
+  You check in when you’re ready — by text message, a written note, or a quick photo — and I reply with 
+  whatever format makes things clearest: written steps, voice messages, or short videos you can watch anytime.
+</p>
+<p>
+  If you’ve used our Skill Builders or Studio Sessions, this is where we apply them directly to your project 
+  with focused one-to-one support.
+</p>
+---
+
+B) "Who This Is For" section:
+In the “Perfect if you’re:” list, ADD this bullet at the top:
+- Someone who prefers support in familiar formats — text messages, written notes, or quick video replies that explain exactly what to do next.
+
+Do NOT alter any other bullets.
+
+C) "How the 10 Days Work" section:
+In Step 5, replace the descriptive paragraph with:
+
+---
+You check in whenever you’re ready — by text message, written note, or a few photos of what you’re seeing. 
+I’ll reply with the format that helps most: written steps, a voice message, or a short video walking you 
+through your next move. Most knitters check in just a handful of times during their 10 days.
+---
+
+D) Pricing Cards:
+In the Core card, add this bullet (near the other features):
+- Personalized replies in the format that helps you most — text message, written notes, voice messages, or short videos.
+
+In the Plus card, add this bullet:
+- Flexible support formats: text messages, written notes, voice replies, or short videos created specifically for your project.
+
+E) FAQ — “What does a check-in look like?”:
+Replace the answer with:
+
+---
+Check-ins are simple: send a text message, a quick note, or a few photos of what you’re seeing. 
+I’ll reply with whatever format makes the next step clearest — written instructions, a voice message, 
+or a short video you can replay anytime. No calls required.
+---
+
+3. DO NOT CHANGE ANYTHING ELSE
+- Leave the hero section untouched.
+- Do not remove or add sections.
+- Do not add new scripts, styles, imports, or components.
+- Preserve the document structure exactly.
+
+After you complete the update, confirm:
+- The backup file exists and contains the original page.
+- The updated page builds without errors.
