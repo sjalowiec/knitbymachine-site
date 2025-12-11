@@ -1,0 +1,219 @@
+You are working in a Replit project for the Knit by Machine website.
+
+Your task:
+1. Back up the current Guided Workshop page.
+2. Update it with new copy while keeping the existing layout, header, footer, and styles.
+
+Details:
+
+- The page route is /guided-workshops.
+- Find the source file that defines this page. In this project it is likely:
+  - src/pages/guided-workshops/index.astro
+  or a similarly named file in src/pages or pages/.
+- Do NOT change any global header, footer, scripts, imports, or CSS.
+- Preserve all class names, IDs, and data-testid attributes that already exist.
+- Only replace the MAIN content block for the Guided Workshop page.
+
+STEP 1 – BACKUP
+- Locate the file that defines the /guided-workshops page.
+- Create a backup copy in the same directory named:
+  - index.guided-workshop-backup.astro
+- Copy the FULL original contents into this backup file before making any changes.
+
+STEP 2 – UPDATE MAIN CONTENT
+- In the original file (NOT the backup), find the existing <main> element for the Guided Workshop page.
+  It will look like:
+    <main class="page page--guided-workshop"> … </main>
+- Replace everything from
+    <main class="page page--guided-workshop">
+  down to the matching closing
+    </main>
+  with the following updated HTML block, keeping the tag and class the same:
+
+---- START NEW MAIN CONTENT ----
+<main class="page page--guided-workshop">
+  <!-- Hero Section -->
+  <section class="section section--hero">
+    <div class="section-inner">
+      <div class="grid grid--two hero-grid">
+        <div class="hero-left">
+          <div class="hero-header">
+            <div class="hero-title-row">
+              <img src="/images/guided_workshops.svg" alt="Guided Workshops logo" class="hero-logo" />
+              <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
+            </div>
+            <p class="hero-subtitle">
+              A 10-day, call-free workshop where you finish one real project on your machine — with calm, written guidance at each step.
+            </p>
+          </div>
+
+          <p>
+            In this guided, one-to-one workshop, we’ll choose a realistic project, get your machine behaving, and walk through each step in writing so you’re never left wondering what to do next.
+          </p>
+          <p>
+            You set the pace. You check in when you’re ready. I reply with clear next steps, adjustments, and encouragement — no calls, no time zones, no pressure to “keep up.”
+          </p>
+
+          <div class="hero-cta">
+            <a
+              class="button button--primary button--large"
+              href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
+              data-testid="button-cta-hero"
+            >
+              Start Your Guided Workshop
+            </a>
+          </div>
+
+          <p class="hero-note">
+            Your 10-day window begins when you submit your Project Planner — not at payment. Most knitters check in just a few times during their 10 days. You choose the pace that works for you.
+          </p>
+        </div>
+
+        <div class="hero-right">
+          <!-- You can replace this placeholder with a real image later -->
+          <div class="hero-media">
+            <div class="placeholder-image">
+              <span>Hero Image (Sue + machine setup)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="kbm-divider" />
+
+  <!-- What This Is -->
+  <section class="section section--overview">
+    <div class="section-inner">
+      <h2>What a Guided Workshop Actually Is</h2>
+      <p>
+        A Guided Workshop is a 10-day, written-support container focused on one finishable project. Instead of a giant course or weekly Zoom calls,
+        you get a simple project plan, clear checklists, and private written feedback from Sue whenever you send notes or photos.
+      </p>
+      <p>
+        If you’ve used <strong>Smart Guides</strong> or <strong>Studio Sessions</strong> before, this is where we apply that knowledge to one real project with focused, one-to-one support.
+      </p>
+    </div>
+  </section>
+
+  <hr class="kbm-divider" />
+
+  <!-- Who This Is For -->
+  <section class="section section--problem">
+    <div class="section-inner">
+      <h2>If your machine has been sitting quietly…</h2>
+      <p>
+        …and you’re not sure what to knit next — or how to start without “messing it up” — a Guided Workshop gives you a calm, realistic path forward.
+      </p>
+
+      <div class="grid grid--two">
+        <div>
+          <h3>Perfect if you’re:</h3>
+          <ul>
+            <li>A newer or rusty knitter who wants help choosing a project that fits your current skills and time.</li>
+            <li>Returning to your machine after a break and craving a clear, do-able plan.</li>
+            <li>Busy, juggling real life, and needing support that works without live calls or complicated scheduling.</li>
+            <li>Someone who learns best from written steps, photos, and checklists you can revisit.</li>
+          </ul>
+        </div>
+        <div>
+          <h3>Not the best fit if you’re:</h3>
+          <ul>
+            <li>Looking for weekly group calls or live Zoom coaching.</li>
+            <li>Wanting a big video course to binge-watch rather than a focused project.</li>
+            <li>Unable to work within a 10-day window or send occasional notes/photos of your progress.</li>
+            <li>More interested in collecting information than finishing one real, finishable project.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="kbm-divider" />
+
+  <!-- How the 10 Days Work -->
+  <section class="section section--how-it-works">
+    <div class="section-inner">
+      <h2>How Your 10-Day Guided Workshop Works</h2>
+      <ol class="steps-list">
+        <li>
+          <h3>1. Join the workshop.</h3>
+          <p>
+            You’ll complete checkout and get immediate access to your Project Planner — a simple intake form where you’ll share your machine, yarn,
+            and the project you’d like to work on.
+          </p>
+        </li>
+        <li>
+          <h3>2. Choose when to begin.</h3>
+          <p>
+            Your 10 days do <strong>not</strong> start at payment. They begin when you submit your Project Planner. Start today, next week, or when
+            your yarn arrives — you’re in control.
+          </p>
+        </li>
+        <li>
+          <h3>3. Tell Sue about your project.</h3>
+          <p>
+            Use the Project Planner to describe what you want to finish (or finally start), your time constraints, and any parts that feel confusing
+            or scary.
+          </p>
+        </li>
+        <li>
+          <h3>4. Get your personalized plan.</h3>
+          <p>
+            I review your intake and send a clear, realistic plan for your 10 days: simple steps, machine checks, and small milestones that fit the
+            time and energy you actually have.
+          </p>
+        </li>
+        <li>
+          <h3>5. Move forward at your pace.</h3>
+          <p>
+            You check in when you’re ready — with notes, questions, or photos of what you’re seeing on the machine. I reply with adjustments,
+            explanations, and your next step. Most knitters check in just a handful of times during their 10 days.
+          </p>
+        </li>
+      </ol>
+
+      <div class="callout callout--contrast">
+        <p>
+          No calls. No camera. No time zones to juggle. Just written, private guidance that meets you where you are — and moves you steadily toward a
+          finished project.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="kbm-divider" />
+
+  <!-- Example Projects -->
+  <section class="section section--examples">
+    <div class="section-inner">
+      <h2>Good Projects for a Guided Workshop</h2>
+      <p>Here are some examples of projects that work especially well inside a 10-day container:</p>
+      <ul>
+        <li>Your first simple baby blanket or throw on a newly revived machine.</li>
+        <li>A straightforward scarf or shawl that lets you practice clean cast-ons and tidy edges.</li>
+        <li>A hat or set of hats to get comfortable with shaping and finishing.</li>
+        <li>Finishing a stalled sweater where you’re stuck on shaping, sizing, or assembly.</li>
+        <li>A basic sweater or cardigan using yarn you already love, where fit and measurements really matter.</li>
+        <li>Reviving an older machine with a simple “test project” that builds confidence and familiarity.</li>
+      </ul>
+      <p>
+        If you’re unsure whether your idea fits, you can describe it in your Project Planner and we’ll shape it into a calm, finishable project
+        together.
+      </p>
+    </div>
+  </section>
+
+  <hr class="kbm-divider" />
+
+  <!-- Pricing / Levels -->
+  <section class="section section--pricing" id="pricing">
+    <div class="section-inner">
+      <h2>Choose Your Workshop Level</h2>
+      <p>
+        Both options are 10-day, call-free workshops with written guidance and a personalized project plan. Choose the level that matches the size and
+        complexity of the project you have in mind.
+      </p>
+
+      <p><strong>Quick chooser:</strong> Choose <em>Core</em> for smaller/simpler projects; choose <em>Plus</em> for sweaters or projects with more shaping and mo
