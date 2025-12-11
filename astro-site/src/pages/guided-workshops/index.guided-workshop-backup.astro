@@ -7,6 +7,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
 <BaseLayout {title} {description}>
   <main class="page page--guided-workshop">
+    
     <!-- Hero Section -->
     <section class="section section--hero">
       <div class="section-inner">
@@ -14,91 +15,85 @@ const description = "A hands-on, personal workshop designed to help you make rea
           <div class="hero-left">
             <div class="hero-header">
               <div class="hero-title-row">
-                <img src="/images/guided_workshops.svg" alt="Guided Workshops logo" class="hero-logo" />
+                <img
+                  src="/images/guided_workshops.svg"
+                  alt="Guided Workshops logo"
+                  class="hero-logo"
+                />
                 <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
               </div>
               <p class="hero-subtitle">
-                A 10-day, call-free workshop where you finish one real project on your machine — with calm, written guidance at each step.
+                A hands-on, personal workshop designed to help you make real progress on a project you're excited about—at a pace that feels calm and doable.
               </p>
             </div>
 
-            <p>
-              In this guided, one-to-one workshop, we'll choose a realistic project, get your machine behaving, and walk through each step in writing so you're never left wondering what to do next.
-            </p>
-            <p>
-              You set the pace. You check in when you're ready. I reply with clear next steps, adjustments, and encouragement — no calls, no time zones, no pressure to "keep up."
-            </p>
-
-            <div class="hero-cta">
-              <a
-                class="button button--primary button--large"
-                href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
-                data-testid="button-cta-hero"
-              >
-                Start Your Guided Workshop
-              </a>
-            </div>
-
-            <p class="hero-note">
-              Your 10-day window begins when you submit your Project Planner — not at payment. Most knitters check in just a few times during their 10 days. You choose the pace that works for you.
-            </p>
           </div>
-
           <div class="hero-right">
-            <!-- You can replace this placeholder with a real image later -->
+            <!-- HERO IMAGE PLACEHOLDER -->
+            <!-- TODO: Replace the placeholder image below with a real photo:
+                - Sue at a knitting machine, or
+                - a clean, inviting machine setup
+            -->
             <div class="hero-media">
               <div class="placeholder-image">
-                <span>Hero Image (Sue + machine setup)</span>
+                <span>Hero Image Placeholder</span>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="hero-cta">
+          <a 
+            class="button button--primary" 
+            href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
+            data-testid="button-cta-hero"
+          >
+            Start Your Guided Workshop
+          </a>
+
+          <div class="how-it-works-link">
+            <a href="#" data-modal-open="how-it-works">How does this workshop work?</a>
+          </div>
+        </div>
+
+        <p class="hero-note">
+          Your 10 days start when you submit your Project Planner—no calls, no time zones, just clear written guidance.
+        </p>
       </div>
     </section>
-
     <hr class="kbm-divider" />
 
-    <!-- What This Is -->
-    <section class="section section--overview">
-      <div class="section-inner">
-        <h2>What a Guided Workshop Actually Is</h2>
-        <p>
-          A Guided Workshop is a 10-day, written-support container focused on one finishable project. Instead of a giant course or weekly Zoom calls,
-          you get a simple project plan, clear checklists, and private written feedback from Sue whenever you send notes or photos.
-        </p>
-        <p>
-          If you've used <strong>Smart Guides</strong> or <strong>Studio Sessions</strong> before, this is where we apply that knowledge to one real project with focused, one-to-one support.
-        </p>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
-    <!-- Who This Is For -->
+    <!-- Problem / Fit Section -->
     <section class="section section--problem">
       <div class="section-inner">
         <h2>If your machine has been sitting quietly…</h2>
         <p>
-          …and you're not sure what to knit next — or how to start without "messing it up" — a Guided Workshop gives you a calm, realistic path forward.
+          …and you're not sure what to knit next — or how to start without messing
+          things up — this is for you.
         </p>
-
         <div class="grid grid--two">
           <div>
-            <h3>Perfect if you're:</h3>
+            <h3>
+              <i class="fa-solid fa-xmark fa-lg fit-icon"></i>
+              You don't need:
+            </h3>
             <ul>
-              <li>A newer or rusty knitter who wants help choosing a project that fits your current skills and time.</li>
-              <li>Returning to your machine after a break and craving a clear, do-able plan.</li>
-              <li>Busy, juggling real life, and needing support that works without live calls or complicated scheduling.</li>
-              <li>Someone who learns best from written steps, photos, and checklists you can revisit.</li>
+              <li>Another giant course</li>
+              <li>Endless YouTube rabbit holes</li>
+              <li>Weekly Zoom calls</li>
+              <li>A basket of half-finished projects</li>
             </ul>
           </div>
           <div>
-            <h3>Not the best fit if you're:</h3>
+            <h3>
+              <i class="fa-solid fa-check fa-lg fit-icon"></i>
+              You do need:
+            </h3>
             <ul>
-              <li>Looking for weekly group calls or live Zoom coaching.</li>
-              <li>Wanting a big video course to binge-watch rather than a focused project.</li>
-              <li>Unable to work within a 10-day window or send occasional notes/photos of your progress.</li>
-              <li>More interested in collecting information than finishing one real, finishable project.</li>
+              <li>A clear project choice</li>
+              <li>A simple, realistic plan</li>
+              <li>One small step at a time</li>
+              <li>Expert eyes when it matters</li>
             </ul>
           </div>
         </div>
@@ -107,76 +102,46 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
     <hr class="kbm-divider" />
 
-    <!-- How the 10 Days Work -->
-    <section class="section section--how-it-works">
+    <!-- Overview Cards Section -->
+    <section class="section section--overview-cards">
       <div class="section-inner">
-        <h2>How Your 10-Day Guided Workshop Works</h2>
-        <ol class="steps-list">
-          <li>
-            <h3>1. Join the workshop.</h3>
-            <p>
-              You'll complete checkout and get immediate access to your Project Planner — a simple intake form where you'll share your machine, yarn,
-              and the project you'd like to work on.
-            </p>
-          </li>
-          <li>
-            <h3>2. Choose when to begin.</h3>
-            <p>
-              Your 10 days do <strong>not</strong> start at payment. They begin when you submit your Project Planner. Start today, next week, or when
-              your yarn arrives — you're in control.
-            </p>
-          </li>
-          <li>
-            <h3>3. Tell Sue about your project.</h3>
-            <p>
-              Use the Project Planner to describe what you want to finish (or finally start), your time constraints, and any parts that feel confusing
-              or scary.
-            </p>
-          </li>
-          <li>
-            <h3>4. Get your personalized plan.</h3>
-            <p>
-              I review your intake and send a clear, realistic plan for your 10 days: simple steps, machine checks, and small milestones that fit the
-              time and energy you actually have.
-            </p>
-          </li>
-          <li>
-            <h3>5. Move forward at your pace.</h3>
-            <p>
-              You check in when you're ready — with notes, questions, or photos of what you're seeing on the machine. I reply with adjustments,
-              explanations, and your next step. Most knitters check in just a handful of times during their 10 days.
-            </p>
-          </li>
-        </ol>
+        <h2>How this workshop works at a glance</h2>
 
-        <div class="callout callout--contrast">
-          <p>
-            No calls. No camera. No time zones to juggle. Just written, private guidance that meets you where you are — and moves you steadily toward a
-            finished project.
-          </p>
+        <div class="workshop-overview-grid">
+          <!-- Card 1 -->
+          <div class="workshop-card">
+            <h3>What this is</h3>
+            <ul>
+              <li>A 10-day, call-free, 1-1 workshop focused on one real project.</li>
+              <li>No Zoom calls or scheduling — everything happens through simple written check-ins.</li>
+              <li>You choose the project you want to work on.</li>
+              <li>A calm, steady plan tailored to your machine, yarn, and time.</li>
+            </ul>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="workshop-card">
+            <h3>How it works</h3>
+            <ul>
+              <li>Start by filling out the Ready • Set • Knit Project Planner.</li>
+              <li>I send your personalized 10-day plan with clear, realistic steps.</li>
+              <li>You check in with quick notes or photos when you're ready.</li>
+              <li>I reply with corrections, encouragement, and your next step.</li>
+              <li>No calls. No camera. No time zone issues.</li>
+            </ul>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="workshop-card">
+            <h3>What you'll practice</h3>
+            <ul>
+              <li>Choosing a project that fits your current skills and time.</li>
+              <li>Getting your machine behaving (sponge bar, tension, weights).</li>
+              <li>Working clean cast-ons, edges, and bind-offs that match your fabric.</li>
+              <li>Taking small, confident steps instead of getting stuck or overwhelmed.</li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </section>
-
-    <hr class="kbm-divider" />
-
-    <!-- Example Projects -->
-    <section class="section section--examples">
-      <div class="section-inner">
-        <h2>Good Projects for a Guided Workshop</h2>
-        <p>Here are some examples of projects that work especially well inside a 10-day container:</p>
-        <ul>
-          <li>Your first simple baby blanket or throw on a newly revived machine.</li>
-          <li>A straightforward scarf or shawl that lets you practice clean cast-ons and tidy edges.</li>
-          <li>A hat or set of hats to get comfortable with shaping and finishing.</li>
-          <li>Finishing a stalled sweater where you're stuck on shaping, sizing, or assembly.</li>
-          <li>A basic sweater or cardigan using yarn you already love, where fit and measurements really matter.</li>
-          <li>Reviving an older machine with a simple "test project" that builds confidence and familiarity.</li>
-        </ul>
-        <p>
-          If you're unsure whether your idea fits, you can describe it in your Project Planner and we'll shape it into a calm, finishable project
-          together.
-        </p>
       </div>
     </section>
 
@@ -187,12 +152,11 @@ const description = "A hands-on, personal workshop designed to help you make rea
       <div class="section-inner">
         <h2>Choose Your Workshop Level</h2>
         <p>
-          Both options are 10-day, call-free workshops with written guidance and a personalized project plan. Choose the level that matches the size and
-          complexity of the project you have in mind.
+          Both options are 10-day, call-free workshops. Workshop Core is best for smaller, simpler projects; Workshop Plus is ideal for sweaters and more complex makes.
         </p>
-
-        <p><strong>Quick chooser:</strong> Choose <em>Core</em> for smaller/simpler projects; choose <em>Plus</em> for sweaters or projects with more shaping and moving pieces.</p>
-
+        <p>
+          Every Guided Workshop includes a personalized 10-day plan, calm written guidance, and simple machine checklists so your setup behaves.
+        </p>
         <div class="grid grid--two pricing-grid">
           <div class="card card--pricing" data-testid="card-pricing-core">
             <h3>Workshop Core — $297</h3>
@@ -258,6 +222,9 @@ const description = "A hands-on, personal workshop designed to help you make rea
 
           </div>
         </div>
+
+        <!-- COMPARISON CHART PLACEHOLDER -->
+        <!-- TODO: If you prefer, replace the two cards above with a simple comparison table -->
       </div>
     </section>
 
@@ -313,6 +280,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
           Start with the Project Planner. Tell me what you want to knit — and I'll
           create a calm, finishable path forward.
         </p>
+        <!-- TODO: Update href to the actual intake / sign-up page -->
 <a 
   class="button button--primary" 
   href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
