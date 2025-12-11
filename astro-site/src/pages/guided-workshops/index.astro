@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const title = "Guided Workshop with Sue | Knit by Machine";
-const description = "A hands-on, personal workshop designed to help you make real progress on a project you’re excited about—at a pace that feels calm and doable.";
+const description = "A hands-on, personal workshop designed to help you make real progress on a project you’re excited about—at a pace that feels focused and doable.";
 ---
 
 <BaseLayout {title} {description}>
@@ -18,7 +18,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
                 <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
               </div>
               <p class="hero-subtitle">
-                A 10-day, call-free workshop where you finish one real project on your machine — with calm, written guidance at each step.
+                A 10-day, call-free workshop where you finish one real project on your machine — with focused, written guidance at each step.
               </p>
             </div>
           </div>
@@ -71,7 +71,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
         </p>
         <p>
           We'll stay in touch with a mix of 
-          <strong>written messages, text messages (if you want), voice notes, and short videos</strong>—whatever makes it easiest for you to keep moving.
+          <strong>written messages, text messages</strong> (if you want), <strong>voice notes, and short videos</strong>—whatever makes it easiest for you to keep moving.
         </p>
       </div>
     </section>
@@ -95,9 +95,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
           <li>Working through "this part doesn't look right and I don't know why"</li>
           <li>Finishing details so your project looks and feels the way you hoped</li>
         </ul>
-        <p>
-          If you're not sure whether your idea fits, that's exactly what the "Tell Me About Your Project" step is for.
-        </p>
+    
       </div>
 
       <div class="gw-col">
@@ -117,8 +115,21 @@ const description = "A hands-on, personal workshop designed to help you make rea
           You keep knitting at your pace. I'm in the background when you need support.
         </p>
       </div>
+    
     </section>
-
+<p>
+  If you're not sure whether your idea fits, that's exactly what the "Tell Me About Your Project" step is for.
+</p> <!-- Centered CTA -->
+        <div class="hero-cta hero-cta--centered">
+          <a
+            class="button button--primary button--large"
+            href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
+            data-testid="button-cta-hero"
+          >
+            Tell Me About Your Project
+          </a>
+         
+        </div>
     <hr class="kbm-divider" />
 
     <!-- How it works -->
@@ -136,7 +147,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
           <li>
             <h3>I review your project</h3>
             <p>
-              I'll look at what you've shared and cconfirm whether it’s a good fit for a 10-day workshop.
+              I'll look at what you've shared and confirm whether it’s a good fit for a 10-day workshop.
             </p>
           </li>
           <li>
@@ -152,6 +163,10 @@ const description = "A hands-on, personal workshop designed to help you make rea
               Once you accept the quote and complete payment, we set your 10-day window and get started.
             </p>
           </li>
+          <li>
+          <p class="kbm-note">
+            <h3>You don’t need to check in every day</h3> — you choose your pace during your 10-day workshop.
+          </p></li>
         </ol>
       </div>
     </section>
@@ -219,15 +234,15 @@ const description = "A hands-on, personal workshop designed to help you make rea
       <div class="section-inner section-inner--center">
         <h2>Ready to get started?</h2>
         <p>
-          If you're feeling a tug toward one particular project—and you'd like a calm, structured 
-          10 days with support along the way—fill out the short application and we'll see if it's a fit.
+          If you're feeling a tug toward one particular project-and you'd like a calm, structured 
+          10 days with support along the way-fill out the short application and we'll see if it's a fit.
         </p>
         <a 
           class="button button--primary button--large" 
           href="https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=ZmNe52W2&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous"
           data-testid="button-cta-apply"
         >
-          Tell me about your project
+          Tell Me About Your Project
         </a>
         <p class="gw-cta-note">
           I'll review your application and send your custom quote within 2-3 business days.
@@ -470,14 +485,14 @@ const description = "A hands-on, personal workshop designed to help you make rea
   .section ul,
   .section ol {
     padding-left: 1.5rem;
-    margin: 1rem 0;
+    margin: 0.75rem 0;
   }
 
   .section li {
     font-size: clamp(1rem, 1.5vw, 1.05rem);
     color: #5a6b47;
     line-height: 1.6;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.4rem;
   }
 
   /* Grid Layout */
@@ -629,7 +644,7 @@ const description = "A hands-on, personal workshop designed to help you make rea
   .kbm-divider {
     border: none;
     border-top: 1px solid #e5e8e0;
-    margin: 1.5rem auto;
+    margin: 2rem auto 1.25rem;
   }
 
   /* Problem Section Styling */
@@ -712,7 +727,6 @@ const description = "A hands-on, personal workshop designed to help you make rea
     display: flex;
     gap: 3rem;
     align-items: flex-start;
-    padding: 1.5rem 0;
   }
 
   .gw-col {

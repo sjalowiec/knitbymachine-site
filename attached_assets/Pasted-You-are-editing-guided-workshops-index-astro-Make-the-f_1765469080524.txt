@@ -1,0 +1,120 @@
+You are editing `/guided-workshops/index.astro`.
+
+Make the following changes ONLY in this file:
+
+--------------------------------
+1) Tighten the two-column section spacing
+--------------------------------
+
+In the `<style>` block for this page, find the rule:
+
+  .gw-two-col[data-astro-cid-ht3ynwrm] {
+    display:flex;
+    gap:3rem;
+    align-items:flex-start;
+    padding:1.5rem 0;
+  }
+
+Update it to remove the padding so `.section` controls vertical spacing:
+
+  .gw-two-col[data-astro-cid-ht3ynwrm] {
+    display:flex;
+    gap:3rem;
+    align-items:flex-start;
+  }
+
+(Do not change anything else in that rule.)
+
+--------------------------------
+2) Adjust divider spacing
+--------------------------------
+
+In the same `<style>` block, find the rule that styles `.kbm-divider[data-astro-cid-ht3ynwrm]`:
+
+  .kbm-divider[data-astro-cid-ht3ynwrm]{
+    border:none;
+    border-top:1px solid #e5e8e0;
+    margin:1.5rem auto
+  }
+
+Replace it with:
+
+  .kbm-divider[data-astro-cid-ht3ynwrm]{
+    border:none;
+    border-top:1px solid #e5e8e0;
+    margin:2rem auto 1.25rem;
+  }
+
+This gives a little more space between the hero and the first section, but slightly less below the divider so the page feels tighter overall.
+
+--------------------------------
+3) Slightly tighten list spacing
+--------------------------------
+
+In the same page-level `<style>` block, find the rules:
+
+  .section[data-astro-cid-ht3ynwrm] ul[data-astro-cid-ht3ynwrm],
+  .section[data-astro-cid-ht3ynwrm] ol[data-astro-cid-ht3ynwrm]{
+    padding-left:1.5rem;
+    margin:1rem 0
+  }
+
+  .section[data-astro-cid-ht3ynwrm] li[data-astro-cid-ht3ynwrm]{
+    font-size:clamp(1rem,1.5vw,1.05rem);
+    color:#5a6b47;
+    line-height:1.6;
+    margin-bottom:0.5rem
+  }
+
+Update them to:
+
+  .section[data-astro-cid-ht3ynwrm] ul[data-astro-cid-ht3ynwrm],
+  .section[data-astro-cid-ht3ynwrm] ol[data-astro-cid-ht3ynwrm]{
+    padding-left:1.5rem;
+    margin:0.75rem 0;
+  }
+
+  .section[data-astro-cid-ht3ynwrm] li[data-astro-cid-ht3ynwrm]{
+    font-size:clamp(1rem,1.5vw,1.05rem);
+    color:#5a6b47;
+    line-height:1.6;
+    margin-bottom:0.4rem;
+  }
+
+Keep everything else in those rules the same.
+
+--------------------------------
+4) Fix the “cconfirm” typo
+--------------------------------
+
+In the HTML for the “How it works” section, find this paragraph under
+“I review your project”:
+
+  I'll look at what you've shared and cconfirm whether it’s a good fit for a 10-day workshop.
+
+Change `cconfirm` to `confirm`:
+
+  I'll look at what you've shared and confirm whether it’s a good fit for a 10-day workshop.
+
+--------------------------------
+5) Make the CTA text consistent (Title Case)
+--------------------------------
+
+Change all CTA button labels that currently say:
+
+  Tell me about your project
+
+so they all read:
+
+  Tell Me About Your Project
+
+Specifically update:
+- The hero CTA button
+- The mid-page CTA button under the two-column section
+- The final CTA button in the “Ready to get started?” section
+
+Leave the URLs and classes exactly as they are; only change the visible button text.
+
+--------------------------------
+
+Do not modify any other content, styles, or structure on this page.
