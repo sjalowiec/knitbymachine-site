@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
   updateFormState();
 
   form.addEventListener('submit', function(event) {
+    console.log('GW Form JS: Submit event fired');
     event.preventDefault();
     
     var honeypot = form.querySelector('input[name="company"]');
