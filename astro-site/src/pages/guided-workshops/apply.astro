@@ -27,7 +27,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
 
         <div class="grid grid--two">
           <div>
-            <h3><i class="fa-solid fa-check fa-lg"></i> This is likely a good fit if you:</h3>
+            <h3><i class="fa-solid fa-check fa-xl"></i> This is likely a good fit if you:</h3>
             <ul>
               <li>Want to start one project from the beginning and move it forward with clarity</li>
               <li>Prefer written guidance, voice notes, and short videos over scheduling live calls</li>
@@ -38,7 +38,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
           </div>
 
           <div>
-            <h3><i class="fa-solid fa-xmark fa-lg"></i> It's probably not a fit if you:</h3>
+            <h3><i class="fa-solid fa-xmark fa-xl"></i> It's probably not a fit if you:</h3>
             <ul>
               <li>Want a full custom pattern designed from scratch</li>
               <li>Are looking to fix or rescue a project that's already well underway</li>
@@ -242,12 +242,12 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
   }
 
   .section--fit h3 .fa-check {
-    color: #6E8B3D;
+    color: #52682d;
     margin-right: 0.4rem;
   }
 
   .section--fit h3 .fa-xmark {
-    color: #C2614E;
+    color: red;
     margin-right: 0.4rem;
   }
 
