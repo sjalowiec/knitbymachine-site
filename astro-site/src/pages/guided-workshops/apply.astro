@@ -28,12 +28,12 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
         <div class="grid grid--two">
           <div>
             <h3><i class="fa-solid fa-check fa-xl"></i> This is likely a good fit if you:</h3>
-            <ul>
-              <li>Want to start one project from the beginning and move it forward with clarity</li>
-              <li>Prefer written guidance, voice notes, and short videos over scheduling live calls</li>
-              <li>Want specific, project-focused support — not a big course or content library</li>
-              <li>Are willing to take small, steady actions over a 10-day window</li>
-              <li>Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
+            <ul class="check-list">
+              <li><i class="fa-solid fa-check"></i> Want to start one project from the beginning and move it forward with clarity</li>
+              <li><i class="fa-solid fa-check"></i> Prefer written guidance, voice notes, and short videos over scheduling live calls</li>
+              <li><i class="fa-solid fa-check"></i> Want specific, project-focused support — not a big course or content library</li>
+              <li><i class="fa-solid fa-check"></i> Are willing to take small, steady actions over a 10-day window</li>
+              <li><i class="fa-solid fa-check"></i> Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
             </ul>
           </div>
 
@@ -281,6 +281,23 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
   .section--fit ul {
     padding-left: 1.25rem;
     margin: 0;
+  }
+
+  .section--fit ul.check-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .section--fit ul.check-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .section--fit ul.check-list li .fa-check {
+    color: #52682d;
+    margin-top: 0.25rem;
+    flex-shrink: 0;
   }
 
   .section--fit li {
