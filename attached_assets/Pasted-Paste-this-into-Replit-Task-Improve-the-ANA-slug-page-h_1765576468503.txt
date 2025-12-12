@@ -1,0 +1,75 @@
+Paste this into Replit:
+
+Task: Improve the ANA slug page header hierarchy so the H1 (icon + title) feels connected to the conversation card and doesn’t get lost. Keep the bubbles exactly as they are.
+
+File: src/pages/ana/[slug].astro
+
+1) Safety backup
+
+Duplicate src/pages/ana/[slug].astro → src/pages/ana/[slug].astro.bak
+
+2) Reorder header elements (preferred structure)
+
+In the top header area of the ANA page (where you currently show the back link, encouragement band, and the H1), reorder them to be:
+
+Back link (unchanged)
+
+H1 row with ANA icon + title (unchanged content)
+
+Encouragement band (“You’re not alone…”) below the H1 (same text)
+
+Do not move the H1 into the bubble card. Do not change the bubble markup/content.
+
+3) Tighten spacing so the title “belongs” to the card
+
+Add/adjust CSS in the same file so that:
+
+The gap between the H1 row and the conversation card is reduced (bring the card up).
+
+The H1 row has a little visual “anchor” so it reads like the card title, not a floating element.
+
+Implement this anchor using ONE subtle method (choose the cleanest based on existing styles):
+
+either a faint bottom border under the H1 row, or
+
+a small left accent rule next to the icon + title, or
+
+a slightly tinted background strip behind the H1 row that matches KBM’s light green system (very subtle).
+
+Keep it minimal—KBM clean, modern, not boxed-in.
+
+4) Make the encouragement band supportive, not dominant
+
+Adjust only styling (not text) so it feels secondary:
+
+slightly reduce padding/height
+
+slightly reduce font size or weight compared to the H1
+
+keep it readable and on-brand
+
+5) Responsive checks
+
+Ensure on mobile:
+
+the icon and H1 stay on one line if possible, otherwise wrap gracefully
+
+spacing remains tight and the header doesn’t feel “floaty”
+
+6) Confirm
+
+Run the dev server and confirm:
+
+Back link → H1 (icon + title) → encouragement → conversation card
+
+H1 is visually connected to the card
+
+bubbles unchanged
+
+Important constraints:
+
+Do not modify the question/answer bubble components or their CSS
+
+Do not touch JSON schemas or admin tooling
+
+Keep changes scoped to this page’s header markup + CSS only
