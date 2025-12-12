@@ -729,14 +729,21 @@ const error = Astro.url.searchParams.get('error');
   }
 </style>
 
-<script>
+<script is:inline>
   document.addEventListener('DOMContentLoaded', () => {
+    console.log('Form script loaded');
     const form = document.getElementById('workshop-form');
     const startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
     const submitButton = document.querySelector('button[type="submit"]');
     const warningMessage = document.getElementById('start-fresh-warning');
 
-    if (!submitButton || !warningMessage) return;
+    console.log('Form found:', !!form);
+    console.log('Submit button found:', !!submitButton);
+
+    if (!submitButton || !warningMessage) {
+      console.error('Required elements not found');
+      return;
+    }
 
     function updateFormState() {
       const selected = document.querySelector('input[name="startingFresh"]:checked');
@@ -761,6 +768,7 @@ const error = Astro.url.searchParams.get('error');
     if (form) {
       form.addEventListener('submit', async (event) => {
         event.preventDefault();
+        console.log('Form submitted');
         
         const honeypot = form.querySelector('input[name="company"]');
         if (honeypot && honeypot.value.trim() !== '') {
