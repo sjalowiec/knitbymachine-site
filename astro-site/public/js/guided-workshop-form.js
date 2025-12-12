@@ -29,11 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
   updateFormState();
 
   submitButton.addEventListener('click', function(event) {
+    alert('Button clicked!');
     event.preventDefault();
-    console.log('GW Form JS: Button clicked');
     
     if (!form.checkValidity()) {
-      console.log('GW Form JS: Form invalid');
       form.reportValidity();
       return;
     }
