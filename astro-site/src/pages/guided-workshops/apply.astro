@@ -149,6 +149,18 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
             </div>
           </fieldset>
 
+          <div class="form-field form-field--supplemental">
+            <label for="patternReference">If you have a pattern, what is it?</label>
+            <p class="helper-text">Sharing this is optional — a title or link is enough.</p>
+            <input 
+              type="text" 
+              id="patternReference" 
+              name="patternReference" 
+              placeholder="Pattern name or link"
+              data-testid="input-pattern-reference"
+            />
+          </div>
+
           <hr class="kbm-divider" />
 
           <fieldset class="form-field">
@@ -362,6 +374,22 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     border: none;
     padding: 0;
     margin: 0 0 1.75rem 0;
+  }
+
+  .form-field--supplemental {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+    margin-left: 1rem;
+  }
+
+  .form-field--supplemental label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #5a6b47;
+  }
+
+  .form-field--supplemental input[type="text"] {
+    width: calc(100% - 1rem);
   }
 
   .required {
