@@ -14,6 +14,11 @@
   "relatedAnas": [],
   "relatedWorkshops": [],
   "body": "This is a test answer to verify the batching system works correctly.",
+  "memberDividerText": "",
+  "memberTitle": "",
+  "memberBody": "",
+  "memberVideoUrl": "",
+  "embedWizard": "",
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2025-11-03T00:00:00.000Z"
