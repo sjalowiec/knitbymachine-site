@@ -71,7 +71,8 @@ const error = Astro.url.searchParams.get('error');
 
     <section class="section section--form">
       <div class="section-inner">
-        <form method="POST" action="/api/guided-workshop-application" class="application-form" data-testid="form-application">
+        <form method="POST" action="/guided-workshop/thanks" name="guided-workshop-application" data-netlify="true" netlify-honeypot="company" class="application-form" data-testid="form-application">
+          <input type="hidden" name="form-name" value="guided-workshop-application" />
           <input
             type="text"
             name="company"
