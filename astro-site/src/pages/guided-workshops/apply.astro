@@ -178,7 +178,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
           <div class="form-field form-field--checkbox">
             <label class="checkbox-label">
               <input type="checkbox" name="confirm" value="yes" required data-testid="checkbox-confirm" />
-              <span>I understand this is a 10-day, start-to-finish workshop priced between $297–$397, and it begins after my materials arrive.</span>
+              <span>I understand this is a 10-day, start-to-finish workshop priced between $297–$397, and the workshop begins only after my materials are ready and I confirm that I’m ready to start.</span>
             </label>
           </div>
 
@@ -412,7 +412,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     margin-left: 1rem;
   }
 
-  .radio-label {
+  .form-field .radio-label,
+  .radio-group .radio-label {
     display: flex;
     align-items: flex-start;
     gap: 0.5rem;
@@ -421,6 +422,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     color: #5a6b47;
     font-weight: 400;
     line-height: 1.5;
+    margin-bottom: 0;
   }
 
   .radio-label input[type="radio"] {
@@ -438,14 +440,17 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     margin-left: 1rem;
   }
 
-  .checkbox-label {
+  .form-field .checkbox-label,
+  .form-field--checkbox .checkbox-label {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
     cursor: pointer;
     font-size: 0.95rem;
     color: #5a6b47;
+    font-weight: 400;
     line-height: 1.5;
+    margin-bottom: 0;
   }
 
   .checkbox-label input[type="checkbox"] {
