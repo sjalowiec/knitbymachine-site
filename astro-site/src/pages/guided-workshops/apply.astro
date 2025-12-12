@@ -114,8 +114,10 @@ const error = Astro.url.searchParams.get('error');
               name="projectDirection" 
               rows="4" 
               required
+              placeholder="Example: A top-down cardigan using a mid-weight yarn, likely with set-in sleeves. I'm comfortable with basic shaping but want help planning the construction and finishing."
               data-testid="textarea-project-direction"
             ></textarea>
+            <p class="helper-text helper-text--below">A sentence or two is perfect. You don't need final decisions — just enough detail to understand the kind of project you have in mind.</p>
           </div>
 
           <hr class="kbm-divider" />
@@ -518,6 +520,10 @@ const error = Astro.url.searchParams.get('error');
     margin: 0 0 0.5rem 0;
     margin-left: 1rem;
     line-height: 1.5;
+  }
+
+  .helper-text--below {
+    margin: 0.5rem 0 0 1rem;
   }
 
   .form-field input[type="text"],
