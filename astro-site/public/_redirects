@@ -1,1 +1,4 @@
 /project-checklist   /checklists/Project_readiness.pdf   200
+
+# Handle API routes through SSR function
+/api/*  /.netlify/functions/entry  200
