@@ -598,6 +598,27 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     font-size: 1.1rem;
   }
 
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .button--primary:disabled:hover {
+    background-color: var(--kbm-green);
+    border-color: var(--kbm-green);
+  }
+
+  .form-warning {
+    margin-left: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #5a3b2e;
+    background: #fff4ee;
+    border-left: 3px solid #c2614e;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+  }
+
   @media (max-width: 768px) {
     .page--apply {
       padding: 1.5rem 1rem 3rem;
@@ -613,3 +634,34 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     }
   }
 </style>
+
+<script>
+  const radios = document.querySelectorAll('input[name="startingFresh"]');
+  const warning = document.getElementById('start-fresh-warning');
+  const submitBtn = document.querySelector('button[type="submit"]');
+  const originalText = submitBtn?.textContent || 'Submit Application';
+
+  function updateFormState() {
+    const selected = document.querySelector('input[name="startingFresh"]:checked');
+    
+    if (selected?.value === 'no') {
+      warning?.removeAttribute('hidden');
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Workshops require a fresh start';
+        submitBtn.title = 'Guided Workshops are for new projects started from the beginning.';
+      }
+    } else {
+      warning?.setAttribute('hidden', '');
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+        submitBtn.removeAttribute('title');
+      }
+    }
+  }
+
+  radios.forEach(radio => {
+    radio.addEventListener('change', updateFormState);
+  });
+</script>
