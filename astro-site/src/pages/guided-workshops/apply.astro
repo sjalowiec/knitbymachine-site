@@ -329,7 +329,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
   .form-field label,
   .form-field legend {
     display: block;
-    font-size: 1rem;
+    font-size: 1.1rem;
     font-weight: 600;
     color: var(--kbm-green);
     margin-bottom: 0.5rem;
@@ -354,13 +354,15 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     font-size: 0.9rem;
     color: #6b7a5a;
     margin: 0 0 0.5rem 0;
+    margin-left: 1rem;
     line-height: 1.5;
   }
 
   .form-field input[type="text"],
   .form-field input[type="email"],
   .form-field textarea {
-    width: 100%;
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
     padding: 0.75rem 1rem;
     font-size: 1rem;
     font-family: inherit;
@@ -389,6 +391,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    margin-left: 1rem;
   }
 
   .radio-label {
@@ -414,6 +417,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     background: #f5f7f2;
     border-radius: 8px;
     padding: 1rem;
+    margin-left: 1rem;
   }
 
   .checkbox-label {
