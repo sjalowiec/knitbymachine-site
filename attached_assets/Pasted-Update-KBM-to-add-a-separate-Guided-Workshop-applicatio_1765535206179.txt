@@ -1,0 +1,138 @@
+Update KBM to add a separate Guided Workshop application page with an intake form.
+
+GOAL
+Create a new page at /guided-workshops/apply that includes:
+1) A top “Is a Guided Workshop right for you?” section (two-column fit / not-fit)
+2) A simple application form (6 answers + email)
+3) A confirmation message after submission (via ?submitted=1)
+We can refine wording later — focus on getting it working and on-brand.
+
+FILES
+- Create: src/pages/guided-workshops/apply.astro
+  (If this project uses folder routing, instead create: src/pages/guided-workshops/apply/index.astro)
+- Update: src/pages/guided-workshops/index.astro
+  Ensure primary CTA(s) link to /guided-workshops/apply
+
+PAGE REQUIREMENTS
+1) Use the existing BaseLayout (same header/footer).
+Set:
+- title: "Apply | Guided Workshop with Sue | Knit by Machine"
+- description: "Apply for a Guided Workshop. This short application helps Sue confirm fit and follow up with next steps."
+
+2) Page layout:
+- H1: "Apply for a Guided Workshop"
+- Short intro paragraph:
+  "This short application helps me confirm that the Guided Workshop is the right fit for your project. You don’t need to have everything figured out yet — a clear direction is enough."
+
+3) Add this section ABOVE the form (not commented out):
+<section class="section section--fit">
+  <div class="section-inner">
+    <h2>Is a Guided Workshop right for you?</h2>
+
+    <div class="grid grid--two">
+      <div>
+        <h3>This is likely a good fit if you:</h3>
+        <ul>
+          <li>Want to start one project from the beginning and move it forward with clarity</li>
+          <li>Prefer written guidance, voice notes, and short videos over scheduling live calls</li>
+          <li>Want specific, project-focused support — not a big course or content library</li>
+          <li>Are willing to take small, steady actions over a 10-day window</li>
+          <li>Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3>It’s probably not a fit if you:</h3>
+        <ul>
+          <li>Want a full custom pattern designed from scratch</li>
+          <li>Are looking to fix or rescue a project that’s already well underway</li>
+          <li>Have a very large, open-ended, or long-term project</li>
+          <li>Prefer live, real-time coaching calls</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="fit-note">
+      If your project isn’t the right match for this format, I’ll let you know before you’re asked to pay.
+    </p>
+  </div>
+</section>
+
+4) Add the application form directly below the fit section.
+Form requirements:
+- method="POST"
+- action="/api/guided-workshop-application"  (placeholder endpoint for now)
+- Include an email field + 6 questions
+- All fields required
+
+FIELDS (labels + names)
+A) Email
+- type="email"
+- name="email"
+- label: "Email address"
+
+B) Project direction (textarea)
+- name="projectDirection"
+- label: "What are you hoping to make in this workshop?"
+- helper: "A clear direction is enough — this doesn’t need to be final."
+
+C) Starting fresh confirmation (radio)
+- name="startingFresh"
+- label: "Are you ready to start this project from the beginning?"
+- helper: "This format isn’t designed for fixing or rescuing in-progress projects."
+- options:
+  - value="yes" label="Yes — starting fresh"
+  - value="notYet" label="Not yet"
+
+D) Machine + comfort (textarea)
+- name="machineComfort"
+- label: "What machine will you be using, and how comfortable do you feel with it?"
+
+E) Pattern status (radio)
+- name="patternStatus"
+- label: "Do you already have a pattern in mind?"
+- options:
+  - value="haveOne" label="Yes, I have one"
+  - value="fewOptions" label="I have a few options"
+  - value="needGuidance" label="I’ll need guidance choosing one"
+  - value="openToKBM" label="I’m open to using a KBM pattern"
+
+F) Yarn status (radio)
+- name="yarnStatus"
+- label: "About yarn — which best describes you right now?"
+- options:
+  - value="haveYarn" label="I already have yarn I’d like to use"
+  - value="haveUnsure" label="I have yarn but I’m not sure it’s right"
+  - value="buyAfterApproval" label="I’ll buy yarn after the project is approved"
+  - value="needRecs" label="I want guidance on what to buy"
+
+G) Confirmation checkbox (single)
+- name="confirm"
+- value="yes"
+- required
+- label text:
+  "I understand this is a 10-day, start-to-finish workshop priced between $297–$397, and it begins after my materials arrive."
+
+Submit button:
+- Text: "Submit Application"
+
+5) Success message:
+If the URL has ?submitted=1, show a confirmation block ABOVE the form:
+"Thanks — I’ve received your application. I review these personally and will follow up by email with next steps."
+
+6) Styling:
+- Use existing site utility classes and grid system (grid grid--two).
+- Add minimal page-scoped CSS only if needed for:
+  - form max-width (e.g., 720px)
+  - spacing between labels/helpers/fields
+  - fieldset styling
+  - fit-note styling
+Keep it consistent with the current KBM design system.
+
+7) Update CTAs on the Guided Workshop sales page:
+File: src/pages/guided-workshops/index.astro
+- Make the main CTA button(s) link to: /guided-workshops/apply
+- Do not remove or change any existing modal "How does this work?" link.
+
+8) Do NOT implement the /api/guided-workshop-application endpoint yet.
+Just build the page + form UI with the placeholder action so we can wire it up next.
