@@ -12,7 +12,13 @@ export default defineConfig({
   },
   vite: {
     server: {
-      allowedHosts: [process.env.REPLIT_DEV_DOMAIN]
+      allowedHosts: [process.env.REPLIT_DEV_DOMAIN],
+      proxy: {
+        '/api': {
+          target: 'http://localhost:3000',
+          changeOrigin: true
+        }
+      }
     }
   }
 });

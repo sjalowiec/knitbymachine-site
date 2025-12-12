@@ -1,0 +1,75 @@
+Split the “machine + comfort” question into two fields and add a helper line for clarity on the Guided Workshop application form.
+
+FILE
+- src/pages/guided-workshops/apply.astro
+  (or src/pages/guided-workshops/apply/index.astro, depending on routing)
+
+GOAL
+Improve clarity and response quality by:
+1) Separating machine model (fact) from comfort level (self-assessment)
+2) Reassuring applicants who aren’t sure of their exact machine model
+
+DO NOT change:
+- other questions or wording
+- overall form flow
+- existing styling patterns (labels bold, options normal, dividers)
+- submission behavior or validation elsewhere in the form
+
+---
+
+CHANGES
+
+1) Remove the existing combined field:
+“What machine will you be using, and how comfortable do you feel with it?”
+
+2) Add Field A (REQUIRED):
+Label:
+"What machine will you be using?"
+
+Type:
+- Text input
+
+Attributes:
+- name="machineModel"
+- required
+- placeholder="Brother KH-___, Silver Reed SK___, LK150, etc."
+- autocomplete="off"
+
+Helper text (directly below the input):
+"If you’re not sure of the exact model, just describe what you have."
+
+Style:
+- Same helper-text styling used elsewhere
+- Normal weight (not bold)
+- Slightly indented under the input
+- Muted/body-secondary color
+
+3) Add Field B (REQUIRED), directly below Field A:
+Label:
+"How comfortable do you feel using it?"
+
+Type:
+- Radio button group
+
+Attributes:
+- name="machineComfortLevel"
+- required
+
+Options:
+- value="new" label="I’m brand new / just getting started"
+- value="some" label="I can do basics, but I get stuck"
+- value="ok" label="I’m fairly comfortable"
+- value="confident" label="I’m confident"
+
+4) Layout rules:
+- Treat Field A and Field B as a single “machine” section
+- Do NOT insert a divider between these two fields
+- Keep radio options indented under the label
+- Ensure option text is normal body weight (not bold)
+
+---
+
+SUCCESS CRITERIA
+- Applicants reliably provide both machine model and comfort level
+- Beginners feel safe answering even if unsure
+- Visual hierarchy remains calm and consistent with the rest of the form
