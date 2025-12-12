@@ -1,0 +1,444 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = "Apply | Guided Workshop with Sue | Knit by Machine";
+const description = "Apply for a Guided Workshop. This short application helps Sue confirm fit and follow up with next steps.";
+
+const submitted = Astro.url.searchParams.get('submitted') === '1';
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--apply">
+    <h1 data-testid="text-page-title">Apply for a Guided Workshop</h1>
+    <p class="intro-text">
+      This short application helps me confirm that the Guided Workshop is the right fit for your project. You don't need to have everything figured out yet — a clear direction is enough.
+    </p>
+
+    {submitted && (
+      <div class="success-message" data-testid="text-success-message">
+        <p><strong>Thanks — I've received your application.</strong></p>
+        <p>I review these personally and will follow up by email with next steps.</p>
+      </div>
+    )}
+
+    <section class="section section--fit">
+      <div class="section-inner">
+        <h2>Is a Guided Workshop right for you?</h2>
+
+        <div class="grid grid--two">
+          <div>
+            <h3>This is likely a good fit if you:</h3>
+            <ul>
+              <li>Want to start one project from the beginning and move it forward with clarity</li>
+              <li>Prefer written guidance, voice notes, and short videos over scheduling live calls</li>
+              <li>Want specific, project-focused support — not a big course or content library</li>
+              <li>Are willing to take small, steady actions over a 10-day window</li>
+              <li>Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3>It's probably not a fit if you:</h3>
+            <ul>
+              <li>Want a full custom pattern designed from scratch</li>
+              <li>Are looking to fix or rescue a project that's already well underway</li>
+              <li>Have a very large, open-ended, or long-term project</li>
+              <li>Prefer live, real-time coaching calls</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="fit-note">
+          If your project isn't the right match for this format, I'll let you know before you're asked to pay.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section--form">
+      <div class="section-inner">
+        <form method="POST" action="/api/guided-workshop-application" class="application-form" data-testid="form-application">
+          
+          <div class="form-field">
+            <label for="email">Email address <span class="required">*</span></label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              data-testid="input-email"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="projectDirection">What are you hoping to make in this workshop? <span class="required">*</span></label>
+            <p class="helper-text">A clear direction is enough — this doesn't need to be final.</p>
+            <textarea 
+              id="projectDirection" 
+              name="projectDirection" 
+              rows="4" 
+              required
+              data-testid="textarea-project-direction"
+            ></textarea>
+          </div>
+
+          <fieldset class="form-field">
+            <legend>Are you ready to start this project from the beginning? <span class="required">*</span></legend>
+            <p class="helper-text">This format isn't designed for fixing or rescuing in-progress projects.</p>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="startingFresh" value="yes" required data-testid="radio-starting-fresh-yes" />
+                <span>Yes — starting fresh</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="startingFresh" value="notYet" data-testid="radio-starting-fresh-not-yet" />
+                <span>Not yet</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-field">
+            <label for="machineComfort">What machine will you be using, and how comfortable do you feel with it? <span class="required">*</span></label>
+            <textarea 
+              id="machineComfort" 
+              name="machineComfort" 
+              rows="3" 
+              required
+              data-testid="textarea-machine-comfort"
+            ></textarea>
+          </div>
+
+          <fieldset class="form-field">
+            <legend>Do you already have a pattern in mind? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="haveOne" required data-testid="radio-pattern-have-one" />
+                <span>Yes, I have one</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="fewOptions" data-testid="radio-pattern-few-options" />
+                <span>I have a few options</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="needGuidance" data-testid="radio-pattern-need-guidance" />
+                <span>I'll need guidance choosing one</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="openToKBM" data-testid="radio-pattern-open-kbm" />
+                <span>I'm open to using a KBM pattern</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <fieldset class="form-field">
+            <legend>About yarn — which best describes you right now? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="haveYarn" required data-testid="radio-yarn-have" />
+                <span>I already have yarn I'd like to use</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="haveUnsure" data-testid="radio-yarn-unsure" />
+                <span>I have yarn but I'm not sure it's right</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="buyAfterApproval" data-testid="radio-yarn-buy-after" />
+                <span>I'll buy yarn after the project is approved</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="needRecs" data-testid="radio-yarn-need-recs" />
+                <span>I want guidance on what to buy</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-field form-field--checkbox">
+            <label class="checkbox-label">
+              <input type="checkbox" name="confirm" value="yes" required data-testid="checkbox-confirm" />
+              <span>I understand this is a 10-day, start-to-finish workshop priced between $297–$397, and it begins after my materials arrive.</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="button button--primary button--large" data-testid="button-submit">
+              Submit Application
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .page--apply {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .page--apply h1 {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .success-message {
+    background: #e6f4e6;
+    border: 2px solid var(--kbm-green-2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .success-message p {
+    margin: 0;
+    color: var(--kbm-green);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .success-message p + p {
+    margin-top: 0.5rem;
+  }
+
+  .section {
+    padding: 1.5rem 0;
+  }
+
+  .section-inner {
+    max-width: 100%;
+  }
+
+  .section--fit {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .section--fit h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 1.5rem;
+  }
+
+  .section--fit h3 {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.75rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .grid--two {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .section--fit ul {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .section--fit li {
+    font-size: clamp(0.95rem, 1.5vw, 1rem);
+    color: #5a6b47;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .fit-note {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--kbm-green);
+    font-style: italic;
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+  }
+
+  .application-form {
+    max-width: 720px;
+  }
+
+  .form-field {
+    margin-bottom: 1.75rem;
+  }
+
+  .form-field label,
+  .form-field legend {
+    display: block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-field legend {
+    padding: 0;
+    border: none;
+  }
+
+  fieldset.form-field {
+    border: none;
+    padding: 0;
+    margin: 0 0 1.75rem 0;
+  }
+
+  .required {
+    color: #c2614e;
+  }
+
+  .helper-text {
+    font-size: 0.9rem;
+    color: #6b7a5a;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.5;
+  }
+
+  .form-field input[type="email"],
+  .form-field textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid #d4dbc8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--kbm-green);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .form-field input[type="email"]:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: var(--kbm-green-2);
+    box-shadow: 0 0 0 3px rgba(115, 140, 82, 0.15);
+  }
+
+  .form-field textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .radio-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #5a6b47;
+    font-weight: 400;
+    line-height: 1.5;
+  }
+
+  .radio-label input[type="radio"] {
+    margin-top: 0.25rem;
+    accent-color: var(--kbm-green);
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+  }
+
+  .form-field--checkbox {
+    background: #f5f7f2;
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #5a6b47;
+    line-height: 1.5;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    margin-top: 0.2rem;
+    accent-color: var(--kbm-green);
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .form-actions {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button--primary {
+    background-color: var(--kbm-green);
+    color: #ffffff;
+    border-color: var(--kbm-green);
+  }
+
+  .button--primary:hover {
+    background-color: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+  }
+
+  .button--large {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  @media (max-width: 768px) {
+    .page--apply {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .section--fit {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .form-field input[type="email"],
+    .form-field textarea {
+      padding: 0.65rem 0.85rem;
+    }
+  }
+</style>
