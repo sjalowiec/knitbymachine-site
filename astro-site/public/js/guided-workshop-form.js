@@ -28,8 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
   updateFormState();
 
-  form.addEventListener('submit', function(event) {
+  submitButton.addEventListener('click', function(event) {
     event.preventDefault();
+    console.log('GW Form JS: Button clicked');
+    
+    if (!form.checkValidity()) {
+      console.log('GW Form JS: Form invalid');
+      form.reportValidity();
+      return;
+    }
     
     var honeypot = form.querySelector('input[name="company"]');
     if (honeypot && honeypot.value.trim() !== '') {
