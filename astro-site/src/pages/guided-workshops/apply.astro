@@ -303,6 +303,120 @@ const error = Astro.url.searchParams.get('error');
       </div>
     </section>
 
+  <script is:inline>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('Form script loaded');
+      const form = document.getElementById('workshop-form');
+      const startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
+      const submitButton = document.querySelector('button[type="submit"]');
+      const warningMessage = document.getElementById('start-fresh-warning');
+
+      console.log('Form found:', !!form);
+      console.log('Submit button found:', !!submitButton);
+
+      if (!submitButton || !warningMessage) {
+        console.error('Required elements not found');
+        return;
+      }
+
+      function updateFormState() {
+        const selected = document.querySelector('input[name="startingFresh"]:checked');
+
+        if (selected && selected.value === 'no') {
+          submitButton.disabled = true;
+          submitButton.textContent = 'Workshops require a fresh start';
+          warningMessage.hidden = false;
+        } else {
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit Application';
+          warningMessage.hidden = true;
+        }
+      }
+
+      startingFreshRadios.forEach(radio => {
+        radio.addEventListener('change', updateFormState);
+      });
+
+      updateFormState();
+
+      if (form) {
+        form.addEventListener('submit', async (event) => {
+          event.preventDefault();
+          console.log('Form submitted');
+          
+          const honeypot = form.querySelector('input[name="company"]');
+          if (honeypot && honeypot.value.trim() !== '') {
+            return;
+          }
+
+          submitButton.disabled = true;
+          submitButton.textContent = 'Sending...';
+
+          const formData = new FormData(form);
+          const data = Object.fromEntries(formData.entries());
+
+          try {
+            const response = await fetch('/.netlify/functions/guided-workshop-submit', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+              window.location.href = '/guided-workshop/thanks';
+            } else {
+              console.error('Status:', response.status);
+              const rawText = await response.text();
+              console.error('Raw response:', rawText);
+              
+              let errorMessage = 'Something went wrong. Please try again.';
+              try {
+                const result = JSON.parse(rawText);
+                console.error('Submission error:', result);
+                if (result.error) {
+                  errorMessage = result.error;
+                }
+              } catch (parseError) {
+                console.error('Could not parse response as JSON');
+              }
+              
+              submitButton.disabled = false;
+              submitButton.textContent = 'Submit Application';
+              alert(errorMessage);
+            }
+          } catch (error) {
+            console.error('Network error:', error);
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit Application';
+            alert('Connection error. Please check your internet and try again.');
+          }
+        });
+      }
+
+      const patternRadios = document.querySelectorAll('input[name="patternStatus"]');
+      const patternField = document.getElementById('pattern-name-field');
+
+      if (patternRadios.length && patternField) {
+        function updatePatternField() {
+          const selected = document.querySelector('input[name="patternStatus"]:checked');
+          if (!selected) return;
+
+          if (selected.value === 'haveOne' || selected.value === 'fewOptions') {
+            patternField.hidden = false;
+          } else {
+            patternField.hidden = true;
+          }
+        }
+
+        patternRadios.forEach(radio => {
+          radio.addEventListener('change', updatePatternField);
+        });
+
+        updatePatternField();
+      }
+    });
+  </script>
+
   </main>
 </BaseLayout>
 
@@ -728,117 +842,3 @@ const error = Astro.url.searchParams.get('error');
     }
   }
 </style>
-
-<script is:inline>
-  document.addEventListener('DOMContentLoaded', () => {
-    console.log('Form script loaded');
-    const form = document.getElementById('workshop-form');
-    const startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
-    const submitButton = document.querySelector('button[type="submit"]');
-    const warningMessage = document.getElementById('start-fresh-warning');
-
-    console.log('Form found:', !!form);
-    console.log('Submit button found:', !!submitButton);
-
-    if (!submitButton || !warningMessage) {
-      console.error('Required elements not found');
-      return;
-    }
-
-    function updateFormState() {
-      const selected = document.querySelector('input[name="startingFresh"]:checked');
-
-      if (selected && selected.value === 'no') {
-        submitButton.disabled = true;
-        submitButton.textContent = 'Workshops require a fresh start';
-        warningMessage.hidden = false;
-      } else {
-        submitButton.disabled = false;
-        submitButton.textContent = 'Submit Application';
-        warningMessage.hidden = true;
-      }
-    }
-
-    startingFreshRadios.forEach(radio => {
-      radio.addEventListener('change', updateFormState);
-    });
-
-    updateFormState();
-
-    if (form) {
-      form.addEventListener('submit', async (event) => {
-        event.preventDefault();
-        console.log('Form submitted');
-        
-        const honeypot = form.querySelector('input[name="company"]');
-        if (honeypot && honeypot.value.trim() !== '') {
-          return;
-        }
-
-        submitButton.disabled = true;
-        submitButton.textContent = 'Sending...';
-
-        const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-
-        try {
-          const response = await fetch('/.netlify/functions/guided-workshop-submit', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data)
-          });
-
-          if (response.ok) {
-            window.location.href = '/guided-workshop/thanks';
-          } else {
-            console.error('Status:', response.status);
-            const rawText = await response.text();
-            console.error('Raw response:', rawText);
-            
-            let errorMessage = 'Something went wrong. Please try again.';
-            try {
-              const result = JSON.parse(rawText);
-              console.error('Submission error:', result);
-              if (result.error) {
-                errorMessage = result.error;
-              }
-            } catch (parseError) {
-              console.error('Could not parse response as JSON');
-            }
-            
-            submitButton.disabled = false;
-            submitButton.textContent = 'Submit Application';
-            alert(errorMessage);
-          }
-        } catch (error) {
-          console.error('Network error:', error);
-          submitButton.disabled = false;
-          submitButton.textContent = 'Submit Application';
-          alert('Connection error. Please check your internet and try again.');
-        }
-      });
-    }
-
-    const patternRadios = document.querySelectorAll('input[name="patternStatus"]');
-    const patternField = document.getElementById('pattern-name-field');
-
-    if (patternRadios.length && patternField) {
-      function updatePatternField() {
-        const selected = document.querySelector('input[name="patternStatus"]:checked');
-        if (!selected) return;
-
-        if (selected.value === 'haveOne' || selected.value === 'fewOptions') {
-          patternField.hidden = false;
-        } else {
-          patternField.hidden = true;
-        }
-      }
-
-      patternRadios.forEach(radio => {
-        radio.addEventListener('change', updatePatternField);
-      });
-
-      updatePatternField();
-    }
-  });
-</script>
