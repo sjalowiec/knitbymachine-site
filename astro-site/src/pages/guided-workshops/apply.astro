@@ -81,6 +81,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
             />
           </div>
 
+          <hr class="kbm-divider" />
+
           <div class="form-field">
             <label for="projectDirection">What are you hoping to make in this workshop? <span class="required">*</span></label>
             <p class="helper-text">A clear direction is enough — this doesn't need to be final.</p>
@@ -92,6 +94,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
               data-testid="textarea-project-direction"
             ></textarea>
           </div>
+
+          <hr class="kbm-divider" />
 
           <fieldset class="form-field">
             <legend>Are you ready to start this project from the beginning? <span class="required">*</span></legend>
@@ -108,6 +112,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
             </div>
           </fieldset>
 
+          <hr class="kbm-divider" />
+
           <div class="form-field">
             <label for="machineComfort">What machine will you be using, and how comfortable do you feel with it? <span class="required">*</span></label>
             <textarea 
@@ -118,6 +124,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
               data-testid="textarea-machine-comfort"
             ></textarea>
           </div>
+
+          <hr class="kbm-divider" />
 
           <fieldset class="form-field">
             <legend>Do you already have a pattern in mind? <span class="required">*</span></legend>
@@ -141,6 +149,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
             </div>
           </fieldset>
 
+          <hr class="kbm-divider" />
+
           <fieldset class="form-field">
             <legend>About yarn — which best describes you right now? <span class="required">*</span></legend>
             <div class="radio-group">
@@ -162,6 +172,8 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
               </label>
             </div>
           </fieldset>
+
+          <hr class="kbm-divider" />
 
           <div class="form-field form-field--checkbox">
             <label class="checkbox-label">
@@ -320,6 +332,12 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
 
   .application-form {
     max-width: 720px;
+  }
+
+  .kbm-divider {
+    border: none;
+    border-top: 1px solid #e5e8e0;
+    margin: 2rem auto 1.25rem;
   }
 
   .form-field {

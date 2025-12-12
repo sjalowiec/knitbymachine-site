@@ -1,0 +1,79 @@
+Refine visual hierarchy and spacing in the Guided Workshop application form.
+
+FILE
+- src/pages/guided-workshops/apply.astro
+  (or src/pages/guided-workshops/apply/index.astro, depending on routing)
+
+GOAL
+Improve readability and scanning by:
+1) Adding subtle dividers between major questions
+2) Ensuring radio/checkbox options do not compete with question headers
+
+DO NOT change:
+- form fields or copy
+- field order
+- labels (question text)
+- helper text content
+- submission behavior
+- validation rules
+
+---
+
+PART 1 — ADD QUESTION DIVIDERS
+
+1) Add this divider style (page-scoped or existing styles section):
+
+/* Divider */
+.kbm-divider {
+  border: none;
+  border-top: 1px solid #e5e8e0;
+  margin: 2rem auto 1.25rem;
+}
+
+2) Insert the divider element using:
+<hr class="kbm-divider" />
+
+Place dividers:
+- Between major question blocks (each question label + its inputs/options)
+- Especially between:
+  - radio groups and textareas
+  - longer questions
+  - concept shifts (project → machine → pattern → yarn)
+
+Do NOT place dividers:
+- Between a label and its related inputs
+- Inside radio/checkbox groups
+- After the final confirmation checkbox
+- Directly before the submit button
+
+---
+
+PART 2 — FIX RADIO / CHECKBOX OPTION HIERARCHY
+
+1) Radio and checkbox option text:
+- Set font-weight to normal (400)
+- Use standard body text size (not label size)
+- Use existing body/body-secondary color (not accent or heading color)
+
+2) Question labels should remain:
+- Larger
+- Bolder
+- Visually dominant
+
+3) Selected states:
+- Do NOT increase text weight on selection
+- Let the radio/checkbox control indicate selection
+
+IMPLEMENTATION NOTES
+- Target only the labels associated with radio/checkbox options
+- Do not affect primary question labels
+- Keep spacing between options unchanged
+- Avoid inline styles; use classes or scoped CSS
+
+---
+
+SUCCESS CRITERIA
+- Each question reads as a clear, self-contained block
+- Question headers stand out immediately
+- Answer options feel visually subordinate
+- The form scans calmly and efficiently from top to bottom
