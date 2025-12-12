@@ -303,7 +303,67 @@ const error = Astro.url.searchParams.get('error');
       </div>
     </section>
 
-  <script src="/js/guided-workshop-form.js?v=5" is:inline></script>
+  <script is:inline>
+(function() {
+  var form = document.getElementById('workshop-form');
+  var submitButton = document.querySelector('button[type="submit"]');
+  var warningMessage = document.getElementById('start-fresh-warning');
+  var startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
+  var patternRadios = document.querySelectorAll('input[name="patternStatus"]');
+  var patternField = document.getElementById('pattern-name-field');
+
+  if (!form || !submitButton) return;
+
+  function updateFormState() {
+    var selected = document.querySelector('input[name="startingFresh"]:checked');
+    if (selected && selected.value === 'no') {
+      submitButton.disabled = true;
+      submitButton.textContent = 'Workshops require a fresh start';
+      if (warningMessage) warningMessage.hidden = false;
+    } else {
+      submitButton.disabled = false;
+      submitButton.textContent = 'Submit Application';
+      if (warningMessage) warningMessage.hidden = true;
+    }
+  }
+
+  startingFreshRadios.forEach(function(r) { r.addEventListener('change', updateFormState); });
+  updateFormState();
+
+  if (patternRadios.length && patternField) {
+    function updatePatternField() {
+      var selected = document.querySelector('input[name="patternStatus"]:checked');
+      if (selected && (selected.value === 'haveOne' || selected.value === 'fewOptions')) {
+        patternField.hidden = false;
+      } else {
+        patternField.hidden = true;
+      }
+    }
+    patternRadios.forEach(function(r) { r.addEventListener('change', updatePatternField); });
+    updatePatternField();
+  }
+
+  submitButton.onclick = function(e) {
+    e.preventDefault();
+    if (!form.checkValidity()) { form.reportValidity(); return; }
+    var honeypot = form.querySelector('input[name="company"]');
+    if (honeypot && honeypot.value.trim() !== '') return;
+    submitButton.disabled = true;
+    submitButton.textContent = 'Sending...';
+    var formData = new FormData(form);
+    var data = {};
+    formData.forEach(function(v, k) { data[k] = v; });
+    fetch('/.netlify/functions/guided-workshop-submit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(function(res) {
+      if (res.ok) { window.location.href = '/guided-workshop/thanks'; }
+      else { alert('Something went wrong. Please try again.'); submitButton.disabled = false; submitButton.textContent = 'Submit Application'; }
+    }).catch(function() { alert('Connection error. Please try again.'); submitButton.disabled = false; submitButton.textContent = 'Submit Application'; });
+  };
+})();
+</script>
 
   </main>
 </BaseLayout>
