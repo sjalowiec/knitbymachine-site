@@ -1,0 +1,121 @@
+I need to update the speech bubble design on my ANA slug page. Please follow these steps exactly:
+
+1. **Create a Backup:**
+   Duplicate `src/pages/ana/[slug].astro` and name the copy `src/pages/ana/[slug].astro.bak` so I have a safe version.
+
+2. **Update the CSS:**
+   In `src/pages/ana/[slug].astro`, replace the existing `.bubbles-container`, `.thought-bubble`, and `.speech-bubble` styles within the `<style>` block with this new CSS:
+
+   ```css
+   /* =========================================
+      Modern Conversation Layout
+      ========================================= */
+   .ana-conversation-wrap {
+     display: flex;
+     flex-direction: column;
+     gap: 1.5rem;
+     max-width: 900px;
+     margin: 1rem auto 3rem;
+     font-family: var(--font, "Poppins", sans-serif);
+   }
+
+   /* Shared Bubble Base Styles */
+   .ana-bubble {
+     position: relative;
+     padding: 1.5rem 2rem;
+     max-width: 85%;
+     box-shadow: 0 4px 14px rgba(82, 104, 45, 0.1);
+     transition: transform 0.2s ease, box-shadow 0.2s ease;
+   }
+
+   .ana-bubble:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 6px 20px rgba(82, 104, 45, 0.15);
+   }
+
+   .ana-bubble-content p {
+     margin: 0;
+     line-height: 1.6;
+     font-size: 1.05rem;
+     color: #2c3a57;
+   }
+
+   /* Header (Label + Icon) Styling */
+   .ana-bubble-header {
+     display: flex;
+     align-items: center;
+     gap: 8px;
+     margin-bottom: 0.75rem;
+     font-size: 0.85rem;
+     font-weight: 700;
+     text-transform: uppercase;
+     letter-spacing: 0.05em;
+     opacity: 0.9;
+   }
+
+   .ana-icon {
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 24px;
+     height: 24px;
+     border-radius: 50%;
+     font-size: 14px;
+     font-weight: bold;
+     line-height: 1;
+   }
+
+   /* STYLE 1: The Question (Left) - White Background */
+   .ana-question {
+     align-self: flex-start;
+     background-color: #ffffff;
+     border: 2px solid #52682d;
+     border-radius: 24px 24px 24px 0;
+   }
+
+   .ana-question .ana-bubble-header { color: #52682d; }
+   .ana-question .ana-icon { background-color: #52682d; color: #ffffff; }
+
+   /* STYLE 2: The Answer (Right) - Light Green Background */
+   .ana-answer {
+     align-self: flex-end;
+     background-color: #eef3e4;
+     border: 2px solid #52682d;
+     border-radius: 24px 24px 0 24px;
+   }
+
+   .ana-answer .ana-bubble-header { justify-content: flex-end; color: #52682d; }
+   .ana-answer .ana-icon { background-color: #52682d; color: #ffffff; }
+
+   @media (max-width: 600px) {
+     .ana-bubble { max-width: 100%; margin-bottom: 0.5rem; }
+     .ana-question { border-radius: 16px 16px 16px 0; }
+     .ana-answer { border-radius: 16px 16px 0 16px; }
+   }
+Update the HTML: Find the div with class bubbles-container in src/pages/ana/[slug].astro and replace the entire container with this new structure. Important: Ensure you inject the Astro {entry.data.question} and <Content /> variables correctly into this new HTML:
+
+HTML
+
+<div class="ana-conversation-wrap">
+
+  <div class="ana-bubble ana-question">
+    <div class="ana-bubble-header">
+      <span class="ana-icon">?</span>
+      <span class="ana-label">The Question</span>
+    </div>
+    <div class="ana-bubble-content">
+      <p>{entry.data.question}</p>
+    </div>
+  </div>
+
+  <div class="ana-bubble ana-answer">
+    <div class="ana-bubble-header">
+      <span class="ana-label">The Answer</span>
+      <span class="ana-icon">✓</span>
+    </div>
+    <div class="ana-bubble-content">
+      <Content />
+    </div>
+  </div>
+
+</div>
