@@ -672,11 +672,15 @@ const error = Astro.url.searchParams.get('error');
 <script>
   const radios = document.querySelectorAll('input[name="startingFresh"]');
   const warning = document.getElementById('start-fresh-warning');
-  const submitBtn = document.querySelector('button[type="submit"]');
-  const originalText = submitBtn?.textContent || 'Submit Application';
+  const submitBtn = document.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  
+  // Store original text in dataset for reliable state restoration
+  if (submitBtn && !submitBtn.dataset.originalText) {
+    submitBtn.dataset.originalText = submitBtn.textContent || 'Submit Application';
+  }
 
   function updateFormState() {
-    const selected = document.querySelector('input[name="startingFresh"]:checked');
+    const selected = document.querySelector('input[name="startingFresh"]:checked') as HTMLInputElement | null;
     
     if (selected?.value === 'no') {
       warning?.removeAttribute('hidden');
@@ -689,7 +693,7 @@ const error = Astro.url.searchParams.get('error');
       warning?.setAttribute('hidden', '');
       if (submitBtn) {
         submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
+        submitBtn.textContent = submitBtn.dataset.originalText || 'Submit Application';
         submitBtn.removeAttribute('title');
       }
     }
@@ -698,4 +702,7 @@ const error = Astro.url.searchParams.get('error');
   radios.forEach(radio => {
     radio.addEventListener('change', updateFormState);
   });
+
+  // Run on page load in case form state is preserved
+  updateFormState();
 </script>
