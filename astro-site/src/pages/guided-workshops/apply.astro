@@ -216,7 +216,7 @@ const error = Astro.url.searchParams.get('error');
             </div>
           </fieldset>
 
-          <div class="form-field form-field--supplemental">
+          <div id="pattern-name-field" class="form-field form-field--supplemental" hidden>
             <label for="patternReference">If you have a pattern, what is it?</label>
             <p class="helper-text">Sharing this is optional — a title or link is enough.</p>
             <input 
@@ -728,6 +728,28 @@ const error = Astro.url.searchParams.get('error');
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
       });
+    }
+
+    const patternRadios = document.querySelectorAll('input[name="patternStatus"]');
+    const patternField = document.getElementById('pattern-name-field');
+
+    if (patternRadios.length && patternField) {
+      function updatePatternField() {
+        const selected = document.querySelector('input[name="patternStatus"]:checked');
+        if (!selected) return;
+
+        if (selected.value === 'haveOne' || selected.value === 'fewOptions') {
+          patternField.hidden = false;
+        } else {
+          patternField.hidden = true;
+        }
+      }
+
+      patternRadios.forEach(radio => {
+        radio.addEventListener('change', updatePatternField);
+      });
+
+      updatePatternField();
     }
   });
 </script>
