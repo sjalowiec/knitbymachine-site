@@ -133,15 +133,40 @@ const error = Astro.url.searchParams.get('error');
           <hr class="kbm-divider" />
 
           <div class="form-field">
-            <label for="machineComfort">What machine will you be using, and how comfortable do you feel with it? <span class="required">*</span></label>
-            <textarea 
-              id="machineComfort" 
-              name="machineComfort" 
-              rows="3" 
+            <label for="machineModel">What machine will you be using? <span class="required">*</span></label>
+            <input 
+              type="text"
+              id="machineModel" 
+              name="machineModel" 
               required
-              data-testid="textarea-machine-comfort"
-            ></textarea>
+              placeholder="Brother KH-___, Silver Reed SK___, LK150, etc."
+              autocomplete="off"
+              data-testid="input-machine-model"
+            />
+            <p class="helper-text">If you're not sure of the exact model, just describe what you have.</p>
           </div>
+
+          <fieldset class="form-field">
+            <legend>How comfortable do you feel using it? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="new" required data-testid="radio-comfort-new" />
+                <span>I'm brand new / just getting started</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="some" data-testid="radio-comfort-some" />
+                <span>I can do basics, but I get stuck</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="ok" data-testid="radio-comfort-ok" />
+                <span>I'm fairly comfortable</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="confident" data-testid="radio-comfort-confident" />
+                <span>I'm confident</span>
+              </label>
+            </div>
+          </fieldset>
 
           <hr class="kbm-divider" />
 
