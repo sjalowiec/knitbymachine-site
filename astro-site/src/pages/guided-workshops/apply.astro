@@ -229,17 +229,21 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
             </div>
           </fieldset>
 
-          <div class="form-field form-field--checkbox">
-            <label class="checkbox-label">
-              <input type="checkbox" name="confirm" value="yes" required data-testid="checkbox-confirm" />
+          <div class="final-check">
+            <div class="form-field form-field--checkbox">
+              <label class="checkbox-label">
+                <input type="checkbox" name="confirm" value="yes" required data-testid="checkbox-confirm" />
               <span>I understand this is a 10-day, start-to-finish workshop priced between $297–$397, and the workshop begins only after my materials are ready and I confirm that I’m ready to start.</span>
             </label>
           </div>
 
           <div class="form-actions">
-            <button type="submit" class="button button--primary button--large" data-testid="button-submit">
-              Submit Application
-            </button>
+              <button type="submit" class="button button--primary button--large" data-testid="button-submit">
+                Submit Application
+              </button>
+            </div>
+
+            <p class="next-steps-note">After you submit, I'll review your application and follow up by email with next steps.</p>
           </div>
 
         </form>
@@ -529,6 +533,32 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     width: 20px;
     height: 20px;
     flex-shrink: 0;
+  }
+
+  .final-check {
+    background: #f9faf7;
+    border: 1px solid #e5e8e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .final-check .form-field--checkbox {
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+
+  .final-check .form-actions {
+    margin-top: 1.25rem;
+  }
+
+  .next-steps-note {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #6b7a5a;
+    text-align: center;
+    margin: 1rem 0 0 0;
+    line-height: 1.5;
   }
 
   .form-actions {
