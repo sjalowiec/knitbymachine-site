@@ -1,21 +1,12 @@
-console.log('GW Form JS: Script loaded');
-
 document.addEventListener('DOMContentLoaded', function() {
-  console.log('GW Form JS: DOMContentLoaded fired');
   var form = document.getElementById('workshop-form');
   var startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
   var submitButton = document.querySelector('button[type="submit"]');
   var warningMessage = document.getElementById('start-fresh-warning');
 
-  console.log('GW Form JS: form=', form);
-  console.log('GW Form JS: submitButton=', submitButton);
-
   if (!form || !submitButton) {
-    console.log('GW Form JS: Missing elements, exiting');
     return;
   }
-  
-  console.log('GW Form JS: Attaching submit handler');
 
   function updateFormState() {
     var selected = document.querySelector('input[name="startingFresh"]:checked');
@@ -38,7 +29,6 @@ document.addEventListener('DOMContentLoaded', function() {
   updateFormState();
 
   form.addEventListener('submit', function(event) {
-    console.log('GW Form JS: Submit event fired');
     event.preventDefault();
     
     var honeypot = form.querySelector('input[name="company"]');
