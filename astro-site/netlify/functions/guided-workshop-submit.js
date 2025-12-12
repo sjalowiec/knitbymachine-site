@@ -8,19 +8,38 @@ exports.handler = async (event) => {
 
   if (!AC_API_URL || !AC_API_KEY) {
     console.error('Missing ActiveCampaign credentials');
-    return { statusCode: 500, body: JSON.stringify({ error: 'Server configuration error' }) };
+    return {
+      statusCode: 302,
+      headers: { Location: '/guided-workshops/apply?error=server' }
+    };
   }
 
   let data;
-  try {
-    data = JSON.parse(event.body);
-  } catch (e) {
-    return { statusCode: 400, body: JSON.stringify({ error: 'Invalid JSON' }) };
+  
+  // Handle both JSON and form-urlencoded data
+  const contentType = event.headers['content-type'] || '';
+  
+  if (contentType.includes('application/json')) {
+    try {
+      data = JSON.parse(event.body);
+    } catch (e) {
+      return { statusCode: 400, body: 'Invalid JSON' };
+    }
+  } else {
+    // Parse form-urlencoded data
+    const params = new URLSearchParams(event.body);
+    data = {};
+    for (const [key, value] of params) {
+      data[key] = value;
+    }
   }
 
   // Honeypot check
   if (data.company && data.company.trim() !== '') {
-    return { statusCode: 200, body: JSON.stringify({ success: true }) };
+    return {
+      statusCode: 302,
+      headers: { Location: '/guided-workshop/thanks' }
+    };
   }
 
   // Split full name into first/last
@@ -69,9 +88,9 @@ exports.handler = async (event) => {
     if (!response.ok) {
       const errorText = await response.text();
       console.error('ActiveCampaign error:', response.status, errorText);
-      return { 
-        statusCode: 500, 
-        body: JSON.stringify({ error: 'Failed to submit to ActiveCampaign' }) 
+      return {
+        statusCode: 302,
+        headers: { Location: '/guided-workshops/apply?error=server' }
       };
     }
 
@@ -83,7 +102,6 @@ exports.handler = async (event) => {
     const TAG_NAME = 'GW – Applied';
     let tagId = null;
 
-    // Search for existing tag
     const tagSearchResponse = await fetch(
       `${AC_API_URL}/api/3/tags?search=${encodeURIComponent(TAG_NAME)}`,
       { headers: { 'Api-Token': AC_API_KEY } }
@@ -97,7 +115,6 @@ exports.handler = async (event) => {
       }
     }
 
-    // Create tag if not found
     if (!tagId) {
       const createTagResponse = await fetch(`${AC_API_URL}/api/3/tags`, {
         method: 'POST',
@@ -117,13 +134,12 @@ exports.handler = async (event) => {
       if (createTagResponse.ok) {
         const createTagResult = await createTagResponse.json();
         tagId = createTagResult.tag?.id;
-        console.log('Created tag:', tagId);
       }
     }
 
     // Step 3: Apply tag to contact
     if (tagId && contactId) {
-      const applyTagResponse = await fetch(`${AC_API_URL}/api/3/contactTags`, {
+      await fetch(`${AC_API_URL}/api/3/contactTags`, {
         method: 'POST',
         headers: {
           'Api-Token': AC_API_KEY,
@@ -136,24 +152,18 @@ exports.handler = async (event) => {
           }
         })
       });
-      
-      if (applyTagResponse.ok) {
-        console.log('Tag applied to contact');
-      } else {
-        console.warn('Failed to apply tag:', await applyTagResponse.text());
-      }
     }
 
+    // Redirect to thank you page
     return {
-      statusCode: 200,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success: true, contactId: contactId })
+      statusCode: 302,
+      headers: { Location: '/guided-workshop/thanks' }
     };
   } catch (error) {
     console.error('Error submitting to ActiveCampaign:', error);
-    return { 
-      statusCode: 500, 
-      body: JSON.stringify({ error: 'Server error' }) 
+    return {
+      statusCode: 302,
+      headers: { Location: '/guided-workshops/apply?error=server' }
     };
   }
 };
