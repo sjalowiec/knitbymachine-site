@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function() {
   updateFormState();
 
   submitButton.addEventListener('click', function(event) {
-    alert('Button clicked!');
     event.preventDefault();
     
     if (!form.checkValidity()) {
+      alert('Form has invalid fields');
       form.reportValidity();
       return;
     }
@@ -44,6 +44,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     submitButton.disabled = true;
     submitButton.textContent = 'Sending...';
+    alert('Sending to server...');
 
     var formData = new FormData(form);
     var data = {};
