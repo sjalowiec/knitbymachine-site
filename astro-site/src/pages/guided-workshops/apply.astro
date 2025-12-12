@@ -128,6 +128,30 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
           <hr class="kbm-divider" />
 
           <fieldset class="form-field">
+            <legend>How would you describe your machine-knitting experience? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="beginner" required data-testid="radio-experience-beginner" />
+                <span>I'm brand new or just getting started</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="some" data-testid="radio-experience-some" />
+                <span>I've completed a few projects</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="comfortable" data-testid="radio-experience-comfortable" />
+                <span>I'm comfortable but still learning</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="experienced" data-testid="radio-experience-experienced" />
+                <span>I'm experienced and fairly confident</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <hr class="kbm-divider" />
+
+          <fieldset class="form-field">
             <legend>Do you already have a pattern in mind? <span class="required">*</span></legend>
             <div class="radio-group">
               <label class="radio-label">
@@ -186,6 +210,24 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
           </fieldset>
 
           <hr class="kbm-divider" />
+
+          <fieldset class="form-field">
+            <legend>When would you realistically be ready to start your 10-day workshop? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="startWindow" value="within2weeks" required data-testid="radio-start-within-2-weeks" />
+                <span>Within the next 2 weeks</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="startWindow" value="2to4weeks" data-testid="radio-start-2-to-4-weeks" />
+                <span>In about 2–4 weeks</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="startWindow" value="notSure" data-testid="radio-start-not-sure" />
+                <span>I'm not sure yet</span>
+              </label>
+            </div>
+          </fieldset>
 
           <div class="form-field form-field--checkbox">
             <label class="checkbox-label">

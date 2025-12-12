@@ -1,0 +1,69 @@
+Add Experience Level and Time Window Readiness questions to the Guided Workshop application form.
+
+FILE
+- src/pages/guided-workshops/apply.astro
+  (or src/pages/guided-workshops/apply/index.astro, depending on routing)
+
+GOAL
+Capture applicant experience context and timing readiness to support fit review and scheduling.
+
+DO NOT change:
+- existing questions or wording
+- existing field order except where noted
+- styling rules already applied (labels, dividers, hierarchy)
+- submission behavior or validation of existing fields
+
+---
+
+PART 1 — EXPERIENCE LEVEL (REQUIRED)
+
+1) Add a new required radio-button question.
+
+Label:
+"How would you describe your machine-knitting experience?"
+
+Options:
+- value="beginner" label="I’m brand new or just getting started"
+- value="some" label="I’ve completed a few projects"
+- value="comfortable" label="I’m comfortable but still learning"
+- value="experienced" label="I’m experienced and fairly confident"
+
+Field name:
+- name="experienceLevel"
+
+Placement:
+- Place this question AFTER:
+  “What machine will you be using, and how comfortable do you feel with it?”
+- Add a divider BEFORE this question (consistent with other major questions)
+
+Styling:
+- Question label = bold / larger (same as other questions)
+- Option text = normal body weight (not bold)
+- Use existing spacing and indentation patterns
+
+---
+
+PART 2 — TIME WINDOW READINESS (REQUIRED)
+
+2) Add a new required radio-button question.
+
+Label:
+"When would you realistically be ready to start your 10-day workshop?"
+
+Options:
+- value="within2weeks" label="Within the next 2 weeks"
+- value="2to4weeks" label="In about 2–4 weeks"
+- value="notSure" label="I’m not sure yet"
+
+Field name:
+- name="startWindow"
+
+Placement:
+- Place this question AFTER the Yarn Status question block
+- Add a divider BEFORE this question
+- Do NOT add a divider after this question if the next element is the final confirmation checkbox
+
+Styling:
+- Match existing radio-group styling
+- Keep option text calm and neutral
+- Do
