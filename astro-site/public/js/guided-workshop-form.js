@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+function initForm() {
   var form = document.getElementById('workshop-form');
   var startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
   var submitButton = document.querySelector('button[type="submit"]');
@@ -99,4 +99,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     updatePatternField();
   }
-});
+}
+
+// Run immediately if DOM ready, otherwise wait for it
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initForm);
+} else {
+  initForm();
+}
