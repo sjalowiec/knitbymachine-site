@@ -783,11 +783,24 @@ const error = Astro.url.searchParams.get('error');
           if (response.ok) {
             window.location.href = '/guided-workshop/thanks';
           } else {
-            const result = await response.json();
-            console.error('Submission error:', result);
+            console.error('Status:', response.status);
+            const rawText = await response.text();
+            console.error('Raw response:', rawText);
+            
+            let errorMessage = 'Something went wrong. Please try again.';
+            try {
+              const result = JSON.parse(rawText);
+              console.error('Submission error:', result);
+              if (result.error) {
+                errorMessage = result.error;
+              }
+            } catch (parseError) {
+              console.error('Could not parse response as JSON');
+            }
+            
             submitButton.disabled = false;
             submitButton.textContent = 'Submit Application';
-            alert('Something went wrong. Please try again.');
+            alert(errorMessage);
           }
         } catch (error) {
           console.error('Network error:', error);
