@@ -119,24 +119,16 @@ const relatedWizards = entry.data.relatedWizards?.length
 
     <div class="unified-content-card">
       <article class="ana-item">
-        <!-- Modern Conversation Layout -->
-        <div class="ana-conversation-wrap">
-          <div class="ana-bubble ana-question">
-            <div class="ana-bubble-header">
-              <span class="ana-icon">?</span>
-              <span class="ana-label">The Question</span>
-            </div>
-            <div class="ana-bubble-content">
-              <p>{entry.data.title}</p>
-            </div>
+        <!-- Bubbles Container - single wrapper for proper stacking -->
+        <div class="bubbles-container">
+          <!-- Question Bubble -->
+          <div class="thought-bubble question-bubble">
+            <p>{entry.data.title}</p>
           </div>
 
-          <div class="ana-bubble ana-answer">
-            <div class="ana-bubble-header">
-              <span class="ana-label">The Answer</span>
-              <span class="ana-icon">✓</span>
-            </div>
-            <div class="ana-bubble-content" set:html={entry.data.body}></div>
+          <!-- Answer Bubble -->
+          <div class="speech-bubble answer-bubble">
+            <div class="bubble-content" set:html={entry.data.body}></div>
           </div>
         </div>
 
@@ -328,104 +320,109 @@ const relatedWizards = entry.data.relatedWizards?.length
     gap: 2.5rem;
   }
 
-  /* =========================================
-     Modern Conversation Layout
-     ========================================= */
-  .ana-conversation-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 900px;
-    margin: 1rem auto 3rem;
-    font-family: var(--font, "Poppins", sans-serif);
-  }
+  /* Note: .bubbles-container and bubble positioning styles 
+     are in global.css to ensure consistent overlap across all ANA entries */
 
-  /* Shared Bubble Base Styles */
-  .ana-bubble {
+  .thought-bubble {
     position: relative;
+    background-color: #ffffff;
+    color: #2c3a57;
+    border: 1px solid #c7d8a4;
     padding: 1.5rem 2rem;
-    max-width: 85%;
-    box-shadow: 0 4px 14px rgba(82, 104, 45, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 25px;
+    font-size: 1.2rem;
+    font-weight: 500;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.08);
   }
 
-  .ana-bubble:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.15);
+  .thought-bubble.question-bubble {
+    color: #2c3a57;
+    font-size: 1.1rem;
   }
 
-  .ana-bubble-content p {
-    margin: 0;
+  .thought-bubble::before {
+    content: '';
+    position: absolute;
+    left: -14px;
+    bottom: 20px;
+    width: 12px;
+    height: 12px;
+    background-color: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 50%;
+  }
+
+  .thought-bubble::after {
+    content: '';
+    position: absolute;
+    left: -24px;
+    bottom: 12px;
+    width: 8px;
+    height: 8px;
+    background-color: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 50%;
+  }
+
+  .speech-bubble {
+    position: relative;
+    background-color: #eef3e4;
+    color: #2c3a57;
+    padding: 1.4rem 1.8rem;
+    border-radius: 22px;
+    border: 1px solid #c7d8a4;
+    font-size: 1rem;
     line-height: 1.6;
-    font-size: 1.05rem;
+    box-shadow: 0 2px 6px rgba(82, 104, 45, 0.10);
+  }
+
+  .speech-bubble::before {
+    content: "";
+    position: absolute;
+    right: -10px;
+    bottom: 18px;
+    width: 0;
+    height: 0;
+    border-left: 14px solid #eef3e4;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
+
+  .speech-bubble::after {
+    content: "";
+    position: absolute;
+    right: -12px;
+    bottom: 18px;
+    width: 0;
+    height: 0;
+    border-left: 16px solid #c7d8a4;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    z-index: -1;
+  }
+
+  .bubble-content {
     color: #2c3a57;
   }
 
-  .ana-bubble-content :global(p) {
+  .bubble-content :global(p) {
     margin-bottom: 1rem;
   }
 
-  .ana-bubble-content :global(p:last-child) {
+  .bubble-content :global(p:last-child) {
     margin-bottom: 0;
   }
 
-  .ana-bubble-content :global(ul),
-  .ana-bubble-content :global(ol) {
+  .bubble-content :global(ul),
+  .bubble-content :global(ol) {
     margin-left: 1.5rem;
     margin-bottom: 1rem;
   }
 
-  .ana-bubble-content :global(strong) {
+  .bubble-content :global(strong) {
     font-weight: 600;
     color: #52682d;
   }
-
-  /* Header (Label + Icon) Styling */
-  .ana-bubble-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 0.75rem;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    opacity: 0.9;
-  }
-
-  .ana-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1;
-  }
-
-  /* STYLE 1: The Question (Left) - White Background */
-  .ana-question {
-    align-self: flex-start;
-    background-color: #ffffff;
-    border: 2px solid #52682d;
-    border-radius: 24px 24px 24px 0;
-  }
-
-  .ana-question .ana-bubble-header { color: #52682d; }
-  .ana-question .ana-icon { background-color: #52682d; color: #ffffff; }
-
-  /* STYLE 2: The Answer (Right) - Light Green Background */
-  .ana-answer {
-    align-self: flex-end;
-    background-color: #eef3e4;
-    border: 2px solid #52682d;
-    border-radius: 24px 24px 0 24px;
-  }
-
-  .ana-answer .ana-bubble-header { justify-content: flex-end; color: #52682d; }
-  .ana-answer .ana-icon { background-color: #52682d; color: #ffffff; }
 
   /* Image Section */
   .ana-image-section {
@@ -673,15 +670,13 @@ const relatedWizards = entry.data.relatedWizards?.length
       text-align: center;
     }
 
-    .ana-bubble { 
-      max-width: 100%; 
-      margin-bottom: 0.5rem; 
+    .bubble-wrapper {
+      max-width: 100%;
     }
-    .ana-question { 
-      border-radius: 16px 16px 16px 0; 
-    }
-    .ana-answer { 
-      border-radius: 16px 16px 0 16px; 
+
+    .question-wrapper,
+    .answer-wrapper {
+      margin-left: 0;
     }
 
     .ana-image-section {
