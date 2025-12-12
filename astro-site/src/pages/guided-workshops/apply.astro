@@ -695,39 +695,31 @@ const error = Astro.url.searchParams.get('error');
 </style>
 
 <script>
-  const radios = document.querySelectorAll('input[name="startingFresh"]');
-  const warning = document.getElementById('start-fresh-warning');
-  const submitBtn = document.querySelector('button[type="submit"]') as HTMLButtonElement | null;
-  
-  // Store original text in dataset for reliable state restoration
-  if (submitBtn && !submitBtn.dataset.originalText) {
-    submitBtn.dataset.originalText = submitBtn.textContent || 'Submit Application';
-  }
+  document.addEventListener('DOMContentLoaded', () => {
+    const startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
+    const submitButton = document.querySelector('button[type="submit"]');
+    const warningMessage = document.getElementById('start-fresh-warning');
 
-  function updateFormState() {
-    const selected = document.querySelector('input[name="startingFresh"]:checked') as HTMLInputElement | null;
-    
-    if (selected?.value === 'no') {
-      warning?.removeAttribute('hidden');
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Workshops require a fresh start';
-        submitBtn.title = 'Guided Workshops are for new projects started from the beginning.';
-      }
-    } else {
-      warning?.setAttribute('hidden', '');
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.textContent = submitBtn.dataset.originalText || 'Submit Application';
-        submitBtn.removeAttribute('title');
+    if (!submitButton || !warningMessage) return;
+
+    function updateFormState() {
+      const selected = document.querySelector('input[name="startingFresh"]:checked');
+
+      if (selected && selected.value === 'no') {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Workshops require a fresh start';
+        warningMessage.hidden = false;
+      } else {
+        submitButton.disabled = false;
+        submitButton.textContent = 'Submit Application';
+        warningMessage.hidden = true;
       }
     }
-  }
 
-  radios.forEach(radio => {
-    radio.addEventListener('change', updateFormState);
+    startingFreshRadios.forEach(radio => {
+      radio.addEventListener('change', updateFormState);
+    });
+
+    updateFormState();
   });
-
-  // Run on page load in case form state is preserved
-  updateFormState();
 </script>
