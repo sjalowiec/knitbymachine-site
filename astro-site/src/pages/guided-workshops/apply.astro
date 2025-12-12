@@ -59,6 +59,18 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
         <form method="POST" action="/api/guided-workshop-application" class="application-form" data-testid="form-application">
           
           <div class="form-field">
+            <label for="fullName">Your name <span class="required">*</span></label>
+            <input 
+              type="text" 
+              id="fullName" 
+              name="fullName" 
+              required 
+              autocomplete="name"
+              data-testid="input-full-name"
+            />
+          </div>
+
+          <div class="form-field">
             <label for="email">Email address <span class="required">*</span></label>
             <input 
               type="email" 
@@ -328,6 +340,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     line-height: 1.5;
   }
 
+  .form-field input[type="text"],
   .form-field input[type="email"],
   .form-field textarea {
     width: 100%;
@@ -342,6 +355,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
     box-sizing: border-box;
   }
 
+  .form-field input[type="text"]:focus,
   .form-field input[type="email"]:focus,
   .form-field textarea:focus {
     outline: none;
