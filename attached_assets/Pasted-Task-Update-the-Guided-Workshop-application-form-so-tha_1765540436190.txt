@@ -1,0 +1,104 @@
+Task: Update the Guided Workshop application form so that selecting an in-progress project prevents submission clearly and immediately.
+
+Where: This Astro page: Apply | Guided Workshop with Sue (the form that posts to /api/guided-workshop-application).
+
+1) Update the “starting fresh” question to be an explicit hard requirement
+
+In the fieldset for startingFresh, update the radio option labels/values to:
+
+Yes — I’m starting from the beginning (value="yes")
+
+No — my project is already in progress (value="no")
+
+Keep required on the group.
+
+2) Add a warning message directly under this question (hidden by default)
+
+Insert this element directly under the radio group inside the startingFresh fieldset:
+
+<p id="start-fresh-warning" class="form-warning" hidden aria-live="polite">
+  Guided Workshops are designed for projects started from the beginning. If your project is already in progress, this application can’t move forward.
+</p>
+
+3) Disable submit + change button text when “No” is selected
+
+When startingFresh="no":
+
+Show the warning
+
+Disable the submit button
+
+Change button text to: Workshops require a fresh start
+
+Add a tooltip/title on the disabled button: Guided Workshops are for new projects started from the beginning.
+
+When startingFresh="yes":
+
+Hide the warning
+
+Enable the submit button
+
+Restore original button text: Submit Application
+
+Remove the tooltip/title
+
+Implement with a small vanilla JS script (no frameworks). Put it near the bottom of the page (below the form) so elements exist before the script runs.
+
+4) Add subtle disabled styling (CSS)
+
+Add CSS so the disabled button looks intentionally inactive:
+
+Lower opacity
+
+Change cursor to not-allowed
+
+Prevent hover styling from “lighting up” while disabled
+
+Example rules (adjust to match existing styles):
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.button--primary:disabled:hover {
+  background-color: var(--kbm-green);
+  border-color: var(--kbm-green);
+}
+
+
+Also add styles for the warning that feel calm (not harsh red), consistent with KBM:
+
+.form-warning {
+  margin-left: 1rem;
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  color: #5a3b2e;
+  background: #fff4ee;
+  border-left: 3px solid #c2614e;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+}
+
+5) Server-side safeguard (important)
+
+In /api/guided-workshop-application, add a validation check:
+
+If startingFresh !== "yes", do not treat it as a valid application.
+
+Return an error response that prevents “submitted=1” success flow and instead returns a friendly message (or redirects with an error query param).
+
+This is a backup in case JS is disabled or bypassed.
+
+Do not add coaching or alternative recommendations in the rejection message—keep it short and factual.
+
+6) Acceptance criteria
+
+Selecting “No — my project is already in progress” immediately shows the warning, disables the button, and swaps button text.
+
+Selecting “Yes” immediately reverses all of that.
+
+Button has a tooltip/title when disabled.
+
+Disabled button is visibly disabled and cannot submit.
+
+Backend refuses submissions that are not starting fresh.

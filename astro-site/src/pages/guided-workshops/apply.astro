@@ -2,7 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const title = "Apply | Guided Workshop with Sue | Knit by Machine";
-const description = "Apply for a Guided Workshop. This short application helps Sue confirm fit and follow up with next steps.";
+const description = "Apply for a Guided Workshop. This application helps Sue confirm fit and follow up with next steps.";
 
 const submitted = Astro.url.searchParams.get('submitted') === '1';
 ---
@@ -11,7 +11,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
   <main class="page page--apply">
     <h1 data-testid="text-page-title">Apply for a Guided Workshop</h1>
     <p class="intro-text">
-      This short application helps me confirm that the Guided Workshop is the right fit for your project. You don't need to have everything figured out yet — a clear direction is enough.
+    This application helps me confirm that the Guided Workshop is the right fit for your project. You don’t need final decisions yet — a clear sense of what you’d like to work on is enough. It takes about 3–5 minutes to complete, and Guided Workshops typically fall between $297–$397.
     </p>
 
     {submitted && (
@@ -99,17 +99,20 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
 
           <fieldset class="form-field">
             <legend>Are you ready to start this project from the beginning? <span class="required">*</span></legend>
-            <p class="helper-text">This format isn't designed for fixing or rescuing in-progress projects.</p>
+            <p class="helper-text">Guided Workshops are designed for new projects started from the beginning. They’re not a good fit for rescuing or reworking projects already in progress.</p>
             <div class="radio-group">
               <label class="radio-label">
                 <input type="radio" name="startingFresh" value="yes" required data-testid="radio-starting-fresh-yes" />
-                <span>Yes — starting fresh</span>
+                <span>Yes — I'm starting from the beginning</span>
               </label>
               <label class="radio-label">
-                <input type="radio" name="startingFresh" value="notYet" data-testid="radio-starting-fresh-not-yet" />
-                <span>Not yet</span>
+                <input type="radio" name="startingFresh" value="no" data-testid="radio-starting-fresh-no" />
+                <span>No — my project is already in progress</span>
               </label>
             </div>
+            <p id="start-fresh-warning" class="form-warning" hidden aria-live="polite">
+              Guided Workshops are designed for projects started from the beginning. If your project is already in progress, this application can't move forward.
+            </p>
           </fieldset>
 
           <hr class="kbm-divider" />
@@ -243,7 +246,7 @@ const submitted = Astro.url.searchParams.get('submitted') === '1';
               </button>
             </div>
 
-            <p class="next-steps-note">After you submit, I'll review your application and follow up by email with next steps.</p>
+            <p class="next-steps-note">After you submit, I’ll personally review your application and follow up. You’ll only be asked for payment if you decide to move forward.</p>
           </div>
 
         </form>
