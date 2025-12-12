@@ -56,6 +56,7 @@ exports.handler = async (event) => {
   };
 
   try {
+    // Step 1: Create/update contact
     const response = await fetch(`${AC_API_URL}/api/3/contact/sync`, {
       method: 'POST',
       headers: {
@@ -75,12 +76,78 @@ exports.handler = async (event) => {
     }
 
     const result = await response.json();
-    console.log('Contact synced:', result.contact?.id);
+    const contactId = result.contact?.id;
+    console.log('Contact synced:', contactId);
+
+    // Step 2: Find or create the "GW – Applied" tag
+    const TAG_NAME = 'GW – Applied';
+    let tagId = null;
+
+    // Search for existing tag
+    const tagSearchResponse = await fetch(
+      `${AC_API_URL}/api/3/tags?search=${encodeURIComponent(TAG_NAME)}`,
+      { headers: { 'Api-Token': AC_API_KEY } }
+    );
+    
+    if (tagSearchResponse.ok) {
+      const tagSearchResult = await tagSearchResponse.json();
+      const existingTag = tagSearchResult.tags?.find(t => t.tag === TAG_NAME);
+      if (existingTag) {
+        tagId = existingTag.id;
+      }
+    }
+
+    // Create tag if not found
+    if (!tagId) {
+      const createTagResponse = await fetch(`${AC_API_URL}/api/3/tags`, {
+        method: 'POST',
+        headers: {
+          'Api-Token': AC_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          tag: {
+            tag: TAG_NAME,
+            tagType: 'contact',
+            description: 'Applied for Guided Workshop'
+          }
+        })
+      });
+      
+      if (createTagResponse.ok) {
+        const createTagResult = await createTagResponse.json();
+        tagId = createTagResult.tag?.id;
+        console.log('Created tag:', tagId);
+      }
+    }
+
+    // Step 3: Apply tag to contact
+    if (tagId && contactId) {
+      const applyTagResponse = await fetch(`${AC_API_URL}/api/3/contactTags`, {
+        method: 'POST',
+        headers: {
+          'Api-Token': AC_API_KEY,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          contactTag: {
+            contact: contactId,
+            tag: tagId
+          }
+        })
+      });
+      
+      if (applyTagResponse.ok) {
+        console.log('Tag applied to contact');
+      } else {
+        console.warn('Failed to apply tag:', await applyTagResponse.text());
+      }
+    }
 
     return {
       statusCode: 200,
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ success: true, contactId: result.contact?.id })
+      body: JSON.stringify({ success: true, contactId: contactId })
     };
   } catch (error) {
     console.error('Error submitting to ActiveCampaign:', error);
