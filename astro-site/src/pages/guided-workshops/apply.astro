@@ -71,8 +71,7 @@ const error = Astro.url.searchParams.get('error');
 
     <section class="section section--form">
       <div class="section-inner">
-        <form method="POST" action="/guided-workshop/thanks" name="guided-workshop-application" data-netlify="true" netlify-honeypot="company" class="application-form" data-testid="form-application">
-          <input type="hidden" name="form-name" value="guided-workshop-application" />
+        <form id="workshop-form" class="application-form" data-testid="form-application">
           <input
             type="text"
             name="company"
@@ -732,7 +731,7 @@ const error = Astro.url.searchParams.get('error');
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('form');
+    const form = document.getElementById('workshop-form');
     const startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
     const submitButton = document.querySelector('button[type="submit"]');
     const warningMessage = document.getElementById('start-fresh-warning');
@@ -759,16 +758,43 @@ const error = Astro.url.searchParams.get('error');
 
     updateFormState();
 
-    const honeypot = form?.querySelector('input[name="company"]');
-
     if (form) {
-      form.addEventListener('submit', (event) => {
+      form.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const honeypot = form.querySelector('input[name="company"]');
         if (honeypot && honeypot.value.trim() !== '') {
-          event.preventDefault();
           return;
         }
+
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        try {
+          const response = await fetch('/.netlify/functions/guided-workshop-submit', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+
+          if (response.ok) {
+            window.location.href = '/guided-workshop/thanks';
+          } else {
+            const result = await response.json();
+            console.error('Submission error:', result);
+            submitButton.disabled = false;
+            submitButton.textContent = 'Submit Application';
+            alert('Something went wrong. Please try again.');
+          }
+        } catch (error) {
+          console.error('Network error:', error);
+          submitButton.disabled = false;
+          submitButton.textContent = 'Submit Application';
+          alert('Connection error. Please check your internet and try again.');
+        }
       });
     }
 
