@@ -1,0 +1,107 @@
+Goal: When the Guided Workshop application form is successfully submitted, redirect the user to a dedicated confirmation page at:
+
+/guided-workshop/thanks
+
+1) Create a new confirmation page
+
+Create this new file:
+
+src/pages/guided-workshop/thanks.astro
+
+Use this exact content:
+
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "Application received | Guided Workshop | Knit by Machine";
+const description =
+  "Your Guided Workshop application has been received. Here’s what happens next.";
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--guided-workshop page--guided-workshop-thanks">
+    <section class="section">
+      <div class="section-inner" style="max-width: 820px;">
+        <h1>Your application has been received</h1>
+
+        <p>
+          Thanks for applying for a Guided Workshop.
+        </p>
+
+        <p>
+          I personally review every application to make sure the workshop is a good fit for both you and your project.
+        </p>
+
+        <h2 style="margin-top: 1.25rem;">What happens next</h2>
+        <ul>
+          <li>I’ll review your application within <strong>1–2 business days</strong>.</li>
+          <li>I may reply with a quick follow-up question or clarification.</li>
+          <li>If it’s a good fit, you’ll receive an approval email with next steps and pricing.</li>
+          <li><strong>No payment is required until your project is approved.</strong></li>
+        </ul>
+
+        <p style="margin-top: 1.25rem;">
+          There’s nothing you need to do right now. You’ll hear from me soon.
+        </p>
+
+        <p style="margin-top: 1.25rem;">
+          — Sue
+        </p>
+
+        <p style="margin-top: 2rem; font-size: 0.95rem; opacity: 0.85;">
+          If you don’t see a reply within two business days, check your spam folder.
+        </p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+2) Update the application API handler to redirect on success
+
+Find the POST handler for the application form submission. It may be one of these:
+
+src/pages/api/guided-workshop-application.ts
+
+src/pages/api/guided-workshop-application.js
+
+src/pages/api/guided-workshop-application/index.ts
+
+Update the successful response so it redirects to the new page:
+
+Set status to 303
+
+Set header Location to /guided-workshop/thanks
+
+Example (Astro endpoint style):
+
+return new Response(null, {
+  status: 303,
+  headers: {
+    Location: "/guided-workshop/thanks",
+  },
+});
+
+
+If your handler currently returns JSON like { ok: true }, replace that success return with the redirect above.
+
+3) Verify the form submits normally (no fetch)
+
+On the application page, make sure the form uses a normal POST:
+
+method="POST"
+
+action="/api/guided-workshop-application"
+
+If you are submitting via fetch() in a script, remove that and allow a normal form POST (so the server redirect works reliably).
+
+4) Quick test
+
+Submit a valid application
+
+Confirm you land on: /guided-workshop/thanks
+
+Deliverables:
+
+New file: src/pages/guided-workshop/thanks.astro
+
+Updated API success behavior: redirect (303) to /guided-workshop/thanks
