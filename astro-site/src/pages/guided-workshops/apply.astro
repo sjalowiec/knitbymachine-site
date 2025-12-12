@@ -72,6 +72,14 @@ const error = Astro.url.searchParams.get('error');
     <section class="section section--form">
       <div class="section-inner">
         <form method="POST" action="/api/guided-workshop-application" class="application-form" data-testid="form-application">
+          <input
+            type="text"
+            name="company"
+            tabindex="-1"
+            autocomplete="off"
+            class="honeypot"
+            aria-hidden="true"
+          />
           
           <div class="form-field">
             <label for="fullName">Your name <span class="required">*</span></label>
@@ -662,6 +670,14 @@ const error = Astro.url.searchParams.get('error');
     cursor: not-allowed;
   }
 
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
   .button--primary:disabled:hover {
     background-color: var(--kbm-green);
     border-color: var(--kbm-green);
@@ -723,8 +739,14 @@ const error = Astro.url.searchParams.get('error');
 
     updateFormState();
 
+    const honeypot = form?.querySelector('input[name="company"]');
+
     if (form) {
-      form.addEventListener('submit', () => {
+      form.addEventListener('submit', (event) => {
+        if (honeypot && honeypot.value.trim() !== '') {
+          event.preventDefault();
+          return;
+        }
         submitButton.disabled = true;
         submitButton.textContent = 'Sending...';
       });
