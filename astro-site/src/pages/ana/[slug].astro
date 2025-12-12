@@ -117,6 +117,12 @@ const relatedWizards = entry.data.relatedWizards?.length
       </div>
     </div>
 
+    <!-- Page Header: ANA Icon + Title -->
+    <div class="ana-page-header">
+      <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="ana-header-icon" />
+      <h1 class="ana-page-title">{entry.data.title}</h1>
+    </div>
+
     <div class="unified-content-card">
       <article class="ana-item">
         <!-- Modern Conversation Layout -->
@@ -124,7 +130,7 @@ const relatedWizards = entry.data.relatedWizards?.length
           <div class="ana-bubble ana-question">
             <div class="ana-bubble-header">
               <span class="ana-icon">?</span>
-              <span class="ana-label">The Question</span>
+              <span class="ana-label">You asked</span>
             </div>
             <div class="ana-bubble-content">
               <p>{entry.data.title}</p>
@@ -133,7 +139,7 @@ const relatedWizards = entry.data.relatedWizards?.length
 
           <div class="ana-bubble ana-answer">
             <div class="ana-bubble-header">
-              <span class="ana-label">The Answer</span>
+              <span class="ana-label">Sue's Answer</span>
               <span class="ana-icon">✓</span>
             </div>
             <div class="ana-bubble-content" set:html={entry.data.body}></div>
@@ -311,6 +317,28 @@ const relatedWizards = entry.data.relatedWizards?.length
     color: #52682d;
     opacity: 0.85;
     text-align: center;
+  }
+
+  /* Page Header: Icon + H1 */
+  .ana-page-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .ana-header-icon {
+    height: 32px;
+    width: auto;
+    flex-shrink: 0;
+  }
+
+  .ana-page-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: #52682d;
+    line-height: 1.3;
   }
 
   /* Unified white content card */
@@ -671,6 +699,14 @@ const relatedWizards = entry.data.relatedWizards?.length
     .back-link {
       display: block;
       text-align: center;
+    }
+
+    .ana-header-icon {
+      height: 26px;
+    }
+
+    .ana-page-title {
+      font-size: 1.3rem;
     }
 
     .ana-bubble { 
