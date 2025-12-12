@@ -140,7 +140,7 @@ const relatedWizards = entry.data.relatedWizards?.length
           <div class="ana-bubble ana-answer">
             <div class="ana-bubble-header">
               <span class="ana-label">Sue's Answer</span>
-              <span class="ana-icon">✓</span>
+              <img src="/images/hex_checkmark.svg" alt="" class="ana-answer-icon" />
             </div>
             <div class="ana-bubble-content" set:html={entry.data.body}></div>
           </div>
@@ -428,6 +428,11 @@ const relatedWizards = entry.data.relatedWizards?.length
     transform-origin: center;
   }
 
+  .ana-answer-icon {
+    height: 24px;
+    width: auto;
+  }
+
   /* STYLE 1: The Question (Left) - White Background */
   .ana-question {
     align-self: flex-start;
@@ -709,6 +714,10 @@ const relatedWizards = entry.data.relatedWizards?.length
 
     .ana-bubble-icon {
       height: 18px;
+    }
+
+    .ana-answer-icon {
+      height: 20px;
     }
 
     .ana-encouragement {
