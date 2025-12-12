@@ -696,6 +696,7 @@ const error = Astro.url.searchParams.get('error');
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
+    const form = document.querySelector('form');
     const startingFreshRadios = document.querySelectorAll('input[name="startingFresh"]');
     const submitButton = document.querySelector('button[type="submit"]');
     const warningMessage = document.getElementById('start-fresh-warning');
@@ -721,5 +722,12 @@ const error = Astro.url.searchParams.get('error');
     });
 
     updateFormState();
+
+    if (form) {
+      form.addEventListener('submit', () => {
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+      });
+    }
   });
 </script>
