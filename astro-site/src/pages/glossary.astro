@@ -197,141 +197,120 @@ const description = "Your key to understanding abbreviations and terms used in m
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 2.5rem;
+      gap: 1.25rem;
       margin-bottom: 3rem;
     }
 
-    .flip-card {
-      perspective: 1000px;
-      height: 240px;
-      cursor: pointer;
-    }
-
-    .flip-card-inner {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      transition: transform 0.45s ease;
-      transform-style: preserve-3d;
-    }
-
-    .flip-card.flipped .flip-card-inner {
-      transform: rotateY(180deg);
-    }
-
-    .flip-card-front,
-    .flip-card-back {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      backface-visibility: hidden;
+    .term-card {
+      border: 1px solid rgba(82, 104, 45, 0.18);
       border-radius: 16px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-      box-sizing: border-box;
+      background: #fff;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
     }
 
-    .flip-card-front {
-      background: linear-gradient(135deg, #f6f8f2 0%, #ffffff 100%);
-      border: 1px solid #e2e6df;
+    .term-head {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      padding: 1rem 1rem 0.9rem;
       display: flex;
-      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
       justify-content: space-between;
-      align-items: center;
-      text-align: center;
-      padding: 1rem 1.25rem;
-    }
-
-    .card-title {
-      font-size: var(--text-xl);
-      font-weight: 800;
-      color: var(--kbm-green);
-      margin: 0 0 0.75rem 0;
-      line-height: 1.2;
-    }
-
-    .card-excerpt {
-      font-size: var(--text-base);
-      color: #6b7280;
-      margin: 0 0 1rem 0;
-      font-style: italic;
-      line-height: 1.5;
-    }
-
-    .card-hint {
-      font-size: var(--text-base);
-      color: #9ca3af;
-      margin-top: auto;
-      padding-top: 1rem;
-    }
-
-    .flip-card-back {
-      background: #ffffff;
-      border: 1px solid #e2e6df;
-      transform: rotateY(180deg);
-      display: flex;
-      flex-direction: column;
-      padding: 0.75rem;
-      text-decoration: none;
       cursor: pointer;
+      font-family: inherit;
     }
 
-    .card-back-content {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
-    .card-back-title {
-      font-size: var(--text-base);
-      font-weight: 800;
-      color: var(--kbm-green);
-      margin: 0;
-      line-height: 1;
-      text-align: center;
-      padding: 0;
-      flex-shrink: 0;
-    }
-
-    .card-back-image-container {
-      width: 100%;
+    .term-head-text {
       flex: 1;
-      min-height: 0;
-      display: flex;
+    }
+
+    .term-title {
+      margin: 0 0 .35rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--kbm-green, #52682d);
+    }
+
+    .term-excerpt {
+      margin: 0;
+      color: #5a6b47;
+      line-height: 1.5;
+      font-size: .95rem;
+    }
+
+    .term-icon {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      overflow: visible;
+      border: 1px solid rgba(82, 104, 45, 0.22);
+      color: var(--kbm-green, #52682d);
+      font-weight: 900;
+      font-size: 1.25rem;
+      transform: translateY(2px);
+      transition: transform 0.2s ease;
     }
 
-    .card-back-image {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
+    .term-panel {
+      padding: 0 1rem 1rem;
+    }
+
+    .term-panel[hidden] {
+      display: none;
+    }
+
+    .term-media {
+      margin-top: .25rem;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(82, 104, 45, 0.14);
+      background: #f7f7f4;
+    }
+
+    .term-media img {
       display: block;
-      object-fit: contain;
+      width: 100%;
+      height: auto;
     }
 
-    .card-back-link {
-      background: none;
-      color: #52682D;
-      border: none;
-      font-weight: 600;
-      text-decoration: none;
-      padding: 0;
-      font-size: var(--text-base);
+    .term-body {
+      margin-top: .9rem;
+      padding-top: .9rem;
+      border-top: 1px solid rgba(82, 104, 45, 0.14);
+    }
+
+    .term-definition {
+      color: #2f3a2a;
+      line-height: 1.7;
+      font-size: .98rem;
+    }
+
+    .term-link {
       display: inline-block;
-      text-align: center;
-      transition: color 0.2s ease;
-      flex-shrink: 0;
+      margin-top: .75rem;
+      font-weight: 800;
+      color: var(--kbm-green, #52682d);
+      text-decoration: none;
     }
 
-    .card-back-link:hover {
-      color: #738C52;
+    .term-link:hover {
+      text-decoration: underline;
+    }
+
+    .term-card.is-open .term-icon {
+      transform: translateY(2px) rotate(45deg);
+    }
+
+    .term-head:focus-visible {
+      outline: 3px solid rgba(199, 216, 164, 0.8);
+      outline-offset: 2px;
+      border-radius: 14px;
     }
 
     .no-results {
@@ -394,20 +373,6 @@ const description = "Your key to understanding abbreviations and terms used in m
       .card-grid {
         grid-template-columns: 1fr;
       }
-
-      .flip-card {
-        height: 240px;
-      }
-
-      .card-back-image-container {
-        width: 100%;
-        flex: 1;
-      }
-      
-      .card-back-image {
-        max-width: 100%;
-        max-height: 100%;
-      }
     }
   </style>
 
@@ -464,40 +429,31 @@ const description = "Your key to understanding abbreviations and terms used in m
         {allTerms.length > 0 ? (
           allTerms.map((term) => {
             const definitionText = term.definition || term.excerpt || 'No definition available';
-            const firstLetter = term.title.charAt(0).toUpperCase();
             const altText = term.imageAlt || term.title;
 
             return (
-              <div class="flip-card" data-card-id={term._id} data-title={term.title.toLowerCase()} role="article" tabindex="0" aria-label={`Glossary term: ${term.title}`}>
-                <div class="flip-card-inner">
-                  <div class="flip-card-front">
-                    <div>
-                      <h2 class="card-title">{term.title}</h2>
-                      {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
-                    </div>
-                    <p class="card-hint">Tap for details</p>
+              <article class="term-card" data-card-id={term._id} data-title={term.title.toLowerCase()}>
+                <button class="term-head" type="button" aria-expanded="false">
+                  <div class="term-head-text">
+                    <h2 class="term-title">{term.title}</h2>
+                    {term.excerpt && <p class="term-excerpt">{term.excerpt}</p>}
                   </div>
-                  <a href={`/glossary/${term.slug}`} class="flip-card-back">
-                    <div class="card-back-content">
-                      <h3 class="card-back-title">{term.title}</h3>
-                      
-                      {term.image && (
-                        <div class="card-back-image-container">
-                          <img 
-                            src={term.image}
-                            alt={altText}
-                            class="card-back-image"
-                          />
-                        </div>
-                      )}
+                  <span class="term-icon" aria-hidden="true">+</span>
+                </button>
 
-                      <span class="card-back-link">
-                        → Learn more
-                      </span>
+                <div class="term-panel" hidden>
+                  {term.image && (
+                    <div class="term-media">
+                      <img src={term.image} alt={altText} loading="lazy" />
                     </div>
-                  </a>
+                  )}
+
+                  <div class="term-body">
+                    <div class="term-definition" set:html={definitionText} />
+                    <a class="term-link" href={`/glossary/${term.slug}`}>Open full entry &rarr;</a>
+                  </div>
                 </div>
-              </div>
+              </article>
             );
           })
         ) : (
@@ -512,75 +468,63 @@ const description = "Your key to understanding abbreviations and terms used in m
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const cards = document.querySelectorAll('.flip-card');
+      const cards = document.querySelectorAll('.term-card');
       const searchInput = document.getElementById('searchInput');
       const letterLinks = document.querySelectorAll('.alphabet a[data-letter]');
       const allLink = document.getElementById('filterAll');
       const termGrid = document.getElementById('termGrid');
       const allTerms = JSON.parse(termGrid?.dataset.terms || '[]');
       
-      let currentlyFlippedCard = null;
+      let currentlyOpenCard = null;
       let currentFilter = { search: '', letter: '' };
 
-      // Flip card functionality
+      // Accordion toggle functionality
+      function closeCard(card) {
+        if (!card) return;
+        const btn = card.querySelector('.term-head');
+        const panel = card.querySelector('.term-panel');
+        card.classList.remove('is-open');
+        btn.setAttribute('aria-expanded', 'false');
+        panel.hidden = true;
+      }
+
+      function openCard(card) {
+        const btn = card.querySelector('.term-head');
+        const panel = card.querySelector('.term-panel');
+        card.classList.add('is-open');
+        btn.setAttribute('aria-expanded', 'true');
+        panel.hidden = false;
+      }
+
       cards.forEach(card => {
-        const front = card.querySelector('.flip-card-front');
-        const back = card.querySelector('.flip-card-back');
+        const btn = card.querySelector('.term-head');
         
-        // Click to flip
-        front.addEventListener('click', (e) => {
-          e.stopPropagation();
+        btn.addEventListener('click', () => {
+          const isOpen = card.classList.contains('is-open');
           
-          if (currentlyFlippedCard && currentlyFlippedCard !== card) {
-            currentlyFlippedCard.classList.remove('flipped');
+          // Close any open card
+          if (currentlyOpenCard && currentlyOpenCard !== card) {
+            closeCard(currentlyOpenCard);
           }
           
-          card.classList.add('flipped');
-          currentlyFlippedCard = card;
-        });
-        
-        // Keyboard accessibility
-        card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            
-            if (card.classList.contains('flipped')) {
-              // If already flipped, navigate to detail page
-              if (back) {
-                back.click();
-              }
-            } else {
-              // Flip the card
-              if (currentlyFlippedCard && currentlyFlippedCard !== card) {
-                currentlyFlippedCard.classList.remove('flipped');
-              }
-              card.classList.add('flipped');
-              currentlyFlippedCard = card;
-            }
-          } else if (e.key === 'Escape' && card.classList.contains('flipped')) {
-            card.classList.remove('flipped');
-            currentlyFlippedCard = null;
+          // Toggle this card
+          if (isOpen) {
+            closeCard(card);
+            currentlyOpenCard = null;
+          } else {
+            openCard(card);
+            currentlyOpenCard = card;
           }
         });
       });
 
-      // Desktop hover
-      if (!window.matchMedia('(max-width: 1024px)').matches) {
-        cards.forEach(card => {
-          card.addEventListener('mouseenter', () => {
-            if (currentlyFlippedCard && currentlyFlippedCard !== card) {
-              currentlyFlippedCard.classList.remove('flipped');
-            }
-            card.classList.add('flipped');
-            currentlyFlippedCard = card;
-          });
-          
-          card.addEventListener('mouseleave', () => {
-            card.classList.remove('flipped');
-            currentlyFlippedCard = null;
-          });
-        });
-      }
+      // Escape key closes open card
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && currentlyOpenCard) {
+          closeCard(currentlyOpenCard);
+          currentlyOpenCard = null;
+        }
+      });
 
       // Filter functionality
       function filterTerms() {

@@ -1,0 +1,191 @@
+Goal: Replace the flip-card behavior on /glossary with a modern “expandable card” accordion. Keep the page clean, minimal, and KBM-styled (not a classic 80s accordion).
+
+1) Update the markup for each term card
+
+In the glossary grid where each term is currently rendered as:
+
+<div class="flip-card" ...> ... </div>
+
+
+Replace each term card with this structure:
+
+<article class="term-card" data-title="carriage on the left">
+  <button class="term-head" type="button" aria-expanded="false">
+    <div class="term-head-text">
+      <h2 class="term-title">Carriage on the Left</h2>
+      <p class="term-excerpt">The main knitting carriage is positioned on the left side…</p>
+    </div>
+    <span class="term-icon" aria-hidden="true">+</span>
+  </button>
+
+  <div class="term-panel" hidden>
+    <!-- Optional image (only if image exists) -->
+    <div class="term-media">
+      <img src="/images/glossary/..." alt="..." loading="lazy" />
+    </div>
+
+    <div class="term-body">
+      <!-- Use your existing definition HTML here -->
+      <div class="term-definition">
+        ...definition html...
+      </div>
+
+      <a class="term-link" href="/glossary/carriage-on-the-left">Open full entry →</a>
+    </div>
+  </div>
+</article>
+
+
+Rules:
+
+If a term has no image, omit the entire .term-media block.
+
+Keep data-title on the card for your filtering script (your filter uses dataset.title today).
+
+2) CSS: modern expandable card styling (add to glossary CSS)
+
+Add these styles (keep your existing variables/colors):
+
+.term-card {
+  border: 1px solid rgba(82, 104, 45, 0.18);
+  border-radius: 16px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+}
+
+.term-head {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 1rem 1rem 0.9rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.term-title {
+  margin: 0 0 .35rem;
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--kbm-green, #52682d);
+}
+
+.term-excerpt {
+  margin: 0;
+  color: #5a6b47;
+  line-height: 1.5;
+  font-size: .95rem;
+}
+
+.term-icon {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(82, 104, 45, 0.22);
+  color: var(--kbm-green, #52682d);
+  font-weight: 900;
+  transform: translateY(2px);
+}
+
+/* Panel with smooth “fresh” expand */
+.term-panel {
+  padding: 0 1rem 1rem;
+}
+
+.term-media {
+  margin-top: .25rem;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(82, 104, 45, 0.14);
+  background: #f7f7f4;
+}
+
+.term-media img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.term-body {
+  margin-top: .9rem;
+  padding-top: .9rem;
+  border-top: 1px solid rgba(82, 104, 45, 0.14);
+}
+
+.term-definition {
+  color: #2f3a2a;
+  line-height: 1.7;
+  font-size: .98rem;
+}
+
+.term-link {
+  display: inline-block;
+  margin-top: .75rem;
+  font-weight: 800;
+  color: var(--kbm-green, #52682d);
+  text-decoration: none;
+}
+.term-link:hover { text-decoration: underline; }
+
+/* Open state */
+.term-card.is-open .term-icon {
+  content: "";
+  transform: translateY(2px) rotate(45deg);
+}
+
+/* Focus state */
+.term-head:focus-visible {
+  outline: 3px solid rgba(199, 216, 164, 0.8);
+  outline-offset: 2px;
+  border-radius: 14px;
+}
+
+3) JS: toggle behavior + “one open at a time”
+
+Replace the flip-card JS with this:
+
+On click .term-head:
+
+close any open card
+
+open this one
+
+update aria-expanded
+
+toggle hidden on .term-panel
+
+Also preserve keyboard support:
+
+Enter/Space activates the button naturally
+
+Escape closes the open card (add listener)
+
+4) Keep your existing filtering logic working
+
+Your filter currently iterates over cards and uses card.dataset.title.
+
+Make sure:
+
+.term-card carries data-title="..." (lowercase)
+
+Update the selector list in the filtering code from .flip-card → .term-card
+
+Expected result
+
+Grid stays clean and scannable.
+
+Click a term → it expands smoothly inside the card.
+
+No “flip vs click” confusion.
+
+Works great on mobile.
+
+Still feels modern and KBM.
