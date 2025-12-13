@@ -416,17 +416,18 @@ p {
 .kbm-card-ribbon::after {
   content: "FREE" !important;
   position: absolute;
-  top: 10px;
-  left: 8px;
+  top: 14px;
+  left: 4px;
 
   font-size: 0.62rem;
   font-weight: 800;
   letter-spacing: 0.05em;
   text-transform: uppercase;
   color: #52682d;
+  text-indent: 0;
 
   transform: rotate(-45deg);
-  transform-origin: top left;
+  transform-origin: center center;
 }
 
 /* Responsive adjustments for KBM cards */
