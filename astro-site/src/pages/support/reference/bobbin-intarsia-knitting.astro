@@ -1,0 +1,393 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+const title = "Bobbin (Intarsia) Knitting | Reference | Knit by Machine";
+const description = "Member reference: how bobbin (intarsia) knitting works on a machine—graph prep, setup, flow, wrapping, and common problems.";
+
+/**
+ * Member-only gating:
+ * - Do NOT implement gating logic here if you already gate pages globally via Memberstack/Outseta middleware.
+ * - If you need a visual marker, keep the badge below; the actual gate should be enforced elsewhere.
+ */
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--reference">
+    <header class="ref-hero">
+      <div class="ref-hero-inner">
+        <div class="ref-badge">Reference • Members</div>
+        <h1 class="ref-title">Bobbin (Intarsia) Knitting</h1>
+        <p class="ref-subtitle">
+          Knit separate color areas without floats by working each color section independently.
+        </p>
+
+        <div class="ref-meta">
+          <span class="ref-meta-item">Best used as a lookup page</span>
+          <span class="ref-dot">•</span>
+          <span class="ref-meta-item">Tip: Ctrl/Cmd + F to find "wrap", "row counter", "holes", etc.</span>
+        </div>
+      </div>
+    </header>
+
+    <section class="ref-body">
+      <div class="ref-body-inner">
+
+        <!-- Quick scan box -->
+        <aside class="ref-scan">
+          <h2 class="ref-scan-title">Quick scan</h2>
+          <ul class="ref-scan-list">
+            <li><a href="#what">What this is</a></li>
+            <li><a href="#when">When to use it</a></li>
+            <li><a href="#graph">Preparing the graph</a></li>
+            <li><a href="#setup">Machine setup</a></li>
+            <li><a href="#flow">Knitting flow</a></li>
+            <li><a href="#wrap">Wrapping at color changes</a></li>
+            <li><a href="#counter">Row counter</a></li>
+            <li><a href="#problems">Common problems</a></li>
+            <li><a href="#alternatives">When to use a different method</a></li>
+          </ul>
+        </aside>
+
+        <!-- Content -->
+        <article class="ref-article">
+
+          <section id="what" class="ref-section">
+            <h2>What this is</h2>
+            <ul class="ref-bullets">
+              <li><strong>Bobbin knitting</strong> (often called <strong>intarsia</strong>) uses a separate yarn source for each color area.</li>
+              <li>Color areas are worked independently, so the back of the fabric stays clean with <strong>no carried floats</strong>.</li>
+              <li>You select needles by hand for each color section as you work across the row.</li>
+            </ul>
+
+            <div class="ref-callout ref-callout--note">
+              <p><strong>Reference mindset:</strong> This page is designed for quick lookup. Use the "Quick scan" links above or Ctrl/Cmd + F to jump straight to what you need.</p>
+            </div>
+          </section>
+
+          <section id="when" class="ref-section">
+            <h2>When to use it</h2>
+            <ul class="ref-bullets">
+              <li>Large motifs, pictures, names, or wide color blocks</li>
+              <li>Multiple colors in a single row</li>
+              <li>Designs that don't fit (or don't repeat well) on a punch card / standard repeat</li>
+              <li>Projects where a clean, snag-free back matters</li>
+            </ul>
+          </section>
+
+          <section id="graph" class="ref-section">
+            <h2>Preparing the graph</h2>
+
+            <h3>Stitch proportion matters</h3>
+            <p class="ref-text">
+              Machine knitting stitches are wider than they are tall. If you draw a design on square paper and knit it "as drawn,"
+              the finished image can look stretched or squashed. Knitting graph paper compensates for this.
+            </p>
+
+            <div class="ref-callout ref-callout--important">
+              <p><strong>Rule of thumb:</strong> If you're using square graph paper, you may need to repeat one row approximately every <strong>2/3 inch</strong> to correct distortion. (This is a starting point—your machine and yarn determine the final ratio.)</p>
+            </div>
+
+            <h3>Orientation (left/right)</h3>
+            <p class="ref-text">
+              Many machine-knit motifs are worked from the "back" side during knitting. If direction matters (letters, asymmetry),
+              reverse the graph before knitting so the finished design reads correctly.
+            </p>
+
+            <h3>Make the graph knittable</h3>
+            <ul class="ref-bullets">
+              <li>Number needles (or mark key needle positions) so placement stays consistent.</li>
+              <li>Mark only color-change points when possible—avoid over-marking every square if it slows you down.</li>
+              <li>Keep row numbers visible and easy to track.</li>
+            </ul>
+          </section>
+
+          <section id="setup" class="ref-section">
+            <h2>Machine setup</h2>
+            <ul class="ref-bullets">
+              <li>Main bed only</li>
+              <li>Needles selected by hand</li>
+              <li>One bobbin (yarn source) per color section</li>
+              <li>Row counter: plan to manage it intentionally (see below)</li>
+            </ul>
+
+            <div class="ref-callout ref-callout--tip">
+              <p><strong>Tip:</strong> Keep bobbins small and manageable. Many small bobbins are easier than a few heavy ones.</p>
+            </div>
+          </section>
+
+          <section id="flow" class="ref-section">
+            <h2>Knitting flow (one row)</h2>
+            <ol class="ref-steps">
+              <li>Position the carriage at the starting edge for the row.</li>
+              <li>Select the needles for the first color area.</li>
+              <li>Knit that selected section.</li>
+              <li>Move to the next color area: change yarn source and select needles for that section.</li>
+              <li>Repeat across the row until all color sections are knitted.</li>
+            </ol>
+
+            <div class="ref-callout ref-callout--note">
+              <p><strong>Keep it simple:</strong> Your job is to select needles + manage yarn joins cleanly. Don't try to "optimize" the process before you can do it consistently.</p>
+            </div>
+          </section>
+
+          <section id="wrap" class="ref-section">
+            <h2>Wrapping at color changes</h2>
+            <p class="ref-text">
+              On the second and following rows, yarns must be joined at each color boundary to prevent holes.
+            </p>
+
+            <div class="ref-callout ref-callout--important">
+              <p><strong>Key habit:</strong> Bring the new yarn <strong>up from underneath</strong> the previous yarn at the color change. This joins the two sections.</p>
+            </div>
+
+            <ul class="ref-bullets">
+              <li>Wrapping joins color sections; twisting tightly adds bulk.</li>
+              <li>Consistency matters more than perfection—wrap the same way every time.</li>
+              <li>If you see holes forming, adjust the wrap before you knit another inch.</li>
+            </ul>
+          </section>
+
+          <section id="counter" class="ref-section">
+            <h2>Row counter & tracking</h2>
+            <ul class="ref-bullets">
+              <li>If your counter doesn't advance normally during this process, advance it intentionally after a full row is complete.</li>
+              <li>Use your graph row numbers as your "truth." The counter supports your tracking, it doesn't replace it.</li>
+              <li>If you step away mid-row, pause in a way you can resume confidently (note the row, and where you are across the row).</li>
+            </ul>
+          </section>
+
+          <section id="problems" class="ref-section">
+            <h2>Common problems</h2>
+            <div class="ref-grid">
+              <div class="ref-problem">
+                <h3>Holes at color changes</h3>
+                <p>Usually caused by incomplete or inconsistent wrapping at the join.</p>
+              </div>
+              <div class="ref-problem">
+                <h3>Uneven tension between colors</h3>
+                <p>Yarn sources feeding differently. Match tension and keep bobbins similar size/drag.</p>
+              </div>
+              <div class="ref-problem">
+                <h3>Losing your place</h3>
+                <p>Tracking breaks down. Use row numbers on the graph and a deliberate pause method.</p>
+              </div>
+              <div class="ref-problem">
+                <h3>Tangled bobbins</h3>
+                <p>Too many active strands hanging. Keep bobbins small and tidy; cut and restart when needed.</p>
+              </div>
+            </div>
+          </section>
+
+          <section id="alternatives" class="ref-section">
+            <h2>When to use a different method</h2>
+            <ul class="ref-bullets">
+              <li>If the design repeats consistently: consider punch card or electronic patterning.</li>
+              <li>If you want speed and don't mind floats: consider Fair Isle-style techniques.</li>
+              <li>If the motif is tiny and isolated: consider duplicate stitch or post-knit embellishment.</li>
+            </ul>
+          </section>
+
+          <footer class="ref-footer">
+            <p class="ref-footer-note">
+              This reference reflects long-established machine knitting practices curated for Knit by Machine members.
+            </p>
+          </footer>
+
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <style>
+    /* ================================
+       KBM Reference Page (Base Styles)
+       ================================ */
+
+    .page--reference { padding-bottom: 3rem; }
+
+    .ref-hero {
+      background: #ffffff;
+      border-bottom: 1px solid rgba(44, 58, 87, 0.12);
+    }
+
+    .ref-hero-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 2rem 1.25rem 1.5rem;
+    }
+
+    .ref-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.35rem 0.65rem;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      background: rgba(199, 216, 164, 0.45);
+      color: #52682D;
+      border: 1px solid rgba(82, 104, 45, 0.22);
+      margin-bottom: 0.75rem;
+    }
+
+    .ref-title {
+      margin: 0 0 0.5rem;
+      line-height: 1.15;
+    }
+
+    .ref-subtitle {
+      margin: 0 0 0.75rem;
+      max-width: 70ch;
+      opacity: 0.92;
+    }
+
+    .ref-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      opacity: 0.85;
+    }
+
+    .ref-dot { opacity: 0.55; }
+
+    .ref-body { background: #ffffff; }
+
+    .ref-body-inner {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 1.5rem 1.25rem 2.5rem;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    /* Quick scan */
+    .ref-scan {
+      position: sticky;
+      top: 1rem;
+      border: 1px solid rgba(44, 58, 87, 0.12);
+      border-radius: 14px;
+      padding: 1rem;
+      background: rgba(44, 58, 87, 0.02);
+    }
+
+    .ref-scan-title {
+      font-size: 1rem;
+      margin: 0 0 0.75rem;
+    }
+
+    .ref-scan-list {
+      margin: 0;
+      padding-left: 1.1rem;
+      display: grid;
+      gap: 0.35rem;
+    }
+
+    .ref-scan a { text-decoration: none; }
+    .ref-scan a:hover { text-decoration: underline; }
+
+    /* Article */
+    .ref-article { min-width: 0; }
+
+    .ref-section {
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(44, 58, 87, 0.10);
+    }
+
+    .ref-section h2 { margin: 0 0 0.75rem; }
+    .ref-section h3 { margin: 1rem 0 0.5rem; }
+
+    .ref-text { max-width: 75ch; }
+
+    .ref-bullets {
+      margin: 0.5rem 0 0;
+      padding-left: 1.15rem;
+      display: grid;
+      gap: 0.5rem;
+      max-width: 80ch;
+    }
+
+    .ref-steps {
+      margin: 0.5rem 0 0;
+      padding-left: 1.25rem;
+      display: grid;
+      gap: 0.6rem;
+      max-width: 80ch;
+    }
+
+    /* Callouts */
+    .ref-callout {
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      margin: 0.9rem 0 0.5rem;
+      border: 1px solid rgba(44, 58, 87, 0.12);
+      background: rgba(44, 58, 87, 0.02);
+      max-width: 85ch;
+    }
+
+    .ref-callout p { margin: 0; }
+
+    .ref-callout--important {
+      background: rgba(194, 97, 78, 0.08);
+      border-color: rgba(194, 97, 78, 0.20);
+    }
+
+    .ref-callout--tip {
+      background: rgba(199, 216, 164, 0.35);
+      border-color: rgba(82, 104, 45, 0.18);
+    }
+
+    /* Problems grid */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9rem;
+      margin-top: 0.75rem;
+      max-width: 85ch;
+    }
+
+    .ref-problem {
+      border: 1px solid rgba(44, 58, 87, 0.12);
+      border-radius: 14px;
+      padding: 0.9rem 1rem;
+      background: #fff;
+    }
+
+    .ref-problem h3 { margin: 0 0 0.4rem; font-size: 1.02rem; }
+
+    .ref-footer {
+      padding: 1.25rem 0 0;
+      border: 0;
+    }
+
+    .ref-footer-note {
+      margin: 0;
+      font-size: 0.95rem;
+      opacity: 0.78;
+      max-width: 85ch;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .ref-body-inner {
+        grid-template-columns: 1fr;
+      }
+      .ref-scan {
+        position: relative;
+        top: auto;
+        order: 0;
+      }
+    }
+
+    /* Print */
+    @media print {
+      .ref-scan { display: none; }
+      .ref-hero, .ref-body { border: none; }
+      .ref-hero-inner, .ref-body-inner { padding: 0; }
+      .ref-section { border-bottom: 1px solid #ddd; }
+      a { text-decoration: none; color: inherit; }
+    }
+  </style>
+</BaseLayout>
