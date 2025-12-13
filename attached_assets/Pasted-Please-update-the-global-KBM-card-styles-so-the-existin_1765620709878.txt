@@ -1,0 +1,103 @@
+Please update the global KBM card styles so the existing Free badge displays as a subtle corner ribbon (a small corner fold) on catalog cards.
+
+Critical constraints
+
+Do not change any HTML/markup in the card component or tools/index page.
+
+Only update CSS.
+
+Result must be subtle and must not cover the card title.
+
+Step 1 — Identify the existing Free badge selector
+
+Find the element that currently renders the Free pill on cards. It may be one of these:
+
+.guide-card-badge.badge-free
+
+.kbm-card-badge.badge-free
+
+.kbm-card-ribbon (if already created)
+
+Use the selector that exists in the project (inspect the Tools cards if needed).
+
+For the CSS below, target the existing selector (replace YOUR_FREE_BADGE_SELECTOR with the correct one).
+
+Step 2 — Convert the existing Free pill into a corner fold (CSS only)
+
+Add this CSS (again: replace YOUR_FREE_BADGE_SELECTOR with the real selector):
+
+/* Ensure the card is the positioning context and clips the corner fold */
+.guide-card,
+.kbm-card {
+  position: relative;
+  overflow: hidden;
+}
+
+/* === Free corner fold (subtle) — CSS-only, no HTML changes === */
+YOUR_FREE_BADGE_SELECTOR {
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 3 !important;
+
+  /* Turn the badge into a small corner container */
+  width: 60px !important;
+  height: 60px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+
+  /* Hide normal pill layout */
+  display: block !important;
+  text-indent: -9999px; /* visually hide original text safely */
+  overflow: hidden !important;
+}
+
+/* Draw the corner fold */
+YOUR_FREE_BADGE_SELECTOR::before {
+  content: "" !important;
+  position: absolute;
+  inset: 0;
+
+  background: #c7d8a4;
+  border-right: 1px solid rgba(82, 104, 45, 0.18);
+  border-bottom: 1px solid rgba(82, 104, 45, 0.18);
+
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+/* Recreate the FREE text subtly */
+YOUR_FREE_BADGE_SELECTOR::after {
+  content: "FREE" !important;
+  position: absolute;
+  top: 10px;
+  left: 8px;
+
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #52682d;
+
+  transform: rotate(-45deg);
+  transform-origin: top left;
+}
+
+Step 3 — Verify
+
+The “Free” marker should appear only as a small corner fold in the top-left.
+
+It should be quiet (small, no shadows).
+
+It should not overlap the title.
+
+The rest of the card layout should not move.
+
+Notes for Replit
+
+Do not add diagonal ribbons across the card.
+
+Do not add shadows or gradients.
+
+Keep the fold small (60×60).
