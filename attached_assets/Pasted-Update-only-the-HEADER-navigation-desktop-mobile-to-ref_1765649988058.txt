@@ -1,0 +1,139 @@
+Update only the HEADER navigation (desktop + mobile) to reflect the final, locked structure below.
+
+🚫 Do NOT modify the footer in any way.
+🚫 Do NOT move, add, remove, or relabel footer links.
+
+Final Top Menu (Header Only)
+
+Plan · Knit · Support · Shop
+
+Dropdown Structure
+Plan
+
+Project Wizards
+
+Charting Tools
+
+Knit
+
+Patterns
+
+Practice Projects
+
+Project Walkthroughs
+
+Support
+
+Glossary
+
+Answers
+
+Community
+
+Reference
+
+Shop
+
+Machines
+
+Guided Workshops (1-1)
+
+Hard Rules (Important)
+
+Do NOT rename or move any files, folders, or URLs.
+
+This is a label + navigation structure update only.
+
+Keep all existing destination URLs exactly as they are.
+
+If a top-level item (Plan / Knit / Support / Shop) does not have a landing page:
+
+Link it to # and rely on dropdowns.
+
+Do NOT touch footer code.
+
+No footer cleanup
+
+No footer relabeling
+
+No moving Blog or Contact
+
+Implementation Instructions
+
+Find the header navigation source
+
+Locate the shared header/nav component (e.g. Header.astro, Nav.astro, Layout.astro, or a navLinks config).
+
+Ensure desktop and mobile menus are updated consistently.
+
+Update labels exactly
+
+“Studio Sessions” → Project Walkthroughs
+
+“Forum” → Community
+
+“ANA” → Answers
+
+“RSK” or similar → Project Wizards (menu label only)
+
+Support dropdown
+
+Add Glossary as its own first-class item.
+
+Add Reference as a separate item (not a parent, not nested under Glossary).
+
+Order should be:
+
+Glossary
+
+Answers
+
+Community
+
+Reference
+
+Active state behavior
+
+Pages under:
+
+Project Wizards / Charting → Plan active
+
+Patterns / Practice / Walkthroughs → Knit active
+
+Glossary / Answers / Community / Reference → Support active
+
+Machines / Guided Workshops → Shop active
+
+Mobile navigation
+
+Match structure and labels exactly.
+
+Use expandable sections if already implemented.
+
+Do not redesign mobile UI — structure only.
+
+Search + verify
+
+Search for old nav labels and update header references only:
+
+Studio Sessions
+
+Forum
+
+ANA
+
+RSK
+
+Do not update page titles or content yet.
+
+QA Checklist (must pass)
+
+Header shows: Plan · Knit · Support · Shop
+
+Support dropdown includes: Glossary, Answers, Community, Reference
+
+No footer files were edited
+
+No URLs/slugs changed
+
+Desktop + mobile match
