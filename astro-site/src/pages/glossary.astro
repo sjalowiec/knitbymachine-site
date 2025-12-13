@@ -241,6 +241,7 @@ const description = "Your key to understanding abbreviations and terms used in m
       align-items: center;
       text-align: center;
       padding: 1rem 1.25rem;
+      cursor: pointer;
     }
 
     .card-title {
@@ -475,7 +476,7 @@ const description = "Your key to understanding abbreviations and terms used in m
                       <h2 class="card-title">{term.title}</h2>
                       {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
                     </div>
-                    <p class="card-hint">Tap for details</p>
+                    <p class="card-hint">Tap to learn more</p>
                   </div>
                   <a href={`/glossary/${term.slug}`} class="flip-card-back">
                     <div class="card-back-content">
@@ -519,68 +520,32 @@ const description = "Your key to understanding abbreviations and terms used in m
       const termGrid = document.getElementById('termGrid');
       const allTerms = JSON.parse(termGrid?.dataset.terms || '[]');
       
-      let currentlyFlippedCard = null;
       let currentFilter = { search: '', letter: '' };
 
-      // Flip card functionality
+      // Card click functionality - navigate directly to term page
       cards.forEach(card => {
         const front = card.querySelector('.flip-card-front');
         const back = card.querySelector('.flip-card-back');
+        const href = back?.getAttribute('href');
         
-        // Click to flip
+        // Click front to navigate directly
         front.addEventListener('click', (e) => {
           e.stopPropagation();
-          
-          if (currentlyFlippedCard && currentlyFlippedCard !== card) {
-            currentlyFlippedCard.classList.remove('flipped');
+          if (href) {
+            window.location.href = href;
           }
-          
-          card.classList.add('flipped');
-          currentlyFlippedCard = card;
         });
         
-        // Keyboard accessibility
+        // Keyboard accessibility - Enter/Space navigate directly
         card.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
             e.preventDefault();
-            
-            if (card.classList.contains('flipped')) {
-              // If already flipped, navigate to detail page
-              if (back) {
-                back.click();
-              }
-            } else {
-              // Flip the card
-              if (currentlyFlippedCard && currentlyFlippedCard !== card) {
-                currentlyFlippedCard.classList.remove('flipped');
-              }
-              card.classList.add('flipped');
-              currentlyFlippedCard = card;
+            if (href) {
+              window.location.href = href;
             }
-          } else if (e.key === 'Escape' && card.classList.contains('flipped')) {
-            card.classList.remove('flipped');
-            currentlyFlippedCard = null;
           }
         });
       });
-
-      // Desktop hover
-      if (!window.matchMedia('(max-width: 1024px)').matches) {
-        cards.forEach(card => {
-          card.addEventListener('mouseenter', () => {
-            if (currentlyFlippedCard && currentlyFlippedCard !== card) {
-              currentlyFlippedCard.classList.remove('flipped');
-            }
-            card.classList.add('flipped');
-            currentlyFlippedCard = card;
-          });
-          
-          card.addEventListener('mouseleave', () => {
-            card.classList.remove('flipped');
-            currentlyFlippedCard = null;
-          });
-        });
-      }
 
       // Filter functionality
       function filterTerms() {

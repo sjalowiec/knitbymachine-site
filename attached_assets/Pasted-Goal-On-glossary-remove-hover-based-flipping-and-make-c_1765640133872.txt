@@ -1,0 +1,68 @@
+Goal: On /glossary, remove hover-based flipping and make card interaction simpler:
+
+Desktop + mobile: NO hover flip at all.
+
+Click/tap anywhere on the card FRONT: navigate directly to the term page (same as “Learn more”).
+
+Keep keyboard accessibility: Enter/Space should also navigate.
+
+Keep the existing back side and styling (don’t redesign cards).
+
+Steps
+
+Edit the glossary page script
+Find the script near the bottom of the glossary page (the one that starts with document.addEventListener("DOMContentLoaded", ...) and references .flip-card, .flip-card-front, .flip-card-back).
+
+Remove / disable hover flipping
+Delete (or fully comment out) the entire block that adds hover listeners, currently like:
+
+window.matchMedia("(max-width: 1024px)").matches || r.forEach(e=>{
+  e.addEventListener("mouseenter", ... )
+  e.addEventListener("mouseleave", ... )
+});
+
+
+After this change, cards should NOT flip on hover on desktop.
+
+Make the front of each card navigate to the term
+In the r.forEach(e => { ... }) loop:
+
+Determine the destination URL using the existing back link:
+
+const backLink = e.querySelector('.flip-card-back');
+
+const href = backLink?.getAttribute('href');
+
+Add a click handler on the .flip-card-front that navigates immediately:
+
+Use window.location.href = href;
+
+Do not toggle flipped state on click anymore.
+
+Concretely, replace the current .flip-card-front click logic (which adds .flipped) with navigation logic.
+
+Keyboard behavior
+Update the existing keydown handler so:
+
+Enter and Space navigate to href immediately (same as clicking the card).
+
+Escape should do nothing (since we’re not using “flipped” state as an interaction requirement anymore).
+
+Keep filtering working
+Do not change the filtering code (function d() and the search/alphabet handlers). Only change flip/hover/click behaviors.
+
+Expected result checklist
+
+Desktop: hovering over cards does nothing (no flip animation).
+
+Clicking the card front opens /glossary/<term-slug> immediately.
+
+“Learn more” still works.
+
+Search + alphabet filtering still works.
+
+No console errors.
+
+Optional tiny improvement (do this if easy)
+
+Add cursor: pointer; to .flip-card-front in the glossary CSS so it’s obvious it’s clickable.
