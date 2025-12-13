@@ -1,0 +1,82 @@
+Please fix the Free label in the global KBM card component so it renders as a flat notched ribbon (Option 2), not a speech bubble.
+
+1) Locate the component + CSS
+
+Find where the Free label is implemented (likely in the global card component + its CSS):
+
+The element: .kbm-card-ribbon (or whatever class you used)
+
+The card wrapper: .kbm-card (or the anchor that forms the card)
+
+2) Replace the current ribbon CSS completely
+
+The current shape looks like a bubble because it likely uses:
+
+border-radius too large, and/or
+
+a pseudo-element triangle, and/or
+
+a “tail” effect
+
+Delete any bubble/tail styles (::before, ::after, extra triangles, etc.) and replace the entire ribbon styling with exactly this:
+
+/* Card must be the positioning context */
+.kbm-card { position: relative; }
+
+/* Notched ribbon (flat, modern) */
+.kbm-card-ribbon{
+  position:absolute;
+  top:12px;
+  left:12px;
+  z-index:2;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  padding:0.35rem 0.75rem;
+  font-size:0.75rem;
+  font-weight:800;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+
+  background:#c7d8a4;
+  color:#52682d;
+  border:1px solid rgba(82,104,45,.28);
+
+  /* IMPORTANT: keep corners crisp so it reads as a ribbon, not a pill */
+  border-radius:6px;
+
+  /* The notch is cut OUT of the right edge (not a “tail”) */
+  clip-path: polygon(
+    0 0,
+    92% 0,
+    100% 50%,
+    92% 100%,
+    0 100%
+  );
+}
+
+/* Remove any pseudo-elements used to create a bubble tail */
+.kbm-card-ribbon::before,
+.kbm-card-ribbon::after{
+  content:none !important;
+}
+
+/* Fallback if clip-path unsupported */
+@supports not (clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%)) {
+  .kbm-card-ribbon { clip-path:none; }
+}
+
+3) Ensure ribbon does not overlap the title
+
+If the ribbon is colliding with the H2, add top padding to the card content area (not the card overall), for example:
+
+.kbm-card { padding-top: 2.1rem; }
+
+
+(Only add this if needed—don’t change layout unless overlap exists.)
+
+4) Verify result
+
+The Free label should now look like a flat tag with a notched right edge, not rounded like a bubble, and it should sit cleanly in the top-left corner.

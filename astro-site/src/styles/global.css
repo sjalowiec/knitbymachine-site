@@ -389,30 +389,37 @@ p {
   align-items: center;
   justify-content: center;
 
-  padding: 0.35rem 0.7rem;
-  border-radius: 10px;
-
+  padding: 0.35rem 0.75rem;
   font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
+  font-weight: 800;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 
   background: #c7d8a4;
   color: #52682d;
-  border: 1px solid rgba(82, 104, 45, 0.25);
+  border: 1px solid rgba(82, 104, 45, 0.28);
 
-  /* Notched ribbon effect */
+  /* Crisp corners for ribbon look */
+  border-radius: 6px;
+
+  /* Notch cut OUT of right edge */
   clip-path: polygon(
     0 0,
-    100% 0,
-    92% 50%,
-    100% 100%,
+    92% 0,
+    100% 50%,
+    92% 100%,
     0 100%
   );
 }
 
+/* Remove any pseudo-elements */
+.kbm-card-ribbon::before,
+.kbm-card-ribbon::after {
+  content: none !important;
+}
+
 /* Fallback for browsers without clip-path support */
-@supports not (clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%)) {
+@supports not (clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%)) {
   .kbm-card-ribbon {
     clip-path: none;
   }
