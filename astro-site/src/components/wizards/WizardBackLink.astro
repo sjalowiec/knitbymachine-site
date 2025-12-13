@@ -18,8 +18,18 @@ const isSmartGuide =
   normalizedCategory === 'smart guide' ||
   normalizedCategory === 'smart guides';
 
-const href = isSmartGuide ? '/smart-guides' : '/wizards-catalog';
-const text = isSmartGuide ? '← Back to Project Planners' : '← Back to Wizards Catalog';
+const isTool = normalizedCategory === 'tool' || normalizedCategory === 'tools';
+
+let href = '/wizards-catalog';
+let text = '← Back to Wizards Catalog';
+
+if (isSmartGuide) {
+  href = '/smart-guides';
+  text = '← Back to Project Planners';
+} else if (isTool) {
+  href = '/tools';
+  text = '← Back to Tools';
+}
 ---
 
 <a href={href} class={linkClass} data-testid="link-back-catalog">{text}</a>

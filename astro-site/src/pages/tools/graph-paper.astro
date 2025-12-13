@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
+import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import ToolActionBar from "../../components/wizards/ToolActionBar.astro";
 import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 import "../../styles/wizard.css";
 
@@ -12,50 +14,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   description="Create full-scale knitter's graph paper based on your stitch and row gauge. Download printable SVG graph paper for shaping, motifs, and intarsia.">
 
 <style>
-.wizard-page {
-  padding-top: 120px;
-  padding-bottom: 3rem;
-  min-height: 100vh;
-  background: var(--page-bg);
-}
-
-.page-header {
-  max-width: 800px;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
-}
-
-.page-header-title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  margin-bottom: 0.75rem;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 640px) {
-  .page-header-title {
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-}
-
-.page-header h1 {
-  color: var(--kbm-green);
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0;
-}
-
-.page-header p {
-  color: #6b7280;
-  font-size: 1.05rem;
-  line-height: 1.6;
-  text-align: center;
-}
-
-.wizard-container {
+/* Tool-specific container (wider than default wizard-container) */
+.tool-container {
   max-width: 900px;
   margin: 0 auto;
   background: white;
@@ -76,46 +36,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   display: block;
 }
 
-.input-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.input-group {
-  margin-bottom: 1rem;
-}
-
-.input-group label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  color: #374151;
-  font-size: 0.95rem;
-}
-
-.input-group input,
-.input-group select {
-  width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
-  font-size: 1rem;
-  transition: border-color 0.2s;
-  font-family: inherit;
-}
-
-.input-group input:focus,
-.input-group select:focus {
-  outline: none;
-  border-color: var(--kbm-green);
-}
-
-.input-group input::placeholder {
-  color: #9ca3af;
-  font-size: 0.9rem;
-}
-
 .unit-label {
   font-size: 0.85rem;
   color: #6b7280;
@@ -128,27 +48,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   gap: 1rem;
 }
 
-.checkbox-group {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.checkbox-group input[type="checkbox"] {
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  accent-color: var(--kbm-green);
-}
-
-.checkbox-group label {
-  cursor: pointer;
-  font-weight: 600;
-  color: #374151;
-  font-size: 0.95rem;
-}
-
+/* Preview Section */
 .preview-section {
   margin-top: 2rem;
   padding: 1.5rem;
@@ -186,74 +86,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   line-height: 1.5;
 }
 
-.actions-section {
-  margin-top: 2rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.action-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.85rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s;
-  text-decoration: none;
-  border: none;
-  font-family: inherit;
-}
-
-.action-btn-primary {
-  background: var(--kbm-green);
-  color: white;
-}
-
-.action-btn-primary:hover {
-  background: #3f5123;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25);
-}
-
-.action-btn-secondary {
-  background: #e5e7eb;
-  color: #374151;
-}
-
-.action-btn-secondary:hover {
-  background: #d1d5db;
-  transform: translateY(-1px);
-}
-
-.helper-note {
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  background: rgba(82, 104, 45, 0.08);
-  border-left: 3px solid var(--kbm-green);
-  border-radius: 4px;
-  font-size: 0.9rem;
-  color: #374151;
-}
-
-.back-link {
-  display: inline-block;
-  color: #52682D;
-  text-decoration: none;
-  font-weight: 500;
-  margin-bottom: 1.5rem;
-  padding: 0.5rem 0;
-  transition: color 0.2s;
-}
-
-.back-link:hover {
-  color: #3d4e21;
-  text-decoration: underline;
-}
-
 /* Print styles */
 @media print {
   .wizard-page {
@@ -265,12 +97,12 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   .back-link,
   .form-section,
   .actions-section,
-  .helper-note,
+  .info-box,
   .no-print {
     display: none !important;
   }
   
-  .wizard-container {
+  .tool-container {
     box-shadow: none !important;
     padding: 0 !important;
     background: white !important;
@@ -285,27 +117,15 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
 }
 
 @media (max-width: 640px) {
-  .input-grid {
-    grid-template-columns: 1fr;
-  }
-  
   .options-row {
     grid-template-columns: 1fr;
-  }
-  
-  .actions-section {
-    flex-direction: column;
-  }
-  
-  .action-btn {
-    justify-content: center;
   }
 }
 </style>
 
 <div class="wizard-page">
   <div style="max-width: 900px; margin: 0 auto; padding: 0 1rem;">
-    <a href="/tools" class="back-link" data-testid="link-back-tools">← Back to Tools</a>
+    <WizardBackLink category="tool" />
   </div>
 
   <div class="page-header">
@@ -317,7 +137,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     </p>
   </div>
 
-  <div class="wizard-container">
+  <div class="tool-container">
     <!-- Gauge Section -->
     <div class="form-section">
       <div class="kbm-header-layout">
@@ -413,19 +233,9 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     </div>
 
     <!-- Actions -->
-    <div class="actions-section no-print">
-      <button class="action-btn action-btn-primary" id="update-preview-btn" data-testid="button-update-preview">
-        <i class="fas fa-sync-alt"></i> Update Preview
-      </button>
-      <a class="action-btn action-btn-primary" id="download-btn" href="#" download="knit-graph-paper.svg" data-testid="link-download-svg">
-        <i class="fas fa-download"></i> Download SVG
-      </a>
-      <button class="action-btn action-btn-secondary" id="print-btn" data-testid="button-print">
-        <i class="fas fa-print"></i> Print
-      </button>
-    </div>
+    <ToolActionBar downloadId="download-btn" downloadFilename="knit-graph-paper.svg" />
     
-    <div class="helper-note no-print">
+    <div class="info-box no-print">
       <strong>Tip:</strong> For true-scale printing, print at Actual Size / 100% (not "Fit to page").
     </div>
   </div>
@@ -456,9 +266,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   const rowUnitLabel = document.getElementById('row-unit-label');
   const guidesLabel = document.getElementById('guides-label');
   const previewImg = document.getElementById('preview-img') as HTMLImageElement;
-  const updateBtn = document.getElementById('update-preview-btn');
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
-  const printBtn = document.getElementById('print-btn');
 
   // Initialize inputs from localStorage
   inputStitches.value = stitches;
@@ -537,13 +345,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   selectOrientation.addEventListener('change', updatePreview);
   selectBoldEvery.addEventListener('change', updatePreview);
   checkboxGuides.addEventListener('change', updatePreview);
-
-  // Button handlers
-  updateBtn?.addEventListener('click', updatePreview);
-  
-  printBtn?.addEventListener('click', () => {
-    window.print();
-  });
 
   // Initial preview update
   updatePreview();
