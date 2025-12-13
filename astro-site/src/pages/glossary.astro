@@ -197,66 +197,141 @@ const description = "Your key to understanding abbreviations and terms used in m
     .card-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 1.25rem;
+      gap: 2.5rem;
       margin-bottom: 3rem;
     }
 
-    .term-card {
-      border: 1px solid rgba(82, 104, 45, 0.18);
-      border-radius: 16px;
-      background: #fff;
-      overflow: hidden;
-      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
-      transition: box-shadow 0.2s ease, transform 0.2s ease;
+    .flip-card {
+      perspective: 1000px;
+      height: 240px;
+      cursor: pointer;
     }
 
-    .term-card:hover {
-      box-shadow: 0 12px 28px rgba(0,0,0,0.1);
-      transform: translateY(-2px);
-    }
-
-    .term-card-link {
-      display: block;
-      text-decoration: none;
-      color: inherit;
-    }
-
-    .term-card-link:focus-visible {
-      outline: 3px solid rgba(199, 216, 164, 0.85);
-      outline-offset: 3px;
-    }
-
-    .term-media {
-      border-bottom: 1px solid rgba(82, 104, 45, 0.14);
-      background: #f7f7f4;
-    }
-
-    .term-media img {
-      display: block;
+    .flip-card-inner {
+      position: relative;
       width: 100%;
-      height: auto;
+      height: 100%;
+      transition: transform 0.45s ease;
+      transform-style: preserve-3d;
     }
 
-    .term-content {
-      padding: .9rem 1rem 1.1rem;
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
     }
 
-    .term-title {
-      margin: 0 0 .35rem;
-      font-size: 1.05rem;
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      backface-visibility: hidden;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      box-sizing: border-box;
+    }
+
+    .flip-card-front {
+      background: linear-gradient(135deg, #f6f8f2 0%, #ffffff 100%);
+      border: 1px solid #e2e6df;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      text-align: center;
+      padding: 1rem 1.25rem;
+    }
+
+    .card-title {
+      font-size: var(--text-xl);
       font-weight: 800;
-      color: var(--kbm-green, #52682d);
+      color: var(--kbm-green);
+      margin: 0 0 0.75rem 0;
+      line-height: 1.2;
     }
 
-    .term-card-link:hover .term-title {
-      text-decoration: underline;
+    .card-excerpt {
+      font-size: var(--text-base);
+      color: #6b7280;
+      margin: 0 0 1rem 0;
+      font-style: italic;
+      line-height: 1.5;
     }
 
-    .term-tooltip {
+    .card-hint {
+      font-size: var(--text-base);
+      color: #9ca3af;
+      margin-top: auto;
+      padding-top: 1rem;
+    }
+
+    .flip-card-back {
+      background: #ffffff;
+      border: 1px solid #e2e6df;
+      transform: rotateY(180deg);
+      display: flex;
+      flex-direction: column;
+      padding: 0.75rem;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .card-back-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.25rem;
+    }
+
+    .card-back-title {
+      font-size: var(--text-base);
+      font-weight: 800;
+      color: var(--kbm-green);
       margin: 0;
-      font-size: .95rem;
-      line-height: 1.55;
-      color: #5a6b47;
+      line-height: 1;
+      text-align: center;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .card-back-image-container {
+      width: 100%;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: visible;
+    }
+
+    .card-back-image {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .card-back-link {
+      background: none;
+      color: #52682D;
+      border: none;
+      font-weight: 600;
+      text-decoration: none;
+      padding: 0;
+      font-size: var(--text-base);
+      display: inline-block;
+      text-align: center;
+      transition: color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .card-back-link:hover {
+      color: #738C52;
     }
 
     .no-results {
@@ -297,91 +372,7 @@ const description = "Your key to understanding abbreviations and terms used in m
       }
     }
 
-    /* Mobile alphabet control - hidden by default */
-    .alpha-mobile { display: none; }
-
-    @media (max-width: 768px) {
-      .alphabet-filter { display: none; }
-      
-      .alpha-mobile { 
-        display: block; 
-        margin: 0 auto 1rem; 
-        padding: 0 1.5rem; 
-        max-width: 1200px; 
-      }
-
-      .alpha-mobile-btn {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: .75rem 1rem;
-        border-radius: 999px;
-        border: 1px solid rgba(82, 104, 45, 0.22);
-        background: #fff;
-        color: var(--kbm-green, #52682d);
-        font-weight: 800;
-        font-size: var(--text-base);
-        cursor: pointer;
-        font-family: inherit;
-      }
-
-      .alpha-mobile-caret {
-        transition: transform 0.2s ease;
-      }
-
-      .alpha-mobile-btn[aria-expanded="true"] .alpha-mobile-caret {
-        transform: rotate(180deg);
-      }
-
-      .alpha-mobile-panel {
-        margin-top: .75rem;
-        border-radius: 16px;
-        border: 1px solid rgba(82, 104, 45, 0.18);
-        background: #fff;
-        padding: .75rem;
-        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-      }
-
-      .alpha-mobile-letters {
-        display: grid;
-        grid-template-columns: repeat(6, minmax(0, 1fr));
-        gap: .35rem;
-      }
-
-      .alpha-mobile-letters a {
-        text-align: center;
-        padding: .5rem 0;
-        border-radius: 10px;
-        font-weight: 800;
-        color: var(--kbm-green, #52682d);
-        text-decoration: none;
-        border: 1px solid rgba(82, 104, 45, 0.14);
-        transition: all 0.15s ease;
-      }
-
-      .alpha-mobile-letters a:hover:not(.disabled) {
-        background: #f0f4ea;
-        border-color: var(--kbm-green);
-      }
-
-      .alpha-mobile-letters a.active {
-        background: var(--kbm-green);
-        color: #fff;
-        border-color: var(--kbm-green);
-      }
-
-      .alpha-mobile-letters a.disabled {
-        opacity: .35;
-        pointer-events: none;
-      }
-
-      .card-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (min-width: 769px) and (max-width: 1024px) {
+    @media (max-width: 1024px) {
       .alphabet-filter {
         top: var(--header-height);
       }
@@ -401,7 +392,21 @@ const description = "Your key to understanding abbreviations and terms used in m
       }
 
       .card-grid {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr;
+      }
+
+      .flip-card {
+        height: 240px;
+      }
+
+      .card-back-image-container {
+        width: 100%;
+        flex: 1;
+      }
+      
+      .card-back-image {
+        max-width: 100%;
+        max-height: 100%;
       }
     }
   </style>
@@ -412,7 +417,7 @@ const description = "Your key to understanding abbreviations and terms used in m
     iconPath="/images/glossary/glossary_logo.svg"
     iconAlt="Glossary"
   >
-    <p class="tap-hint">Tap a term to see the full explanation.</p>
+    <p class="tap-hint">↓ Tap a term for a plain-English explanation.</p>
     <div slot="toolbar" class="glossary-search">
       <form method="get" action="/glossary" id="searchForm">
         <input
@@ -446,31 +451,6 @@ const description = "Your key to understanding abbreviations and terms used in m
       })}
     </div>
   </div>
-
-  <div class="alpha-mobile">
-    <button type="button" class="alpha-mobile-btn" aria-expanded="false" aria-controls="alphaMobilePanel">
-      Jump to a letter
-      <span class="alpha-mobile-caret">▾</span>
-    </button>
-
-    <div id="alphaMobilePanel" class="alpha-mobile-panel" hidden>
-      <div class="alpha-mobile-letters">
-        <a href="/glossary" class="active" id="filterAllMobile">All</a>
-        {alphabet.map((letter) => {
-          const hasTerms = lettersWithTerms.has(letter);
-          return (
-            <a
-              href={`#${letter}`}
-              class={!hasTerms ? "disabled" : ""}
-              data-letter={letter}
-            >
-              {letter}
-            </a>
-          );
-        })}
-      </div>
-    </div>
-  </div>
   
   <div class="container">
     {errorMessage ? (
@@ -483,27 +463,46 @@ const description = "Your key to understanding abbreviations and terms used in m
       <div class="card-grid" id="termGrid" data-terms={JSON.stringify(allTerms)}>
         {allTerms.length > 0 ? (
           allTerms.map((term) => {
+            const definitionText = term.definition || term.excerpt || 'No definition available';
+            const firstLetter = term.title.charAt(0).toUpperCase();
             const altText = term.imageAlt || term.title;
 
             return (
-              <article class="term-card" data-title={term.title.toLowerCase()}>
-                <a href={`/glossary/${term.slug}`} class="term-card-link">
-                  {term.image && (
-                    <div class="term-media">
-                      <img src={term.image} alt={altText} loading="lazy" class="kbm-reference-image" />
+              <div class="flip-card" data-card-id={term._id} data-title={term.title.toLowerCase()} role="article" tabindex="0" aria-label={`Glossary term: ${term.title}`}>
+                <div class="flip-card-inner">
+                  <div class="flip-card-front">
+                    <div>
+                      <h2 class="card-title">{term.title}</h2>
+                      {term.excerpt && <p class="card-excerpt">{term.excerpt}</p>}
                     </div>
-                  )}
-                  <div class="term-content">
-                    <h2 class="term-title">{term.title}</h2>
-                    {term.excerpt && <p class="term-tooltip">{term.excerpt}</p>}
+                    <p class="card-hint">Tap for details</p>
                   </div>
-                </a>
-              </article>
+                  <a href={`/glossary/${term.slug}`} class="flip-card-back">
+                    <div class="card-back-content">
+                      <h3 class="card-back-title">{term.title}</h3>
+                      
+                      {term.image && (
+                        <div class="card-back-image-container">
+                          <img 
+                            src={term.image}
+                            alt={altText}
+                            class="card-back-image"
+                          />
+                        </div>
+                      )}
+
+                      <span class="card-back-link">
+                        → Learn more
+                      </span>
+                    </div>
+                  </a>
+                </div>
+              </div>
             );
           })
         ) : (
           <div class="no-results">
-            <h2>No terms found</h2>
+            <h2>No terms found  </h2>
             <p>Check back soon as we add more glossary terms.</p>
           </div>
         )}
@@ -513,44 +512,75 @@ const description = "Your key to understanding abbreviations and terms used in m
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const cards = document.querySelectorAll('.term-card');
+      const cards = document.querySelectorAll('.flip-card');
       const searchInput = document.getElementById('searchInput');
       const letterLinks = document.querySelectorAll('.alphabet a[data-letter]');
       const allLink = document.getElementById('filterAll');
       const termGrid = document.getElementById('termGrid');
+      const allTerms = JSON.parse(termGrid?.dataset.terms || '[]');
       
-      // Mobile alphabet panel elements
-      const alphaMobileBtn = document.querySelector('.alpha-mobile-btn');
-      const alphaMobilePanel = document.getElementById('alphaMobilePanel');
-      const mobileLetterLinks = document.querySelectorAll('.alpha-mobile-letters a[data-letter]');
-      const allLinkMobile = document.getElementById('filterAllMobile');
-      
+      let currentlyFlippedCard = null;
       let currentFilter = { search: '', letter: '' };
 
-      // Mobile panel toggle
-      function toggleMobilePanel() {
-        const isOpen = alphaMobilePanel.hidden === false;
-        alphaMobilePanel.hidden = isOpen;
-        alphaMobileBtn.setAttribute('aria-expanded', !isOpen);
-      }
-
-      function closeMobilePanel() {
-        alphaMobilePanel.hidden = true;
-        alphaMobileBtn.setAttribute('aria-expanded', 'false');
-      }
-
-      alphaMobileBtn?.addEventListener('click', toggleMobilePanel);
-
-      // Close mobile panel on outside click
-      document.addEventListener('click', (e) => {
-        if (alphaMobilePanel && !alphaMobilePanel.hidden) {
-          const isInsidePanel = alphaMobilePanel.contains(e.target);
-          const isButton = alphaMobileBtn.contains(e.target);
-          if (!isInsidePanel && !isButton) {
-            closeMobilePanel();
+      // Flip card functionality
+      cards.forEach(card => {
+        const front = card.querySelector('.flip-card-front');
+        const back = card.querySelector('.flip-card-back');
+        
+        // Click to flip
+        front.addEventListener('click', (e) => {
+          e.stopPropagation();
+          
+          if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+            currentlyFlippedCard.classList.remove('flipped');
           }
-        }
+          
+          card.classList.add('flipped');
+          currentlyFlippedCard = card;
+        });
+        
+        // Keyboard accessibility
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            
+            if (card.classList.contains('flipped')) {
+              // If already flipped, navigate to detail page
+              if (back) {
+                back.click();
+              }
+            } else {
+              // Flip the card
+              if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+                currentlyFlippedCard.classList.remove('flipped');
+              }
+              card.classList.add('flipped');
+              currentlyFlippedCard = card;
+            }
+          } else if (e.key === 'Escape' && card.classList.contains('flipped')) {
+            card.classList.remove('flipped');
+            currentlyFlippedCard = null;
+          }
+        });
       });
+
+      // Desktop hover
+      if (!window.matchMedia('(max-width: 1024px)').matches) {
+        cards.forEach(card => {
+          card.addEventListener('mouseenter', () => {
+            if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+              currentlyFlippedCard.classList.remove('flipped');
+            }
+            card.classList.add('flipped');
+            currentlyFlippedCard = card;
+          });
+          
+          card.addEventListener('mouseleave', () => {
+            card.classList.remove('flipped');
+            currentlyFlippedCard = null;
+          });
+        });
+      }
 
       // Filter functionality
       function filterTerms() {
@@ -594,73 +624,32 @@ const description = "Your key to understanding abbreviations and terms used in m
         filterTerms();
       });
 
-      // Helper to sync active states across desktop and mobile
-      function syncActiveStates(letter) {
-        // Update desktop
-        letterLinks.forEach(l => l.classList.remove('active'));
-        allLink?.classList.remove('active');
-        
-        // Update mobile
-        mobileLetterLinks.forEach(l => l.classList.remove('active'));
-        allLinkMobile?.classList.remove('active');
-        
-        if (letter) {
-          // Activate specific letter in both
-          letterLinks.forEach(l => {
-            if (l.dataset.letter === letter) l.classList.add('active');
-          });
-          mobileLetterLinks.forEach(l => {
-            if (l.dataset.letter === letter) l.classList.add('active');
-          });
-        } else {
-          // Activate "All" in both
-          allLink?.classList.add('active');
-          allLinkMobile?.classList.add('active');
-        }
-      }
-
-      // Letter filter (desktop)
+      // Letter filter
       letterLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           const letter = link.dataset.letter;
           
           currentFilter.letter = letter;
-          syncActiveStates(letter);
-          filterTerms();
-        });
-      });
-
-      // Letter filter (mobile)
-      mobileLetterLinks.forEach(link => {
-        link.addEventListener('click', (e) => {
-          e.preventDefault();
-          const letter = link.dataset.letter;
           
-          currentFilter.letter = letter;
-          syncActiveStates(letter);
+          letterLinks.forEach(l => l.classList.remove('active'));
+          allLink?.classList.remove('active');
+          link.classList.add('active');
+          
           filterTerms();
-          closeMobilePanel();
         });
       });
 
-      // All filter (desktop)
+      // All filter
       allLink?.addEventListener('click', (e) => {
         e.preventDefault();
         
         currentFilter.letter = '';
-        syncActiveStates('');
-        filterTerms();
-      });
-
-      // All filter (mobile)
-      allLinkMobile?.addEventListener('click', (e) => {
-        e.preventDefault();
         
-        currentFilter.letter = '';
-        syncActiveStates('');
+        letterLinks.forEach(l => l.classList.remove('active'));
+        allLink.classList.add('active');
+        
         filterTerms();
-        closeMobilePanel();
       });
     });
   </script>
