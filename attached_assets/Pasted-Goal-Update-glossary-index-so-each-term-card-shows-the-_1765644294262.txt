@@ -1,0 +1,184 @@
+Goal: Update /glossary (index) so each term card shows the JSON tooltip on the collapsed state, and expands to reveal ONLY the image. Clicking the revealed image opens the term’s slug page, where the full description/definition is shown. Remove flip-card behavior entirely.
+
+1) Glossary index: card markup
+
+In the glossary index page where term cards are rendered, replace the flip-card markup with this structure:
+
+<article class="term-card" data-title="{titleLower}">
+  <!-- Card header: shows tooltip + toggles image panel -->
+  <button class="term-head" type="button" aria-expanded="false">
+    <div class="term-head-text">
+      <h2 class="term-title">{title}</h2>
+      <p class="term-tooltip">{tooltip}</p>
+    </div>
+    <span class="term-chevron" aria-hidden="true">▾</span>
+  </button>
+
+  <!-- Accordion panel: IMAGE ONLY -->
+  <div class="term-panel" hidden>
+    {# if image exists #}
+    <a class="term-image-link" href="/glossary/{slug}" aria-label="Open full entry for {title}">
+      <img
+        src="{image}"
+        alt="{imageAlt || title}"
+        loading="lazy"
+        class="term-image kbm-unified-image"
+      />
+      <span class="term-open-link">Open full entry →</span>
+    </a>
+
+    {# if no image exists #}
+    <!-- show a clean link only (no empty box) -->
+    <a class="term-fallback-link" href="/glossary/{slug}">
+      Open full entry →
+    </a>
+  </div>
+</article>
+
+
+Important:
+
+Use tooltip on the index card (not description/definition).
+
+Do not render the full description/definition anywhere on the index page.
+
+2) CSS: modern “expandable card” styling
+
+Add these styles to the glossary CSS (keep colors consistent with KBM):
+
+.term-card{
+  border:1px solid rgba(82,104,45,.18);
+  border-radius:16px;
+  background:#fff;
+  box-shadow:0 10px 25px rgba(0,0,0,.06);
+  overflow:hidden;
+}
+
+.term-head{
+  width:100%;
+  text-align:left;
+  background:transparent;
+  border:0;
+  padding:1rem 1rem .95rem;
+  display:flex;
+  justify-content:space-between;
+  gap:1rem;
+  cursor:pointer;
+}
+
+.term-title{
+  margin:0 0 .35rem;
+  font-size:1.05rem;
+  font-weight:800;
+  color:var(--kbm-green,#52682d);
+}
+
+.term-tooltip{
+  margin:0;
+  color:#5a6b47;
+  line-height:1.55;
+  font-size:.95rem;
+}
+
+.term-chevron{
+  flex:0 0 auto;
+  width:34px;height:34px;
+  border-radius:999px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border:1px solid rgba(82,104,45,.22);
+  color:var(--kbm-green,#52682d);
+  transition:transform .2s ease;
+  transform:translateY(2px);
+}
+
+.term-panel{ padding:0 1rem 1rem; }
+
+.term-image-link{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid rgba(82,104,45,.14);
+  background:#f7f7f4;
+}
+
+.term-image{ display:block; width:100%; height:auto; }
+
+.term-open-link{
+  display:block;
+  padding:.7rem .85rem;
+  font-weight:800;
+  color:var(--kbm-green,#52682d);
+  border-top:1px solid rgba(82,104,45,.12);
+  background:#fff;
+}
+
+.term-fallback-link{
+  display:inline-block;
+  padding:.75rem .85rem;
+  border-radius:12px;
+  border:1px solid rgba(82,104,45,.18);
+  color:var(--kbm-green,#52682d);
+  font-weight:800;
+  text-decoration:none;
+  background:#fff;
+}
+
+.term-card.is-open .term-chevron{
+  transform:translateY(2px) rotate(180deg);
+}
+
+.term-head:focus-visible{
+  outline:3px solid rgba(199,216,164,.85);
+  outline-offset:2px;
+  border-radius:14px;
+}
+
+/* Optional: unify images so mixed styles feel calm */
+.kbm-unified-image{
+  filter:grayscale(100%);
+  opacity:.88;
+}
+
+3) JS: accordion toggle (one open at a time)
+
+Remove all flip/hover JS. Add a small script:
+
+On .term-head click:
+
+close any other open .term-card
+
+toggle this one
+
+set aria-expanded
+
+toggle hidden on .term-panel
+
+Escape closes the currently open card.
+
+4) Filtering/search: update selectors
+
+Your existing filter code targets .flip-card. Update it to target .term-card and continue filtering using data-title.
+
+5) Slug page: show full description/definition
+
+On the glossary slug page (/glossary/[slug]), ensure it renders the full description/definition field (whatever your JSON uses for the long HTML), not the tooltip.
+
+No other changes needed — the index stays short; the slug page holds the full explanation.
+
+Acceptance checklist
+
+Index cards show tooltip only
+
+Expanding a card reveals image only
+
+Clicking image opens slug page
+
+Slug page shows full description
+
+No flip behavior remains
+
+Mobile feels clean (no giant expansions)
