@@ -206,70 +206,28 @@ const description = "Your key to understanding abbreviations and terms used in m
       border-radius: 16px;
       background: #fff;
       overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s ease, transform 0.2s ease;
     }
 
-    .term-head {
-      width: 100%;
-      text-align: left;
-      background: transparent;
-      border: 0;
-      padding: 1rem 1rem 0.9rem;
-      display: flex;
-      gap: 1rem;
-      align-items: flex-start;
-      justify-content: space-between;
-      cursor: pointer;
-      font-family: inherit;
+    .term-card:hover {
+      box-shadow: 0 12px 28px rgba(0,0,0,0.1);
+      transform: translateY(-2px);
     }
 
-    .term-head-text {
-      flex: 1;
+    .term-card-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
     }
 
-    .term-title {
-      margin: 0 0 .35rem;
-      font-size: 1.05rem;
-      font-weight: 800;
-      color: var(--kbm-green, #52682d);
-    }
-
-    .term-excerpt {
-      margin: 0;
-      color: #5a6b47;
-      line-height: 1.5;
-      font-size: .95rem;
-    }
-
-    .term-icon {
-      flex: 0 0 auto;
-      width: 34px;
-      height: 34px;
-      border-radius: 999px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgba(82, 104, 45, 0.22);
-      color: var(--kbm-green, #52682d);
-      font-weight: 900;
-      font-size: 1.25rem;
-      transform: translateY(2px);
-      transition: transform 0.2s ease;
-    }
-
-    .term-panel {
-      padding: 0 1rem 1rem;
-    }
-
-    .term-panel[hidden] {
-      display: none;
+    .term-card-link:focus-visible {
+      outline: 3px solid rgba(199, 216, 164, 0.85);
+      outline-offset: 3px;
     }
 
     .term-media {
-      margin-top: .25rem;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(82, 104, 45, 0.14);
+      border-bottom: 1px solid rgba(82, 104, 45, 0.14);
       background: #f7f7f4;
     }
 
@@ -279,38 +237,26 @@ const description = "Your key to understanding abbreviations and terms used in m
       height: auto;
     }
 
-    .term-body {
-      margin-top: .9rem;
-      padding-top: .9rem;
-      border-top: 1px solid rgba(82, 104, 45, 0.14);
+    .term-content {
+      padding: .9rem 1rem 1.1rem;
     }
 
-    .term-definition {
-      color: #2f3a2a;
-      line-height: 1.7;
-      font-size: .98rem;
-    }
-
-    .term-link {
-      display: inline-block;
-      margin-top: .75rem;
+    .term-title {
+      margin: 0 0 .35rem;
+      font-size: 1.05rem;
       font-weight: 800;
       color: var(--kbm-green, #52682d);
-      text-decoration: none;
     }
 
-    .term-link:hover {
+    .term-card-link:hover .term-title {
       text-decoration: underline;
     }
 
-    .term-card.is-open .term-icon {
-      transform: translateY(2px) rotate(45deg);
-    }
-
-    .term-head:focus-visible {
-      outline: 3px solid rgba(199, 216, 164, 0.8);
-      outline-offset: 2px;
-      border-radius: 14px;
+    .term-tooltip {
+      margin: 0;
+      font-size: .95rem;
+      line-height: 1.55;
+      color: #5a6b47;
     }
 
     .no-results {
@@ -466,7 +412,7 @@ const description = "Your key to understanding abbreviations and terms used in m
     iconPath="/images/glossary/glossary_logo.svg"
     iconAlt="Glossary"
   >
-    <p class="tap-hint">↓ Tap a term for a plain-English explanation.</p>
+    <p class="tap-hint">Tap a term to see the full explanation.</p>
     <div slot="toolbar" class="glossary-search">
       <form method="get" action="/glossary" id="searchForm">
         <input
@@ -537,37 +483,27 @@ const description = "Your key to understanding abbreviations and terms used in m
       <div class="card-grid" id="termGrid" data-terms={JSON.stringify(allTerms)}>
         {allTerms.length > 0 ? (
           allTerms.map((term) => {
-            const definitionText = term.definition || term.excerpt || 'No definition available';
             const altText = term.imageAlt || term.title;
 
             return (
-              <article class="term-card" data-card-id={term._id} data-title={term.title.toLowerCase()}>
-                <button class="term-head" type="button" aria-expanded="false">
-                  <div class="term-head-text">
-                    <h2 class="term-title">{term.title}</h2>
-                    {term.excerpt && <p class="term-excerpt">{term.excerpt}</p>}
-                  </div>
-                  <span class="term-icon" aria-hidden="true">+</span>
-                </button>
-
-                <div class="term-panel" hidden>
+              <article class="term-card" data-title={term.title.toLowerCase()}>
+                <a href={`/glossary/${term.slug}`} class="term-card-link">
                   {term.image && (
                     <div class="term-media">
-                      <img src={term.image} alt={altText} loading="lazy" />
+                      <img src={term.image} alt={altText} loading="lazy" class="kbm-reference-image" />
                     </div>
                   )}
-
-                  <div class="term-body">
-                    <div class="term-definition" set:html={definitionText} />
-                    <a class="term-link" href={`/glossary/${term.slug}`}>Open full entry &rarr;</a>
+                  <div class="term-content">
+                    <h2 class="term-title">{term.title}</h2>
+                    {term.excerpt && <p class="term-tooltip">{term.excerpt}</p>}
                   </div>
-                </div>
+                </a>
               </article>
             );
           })
         ) : (
           <div class="no-results">
-            <h2>No terms found  </h2>
+            <h2>No terms found</h2>
             <p>Check back soon as we add more glossary terms.</p>
           </div>
         )}
@@ -582,7 +518,6 @@ const description = "Your key to understanding abbreviations and terms used in m
       const letterLinks = document.querySelectorAll('.alphabet a[data-letter]');
       const allLink = document.getElementById('filterAll');
       const termGrid = document.getElementById('termGrid');
-      const allTerms = JSON.parse(termGrid?.dataset.terms || '[]');
       
       // Mobile alphabet panel elements
       const alphaMobileBtn = document.querySelector('.alpha-mobile-btn');
@@ -590,7 +525,6 @@ const description = "Your key to understanding abbreviations and terms used in m
       const mobileLetterLinks = document.querySelectorAll('.alpha-mobile-letters a[data-letter]');
       const allLinkMobile = document.getElementById('filterAllMobile');
       
-      let currentlyOpenCard = null;
       let currentFilter = { search: '', letter: '' };
 
       // Mobile panel toggle
@@ -615,54 +549,6 @@ const description = "Your key to understanding abbreviations and terms used in m
           if (!isInsidePanel && !isButton) {
             closeMobilePanel();
           }
-        }
-      });
-
-      // Accordion toggle functionality
-      function closeCard(card) {
-        if (!card) return;
-        const btn = card.querySelector('.term-head');
-        const panel = card.querySelector('.term-panel');
-        card.classList.remove('is-open');
-        btn.setAttribute('aria-expanded', 'false');
-        panel.hidden = true;
-      }
-
-      function openCard(card) {
-        const btn = card.querySelector('.term-head');
-        const panel = card.querySelector('.term-panel');
-        card.classList.add('is-open');
-        btn.setAttribute('aria-expanded', 'true');
-        panel.hidden = false;
-      }
-
-      cards.forEach(card => {
-        const btn = card.querySelector('.term-head');
-        
-        btn.addEventListener('click', () => {
-          const isOpen = card.classList.contains('is-open');
-          
-          // Close any open card
-          if (currentlyOpenCard && currentlyOpenCard !== card) {
-            closeCard(currentlyOpenCard);
-          }
-          
-          // Toggle this card
-          if (isOpen) {
-            closeCard(card);
-            currentlyOpenCard = null;
-          } else {
-            openCard(card);
-            currentlyOpenCard = card;
-          }
-        });
-      });
-
-      // Escape key closes open card
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && currentlyOpenCard) {
-          closeCard(currentlyOpenCard);
-          currentlyOpenCard = null;
         }
       });
 
