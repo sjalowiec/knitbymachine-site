@@ -48,7 +48,7 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
     <!-- 1. Hero Section -->
     <section class="kbm-hero kbm-hero--agent">
       <div class="kbm-hero__content">
-        <p class="kbm-eyebrow">Smart Guide · AI Agent</p>
+        <p class="kbm-eyebrow">Project Planner</p>
         <h1 class="kbm-hero__title">{pageTitle}</h1>
         {subheading && <p class="kbm-hero__subtitle">{subheading}</p>}
 
@@ -56,7 +56,7 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
           <div class="kbm-hero__reassurance">
             <h2>You don't have to figure this out alone.</h2>
             <p>
-              {data.onboardingIntroBody ?? "This Smart Guide will ask you simple questions and help you decide what to do next at the machine."}
+              {data.onboardingIntroBody ?? "This Project Planner will ask you simple questions and help you decide what to do next at the machine."}
             </p>
           </div>
         )}
@@ -67,7 +67,7 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
           </a>
           {data.showSecondaryCta !== false && (
             <a href="/smart-guides" class="kbm-button kbm-button--ghost">
-              See all Smart Guides
+              See all Project Planners
             </a>
           )}
         </div>
@@ -106,15 +106,15 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
         )}
 
         <div class="kbm-panel">
-          <h2>Why this Smart Guide matters</h2>
+          <h2>Why this Project Planner matters</h2>
           <p>
-            {data.whyItMatters ?? "A small decision early in a project can make the difference between a confident finish and a frustrating do-over. This Smart Guide helps you make those choices before you cast on."}
+            {data.whyItMatters ?? "A small decision early in a project can make the difference between a confident finish and a frustrating do-over. This Project Planner helps you make those choices before you cast on."}
           </p>
         </div>
 
         {hasBenefits && (
           <div class="kbm-panel">
-            <h2>What this Smart Guide will walk you through</h2>
+            <h2>What this Project Planner will walk you through</h2>
             <ul>
               {data.benefits!.map((benefit: string) => <li>{benefit}</li>)}
             </ul>
@@ -127,7 +127,7 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
     {hasRelatedGuides && (
       <section class="kbm-section kbm-section--related">
         <header class="kbm-section__header">
-          <h2>Related Smart Guides</h2>
+          <h2>Related Project Planners</h2>
           <p>Keep building your confidence, one small win at a time.</p>
         </header>
         <ul class="kbm-related-list">
@@ -154,7 +154,7 @@ const hasBenefits = data.benefits && data.benefits.length > 0;
     <!-- 5. Agent engine / iframe -->
     <section id="agent-engine" class="kbm-section kbm-section--engine">
       <div class="kbm-section__inner">
-        <h2 class="kbm-visually-hidden">Smart Guide</h2>
+        <h2 class="kbm-visually-hidden">Project Planner</h2>
 
         {data.iframeUrl ? (
           <div class="kbm-agent-frame">

@@ -66,16 +66,16 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Smart Guides";
+const title = "Project Planners";
 const description = "Step-by-step planning tools to help you start your next project with confidence.";
 ---
 
 <BaseLayout {title} {description}>
   <div class="page-container">
     <SectionHero 
-      title="Smart Guides" 
+      title="Project Planners" 
       iconPath="/images/guide_icon.png"
-      iconAlt="Smart Guide icon"
+      iconAlt="Project Planner icon"
     />
 
     <div class="intro-section">
@@ -88,7 +88,7 @@ const description = "Step-by-step planning tools to help you start your next pro
     <div class="guides-grid" data-testid="smart-guides-grid">
       {errorMessage && (
         <div class="error">
-          <p><strong>Error loading Smart Guides</strong></p>
+          <p><strong>Error loading Project Planners</strong></p>
           <p>Unable to fetch entries. Please try again later.</p>
           <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
         </div>
@@ -96,7 +96,7 @@ const description = "Step-by-step planning tools to help you start your next pro
       
       {entries.length === 0 && !errorMessage && (
         <div class="no-results">
-          <p>Smart Guides are coming soon! Check back for step-by-step planning tools.</p>
+          <p>Project Planners are coming soon! Check back for step-by-step planning tools.</p>
         </div>
       )}
       
