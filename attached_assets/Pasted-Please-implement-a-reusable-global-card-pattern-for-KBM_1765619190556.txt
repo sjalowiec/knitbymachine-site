@@ -1,0 +1,131 @@
+Please implement a reusable global card pattern for KBM catalog pages, then apply it to the Tools index page.
+
+Scope
+
+Create global CSS utilities for “KBM cards” (reusable across catalog pages)
+
+Update src/pages/tools/index.astro to use the pattern:
+
+Replace the current FREE pill with a corner tag (not a diagonal ribbon)
+
+Add a bottom cue line: “Open calculator →” (text only)
+
+Do not change the grid layout, links, titles, or descriptions.
+
+Part A — Create global, reusable card styles
+1) Add these global classes in your main stylesheet
+
+Add to your global CSS file (where header/footer styles live — e.g. src/styles/global.css or your main imported stylesheet):
+
+Create these classes:
+
+Base card
+
+.kbm-card
+
+.kbm-card__title
+
+.kbm-card__desc
+
+.kbm-card__meta (for bottom cue text)
+
+.kbm-card__corner-tag (for the Free label)
+
+Behavior requirements
+
+Card stays a full clickable link
+
+Uses existing KBM palette and typography
+
+Modern, flat, clean (no gradients)
+
+Layout requirements
+
+.kbm-card should be position: relative;
+
+Use display: flex; flex-direction: column;
+
+Ensure the meta cue stays at the bottom using:
+
+description flexes, meta sits after it
+
+e.g. .kbm-card__desc { flex: 1; }
+
+Corner tag (Free)
+
+Looks like a small corner label/tab (NOT diagonal)
+
+Top-left inside the card, with modest padding
+
+Subtle background + strong text contrast
+
+Rounded corners consistent with your system
+
+Should not overlap the title
+
+Meta cue
+
+Small, muted text at the bottom
+
+Text only, not a button
+
+Example styling: slightly smaller font-size, medium weight, increased letter spacing optional
+
+Reads like a hint: “Open calculator →”
+
+Part B — Apply to Tools index page only (for now)
+
+Update:
+src/pages/tools/index.astro
+
+1) Card markup updates
+
+For each tool card:
+
+Add .kbm-card to the existing card link element (keep existing classes if needed)
+
+Update title/description classes to also use:
+
+.kbm-card__title
+
+.kbm-card__desc
+
+2) Replace FREE pill with corner tag
+
+Remove the existing FREE pill element from inside the card body
+
+Add a new element near the top of the card markup:
+
+<span class="kbm-card__corner-tag">Free</span>
+
+Only render this tag when the tool is free (current data already knows this)
+
+3) Add bottom instruction line
+
+At the bottom of each card add:
+
+<div class="kbm-card__meta">Open calculator →</div>
+
+This should appear beneath the description, aligned left, and remain text only.
+
+Guardrails
+
+Do not introduce “Paid” labels.
+
+Do not change hover effects except as needed to support the new classes.
+
+Do not add gating logic.
+
+Keep the current animation behavior if it exists.
+
+Quick visual check (Tools page)
+
+Each card should show:
+
+A subtle top-left corner tag: Free
+
+Title + description unchanged
+
+Bottom cue: Open calculator →
+
+Overall card height should remain tidy and balanced.
