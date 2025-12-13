@@ -1,0 +1,92 @@
+Please update the global KBM catalog card component (the reusable card used on Tools and other catalog pages) so the “Free” indicator appears as a small, subtle corner ribbon.
+
+This must be implemented in the component, not as a page-only override.
+
+1) Locate the global card component
+
+Find the reusable card component file (for example):
+
+src/components/KbmCard.astro
+
+src/components/CatalogCard.astro
+
+src/components/cards/*.astro
+
+This is the component that renders the clickable card and currently shows the “Free” label.
+
+2) Replace the existing Free badge markup
+
+Remove the current FREE pill / tag / bubble markup completely.
+
+Inside the card container element, add this markup only when the card is free, using the existing boolean logic:
+
+{isFree && <span class="kbm-card-ribbon">Free</span>}
+
+
+Do not introduce new props or labels.
+
+3) Update the card container styles (required)
+
+Ensure the card clips the ribbon cleanly and reserves minimal space so content never collides.
+
+.kbm-card {
+  position: relative;
+  overflow: hidden;
+  padding-top: 12px; /* minimal reserve for ribbon */
+}
+
+4) Use this subtle ribbon CSS (small, quiet, corner-only)
+
+Delete any previous ribbon/badge styles and add exactly the following:
+
+.kbm-card-ribbon {
+  position: absolute;
+  top: 8px;
+  left: -24px;
+  z-index: 3;
+
+  width: 76px;
+  padding: 0.18rem 0;
+  text-align: center;
+
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  background: #c7d8a4;
+  color: #52682d;
+  border: 1px solid rgba(82, 104, 45, 0.22);
+
+  transform: rotate(-45deg);
+}
+
+Design intent (do not deviate)
+
+This ribbon should barely touch the card corner
+
+It should never cross the card title
+
+It should feel informational, not decorative
+
+No shadows, gradients, rounded pill shapes, or tails
+
+5) Verify result
+
+After updating:
+
+The “Free” ribbon appears quietly in the top-left corner
+
+It does not dominate the card
+
+No old Free pill remains anywhere
+
+Card layout and grid are unchanged
+
+Guardrails
+
+Do not add “Paid” labels
+
+Do not change card content or interactions
+
+Only adjust what’s needed for the ribbon
