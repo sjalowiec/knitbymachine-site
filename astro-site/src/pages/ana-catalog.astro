@@ -120,15 +120,15 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Ask 'n Answer Catalogue";
-const description = "Browse all your knitting machine questions and answers, organized by topic. Find solutions to troubleshooting, techniques, machines, and more.";
+const title = "Answers";
+const description = "Machine knitting questions and answers, organized by topic. Find solutions to troubleshooting, techniques, machines, and more.";
 ---
 
 <BaseLayout {title} {description}>
   <div class="page-container">
     <!-- Compact Header: Icon + Text + Search/Sort -->
     <div class="header-panel fade-in">
-      <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="intro-icon">
+      <img src="/images/ask-n-answer_logo.svg" alt="Answers" class="intro-icon">
       <div class="header-right">
         <p class="intro-tagline">Troubleshoot, learn, and master your knitting machine — one question at a time.</p>
         <!-- Ask Sue Trigger Link -->
@@ -143,7 +143,7 @@ const description = "Browse all your knitting machine questions and answers, org
               type="text" 
               class="search-input" 
               id="searchInput" 
-              placeholder="Search ANA questions..."
+              placeholder="Search answers..."
               aria-label="Search questions"
             >
           </div>
@@ -198,7 +198,7 @@ const description = "Browse all your knitting machine questions and answers, org
       {errorMessage && (
         <div class="error">
           <p><strong>Error loading questions</strong></p>
-          <p>Unable to fetch ANA entries. Please try again later.</p>
+          <p>Unable to fetch entries. Please try again later.</p>
           <p style="font-size: var(--text-base); margin-top: 1rem;">{errorMessage}</p>
         </div>
       )}
@@ -223,7 +223,7 @@ const description = "Browse all your knitting machine questions and answers, org
 
       <h2 class="ask-modal__title">Ask Sue a Question</h2>
       <p class="ask-modal__intro">
-        I read every question and may add it to Ask 'n Answer so other machine knitters can benefit too.
+        I read every question and may add it to Answers so other machine knitters can benefit too.
       </p>
 
       <div class="ask-modal__form">
