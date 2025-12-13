@@ -265,6 +265,11 @@ const description = "Your key to understanding abbreviations and terms used in m
       color: #9ca3af;
       margin-top: auto;
       padding-top: 1rem;
+      cursor: pointer;
+    }
+    
+    .card-hint:hover {
+      color: var(--kbm-green);
     }
 
     .flip-card-back {
@@ -521,30 +526,81 @@ const description = "Your key to understanding abbreviations and terms used in m
       const allTerms = JSON.parse(termGrid?.dataset.terms || '[]');
       
       let currentFilter = { search: '', letter: '' };
+      let currentlyFlippedCard = null;
 
-      // Card click functionality - navigate directly to term page
+      // Card interaction - click front to navigate, click hint to flip preview
       cards.forEach(card => {
         const front = card.querySelector('.flip-card-front');
         const back = card.querySelector('.flip-card-back');
+        const hint = card.querySelector('.card-hint');
         const href = back?.getAttribute('href');
         
-        // Click front to navigate directly
-        front.addEventListener('click', (e) => {
+        // Click hint to toggle flip preview (does NOT navigate)
+        hint?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          
+          if (card.classList.contains('flipped')) {
+            card.classList.remove('flipped');
+            currentlyFlippedCard = null;
+          } else {
+            // Close any other flipped card first
+            if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+              currentlyFlippedCard.classList.remove('flipped');
+            }
+            card.classList.add('flipped');
+            currentlyFlippedCard = card;
+          }
+        });
+        
+        // Click front (but not hint) to navigate directly
+        front?.addEventListener('click', (e) => {
+          // Ignore if clicking the hint (hint handler will handle it)
+          if (e.target.closest('.card-hint')) {
+            return;
+          }
           e.stopPropagation();
           if (href) {
             window.location.href = href;
           }
         });
         
-        // Keyboard accessibility - Enter/Space navigate directly
+        // Keyboard accessibility
         card.addEventListener('keydown', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === 'Enter') {
+            // Enter = navigate to term page
             e.preventDefault();
             if (href) {
               window.location.href = href;
             }
+          } else if (e.key === ' ') {
+            // Space = toggle flip preview
+            e.preventDefault();
+            if (card.classList.contains('flipped')) {
+              card.classList.remove('flipped');
+              currentlyFlippedCard = null;
+            } else {
+              if (currentlyFlippedCard && currentlyFlippedCard !== card) {
+                currentlyFlippedCard.classList.remove('flipped');
+              }
+              card.classList.add('flipped');
+              currentlyFlippedCard = card;
+            }
+          } else if (e.key === 'Escape') {
+            // Escape = unflip
+            if (card.classList.contains('flipped')) {
+              card.classList.remove('flipped');
+              currentlyFlippedCard = null;
+            }
           }
         });
+      });
+      
+      // Close flipped card when clicking outside
+      document.addEventListener('click', (e) => {
+        if (currentlyFlippedCard && !e.target.closest('.flip-card')) {
+          currentlyFlippedCard.classList.remove('flipped');
+          currentlyFlippedCard = null;
+        }
       });
 
       // Filter functionality
