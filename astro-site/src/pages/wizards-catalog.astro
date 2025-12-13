@@ -705,9 +705,9 @@ const description = "Browse all our knitting calculators and interactive tools t
     // Normalize category names for consistent grouping
     const cat = (category || 'Uncategorized').toLowerCase().trim();
     
-    // Normalize "smart guide" variations to "Smart Guide"
-    if (cat.includes('smart guide')) {
-      return 'Smart Guide';
+    // Normalize "smart guide" and "project planner" variations to "Project Planner"
+    if (cat.includes('smart guide') || cat.includes('project planner')) {
+      return 'Project Planner';
     }
     // Normalize "skill builder" variations
     if (cat.includes('skill builder')) {
