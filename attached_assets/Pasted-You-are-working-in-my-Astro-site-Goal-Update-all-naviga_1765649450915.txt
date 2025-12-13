@@ -1,0 +1,135 @@
+You are working in my Astro site.
+
+Goal
+
+Update all navigation UI to this final structure:
+
+Top Menu (main nav):
+Plan · Knit · Support · Shop
+
+Plan dropdown
+
+Project Wizards (parent label only; link optional if a landing page exists)
+
+Ready · Set · Knit planners (keep existing URL)
+
+Charting Tools (keep existing URL)
+
+Knit dropdown
+
+Patterns (keep existing URL)
+
+Practice Projects (keep existing URL)
+
+Project Walkthroughs (keep existing URL)
+
+Support dropdown
+
+Answers (this is ANA; keep existing URL)
+
+Community (this is the Forum/Discourse; keep existing URL)
+
+Shop dropdown
+
+Machines (keep existing URL)
+
+Guided Workshops (1-1) (keep existing URL)
+
+Footer
+
+Move Blog and Contact to the footer (not in top menu).
+
+Keep other footer sections as-is.
+
+Hard Rules
+
+Do NOT rename files, folders, or slugs/URLs in this pass.
+
+Only update labels and navigation structure (and links to existing pages).
+
+If a destination page doesn’t exist for a top-level item (ex: /plan), do one of these:
+
+Option A: Link the top-level menu item to # and rely on dropdown items, OR
+
+Option B: Create a simple landing page (minimal) and link to it.
+Choose A unless the landing page already exists.
+
+Implementation Steps
+
+Find the nav source of truth
+
+Search for where the header/nav is defined (likely a shared component like Header.astro, Nav.astro, Layout.astro, or a navLinks array).
+
+Also find the mobile menu source (sometimes separate).
+
+Update it so both desktop and mobile use the same data structure if possible.
+
+Update the top nav
+
+Replace current top-level items with: Plan, Knit, Support, Shop
+
+Implement dropdowns (desktop) and collapsible sections (mobile) for sub-items.
+
+Ensure keyboard accessibility:
+
+buttons have aria-expanded
+
+dropdowns are reachable by tab
+
+focus styles remain visible
+
+Update labels exactly
+
+“Ready Set Knit” may appear as “R-S-K” or similar—change the label to Ready · Set · Knit planners wherever it appears in navigation.
+
+Change “Studio Sessions” (or anything similar) to Project Walkthroughs.
+
+Change “Forum” to Community.
+
+Change “ANA” labels to Answers in navigation only (page titles can remain for now).
+
+Move Blog + Contact to footer
+
+Remove Blog and Contact from header nav (desktop + mobile).
+
+Add them into the footer as links (use existing URLs).
+
+Keep footer styling consistent.
+
+Update active states
+
+Make sure the correct top-level section highlights as active when viewing a subpage.
+
+Example: on a Pattern page, Knit shows active.
+
+On ANA pages, Support shows active.
+
+Do a quick site-wide search
+
+Search for the old nav labels and update any remaining nav UI occurrences:
+
+“Studio Sessions”
+
+“Forum”
+
+“ANA”
+
+“RSK” (as a nav label)
+
+Do not change content pages yet—navigation only.
+
+QA Checklist (must pass)
+
+Desktop header shows: Plan / Knit / Support / Shop
+
+Each has the correct dropdown links
+
+Mobile menu matches exactly
+
+Blog + Contact appear in footer and are removed from top nav
+
+No broken links introduced
+
+No slug changes / file renames done in this pass
+
+Deliverable

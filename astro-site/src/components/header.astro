@@ -152,6 +152,9 @@ html, body {
   transition: color 0.2s ease;
   white-space: nowrap;
   cursor: pointer;
+  background: none;
+  border: none;
+  font-family: inherit;
 }
 
 .kbm-menu > li > a:hover,
@@ -457,38 +460,43 @@ html, body {
         <span></span>
       </button>
 
-      <!-- Navigation Row - KNIT / LEARN / CONNECT structure -->
+      <!-- Navigation Row - PLAN / KNIT / SUPPORT / SHOP structure -->
       <div class="kbm-nav-row">
         <ul class="kbm-menu">
+          <!-- PLAN dropdown -->
+          <li class="dd">
+            <button class="dd-trigger" aria-expanded="false" data-testid="nav-plan">Plan <span class="caret">▾</span></button>
+            <ul class="dd-panel">
+              <li><a href="/smart-guides" data-testid="nav-plan-rsk">Ready · Set · Knit planners</a></li>
+              <li><a href="/tools" data-testid="nav-plan-tools">Charting Tools</a></li>
+            </ul>
+          </li>
+          
           <!-- KNIT dropdown -->
           <li class="dd">
-            <span class="dd-trigger" data-testid="nav-knit">KNIT <span class="caret">▾</span></span>
+            <button class="dd-trigger" aria-expanded="false" data-testid="nav-knit">Knit <span class="caret">▾</span></button>
             <ul class="dd-panel">
               <li><a href="/patterns" data-testid="nav-knit-patterns">Patterns</a></li>
-              <li><a href="/tools" data-testid="nav-knit-tools">Charting Tools</a></li>
-              <li><a href="/skillbuilder-catalog" data-testid="nav-knit-skillbuilders">Practice Projects</a></li>
+              <li><a href="/skillbuilder-catalog" data-testid="nav-knit-practice">Practice Projects</a></li>
+              <li><a href="/studio-sessions" data-testid="nav-knit-walkthroughs">Project Walkthroughs</a></li>
             </ul>
           </li>
           
-          <!-- LEARN dropdown -->
+          <!-- SUPPORT dropdown -->
           <li class="dd">
-            <span class="dd-trigger" data-testid="nav-learn">LEARN <span class="caret">▾</span></span>
+            <button class="dd-trigger" aria-expanded="false" data-testid="nav-support">Support <span class="caret">▾</span></button>
             <ul class="dd-panel">
-              <li><a href="/studio-sessions" data-testid="nav-learn-studio-sessions">Studio Sessions</a></li>
-              <li><a href="/smart-guides" data-testid="nav-learn-smartguides">Project Planners</a></li>
-              <li><a href="/ana-catalog" data-testid="nav-learn-ana">Answers</a></li>
-              <li><a href="/glossary" data-testid="nav-learn-glossary">Glossary</a></li>
+              <li><a href="/ana-catalog" data-testid="nav-support-answers">Answers</a></li>
+              <li><a href="https://knitbymachine.discourse.group" data-testid="nav-support-community">Community</a></li>
             </ul>
           </li>
           
-          <!-- CONNECT dropdown -->
+          <!-- SHOP dropdown -->
           <li class="dd">
-            <span class="dd-trigger" data-testid="nav-connect">CONNECT <span class="caret">▾</span></span>
+            <button class="dd-trigger" aria-expanded="false" data-testid="nav-shop">Shop <span class="caret">▾</span></button>
             <ul class="dd-panel">
-              <li><a href="/blog" data-testid="nav-connect-blog">Blog</a></li>
-              <li><a href="/guided-workshops" data-testid="nav-connect-guided-workshops">Guided Workshops</a></li>
-              <li><a href="/contact" data-testid="nav-connect-contact">Contact</a></li>
-              <li><a href="https://knitbymachine.discourse.group" data-testid="nav-connect-community">Community</a></li>
+              <li><a href="/machines" data-testid="nav-shop-machines">Machines</a></li>
+              <li><a href="/guided-workshops" data-testid="nav-shop-workshops">Guided Workshops (1-1)</a></li>
             </ul>
           </li>
         </ul>
@@ -520,7 +528,11 @@ html, body {
 
     function closeAll(except) {
       dds.forEach(li => {
-        if (li !== except) li.classList.remove('open');
+        if (li !== except) {
+          li.classList.remove('open');
+          const trigger = li.querySelector('.dd-trigger');
+          if (trigger) trigger.setAttribute('aria-expanded', 'false');
+        }
       });
     }
 
@@ -555,6 +567,7 @@ html, body {
           const handler = (e) => {
             e.preventDefault();
             const nowOpen = li.classList.toggle('open');
+            trigger.setAttribute('aria-expanded', nowOpen ? 'true' : 'false');
             if (nowOpen) closeAll(li);
           };
           trigger.addEventListener('click', handler);
@@ -570,15 +583,20 @@ html, body {
 
     // Desktop hover behavior (always active, but only works when not in touch mode)
     dds.forEach(li => {
+      const trigger = li.querySelector('.dd-trigger');
       li.addEventListener('mouseenter', () => {
         if (!isTouchMode()) {
           clearTimeout(li._closeTimeout);
           li.classList.add('open');
+          if (trigger) trigger.setAttribute('aria-expanded', 'true');
         }
       });
       li.addEventListener('mouseleave', () => {
         if (!isTouchMode()) {
-          li._closeTimeout = setTimeout(() => li.classList.remove('open'), 250);
+          li._closeTimeout = setTimeout(() => {
+            li.classList.remove('open');
+            if (trigger) trigger.setAttribute('aria-expanded', 'false');
+          }, 250);
         }
       });
     });
