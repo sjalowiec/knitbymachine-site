@@ -112,9 +112,7 @@ const description = "Machine-knitting tools that do the math for you. Let the wi
             data-testid={`card-tool-${entry.slug}`}
             style={`animation-delay: ${index * 0.1}s`}
           >
-            {isFree && (
-              <span class="kbm-card__corner-tag">Free</span>
-            )}
+            {isFree && <span class="kbm-card-ribbon">Free</span>}
             <h2 class="guide-card-title kbm-card__title">{entry.title}</h2>
             {displayText && (
               <p class="guide-card-description kbm-card__desc">{displayText}</p>

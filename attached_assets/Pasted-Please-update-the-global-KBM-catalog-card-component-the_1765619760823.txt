@@ -1,0 +1,98 @@
+Please update the global KBM catalog card component (the reusable card component we created for Tools/other catalogs) so the “Free” indicator is a subtle notched ribbon using clip-path (Option 2). Do not implement this as a one-off on tools/index—it must live in the component so all catalogs stay consistent.
+
+1) Find the global card component
+
+Locate the reusable component file we created (example paths):
+
+src/components/KbmCard.astro
+
+src/components/CatalogCard.astro
+
+src/components/cards/*.astro
+
+This is the component that renders the clickable card (<a ...>) with title/description and currently shows a “FREE” pill/tag.
+
+2) Replace the existing FREE pill/tag markup with this ribbon element
+
+Remove the old FREE pill element entirely so it does not render anymore.
+
+Inside the card container link, add this element only when the card is free (use the existing free logic/prop):
+
+{isFree && <span class="kbm-card-ribbon">Free</span>}
+
+
+Important:
+
+Use the component’s existing boolean/condition (it might be isFree, badge === 'free', etc.). Do not rename props unless necessary.
+
+“Free” must appear only once per card.
+
+3) Add the required CSS for the notched ribbon (Option 2)
+
+Where the component styles live (either in the component <style> block or the global CSS file that defines .kbm-card), add these exact rules.
+
+Ensure the card can position the ribbon
+.kbm-card {
+  position: relative;
+}
+
+Notched ribbon (Option 2) — use clip-path exactly like this
+.kbm-card-ribbon {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  background: #c7d8a4; /* KBM light green */
+  color: #52682d;      /* KBM green */
+  border: 1px solid rgba(82, 104, 45, 0.25);
+
+  /* Option 2: subtle notch */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    92% 50%,
+    100% 100%,
+    0 100%
+  );
+}
+
+Safety fallback for browsers that don’t support clip-path
+
+Add this directly after the rule above:
+
+@supports not (clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%)) {
+  .kbm-card-ribbon {
+    clip-path: none;
+  }
+}
+
+4) Verify on /tools
+
+After updating the component, confirm the Tools index page now shows:
+
+A small notched “Free” ribbon in the top-left of each card
+
+No old “FREE” pill remaining
+
+Ribbon does not overlap card titles on desktop or mobile
+
+Guardrails
+
+Do not add “Paid” labels.
+
+Do not change card links, grid layout, titles, or descriptions.
+
+Only update the free indicator UI inside the global card component (and its CSS).

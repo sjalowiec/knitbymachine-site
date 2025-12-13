@@ -379,18 +379,43 @@ p {
   margin-top: 1rem;
 }
 
-.kbm-card__corner-tag {
+.kbm-card-ribbon {
   position: absolute;
-  top: 0.75rem;
-  left: 0.75rem;
-  background-color: #C7D8A4;
-  color: var(--kbm-green, #52682d);
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0.35rem 0.7rem;
+  border-radius: 10px;
+
   font-size: 0.75rem;
-  font-weight: 600;
+  font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.03em;
-  padding: 0.25rem 0.6rem;
-  border-radius: 6px;
+
+  background: #c7d8a4;
+  color: #52682d;
+  border: 1px solid rgba(82, 104, 45, 0.25);
+
+  /* Notched ribbon effect */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    92% 50%,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Fallback for browsers without clip-path support */
+@supports not (clip-path: polygon(0 0, 100% 0, 92% 50%, 100% 100%, 0 100%)) {
+  .kbm-card-ribbon {
+    clip-path: none;
+  }
 }
 
 /* Responsive adjustments for KBM cards */
@@ -399,11 +424,11 @@ p {
     padding: 1.5rem;
   }
   
-  .kbm-card__corner-tag {
-    top: 0.6rem;
-    left: 0.6rem;
+  .kbm-card-ribbon {
+    top: 10px;
+    left: 10px;
     font-size: 0.7rem;
-    padding: 0.2rem 0.5rem;
+    padding: 0.3rem 0.6rem;
   }
 }
 
