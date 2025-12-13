@@ -81,7 +81,7 @@ const lettersWithTerms = new Set(
 );
 
 const title = "Machine Knitting Terms Glossary";
-const description = "Your key to understanding abbreviations and terms used in machine knitting patterns and vintage publications. Tap a term for a plain-English explanation.";
+const description = "Your key to understanding abbreviations and terms used in machine knitting patterns and vintage publications.";
 ---
 
 <Layout bodyClass="has-catalog-search">
@@ -105,12 +105,11 @@ const description = "Your key to understanding abbreviations and terms used in m
 
     .kbm-search-input {
       flex: 1;
-      padding: 0.75rem 1rem;
-      border: 1px solid #e2e6df;
-      border-radius: 10px;
-      font-size: var(--text-lg);
+      padding: 0.5rem 0.875rem;
+      border: 2px solid #c7d8a4;
+      border-radius: 50px;
+      font-size: var(--text-sm);
       background: #fff;
-      min-height: 44px;
     }
 
     .kbm-search-input:focus {
@@ -120,19 +119,25 @@ const description = "Your key to understanding abbreviations and terms used in m
     }
 
     .kbm-search-btn {
-      padding: 0.75rem 1.25rem;
+      padding: 0.5rem 0.875rem;
       background: var(--kbm-green);
       color: #fff;
       border: none;
-      border-radius: 10px;
+      border-radius: 50px;
       cursor: pointer;
-      font-size: var(--text-lg);
+      font-size: var(--text-sm);
       transition: background 0.2s ease;
-      min-height: 44px;
     }
 
     .kbm-search-btn:hover {
       background: var(--kbm-green-2);
+    }
+
+    .tap-hint {
+      font-size: var(--text-base);
+      color: #6b7280;
+      margin: 0.5rem 0 0 0;
+      font-style: italic;
     }
 
 
@@ -412,6 +417,7 @@ const description = "Your key to understanding abbreviations and terms used in m
     iconPath="/images/glossary/glossary_logo.svg"
     iconAlt="Glossary"
   >
+    <p class="tap-hint">↓ Tap a term for a plain-English explanation.</p>
     <div slot="toolbar" class="glossary-search">
       <form method="get" action="/glossary" id="searchForm">
         <input
