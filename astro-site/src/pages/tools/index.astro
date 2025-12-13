@@ -103,23 +103,23 @@ const description = "Machine-knitting tools that do the math for you. Let the wi
       {entries.map((entry, index) => {
         const basePath = entry.entryType === 'agent' ? '/agents' : '/wizards';
         const displayText = entry.excerpt || entry.hero || '';
-        const badgeClass = `badge-${entry.accessLevel}`;
-        const badgeText = entry.accessLevel === 'paid' && entry.price 
-          ? `$${entry.price}` 
-          : entry.accessLevel.charAt(0).toUpperCase() + entry.accessLevel.slice(1);
+        const isFree = entry.accessLevel === 'free';
         
         return (
           <a 
             href={`${basePath}/${entry.slug}`} 
-            class="guide-card" 
+            class="guide-card kbm-card" 
             data-testid={`card-tool-${entry.slug}`}
             style={`animation-delay: ${index * 0.1}s`}
           >
-            <h2 class="guide-card-title">{entry.title}</h2>
-            {displayText && (
-              <p class="guide-card-description">{displayText}</p>
+            {isFree && (
+              <span class="kbm-card__corner-tag">Free</span>
             )}
-            <span class={`guide-card-badge ${badgeClass}`}>{badgeText}</span>
+            <h2 class="guide-card-title kbm-card__title">{entry.title}</h2>
+            {displayText && (
+              <p class="guide-card-description kbm-card__desc">{displayText}</p>
+            )}
+            <div class="kbm-card__meta">Open calculator →</div>
           </a>
         );
       })}
@@ -198,31 +198,6 @@ const description = "Machine-knitting tools that do the math for you. Let the wi
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .guide-card-badge {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border-radius: 12px;
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    font-weight: 600;
-    text-transform: uppercase;
-    align-self: flex-start;
-  }
-
-  .badge-free {
-    background-color: #C7D8A4;
-    color: #52682D;
-  }
-
-  .badge-paid {
-    background-color: #52682D;
-    color: white;
-  }
-
-  .badge-membership {
-    background-color: #8BA556;
-    color: white;
   }
 
   @keyframes fadeInUp {
