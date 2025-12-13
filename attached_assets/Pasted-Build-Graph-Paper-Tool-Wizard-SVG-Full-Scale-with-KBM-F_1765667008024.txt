@@ -1,0 +1,267 @@
+Build “Graph Paper Tool” Wizard (SVG, Full-Scale) with KBM Footer Attribution
+
+You are working in my Astro codebase for Knit by Machine (KBM).
+
+Goal
+
+Create a new Tool / Wizard that generates full-scale knitter’s graph paper as SVG, based on the user’s stitch and row gauge, with an in/cm toggle, paper size selection, and a Download SVG button.
+The generated SVG must include a subtle footer attribution indicating it was created with Knit by Machine.
+
+This tool must reuse my existing wizard “lego block” layout and my existing stitch/row gauge input components (including unit toggle). Do not invent new UI patterns.
+
+Routing + Naming
+
+Create page:
+src/pages/tools/graph-paper.astro
+
+Page title:
+Graph Paper Tool | Knit by Machine
+
+Meta description:
+Create full-scale knitter’s graph paper based on your stitch and row gauge. Download printable SVG graph paper for shaping, motifs, and intarsia.
+
+Use my standard KBM layout (same header/footer) via my existing layout component (e.g. BaseLayout.astro).
+
+Reuse Existing Wizard Lego Blocks
+
+Search the project for existing tool/wizard pages.
+
+Reuse:
+
+Wizard container layout
+
+Wizard header (icon + H1 + intro)
+
+Form row/input styling
+
+Existing stitch + row gauge inputs
+
+Existing in/cm unit toggle
+
+Import and reuse these components directly.
+Extend them only if strictly necessary, without changing their appearance.
+
+Wizard UI Requirements
+A) Gauge Inputs
+
+stitches (number, required, > 0)
+
+rows (number, required, > 0)
+
+Unit toggle:
+
+in = stitches per inch / rows per inch
+
+cm = stitches per centimeter / rows per centimeter
+
+B) Paper Options
+
+Paper size:
+
+Letter (8.5 × 11 in)
+
+A4 (210 × 297 mm)
+
+Orientation: Portrait / Landscape
+
+Bold line frequency:
+
+Every 5 cells
+
+Every 10 cells
+
+Reference guides:
+
+If unit = in → Show 1-inch guides
+
+If unit = cm → Show 5-cm guides
+
+C) Actions
+
+Update Preview
+
+Download SVG
+
+Optional: Print (via window.print())
+
+D) Helper Note
+
+Display beneath download button:
+
+For true-scale printing, print at Actual Size / 100% (not “Fit to page”).
+
+SVG Output Requirements (Critical)
+True-Scale Rules
+
+SVG must use real-world units.
+
+Letter:
+
+width="8.5in" height="11in"
+
+A4:
+
+Use mm or convert to inches internally — either is acceptable.
+
+Printing at 100% must preserve scale.
+
+Cell Dimensions
+
+Unit = in:
+
+cell width = 1 / stitches inches
+
+cell height = 1 / rows inches
+
+Unit = cm:
+
+cell width = 1 / stitches cm
+
+cell height = 1 / rows cm
+
+If converting to inches internally: divide by 2.54
+
+Grid Features
+
+Light grid for every cell
+
+Bold grid lines every N cells (5 or 10)
+
+Reference guides:
+
+in → every 1 inch
+(stitches cells horizontally, rows cells vertically)
+
+cm → every 5 cm
+(stitches * 5 and rows * 5 cells)
+
+Margins + Footer Band (Required)
+
+Page margin: 0.25in (or 6mm) on all sides
+
+Footer band height: 0.25in (or 6mm)
+
+The grid must stop above the footer band.
+
+Do not allow grid lines into the footer area.
+
+KBM Footer Attribution (Inside SVG)
+Footer Text (use exactly):
+
+Created with the Knit by Machine Graph Paper Tool
+
+Placement
+
+Inside the SVG (not HTML)
+
+In the footer band at the bottom of the page
+
+Left-aligned with the grid’s left edge
+
+Style
+
+Font family:
+system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif
+
+Font size: 7pt
+
+Opacity: 0.45
+
+Not bold
+
+fill="currentColor"
+
+text-rendering="geometricPrecision"
+
+Positioning
+
+X = left margin
+
+Y = pageHeight − margin − (footerBand × 0.35)
+(visually centered within footer band)
+
+Implementation (Recommended Architecture)
+1) SVG API Route
+
+Create:
+
+src/pages/api/graph-paper.svg.ts
+
+
+This route:
+
+Accepts query params:
+
+sts
+
+rows
+
+unit (in | cm)
+
+paper (letter | a4)
+
+orientation (portrait | landscape)
+
+boldEvery (5 | 10)
+
+guides (0 | 1)
+
+Returns:
+
+Content-Type: image/svg+xml; charset=utf-8
+
+SVG string
+
+2) Wizard Page
+
+In tools/graph-paper.astro:
+
+Build UI using existing wizard lego blocks
+
+Generate preview via:
+
+<img> or <object> pointing to the API route
+
+Download button:
+
+<a href="/api/graph-paper.svg?..."
+
+include download attribute
+
+Page Copy (KBM Voice)
+
+H1: Graph Paper Tool
+
+Intro:
+
+Create full-scale knitter’s graph paper based on your stitch and row gauge. Plan shaping, motifs, and intarsia on a grid that matches how your knitting grows.
+
+Under preview:
+
+Print at 100%, tape sheets together for larger pieces, and sketch shapes or motifs directly on the grid.
+
+Acceptance Criteria
+
+Uses KBM header/footer layout
+
+Reuses existing wizard + gauge components
+
+SVG prints true-scale at 100%
+
+Footer attribution appears on preview, download, and print
+
+Grid never overlaps footer
+
+No unrelated refactors
+
+Final Step
+
+After implementation, report:
+
+Which existing components were reused (file paths)
+
+Final tool URL
+
+One tested query string (e.g. 6 sts / 8 rows per inch, Letter, portrait)
+
+Do not refactor unrelated files.
