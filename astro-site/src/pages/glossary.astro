@@ -351,7 +351,91 @@ const description = "Your key to understanding abbreviations and terms used in m
       }
     }
 
-    @media (max-width: 1024px) {
+    /* Mobile alphabet control - hidden by default */
+    .alpha-mobile { display: none; }
+
+    @media (max-width: 768px) {
+      .alphabet-filter { display: none; }
+      
+      .alpha-mobile { 
+        display: block; 
+        margin: 0 auto 1rem; 
+        padding: 0 1.5rem; 
+        max-width: 1200px; 
+      }
+
+      .alpha-mobile-btn {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: .75rem 1rem;
+        border-radius: 999px;
+        border: 1px solid rgba(82, 104, 45, 0.22);
+        background: #fff;
+        color: var(--kbm-green, #52682d);
+        font-weight: 800;
+        font-size: var(--text-base);
+        cursor: pointer;
+        font-family: inherit;
+      }
+
+      .alpha-mobile-caret {
+        transition: transform 0.2s ease;
+      }
+
+      .alpha-mobile-btn[aria-expanded="true"] .alpha-mobile-caret {
+        transform: rotate(180deg);
+      }
+
+      .alpha-mobile-panel {
+        margin-top: .75rem;
+        border-radius: 16px;
+        border: 1px solid rgba(82, 104, 45, 0.18);
+        background: #fff;
+        padding: .75rem;
+        box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+      }
+
+      .alpha-mobile-letters {
+        display: grid;
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+        gap: .35rem;
+      }
+
+      .alpha-mobile-letters a {
+        text-align: center;
+        padding: .5rem 0;
+        border-radius: 10px;
+        font-weight: 800;
+        color: var(--kbm-green, #52682d);
+        text-decoration: none;
+        border: 1px solid rgba(82, 104, 45, 0.14);
+        transition: all 0.15s ease;
+      }
+
+      .alpha-mobile-letters a:hover:not(.disabled) {
+        background: #f0f4ea;
+        border-color: var(--kbm-green);
+      }
+
+      .alpha-mobile-letters a.active {
+        background: var(--kbm-green);
+        color: #fff;
+        border-color: var(--kbm-green);
+      }
+
+      .alpha-mobile-letters a.disabled {
+        opacity: .35;
+        pointer-events: none;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
       .alphabet-filter {
         top: var(--header-height);
       }
@@ -371,7 +455,7 @@ const description = "Your key to understanding abbreviations and terms used in m
       }
 
       .card-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
       }
     }
   </style>
@@ -414,6 +498,31 @@ const description = "Your key to understanding abbreviations and terms used in m
           </a>
         );
       })}
+    </div>
+  </div>
+
+  <div class="alpha-mobile">
+    <button type="button" class="alpha-mobile-btn" aria-expanded="false" aria-controls="alphaMobilePanel">
+      Jump to a letter
+      <span class="alpha-mobile-caret">▾</span>
+    </button>
+
+    <div id="alphaMobilePanel" class="alpha-mobile-panel" hidden>
+      <div class="alpha-mobile-letters">
+        <a href="/glossary" class="active" id="filterAllMobile">All</a>
+        {alphabet.map((letter) => {
+          const hasTerms = lettersWithTerms.has(letter);
+          return (
+            <a
+              href={`#${letter}`}
+              class={!hasTerms ? "disabled" : ""}
+              data-letter={letter}
+            >
+              {letter}
+            </a>
+          );
+        })}
+      </div>
     </div>
   </div>
   
@@ -475,8 +584,39 @@ const description = "Your key to understanding abbreviations and terms used in m
       const termGrid = document.getElementById('termGrid');
       const allTerms = JSON.parse(termGrid?.dataset.terms || '[]');
       
+      // Mobile alphabet panel elements
+      const alphaMobileBtn = document.querySelector('.alpha-mobile-btn');
+      const alphaMobilePanel = document.getElementById('alphaMobilePanel');
+      const mobileLetterLinks = document.querySelectorAll('.alpha-mobile-letters a[data-letter]');
+      const allLinkMobile = document.getElementById('filterAllMobile');
+      
       let currentlyOpenCard = null;
       let currentFilter = { search: '', letter: '' };
+
+      // Mobile panel toggle
+      function toggleMobilePanel() {
+        const isOpen = alphaMobilePanel.hidden === false;
+        alphaMobilePanel.hidden = isOpen;
+        alphaMobileBtn.setAttribute('aria-expanded', !isOpen);
+      }
+
+      function closeMobilePanel() {
+        alphaMobilePanel.hidden = true;
+        alphaMobileBtn.setAttribute('aria-expanded', 'false');
+      }
+
+      alphaMobileBtn?.addEventListener('click', toggleMobilePanel);
+
+      // Close mobile panel on outside click
+      document.addEventListener('click', (e) => {
+        if (alphaMobilePanel && !alphaMobilePanel.hidden) {
+          const isInsidePanel = alphaMobilePanel.contains(e.target);
+          const isButton = alphaMobileBtn.contains(e.target);
+          if (!isInsidePanel && !isButton) {
+            closeMobilePanel();
+          }
+        }
+      });
 
       // Accordion toggle functionality
       function closeCard(card) {
@@ -568,32 +708,73 @@ const description = "Your key to understanding abbreviations and terms used in m
         filterTerms();
       });
 
-      // Letter filter
+      // Helper to sync active states across desktop and mobile
+      function syncActiveStates(letter) {
+        // Update desktop
+        letterLinks.forEach(l => l.classList.remove('active'));
+        allLink?.classList.remove('active');
+        
+        // Update mobile
+        mobileLetterLinks.forEach(l => l.classList.remove('active'));
+        allLinkMobile?.classList.remove('active');
+        
+        if (letter) {
+          // Activate specific letter in both
+          letterLinks.forEach(l => {
+            if (l.dataset.letter === letter) l.classList.add('active');
+          });
+          mobileLetterLinks.forEach(l => {
+            if (l.dataset.letter === letter) l.classList.add('active');
+          });
+        } else {
+          // Activate "All" in both
+          allLink?.classList.add('active');
+          allLinkMobile?.classList.add('active');
+        }
+      }
+
+      // Letter filter (desktop)
       letterLinks.forEach(link => {
         link.addEventListener('click', (e) => {
           e.preventDefault();
           const letter = link.dataset.letter;
           
           currentFilter.letter = letter;
-          
-          letterLinks.forEach(l => l.classList.remove('active'));
-          allLink?.classList.remove('active');
-          link.classList.add('active');
-          
+          syncActiveStates(letter);
           filterTerms();
         });
       });
 
-      // All filter
+      // Letter filter (mobile)
+      mobileLetterLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const letter = link.dataset.letter;
+          
+          currentFilter.letter = letter;
+          syncActiveStates(letter);
+          filterTerms();
+          closeMobilePanel();
+        });
+      });
+
+      // All filter (desktop)
       allLink?.addEventListener('click', (e) => {
         e.preventDefault();
         
         currentFilter.letter = '';
-        
-        letterLinks.forEach(l => l.classList.remove('active'));
-        allLink.classList.add('active');
-        
+        syncActiveStates('');
         filterTerms();
+      });
+
+      // All filter (mobile)
+      allLinkMobile?.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        currentFilter.letter = '';
+        syncActiveStates('');
+        filterTerms();
+        closeMobilePanel();
       });
     });
   </script>
