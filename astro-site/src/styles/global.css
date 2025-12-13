@@ -330,6 +330,7 @@ p {
 
 .kbm-card {
   position: relative;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   background-color: #ffffff;
@@ -381,15 +382,14 @@ p {
 
 .kbm-card-ribbon {
   position: absolute;
-  top: 12px;
-  left: 12px;
-  z-index: 2;
+  top: 14px;
+  left: -42px;
+  z-index: 3;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  width: 140px;
+  text-align: center;
 
-  padding: 0.35rem 0.75rem;
+  padding: 0.35rem 0;
   font-size: 0.75rem;
   font-weight: 800;
   letter-spacing: 0.06em;
@@ -397,32 +397,9 @@ p {
 
   background: #c7d8a4;
   color: #52682d;
-  border: 1px solid rgba(82, 104, 45, 0.28);
+  border: 1px solid rgba(82, 104, 45, 0.25);
 
-  /* Crisp corners for ribbon look */
-  border-radius: 6px;
-
-  /* Notch cut OUT of right edge */
-  clip-path: polygon(
-    0 0,
-    92% 0,
-    100% 50%,
-    92% 100%,
-    0 100%
-  );
-}
-
-/* Remove any pseudo-elements */
-.kbm-card-ribbon::before,
-.kbm-card-ribbon::after {
-  content: none !important;
-}
-
-/* Fallback for browsers without clip-path support */
-@supports not (clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%)) {
-  .kbm-card-ribbon {
-    clip-path: none;
-  }
+  transform: rotate(-45deg);
 }
 
 /* Responsive adjustments for KBM cards */

@@ -1,0 +1,105 @@
+Please update the global KBM catalog card component (the reusable component used for Tools and other catalogs) so the Free label appears as a rotated corner ribbon, not a pill, tag, or speech bubble.
+
+This change must be made in the component, not just on a single page.
+
+1) Locate the global card component
+
+Find the reusable card component file (for example):
+
+src/components/KbmCard.astro
+
+src/components/CatalogCard.astro
+
+src/components/cards/*.astro
+
+This is the component that renders the clickable card and currently shows the “Free” label.
+
+2) Replace the existing “Free” badge markup
+
+Remove the existing FREE pill / tag markup completely.
+
+Inside the card container element (the anchor or wrapper that represents the card), add this markup only when the card is free, using the existing boolean logic:
+
+{isFree && <span class="kbm-card-ribbon">Free</span>}
+
+
+Do not introduce new props. Use the existing “free” condition already present in the component.
+
+3) Update card container styles (required)
+
+The card container must clip the ribbon so it feels integrated into the corner.
+
+Add or confirm this on the card wrapper:
+
+.kbm-card {
+  position: relative;
+  overflow: hidden;
+}
+
+4) Replace ALL existing ribbon/badge CSS with this rotated ribbon CSS
+
+Delete any previous styles related to:
+
+pills
+
+tags
+
+notches
+
+clip-path
+
+::before / ::after shapes
+
+Then add exactly this CSS:
+
+.kbm-card-ribbon {
+  position: absolute;
+  top: 14px;
+  left: -42px;
+  z-index: 3;
+
+  width: 140px;
+  text-align: center;
+
+  padding: 0.35rem 0;
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  background: #c7d8a4;
+  color: #52682d;
+  border: 1px solid rgba(82, 104, 45, 0.25);
+
+  transform: rotate(-45deg);
+}
+
+Important constraints
+
+No border-radius (this avoids the pill/bubble look)
+
+No gradients
+
+No shadows
+
+Flat, calm, architectural
+
+5) Verify behavior
+
+After updating the component, confirm that:
+
+Each free card shows a diagonal “Free” ribbon in the top-left corner
+
+The ribbon is clipped cleanly by the card corner
+
+No text overlaps the card title
+
+No old “Free” pills remain anywhere
+
+Guardrails
+
+Do not add “Paid” or other labels
+
+Do not change card layout, grid, titles, or descriptions
+
+This change should automatically apply to /tools without page-level edits
