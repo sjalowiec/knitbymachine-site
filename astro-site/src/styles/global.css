@@ -25,6 +25,11 @@ body {
   line-height: 1.5;
 }
 
+/* Hide global header search on catalog pages that have their own search */
+body.has-catalog-search .kbm-search-wrap {
+  display: none;
+}
+
 /* Global layout container */
 main {
   padding-top: var(--header-height); /* ensures header doesn't overlap content */

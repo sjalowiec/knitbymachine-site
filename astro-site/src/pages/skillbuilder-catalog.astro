@@ -49,6 +49,7 @@ try {
 
 const title = "Skill Builders";
 const description = "Interactive step-by-step journeys to master knitting machine techniques. Learn at your own pace with hands-on practice.";
+const bodyClass = "has-catalog-search";
 
 // Level definitions for the selector (line1 = "Level X", line2 = description)
 const levels = [
@@ -60,7 +61,7 @@ const levels = [
 ];
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} {bodyClass}>
   <div class="page-container">
     <!-- Integrated Hero Panel with Controls -->
     <div class="hero-panel fade-in">

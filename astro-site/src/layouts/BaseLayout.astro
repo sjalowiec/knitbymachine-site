@@ -7,9 +7,10 @@ import "../styles/print.css";
 interface Props {
   title?: string;
   description?: string;
+  bodyClass?: string;
 }
 
-const { title = "Knit by Machine", description = "Machine knitting tools and patterns" } = Astro.props;
+const { title = "Knit by Machine", description = "Machine knitting tools and patterns", bodyClass = "" } = Astro.props;
 ---
 
 <html lang="en">
@@ -39,7 +40,7 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
     <slot name="head" />
   </head>
 
-  <body>
+  <body class={bodyClass}>
     <Header />
 
     <main>

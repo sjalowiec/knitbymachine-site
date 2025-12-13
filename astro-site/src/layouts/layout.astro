@@ -1,7 +1,13 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
+
+interface Props {
+  bodyClass?: string;
+}
+
+const { bodyClass = "" } = Astro.props;
 ---
-<BaseLayout>
+<BaseLayout bodyClass={bodyClass}>
   <slot />
 </BaseLayout>
 
