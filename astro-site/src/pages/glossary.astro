@@ -304,9 +304,12 @@ const description = "Your key to understanding abbreviations and terms used in m
       border-radius: 14px;
     }
 
+    /* Remove grayscale from glossary catalog images */
+    .term-image,
+    .term-image img,
     .kbm-unified-image {
-      filter: grayscale(100%);
-      opacity: .88;
+      filter: none;
+      opacity: 1;
     }
 
     .no-results {
