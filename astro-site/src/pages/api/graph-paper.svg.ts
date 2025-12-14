@@ -13,21 +13,44 @@ export const GET: APIRoute = async ({ request }) => {
   const url = new URL(request.url);
   
   // Parse query parameters
-  const stsParam = url.searchParams.get('sts') || '6';
-  const rowsParam = url.searchParams.get('rows') || '8';
+  const stsParam = url.searchParams.get('sts') || '24';
+  const rowsParam = url.searchParams.get('rows') || '32';
   const unit = url.searchParams.get('unit') || 'in';
   const paper = url.searchParams.get('paper') || 'letter';
   const orientation = url.searchParams.get('orientation') || 'portrait';
   const boldEveryParam = url.searchParams.get('boldEvery') || '10';
   const guidesParam = url.searchParams.get('guides') || '1';
   
-  const sts = parseFloat(stsParam) || 6;
-  const rows = parseFloat(rowsParam) || 8;
+  const stsInput = parseFloat(stsParam) || 24;  // Default: 24 stitches over 4"
+  const rowsInput = parseFloat(rowsParam) || 32; // Default: 32 rows over 4"
   const boldEvery = parseInt(boldEveryParam) || 10;
   const showGuides = guidesParam === '1';
   
   // Validate inputs
-  if (sts <= 0 || rows <= 0) {
+  if (stsInput <= 0 || rowsInput <= 0) {
+    return new Response('Invalid gauge values', { status: 400 });
+  }
+  
+  // Convert gauge inputs to per-inch values
+  // Inputs are always "over 4 inches" (unit=in) or "over 10 cm" (unit=cm)
+  let stsPerIn: number;
+  let rowsPerIn: number;
+  
+  if (unit === 'cm') {
+    // Input is stitches/rows over 10 cm
+    const stsPerCm = stsInput / 10;
+    const rowsPerCm = rowsInput / 10;
+    // Convert to per-inch
+    stsPerIn = stsPerCm * 2.54;
+    rowsPerIn = rowsPerCm * 2.54;
+  } else {
+    // Input is stitches/rows over 4 inches
+    stsPerIn = stsInput / 4;
+    rowsPerIn = rowsInput / 4;
+  }
+  
+  // Validate converted values
+  if (stsPerIn <= 0 || rowsPerIn <= 0) {
     return new Response('Invalid gauge values', { status: 400 });
   }
   
@@ -41,19 +64,9 @@ export const GET: APIRoute = async ({ request }) => {
     [pageWidth, pageHeight] = [pageHeight, pageWidth];
   }
   
-  // Calculate cell dimensions based on unit
-  let cellWidth: number;
-  let cellHeight: number;
-  
-  if (unit === 'cm') {
-    // Input is stitches/rows per cm, convert to inches
-    cellWidth = 1 / sts / 2.54; // cm to inches
-    cellHeight = 1 / rows / 2.54;
-  } else {
-    // Input is stitches/rows per inch
-    cellWidth = 1 / sts;
-    cellHeight = 1 / rows;
-  }
+  // Calculate cell dimensions in inches (true-scale)
+  const cellWidth = 1 / stsPerIn;
+  const cellHeight = 1 / rowsPerIn;
   
   // Calculate drawable area
   const drawableWidth = pageWidth - (2 * MARGIN);
@@ -125,13 +138,14 @@ export const GET: APIRoute = async ({ request }) => {
     let guideIntervalRows: number;
     
     if (unit === 'cm') {
-      // Show 5cm guides: stitches * 5 cells horizontally, rows * 5 cells vertically
-      guideIntervalCols = Math.round(sts * 5);
-      guideIntervalRows = Math.round(rows * 5);
+      // Show 5cm guides: use per-inch values converted to cells for 5cm
+      // 5cm = 5/2.54 inches ≈ 1.97 inches worth of cells
+      guideIntervalCols = Math.round(stsPerIn * (5 / 2.54));
+      guideIntervalRows = Math.round(rowsPerIn * (5 / 2.54));
     } else {
-      // Show 1-inch guides: stitches cells horizontally, rows cells vertically
-      guideIntervalCols = Math.round(sts);
-      guideIntervalRows = Math.round(rows);
+      // Show 1-inch guides: stitches per inch cells horizontally, rows per inch cells vertically
+      guideIntervalCols = Math.round(stsPerIn);
+      guideIntervalRows = Math.round(rowsPerIn);
     }
     
     // Draw vertical guide lines

@@ -36,10 +36,11 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   display: block;
 }
 
-.unit-label {
-  font-size: 0.85rem;
+.gauge-helper {
+  font-size: 0.9rem;
   color: #6b7280;
-  margin-top: 0.25rem;
+  margin-top: 0.5rem;
+  font-style: italic;
 }
 
 .options-row {
@@ -149,30 +150,29 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       
       <div class="input-grid">
         <div class="input-group">
-          <label for="stitches">Stitch Gauge</label>
+          <label for="stitches" id="stitch-label">Stitches over 4 inches</label>
           <input 
             type="number" 
             id="stitches" 
             step="0.5" 
             min="0.5"
-            placeholder="e.g., 6"
+            placeholder="e.g., 24"
             data-testid="input-stitches"
           />
-          <div class="unit-label" id="stitch-unit-label">stitches per inch</div>
         </div>
         <div class="input-group">
-          <label for="rows">Row Gauge</label>
+          <label for="rows" id="row-label">Rows over 4 inches</label>
           <input 
             type="number" 
             id="rows" 
             step="0.5" 
             min="0.5"
-            placeholder="e.g., 8"
+            placeholder="e.g., 32"
             data-testid="input-rows"
           />
-          <div class="unit-label" id="row-unit-label">rows per inch</div>
         </div>
       </div>
+      <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm). The tool converts it to full-scale graph paper automatically.</p>
     </div>
 
     <!-- Paper Options -->
@@ -222,7 +222,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       <div class="preview-container">
         <img 
           id="preview-img" 
-          src="/api/graph-paper.svg?sts=6&rows=8&unit=in&paper=letter&orientation=portrait&boldEvery=10&guides=1" 
+          src="/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&boldEvery=10&guides=1" 
           alt="Graph paper preview"
           data-testid="img-preview"
         />
@@ -246,8 +246,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
 <script>
   // State
   let unit = localStorage.getItem('graphpaper.unit') || 'in';
-  let stitches = localStorage.getItem('graphpaper.sts') || '6';
-  let rows = localStorage.getItem('graphpaper.rows') || '8';
+  let stitches = localStorage.getItem('graphpaper.sts') || '24';
+  let rows = localStorage.getItem('graphpaper.rows') || '32';
   let paperSize = localStorage.getItem('graphpaper.paper') || 'letter';
   let orientation = localStorage.getItem('graphpaper.orientation') || 'portrait';
   let boldEvery = localStorage.getItem('graphpaper.boldEvery') || '10';
@@ -262,8 +262,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   const selectOrientation = document.getElementById('orientation') as HTMLSelectElement;
   const selectBoldEvery = document.getElementById('bold-every') as HTMLSelectElement;
   const checkboxGuides = document.getElementById('show-guides') as HTMLInputElement;
-  const stitchUnitLabel = document.getElementById('stitch-unit-label');
-  const rowUnitLabel = document.getElementById('row-unit-label');
+  const stitchLabel = document.getElementById('stitch-label');
+  const rowLabel = document.getElementById('row-label');
   const guidesLabel = document.getElementById('guides-label');
   const previewImg = document.getElementById('preview-img') as HTMLImageElement;
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
@@ -281,14 +281,14 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     if (unit === 'in') {
       btnInches?.classList.add('active');
       btnCm?.classList.remove('active');
-      if (stitchUnitLabel) stitchUnitLabel.textContent = 'stitches per inch';
-      if (rowUnitLabel) rowUnitLabel.textContent = 'rows per inch';
+      if (stitchLabel) stitchLabel.textContent = 'Stitches over 4 inches';
+      if (rowLabel) rowLabel.textContent = 'Rows over 4 inches';
       if (guidesLabel) guidesLabel.textContent = 'Show reference guides (every 1 inch)';
     } else {
       btnCm?.classList.add('active');
       btnInches?.classList.remove('active');
-      if (stitchUnitLabel) stitchUnitLabel.textContent = 'stitches per cm';
-      if (rowUnitLabel) rowUnitLabel.textContent = 'rows per cm';
+      if (stitchLabel) stitchLabel.textContent = 'Stitches over 10 cm';
+      if (rowLabel) rowLabel.textContent = 'Rows over 10 cm';
       if (guidesLabel) guidesLabel.textContent = 'Show reference guides (every 5 cm)';
     }
   }
@@ -298,8 +298,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   // Build query string
   function buildQueryString(): string {
     const params = new URLSearchParams({
-      sts: inputStitches.value || '6',
-      rows: inputRows.value || '8',
+      sts: inputStitches.value || '24',
+      rows: inputRows.value || '32',
       unit: unit,
       paper: selectPaper.value,
       orientation: selectOrientation.value,

@@ -1,0 +1,135 @@
+You are working in my Astro codebase for Knit by Machine (KBM). Update the Graph Paper Tool wizard and SVG generator so the gauge inputs are always entered as:
+
+stitches over 4 inches (if unit = in)
+
+stitches over 10 cm (if unit = cm)
+(and same for rows)
+
+Do not add a selector. Do not ask for per-inch/per-cm.
+
+Use my existing wizard lego blocks and gauge input UI.
+
+1) Wizard UI changes (tools/graph-paper.astro)
+
+In the gauge section:
+
+A) Keep the inputs
+
+stitches (number)
+
+rows (number)
+
+in/cm toggle (already exists in my lego gauge block)
+
+B) Update labels + help text to enforce the standard
+
+Label stitches input as:
+
+If unit = in: “Stitches over 4 inches”
+
+If unit = cm: “Stitches over 10 cm”
+
+Label rows input as:
+
+If unit = in: “Rows over 4 inches”
+
+If unit = cm: “Rows over 10 cm”
+
+Add one short helper line under the pair:
+
+Enter your measured gauge over 4" (or 10 cm). The tool converts it to full-scale graph paper automatically.
+
+C) Query params sent to the SVG endpoint
+
+The wizard should call:
+/api/graph-paper.svg?sts=...&rows=...&unit=in|cm&paper=...&orientation=...&boldEvery=...&guides=...
+
+No span param needed, because the “span” is implied:
+
+unit=in → 4 inches
+
+unit=cm → 10 cm
+
+2) SVG generator changes (api/graph-paper.svg.ts)
+
+The SVG output is currently wrong in two ways:
+
+Footer text is gigantic (must use pt)
+
+Gauge math expects per-inch
+
+Fix both.
+
+A) Interpret gauge inputs as “over 4 in / 10 cm”
+
+Let:
+
+stsInput = query sts (number)
+
+rowsInput = query rows (number)
+
+unit = query unit ("in" | "cm")
+
+Convert to per-inch internally:
+
+If unit = "in" (inputs are over 4 inches)
+
+stsPerIn = stsInput / 4
+
+rowsPerIn = rowsInput / 4
+
+If unit = "cm" (inputs are over 10 cm)
+
+stsPerCm = stsInput / 10
+
+rowsPerCm = rowsInput / 10
+
+Convert to per-inch:
+
+stsPerIn = stsPerCm * 2.54
+
+rowsPerIn = rowsPerCm * 2.54
+
+Then compute true-scale cell size in inches:
+
+cellW = 1 / stsPerIn
+
+cellH = 1 / rowsPerIn
+
+Validate:
+
+stsInput > 0, rowsInput > 0
+
+stsPerIn > 0, rowsPerIn > 0
+
+B) Fix footer text sizing (critical)
+
+The footer must use:
+
+font-size="7pt" (NOT 7)
+Otherwise it renders huge.
+
+Footer text:
+Created with the Knit by Machine Graph Paper Tool
+
+C) (Recommended) Render grid using patterns, not thousands of <line> tags
+
+If the current SVG builds the grid by looping and outputting tons of <line> elements, replace it with <pattern> fills using:
+
+patternUnits="userSpaceOnUse"
+
+shape-rendering="crispEdges"
+
+This avoids the banding/moire effect in browser preview and makes files small.
+
+3) Quick sanity tests
+
+These two should produce the SAME scale (because 24 sts/32 rows over 4" = 6/8 per inch; 30/40 over 10 cm = 3/4 per cm → same-ish example):
+
+inches version:
+/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&boldEvery=5&guides=1
+
+cm version:
+/api/graph-paper.svg?sts=30&rows=40&unit=cm&paper=a4&orientation=portrait&boldEvery=5&guides=1
+
+Confirm the grid preview looks clean and the footer is small.
