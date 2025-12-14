@@ -150,10 +150,10 @@ export const GET: APIRoute = async ({ request }) => {
     </g>
   </svg>
   <text
-    x="${gridX + 0.2}"
-    y="${footerY}"
+    x="${gridX + 0.3}"
+    y="${footerY + 0.04}"
     font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
-    font-size="0.132"
+    font-size="0.11"
     opacity="0.8"
     fill="#222"
   >${footerText}</text>
