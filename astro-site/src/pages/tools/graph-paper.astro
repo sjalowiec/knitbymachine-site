@@ -117,10 +117,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
           <input 
             type="number" 
             id="stitches" 
-            step="1" 
+            step="any"
             min="1"
-            pattern="[0-9]*"
-            inputmode="numeric"
             placeholder="sts over 4&quot;"
             data-testid="input-stitches"
           />
@@ -130,16 +128,15 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
           <input 
             type="number" 
             id="rows" 
-            step="1" 
+            step="any"
             min="1"
-            pattern="[0-9]*"
-            inputmode="numeric"
             placeholder="rows over 4&quot;"
             data-testid="input-rows"
           />
         </div>
       </div>
-      <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm). Use whole numbers for best results.</p>
+      <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm).</p>
+      <p class="gauge-error" id="gauge-error" style="display: none; color: #dc2626; font-size: 0.9rem; margin-top: 0.5rem;">Please enter whole numbers only.</p>
     </div>
 
     <!-- Paper Size -->
@@ -243,32 +240,34 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     updateDownloadLink();
   });
 
-  // Block decimal input entirely
-  function blockDecimals(e: KeyboardEvent) {
-    if (e.key === '.' || e.key === ',') {
-      e.preventDefault();
+  const gaugeError = document.getElementById('gauge-error');
+
+  // Check if value is a whole number
+  function hasDecimal(value: string): boolean {
+    return value.includes('.') || value.includes(',') || (parseFloat(value) % 1 !== 0);
+  }
+
+  // Validate inputs and show/hide error
+  function validateGauge(): boolean {
+    const stsVal = inputStitches?.value || '';
+    const rowsVal = inputRows?.value || '';
+    
+    if ((stsVal && hasDecimal(stsVal)) || (rowsVal && hasDecimal(rowsVal))) {
+      if (gaugeError) gaugeError.style.display = 'block';
+      return false;
+    } else {
+      if (gaugeError) gaugeError.style.display = 'none';
+      return true;
     }
   }
 
-  // Also sanitize on paste/input (remove any decimals)
-  function sanitizeInput(input: HTMLInputElement) {
-    input.value = input.value.replace(/[.,]/g, '');
-    if (input.value.length > 1 && input.value.startsWith('0')) {
-      input.value = parseInt(input.value, 10).toString();
-    }
-  }
-
-  // Block decimal keys
-  inputStitches?.addEventListener('keydown', blockDecimals);
-  inputRows?.addEventListener('keydown', blockDecimals);
-
-  // Input change handlers - sanitize and update download link
+  // Input change handlers - validate and update download link
   inputStitches?.addEventListener('input', () => {
-    sanitizeInput(inputStitches);
+    validateGauge();
     updateDownloadLink();
   });
   inputRows?.addEventListener('input', () => {
-    sanitizeInput(inputRows);
+    validateGauge();
     updateDownloadLink();
   });
   selectPaper?.addEventListener('change', updateDownloadLink);
