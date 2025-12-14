@@ -130,7 +130,7 @@ export const GET: APIRoute = async ({ request }) => {
   
   <!-- Footer -->
   <image 
-    href="/images/kbm_logo.svg" 
+    href="https://knitbymachine.com/images/kbm_logo.svg" 
     x="${gridX}" 
     y="${footerY - 0.12}" 
     width="0.15" 
