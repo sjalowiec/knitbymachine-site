@@ -131,17 +131,17 @@ export const GET: APIRoute = async ({ request }) => {
   <!-- Footer -->
   <image 
     href="/images/kbm_logo.svg" 
-    x="0.25" 
-    y="10.52" 
-    width="0.2in" 
-    height="0.2in" 
+    x="${gridX}" 
+    y="${footerY - 0.12}" 
+    width="0.15" 
+    height="0.15" 
     preserveAspectRatio="xMidYMid meet" 
   />
   <text
-    x="0.52"
+    x="${gridX + 0.2}"
     y="${footerY}"
     font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
-    font-size="8.5pt"
+    font-size="0.1"
     opacity="0.8"
     fill="#222"
   >${footerText}</text>
