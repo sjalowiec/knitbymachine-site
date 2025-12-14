@@ -55,44 +55,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   gap: 1rem;
 }
 
-/* Preview Section */
-.preview-section {
-  margin-top: 2rem;
-  padding: 1.5rem;
-  background: #f9fafb;
-  border-radius: 8px;
-  border: 1px solid #e5e7eb;
-}
-
-.preview-section h3 {
-  color: var(--kbm-green);
-  font-size: 1.1rem;
-  font-weight: 700;
-  margin: 0 0 1rem 0;
-}
-
-.preview-container {
-  background: white;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-  padding: 0.5rem;
-  overflow: auto;
-  max-height: 400px;
-}
-
-.preview-container img {
-  display: block;
-  max-width: 100%;
-  height: auto;
-}
-
-.preview-hint {
-  font-size: 0.9rem;
-  color: #6b7280;
-  margin-top: 1rem;
-  line-height: 1.5;
-}
-
 /* Print styles */
 @media print {
   .wizard-page {
@@ -114,12 +76,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     padding: 0 !important;
     background: white !important;
     border: none !important;
-  }
-  
-  .preview-section {
-    background: white !important;
-    border: none !important;
-    padding: 0 !important;
   }
 }
 
@@ -205,24 +161,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       </div>
     </div>
 
-    <!-- Preview -->
-    <div class="preview-section">
-      <h3>Preview</h3>
-      <div class="preview-container">
-        <img 
-          id="preview-img" 
-          src="/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&preview=1" 
-          alt="Graph paper preview"
-          data-testid="img-preview"
-        />
-      </div>
-      <p class="preview-hint">
-        Print at 100%, tape sheets together for larger pieces, and sketch shapes or motifs directly on the grid.
-      </p>
-    </div>
-
     <!-- Actions -->
-    <ToolActionBar downloadId="download-btn" downloadFilename="knit-graph-paper.svg" />
+    <ToolActionBar downloadId="download-btn" downloadFilename="knit-graph-paper.svg" showPrint={false} />
     
     <div class="info-box no-print">
       <strong>Tip:</strong> For true-scale printing, print at Actual Size / 100% (not "Fit to page").
@@ -249,7 +189,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   const selectOrientation = document.getElementById('orientation') as HTMLSelectElement;
   const stitchLabel = document.getElementById('stitch-label');
   const rowLabel = document.getElementById('row-label');
-  const previewImg = document.getElementById('preview-img') as HTMLImageElement;
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
 
   // Initialize inputs from localStorage
@@ -287,11 +226,10 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     return params.toString();
   }
 
-  // Update preview
-  function updatePreview() {
+  // Update download link
+  function updateDownloadLink() {
     const query = buildQueryString();
-    previewImg.src = `/api/graph-paper.svg?${query}&preview=1`;
-    downloadBtn.href = `/api/graph-paper.svg?${query}`;
+    if (downloadBtn) downloadBtn.href = `/api/graph-paper.svg?${query}`;
     
     // Save to localStorage
     localStorage.setItem('graphpaper.sts', inputStitches.value);
@@ -305,23 +243,23 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   btnInches?.addEventListener('click', () => {
     unit = 'in';
     updateUnitsUI();
-    updatePreview();
+    updateDownloadLink();
   });
 
   btnCm?.addEventListener('click', () => {
     unit = 'cm';
     updateUnitsUI();
-    updatePreview();
+    updateDownloadLink();
   });
 
-  // Input change handlers - auto-update preview
-  inputStitches.addEventListener('input', updatePreview);
-  inputRows.addEventListener('input', updatePreview);
-  selectPaper.addEventListener('change', updatePreview);
-  selectOrientation.addEventListener('change', updatePreview);
+  // Input change handlers - auto-update download link
+  inputStitches?.addEventListener('input', updateDownloadLink);
+  inputRows?.addEventListener('input', updateDownloadLink);
+  selectPaper?.addEventListener('change', updateDownloadLink);
+  selectOrientation?.addEventListener('change', updateDownloadLink);
 
-  // Initial preview update
-  updatePreview();
+  // Initial download link update
+  updateDownloadLink();
 </script>
 
 </BaseLayout>

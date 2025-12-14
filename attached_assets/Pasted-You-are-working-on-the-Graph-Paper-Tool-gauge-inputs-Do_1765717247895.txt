@@ -1,0 +1,97 @@
+You are working on the Graph Paper Tool gauge inputs. Do NOT change shared/global wizard components at this time. Only update the gauge inputs used on the graph paper page.
+
+Goal
+
+Require whole numbers only for stitches and rows.
+
+Update the placeholder text to clearly reflect the 4" / 10 cm measurement standard.
+
+Keep the existing in/cm toggle behavior.
+
+1) Require whole numbers
+
+For the stitches and rows input fields used by the Graph Paper Tool:
+
+Restrict input to whole numbers only
+
+No decimals
+
+Values must be greater than zero
+
+Implementation requirements:
+
+Set input attributes:
+
+type="number"
+
+step="1"
+
+min="1"
+
+If validation logic exists, ensure decimal values are rejected or rounded.
+
+Do not allow fractional stitches or rows for this tool.
+
+Reason (do not show to user, but use for design intent):
+This tool produces visual graph paper. Fractional stitches/rows create unreadable subdivisions and are not meaningful for planning.
+
+2) Update placeholder text (dynamic by unit)
+
+Update the placeholder text for the two inputs so they clearly describe what the user should enter.
+
+Use these exact placeholder strings:
+
+If unit = inches
+
+Stitches input placeholder:
+sts over 4"
+
+Rows input placeholder:
+rows over 4"
+
+If unit = centimeters
+
+Stitches input placeholder:
+sts over 10cm
+
+Rows input placeholder:
+rows over 10cm
+
+The placeholder must update dynamically when the user toggles between in/cm.
+
+Do NOT include both units in the same placeholder.
+Do NOT mention “per inch” or “per cm”.
+
+3) Optional helper text (allowed, but keep minimal)
+
+If helper text already exists below the inputs, it may be updated to:
+
+“Enter your measured gauge over 4″ (or 10 cm). Use whole numbers for best results.”
+
+Do not add new warnings or error messages unless validation fails.
+
+4) Do NOT change
+
+SVG generation logic
+
+Grid math
+
+Page layout
+
+Other wizards or shared lego blocks
+
+This change applies only to the Graph Paper tool.
+
+Acceptance check
+
+After the change:
+
+Users can only enter whole numbers
+
+Placeholders clearly say “sts over 4″ / rows over 4″” or “sts over 10cm / rows over 10cm”
+
+Switching units updates placeholders immediately
+
+Existing SVG output continues to work as before
+
+Do not refactor unrelated files.
