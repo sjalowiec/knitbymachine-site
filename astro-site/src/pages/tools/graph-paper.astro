@@ -202,24 +202,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
             <option value="landscape">Landscape</option>
           </select>
         </div>
-        
-        <div class="input-group">
-          <label for="bold-every">Bold Lines Every</label>
-          <select id="bold-every" data-testid="select-bold-every">
-            <option value="5">5 cells</option>
-            <option value="10" selected>10 cells</option>
-          </select>
-        </div>
-      </div>
-      
-      <div class="checkbox-group">
-        <input 
-          type="checkbox" 
-          id="show-guides" 
-          checked 
-          data-testid="checkbox-guides"
-        />
-        <label for="show-guides" id="guides-label">Show reference guides (every 1 inch)</label>
       </div>
     </div>
 
@@ -229,7 +211,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       <div class="preview-container">
         <img 
           id="preview-img" 
-          src="/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&boldEvery=10&guides=1&preview=1" 
+          src="/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&preview=1" 
           alt="Graph paper preview"
           data-testid="img-preview"
         />
@@ -257,8 +239,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   let rows = localStorage.getItem('graphpaper.rows') || '32';
   let paperSize = localStorage.getItem('graphpaper.paper') || 'letter';
   let orientation = localStorage.getItem('graphpaper.orientation') || 'portrait';
-  let boldEvery = localStorage.getItem('graphpaper.boldEvery') || '10';
-  let showGuides = localStorage.getItem('graphpaper.guides') !== '0';
 
   // DOM elements
   const btnInches = document.getElementById('graph-btn-inches');
@@ -267,21 +247,16 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   const inputRows = document.getElementById('rows') as HTMLInputElement;
   const selectPaper = document.getElementById('paper-size') as HTMLSelectElement;
   const selectOrientation = document.getElementById('orientation') as HTMLSelectElement;
-  const selectBoldEvery = document.getElementById('bold-every') as HTMLSelectElement;
-  const checkboxGuides = document.getElementById('show-guides') as HTMLInputElement;
   const stitchLabel = document.getElementById('stitch-label');
   const rowLabel = document.getElementById('row-label');
-  const guidesLabel = document.getElementById('guides-label');
   const previewImg = document.getElementById('preview-img') as HTMLImageElement;
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
 
   // Initialize inputs from localStorage
-  inputStitches.value = stitches;
-  inputRows.value = rows;
-  selectPaper.value = paperSize;
-  selectOrientation.value = orientation;
-  selectBoldEvery.value = boldEvery;
-  checkboxGuides.checked = showGuides;
+  if (inputStitches) inputStitches.value = stitches;
+  if (inputRows) inputRows.value = rows;
+  if (selectPaper) selectPaper.value = paperSize;
+  if (selectOrientation) selectOrientation.value = orientation;
 
   // Update UI based on unit
   function updateUnitsUI() {
@@ -290,13 +265,11 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       btnCm?.classList.remove('active');
       if (stitchLabel) stitchLabel.textContent = 'Stitches over 4 inches';
       if (rowLabel) rowLabel.textContent = 'Rows over 4 inches';
-      if (guidesLabel) guidesLabel.textContent = 'Show reference guides (every 1 inch)';
     } else {
       btnCm?.classList.add('active');
       btnInches?.classList.remove('active');
       if (stitchLabel) stitchLabel.textContent = 'Stitches over 10 cm';
       if (rowLabel) rowLabel.textContent = 'Rows over 10 cm';
-      if (guidesLabel) guidesLabel.textContent = 'Show reference guides (every 5 cm)';
     }
   }
 
@@ -310,8 +283,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       unit: unit,
       paper: selectPaper.value,
       orientation: selectOrientation.value,
-      boldEvery: selectBoldEvery.value,
-      guides: checkboxGuides.checked ? '1' : '0',
     });
     return params.toString();
   }
@@ -328,8 +299,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     localStorage.setItem('graphpaper.unit', unit);
     localStorage.setItem('graphpaper.paper', selectPaper.value);
     localStorage.setItem('graphpaper.orientation', selectOrientation.value);
-    localStorage.setItem('graphpaper.boldEvery', selectBoldEvery.value);
-    localStorage.setItem('graphpaper.guides', checkboxGuides.checked ? '1' : '0');
   }
 
   // Unit toggle handlers
@@ -350,8 +319,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   inputRows.addEventListener('input', updatePreview);
   selectPaper.addEventListener('change', updatePreview);
   selectOrientation.addEventListener('change', updatePreview);
-  selectBoldEvery.addEventListener('change', updatePreview);
-  checkboxGuides.addEventListener('change', updatePreview);
 
   // Initial preview update
   updatePreview();

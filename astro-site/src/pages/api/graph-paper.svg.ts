@@ -19,14 +19,10 @@ export const GET: APIRoute = async ({ request }) => {
   const unit = url.searchParams.get('unit') || 'in';
   const paper = url.searchParams.get('paper') || 'letter';
   const orientation = url.searchParams.get('orientation') || 'portrait';
-  const boldEveryParam = url.searchParams.get('boldEvery') || '10';
-  const guidesParam = url.searchParams.get('guides') || '1';
   const previewParam = url.searchParams.get('preview') || '0';
   
   const stsInput = parseFloat(stsParam) || 24;  // Default: 24 stitches over 4"
   const rowsInput = parseFloat(rowsParam) || 32; // Default: 32 rows over 4"
-  const boldEvery = parseInt(boldEveryParam) || 10;
-  const showGuides = guidesParam === '1';
   const isPreview = previewParam === '1';
   
   // Validate inputs
@@ -57,113 +53,83 @@ export const GET: APIRoute = async ({ request }) => {
     return new Response('Invalid gauge values', { status: 400 });
   }
   
-  // Calculate cell dimensions in inches (true-scale)
+  // Calculate minor cell dimensions in inches (gauge subdivisions)
   const cellW = 1 / stsPerIn;
   const cellH = 1 / rowsPerIn;
   
-  // Bold pattern dimensions
-  const boldW = cellW * boldEvery;
-  const boldH = cellH * boldEvery;
+  // Major grid is always 1 inch × 1 inch
+  const inchW = 1;
+  const inchH = 1;
   
   let svg: string;
   
   if (isPreview) {
     // Preview mode: 3in x 3in cropped grid, no margins, no footer
-    const previewGridW = PREVIEW_SIZE;
-    const previewGridH = PREVIEW_SIZE;
-    const previewNumCols = Math.floor(previewGridW / cellW);
-    const previewNumRows = Math.floor(previewGridH / cellH);
-    const actualGridW = previewNumCols * cellW;
-    const actualGridH = previewNumRows * cellH;
+    // Snap grid size to whole inches for clean major grid alignment
+    const gridInchesW = Math.floor(PREVIEW_SIZE);
+    const gridInchesH = Math.floor(PREVIEW_SIZE);
+    const actualGridW = gridInchesW;
+    const actualGridH = gridInchesH;
     
     svg = `<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" 
      width="${PREVIEW_SIZE}in" 
      height="${PREVIEW_SIZE}in" 
-     viewBox="0 0 ${PREVIEW_SIZE} ${PREVIEW_SIZE}">
+     viewBox="0 0 ${PREVIEW_SIZE} ${PREVIEW_SIZE}"
+     shape-rendering="crispEdges">
   <rect width="100%" height="100%" fill="white"/>
   
   <defs>
     <style>
-      .light-line { stroke: #d0d0d0; stroke-width: 0.005; fill: none; }
-      .bold-line { stroke: #808080; stroke-width: 0.01; fill: none; }
-      .guide-line { stroke: #b0b0b0; stroke-width: 0.012; fill: none; stroke-dasharray: 0.03 0.015; }
+      .minor-line { stroke: #c8c8c8; stroke-width: 0.004; fill: none; opacity: 0.7; }
+      .major-line { stroke: #505050; stroke-width: 0.015; fill: none; }
     </style>
     
-    <!-- Light grid pattern: one stitch x one row cell -->
-    <pattern id="lightGrid" 
+    <!-- Minor grid pattern: gauge subdivisions (1 stitch × 1 row) -->
+    <pattern id="minorGrid" 
              patternUnits="userSpaceOnUse" 
              width="${cellW}" 
              height="${cellH}"
              x="0"
              y="0">
-      <line x1="0" y1="0" x2="0" y2="${cellH}" class="light-line"/>
-      <line x1="0" y1="0" x2="${cellW}" y2="0" class="light-line"/>
+      <line x1="0" y1="0" x2="0" y2="${cellH}" class="minor-line"/>
+      <line x1="0" y1="0" x2="${cellW}" y2="0" class="minor-line"/>
     </pattern>
     
-    <!-- Bold grid pattern: boldEvery cells, filled with light grid -->
-    <pattern id="boldGrid" 
+    <!-- Major grid pattern: 1 inch × 1 inch squares -->
+    <pattern id="inchGrid" 
              patternUnits="userSpaceOnUse" 
-             width="${boldW}" 
-             height="${boldH}"
+             width="${inchW}" 
+             height="${inchH}"
              x="0"
              y="0">
-      <!-- Fill with light grid first -->
-      <rect width="${boldW}" height="${boldH}" fill="url(#lightGrid)"/>
-      <!-- Bold lines at origin -->
-      <line x1="0" y1="0" x2="0" y2="${boldH}" class="bold-line"/>
-      <line x1="0" y1="0" x2="${boldW}" y2="0" class="bold-line"/>
+      <line x1="0" y1="0" x2="0" y2="${inchH}" class="major-line"/>
+      <line x1="0" y1="0" x2="${inchW}" y2="0" class="major-line"/>
     </pattern>
   </defs>
   
-  <!-- Grid rendered as single rectangle with pattern fill -->
+  <!-- Layer 1: Minor grid (gauge subdivisions) -->
   <rect 
     x="0" 
     y="0" 
     width="${actualGridW}" 
     height="${actualGridH}" 
-    fill="url(#boldGrid)" 
-    shape-rendering="crispEdges"
+    fill="url(#minorGrid)"
+  />
+  
+  <!-- Layer 2: Major grid (1-inch squares) on top -->
+  <rect 
+    x="0" 
+    y="0" 
+    width="${actualGridW}" 
+    height="${actualGridH}" 
+    fill="url(#inchGrid)"
   />
   
   <!-- Border lines for right and bottom edges -->
-  <line x1="${actualGridW}" y1="0" x2="${actualGridW}" y2="${actualGridH}" class="bold-line" shape-rendering="crispEdges"/>
-  <line x1="0" y1="${actualGridH}" x2="${actualGridW}" y2="${actualGridH}" class="bold-line" shape-rendering="crispEdges"/>
-`;
-
-    // Draw reference guides if enabled (in preview)
-    if (showGuides) {
-      svg += `\n  <!-- Reference guides -->\n  <g id="guides">\n`;
-      
-      let guideIntervalCols: number;
-      let guideIntervalRows: number;
-      
-      if (unit === 'cm') {
-        guideIntervalCols = Math.round(stsPerIn * (5 / 2.54));
-        guideIntervalRows = Math.round(rowsPerIn * (5 / 2.54));
-      } else {
-        guideIntervalCols = Math.round(stsPerIn);
-        guideIntervalRows = Math.round(rowsPerIn);
-      }
-      
-      if (guideIntervalCols > 0) {
-        for (let col = guideIntervalCols; col <= previewNumCols; col += guideIntervalCols) {
-          const x = col * cellW;
-          svg += `    <line x1="${x}" y1="0" x2="${x}" y2="${actualGridH}" class="guide-line"/>\n`;
-        }
-      }
-      
-      if (guideIntervalRows > 0) {
-        for (let row = guideIntervalRows; row <= previewNumRows; row += guideIntervalRows) {
-          const y = row * cellH;
-          svg += `    <line x1="0" y1="${y}" x2="${actualGridW}" y2="${y}" class="guide-line"/>\n`;
-        }
-      }
-      
-      svg += `  </g>\n`;
-    }
-
-    svg += `</svg>`;
+  <line x1="${actualGridW}" y1="0" x2="${actualGridW}" y2="${actualGridH}" class="major-line"/>
+  <line x1="0" y1="${actualGridH}" x2="${actualGridW}" y2="${actualGridH}" class="major-line"/>
+</svg>`;
   } else {
     // Full page mode: Letter/A4 with margins and footer
     const paperSize = PAPER_SIZES[paper as keyof typeof PAPER_SIZES] || PAPER_SIZES.letter;
@@ -177,11 +143,11 @@ export const GET: APIRoute = async ({ request }) => {
     const drawableWidth = pageWidth - (2 * MARGIN);
     const drawableHeight = pageHeight - (2 * MARGIN) - FOOTER_BAND;
     
-    const numCols = Math.floor(drawableWidth / cellW);
-    const numRows = Math.floor(drawableHeight / cellH);
-    
-    const gridW = numCols * cellW;
-    const gridH = numRows * cellH;
+    // Snap to whole inches for clean major grid
+    const gridInchesW = Math.floor(drawableWidth);
+    const gridInchesH = Math.floor(drawableHeight);
+    const gridW = gridInchesW;
+    const gridH = gridInchesH;
     
     const gridX = MARGIN;
     const gridY = MARGIN;
@@ -190,88 +156,61 @@ export const GET: APIRoute = async ({ request }) => {
 <svg xmlns="http://www.w3.org/2000/svg" 
      width="${pageWidth}in" 
      height="${pageHeight}in" 
-     viewBox="0 0 ${pageWidth} ${pageHeight}">
+     viewBox="0 0 ${pageWidth} ${pageHeight}"
+     shape-rendering="crispEdges">
   <rect width="100%" height="100%" fill="white"/>
   
   <defs>
     <style>
-      .light-line { stroke: #d0d0d0; stroke-width: 0.005; fill: none; }
-      .bold-line { stroke: #808080; stroke-width: 0.01; fill: none; }
-      .guide-line { stroke: #b0b0b0; stroke-width: 0.012; fill: none; stroke-dasharray: 0.03 0.015; }
+      .minor-line { stroke: #c8c8c8; stroke-width: 0.004; fill: none; opacity: 0.7; }
+      .major-line { stroke: #505050; stroke-width: 0.015; fill: none; }
     </style>
     
-    <!-- Light grid pattern: one stitch x one row cell -->
-    <pattern id="lightGrid" 
+    <!-- Minor grid pattern: gauge subdivisions (1 stitch × 1 row) -->
+    <pattern id="minorGrid" 
              patternUnits="userSpaceOnUse" 
              width="${cellW}" 
              height="${cellH}"
              x="${gridX}"
              y="${gridY}">
-      <line x1="0" y1="0" x2="0" y2="${cellH}" class="light-line"/>
-      <line x1="0" y1="0" x2="${cellW}" y2="0" class="light-line"/>
+      <line x1="0" y1="0" x2="0" y2="${cellH}" class="minor-line"/>
+      <line x1="0" y1="0" x2="${cellW}" y2="0" class="minor-line"/>
     </pattern>
     
-    <!-- Bold grid pattern: boldEvery cells, filled with light grid -->
-    <pattern id="boldGrid" 
+    <!-- Major grid pattern: 1 inch × 1 inch squares -->
+    <pattern id="inchGrid" 
              patternUnits="userSpaceOnUse" 
-             width="${boldW}" 
-             height="${boldH}"
+             width="${inchW}" 
+             height="${inchH}"
              x="${gridX}"
              y="${gridY}">
-      <!-- Fill with light grid first -->
-      <rect width="${boldW}" height="${boldH}" fill="url(#lightGrid)"/>
-      <!-- Bold lines at origin -->
-      <line x1="0" y1="0" x2="0" y2="${boldH}" class="bold-line"/>
-      <line x1="0" y1="0" x2="${boldW}" y2="0" class="bold-line"/>
+      <line x1="0" y1="0" x2="0" y2="${inchH}" class="major-line"/>
+      <line x1="0" y1="0" x2="${inchW}" y2="0" class="major-line"/>
     </pattern>
   </defs>
   
-  <!-- Grid rendered as single rectangle with pattern fill -->
+  <!-- Layer 1: Minor grid (gauge subdivisions) -->
   <rect 
     x="${gridX}" 
     y="${gridY}" 
     width="${gridW}" 
     height="${gridH}" 
-    fill="url(#boldGrid)" 
-    shape-rendering="crispEdges"
+    fill="url(#minorGrid)"
+  />
+  
+  <!-- Layer 2: Major grid (1-inch squares) on top -->
+  <rect 
+    x="${gridX}" 
+    y="${gridY}" 
+    width="${gridW}" 
+    height="${gridH}" 
+    fill="url(#inchGrid)"
   />
   
   <!-- Border lines for right and bottom edges -->
-  <line x1="${gridX + gridW}" y1="${gridY}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="bold-line" shape-rendering="crispEdges"/>
-  <line x1="${gridX}" y1="${gridY + gridH}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="bold-line" shape-rendering="crispEdges"/>
+  <line x1="${gridX + gridW}" y1="${gridY}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="major-line"/>
+  <line x1="${gridX}" y1="${gridY + gridH}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="major-line"/>
 `;
-
-    // Draw reference guides if enabled
-    if (showGuides) {
-      svg += `\n  <!-- Reference guides -->\n  <g id="guides">\n`;
-      
-      let guideIntervalCols: number;
-      let guideIntervalRows: number;
-      
-      if (unit === 'cm') {
-        guideIntervalCols = Math.round(stsPerIn * (5 / 2.54));
-        guideIntervalRows = Math.round(rowsPerIn * (5 / 2.54));
-      } else {
-        guideIntervalCols = Math.round(stsPerIn);
-        guideIntervalRows = Math.round(rowsPerIn);
-      }
-      
-      if (guideIntervalCols > 0) {
-        for (let col = guideIntervalCols; col <= numCols; col += guideIntervalCols) {
-          const x = gridX + (col * cellW);
-          svg += `    <line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" class="guide-line"/>\n`;
-        }
-      }
-      
-      if (guideIntervalRows > 0) {
-        for (let row = guideIntervalRows; row <= numRows; row += guideIntervalRows) {
-          const y = gridY + (row * cellH);
-          svg += `    <line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" class="guide-line"/>\n`;
-        }
-      }
-      
-      svg += `  </g>\n`;
-    }
     
     // Footer attribution (only in full mode)
     const footerY = pageHeight - MARGIN - (FOOTER_BAND * 0.35);
@@ -283,7 +222,7 @@ export const GET: APIRoute = async ({ request }) => {
     x="${gridX}"
     y="${footerY}"
     font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
-    font-size="0.097"
+    font-size="7pt"
     opacity="0.45"
     fill="currentColor"
     text-rendering="geometricPrecision"
