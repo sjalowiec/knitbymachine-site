@@ -101,13 +101,7 @@ export const GET: APIRoute = async ({ request }) => {
       .light-line { stroke: #d0d0d0; stroke-width: 0.005; fill: none; }
       .bold-line { stroke: #808080; stroke-width: 0.01; fill: none; }
       .guide-line { stroke: #b0b0b0; stroke-width: 0.012; fill: none; stroke-dasharray: 0.03 0.015; }
-      .footer-text { 
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-        font-size: 7pt;
-        fill: currentColor;
-        opacity: 0.45;
-        text-rendering: geometricPrecision;
-      }
+      /* footer-text styles are applied inline on the element */
     </style>
     
     <!-- Light grid pattern: one stitch x one row cell -->
@@ -192,9 +186,15 @@ export const GET: APIRoute = async ({ request }) => {
   const footerY = pageHeight - MARGIN - (FOOTER_BAND * 0.35);
   svg += `
   <!-- Footer attribution -->
-  <text x="${gridX}" y="${footerY}" class="footer-text">
-    Created with the Knit by Machine Graph Paper Tool
-  </text>
+  <text
+    x="${gridX}"
+    y="${footerY}"
+    font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
+    font-size="7pt"
+    opacity="0.45"
+    fill="currentColor"
+    text-rendering="geometricPrecision"
+  >Created with the Knit by Machine Graph Paper Tool</text>
 `;
   
   svg += `</svg>`;
