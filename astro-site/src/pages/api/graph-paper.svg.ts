@@ -83,7 +83,7 @@ export const GET: APIRoute = async ({ request }) => {
     if (isMajor && i > 0 && i < totalCellsX) {
       majorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#303030" stroke-width="0.022" opacity="1"/>`);
     } else if (!isMajor) {
-      minorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#b0b0b0" stroke-width="0.004" opacity="0.6"/>`);
+      minorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#808080" stroke-width="0.005" opacity="0.85"/>`);
     }
   }
   
@@ -94,7 +94,7 @@ export const GET: APIRoute = async ({ request }) => {
     if (isMajor && i > 0 && i < totalCellsY) {
       majorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#303030" stroke-width="0.022" opacity="1"/>`);
     } else if (!isMajor) {
-      minorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#b0b0b0" stroke-width="0.004" opacity="0.6"/>`);
+      minorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#808080" stroke-width="0.005" opacity="0.85"/>`);
     }
   }
   
