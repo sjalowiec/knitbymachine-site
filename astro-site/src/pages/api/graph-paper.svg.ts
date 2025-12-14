@@ -81,9 +81,9 @@ export const GET: APIRoute = async ({ request }) => {
     const x = gridX + (i * cellW);
     const isMajor = Math.abs(i * cellW - Math.round(i * cellW)) < 0.001;
     if (isMajor && i > 0 && i < totalCellsX) {
-      majorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#2b2b2b" stroke-width="0.022" opacity="1"/>`);
+      majorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#1f1f1f" stroke-width="0.024" opacity="1"/>`);
     } else if (!isMajor) {
-      minorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#666666" stroke-width="0.0065" opacity="0.95"/>`);
+      minorLines.push(`<line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" stroke="#5f5f5f" stroke-width="0.007" opacity="1"/>`);
     }
   }
   
@@ -92,9 +92,9 @@ export const GET: APIRoute = async ({ request }) => {
     const y = gridY + (i * cellH);
     const isMajor = Math.abs(i * cellH - Math.round(i * cellH)) < 0.001;
     if (isMajor && i > 0 && i < totalCellsY) {
-      majorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#2b2b2b" stroke-width="0.022" opacity="1"/>`);
+      majorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#1f1f1f" stroke-width="0.024" opacity="1"/>`);
     } else if (!isMajor) {
-      minorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#666666" stroke-width="0.0065" opacity="0.95"/>`);
+      minorLines.push(`<line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" stroke="#5f5f5f" stroke-width="0.007" opacity="1"/>`);
     }
   }
   
