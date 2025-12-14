@@ -80,31 +80,22 @@ export const GET: APIRoute = async ({ request }) => {
   <rect width="100%" height="100%" fill="white"/>
   
   <defs>
-    <style>
-      .minor-line { stroke: #a0a0a0; stroke-width: 0.008; fill: none; }
-      .major-line { stroke: #303030; stroke-width: 0.02; fill: none; }
-    </style>
-    
     <!-- Minor grid pattern: gauge subdivisions (1 stitch × 1 row) -->
     <pattern id="minorGrid" 
              patternUnits="userSpaceOnUse" 
              width="${cellW}" 
-             height="${cellH}"
-             x="0"
-             y="0">
-      <line x1="0" y1="0" x2="0" y2="${cellH}" class="minor-line"/>
-      <line x1="0" y1="0" x2="${cellW}" y2="0" class="minor-line"/>
+             height="${cellH}">
+      <line x1="0" y1="0" x2="0" y2="${cellH}" stroke="#a0a0a0" stroke-width="0.008" fill="none"/>
+      <line x1="0" y1="0" x2="${cellW}" y2="0" stroke="#a0a0a0" stroke-width="0.008" fill="none"/>
     </pattern>
     
     <!-- Major grid pattern: 1 inch × 1 inch squares -->
     <pattern id="inchGrid" 
              patternUnits="userSpaceOnUse" 
              width="${inchW}" 
-             height="${inchH}"
-             x="0"
-             y="0">
-      <line x1="0" y1="0" x2="0" y2="${inchH}" class="major-line"/>
-      <line x1="0" y1="0" x2="${inchW}" y2="0" class="major-line"/>
+             height="${inchH}">
+      <line x1="0" y1="0" x2="0" y2="${inchH}" stroke="#303030" stroke-width="0.02" fill="none"/>
+      <line x1="0" y1="0" x2="${inchW}" y2="0" stroke="#303030" stroke-width="0.02" fill="none"/>
     </pattern>
   </defs>
   
@@ -127,8 +118,8 @@ export const GET: APIRoute = async ({ request }) => {
   />
   
   <!-- Border lines for right and bottom edges -->
-  <line x1="${actualGridW}" y1="0" x2="${actualGridW}" y2="${actualGridH}" class="major-line"/>
-  <line x1="0" y1="${actualGridH}" x2="${actualGridW}" y2="${actualGridH}" class="major-line"/>
+  <line x1="${actualGridW}" y1="0" x2="${actualGridW}" y2="${actualGridH}" stroke="#303030" stroke-width="0.02" fill="none"/>
+  <line x1="0" y1="${actualGridH}" x2="${actualGridW}" y2="${actualGridH}" stroke="#303030" stroke-width="0.02" fill="none"/>
 </svg>`;
   } else {
     // Full page mode: Letter/A4 with margins and footer
@@ -161,31 +152,22 @@ export const GET: APIRoute = async ({ request }) => {
   <rect width="100%" height="100%" fill="white"/>
   
   <defs>
-    <style>
-      .minor-line { stroke: #a0a0a0; stroke-width: 0.008; fill: none; }
-      .major-line { stroke: #303030; stroke-width: 0.02; fill: none; }
-    </style>
-    
     <!-- Minor grid pattern: gauge subdivisions (1 stitch × 1 row) -->
     <pattern id="minorGrid" 
              patternUnits="userSpaceOnUse" 
              width="${cellW}" 
-             height="${cellH}"
-             x="${gridX}"
-             y="${gridY}">
-      <line x1="0" y1="0" x2="0" y2="${cellH}" class="minor-line"/>
-      <line x1="0" y1="0" x2="${cellW}" y2="0" class="minor-line"/>
+             height="${cellH}">
+      <line x1="0" y1="0" x2="0" y2="${cellH}" stroke="#a0a0a0" stroke-width="0.008" fill="none"/>
+      <line x1="0" y1="0" x2="${cellW}" y2="0" stroke="#a0a0a0" stroke-width="0.008" fill="none"/>
     </pattern>
     
     <!-- Major grid pattern: 1 inch × 1 inch squares -->
     <pattern id="inchGrid" 
              patternUnits="userSpaceOnUse" 
              width="${inchW}" 
-             height="${inchH}"
-             x="${gridX}"
-             y="${gridY}">
-      <line x1="0" y1="0" x2="0" y2="${inchH}" class="major-line"/>
-      <line x1="0" y1="0" x2="${inchW}" y2="0" class="major-line"/>
+             height="${inchH}">
+      <line x1="0" y1="0" x2="0" y2="${inchH}" stroke="#303030" stroke-width="0.02" fill="none"/>
+      <line x1="0" y1="0" x2="${inchW}" y2="0" stroke="#303030" stroke-width="0.02" fill="none"/>
     </pattern>
   </defs>
   
@@ -208,8 +190,8 @@ export const GET: APIRoute = async ({ request }) => {
   />
   
   <!-- Border lines for right and bottom edges -->
-  <line x1="${gridX + gridW}" y1="${gridY}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="major-line"/>
-  <line x1="${gridX}" y1="${gridY + gridH}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="major-line"/>
+  <line x1="${gridX + gridW}" y1="${gridY}" x2="${gridX + gridW}" y2="${gridY + gridH}" stroke="#303030" stroke-width="0.02" fill="none"/>
+  <line x1="${gridX}" y1="${gridY + gridH}" x2="${gridX + gridW}" y2="${gridY + gridH}" stroke="#303030" stroke-width="0.02" fill="none"/>
 `;
     
     // Footer attribution (only in full mode)
