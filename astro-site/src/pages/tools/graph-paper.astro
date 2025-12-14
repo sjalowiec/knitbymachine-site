@@ -138,26 +138,14 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm). Use whole numbers for best results.</p>
     </div>
 
-    <!-- Paper Options -->
+    <!-- Paper Size -->
     <div class="form-section">
-      <span class="section-label">Paper Options</span>
-      
-      <div class="options-row">
-        <div class="input-group">
-          <label for="paper-size">Paper Size</label>
-          <select id="paper-size" data-testid="select-paper-size">
-            <option value="letter">Letter (8.5 × 11 in)</option>
-            <option value="a4">A4 (210 × 297 mm)</option>
-          </select>
-        </div>
-        
-        <div class="input-group">
-          <label for="orientation">Orientation</label>
-          <select id="orientation" data-testid="select-orientation">
-            <option value="portrait">Portrait</option>
-            <option value="landscape">Landscape</option>
-          </select>
-        </div>
+      <div class="input-group">
+        <label for="paper-size">Paper Size</label>
+        <select id="paper-size" data-testid="select-paper-size">
+          <option value="letter">Letter (8.5 × 11 in)</option>
+          <option value="a4">A4 (210 × 297 mm)</option>
+        </select>
       </div>
     </div>
 
@@ -178,7 +166,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   let stitches = localStorage.getItem('graphpaper.sts') || '24';
   let rows = localStorage.getItem('graphpaper.rows') || '32';
   let paperSize = localStorage.getItem('graphpaper.paper') || 'letter';
-  let orientation = localStorage.getItem('graphpaper.orientation') || 'portrait';
 
   // DOM elements
   const btnInches = document.getElementById('graph-btn-inches');
@@ -186,7 +173,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   const inputStitches = document.getElementById('stitches') as HTMLInputElement;
   const inputRows = document.getElementById('rows') as HTMLInputElement;
   const selectPaper = document.getElementById('paper-size') as HTMLSelectElement;
-  const selectOrientation = document.getElementById('orientation') as HTMLSelectElement;
   const stitchLabel = document.getElementById('stitch-label');
   const rowLabel = document.getElementById('row-label');
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
@@ -195,7 +181,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   if (inputStitches) inputStitches.value = stitches;
   if (inputRows) inputRows.value = rows;
   if (selectPaper) selectPaper.value = paperSize;
-  if (selectOrientation) selectOrientation.value = orientation;
 
   // Update UI based on unit
   function updateUnitsUI() {
@@ -225,7 +210,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       rows: inputRows.value || '32',
       unit: unit,
       paper: selectPaper.value,
-      orientation: selectOrientation.value,
     });
     return params.toString();
   }
@@ -240,7 +224,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     localStorage.setItem('graphpaper.rows', inputRows.value);
     localStorage.setItem('graphpaper.unit', unit);
     localStorage.setItem('graphpaper.paper', selectPaper.value);
-    localStorage.setItem('graphpaper.orientation', selectOrientation.value);
   }
 
   // Unit toggle handlers
@@ -260,7 +243,6 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   inputStitches?.addEventListener('input', updateDownloadLink);
   inputRows?.addEventListener('input', updateDownloadLink);
   selectPaper?.addEventListener('change', updateDownloadLink);
-  selectOrientation?.addEventListener('change', updateDownloadLink);
 
   // Initial download link update
   updateDownloadLink();
