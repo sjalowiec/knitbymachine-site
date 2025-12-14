@@ -275,6 +275,8 @@ export const GET: APIRoute = async ({ request }) => {
     
     // Footer attribution (only in full mode)
     const footerY = pageHeight - MARGIN - (FOOTER_BAND * 0.35);
+    const gaugeUnit = unit === 'cm' ? '10cm' : '4in';
+    const footerText = `Gauge: ${stsInput} sts × ${rowsInput} rows per ${gaugeUnit} | Created with Knit by Machine`;
     svg += `
   <!-- Footer attribution -->
   <text
@@ -285,7 +287,7 @@ export const GET: APIRoute = async ({ request }) => {
     opacity="0.45"
     fill="currentColor"
     text-rendering="geometricPrecision"
-  >Created with the Knit by Machine Graph Paper Tool</text>
+  >${footerText}</text>
 `;
     
     svg += `</svg>`;
