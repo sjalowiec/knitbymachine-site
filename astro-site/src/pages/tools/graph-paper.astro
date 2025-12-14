@@ -117,9 +117,9 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
           <input 
             type="number" 
             id="stitches" 
-            step="0.5" 
-            min="0.5"
-            placeholder="e.g., 24"
+            step="1" 
+            min="1"
+            placeholder="sts over 4&quot;"
             data-testid="input-stitches"
           />
         </div>
@@ -128,14 +128,14 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
           <input 
             type="number" 
             id="rows" 
-            step="0.5" 
-            min="0.5"
-            placeholder="e.g., 32"
+            step="1" 
+            min="1"
+            placeholder="rows over 4&quot;"
             data-testid="input-rows"
           />
         </div>
       </div>
-      <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm). The tool converts it to full-scale graph paper automatically.</p>
+      <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm). Use whole numbers for best results.</p>
     </div>
 
     <!-- Paper Options -->
@@ -204,11 +204,15 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       btnCm?.classList.remove('active');
       if (stitchLabel) stitchLabel.textContent = 'Stitches over 4 inches';
       if (rowLabel) rowLabel.textContent = 'Rows over 4 inches';
+      if (inputStitches) inputStitches.placeholder = 'sts over 4"';
+      if (inputRows) inputRows.placeholder = 'rows over 4"';
     } else {
       btnCm?.classList.add('active');
       btnInches?.classList.remove('active');
       if (stitchLabel) stitchLabel.textContent = 'Stitches over 10 cm';
       if (rowLabel) rowLabel.textContent = 'Rows over 10 cm';
+      if (inputStitches) inputStitches.placeholder = 'sts over 10cm';
+      if (inputRows) inputRows.placeholder = 'rows over 10cm';
     }
   }
 
