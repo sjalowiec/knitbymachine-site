@@ -1,0 +1,185 @@
+---
+/**
+ * ============================================================================
+ * KBM LEGO BLOCK: Gauge Input Component
+ * ============================================================================
+ * 
+ * Standardized gauge input for all KBM wizards.
+ * Collects stitch and row gauge over 4" (or 10cm when metric).
+ * 
+ * FEATURES:
+ * - Two inputs side-by-side (desktop), stacked (mobile)
+ * - Dynamic placeholders based on unit selection
+ * - Unit toggle integrated (optional)
+ * - Helper text explaining the input format
+ * 
+ * USAGE:
+ * Standalone (includes its own toggle):
+ *   <GaugeInput id="mywizard" />
+ * 
+ * With external toggle (wizard has UnitToggle in header):
+ *   <GaugeInput id="mywizard" showToggle={false} toggleId="hat" />
+ * 
+ * OUTPUT IDS:
+ * - {id}-stitch-gauge: stitch count input
+ * - {id}-row-gauge: row count input
+ * - {toggleId}-btn-inches: inches toggle button (if using external toggle)
+ * - {toggleId}-btn-cm: cm toggle button (if using external toggle)
+ */
+
+import UnitToggle from './UnitToggle.astro';
+
+interface Props {
+  /** ID prefix for form elements (e.g., 'hat' creates 'hat-stitch-gauge') */
+  id?: string;
+  /** Show section title above the gauge inputs */
+  showTitle?: boolean;
+  /** Custom title text */
+  title?: string;
+  /** Show the unit toggle (set false if wizard has its own toggle) */
+  showToggle?: boolean;
+  /** ID of external toggle buttons (defaults to id) */
+  toggleId?: string;
+}
+
+const { 
+  id = 'gauge', 
+  showTitle = true,
+  title = 'Your Gauge',
+  showToggle = true,
+  toggleId
+} = Astro.props;
+
+const effectiveToggleId = toggleId || id;
+---
+
+<div class="gauge-input-wrapper" data-toggle-id={effectiveToggleId}>
+  {showTitle && showToggle && (
+    <div class="kbm-header-layout">
+      <h3 class="section-title">{title}</h3>
+      <div id="kbm-units-toggle">
+        <UnitToggle id={id} />
+      </div>
+    </div>
+  )}
+  
+  {showTitle && !showToggle && (
+    <h3 class="section-title">{title}</h3>
+  )}
+  
+  {!showTitle && showToggle && (
+    <div class="gauge-toggle-only">
+      <UnitToggle id={id} />
+    </div>
+  )}
+  
+  <div class="gauge-input-row">
+    <div class="input-group">
+      <label for={`${id}-stitch-gauge`} id={`${id}-stitch-label`}>Stitches (over 4" / 10cm)</label>
+      <input 
+        type="number" 
+        id={`${id}-stitch-gauge`}
+        step="0.5" 
+        min="1"
+        placeholder="sts per 4&quot;"
+        data-testid={`input-${id}-stitch-gauge`}
+      />
+    </div>
+    <div class="input-group">
+      <label for={`${id}-row-gauge`} id={`${id}-row-label`}>Rows (over 4" / 10cm)</label>
+      <input 
+        type="number" 
+        id={`${id}-row-gauge`}
+        step="0.5" 
+        min="1"
+        placeholder="rows per 4&quot;"
+        data-testid={`input-${id}-row-gauge`}
+      />
+    </div>
+  </div>
+  
+  <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm).</p>
+</div>
+
+<style>
+.gauge-input-wrapper {
+  margin-bottom: 1.5rem;
+}
+
+.gauge-toggle-only {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 0.75rem;
+}
+
+.gauge-input-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+@media (max-width: 480px) {
+  .gauge-input-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gauge-helper {
+  font-size: 0.85rem;
+  color: #6b7280;
+  margin-top: 0.5rem;
+  margin-bottom: 0;
+  font-style: italic;
+}
+</style>
+
+<script>
+  // Dynamic placeholder updates based on unit toggle
+  document.addEventListener('DOMContentLoaded', () => {
+    // Find all gauge input wrappers and set up each one
+    document.querySelectorAll('.gauge-input-wrapper').forEach(wrapper => {
+      const toggleId = wrapper.dataset.toggleId;
+      const id = wrapper.querySelector('input[id$="-stitch-gauge"]')?.id?.replace('-stitch-gauge', '');
+      
+      if (!id) return;
+      
+      const btnInches = document.getElementById(`${toggleId}-btn-inches`);
+      const btnCm = document.getElementById(`${toggleId}-btn-cm`);
+      const stitchInput = document.getElementById(`${id}-stitch-gauge`);
+      const rowInput = document.getElementById(`${id}-row-gauge`);
+      const stitchLabel = document.getElementById(`${id}-stitch-label`);
+      const rowLabel = document.getElementById(`${id}-row-label`);
+      
+      function updatePlaceholders(unit) {
+        if (!stitchInput || !rowInput) return;
+        
+        if (unit === 'cm') {
+          stitchInput.placeholder = 'sts per 10cm';
+          rowInput.placeholder = 'rows per 10cm';
+          if (stitchLabel) stitchLabel.textContent = 'Stitches (over 10 cm)';
+          if (rowLabel) rowLabel.textContent = 'Rows (over 10 cm)';
+        } else {
+          stitchInput.placeholder = 'sts per 4"';
+          rowInput.placeholder = 'rows per 4"';
+          if (stitchLabel) stitchLabel.textContent = 'Stitches (over 4")';
+          if (rowLabel) rowLabel.textContent = 'Rows (over 4")';
+        }
+      }
+      
+      // Check initial state - look for active button or localStorage
+      const inchesActive = btnInches?.classList.contains('active');
+      const savedUnit = localStorage.getItem(`${toggleId}.unit`) || localStorage.getItem(`${toggleId}-unit`);
+      const initialUnit = inchesActive ? 'in' : (savedUnit === 'cm' ? 'cm' : 'in');
+      updatePlaceholders(initialUnit);
+      
+      // Listen for unit toggle clicks
+      btnInches?.addEventListener('click', () => {
+        updatePlaceholders('in');
+      });
+      
+      btnCm?.addEventListener('click', () => {
+        updatePlaceholders('cm');
+      });
+    });
+  });
+</script>
