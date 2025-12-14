@@ -65,24 +65,28 @@ export const GET: APIRoute = async ({ request }) => {
   }
   
   // Calculate cell dimensions in inches (true-scale)
-  const cellWidth = 1 / stsPerIn;
-  const cellHeight = 1 / rowsPerIn;
+  const cellW = 1 / stsPerIn;
+  const cellH = 1 / rowsPerIn;
   
   // Calculate drawable area
   const drawableWidth = pageWidth - (2 * MARGIN);
   const drawableHeight = pageHeight - (2 * MARGIN) - FOOTER_BAND;
   
   // Calculate number of cells that fit
-  const numCols = Math.floor(drawableWidth / cellWidth);
-  const numRows = Math.floor(drawableHeight / cellHeight);
+  const numCols = Math.floor(drawableWidth / cellW);
+  const numRows = Math.floor(drawableHeight / cellH);
   
   // Calculate actual grid dimensions
-  const gridWidth = numCols * cellWidth;
-  const gridHeight = numRows * cellHeight;
+  const gridW = numCols * cellW;
+  const gridH = numRows * cellH;
   
   // Grid starting position (left margin)
   const gridX = MARGIN;
   const gridY = MARGIN;
+  
+  // Bold pattern dimensions
+  const boldW = cellW * boldEvery;
+  const boldH = cellH * boldEvery;
   
   // Build SVG
   let svg = `<?xml version="1.0" encoding="UTF-8"?>
@@ -92,12 +96,11 @@ export const GET: APIRoute = async ({ request }) => {
      viewBox="0 0 ${pageWidth} ${pageHeight}">
   <rect width="100%" height="100%" fill="white"/>
   
-  <!-- Grid definitions -->
   <defs>
     <style>
-      .light-line { stroke: #d0d0d0; stroke-width: 0.003in; fill: none; }
-      .bold-line { stroke: #808080; stroke-width: 0.008in; fill: none; }
-      .guide-line { stroke: #b0b0b0; stroke-width: 0.012in; fill: none; stroke-dasharray: 0.03 0.015; }
+      .light-line { stroke: #d0d0d0; stroke-width: 0.005; fill: none; }
+      .bold-line { stroke: #808080; stroke-width: 0.01; fill: none; }
+      .guide-line { stroke: #b0b0b0; stroke-width: 0.012; fill: none; stroke-dasharray: 0.03 0.015; }
       .footer-text { 
         font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
         font-size: 7pt;
@@ -106,30 +109,48 @@ export const GET: APIRoute = async ({ request }) => {
         text-rendering: geometricPrecision;
       }
     </style>
+    
+    <!-- Light grid pattern: one stitch x one row cell -->
+    <pattern id="lightGrid" 
+             patternUnits="userSpaceOnUse" 
+             width="${cellW}" 
+             height="${cellH}"
+             x="${gridX}"
+             y="${gridY}">
+      <line x1="0" y1="0" x2="0" y2="${cellH}" class="light-line"/>
+      <line x1="0" y1="0" x2="${cellW}" y2="0" class="light-line"/>
+    </pattern>
+    
+    <!-- Bold grid pattern: boldEvery cells, filled with light grid -->
+    <pattern id="boldGrid" 
+             patternUnits="userSpaceOnUse" 
+             width="${boldW}" 
+             height="${boldH}"
+             x="${gridX}"
+             y="${gridY}">
+      <!-- Fill with light grid first -->
+      <rect width="${boldW}" height="${boldH}" fill="url(#lightGrid)"/>
+      <!-- Bold lines at origin -->
+      <line x1="0" y1="0" x2="0" y2="${boldH}" class="bold-line"/>
+      <line x1="0" y1="0" x2="${boldW}" y2="0" class="bold-line"/>
+    </pattern>
   </defs>
   
-  <!-- Grid group -->
-  <g id="grid">
+  <!-- Grid rendered as single rectangle with pattern fill -->
+  <rect 
+    x="${gridX}" 
+    y="${gridY}" 
+    width="${gridW}" 
+    height="${gridH}" 
+    fill="url(#boldGrid)" 
+    shape-rendering="crispEdges"
+  />
+  
+  <!-- Border lines for right and bottom edges -->
+  <line x1="${gridX + gridW}" y1="${gridY}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="bold-line" shape-rendering="crispEdges"/>
+  <line x1="${gridX}" y1="${gridY + gridH}" x2="${gridX + gridW}" y2="${gridY + gridH}" class="bold-line" shape-rendering="crispEdges"/>
 `;
 
-  // Draw vertical lines
-  for (let col = 0; col <= numCols; col++) {
-    const x = gridX + (col * cellWidth);
-    const isBold = col % boldEvery === 0;
-    const lineClass = isBold ? 'bold-line' : 'light-line';
-    svg += `    <line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridHeight}" class="${lineClass}"/>\n`;
-  }
-  
-  // Draw horizontal lines
-  for (let row = 0; row <= numRows; row++) {
-    const y = gridY + (row * cellHeight);
-    const isBold = row % boldEvery === 0;
-    const lineClass = isBold ? 'bold-line' : 'light-line';
-    svg += `    <line x1="${gridX}" y1="${y}" x2="${gridX + gridWidth}" y2="${y}" class="${lineClass}"/>\n`;
-  }
-  
-  svg += `  </g>\n`;
-  
   // Draw reference guides if enabled
   if (showGuides) {
     svg += `\n  <!-- Reference guides -->\n  <g id="guides">\n`;
@@ -151,16 +172,16 @@ export const GET: APIRoute = async ({ request }) => {
     // Draw vertical guide lines
     if (guideIntervalCols > 0) {
       for (let col = guideIntervalCols; col <= numCols; col += guideIntervalCols) {
-        const x = gridX + (col * cellWidth);
-        svg += `    <line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridHeight}" class="guide-line"/>\n`;
+        const x = gridX + (col * cellW);
+        svg += `    <line x1="${x}" y1="${gridY}" x2="${x}" y2="${gridY + gridH}" class="guide-line"/>\n`;
       }
     }
     
     // Draw horizontal guide lines
     if (guideIntervalRows > 0) {
       for (let row = guideIntervalRows; row <= numRows; row += guideIntervalRows) {
-        const y = gridY + (row * cellHeight);
-        svg += `    <line x1="${gridX}" y1="${y}" x2="${gridX + gridWidth}" y2="${y}" class="guide-line"/>\n`;
+        const y = gridY + (row * cellH);
+        svg += `    <line x1="${gridX}" y1="${y}" x2="${gridX + gridW}" y2="${y}" class="guide-line"/>\n`;
       }
     }
     
