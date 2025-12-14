@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
+import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
@@ -524,32 +525,8 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
           </div>
         </div>
         
-        <!-- Gauge Inputs (below diagram) -->
-        <div class="gauge-grid" style="margin-top: 1.5rem;">
-          <div class="svg-input-box">
-            <input 
-              type="number" 
-              id="stitch-gauge" 
-              data-testid="input-stitch-gauge"
-              step="0.1" 
-              min="0.1" 
-              placeholder="Stitch Gauge"
-              required
-            />
-          </div>
-          
-          <div class="svg-input-box">
-            <input 
-              type="number" 
-              id="row-gauge" 
-              data-testid="input-row-gauge"
-              step="0.1" 
-              min="0.1" 
-              placeholder="Row Gauge"
-              required
-            />
-          </div>
-        </div>
+        <!-- Gauge Inputs (using shared GaugeInput component) -->
+        <GaugeInput id="triangle" showToggle={false} toggleId="triangle" />
         
         <!-- Needles Input -->
         <div class="input-needles">
@@ -601,8 +578,8 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
   // Input elements
   const bottomWidthInput = document.getElementById('bottom-width');
   const depthInput = document.getElementById('depth');
-  const stitchGaugeInput = document.getElementById('stitch-gauge');
-  const rowGaugeInput = document.getElementById('row-gauge');
+  const stitchGaugeInput = document.getElementById('triangle-stitch-gauge');
+  const rowGaugeInput = document.getElementById('triangle-row-gauge');
   const needlesInput = document.getElementById('needles');
 
   // Unit toggle buttons
@@ -616,12 +593,10 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
   // Update placeholders based on unit
   function updatePlaceholdersForUnit() {
     const unit = currentUnit === 'inches' ? 'in' : 'cm';
-    const gaugeRef = currentUnit === 'inches' ? '4in' : '10cm';
     
     bottomWidthInput.placeholder = `Bottom Width (${unit})`;
     depthInput.placeholder = `Depth (${unit})`;
-    stitchGaugeInput.placeholder = `Stitch Gauge (per ${gaugeRef})`;
-    rowGaugeInput.placeholder = `Row Gauge (per ${gaugeRef})`;
+    // Note: Gauge input placeholders are handled by GaugeInput component
   }
 
   // Convert input values when unit changes
