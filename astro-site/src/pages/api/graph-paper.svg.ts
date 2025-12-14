@@ -281,7 +281,7 @@ export const GET: APIRoute = async ({ request }) => {
     x="${gridX}"
     y="${footerY}"
     font-family="system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif"
-    font-size="7pt"
+    font-size="0.097"
     opacity="0.45"
     fill="currentColor"
     text-rendering="geometricPrecision"
