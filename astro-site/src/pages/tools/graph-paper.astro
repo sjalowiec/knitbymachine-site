@@ -222,7 +222,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
       <div class="preview-container">
         <img 
           id="preview-img" 
-          src="/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&boldEvery=10&guides=1" 
+          src="/api/graph-paper.svg?sts=24&rows=32&unit=in&paper=letter&orientation=portrait&boldEvery=10&guides=1&preview=1" 
           alt="Graph paper preview"
           data-testid="img-preview"
         />
@@ -312,7 +312,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   // Update preview
   function updatePreview() {
     const query = buildQueryString();
-    previewImg.src = `/api/graph-paper.svg?${query}`;
+    previewImg.src = `/api/graph-paper.svg?${query}&preview=1`;
     downloadBtn.href = `/api/graph-paper.svg?${query}`;
     
     // Save to localStorage
