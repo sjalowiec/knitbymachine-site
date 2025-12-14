@@ -81,8 +81,8 @@ export const GET: APIRoute = async ({ request }) => {
   
   <defs>
     <style>
-      .minor-line { stroke: #c8c8c8; stroke-width: 0.004; fill: none; opacity: 0.7; }
-      .major-line { stroke: #505050; stroke-width: 0.015; fill: none; }
+      .minor-line { stroke: #a0a0a0; stroke-width: 0.008; fill: none; }
+      .major-line { stroke: #303030; stroke-width: 0.02; fill: none; }
     </style>
     
     <!-- Minor grid pattern: gauge subdivisions (1 stitch × 1 row) -->
@@ -162,8 +162,8 @@ export const GET: APIRoute = async ({ request }) => {
   
   <defs>
     <style>
-      .minor-line { stroke: #c8c8c8; stroke-width: 0.004; fill: none; opacity: 0.7; }
-      .major-line { stroke: #505050; stroke-width: 0.015; fill: none; }
+      .minor-line { stroke: #a0a0a0; stroke-width: 0.008; fill: none; }
+      .major-line { stroke: #303030; stroke-width: 0.02; fill: none; }
     </style>
     
     <!-- Minor grid pattern: gauge subdivisions (1 stitch × 1 row) -->
