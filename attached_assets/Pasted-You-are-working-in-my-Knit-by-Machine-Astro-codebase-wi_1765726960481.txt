@@ -1,0 +1,165 @@
+You are working in my Knit by Machine Astro codebase with my existing KBM Admin / Content Manager system (JSON-based). My reference pages are stored at:
+
+src/pages/reference/
+
+I want to add a new internal admin-only content type called Reference Registry so I can track reference pages and whether they are finished/published, without building a public catalog.
+
+Data storage
+
+Create a new JSON file:
+
+src/data/reference-registry.json
+
+Schema:
+
+{
+  "id": "ref_0001",
+  "title": "Intarsia: Bobbin Weaving Basics",
+  "slug": "/reference/intarsia-bobbin-weaving",
+  "topic": "Intarsia",
+  "status": "in-progress",
+  "pushed": null,
+  "linkedFrom": ["ana/intarsia-edges", "skills/intarsia-sampler"],
+  "notes": ""
+}
+
+
+Field rules:
+
+id: unique and stable
+
+slug: required, must start with /reference/
+
+status enum: "idea" | "in-progress" | "published" | "archived"
+
+pushed: ISO date YYYY-MM-DD or null (auto-set when status becomes published)
+
+linkedFrom: optional array of internal KBM paths
+
+notes: optional string
+
+Admin UI placement
+
+Add “Reference Registry” to the existing admin navigation and implement this collection using the same patterns/components/styling used by the other admin collections (Glossary, Tools, ANA, etc.). Mirror existing structure.
+
+Key feature: Auto-scan the reference pages folder
+
+On the Reference Registry list page, also scan the filesystem folder src/pages/reference/ and build a list of existing reference routes.
+
+Rules for scanning:
+
+Include .astro pages inside src/pages/reference/
+
+Include nested subfolders (e.g. src/pages/reference/intarsia/basics.astro → /reference/intarsia/basics)
+
+Ignore:
+
+files starting with _
+
+index.astro should map to /reference or /reference/<folder> depending on location
+
+any non-astro files
+
+Then compare:
+
+Tracked = exists in JSON registry (by slug)
+
+Untracked = exists in src/pages/reference/ but NOT in JSON registry
+
+In the UI, add a toggle or tab:
+
+“Tracked”
+
+“Untracked (found in /reference)”
+
+For Untracked items:
+
+Show slug + inferred title (use filename as fallback)
+
+Provide a button: “Add to Registry” that pre-fills the Add form (slug + title guess)
+
+Default status should be in-progress
+
+List view requirements (Tracked)
+
+Table columns:
+
+Title
+
+Topic
+
+Status (badge)
+
+Pushed
+
+Slug
+
+Actions
+
+Filters:
+
+Search (title + slug)
+
+Status dropdown
+
+Topic dropdown (derived from registry entries)
+
+Quick toggle: “Unfinished” (status = idea or in-progress)
+
+Sorting default:
+
+Status order: idea → in-progress → published → archived
+
+Title A–Z
+
+Visual cues:
+
+Subtle badges for status
+
+Add/Edit form requirements
+
+Fields:
+
+Title
+
+Slug
+
+Topic
+
+Status
+
+Pushed date (auto-set when status changes to published if null; editable)
+
+Linked From (comma-separated → array)
+
+Notes
+
+Validation:
+
+title required
+
+slug required and must start with /reference/
+
+Behavior:
+
+If status becomes published and pushed is null, set pushed to today’s date
+
+Save + Cancel
+
+Persistence constraints
+
+Use the same JSON editing / persistence approach already used in the admin. Do NOT invent a brand new save system. If the admin cannot write files at runtime, follow the existing workflow (copy/paste JSON output or existing API route/function if already present).
+
+Acceptance checklist
+
+I see “Reference Registry” in admin nav
+
+Tracked list works (add/edit/delete)
+
+Untracked tab shows pages found in src/pages/reference/ that are missing from the registry
+
+“Add to Registry” pre-fills and saves a new entry
+
+No public catalog pages are created
+
+Now implement it. After completion, list files added/changed and a short summary of behavior.
