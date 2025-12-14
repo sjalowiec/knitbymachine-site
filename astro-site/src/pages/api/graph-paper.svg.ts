@@ -18,8 +18,8 @@ export const GET: APIRoute = async ({ request }) => {
   const unit = url.searchParams.get('unit') || 'in';
   const paper = url.searchParams.get('paper') || 'letter';
   
-  const stsInput = parseFloat(stsParam) || 24;
-  const rowsInput = parseFloat(rowsParam) || 32;
+  const stsInput = Math.round(parseFloat(stsParam)) || 24;
+  const rowsInput = Math.round(parseFloat(rowsParam)) || 32;
   
   // Validate inputs
   if (stsInput <= 0 || rowsInput <= 0) {

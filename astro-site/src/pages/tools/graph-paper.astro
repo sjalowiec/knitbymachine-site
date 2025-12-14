@@ -119,6 +119,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
             id="stitches" 
             step="1" 
             min="1"
+            pattern="[0-9]*"
+            inputmode="numeric"
             placeholder="sts over 4&quot;"
             data-testid="input-stitches"
           />
@@ -130,6 +132,8 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
             id="rows" 
             step="1" 
             min="1"
+            pattern="[0-9]*"
+            inputmode="numeric"
             placeholder="rows over 4&quot;"
             data-testid="input-rows"
           />
@@ -239,9 +243,27 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
     updateDownloadLink();
   });
 
+  // Force whole numbers only
+  function enforceWholeNumber(input: HTMLInputElement) {
+    const val = input.value;
+    if (val.includes('.') || val.includes(',')) {
+      input.value = Math.round(parseFloat(val.replace(',', '.'))).toString();
+    }
+    // Remove leading zeros except for "0" itself
+    if (val.length > 1 && val.startsWith('0')) {
+      input.value = parseInt(val, 10).toString();
+    }
+  }
+
   // Input change handlers - auto-update download link
-  inputStitches?.addEventListener('input', updateDownloadLink);
-  inputRows?.addEventListener('input', updateDownloadLink);
+  inputStitches?.addEventListener('input', () => {
+    enforceWholeNumber(inputStitches);
+    updateDownloadLink();
+  });
+  inputRows?.addEventListener('input', () => {
+    enforceWholeNumber(inputRows);
+    updateDownloadLink();
+  });
   selectPaper?.addEventListener('change', updateDownloadLink);
 
   // Initial download link update
