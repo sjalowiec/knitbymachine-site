@@ -1,0 +1,145 @@
+You are working in my Astro codebase for Knit by Machine (KBM). I have an existing reusable “lego block” component used across wizards/tools to capture stitch + row gauge (with an in/cm toggle).
+
+Goal
+
+Update that shared gauge component so:
+
+It always asks for stitches over 4 inches and rows over 4 inches
+
+If unit toggle is cm, it still represents over 10 cm (equivalent of 4")
+
+Users should NOT be entering “per inch”. This standard must be enforced everywhere.
+
+The two input boxes are on the same line (desktop), and stack cleanly on mobile.
+
+The placeholder text updates to match the unit toggle:
+
+If unit = in:
+
+stitches placeholder: sts per 4"
+
+rows placeholder: rows per 4"
+
+If unit = cm:
+
+stitches placeholder: sts per 10cm
+
+rows placeholder: rows per 10cm
+
+Also update the visible labels/help text so the user understands they are entering gauge over 4" / 10cm (without giving them any other option).
+
+Steps
+1) Locate the gauge lego block component
+
+Search the repo for the reusable gauge component and identify the file path (likely in one of these places):
+
+src/components/
+
+src/components/wizards/
+
+src/components/lego/
+
+or similar
+
+Look for component names like:
+
+GaugeInput
+
+GaugeFields
+
+StitchRowGauge
+
+GaugeToggle
+
+etc.
+
+Do not create a new component if one already exists — update the existing one.
+
+2) Enforce the “per 4 inches / per 10cm” standard
+
+Update field labels to:
+
+Stitches (over 4" / 10cm)
+
+Rows (over 4" / 10cm)
+
+Add a short helper line beneath (KBM voice, neutral):
+
+Enter your measured gauge over 4" (or 10 cm).
+
+Do not add a selector for gauge span. No per-inch option.
+
+3) Layout: inputs on one line
+
+Update the component markup/CSS so stitches + rows inputs display side-by-side:
+
+Use a wrapper with grid or flex:
+
+Desktop/tablet: two columns
+
+Mobile: one column stacked
+
+Example approach (adapt to my existing CSS tokens/classes; do not introduce a new global system):
+
+.gauge-input-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+
+Add a mobile breakpoint to stack:
+
+grid-template-columns: 1fr;
+
+Do not change other wizard layout.
+
+4) Dynamic placeholders based on unit toggle
+
+Wherever the unit state is stored (component state, props, or form value), implement:
+
+If unit is inches:
+
+stitches placeholder = sts per 4"
+
+rows placeholder = rows per 4"
+
+If unit is cm:
+
+stitches placeholder = sts per 10cm
+
+rows placeholder = rows per 10cm
+
+Important:
+
+Use the user’s selected unit to switch placeholder text live.
+
+Do NOT hardcode “(10cm)” inside the inches placeholder. It should match the chosen unit cleanly.
+
+5) Backwards compatibility
+
+Do not rename existing form field name attributes or IDs if other wizards depend on them (unless absolutely required).
+If the component currently outputs values like stitches and rows plus unit, keep the same data contract.
+
+6) Confirm usage across wizards
+
+After updating the lego block, quickly check at least 2 existing wizard pages that use it to confirm:
+
+the fields appear on the same line (desktop)
+
+placeholders change with in/cm toggle
+
+labels now reference over 4" / 10cm
+
+Acceptance Criteria
+
+Shared gauge component updated (not duplicated)
+
+Always collects stitches/rows over 4" (or 10cm when cm is selected)
+
+Two inputs on the same row (desktop), stacked on mobile
+
+Placeholders match selected unit exactly:
+
+in → sts per 4" and rows per 4"
+
+cm → sts per 10cm and rows per 10cm
+
+No unrelated refactors
+
+Final Step
