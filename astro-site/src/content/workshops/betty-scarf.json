@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "slug": "betty-scarf",
+  "client": {
+    "firstName": "Betty"
+  },
+  "workshop": {
+    "title": "Guided Workshop: Scarf",
+    "subtitle": "A focused 10-day finish plan for one real scarf project.",
+    "startDay": 1,
+    "status": "active"
+  },
+  "outline": {
+    "id": "finish-flow-scarf-v1",
+    "days": [
+      { "day": 1, "title": "Define the scarf", "goal": "Choose stitch, width, and finish line.", "released": true },
+      { "day": 2, "title": "Swatch for fabric", "goal": "Confirm tension and drape.", "released": false },
+      { "day": 3, "title": "Lock stitch + width", "goal": "Needle count and edges.", "released": false },
+      { "day": 4, "title": "Cast-on + setup", "goal": "Start cleanly.", "released": false },
+      { "day": 5, "title": "Establish rhythm", "goal": "Make steady progress.", "released": false },
+      { "day": 6, "title": "Midpoint check", "goal": "Catch issues early.", "released": false },
+      { "day": 7, "title": "Length decisions", "goal": "Finish intentionally.", "released": false },
+      { "day": 8, "title": "Bind-off plan", "goal": "Pick the right finish.", "released": false },
+      { "day": 9, "title": "Finishing + blocking", "goal": "Make it look done.", "released": false },
+      { "day": 10, "title": "Final review + next steps", "goal": "Wrap it up and set up what's next.", "released": false }
+    ]
+  },
+  "hub": {
+    "welcomeTitle": "Welcome, Betty",
+    "welcomeBody": "This is your private workshop hub. Use it to follow your 10-day plan and post updates so I can guide you step-by-step.",
+    "todayLabel": "You're on Day 1 right now.",
+    "showVideoReplyPlaceholder": true
+  },
+  "hyvor": {
+    "enabled": true,
+    "websiteId": "14706",
+    "pageId": "workshop-betty-scarf-hub"
+  }
+}

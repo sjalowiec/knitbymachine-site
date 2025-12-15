@@ -1,0 +1,233 @@
+Goal: Implement a JSON-driven Guided Workshop system in Astro with:
+
+A content folder for workshop instances (one JSON per workshop)
+
+Template JSON files for reuse
+
+A dynamic hub slug page that renders from JSON
+
+The hub page UI should be based on the existing hub page we already created (copy/refactor its markup + styles; do not redesign).
+
+Rules
+
+First, search the repo for the existing hub page file we built (do not assume path).
+
+Do not change global header/footer/layout components.
+
+Make the smallest changes possible.
+
+If any file already exists, update it instead of creating a duplicate.
+
+Keep styling consistent with the existing hub page (reuse its classes/CSS).
+
+Step 1 — Locate existing hub page and styles
+
+Search for the existing hub page by looking for:
+
+“hub” in filename, or
+
+headings like “Workshop Hub”, “Your Workshop”, “Guided Workshop”, “Welcome,” or the Hyvor embed snippet.
+
+Note:
+
+the hub page file path
+
+any CSS file(s) it relies on (global styles, page styles, component styles)
+
+We will refactor this hub page into a dynamic version, preserving markup and CSS classes as much as possible.
+
+Step 2 — Create content + template folders (if missing)
+
+Create these folders if they do not exist:
+
+src/content/workshops/
+
+src/content/workshops/_templates/
+
+Create template files (only if missing):
+
+A) src/content/workshops/_templates/workshop-instance.template.json
+{
+  "version": 1,
+  "slug": "betty-scarf",
+  "client": {
+    "firstName": "Betty"
+  },
+  "workshop": {
+    "title": "Guided Workshop: Scarf",
+    "subtitle": "A focused 10-day finish plan for one real scarf project.",
+    "startDay": 1,
+    "status": "active"
+  },
+  "outline": {
+    "id": "finish-flow-scarf-v1",
+    "days": [
+      { "day": 1, "title": "Define the scarf", "goal": "Choose stitch, width, and finish line.", "released": true },
+      { "day": 2, "title": "Swatch for fabric", "goal": "Confirm tension and drape.", "released": false },
+      { "day": 3, "title": "Lock stitch + width", "goal": "Needle count and edges.", "released": false },
+      { "day": 4, "title": "Cast-on + setup", "goal": "Start cleanly.", "released": false },
+      { "day": 5, "title": "Establish rhythm", "goal": "Make steady progress.", "released": false },
+      { "day": 6, "title": "Midpoint check", "goal": "Catch issues early.", "released": false },
+      { "day": 7, "title": "Length decisions", "goal": "Finish intentionally.", "released": false },
+      { "day": 8, "title": "Bind-off plan", "goal": "Pick the right finish.", "released": false },
+      { "day": 9, "title": "Finishing + blocking", "goal": "Make it look done.", "released": false },
+      { "day": 10, "title": "Final review + next steps", "goal": "Wrap it up and set up what’s next.", "released": false }
+    ]
+  },
+  "hub": {
+    "welcomeTitle": "Welcome, Betty",
+    "welcomeBody": "This is your private workshop hub. Use it to follow your 10-day plan and post updates so I can guide you step-by-step.",
+    "todayLabel": "You’re on Day 1 right now.",
+    "showVideoReplyPlaceholder": true
+  },
+  "hyvor": {
+    "enabled": true,
+    "websiteId": "",
+    "pageId": "workshop-betty-scarf-hub"
+  }
+}
+
+B) src/content/workshops/_templates/outline.template.json
+{
+  "id": "finish-flow-scarf-v1",
+  "version": 1,
+  "label": "Finish Flow: Scarf (10 days)",
+  "days": [
+    { "day": 1, "title": "Define the scarf", "goal": "Choose stitch, width, and finish line." }
+  ]
+}
+
+
+Now create one real instance file (only if missing):
+
+src/content/workshops/betty-scarf.json
+
+Copy the workshop-instance template contents above, but set:
+
+hyvor.websiteId to your actual Hyvor website ID if you have it (if unknown, leave blank and we’ll render comments conditionally)
+
+hub.todayLabel = “You’re on Day 1 right now.”
+
+Step 3 — Add a small loader utility
+
+Create src/lib/workshops.ts (or update if it exists) that:
+
+reads all JSON files in src/content/workshops/
+
+exports:
+
+getWorkshopSlugs()
+
+getWorkshopBySlug(slug)
+
+handles “file not found” gracefully (return null)
+
+Implementation notes:
+
+Use Node fs / path in Astro server context.
+
+Only load .json files, ignore _templates.
+
+Step 4 — Create the dynamic hub slug page
+
+Create this route if missing:
+
+src/pages/guided-workshops/[workshopSlug]/hub.astro
+
+Requirements:
+
+Use getStaticPaths() to generate hub pages for each workshop JSON.
+
+Load workshop data via getWorkshopBySlug(params.workshopSlug).
+
+If no workshop found, return a friendly 404-ish message inside your normal BaseLayout.
+
+MOST IMPORTANT: The rendered HTML should be based on the existing hub page we created:
+
+Copy the section structure and class names
+
+Replace hard-coded text with values from JSON:
+
+Welcome title/body
+
+Workshop title/subtitle if used
+
+“Today” label
+
+Day list
+
+Day list should link to:
+
+/guided-workshops/${slug}/day/${day} (we’ll add the day route next step)
+
+Hyvor comments block:
+
+If hyvor.enabled and hyvor.websiteId is non-empty, render the Hyvor embed.
+
+If missing websiteId, render a placeholder message like:
+“Comments will appear here once Hyvor is connected.”
+
+Video Reply section:
+
+If hub.showVideoReplyPlaceholder is true, include the placeholder component we already made (or create a very simple placeholder block if that component doesn’t exist).
+
+Step 5 — Create dynamic day pages (minimal scaffolding)
+
+Create:
+
+src/pages/guided-workshops/[workshopSlug]/day/[day].astro
+
+Requirements:
+
+getStaticPaths() should generate all day pages from the JSON outline days list.
+
+Render:
+
+Day title + goal
+
+If day is not released: show “Coming next” placeholder + link back to hub.
+
+Always include a “Post your update on the hub” button linking to the hub page.
+
+Keep styling minimal and reuse hub page typography styles if available.
+
+Step 6 — Keep existing hub working (no broken links)
+
+If your old hub page is currently at a fixed URL, keep it temporarily:
+
+Either leave it as-is, or turn it into a simple redirect/notice that links to /guided-workshops/betty-scarf/hub
+
+Do not remove anything that could break your live workshop.
+
+Step 7 — “Admin template structure” (lightweight, matching your current admin)
+
+We are NOT building a full CRUD admin if it doesn’t exist already.
+Instead:
+
+Ensure the _templates/ JSON files exist (done).
+
+Add a simple “How to create a new workshop instance” note file:
+
+Create src/content/workshops/_templates/README.md:
+
+Explain: duplicate workshop-instance.template.json → rename slug → edit client/workshop fields → set Hyvor pageId → publish.
+
+If you already have an admin UI that edits JSON files (like your glossary/reference admin):
+
+Add a new nav item “Workshops”
+
+Create a stub page /admin/workshops that lists the JSON files + links to edit (reuse your existing admin patterns)
+
+If your admin writes to disk via an API route, reuse that approach; do not invent a new persistence mechanism.
+
+Acceptance checks
+
+Visiting /guided-workshops/betty-scarf/hub renders a hub page that looks like the existing hub page but populated from JSON.
+
+The Day list renders 10 days and links to /guided-workshops/betty-scarf/day/1 … /10.
+
+Day 1 renders as released; Day 2+ show placeholders if released=false.
+
+Hyvor block does not error if websiteId is blank (shows placeholder).
+
+No changes to global header/footer.

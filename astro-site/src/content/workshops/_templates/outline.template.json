@@ -1,0 +1,8 @@
+{
+  "id": "finish-flow-scarf-v1",
+  "version": 1,
+  "label": "Finish Flow: Scarf (10 days)",
+  "days": [
+    { "day": 1, "title": "Define the scarf", "goal": "Choose stitch, width, and finish line." }
+  ]
+}
