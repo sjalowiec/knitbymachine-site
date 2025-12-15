@@ -1,3 +1,12 @@
+Create (or update) a Guided Workshop JSON file at:
+
+astro-site/src/content/guided-workshops/scarf-for-betty.json
+
+Do not modify any admin React pages.
+Do not refactor schemas.
+Only create or update this one JSON file.
+
+Use this exact structure and content
 {
   "title": "Scarf Workshop for Betty",
   "slug": "scarf-for-betty",
@@ -99,7 +108,7 @@
       {
         "day": 8,
         "title": "Bind off",
-        "shortDescription": "Use a bind-off that matches the scarf's stretch and look.",
+        "shortDescription": "Use a bind-off that matches the scarf’s stretch and look.",
         "estimatedTime": "20–30 min",
         "release": { "mode": "relative", "dayOffset": 7 },
         "blocks": []
@@ -117,7 +126,7 @@
       {
         "day": 10,
         "title": "Block + photo",
-        "shortDescription": "Final polish and a simple 'done' share.",
+        "shortDescription": "Final polish and a simple ‘done’ share.",
         "estimatedTime": "30–45 min",
         "release": { "mode": "relative", "dayOffset": 9 },
         "blocks": []
@@ -133,7 +142,7 @@
         "blocks": [
           {
             "type": "richText",
-            "content": "You're done! 🎉\n\nThis bonus section is completely optional. Use it if you're curious about variations or already thinking about your next project."
+            "content": "You’re done! 🎉\n\nThis bonus section is completely optional. Use it if you're curious about variations or already thinking about your next project."
           },
           {
             "type": "checklist",
