@@ -40,20 +40,24 @@ const totalDays = outline.days.length;
 <BaseLayout {title} {description}>
   <main class="page page--guided-workshop-hub" data-workshop-slug={workshopSlug}>
 
+    <!-- Hero with icon -->
     <header class="hub-hero">
-      <h1>{hub.welcomeTitle}</h1>
+      <div class="hub-hero-icon">
+        <img src="/images/guided_workshops.svg" alt="" class="hub-logo" />
+      </div>
+      <div class="hub-hero-content">
+        <h1>{hub.welcomeTitle}</h1>
+        <p class="hub-intro">
+          This is your private workshop hub. Use it to follow your {totalDays}-day plan and post updates so I can guide you step-by-step. 
+          <button 
+            class="help-trigger" 
+            type="button"
+            aria-expanded="false"
+            aria-controls="help-drawer"
+          >How this works</button>
+        </p>
+      </div>
     </header>
-
-    <!-- Intro line with "How this works" drawer trigger -->
-    <p class="hub-intro">
-      This is your private workshop hub. Use it to follow your {totalDays}-day plan and post updates so I can guide you step-by-step. 
-      <button 
-        class="help-trigger" 
-        type="button"
-        aria-expanded="false"
-        aria-controls="help-drawer"
-      >How this works</button>
-    </p>
 
     <!-- How this works drawer -->
     <div id="help-drawer" class="help-drawer" hidden>
@@ -206,20 +210,59 @@ const totalDays = outline.days.length;
       padding: 1.25rem 1rem 3rem; 
     }
     
+    /* Hero with icon on left */
     .hub-hero { 
-      margin-bottom: 0.5rem; 
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .hub-hero-icon {
+      flex-shrink: 0;
+    }
+    
+    .hub-logo {
+      width: 64px;
+      height: 64px;
+    }
+    
+    @media (min-width: 640px) {
+      .hub-logo {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    
+    .hub-hero-content {
+      flex: 1;
+      min-width: 0;
     }
     
     .hub-hero h1 {
-      margin: 0;
+      margin: 0 0 0.5rem;
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+    
+    @media (min-width: 640px) {
+      .hub-hero h1 {
+        font-size: 2rem;
+      }
     }
 
     /* Intro line with help trigger */
     .hub-intro {
-      margin: 0 0 1.25rem;
-      font-size: 1.05rem;
+      margin: 0;
+      font-size: 1rem;
       line-height: 1.5;
-      color: rgba(0, 0, 0, 0.75);
+      color: rgba(0, 0, 0, 0.7);
+    }
+    
+    @media (min-width: 640px) {
+      .hub-intro {
+        font-size: 1.05rem;
+      }
     }
     
     .help-trigger {
