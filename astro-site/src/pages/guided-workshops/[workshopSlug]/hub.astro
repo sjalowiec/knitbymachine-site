@@ -3,6 +3,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import VideoReplySection from '../../../components/workshops/VideoReplySection.astro';
 import { getWorkshopSlugs, getWorkshopBySlug } from '../../../lib/workshops';
 
+export const prerender = true;
+
 export async function getStaticPaths() {
   const slugs = getWorkshopSlugs();
   return slugs.map(slug => ({
