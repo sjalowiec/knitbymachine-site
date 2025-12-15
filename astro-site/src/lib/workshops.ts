@@ -10,6 +10,70 @@ export interface WorkshopDay {
   released: boolean;
 }
 
+// Curriculum block types
+export interface RichTextBlock {
+  type: 'richText';
+  content: string;
+}
+
+export interface ImageBlock {
+  type: 'image';
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
+export interface VideoBlock {
+  type: 'video';
+  provider: 'youtube' | 'vimeo' | 'loom' | 'direct';
+  url: string;
+  caption?: string;
+}
+
+export interface DownloadBlock {
+  type: 'download';
+  label: string;
+  url: string;
+}
+
+export interface ChecklistItem {
+  text: string;
+  isOptional?: boolean;
+}
+
+export interface ChecklistBlock {
+  type: 'checklist';
+  title?: string;
+  items: ChecklistItem[];
+}
+
+export interface CalloutBlock {
+  type: 'callout';
+  style: 'note' | 'tip' | 'important';
+  title?: string;
+  content: string;
+}
+
+export type CurriculumBlock = RichTextBlock | ImageBlock | VideoBlock | DownloadBlock | ChecklistBlock | CalloutBlock;
+
+export interface CurriculumDay {
+  day: number;
+  title: string;
+  shortDescription: string;
+  estimatedTime?: string;
+  release: {
+    mode: 'relative' | 'absolute';
+    dayOffset?: number;
+    date?: string;
+  };
+  blocks: CurriculumBlock[];
+}
+
+export interface Curriculum {
+  version: number;
+  days: CurriculumDay[];
+}
+
 export interface Workshop {
   version: number;
   slug: string;
@@ -37,6 +101,7 @@ export interface Workshop {
     websiteId: string;
     pageId: string;
   };
+  curriculum?: Curriculum;
 }
 
 export function getWorkshopSlugs(): string[] {

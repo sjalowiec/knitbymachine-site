@@ -35,5 +35,52 @@
     "enabled": true,
     "websiteId": "",
     "pageId": "workshop-betty-scarf-hub"
+  },
+  "curriculum": {
+    "version": 1,
+    "days": [
+      {
+        "day": 1,
+        "title": "Define the scarf",
+        "shortDescription": "Choose stitch, width, and finish line.",
+        "estimatedTime": "15 min",
+        "release": { "mode": "relative", "dayOffset": 0 },
+        "blocks": [
+          {
+            "type": "richText",
+            "content": "Welcome to Day 1! Today we'll define your scarf project.\n\n## What you'll decide today\n\n- **Stitch pattern** – What texture do you want?\n- **Width** – How wide should your scarf be?\n- **Finish line** – What's your target length?"
+          },
+          {
+            "type": "callout",
+            "style": "tip",
+            "title": "Pro tip",
+            "content": "Don't overthink it. A simple stockinette or garter stitch scarf can be stunning."
+          },
+          {
+            "type": "checklist",
+            "title": "Today's tasks",
+            "items": [
+              { "text": "Choose your stitch pattern", "isOptional": false },
+              { "text": "Decide on width (measure a scarf you love)", "isOptional": false },
+              { "text": "Set a target length", "isOptional": false },
+              { "text": "Post your decisions on the hub", "isOptional": true }
+            ]
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Swatch for fabric",
+        "shortDescription": "Confirm tension and drape.",
+        "estimatedTime": "30 min",
+        "release": { "mode": "relative", "dayOffset": 1 },
+        "blocks": [
+          {
+            "type": "richText",
+            "content": "Today is all about swatching. I know, I know – but trust me, this saves time later."
+          }
+        ]
+      }
+    ]
   }
 }
