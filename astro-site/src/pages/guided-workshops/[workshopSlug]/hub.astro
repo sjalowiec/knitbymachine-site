@@ -28,7 +28,6 @@ const dayList = outline.days.map(od => {
     day: od.day,
     title: curriculumDay?.title || od.title,
     description: curriculumDay?.shortDescription || od.goal,
-    estimatedTime: curriculumDay?.estimatedTime,
     released: od.released,
     href: `/guided-workshops/${workshopSlug}/day/${od.day}`
   };
@@ -39,7 +38,7 @@ const totalDays = outline.days.length;
 ---
 
 <BaseLayout {title} {description}>
-  <main class="page page--guided-workshop-hub">
+  <main class="page page--guided-workshop-hub" data-workshop-slug={workshopSlug}>
 
     <header class="hub-hero">
       <h1>{hub.welcomeTitle}</h1>
@@ -69,10 +68,14 @@ const totalDays = outline.days.length;
       <ul class="plan-grid" aria-label="Workshop plan">
         {dayList.map((d, index) => (
           <li class="plan-item">
-            <a class={`plan-card ${d.released ? '' : 'plan-card--locked'}`} href={d.href}>
+            <a 
+              class={`plan-card ${d.released ? '' : 'plan-card--locked'} ${index === 0 ? 'plan-card--start' : ''}`} 
+              href={d.href}
+              data-day={d.day}
+            >
               <div class="plan-card-top">
                 <span class="plan-day">Day {d.day}</span>
-                {index === 0 && <span class="plan-badge">Start here</span>}
+                {index === 0 && <span class="plan-badge plan-badge--start">Start here</span>}
                 {!d.released && <span class="plan-badge plan-badge--coming">Coming</span>}
               </div>
 
@@ -81,7 +84,6 @@ const totalDays = outline.days.length;
               {d.description && <p class="plan-desc">{d.description}</p>}
 
               <div class="plan-meta">
-                {d.estimatedTime && <span class="plan-time">{d.estimatedTime}</span>}
                 <span class="plan-arrow" aria-hidden="true">→</span>
               </div>
             </a>
@@ -92,13 +94,13 @@ const totalDays = outline.days.length;
 
     {hub.showVideoReplyPlaceholder && <VideoReplySection />}
 
-    <section class="hub-card">
+    <section class="hub-card hub-card--conversation">
       <h2>Workshop Conversation</h2>
       <p class="hub-note">
         Post your update below. If you're stuck, describe what you expected vs. what happened.
       </p>
 
-      <div class="hub-comments">
+      <div class="conversation-bubble">
         {hyvor.enabled && hyvor.websiteId ? (
           <hyvor-talk-comments
             website-id={hyvor.websiteId}
@@ -114,6 +116,28 @@ const totalDays = outline.days.length;
 
   </main>
 
+  <script>
+    // Workshop started tracking via localStorage
+    (function() {
+      const main = document.querySelector('.page--guided-workshop-hub');
+      const slug = main?.getAttribute('data-workshop-slug') || window.location.pathname;
+      const storageKey = `kbm_ws_started_${slug}`;
+      
+      // Check if workshop has been started
+      if (localStorage.getItem(storageKey) === 'true') {
+        document.documentElement.classList.add('ws-started');
+      }
+      
+      // Mark as started when Day 1 is clicked
+      const day1Link = document.querySelector('[data-day="1"]');
+      if (day1Link) {
+        day1Link.addEventListener('click', function() {
+          localStorage.setItem(storageKey, 'true');
+        });
+      }
+    })();
+  </script>
+
   <style>
     .page--guided-workshop-hub { max-width: 880px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
     .hub-hero { margin-bottom: 1.25rem; }
@@ -125,7 +149,6 @@ const totalDays = outline.days.length;
     .hub-list li { margin: 0.4rem 0; }
     .hub-note { margin-top: 0.75rem; opacity: 0.9; }
     .hub-focus p { margin: 0.5rem 0; }
-    .hub-comments { margin-top: 0.75rem; }
 
     /* Plan Grid - Day Cards */
     .plan-grid {
@@ -174,6 +197,34 @@ const totalDays = outline.days.length;
       outline-offset: 2px;
     }
 
+    /* Day 1 highlight - only when NOT started */
+    .plan-card--start {
+      border: 2px solid rgba(82, 104, 45, 0.5);
+      box-shadow: 0 4px 16px rgba(82, 104, 45, 0.15);
+      background: linear-gradient(135deg, rgba(199, 216, 164, 0.15) 0%, #fff 100%);
+    }
+
+    .plan-card--start:hover {
+      border-color: rgba(82, 104, 45, 0.7);
+      box-shadow: 0 8px 24px rgba(82, 104, 45, 0.2);
+    }
+
+    /* Hide Day 1 special styling when workshop is started */
+    :global(.ws-started) .plan-card--start {
+      border: 1px solid rgba(0,0,0,0.10);
+      box-shadow: none;
+      background: #fff;
+    }
+
+    :global(.ws-started) .plan-card--start:hover {
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      border-color: rgba(82, 104, 45, 0.3);
+    }
+
+    :global(.ws-started) .plan-badge--start {
+      display: none;
+    }
+
     .plan-card--locked {
       opacity: 0.65;
       background: rgba(250, 250, 250, 0.9);
@@ -206,15 +257,18 @@ const totalDays = outline.days.length;
       font-weight: 800;
       padding: 0.25rem 0.5rem;
       border-radius: 999px;
-      border: 1px solid rgba(82, 104, 45, 0.28);
-      background: rgba(199, 216, 164, 0.45);
-      color: #52682d;
       white-space: nowrap;
+    }
+
+    .plan-badge--start {
+      border: 1px solid rgba(82, 104, 45, 0.4);
+      background: rgba(199, 216, 164, 0.6);
+      color: #3d4f22;
     }
 
     .plan-badge--coming {
       background: rgba(44, 58, 87, 0.08);
-      border-color: rgba(44, 58, 87, 0.15);
+      border: 1px solid rgba(44, 58, 87, 0.15);
       color: rgba(44, 58, 87, 0.6);
     }
 
@@ -237,30 +291,60 @@ const totalDays = outline.days.length;
     .plan-meta {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      gap: 10px;
+      justify-content: flex-end;
       margin-top: auto;
-      color: rgba(0,0,0,0.55);
-      font-size: 0.84rem;
     }
 
-    .plan-time {
-      color: rgba(82, 104, 45, 0.85);
-    }
-
+    /* Enhanced arrow visibility */
     .plan-arrow {
-      opacity: 0.6;
-      transition: transform 140ms ease, opacity 140ms ease;
-      margin-left: auto;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #52682d;
+      opacity: 0.7;
+      background: rgba(199, 216, 164, 0.35);
+      padding: 0.2rem 0.5rem;
+      border-radius: 8px;
+      transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
     }
 
     .plan-card:hover .plan-arrow {
-      transform: translateX(3px);
-      opacity: 0.9;
+      transform: translateX(4px);
+      opacity: 1;
+      background: rgba(199, 216, 164, 0.55);
     }
 
     .plan-card--locked .plan-arrow {
-      opacity: 0.3;
+      opacity: 0.35;
+      background: rgba(44, 58, 87, 0.08);
+      color: rgba(44, 58, 87, 0.5);
+    }
+
+    /* Workshop Conversation - Speech Bubble Styling */
+    .hub-card--conversation {
+      position: relative;
+    }
+
+    .conversation-bubble {
+      margin-top: 1rem;
+      padding: 1.25rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,245,0.95) 100%);
+      border: 1px solid rgba(82, 104, 45, 0.18);
+      box-shadow: 0 2px 12px rgba(82, 104, 45, 0.06);
+      position: relative;
+    }
+
+    .conversation-bubble::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 28px;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,245,0.95) 100%);
+      border-left: 1px solid rgba(82, 104, 45, 0.18);
+      border-top: 1px solid rgba(82, 104, 45, 0.18);
+      transform: rotate(45deg);
     }
 
     .hub-comments-placeholder {

@@ -1,0 +1,112 @@
+Replit: update the workshop hub “plan cards” and conversation styling
+
+Goal
+
+On the Guided Workshop hub page:
+
+Remove time estimates from plan cards.
+
+Make Day 1 visually stand out (border/shadow/tint) + show “Start here”.
+
+After the user clicks Day 1 once, remove the special Day 1 styling and remove “Start here” on future hub visits (simple “started” flag; not full completion tracking).
+
+Increase visibility of the right-side arrow affordance.
+
+Style the “Workshop Conversation” section container like a speech bubble (similar to ANA page), without changing Hyvor functionality.
+
+Constraints
+
+Don’t change header/footer or other page copy.
+
+Don’t introduce a database.
+
+Use localStorage only.
+
+Keep day cards linking to the existing day URLs.
+
+Make a .bak backup of any file you modify.
+
+Steps
+
+Locate the hub page/component that renders the plan cards and the “Workshop Conversation” section.
+
+Search for the section heading text (“Your plan”, “Your 10-Day Plan”, or similar).
+
+In the plan card markup:
+
+Remove rendering of duration/time entirely (don’t leave empty wrappers).
+
+Keep Day label + title + short description.
+
+Replace the tiny arrow with a clearer arrow element (larger, higher contrast). It can be a text arrow “→” but must be visually obvious.
+
+Add “Start here” badge ONLY to Day 1 when workshop is not started.
+
+Add a Day 1 highlight class ONLY when workshop is not started.
+
+Add a small inline script on the hub page:
+
+Create a storage key using the workshop slug if available, else use the page pathname.
+Example key base: kbm_ws_started_${workshopSlug || location.pathname}
+
+When the Day 1 card is clicked, set that key to "true".
+
+On page load, if the key is "true", add a class to the document like ws-started so CSS can hide the badge and remove Day 1 highlight.
+
+Add CSS:
+
+Default cards remain calm.
+
+Day 1 highlight (only when NOT started): thicker border, slightly stronger shadow, subtle tint.
+
+Hide “Start here” badge when .ws-started is present.
+
+Increase arrow size/contrast; optional pill background.
+
+Style Workshop Conversation container:
+
+Wrap that section content in a div (if not already) with a class like .conversation-bubble.
+
+Apply ANA-like bubble styling: rounded corners, soft background, subtle border, comfortable padding.
+
+Do not change Hyvor embed code beyond moving it inside the bubble container if needed.
+
+Implementation details (preferred pattern)
+
+Add data-day="1" attribute to Day 1 link for easy JS targeting.
+
+Add classes:
+
+.plan-card
+
+.plan-card--start on Day 1 card (only when not started)
+
+.plan-badge for “Start here”
+
+.plan-arrow for arrow element
+
+Script requirement
+
+Add something like:
+
+On load:
+
+read localStorage key
+
+if true: document.documentElement.classList.add('ws-started')
+
+On Day 1 click:
+
+set key true
+
+Deliverable
+
+Provide the updated file(s) and confirm:
+
+time removed from cards
+
+Day 1 highlight + Start here show only until Day 1 is clicked once
+
+arrow is visibly clearer
+
+conversation section has speech-bubble container styling
