@@ -1,0 +1,96 @@
+The Netlify deploy errored, with the following guidance provided:
+
+Diagnosis  
+- The build fails because Vite/Rollup cannot resolve the `marked` module imported in `src/pages/guided-workshops/[workshopSlug]/day/...` ([line 91](#L91)). This indicates that `marked` is not available to the project during the build (missing dependency or not installed).
+
+Solution  
+1. Verify whether `marked` is listed under `dependencies` in `package.json`. If it is missing, add it.  
+2. Install and commit the dependency so it’s available during Netlify builds:  
+   ```bash
+   npm install marked
+   git add package.json package-lock.json
+   git commit -m "Add marked dependency"
+   ```  
+3. Trigger a new Netlify deploy. The build should succeed once `marked` is present.
+
+The relevant error logs are:
+
+Line 14: Now using node v20.19.6 (npm v10.8.2)
+Line 15: Enabling Node.js Corepack
+Line 16: Started restoring cached build plugins
+Line 17: Finished restoring cached build plugins
+Line 18: Started restoring cached corepack dependencies
+Line 19: Finished restoring cached corepack dependencies
+Line 20: No npm workspaces detected
+Line 21: Started restoring cached node modules
+Line 22: Finished restoring cached node modules
+Line 23: Installing npm packages using npm version 10.8.2
+Line 24: npm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead
+Line 25: added 790 packages in 33s
+Line 26: npm packages installed
+Line 27: Successfully installed dependencies
+Line 28: Starting build script
+Line 29: Detected 1 framework(s)
+Line 30: "astro" at version "5.16.5"
+Line 31: Section completed: initializing
+Line 32: [96m[1m​[22m[39m
+Line 33: [96m[1mNetlify Build                                                 [22m[39m
+Line 34: [96m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 80: [2m17:05:59[22m [34m[build][39m adapter: [32m@astrojs/netlify[39m
+Line 81: [2m17:05:59[22m [34m[build][39m Collecting build info...
+Line 82: [2m17:05:59[22m [34m[build][39m [32m✓ Completed in 566ms.[39m
+Line 83: [2m17:05:59[22m [34m[build][39m Building server entrypoints...
+Line 84: [1m[33mwarn[39m[22m - The `content` option in your Tailwind CSS configuration is missing or empty.
+Line 85: [1m[33mwarn[39m[22m - Configure your content sources or your generated CSS will be missing styles.
+Line 86: [1m[33mwarn[39m[22m - https://tailwindcss.com/docs/content-configuration
+Line 87: [33m[1m17:06:02[22m [WARN] [router][39m getStaticPaths() ignored in dynamic page [1m/src/pages/ai-agents/[slug].astro[22m.
+Line 88: [33m[1m17:06:02[22m [WARN] [router][39m getStaticPaths() ignored in dynamic page [1m/src/pages/guided-workshops/[workshopSl
+Line 89: [33m[1m17:06:02[22m [WARN] [router][39m getStaticPaths() ignored in dynamic page [1m/src/pages/guided-workshops/[workshopSl
+Line 90: [31m[1m17:06:02[22m [ERROR] [vite][39m [31m✗[39m Build failed in 3.48s
+Line 91: [vite]: Rollup failed to resolve import "marked" from "/opt/build/repo/astro-site/src/pages/guided-workshops/[workshopSlug]/day/
+Line 92: This is most likely unintended because it can break your application at runtime.
+Line 93: If you do want to externalize this module explicitly add it to
+Line 94: `build.rollupOptions.external`
+Line 95:   [1mStack trace:[22m
+Line 96: [2m    at viteLog (file:///opt/build/repo/astro-site/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46374:15)
+Line 97:     at onLog (file:///opt/build/repo/astro-site/node_modules/vite/dist/node/chunks/dep-D4NMHUTW.js:46072:7)
+Line 98:     at Object.logger [as onLog] (file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:22886:9)
+Line 99:     at file:///opt/build/repo/astro-site/node_modules/rollup/dist/es/shared/node-entry.js:21588:26[22m
+Line 100: [91m[1m​[22m[39m
+Line 101: [91m[1m"build.command" failed                                        [22m[39m
+Line 102: [91m[1m────────────────────────────────────────────────────────────────[22m[39m
+Line 103: ​
+Line 104:   [31m[1mError message[22m[39m
+Line 105:   Command failed with exit code 1: npm run build
+Line 106: ​
+Line 107:   [31m[1mError location[22m[39m
+Line 108:   In build.command from netlify.toml:
+Line 109:   npm run build
+Line 110: ​
+Line 111:   [31m[1mResolved config[22m[39m
+Line 112:   build:
+Line 113:     base: /opt/build/repo/astro-site
+Line 114:     command: npm run build
+Line 115:     commandOrigin: config
+Line 116:     environment:
+Line 117:       - ACTIVECAMPAIGN_API_KEY
+Line 121:       - GITHUB_TOKEN
+Line 122:       - NODE_VERSION
+Line 123:     processing:
+Line 124:       html:
+Line 125:         pretty_urls: true
+Line 126:       skip_processing: false
+Line 127:     publish: /opt/build/repo/astro-site/dist
+Line 128:     publishOrigin: config
+Line 129:   functionsDirectory: /opt/build/repo/astro-site/netlify/functions
+Line 130:   headers:
+Line 131: Failed during stage 'building site': Build script returned non-zero exit code: 2
+Line 132:     - for: /*
+      values:
+        Cache-Control: public, max-age=0, must-revalidate
+    - for: /assets/*
+      values:
+       
+Line 133: Build failed due to a user error: Build script returned non-zero exit code: 2
+Line 134: Failing build: Failed to build site
+Line 135: Finished processing build request in 1m0.66s
