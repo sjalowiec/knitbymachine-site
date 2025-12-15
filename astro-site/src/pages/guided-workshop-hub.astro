@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = 'Guided Workshop — In Progress';
+const description = 'Your private workshop space for updates and questions.';
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--guided-workshop-hub">
+
+    <h1>Guided Workshop</h1>
+
+    <p>
+      This is your workshop space. Post updates and questions below.
+    </p>
+
+    <hyvor-talk-comments
+      website-id="14706"
+      page-id="guided-workshop-hub-test"
+    ></hyvor-talk-comments>
+
+  </main>
+</BaseLayout>
