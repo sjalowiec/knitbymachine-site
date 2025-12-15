@@ -285,8 +285,23 @@ const description = "Member reference: how bobbin (intarsia) knitting works on a
       gap: 0.35rem;
     }
 
-    .ref-scan a { text-decoration: none; }
-    .ref-scan a:hover { text-decoration: underline; }
+    .ref-scan a { 
+      color: #2C3A57;
+      text-decoration: none; 
+    }
+    .ref-scan a:hover { 
+      text-decoration: underline; 
+    }
+
+    /* Test: Global link color for this page */
+    .ref-article a {
+      color: #2C3A57;
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+    .ref-article a:hover {
+      opacity: 0.8;
+    }
 
     /* Article */
     .ref-article { min-width: 0; }
