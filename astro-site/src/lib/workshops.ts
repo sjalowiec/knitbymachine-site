@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 
 const WORKSHOPS_DIR = path.join(process.cwd(), 'src/content/workshops');
+const GUIDED_WORKSHOPS_DIR = path.join(process.cwd(), 'src/content/guided-workshops');
 
 export interface WorkshopDay {
   day: number;
@@ -104,13 +105,92 @@ export interface Workshop {
   curriculum?: Curriculum;
 }
 
-export function getWorkshopSlugs(): string[] {
+// New guided workshop format (from admin)
+export interface GuidedWorkshopFile {
+  title: string;
+  slug: string;
+  shortDescription: string;
+  description: string;
+  tags: string[];
+  isDraft: boolean;
+  publishedDate: string;
+  durationDays: number;
+  level: string;
+  imageUrl: string;
+  imageAlt: string;
+  curriculum: {
+    version: number;
+    days: Array<{
+      day: number;
+      title: string;
+      shortDescription: string;
+      estimatedTime?: string;
+      isBonus?: boolean;
+      release: {
+        mode: 'relative' | 'absolute';
+        dayOffset?: number;
+        date?: string;
+      };
+      blocks: CurriculumBlock[];
+    }>;
+  };
+}
+
+// Adapt new guided workshop format to expected Workshop interface
+function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
+  return {
+    version: 1,
+    slug: gw.slug,
+    client: {
+      firstName: 'Friend'
+    },
+    workshop: {
+      title: gw.title,
+      subtitle: gw.shortDescription,
+      startDay: 1,
+      status: 'active'
+    },
+    outline: {
+      id: gw.slug,
+      days: gw.curriculum.days.map(d => ({
+        day: d.day,
+        title: d.title,
+        goal: d.shortDescription,
+        released: true // All days released by default for new format
+      }))
+    },
+    hub: {
+      welcomeTitle: `Welcome to ${gw.title}`,
+      welcomeBody: gw.description,
+      todayLabel: 'Your workshop is ready',
+      showVideoReplyPlaceholder: false
+    },
+    hyvor: {
+      enabled: false,
+      websiteId: '',
+      pageId: ''
+    },
+    curriculum: {
+      version: gw.curriculum.version,
+      days: gw.curriculum.days.map(d => ({
+        day: d.day,
+        title: d.title,
+        shortDescription: d.shortDescription,
+        estimatedTime: d.estimatedTime,
+        release: d.release,
+        blocks: d.blocks
+      }))
+    }
+  };
+}
+
+// Get slugs from old workshops directory (with hub/outline/client structure)
+function getOldWorkshopSlugs(): string[] {
   try {
     const files = fs.readdirSync(WORKSHOPS_DIR);
     return files
       .filter(file => file.endsWith('.json') && !file.startsWith('_'))
       .filter(file => {
-        // Check if the file has the new workshop instance structure
         try {
           const filePath = path.join(WORKSHOPS_DIR, file);
           const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
@@ -125,24 +205,78 @@ export function getWorkshopSlugs(): string[] {
   }
 }
 
+// Get slugs from new guided-workshops directory
+function getGuidedWorkshopSlugs(): string[] {
+  try {
+    if (!fs.existsSync(GUIDED_WORKSHOPS_DIR)) {
+      return [];
+    }
+    const files = fs.readdirSync(GUIDED_WORKSHOPS_DIR);
+    return files
+      .filter(file => file.endsWith('.json') && !file.startsWith('_'))
+      .filter(file => {
+        try {
+          const filePath = path.join(GUIDED_WORKSHOPS_DIR, file);
+          const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+          // New format has curriculum but no hub/outline/client
+          return content.curriculum && content.slug && !content.hub && !content.isDraft;
+        } catch {
+          return false;
+        }
+      })
+      .map(file => file.replace('.json', ''));
+  } catch {
+    return [];
+  }
+}
+
+export function getWorkshopSlugs(): string[] {
+  const oldSlugs = getOldWorkshopSlugs();
+  const guidedSlugs = getGuidedWorkshopSlugs();
+  // Combine and dedupe (old format takes precedence)
+  const allSlugs = [...oldSlugs];
+  for (const slug of guidedSlugs) {
+    if (!allSlugs.includes(slug)) {
+      allSlugs.push(slug);
+    }
+  }
+  return allSlugs;
+}
+
 export function getWorkshopBySlug(slug: string): Workshop | null {
+  // First try old workshops directory
   try {
     const filePath = path.join(WORKSHOPS_DIR, `${slug}.json`);
-    if (!fs.existsSync(filePath)) {
-      return null;
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const workshop = JSON.parse(content) as Workshop;
+      
+      // Validate it's the old structure with hub/outline/client
+      if (workshop.hub && workshop.outline && workshop.client) {
+        return workshop;
+      }
     }
-    const content = fs.readFileSync(filePath, 'utf-8');
-    const workshop = JSON.parse(content) as Workshop;
-    
-    // Validate it's the new structure
-    if (!workshop.hub || !workshop.outline || !workshop.client) {
-      return null;
-    }
-    
-    return workshop;
   } catch {
-    return null;
+    // Continue to try guided workshops
   }
+  
+  // Then try new guided-workshops directory
+  try {
+    const filePath = path.join(GUIDED_WORKSHOPS_DIR, `${slug}.json`);
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf-8');
+      const gw = JSON.parse(content) as GuidedWorkshopFile;
+      
+      // Validate it's the new guided workshop structure and not a draft
+      if (gw.curriculum && gw.slug && !gw.isDraft) {
+        return adaptGuidedWorkshop(gw);
+      }
+    }
+  } catch {
+    // Fall through
+  }
+  
+  return null;
 }
 
 export function getAllWorkshops(): Workshop[] {
