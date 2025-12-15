@@ -249,17 +249,17 @@ if (!entry) {
       color: #1f2937;
     }
 
-    /* Promo text links — force KBM green */
-    .term-promo a,
-    .term-promo a:visited {
+    /* Promo text links — force KBM green (global for set:html content) */
+    .term-promo :global(a),
+    .term-promo :global(a:visited) {
       color: #52682d !important;
       font-weight: 600;
       text-decoration: underline;
       text-underline-offset: 2px;
     }
 
-    .term-promo a:hover,
-    .term-promo a:focus-visible {
+    .term-promo :global(a:hover),
+    .term-promo :global(a:focus-visible) {
       opacity: 0.85;
     }
 
