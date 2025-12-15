@@ -40,7 +40,7 @@ const dayList = outline.days.map(od => {
 const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
 ---
 
-<BaseLayout {title} {description}>
+<BaseLayout {title} {description} skipGlobalHyvor={true}>
   <main class="page page--guided-workshop-hub" data-workshop-slug={workshopSlug}>
 
     <!-- Hero with icon -->
@@ -116,18 +116,22 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
       </p>
 
       <div class="conversation-bubble">
-        {hyvor.enabled && hyvor.websiteId ? (
-          <hyvor-talk-comments
-            website-id={hyvor.websiteId}
-            page-id={hyvor.pageId}
-          ></hyvor-talk-comments>
-        ) : (
-          <div class="hub-comments-placeholder">
-            <p>Comments will appear here once Hyvor is connected.</p>
-          </div>
-        )}
+        <!-- Hyvor Talk container - loads only after auth is confirmed -->
+        <div id="hyvor-talk-view" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId}></div>
       </div>
     </section>
+
+    <!-- 
+      DEV TEST INSTRUCTIONS:
+      To simulate a paid user during development, open DevTools and run:
+      
+      localStorage.setItem("kbm_user", JSON.stringify({
+        id: "dev-1",
+        name: "Betty",
+        email: "betty@example.com"
+      }));
+      location.reload();
+    -->
 
   </main>
 
@@ -204,6 +208,47 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
         localStorage.setItem(helpSeenKey, 'true');
       }
     })();
+  </script>
+
+  <!-- Hyvor Talk Auth-Aware Loader -->
+  <script type="module">
+    import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/src/lib/hyvorLoader.js';
+
+    const mount = document.getElementById('hyvor-talk-view');
+    if (mount) {
+      const websiteId = mount.dataset.websiteId || '14706';
+      const pageId = mount.dataset.pageId || 'workshop-hub';
+
+      // Show loading state
+      mount.insertAdjacentHTML('beforebegin', `
+        <div class="kbm-hyvor-wait" id="kbm-hyvor-wait">
+          Loading your workshop conversation…
+        </div>
+      `);
+
+      const result = await waitForAuth({ timeoutMs: 8000 });
+
+      if (result.ok && result.user) {
+        const waitEl = document.getElementById('kbm-hyvor-wait');
+        if (waitEl) waitEl.remove();
+
+        setHyvorIdentity({ websiteId, user: result.user });
+        
+        // Create the Hyvor Talk element
+        const hyvorEl = document.createElement('hyvor-talk-comments');
+        hyvorEl.setAttribute('website-id', websiteId);
+        hyvorEl.setAttribute('page-id', pageId);
+        mount.appendChild(hyvorEl);
+        
+        loadHyvorScript();
+      } else {
+        // No auth - show timeout message
+        const waitEl = document.getElementById('kbm-hyvor-wait');
+        if (waitEl) {
+          waitEl.innerHTML = 'Loading is taking longer than expected. Refresh this page if needed.';
+        }
+      }
+    }
   </script>
 
   <style>
@@ -591,6 +636,17 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
       background: rgba(255, 255, 255, 0.55);
       text-align: center;
       color: rgba(44, 58, 87, 0.7);
+    }
+
+    /* Hyvor loading state */
+    .kbm-hyvor-wait {
+      margin: 1rem 0;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid rgba(82, 104, 45, 0.22);
+      border-radius: 12px;
+      background: rgba(199, 216, 164, 0.18);
+      color: #2b2b2b;
+      font-size: 0.95rem;
     }
   </style>
 </BaseLayout>

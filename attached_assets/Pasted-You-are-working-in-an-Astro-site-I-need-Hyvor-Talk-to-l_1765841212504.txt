@@ -1,0 +1,151 @@
+You are working in an Astro site. I need Hyvor Talk to load ONLY after workshop authentication data exists, so paid users never see a Hyvor login prompt.
+
+Step 1 — Locate the hub page
+
+Search the repo for the route:
+
+/guided-workshops/scarf-for-betty/hub
+
+If not found, search for:
+
+src/pages/guided-workshops/scarf-for-betty/hub.astro
+
+src/pages/guided-workshops/scarf-for-betty/hub/index.astro
+
+scarf-for-betty
+
+Stop and confirm which file powers this route.
+
+Step 2 — Check for existing Hyvor code
+
+Search for:
+
+talk.hyvor.com
+
+embed/embed.js
+
+hyvorTalk
+
+hyvor-talk-view
+
+If any Hyvor loader already exists, reuse it and avoid duplication.
+
+Step 3 — Create a shared Hyvor loader (only if missing)
+
+Create this file only if it does not already exist:
+
+File: src/lib/hyvorLoader.js
+
+export async function waitForAuth({ timeoutMs = 8000, intervalMs = 150 } = {}) {
+  const start = Date.now();
+
+  const getUser = () => {
+    // Future: replace with Memberstack / Outseta user
+    if (window.KBM_AUTH?.user) return window.KBM_AUTH.user;
+
+    // Dev fallback
+    try {
+      const raw = localStorage.getItem("kbm_user");
+      if (raw) return JSON.parse(raw);
+    } catch (e) {}
+
+    return null;
+  };
+
+  return new Promise((resolve) => {
+    const tick = () => {
+      const user = getUser();
+      if (user) return resolve({ ok: true, user });
+      if (Date.now() - start > timeoutMs) return resolve({ ok: false, user: null });
+      setTimeout(tick, intervalMs);
+    };
+    tick();
+  });
+}
+
+export function setHyvorIdentity({ websiteId, user }) {
+  window.hyvorTalk = window.hyvorTalk || {};
+  window.hyvorTalk.website = websiteId;
+
+  window.hyvorTalk.sso = {
+    user: {
+      id: String(user.id || user.userId || user.email || "unknown"),
+      name: String(user.name || user.firstName || "Member"),
+      email: String(user.email || ""),
+      avatar: user.avatar || ""
+    }
+  };
+}
+
+export function loadHyvorScript() {
+  if (document.querySelector('script[data-kbm-hyvor="1"]')) return;
+
+  const s = document.createElement("script");
+  s.async = true;
+  s.src = "https://talk.hyvor.com/embed/embed.js";
+  s.dataset.kbmHyvor = "1";
+  document.body.appendChild(s);
+}
+
+Step 4 — Update ONLY the scarf hub page
+
+In the confirmed hub page file:
+
+4a. Ensure the comment container exists
+<div id="hyvor-talk-view"></div>
+
+4b. Add this client-side loader script
+<script type="module">
+  import { waitForAuth, setHyvorIdentity, loadHyvorScript } from "/src/lib/hyvorLoader.js";
+
+  const HYVOR_WEBSITE_ID = "14706";
+
+  const mount = document.getElementById("hyvor-talk-view");
+  if (mount) {
+    mount.insertAdjacentHTML("beforebegin", `
+      <div class="kbm-hyvor-wait" id="kbm-hyvor-wait">
+        Loading your workshop conversation…
+      </div>
+    `);
+  }
+
+  const result = await waitForAuth({ timeoutMs: 8000 });
+
+  if (result.ok && result.user) {
+    const waitEl = document.getElementById("kbm-hyvor-wait");
+    if (waitEl) waitEl.remove();
+
+    setHyvorIdentity({ websiteId: HYVOR_WEBSITE_ID, user: result.user });
+    loadHyvorScript();
+  } else {
+    // Do not load Hyvor if auth never appears
+    const waitEl = document.getElementById("kbm-hyvor-wait");
+    if (waitEl) {
+      waitEl.innerHTML = "Loading is taking longer than expected. Refresh this page if needed.";
+    }
+  }
+</script>
+
+4c. Add minimal local styling (safe + on brand)
+.kbm-hyvor-wait{
+  margin: 1rem 0;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(82,104,45,0.22);
+  border-radius: 12px;
+  background: rgba(199,216,164,0.18);
+  color: #2b2b2b;
+  font-size: 0.95rem;
+}
+
+Step 5 — Dev test (no auth system yet)
+
+Add a short comment in the hub page explaining:
+
+To simulate a paid user during development, open DevTools and run:
+
+localStorage.setItem("kbm_user", JSON.stringify({
+  id: "dev-1",
+  name: "Betty",
+  email: "betty@example.com"
+}));
+location.reload();

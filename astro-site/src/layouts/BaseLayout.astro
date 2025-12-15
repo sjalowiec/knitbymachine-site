@@ -8,9 +8,10 @@ interface Props {
   title?: string;
   description?: string;
   bodyClass?: string;
+  skipGlobalHyvor?: boolean;
 }
 
-const { title = "Knit by Machine", description = "Machine knitting tools and patterns", bodyClass = "" } = Astro.props;
+const { title = "Knit by Machine", description = "Machine knitting tools and patterns", bodyClass = "", skipGlobalHyvor = false } = Astro.props;
 ---
 
 <html lang="en">
@@ -50,6 +51,6 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
     <Footer />
     
     <script src="/scripts/rsk-title-format.js" defer></script>
-    <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
+    {!skipGlobalHyvor && <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>}
   </body>
 </html>
