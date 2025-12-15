@@ -31,12 +31,13 @@ const dayList = outline.days.map(od => {
     title: curriculumDay?.title || od.title,
     description: curriculumDay?.shortDescription || od.goal,
     released: od.released,
+    isBonus: od.isBonus || od.day === 99,
     href: `/guided-workshops/${workshopSlug}/day/${od.day}`
   };
 });
 
-// Total days always comes from outline (the authoritative schedule)
-const totalDays = outline.days.length;
+// Total days counts only regular days (excludes bonus days like Day 99)
+const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
 ---
 
 <BaseLayout {title} {description}>
@@ -82,12 +83,12 @@ const totalDays = outline.days.length;
         {dayList.map((d, index) => (
           <li class="plan-item">
             <a 
-              class={`plan-card ${d.released ? '' : 'plan-card--locked'} ${index === 0 ? 'plan-card--start' : ''}`} 
+              class={`plan-card ${d.released ? '' : 'plan-card--locked'} ${index === 0 ? 'plan-card--start' : ''} ${d.isBonus ? 'plan-card--bonus' : ''}`} 
               href={d.href}
               data-day={d.day}
             >
               <div class="plan-card-top">
-                <span class="plan-day">Day {d.day}</span>
+                <span class="plan-day">{d.isBonus ? 'Bonus' : `Day ${d.day}`}</span>
                 {index === 0 && <span class="plan-badge plan-badge--start">Start here</span>}
                 {!d.released && <span class="plan-badge plan-badge--coming">Coming</span>}
               </div>
@@ -443,6 +444,21 @@ const totalDays = outline.days.length;
       transform: none;
       box-shadow: none;
       border-color: rgba(0,0,0,0.10);
+    }
+
+    /* Bonus card styling */
+    .plan-card--bonus {
+      border-style: dashed;
+      border-color: rgba(82, 104, 45, 0.35);
+      background: linear-gradient(135deg, rgba(255, 248, 220, 0.4) 0%, #fff 100%);
+    }
+
+    .plan-card--bonus .plan-day {
+      color: #8b6914;
+    }
+
+    .plan-card--bonus:hover {
+      border-color: rgba(139, 105, 20, 0.5);
     }
 
     .plan-card-top {

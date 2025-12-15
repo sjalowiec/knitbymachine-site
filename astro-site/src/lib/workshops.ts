@@ -9,6 +9,7 @@ export interface WorkshopDay {
   title: string;
   goal: string;
   released: boolean;
+  isBonus?: boolean;
 }
 
 // Curriculum block types
@@ -138,11 +139,15 @@ export interface GuidedWorkshopFile {
 
 // Adapt new guided workshop format to expected Workshop interface
 function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
+  // Extract client name from title if it contains "for [Name]"
+  const nameMatch = gw.title.match(/for\s+(\w+)/i);
+  const clientName = nameMatch ? nameMatch[1] : 'Friend';
+  
   return {
     version: 1,
     slug: gw.slug,
     client: {
-      firstName: 'Friend'
+      firstName: clientName
     },
     workshop: {
       title: gw.title,
@@ -156,19 +161,20 @@ function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
         day: d.day,
         title: d.title,
         goal: d.shortDescription,
-        released: true // All days released by default for new format
+        released: true, // All days released by default for new format
+        isBonus: d.isBonus || d.day === 99
       }))
     },
     hub: {
-      welcomeTitle: `Welcome to ${gw.title}`,
+      welcomeTitle: `Welcome, ${clientName}`,
       welcomeBody: gw.description,
       todayLabel: 'Your workshop is ready',
-      showVideoReplyPlaceholder: false
+      showVideoReplyPlaceholder: true // Enable video reply placeholder by default
     },
     hyvor: {
-      enabled: false,
-      websiteId: '',
-      pageId: ''
+      enabled: true,
+      websiteId: '14706', // Default Hyvor website ID
+      pageId: `guided-workshop-${gw.slug}-hub`
     },
     curriculum: {
       version: gw.curriculum.version,
