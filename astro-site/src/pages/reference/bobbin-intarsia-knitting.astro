@@ -278,11 +278,26 @@ const description = "Member reference: how bobbin (intarsia) knitting works on a
       margin: 0 0 0.75rem;
     }
 
-    .ref-scan-list {
-      margin: 0;
-      padding-left: 1.1rem;
-      display: grid;
-      gap: 0.35rem;
+    /* Reference Quick Scan — arrow markers instead of bullets */
+    .ref-scan ul {
+      list-style: none;
+      padding-left: 0;
+      margin-left: 0;
+    }
+
+    .ref-scan li {
+      position: relative;
+      padding-left: 1.25rem;
+      margin: 0.45rem 0;
+    }
+
+    .ref-scan li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 0.05em;
+      font-size: 0.85em;
+      color: #8A946A; /* subtle KBM olive */
     }
 
     .ref-scan a { 
