@@ -278,7 +278,7 @@ const description = "Member reference: how bobbin (intarsia) knitting works on a
       margin: 0 0 0.75rem;
     }
 
-    /* Reference Quick Scan — arrow markers instead of bullets */
+    /* Reference Quick Scan — modern chevron list */
     .ref-scan ul {
       list-style: none;
       padding-left: 0;
@@ -286,18 +286,23 @@ const description = "Member reference: how bobbin (intarsia) knitting works on a
     }
 
     .ref-scan li {
-      position: relative;
-      padding-left: 1.25rem;
+      display: flex;
+      align-items: center;
       margin: 0.45rem 0;
+      transition: transform 0.15s ease;
+    }
+
+    .ref-scan li:hover {
+      transform: translateX(4px);
     }
 
     .ref-scan li::before {
-      content: "→";
-      position: absolute;
-      left: 0;
-      top: 0.05em;
-      font-size: 0.85em;
-      color: #8A946A; /* subtle KBM olive */
+      content: "›";
+      flex-shrink: 0;
+      margin-right: 8px;
+      font-size: 1.1em;
+      font-weight: 600;
+      color: #52682d;
     }
 
     .ref-scan a { 
@@ -305,9 +310,12 @@ const description = "Member reference: how bobbin (intarsia) knitting works on a
       font-weight: 600;
       text-decoration: none; 
     }
-    .ref-scan a:hover { 
+    .ref-scan li:hover a { 
       color: #C2614E;
       text-decoration: underline; 
+    }
+    .ref-scan li:hover::before {
+      color: #C2614E;
     }
 
     /* Test: Global link color for this page */
