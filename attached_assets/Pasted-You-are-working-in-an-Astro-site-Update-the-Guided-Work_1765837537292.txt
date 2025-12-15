@@ -1,0 +1,137 @@
+You are working in an Astro site. Update the Guided Workshop hub page layout and interaction so it feels like a workspace with a clear next action.
+
+Scope (do all of this, and nothing extra)
+A) Make the plan the top focus
+
+Move the plan cards/grid to the top of the hub content (right after the intro line below).
+
+Remove time estimates from plan cards entirely.
+
+Remove any text like “You’re on Day 1 right now” or any “current day” indicator that isn’t real tracking.
+
+Keep each card showing: Day label, title, short description. Entire card is a link to the existing day URL pattern (do not invent new routes).
+
+B) Day 1 “Start here” highlight that goes away after first click
+
+Day 1 card should have a stronger style (border/shadow/tint) and show a “Start here” badge.
+
+After the user clicks Day 1 once, remove the Day 1 highlight and hide “Start here” on future hub visits.
+
+Implement this using localStorage only (this is “started” state, not completion tracking).
+
+Implementation details:
+
+Identify Day 1 card/link and add data-day="1" to it.
+
+Create a localStorage key based on workshop slug if available, else location.pathname:
+
+const id = workshopSlug ?? location.pathname;
+
+kbm_ws_started_${id}
+
+On hub load: if key is true, add ws-started class to <html> (documentElement).
+
+On Day 1 click: set the key to "true".
+
+CSS rules:
+
+When NOT started: Day 1 card has class .plan-card--start and badge visible.
+
+When .ws-started exists: hide badge and remove special styling.
+
+C) Make “How this works” a pull-out drawer (not a big permanent section)
+
+Remove the always-visible “How this works” block from the hub.
+
+Replace it with a single intro sentence above the plan grid:
+
+Intro line (exact copy):
+“This is your private workshop hub. Use it to follow your 10-day plan and post updates so I can guide you step-by-step. How this works”
+
+“How this works” should be a <button> styled like a link.
+
+Clicking it toggles a drawer open/closed.
+
+The drawer should:
+
+be closed by default
+
+auto-open on the user’s first visit to this hub page only
+
+include a “Got it” button that dismisses it and prevents future auto-open
+
+still be accessible anytime via the “How this works” link
+
+LocalStorage keys (use same id approach as above):
+
+kbm_ws_help_seen_${id}
+
+kbm_ws_help_dismissed_${id}
+
+Rules:
+
+If dismissed: never auto-open
+
+Else if not seen: auto-open on load and set seen=true
+
+Clicking “Got it” sets dismissed=true and closes the drawer
+
+Drawer copy (use exactly):
+Title: “How this works”
+Bullets:
+
+“Follow the plan in order (Day 1 → Day 10).”
+
+“After you work on a step, post a quick update below.”
+
+“A photo + 1–2 sentences is perfect.”
+
+“I’ll reply with what to check or do next.”
+Button: “Got it”
+
+Accessibility:
+
+Toggle must have aria-expanded and aria-controls
+
+Drawer must have an id
+
+Use hidden attribute when closed
+
+D) Make it obvious they can talk back (check-in section)
+
+Rename “Workshop Conversation” section to:
+
+Heading: “Your check-in”
+One sentence under heading: “Post a quick update after you work on a step — I’ll reply with what to check or do next.”
+
+Keep the existing Hyvor Talk embed/thread, but place it directly under this heading + sentence.
+
+Style the conversation container like a calm “speech bubble” (similar to ANA) using soft background, subtle border, generous padding, rounded corners. Do NOT change Hyvor functionality.
+
+E) Arrow affordance
+
+The arrow on plan cards is currently too subtle.
+
+Increase its visibility (larger font-size and higher contrast) and/or place it in a small rounded pill on the right side.
+
+Keep it as a text arrow “→” (no SVG).
+
+Constraints
+
+Do not change global header/footer.
+
+Do not introduce libraries.
+
+Do not refactor routing for day pages.
+
+Make a .bak backup copy of any file you modify (same folder).
+
+After edits, report which file(s) changed.
+
+How to find the hub page
+
+Search the project for the hub section headings and Hyvor usage:
+
+Find the hub by searching for “Workshop Conversation”, “Your 10-day plan”, “How this works”, or “talk.hyvor.com/embed/embed.js”.
+
+If Hyvor embed is not present on the hub page, embed it exactly the same way it is embedded on the page where it currently works.

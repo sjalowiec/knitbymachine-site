@@ -42,29 +42,36 @@ const totalDays = outline.days.length;
 
     <header class="hub-hero">
       <h1>{hub.welcomeTitle}</h1>
-      <p class="hub-subtitle">
-        {hub.welcomeBody}
-      </p>
-      <div class="hub-status">
-        <strong>{hub.todayLabel}</strong>
-      </div>
     </header>
 
-    <section class="hub-card">
-      <h2>How this works</h2>
-      <ul class="hub-list">
-        <li><strong>Post updates here:</strong> scroll down and add your note under "Workshop Conversation."</li>
-        <li><strong>What to include:</strong> a photo + 1–2 sentences (what you did, or what feels stuck).</li>
-        <li><strong>My reply rhythm:</strong> I'll respond in writing with the next step and what to check.</li>
-        <li><strong>Done for today:</strong> once you've posted, you're done — no extra homework.</li>
-      </ul>
-      <p class="hub-note">
-        Photos work best. If a short video helps, share a Loom link in your comment.
-      </p>
-    </section>
+    <!-- Intro line with "How this works" drawer trigger -->
+    <p class="hub-intro">
+      This is your private workshop hub. Use it to follow your {totalDays}-day plan and post updates so I can guide you step-by-step. 
+      <button 
+        class="help-trigger" 
+        type="button"
+        aria-expanded="false"
+        aria-controls="help-drawer"
+      >How this works</button>
+    </p>
 
-    <section class="hub-card hub-card--plan">
-      <h2>Your {totalDays}-Day Plan</h2>
+    <!-- How this works drawer -->
+    <div id="help-drawer" class="help-drawer" hidden>
+      <div class="help-drawer-content">
+        <h2 class="help-drawer-title">How this works</h2>
+        <ul class="help-drawer-list">
+          <li>Follow the plan in order (Day 1 → Day {totalDays}).</li>
+          <li>After you work on a step, post a quick update below.</li>
+          <li>A photo + 1–2 sentences is perfect.</li>
+          <li>I'll reply with what to check or do next.</li>
+        </ul>
+        <button type="button" class="help-drawer-dismiss">Got it</button>
+      </div>
+    </div>
+
+    <!-- Plan Grid - Top Focus -->
+    <section class="hub-plan">
+      <h2 class="hub-plan-title">Your {totalDays}-Day Plan</h2>
       <ul class="plan-grid" aria-label="Workshop plan">
         {dayList.map((d, index) => (
           <li class="plan-item">
@@ -94,10 +101,11 @@ const totalDays = outline.days.length;
 
     {hub.showVideoReplyPlaceholder && <VideoReplySection />}
 
-    <section class="hub-card hub-card--conversation">
-      <h2>Workshop Conversation</h2>
-      <p class="hub-note">
-        Post your update below. If you're stuck, describe what you expected vs. what happened.
+    <!-- Your check-in section -->
+    <section class="hub-checkin">
+      <h2>Your check-in</h2>
+      <p class="hub-checkin-intro">
+        Post a quick update after you work on a step — I'll reply with what to check or do next.
       </p>
 
       <div class="conversation-bubble">
@@ -117,14 +125,22 @@ const totalDays = outline.days.length;
   </main>
 
   <script>
-    // Workshop started tracking via localStorage
     (function() {
       const main = document.querySelector('.page--guided-workshop-hub');
       const slug = main?.getAttribute('data-workshop-slug') || window.location.pathname;
-      const storageKey = `kbm_ws_started_${slug}`;
+      
+      // Storage keys
+      const startedKey = `kbm_ws_started_${slug}`;
+      const helpSeenKey = `kbm_ws_help_seen_${slug}`;
+      const helpDismissedKey = `kbm_ws_help_dismissed_${slug}`;
+      
+      // Elements
+      const helpTrigger = document.querySelector('.help-trigger');
+      const helpDrawer = document.getElementById('help-drawer');
+      const helpDismiss = document.querySelector('.help-drawer-dismiss');
       
       // Check if workshop has been started
-      if (localStorage.getItem(storageKey) === 'true') {
+      if (localStorage.getItem(startedKey) === 'true') {
         document.documentElement.classList.add('ws-started');
       }
       
@@ -132,29 +148,177 @@ const totalDays = outline.days.length;
       const day1Link = document.querySelector('[data-day="1"]');
       if (day1Link) {
         day1Link.addEventListener('click', function() {
-          localStorage.setItem(storageKey, 'true');
+          localStorage.setItem(startedKey, 'true');
         });
+      }
+      
+      // Help drawer functions
+      function openDrawer() {
+        if (helpDrawer && helpTrigger) {
+          helpDrawer.hidden = false;
+          helpTrigger.setAttribute('aria-expanded', 'true');
+        }
+      }
+      
+      function closeDrawer() {
+        if (helpDrawer && helpTrigger) {
+          helpDrawer.hidden = true;
+          helpTrigger.setAttribute('aria-expanded', 'false');
+        }
+      }
+      
+      function toggleDrawer() {
+        if (helpDrawer?.hidden) {
+          openDrawer();
+        } else {
+          closeDrawer();
+        }
+      }
+      
+      // Toggle drawer on trigger click
+      if (helpTrigger) {
+        helpTrigger.addEventListener('click', toggleDrawer);
+      }
+      
+      // Dismiss drawer and prevent future auto-open
+      if (helpDismiss) {
+        helpDismiss.addEventListener('click', function() {
+          localStorage.setItem(helpDismissedKey, 'true');
+          closeDrawer();
+        });
+      }
+      
+      // Auto-open on first visit (if not dismissed)
+      const isDismissed = localStorage.getItem(helpDismissedKey) === 'true';
+      const hasSeen = localStorage.getItem(helpSeenKey) === 'true';
+      
+      if (!isDismissed && !hasSeen) {
+        openDrawer();
+        localStorage.setItem(helpSeenKey, 'true');
       }
     })();
   </script>
 
   <style>
-    .page--guided-workshop-hub { max-width: 880px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
-    .hub-hero { margin-bottom: 1.25rem; }
-    .hub-subtitle { margin-top: 0.5rem; }
-    .hub-status { margin-top: 0.75rem; padding: 0.85rem 1rem; border-radius: 16px; border: 1px solid rgba(44,58,87,0.12); background: rgba(255,255,255,0.65); }
-    .hub-card { margin-top: 1rem; padding: 1rem; border-radius: 18px; border: 1px solid rgba(44,58,87,0.12); background: rgba(255,255,255,0.65); }
-    .hub-card--plan { padding: 1.25rem; }
-    .hub-list { margin: 0.75rem 0 0; padding-left: 1.2rem; }
-    .hub-list li { margin: 0.4rem 0; }
-    .hub-note { margin-top: 0.75rem; opacity: 0.9; }
-    .hub-focus p { margin: 0.5rem 0; }
+    .page--guided-workshop-hub { 
+      max-width: 880px; 
+      margin: 0 auto; 
+      padding: 1.25rem 1rem 3rem; 
+    }
+    
+    .hub-hero { 
+      margin-bottom: 0.5rem; 
+    }
+    
+    .hub-hero h1 {
+      margin: 0;
+    }
+
+    /* Intro line with help trigger */
+    .hub-intro {
+      margin: 0 0 1.25rem;
+      font-size: 1.05rem;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.75);
+    }
+    
+    .help-trigger {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      font-size: inherit;
+      color: #52682d;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    
+    .help-trigger:hover {
+      color: #3d4f22;
+    }
+    
+    .help-trigger:focus-visible {
+      outline: 2px solid rgba(82, 104, 45, 0.5);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Help drawer */
+    .help-drawer {
+      margin-bottom: 1.25rem;
+    }
+    
+    .help-drawer-content {
+      padding: 1rem 1.25rem;
+      border-radius: 14px;
+      border: 1px solid rgba(82, 104, 45, 0.2);
+      background: linear-gradient(135deg, rgba(199, 216, 164, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+    }
+    
+    .help-drawer-title {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+    
+    .help-drawer-list {
+      margin: 0 0 1rem;
+      padding-left: 1.25rem;
+      line-height: 1.6;
+      color: rgba(0, 0, 0, 0.75);
+    }
+    
+    .help-drawer-list li {
+      margin: 0.35rem 0;
+    }
+    
+    .help-drawer-dismiss {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    
+    .help-drawer-dismiss:hover {
+      background: #3d4f22;
+    }
+    
+    .help-drawer-dismiss:active {
+      transform: scale(0.98);
+    }
+    
+    .help-drawer-dismiss:focus-visible {
+      outline: 3px solid rgba(82, 104, 45, 0.4);
+      outline-offset: 2px;
+    }
+
+    /* Plan section */
+    .hub-plan {
+      margin-bottom: 2rem;
+    }
+    
+    .hub-plan-title {
+      margin: 0 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
 
     /* Plan Grid - Day Cards */
     .plan-grid {
       list-style: none;
       padding: 0;
-      margin: 1rem 0 0;
+      margin: 0;
       display: grid;
       gap: 12px;
       grid-template-columns: 1fr;
@@ -201,7 +365,7 @@ const totalDays = outline.days.length;
     .plan-card--start {
       border: 2px solid rgba(82, 104, 45, 0.5);
       box-shadow: 0 4px 16px rgba(82, 104, 45, 0.15);
-      background: linear-gradient(135deg, rgba(199, 216, 164, 0.15) 0%, #fff 100%);
+      background: linear-gradient(135deg, rgba(199, 216, 164, 0.18) 0%, #fff 100%);
     }
 
     .plan-card--start:hover {
@@ -297,38 +461,50 @@ const totalDays = outline.days.length;
 
     /* Enhanced arrow visibility */
     .plan-arrow {
-      font-size: 1.25rem;
-      font-weight: 600;
+      font-size: 1.3rem;
+      font-weight: 700;
       color: #52682d;
-      opacity: 0.7;
-      background: rgba(199, 216, 164, 0.35);
-      padding: 0.2rem 0.5rem;
+      background: rgba(199, 216, 164, 0.4);
+      padding: 0.25rem 0.6rem;
       border-radius: 8px;
-      transition: transform 140ms ease, opacity 140ms ease, background 140ms ease;
+      transition: transform 140ms ease, background 140ms ease;
     }
 
     .plan-card:hover .plan-arrow {
       transform: translateX(4px);
-      opacity: 1;
-      background: rgba(199, 216, 164, 0.55);
+      background: rgba(199, 216, 164, 0.65);
     }
 
     .plan-card--locked .plan-arrow {
-      opacity: 0.35;
+      opacity: 0.4;
       background: rgba(44, 58, 87, 0.08);
       color: rgba(44, 58, 87, 0.5);
     }
 
-    /* Workshop Conversation - Speech Bubble Styling */
-    .hub-card--conversation {
-      position: relative;
+    /* Your check-in section */
+    .hub-checkin {
+      margin-top: 2rem;
+    }
+    
+    .hub-checkin h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+    
+    .hub-checkin-intro {
+      margin: 0 0 1rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.7);
     }
 
+    /* Speech Bubble Styling */
     .conversation-bubble {
-      margin-top: 1rem;
-      padding: 1.25rem;
+      padding: 1.5rem;
       border-radius: 20px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,245,0.95) 100%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,245,0.98) 100%);
       border: 1px solid rgba(82, 104, 45, 0.18);
       box-shadow: 0 2px 12px rgba(82, 104, 45, 0.06);
       position: relative;
@@ -341,7 +517,7 @@ const totalDays = outline.days.length;
       left: 28px;
       width: 20px;
       height: 20px;
-      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,250,245,0.95) 100%);
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,245,0.98) 100%);
       border-left: 1px solid rgba(82, 104, 45, 0.18);
       border-top: 1px solid rgba(82, 104, 45, 0.18);
       transform: rotate(45deg);
