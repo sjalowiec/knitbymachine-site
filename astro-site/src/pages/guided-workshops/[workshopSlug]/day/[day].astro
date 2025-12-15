@@ -1,0 +1,166 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getWorkshopSlugs, getWorkshopBySlug } from '../../../../lib/workshops';
+
+export async function getStaticPaths() {
+  const slugs = getWorkshopSlugs();
+  const paths: { params: { workshopSlug: string; day: string } }[] = [];
+  
+  for (const slug of slugs) {
+    const workshop = getWorkshopBySlug(slug);
+    if (workshop) {
+      for (const day of workshop.outline.days) {
+        paths.push({
+          params: { workshopSlug: slug, day: String(day.day) }
+        });
+      }
+    }
+  }
+  
+  return paths;
+}
+
+const { workshopSlug, day: dayParam } = Astro.params;
+const dayNumber = parseInt(dayParam as string, 10);
+const workshop = getWorkshopBySlug(workshopSlug as string);
+
+if (!workshop) {
+  return Astro.redirect('/404');
+}
+
+const dayData = workshop.outline.days.find(d => d.day === dayNumber);
+
+if (!dayData) {
+  return Astro.redirect('/404');
+}
+
+const title = `Day ${dayNumber}: ${dayData.title} | ${workshop.workshop.title}`;
+const description = dayData.goal;
+const hubUrl = `/guided-workshops/${workshopSlug}/hub`;
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--workshop-day">
+
+    <header class="day-hero">
+      <a href={hubUrl} class="day-back-link">← Back to Hub</a>
+      <div class="day-meta">Day {dayNumber} of {workshop.outline.days.length}</div>
+      <h1>{dayData.title}</h1>
+    </header>
+
+    {dayData.released ? (
+      <section class="day-card">
+        <h2>Today's Goal</h2>
+        <p class="day-goal">{dayData.goal}</p>
+        
+        <div class="day-action">
+          <a href={hubUrl} class="day-button">
+            Post your update on the hub →
+          </a>
+        </div>
+      </section>
+    ) : (
+      <section class="day-card day-card--locked">
+        <div class="day-locked-badge">Coming next</div>
+        <h2>{dayData.title}</h2>
+        <p class="day-goal">{dayData.goal}</p>
+        <p class="day-locked-note">
+          This day hasn't been released yet. Check back soon, or continue working on the current step.
+        </p>
+        <div class="day-action">
+          <a href={hubUrl} class="day-button day-button--secondary">
+            ← Return to Hub
+          </a>
+        </div>
+      </section>
+    )}
+
+  </main>
+
+  <style>
+    .page--workshop-day { max-width: 720px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    
+    .day-hero { margin-bottom: 1.5rem; }
+    .day-back-link {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: #52682D;
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+    }
+    .day-back-link:hover { text-decoration: underline; }
+    .day-meta {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(44, 58, 87, 0.6);
+      margin-bottom: 0.5rem;
+    }
+    .day-hero h1 {
+      margin: 0;
+      font-size: 1.75rem;
+      color: #2C3A57;
+    }
+
+    .day-card {
+      padding: 1.5rem;
+      border-radius: 18px;
+      border: 1px solid rgba(44,58,87,0.12);
+      background: rgba(255,255,255,0.65);
+    }
+    .day-card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      color: #52682D;
+    }
+    .day-goal {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin: 0 0 1.5rem;
+    }
+
+    .day-card--locked {
+      background: rgba(44, 58, 87, 0.04);
+      border-color: rgba(44, 58, 87, 0.1);
+    }
+    .day-locked-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(44, 58, 87, 0.6);
+      background: rgba(44, 58, 87, 0.1);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+    .day-locked-note {
+      color: rgba(44, 58, 87, 0.7);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    .day-action { margin-top: 1rem; }
+    .day-button {
+      display: inline-block;
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      background: #52682D;
+      color: #fff;
+      transition: background 0.15s ease;
+    }
+    .day-button:hover { background: #3f5023; }
+    .day-button--secondary {
+      background: transparent;
+      color: #52682D;
+      border: 1px solid rgba(82, 104, 45, 0.3);
+    }
+    .day-button--secondary:hover {
+      background: rgba(82, 104, 45, 0.08);
+    }
+  </style>
+</BaseLayout>
