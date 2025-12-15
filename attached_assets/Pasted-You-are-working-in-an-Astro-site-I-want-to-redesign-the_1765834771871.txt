@@ -1,0 +1,257 @@
+You are working in an Astro site. I want to redesign the Guided Workshop hub page’s “Your 11-Day Plan” section.
+
+Goal
+
+Replace the current day list/accordion with a grid of clickable day cards. Each card must show:
+
+Day label (Day 1, Day 2…)
+
+Title
+
+Short description (or subtitle/excerpt if that’s what we have)
+
+Time estimate (optional)
+
+Entire card is a link to that day’s page/URL
+
+Add a “Start here” badge ONLY on Day 1 (no progress tracking).
+
+Constraints
+
+Do not change global header/footer.
+
+Do not remove or change other hub sections (“How this works”, “Workshop Conversation”, etc.)
+
+Keep the existing data source (JSON / frontmatter / function) — do not hardcode day content.
+
+If the current plan is built from an array (recommended), use that same array.
+
+If the current plan is an accordion component, remove it and replace with the card grid.
+
+Use existing color tokens / KBM green where possible. If unknown, use current CSS variables already present in the project.
+
+Must be accessible: link focus styles, semantic list ok, no div-only clickable hacks.
+
+Implementation steps
+
+Find the hub page template
+Search for the hub page that renders the workshop dashboard. Likely one of:
+
+src/pages/workshops/[slug].astro
+
+src/pages/guided-workshops/[slug].astro
+
+src/pages/workshop/[slug].astro
+
+or a component like src/components/workshops/WorkshopHub.astro
+
+Search for the section heading text: Your 11-Day Plan (or Your 10-Day Plan).
+
+Identify the days data
+Locate the array/object used to render the plan. It probably contains fields like:
+
+dayNumber or day
+
+title
+
+duration or time
+
+description or summary
+
+href or slug or a computed URL
+
+If there is no href, create it using existing routing patterns already used elsewhere, e.g.:
+
+if day pages are /workshops/{workshopSlug}/day-1, etc., build that consistently.
+Do not invent a new URL pattern; match what already exists.
+
+Replace the plan UI with a card grid
+Replace the existing accordion/list markup with:
+
+Section header stays the same.
+
+Inside, render a grid of cards from the days array.
+
+Each card is a single <a> wrapping the content (no nested links).
+
+Add a badge:
+
+If dayNumber === 1 (or the first item), show a small badge “Start here”.
+
+No other logic.
+
+Grid layout rules
+Use CSS (preferred, since you’re not using Tailwind everywhere) to create a responsive grid:
+
+Mobile: 1 column
+
+= 640px: 2 columns
+
+= 900px: 3 columns
+
+= 1200px: 5 columns (so 10 days becomes 2 rows of 5 when there’s room)
+This should happen naturally with grid-template-columns: repeat(...).
+
+Card visual rules (modern, calm)
+
+Soft border, subtle shadow on hover
+
+A small “→” appears or shifts slightly on hover (no SVG)
+
+Title is prominent
+
+Description is smaller and muted
+
+Duration/time in a small meta row
+
+Focus ring visible for keyboard users
+
+Keep the plan count flexible
+It might be 10 days + bonus. The grid should render whatever number of days exists.
+
+Do not break existing day pages
+Only update the hub “plan” section markup + styles. Don’t refactor routing.
+
+Output requirements
+
+Make a backup copy of the file you modify (same folder), e.g. WorkshopHub.astro.bak or hub.astro.bak.
+
+After code changes, summarize what file(s) changed and what the new grid breakpoints are.
+
+Suggested markup (adapt to actual variable names)
+
+Use something like:
+
+<ul class="plan-grid" aria-label="Workshop plan">
+  {days.map((d) => (
+    <li class="plan-item">
+      <a class="plan-card" href={d.href}>
+        <div class="plan-card-top">
+          <span class="plan-day">Day {d.dayNumber}</span>
+          {d.dayNumber === 1 && <span class="plan-badge">Start here</span>}
+        </div>
+
+        <h3 class="plan-title">{d.title}</h3>
+
+        {d.description && <p class="plan-desc">{d.description}</p>}
+
+        {d.duration && (
+          <div class="plan-meta">
+            <span class="plan-time">{d.duration}</span>
+            <span class="plan-arrow" aria-hidden="true">→</span>
+          </div>
+        )}
+        {!d.duration && (
+          <div class="plan-meta">
+            <span class="plan-arrow" aria-hidden="true">→</span>
+          </div>
+        )}
+      </a>
+    </li>
+  ))}
+</ul>
+
+Suggested CSS (adapt to your existing palette variables)
+
+Add CSS in the same file if it’s scoped there, or in the hub stylesheet if that’s how this project works:
+
+.plan-grid {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (min-width: 900px) {
+  .plan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (min-width: 1200px) {
+  .plan-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+.plan-card {
+  display: block;
+  text-decoration: none;
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 14px;
+  padding: 14px 14px 12px;
+  background: #fff;
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  height: 100%;
+}
+
+.plan-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+  border-color: rgba(0,0,0,0.16);
+}
+
+.plan-card:focus-visible {
+  outline: 3px solid rgba(82, 104, 45, 0.35);
+  outline-offset: 2px;
+}
+
+.plan-card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.plan-day {
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  color: #52682d;
+}
+
+.plan-badge {
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.25rem 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(82, 104, 45, 0.28);
+  background: rgba(199, 216, 164, 0.45);
+  color: #52682d;
+  white-space: nowrap;
+}
+
+.plan-title {
+  margin: 0 0 6px;
+  font-size: 1.02rem;
+  line-height: 1.25;
+  color: #2b2b2b;
+}
+
+.plan-desc {
+  margin: 0 0 10px;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  color: rgba(0,0,0,0.68);
+}
+
+.plan-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+  color: rgba(0,0,0,0.58);
+  font-size: 0.86rem;
+}
+
+.plan-arrow {
+  opacity: 0.65;
+  transition: transform 140ms ease, opacity 140ms ease;
+}
+
+.plan-card:hover .plan-arrow {
+  transform: translateX(3px);
+  opacity: 0.9;
+}

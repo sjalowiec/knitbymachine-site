@@ -29,8 +29,7 @@ const dayList = outline.days.map(od => {
     title: curriculumDay?.title || od.title,
     description: curriculumDay?.shortDescription || od.goal,
     estimatedTime: curriculumDay?.estimatedTime,
-    released: od.released,
-    href: `/guided-workshops/${workshopSlug}/day/${od.day}`
+    released: od.released
   };
 });
 
@@ -64,26 +63,18 @@ const totalDays = outline.days.length;
       </p>
     </section>
 
-    <section class="hub-card hub-card--plan">
+    <section class="hub-card">
       <h2>Your {totalDays}-Day Plan</h2>
-      <ul class="plan-grid" aria-label="Workshop plan">
-        {dayList.map((d, index) => (
-          <li class="plan-item">
-            <a class={`plan-card ${d.released ? '' : 'plan-card--locked'}`} href={d.href}>
-              <div class="plan-card-top">
-                <span class="plan-day">Day {d.day}</span>
-                {index === 0 && <span class="plan-badge">Start here</span>}
-                {!d.released && <span class="plan-badge plan-badge--coming">Coming</span>}
+      <ul class="hub-day-list">
+        {dayList.map(day => (
+          <li class={`hub-day-item ${day.released ? 'hub-day-item--released' : 'hub-day-item--locked'}`}>
+            <a href={`/guided-workshops/${workshopSlug}/day/${day.day}`} class="hub-day-link">
+              <span class="hub-day-number">Day {day.day}</span>
+              <div class="hub-day-info">
+                <span class="hub-day-title">{day.title}</span>
+                {day.estimatedTime && <span class="hub-day-time">⏱ {day.estimatedTime}</span>}
               </div>
-
-              <h3 class="plan-title">{d.title}</h3>
-
-              {d.description && <p class="plan-desc">{d.description}</p>}
-
-              <div class="plan-meta">
-                {d.estimatedTime && <span class="plan-time">{d.estimatedTime}</span>}
-                <span class="plan-arrow" aria-hidden="true">→</span>
-              </div>
+              {!day.released && <span class="hub-day-badge">Coming</span>}
             </a>
           </li>
         ))}
@@ -120,147 +111,64 @@ const totalDays = outline.days.length;
     .hub-subtitle { margin-top: 0.5rem; }
     .hub-status { margin-top: 0.75rem; padding: 0.85rem 1rem; border-radius: 16px; border: 1px solid rgba(44,58,87,0.12); background: rgba(255,255,255,0.65); }
     .hub-card { margin-top: 1rem; padding: 1rem; border-radius: 18px; border: 1px solid rgba(44,58,87,0.12); background: rgba(255,255,255,0.65); }
-    .hub-card--plan { padding: 1.25rem; }
     .hub-list { margin: 0.75rem 0 0; padding-left: 1.2rem; }
     .hub-list li { margin: 0.4rem 0; }
     .hub-note { margin-top: 0.75rem; opacity: 0.9; }
     .hub-focus p { margin: 0.5rem 0; }
     .hub-comments { margin-top: 0.75rem; }
 
-    /* Plan Grid - Day Cards */
-    .plan-grid {
-      list-style: none;
-      padding: 0;
-      margin: 1rem 0 0;
-      display: grid;
-      gap: 12px;
-      grid-template-columns: 1fr;
-    }
-
-    @media (min-width: 640px) {
-      .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    }
-    @media (min-width: 900px) {
-      .plan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    }
-    @media (min-width: 1200px) {
-      .plan-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
-    }
-
-    .plan-item {
+    .hub-day-list { list-style: none; margin: 0.75rem 0 0; padding: 0; }
+    .hub-day-item { margin: 0.5rem 0; }
+    .hub-day-link {
       display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.75rem 1rem;
+      border-radius: 12px;
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s ease;
     }
-
-    .plan-card {
+    .hub-day-item--released .hub-day-link {
+      background: rgba(82, 104, 45, 0.08);
+      border: 1px solid rgba(82, 104, 45, 0.18);
+    }
+    .hub-day-item--released .hub-day-link:hover {
+      background: rgba(82, 104, 45, 0.15);
+    }
+    .hub-day-item--locked .hub-day-link {
+      background: rgba(44, 58, 87, 0.04);
+      border: 1px solid rgba(44, 58, 87, 0.08);
+      opacity: 0.7;
+    }
+    .hub-day-number {
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: #52682D;
+      min-width: 50px;
+    }
+    .hub-day-info {
+      flex: 1;
       display: flex;
       flex-direction: column;
-      width: 100%;
-      text-decoration: none;
-      border: 1px solid rgba(0,0,0,0.10);
-      border-radius: 14px;
-      padding: 14px 14px 12px;
-      background: #fff;
-      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+      gap: 0.15rem;
     }
-
-    .plan-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
-      border-color: rgba(82, 104, 45, 0.3);
+    .hub-day-title {
+      line-height: 1.3;
     }
-
-    .plan-card:focus-visible {
-      outline: 3px solid rgba(82, 104, 45, 0.35);
-      outline-offset: 2px;
+    .hub-day-time {
+      font-size: 0.75rem;
+      color: rgba(44, 58, 87, 0.5);
     }
-
-    .plan-card--locked {
-      opacity: 0.65;
-      background: rgba(250, 250, 250, 0.9);
-    }
-
-    .plan-card--locked:hover {
-      transform: none;
-      box-shadow: none;
-      border-color: rgba(0,0,0,0.10);
-    }
-
-    .plan-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 8px;
-      margin-bottom: 8px;
-      flex-wrap: wrap;
-    }
-
-    .plan-day {
-      font-weight: 800;
-      font-size: 0.85rem;
-      letter-spacing: 0.02em;
-      color: #52682d;
-    }
-
-    .plan-badge {
-      font-size: 0.72rem;
-      font-weight: 800;
-      padding: 0.25rem 0.5rem;
-      border-radius: 999px;
-      border: 1px solid rgba(82, 104, 45, 0.28);
-      background: rgba(199, 216, 164, 0.45);
-      color: #52682d;
-      white-space: nowrap;
-    }
-
-    .plan-badge--coming {
-      background: rgba(44, 58, 87, 0.08);
-      border-color: rgba(44, 58, 87, 0.15);
+    .hub-day-badge {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
       color: rgba(44, 58, 87, 0.6);
-    }
-
-    .plan-title {
-      margin: 0 0 6px;
-      font-size: 1rem;
-      font-weight: 600;
-      line-height: 1.25;
-      color: #2b2b2b;
-    }
-
-    .plan-desc {
-      margin: 0 0 10px;
-      font-size: 0.88rem;
-      line-height: 1.35;
-      color: rgba(0,0,0,0.65);
-      flex-grow: 1;
-    }
-
-    .plan-meta {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      margin-top: auto;
-      color: rgba(0,0,0,0.55);
-      font-size: 0.84rem;
-    }
-
-    .plan-time {
-      color: rgba(82, 104, 45, 0.85);
-    }
-
-    .plan-arrow {
-      opacity: 0.6;
-      transition: transform 140ms ease, opacity 140ms ease;
-      margin-left: auto;
-    }
-
-    .plan-card:hover .plan-arrow {
-      transform: translateX(3px);
-      opacity: 0.9;
-    }
-
-    .plan-card--locked .plan-arrow {
-      opacity: 0.3;
+      background: rgba(44, 58, 87, 0.08);
+      padding: 0.2rem 0.5rem;
+      border-radius: 999px;
     }
 
     .hub-comments-placeholder {
