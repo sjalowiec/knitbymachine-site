@@ -5,20 +5,36 @@
   "description": "<p>Graph paper is gridded paper used by machine knitters to plan stitch patterns, motifs, and shaping before knitting. Each square typically represents one stitch and one row, making it easy to visualize how a design will translate onto the needle bed. This helps you check proportions, count stitches accurately, and spot potential issues before you cast on.</p>",
   "tooltip": "Gridded paper used to map stitches and rows when planning machine-knit patterns.",
   "example": "Before knitting a colorwork panel, you sketch the motif on graph paper, coloring in squares to represent each stitch so the design aligns correctly with the machine’s needle count.",
-  "categories": ["Software & Design Tools"],
+  "categories": [
+    "Software & Design Tools"
+  ],
   "letter": "G",
-  "imageFilename": "",
-  "imageAlt": "",
+  "imageFilename": "1765795571548-graph-paper.png",
+  "imageAlt": "knitters graph paper",
   "gifFilename": "",
   "videoUrl": "",
   "isMemberOnly": false,
-  "schemaMarkup": null,
+  "schemaMarkup": {
+    "url": "https://example.com/knitters-graph-paper",
+    "name": "Knitter’s Graph Paper",
+    "@type": "DefinedTerm",
+    "@context": "https://schema.org",
+    "description": "A printable sheet with a continuous grid designed to mimic the proportions of knitted stitches. Unlike standard square graph paper, the rectangles are elongated to reflect the relationship between stitches and rows, making it useful for planning knitting designs to scale.",
+    "alternateName": "Knitting Graph Paper",
+    "inDefinedTermSet": {
+      "name": "Knitting Glossary",
+      "@type": "DefinedTermSet",
+      "description": "A glossary of knitting tools, techniques, and pattern design terms."
+    }
+  },
   "active": true,
   "anaId": "",
   "workshopId": "",
-  "promoText": "",
+  "promoText": "When precision matters, knitter’s graph paper makes all the difference. By matching the true shape of knitted stitches, it allows designers and hobbyists alike to plan colorwork, textures, and motifs exactly as they’ll appear on the needles—saving time, yarn, and guesswork before the first stitch is ever cast on.",
   "relatedTerms": [],
-  "tags": ["fundamentals"],
+  "tags": [
+    "fundamentals"
+  ],
   "isDraft": false,
   "publishedDate": "2025-12-15T00:00:00.000Z",
   "pendingPublish": false
