@@ -1,0 +1,117 @@
+Task: Update the glossary slug page so the Example section appears full-width below the image and is styled as an editorial section (not a boxed callout). Also ensure promo text links always use KBM green (#52682d).
+Follow the steps exactly. Do not refactor unrelated code.
+
+1. Move the Example section to full-width position
+
+In src/pages/glossary/[slug].astro, locate the existing Example block inside .content-column:
+
+{entry.example && (
+  <div class="term-example">
+    <div class="term-example-label">Example:</div>
+    <div class="term-example-text">{entry.example}</div>
+  </div>
+)}
+
+
+Remove this block from its current location.
+
+2. Re-insert the Example below the two-column layout
+
+Find the closing tag for the two-column layout:
+
+</div>  <!-- closes .two-column-layout -->
+
+
+Immediately after this closing tag, insert:
+
+{entry.example && (
+  <div class="glossary-example-full">
+    <div class="term-example">
+      <div class="term-example-label">Example</div>
+      <div class="term-example-text">{entry.example}</div>
+    </div>
+  </div>
+)}
+
+
+(Note: remove the colon after “Example” to support the editorial style.)
+
+3. Add full-width wrapper styles
+
+Inside the existing <style> block, add:
+
+/* Full-width Example container */
+.glossary-example-full {
+  max-width: 1200px;
+  margin: 3rem auto 0;
+  padding: 0 20px;
+}
+
+4. Apply editorial Example styling (Option A)
+
+Add or override the following CSS (keep existing rules, but these should take precedence):
+
+/* Editorial Example treatment */
+.glossary-example-full .term-example {
+  background: transparent;
+  border-left: none;
+  padding: 0;
+  border-radius: 0;
+  margin: 0;
+}
+
+.glossary-example-full .term-example-label {
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #52682d;
+  margin: 0 0 0.6rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(82, 104, 45, 0.18);
+}
+
+.glossary-example-full .term-example-text {
+  color: #374151;
+  line-height: 1.7;
+  white-space: normal;
+  max-width: 900px;
+}
+
+5. Force promo text links to KBM green (all states)
+
+Replace any existing .term-promo a rules with:
+
+/* Promo text links — force KBM green */
+.term-promo a,
+.term-promo a:visited {
+  color: #52682d !important;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.term-promo a:hover,
+.term-promo a:focus-visible {
+  opacity: 0.85;
+}
+
+6. Constraints (do not violate)
+
+Do not change data fetching or JSON structure
+
+Do not alter mobile breakpoints
+
+Do not add backgrounds, cards, or CTA elements
+
+Example should read as editorial content, not a UI component
+
+Expected Result
+
+The glossary page feels calmer and more reference-like
+
+The Example is visually grounded, readable, and full-width
+
+Promo text blends naturally into the content flow
+
+All promo links use KBM green, never browser blue

@@ -249,10 +249,52 @@ if (!entry) {
       color: #1f2937;
     }
 
-    .term-promo a {
-      color: var(--kbm-green);
+    /* Promo text links — force KBM green */
+    .term-promo a,
+    .term-promo a:visited {
+      color: #52682d !important;
       font-weight: 600;
       text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .term-promo a:hover,
+    .term-promo a:focus-visible {
+      opacity: 0.85;
+    }
+
+    /* Full-width Example container */
+    .glossary-example-full {
+      max-width: 1200px;
+      margin: 3rem auto 0;
+      padding: 0 20px;
+    }
+
+    /* Editorial Example treatment */
+    .glossary-example-full .term-example {
+      background: transparent;
+      border-left: none;
+      padding: 0;
+      border-radius: 0;
+      margin: 0;
+    }
+
+    .glossary-example-full .term-example-label {
+      font-size: 0.95rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #52682d;
+      margin: 0 0 0.6rem;
+      padding-top: 1rem;
+      border-top: 1px solid rgba(82, 104, 45, 0.18);
+    }
+
+    .glossary-example-full .term-example-text {
+      color: #374151;
+      line-height: 1.7;
+      white-space: normal;
+      max-width: 900px;
     }
 
     .related-terms {
@@ -399,13 +441,6 @@ if (!entry) {
           <div class="term-promo" set:html={entry.promoText} />
         )}
 
-        {entry.example && (
-          <div class="term-example">
-            <div class="term-example-label">Example:</div>
-            <div class="term-example-text">{entry.example}</div>
-          </div>
-        )}
-
         {relatedTermsData && relatedTermsData.length > 0 && (
           <div class="related-terms">
             <div class="related-terms-label">Related terms:</div>
@@ -484,6 +519,15 @@ if (!entry) {
         )}
       </div>
     </div>
+
+    {entry.example && (
+      <div class="glossary-example-full">
+        <div class="term-example">
+          <div class="term-example-label">Example</div>
+          <div class="term-example-text">{entry.example}</div>
+        </div>
+      </div>
+    )}
   </div>
 
   <script>
