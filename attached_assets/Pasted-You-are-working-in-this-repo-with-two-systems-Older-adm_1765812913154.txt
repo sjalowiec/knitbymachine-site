@@ -1,0 +1,224 @@
+You are working in this repo with two systems:
+
+Older admin catalog format (React): client/src/pages/workshop-list.tsx and client/src/pages/workshop-editor.tsx — do not change these.
+
+New JSON-driven hub system (Astro): templates located in:
+
+astro-site/src/content/workshops/_templates/workshop-instance.template.json
+
+astro-site/src/content/workshops/_templates/outline.template.json
+
+astro-site/src/content/workshops/_templates/README.md
+Dynamic pages already exist:
+
+astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro
+
+astro-site/src/pages/guided-workshops/[workshopSlug]/day/[day].astro
+
+Goal
+
+Add a curriculum schema to the new JSON-driven hub system so each workshop has:
+
+Days (Day 1…Day N)
+
+Each day contains an ordered list of rich content blocks (markdown, images, videos, downloads, checklists, callouts)
+This content will be used by hub.astro and day/[day].astro.
+
+Step 1 — Inspect current template shapes (no changes yet)
+
+Open and review:
+
+astro-site/src/content/workshops/_templates/workshop-instance.template.json
+
+astro-site/src/content/workshops/_templates/outline.template.json
+
+astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro
+
+astro-site/src/pages/guided-workshops/[workshopSlug]/day/[day].astro
+
+Identify:
+
+Which JSON file represents a single workshop “instance”
+
+Which JSON file represents the “outline”
+
+How day data is currently loaded/rendered (or if it’s stubbed)
+
+Step 2 — Add curriculum schema to the templates (backwards compatible)
+
+Update BOTH template JSON files (instance + outline) to include this new top-level key:
+
+"curriculum": {
+  "version": 1,
+  "days": []
+}
+
+
+If either template already has something like days or outlineDays, do NOT delete it. Instead:
+
+Keep existing fields
+
+Add curriculum alongside them
+
+If there’s duplication, leave a comment in README recommending which one becomes source-of-truth (use curriculum.days).
+
+Step 3 — Define day + block schema
+
+Populate the template with one example day object so the structure is obvious:
+
+Each day object must support:
+
+{
+  "day": 1,
+  "title": "",
+  "shortDescription": "",
+  "estimatedTime": "",
+  "release": { "mode": "relative", "dayOffset": 0 },
+  "blocks": [
+    { "type": "richText", "content": "" }
+  ]
+}
+
+
+Supported blocks (implement all in schema examples):
+
+richText (Markdown)
+
+{ "type": "richText", "content": "## Heading\n\nWrite in Markdown here." }
+
+
+image
+
+{ "type": "image", "src": "", "alt": "", "caption": "" }
+
+
+video
+
+{ "type": "video", "provider": "loom", "url": "", "caption": "" }
+
+
+Provider values: youtube, vimeo, loom, direct
+
+download
+
+{ "type": "download", "label": "", "url": "" }
+
+
+checklist
+
+{
+  "type": "checklist",
+  "title": "",
+  "items": [
+    { "text": "", "isOptional": false }
+  ]
+}
+
+
+callout
+
+{ "type": "callout", "style": "note", "title": "", "content": "" }
+
+
+Style values: note, tip, important
+
+Step 4 — Update day page rendering to support blocks
+
+In astro-site/src/pages/guided-workshops/[workshopSlug]/day/[day].astro:
+
+Load the workshop JSON as it currently does.
+
+Find the matching day in curriculum.days by numeric day.
+
+Render blocks in order.
+
+Rendering rules:
+
+richText: render Markdown to HTML using Astro’s built-in Markdown rendering if available in this project; otherwise use a lightweight markdown renderer already in dependencies. Do not add heavy WYSIWYG tooling.
+
+image: render <figure><img ... /><figcaption>...</figcaption></figure> when caption exists
+
+video:
+
+youtube/vimeo: iframe embed
+
+loom: iframe embed
+
+direct: <video controls src="...">
+
+download: render a simple link/button
+
+checklist: render a list with optional “Optional” label
+
+callout: render a styled callout box (use existing site styles if possible; otherwise add minimal scoped CSS in the page)
+
+Do NOT change Hyvor embed logic except ensure it remains on the page.
+
+Step 5 — Update hub page to list curriculum days
+
+In astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro:
+
+List days from curriculum.days
+
+Each day card links to /guided-workshops/{workshopSlug}/day/{day}
+
+Show day title + shortDescription
+
+Step 6 — Create a real first workshop JSON for Betty (copy from template)
+
+Create a new file:
+astro-site/src/content/workshops/scarf-for-betty.json
+
+Populate it with:
+
+title: “Scarf for Betty”
+
+slug: “scarf-for-betty”
+
+curriculum.days including Day 1 and Day 2 filled with useful starter content:
+
+Day 1 blocks must include:
+
+richText: “Set up + swatch” instructions (Markdown)
+
+checklist: materials + steps to confirm tension
+
+image: placeholder for swatch photo guidance
+
+Day 2 blocks must include:
+
+richText: cast on + start knitting
+
+video: placeholder Loom link field (empty url ok)
+
+callout: “Post your swatch + settings in comments”
+
+Keep everything in a calm, encouraging, non-salesy tone.
+
+Step 7 — Update README in _templates
+
+Update astro-site/src/content/workshops/_templates/README.md to explain:
+
+What curriculum is
+
+How to duplicate scarf-for-betty.json to create another workshop (Jane, etc.)
+
+The “Hyvor rule”: unique URL per day = unique Hyvor thread
+
+Guardrails
+
+Do not modify client/src/pages/workshop-list.tsx or client/src/pages/workshop-editor.tsx.
+
+Keep changes limited to astro-site templates and the two dynamic pages.
+
+Prefer minimal, readable code.
+
+Confirm everything builds.
+
+At the end, output:
+
+Files changed/created
+
+What to edit next to create “Pattern Play for Jane”
+
+Proceed now.
