@@ -1,0 +1,210 @@
+Goal: Add a new “Video Reply (optional)” section to the workshop hub page. For now it shows a placeholder card + a fallback text note. Later we’ll swap the placeholder for a VideoAsk embed.
+Rules: Check if the component/CSS already exists before creating. Do not change header/footer or unrelated layout.
+
+1) Locate the hub page file
+
+Search for your workshop hub page. Look for one of these:
+
+src/pages/workshops/hub.astro
+
+src/pages/workshop/hub.astro
+
+src/pages/guided-workshops/hub.astro
+
+or a page containing a main heading like “Workshop Hub”, “Your Workshop”, or “Guided Workshop Hub”
+
+If you find multiple, choose the one currently linked from your workshop flow.
+
+2) Create a reusable component (or update if it exists)
+
+Check if this file exists: src/components/workshops/VideoReplySection.astro
+
+If it does not exist: create it with the content below.
+
+If it does exist: update it to match the markup below (keep any existing props if already used elsewhere).
+
+Create/Update: src/components/workshops/VideoReplySection.astro
+
+---
+const {
+  title = "Video reply (optional)",
+  helper = "If it’s easier to show than explain, you can record a quick video update here.",
+  placeholderTitle = "Video replies are coming next",
+  placeholderBody = "This spot will hold a simple recorder so you can record a short update without leaving the hub page.",
+  fallback = "Prefer not to record? Reply in writing in the comments below — that works great too."
+} = Astro.props;
+---
+
+<section class="kbm-video-reply" aria-labelledby="kbm-video-reply-title">
+  <div class="kbm-video-reply__header">
+    <h2 id="kbm-video-reply-title" class="kbm-video-reply__title">{title}</h2>
+    <p class="kbm-video-reply__helper">{helper}</p>
+  </div>
+
+  <div class="kbm-video-reply__card" role="status" aria-live="polite">
+    <div class="kbm-video-reply__badge">Placeholder</div>
+    <h3 class="kbm-video-reply__cardTitle">{placeholderTitle}</h3>
+    <p class="kbm-video-reply__cardBody">{placeholderBody}</p>
+
+    <div class="kbm-video-reply__placeholder">
+      <div class="kbm-video-reply__placeholderIcon" aria-hidden="true">●</div>
+      <div class="kbm-video-reply__placeholderLines" aria-hidden="true">
+        <div class="kbm-video-reply__line"></div>
+        <div class="kbm-video-reply__line"></div>
+        <div class="kbm-video-reply__line kbm-video-reply__line--short"></div>
+      </div>
+    </div>
+
+    <p class="kbm-video-reply__fallback">{fallback}</p>
+  </div>
+</section>
+
+3) Add styles (create or append safely)
+
+Find where you keep page/component CSS. Common options:
+
+src/styles/global.css
+
+src/styles/site.css
+
+src/styles/components.css
+
+If you have a workshops CSS file, use that. Otherwise, append to your global stylesheet.
+
+Add this CSS at the end (only if these class names don’t already exist):
+
+/* --- Workshop Hub: Video Reply Section (placeholder) --- */
+.kbm-video-reply {
+  margin-top: 1.75rem;
+}
+
+.kbm-video-reply__header {
+  margin-bottom: 0.75rem;
+}
+
+.kbm-video-reply__title {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+  color: #2C3A57;
+}
+
+.kbm-video-reply__helper {
+  margin: 0.35rem 0 0;
+  color: rgba(44, 58, 87, 0.82);
+  line-height: 1.45;
+}
+
+.kbm-video-reply__card {
+  position: relative;
+  border-radius: 14px;
+  border: 1px solid rgba(82, 104, 45, 0.18);
+  background: rgba(199, 216, 164, 0.18);
+  padding: 1rem;
+}
+
+.kbm-video-reply__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #52682D;
+  background: rgba(82, 104, 45, 0.10);
+  border: 1px solid rgba(82, 104, 45, 0.18);
+  border-radius: 999px;
+  padding: 0.25rem 0.55rem;
+}
+
+.kbm-video-reply__cardTitle {
+  margin: 0.7rem 0 0.25rem;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #2C3A57;
+}
+
+.kbm-video-reply__cardBody {
+  margin: 0;
+  color: rgba(44, 58, 87, 0.84);
+  line-height: 1.45;
+}
+
+.kbm-video-reply__placeholder {
+  margin-top: 0.85rem;
+  border-radius: 12px;
+  border: 1px dashed rgba(44, 58, 87, 0.25);
+  background: rgba(255, 255, 255, 0.55);
+  padding: 0.9rem;
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.kbm-video-reply__placeholderIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid rgba(44, 58, 87, 0.18);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(44, 58, 87, 0.70);
+  background: rgba(44, 58, 87, 0.06);
+  font-weight: 900;
+}
+
+.kbm-video-reply__placeholderLines {
+  flex: 1;
+}
+
+.kbm-video-reply__line {
+  height: 10px;
+  border-radius: 999px;
+  background: rgba(44, 58, 87, 0.10);
+  margin-bottom: 10px;
+}
+
+.kbm-video-reply__line--short {
+  width: 62%;
+}
+
+.kbm-video-reply__fallback {
+  margin: 0.9rem 0 0;
+  color: rgba(44, 58, 87, 0.78);
+  font-size: 0.95rem;
+}
+
+4) Insert the component into the hub page
+
+In your hub page .astro file:
+
+Add the import near the top (only if not already present):
+
+import VideoReplySection from "../../components/workshops/VideoReplySection.astro";
+
+
+(Adjust the relative path as needed.)
+
+Place the section where it belongs in the hub flow:
+
+Put it above the Hyvor comments block (ideal), so the user sees “video reply optional” then “comments”.
+
+Example insertion:
+
+<VideoReplySection />
+
+
+Do not remove or rearrange other hub sections.
+
+5) Result
+
+You’ll have a polished section that:
+
+looks intentional today (no broken embed)
+
+keeps momentum on Guided Workshops
+
+is ready for a single swap later (replace the placeholder box with VideoAsk embed)

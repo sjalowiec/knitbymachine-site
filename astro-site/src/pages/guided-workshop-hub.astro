@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoReplySection from '../components/workshops/VideoReplySection.astro';
 
 // === EDIT THESE FOR EACH PARTICIPANT (this is your "drip control center") ===
 const participantFirstName = "Friend"; // ex: "Ruth"
@@ -55,6 +56,8 @@ const hyvorPageId = `guided-workshop-${participantCode}`;
         <p><strong>Question:</strong> {todaysQuestion}</p>
       </div>
     </section>
+
+    <VideoReplySection />
 
     <section class="hub-card">
       <h2>Workshop Conversation</h2>
