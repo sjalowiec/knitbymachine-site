@@ -1,0 +1,131 @@
+You are working in my repo with two different products that must remain separate:
+
+Existing admin pages:
+
+client/src/pages/workshop-list.tsx
+
+client/src/pages/workshop-editor.tsx
+These currently manage my legacy “workshop” records, which are now called Project Walkthroughs.
+Do not break or refactor these pages. If you rename labels in the UI, that’s okay, but do not change the underlying data shape unless necessary.
+
+New Astro Guided Workshops system:
+
+astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro
+
+astro-site/src/pages/guided-workshops/[workshopSlug]/day/[day].astro
+
+JSON templates in astro-site/src/content/workshops/_templates/
+
+Goal
+
+Create a NEW admin section in the React admin for Guided Workshops (curriculum-based), without affecting Project Walkthroughs.
+
+Requirements
+
+Add a new admin navigation entry labeled Guided Workshops.
+
+Create two new pages:
+
+client/src/pages/guided-workshop-list.tsx
+
+client/src/pages/guided-workshop-editor.tsx
+
+Store Guided Workshop data as JSON files under:
+
+astro-site/src/content/guided-workshops/
+(one file per workshop, named by slug, e.g. scarf-for-betty.json)
+
+Guided Workshop JSON schema (v1)
+Top-level fields (minimal, do not include pricing/payment logic yet):
+
+{
+  "title": "",
+  "slug": "",
+  "shortDescription": "",
+  "description": "",
+  "tags": [],
+  "isDraft": true,
+  "publishedDate": "2025-12-15",
+  "durationDays": 10,
+  "level": "",
+  "imageUrl": "",
+  "imageAlt": "",
+  "curriculum": {
+    "version": 1,
+    "days": []
+  }
+}
+
+
+Each day:
+
+{
+  "day": 1,
+  "title": "",
+  "shortDescription": "",
+  "estimatedTime": "",
+  "release": { "mode": "relative", "dayOffset": 0 },
+  "blocks": []
+}
+
+
+Block types:
+
+richText (markdown): { "type":"richText","content":"" }
+
+image: { "type":"image","src":"","alt":"","caption":"" }
+
+video: { "type":"video","provider":"loom","url":"","caption":"" } provider: youtube|vimeo|loom|direct
+
+download: { "type":"download","label":"","url":"" }
+
+checklist: { "type":"checklist","title":"","items":[{"text":"","isOptional":false}] }
+
+callout: { "type":"callout","style":"note","title":"","content":"" } style: note|tip|important
+
+Guided Workshop editor UI
+
+“Workshop Setup” section (title/slug/etc.)
+
+“Curriculum” section:
+
+Add Day
+
+For each Day: edit title, short desc, estimated time
+
+Add Block (choose type)
+
+Edit block fields
+
+Move blocks up/down
+
+Remove block/day
+
+File operations
+
+List page reads JSON files in astro-site/src/content/guided-workshops/
+
+Editor can create a new file and save changes to an existing file.
+
+Do not require a database. Use filesystem JSON like the rest of my system.
+
+Compatibility note
+Do not change the Astro routes today. This change is only to create/maintain the JSON files in the correct folder so the Astro site can consume them next.
+
+Deliverables
+
+New list + editor pages
+
+New folder astro-site/src/content/guided-workshops/ (if missing)
+
+Create one starter workshop file scarf-for-betty.json with Day 1 and Day 2 filled lightly (placeholders ok)
+
+Update admin nav so I can access both:
+
+Project Walkthroughs (existing)
+
+Guided Workshops (new)
+
+Proceed carefully. Keep changes minimal and readable.
+
+Prompt ends
