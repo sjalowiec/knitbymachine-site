@@ -1,0 +1,652 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import VideoReplySection from '../../../components/workshops/VideoReplySection.astro';
+import { getWorkshopSlugs, getWorkshopBySlug } from '../../../lib/workshops';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const slugs = getWorkshopSlugs();
+  return slugs.map(slug => ({
+    params: { workshopSlug: slug }
+  }));
+}
+
+const { workshopSlug } = Astro.params;
+const workshop = getWorkshopBySlug(workshopSlug as string);
+
+if (!workshop) {
+  return Astro.redirect('/404');
+}
+
+const { client, workshop: workshopInfo, outline, hub, hyvor, curriculum } = workshop;
+const title = workshopInfo.title;
+const description = hub.welcomeBody;
+
+// Build unified day list from outline (authoritative schedule), enriched with curriculum content
+const dayList = outline.days.map(od => {
+  const curriculumDay = curriculum?.days.find(cd => cd.day === od.day);
+  return {
+    day: od.day,
+    title: curriculumDay?.title || od.title,
+    description: curriculumDay?.shortDescription || od.goal,
+    released: od.released,
+    isBonus: od.isBonus || od.day === 99,
+    href: `/guided-workshops/${workshopSlug}/day/${od.day}`
+  };
+});
+
+// Total days counts only regular days (excludes bonus days like Day 99)
+const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
+---
+
+<BaseLayout {title} {description} skipGlobalHyvor={true}>
+  <main class="page page--guided-workshop-hub" data-workshop-slug={workshopSlug}>
+
+    <!-- Hero with icon -->
+    <header class="hub-hero">
+      <div class="hub-hero-icon">
+        <img src="/images/guided_workshops.svg" alt="" class="hub-logo" />
+      </div>
+      <div class="hub-hero-content">
+        <h1>{hub.welcomeTitle}</h1>
+        <p class="hub-intro">
+          This is your private workshop hub. Use it to follow your {totalDays}-day plan and post updates so I can guide you step-by-step. 
+          <button 
+            class="help-trigger" 
+            type="button"
+            aria-expanded="false"
+            aria-controls="help-drawer"
+          >How this works</button>
+        </p>
+      </div>
+    </header>
+
+    <!-- How this works drawer -->
+    <div id="help-drawer" class="help-drawer" hidden>
+      <div class="help-drawer-content">
+        <h2 class="help-drawer-title">How this works</h2>
+        <ul class="help-drawer-list">
+          <li>Follow the plan in order (Day 1 → Day {totalDays}).</li>
+          <li>After you work on a step, post a quick update below.</li>
+          <li>A photo + 1–2 sentences is perfect.</li>
+          <li>I'll reply with what to check or do next.</li>
+        </ul>
+        <button type="button" class="help-drawer-dismiss">Got it</button>
+      </div>
+    </div>
+
+    <!-- Plan Grid - Top Focus -->
+    <section class="hub-plan">
+      <h2 class="hub-plan-title">Your {totalDays}-Day Plan</h2>
+      <ul class="plan-grid" aria-label="Workshop plan">
+        {dayList.map((d, index) => (
+          <li class="plan-item">
+            <a 
+              class={`plan-card ${d.released ? '' : 'plan-card--locked'} ${index === 0 ? 'plan-card--start' : ''} ${d.isBonus ? 'plan-card--bonus' : ''}`} 
+              href={d.href}
+              data-day={d.day}
+            >
+              <div class="plan-card-top">
+                <span class="plan-day">{d.isBonus ? 'Bonus' : `Day ${d.day}`}</span>
+                {index === 0 && <span class="plan-badge plan-badge--start">Start here</span>}
+                {!d.released && <span class="plan-badge plan-badge--coming">Coming</span>}
+              </div>
+
+              <h3 class="plan-title">{d.title}</h3>
+
+              {d.description && <p class="plan-desc">{d.description}</p>}
+
+              <div class="plan-meta">
+                <span class="plan-arrow" aria-hidden="true">→</span>
+              </div>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {hub.showVideoReplyPlaceholder && <VideoReplySection />}
+
+    <!-- Your check-in section -->
+    <section class="hub-checkin">
+      <h2>Your check-in</h2>
+      <p class="hub-checkin-intro">
+        Post a quick update after you work on a step — I'll reply with what to check or do next.
+      </p>
+
+      <div class="conversation-bubble">
+        <!-- Hyvor Talk container - loads only after auth is confirmed -->
+        <div id="hyvor-talk-view" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId}></div>
+      </div>
+    </section>
+
+    <!-- 
+      DEV TEST INSTRUCTIONS:
+      To simulate a paid user during development, open DevTools and run:
+      
+      localStorage.setItem("kbm_user", JSON.stringify({
+        id: "dev-1",
+        name: "Betty",
+        email: "betty@example.com"
+      }));
+      location.reload();
+    -->
+
+  </main>
+
+  <script>
+    (function() {
+      const main = document.querySelector('.page--guided-workshop-hub');
+      const slug = main?.getAttribute('data-workshop-slug') || window.location.pathname;
+      
+      // Storage keys
+      const startedKey = `kbm_ws_started_${slug}`;
+      const helpSeenKey = `kbm_ws_help_seen_${slug}`;
+      const helpDismissedKey = `kbm_ws_help_dismissed_${slug}`;
+      
+      // Elements
+      const helpTrigger = document.querySelector('.help-trigger');
+      const helpDrawer = document.getElementById('help-drawer');
+      const helpDismiss = document.querySelector('.help-drawer-dismiss');
+      
+      // Check if workshop has been started
+      if (localStorage.getItem(startedKey) === 'true') {
+        document.documentElement.classList.add('ws-started');
+      }
+      
+      // Mark as started when Day 1 is clicked
+      const day1Link = document.querySelector('[data-day="1"]');
+      if (day1Link) {
+        day1Link.addEventListener('click', function() {
+          localStorage.setItem(startedKey, 'true');
+        });
+      }
+      
+      // Help drawer functions
+      function openDrawer() {
+        if (helpDrawer && helpTrigger) {
+          helpDrawer.hidden = false;
+          helpTrigger.setAttribute('aria-expanded', 'true');
+        }
+      }
+      
+      function closeDrawer() {
+        if (helpDrawer && helpTrigger) {
+          helpDrawer.hidden = true;
+          helpTrigger.setAttribute('aria-expanded', 'false');
+        }
+      }
+      
+      function toggleDrawer() {
+        if (helpDrawer?.hidden) {
+          openDrawer();
+        } else {
+          closeDrawer();
+        }
+      }
+      
+      // Toggle drawer on trigger click
+      if (helpTrigger) {
+        helpTrigger.addEventListener('click', toggleDrawer);
+      }
+      
+      // Dismiss drawer and prevent future auto-open
+      if (helpDismiss) {
+        helpDismiss.addEventListener('click', function() {
+          localStorage.setItem(helpDismissedKey, 'true');
+          closeDrawer();
+        });
+      }
+      
+      // Auto-open on first visit (if not dismissed)
+      const isDismissed = localStorage.getItem(helpDismissedKey) === 'true';
+      const hasSeen = localStorage.getItem(helpSeenKey) === 'true';
+      
+      if (!isDismissed && !hasSeen) {
+        openDrawer();
+        localStorage.setItem(helpSeenKey, 'true');
+      }
+    })();
+  </script>
+
+  <!-- Hyvor Talk Auth-Aware Loader -->
+  <script type="module">
+    import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/src/lib/hyvorLoader.js';
+
+    const mount = document.getElementById('hyvor-talk-view');
+    if (mount) {
+      const websiteId = mount.dataset.websiteId || '14706';
+      const pageId = mount.dataset.pageId || 'workshop-hub';
+
+      // Show loading state
+      mount.insertAdjacentHTML('beforebegin', `
+        <div class="kbm-hyvor-wait" id="kbm-hyvor-wait">
+          Loading your workshop conversation…
+        </div>
+      `);
+
+      const result = await waitForAuth({ timeoutMs: 8000 });
+
+      if (result.ok && result.user) {
+        const waitEl = document.getElementById('kbm-hyvor-wait');
+        if (waitEl) waitEl.remove();
+
+        setHyvorIdentity({ websiteId, user: result.user });
+        
+        // Create the Hyvor Talk element
+        const hyvorEl = document.createElement('hyvor-talk-comments');
+        hyvorEl.setAttribute('website-id', websiteId);
+        hyvorEl.setAttribute('page-id', pageId);
+        mount.appendChild(hyvorEl);
+        
+        loadHyvorScript();
+      } else {
+        // No auth - show timeout message
+        const waitEl = document.getElementById('kbm-hyvor-wait');
+        if (waitEl) {
+          waitEl.innerHTML = 'Loading is taking longer than expected. Refresh this page if needed.';
+        }
+      }
+    }
+  </script>
+
+  <style>
+    .page--guided-workshop-hub { 
+      max-width: 880px; 
+      margin: 0 auto; 
+      padding: 1.25rem 1rem 3rem; 
+    }
+    
+    /* Hero with icon on left */
+    .hub-hero { 
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+    
+    .hub-hero-icon {
+      flex-shrink: 0;
+    }
+    
+    .hub-logo {
+      width: 64px;
+      height: 64px;
+    }
+    
+    @media (min-width: 640px) {
+      .hub-logo {
+        width: 80px;
+        height: 80px;
+      }
+    }
+    
+    .hub-hero-content {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .hub-hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.75rem;
+      line-height: 1.2;
+    }
+    
+    @media (min-width: 640px) {
+      .hub-hero h1 {
+        font-size: 2rem;
+      }
+    }
+
+    /* Intro line with help trigger */
+    .hub-intro {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.7);
+    }
+    
+    @media (min-width: 640px) {
+      .hub-intro {
+        font-size: 1.05rem;
+      }
+    }
+    
+    .help-trigger {
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      font-size: inherit;
+      color: #52682d;
+      text-decoration: underline;
+      text-decoration-style: dotted;
+      text-underline-offset: 3px;
+      cursor: pointer;
+      transition: color 0.15s ease;
+    }
+    
+    .help-trigger:hover {
+      color: #3d4f22;
+    }
+    
+    .help-trigger:focus-visible {
+      outline: 2px solid rgba(82, 104, 45, 0.5);
+      outline-offset: 2px;
+      border-radius: 2px;
+    }
+
+    /* Help drawer */
+    .help-drawer {
+      margin-bottom: 1.25rem;
+    }
+    
+    .help-drawer-content {
+      padding: 1rem 1.25rem;
+      border-radius: 14px;
+      border: 1px solid rgba(82, 104, 45, 0.2);
+      background: linear-gradient(135deg, rgba(199, 216, 164, 0.15) 0%, rgba(255, 255, 255, 0.95) 100%);
+    }
+    
+    .help-drawer-title {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+    
+    .help-drawer-list {
+      margin: 0 0 1rem;
+      padding-left: 1.25rem;
+      line-height: 1.6;
+      color: rgba(0, 0, 0, 0.75);
+    }
+    
+    .help-drawer-list li {
+      margin: 0.35rem 0;
+    }
+    
+    .help-drawer-dismiss {
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    
+    .help-drawer-dismiss:hover {
+      background: #3d4f22;
+    }
+    
+    .help-drawer-dismiss:active {
+      transform: scale(0.98);
+    }
+    
+    .help-drawer-dismiss:focus-visible {
+      outline: 3px solid rgba(82, 104, 45, 0.4);
+      outline-offset: 2px;
+    }
+
+    /* Plan section */
+    .hub-plan {
+      margin-bottom: 2rem;
+    }
+    
+    .hub-plan-title {
+      margin: 0 0 1rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+
+    /* Plan Grid - Day Cards */
+    .plan-grid {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 12px;
+      grid-template-columns: 1fr;
+    }
+
+    @media (min-width: 640px) {
+      .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 900px) {
+      .plan-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1200px) {
+      .plan-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    }
+
+    .plan-item {
+      display: flex;
+    }
+
+    .plan-card {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      text-decoration: none;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 14px;
+      padding: 14px 14px 12px;
+      background: #fff;
+      transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+    }
+
+    .plan-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      border-color: rgba(82, 104, 45, 0.3);
+    }
+
+    .plan-card:focus-visible {
+      outline: 3px solid rgba(82, 104, 45, 0.35);
+      outline-offset: 2px;
+    }
+
+    /* Day 1 highlight - only when NOT started */
+    .plan-card--start {
+      border: 2px solid rgba(82, 104, 45, 0.5);
+      box-shadow: 0 4px 16px rgba(82, 104, 45, 0.15);
+      background: linear-gradient(135deg, rgba(199, 216, 164, 0.18) 0%, #fff 100%);
+    }
+
+    .plan-card--start:hover {
+      border-color: rgba(82, 104, 45, 0.7);
+      box-shadow: 0 8px 24px rgba(82, 104, 45, 0.2);
+    }
+
+    /* Hide Day 1 special styling when workshop is started */
+    :global(.ws-started) .plan-card--start {
+      border: 1px solid rgba(0,0,0,0.10);
+      box-shadow: none;
+      background: #fff;
+    }
+
+    :global(.ws-started) .plan-card--start:hover {
+      box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+      border-color: rgba(82, 104, 45, 0.3);
+    }
+
+    :global(.ws-started) .plan-badge--start {
+      display: none;
+    }
+
+    .plan-card--locked {
+      opacity: 0.65;
+      background: rgba(250, 250, 250, 0.9);
+    }
+
+    .plan-card--locked:hover {
+      transform: none;
+      box-shadow: none;
+      border-color: rgba(0,0,0,0.10);
+    }
+
+    /* Bonus card styling */
+    .plan-card--bonus {
+      border-style: dashed;
+      border-color: rgba(82, 104, 45, 0.35);
+      background: linear-gradient(135deg, rgba(255, 248, 220, 0.4) 0%, #fff 100%);
+    }
+
+    .plan-card--bonus .plan-day {
+      color: #8b6914;
+    }
+
+    .plan-card--bonus:hover {
+      border-color: rgba(139, 105, 20, 0.5);
+    }
+
+    .plan-card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .plan-day {
+      font-weight: 800;
+      font-size: 0.85rem;
+      letter-spacing: 0.02em;
+      color: #52682d;
+    }
+
+    .plan-badge {
+      font-size: 0.72rem;
+      font-weight: 800;
+      padding: 0.25rem 0.5rem;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    .plan-badge--start {
+      border: 1px solid rgba(82, 104, 45, 0.4);
+      background: rgba(199, 216, 164, 0.6);
+      color: #3d4f22;
+    }
+
+    .plan-badge--coming {
+      background: rgba(44, 58, 87, 0.08);
+      border: 1px solid rgba(44, 58, 87, 0.15);
+      color: rgba(44, 58, 87, 0.6);
+    }
+
+    .plan-title {
+      margin: 0 0 6px;
+      font-size: 1rem;
+      font-weight: 600;
+      line-height: 1.25;
+      color: #2b2b2b;
+    }
+
+    .plan-desc {
+      margin: 0 0 10px;
+      font-size: 0.88rem;
+      line-height: 1.35;
+      color: rgba(0,0,0,0.65);
+      flex-grow: 1;
+    }
+
+    .plan-meta {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      margin-top: auto;
+    }
+
+    /* Enhanced arrow visibility */
+    .plan-arrow {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #52682d;
+      background: rgba(199, 216, 164, 0.4);
+      padding: 0.25rem 0.6rem;
+      border-radius: 8px;
+      transition: transform 140ms ease, background 140ms ease;
+    }
+
+    .plan-card:hover .plan-arrow {
+      transform: translateX(4px);
+      background: rgba(199, 216, 164, 0.65);
+    }
+
+    .plan-card--locked .plan-arrow {
+      opacity: 0.4;
+      background: rgba(44, 58, 87, 0.08);
+      color: rgba(44, 58, 87, 0.5);
+    }
+
+    /* Your check-in section */
+    .hub-checkin {
+      margin-top: 2rem;
+    }
+    
+    .hub-checkin h2 {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+    
+    .hub-checkin-intro {
+      margin: 0 0 1rem;
+      font-size: 1rem;
+      line-height: 1.5;
+      color: rgba(0, 0, 0, 0.7);
+    }
+
+    /* Speech Bubble Styling */
+    .conversation-bubble {
+      padding: 1.5rem;
+      border-radius: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,245,0.98) 100%);
+      border: 1px solid rgba(82, 104, 45, 0.18);
+      box-shadow: 0 2px 12px rgba(82, 104, 45, 0.06);
+      position: relative;
+    }
+
+    .conversation-bubble::before {
+      content: '';
+      position: absolute;
+      top: -10px;
+      left: 28px;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,250,245,0.98) 100%);
+      border-left: 1px solid rgba(82, 104, 45, 0.18);
+      border-top: 1px solid rgba(82, 104, 45, 0.18);
+      transform: rotate(45deg);
+    }
+
+    .hub-comments-placeholder {
+      padding: 1.5rem;
+      border-radius: 12px;
+      border: 1px dashed rgba(44, 58, 87, 0.25);
+      background: rgba(255, 255, 255, 0.55);
+      text-align: center;
+      color: rgba(44, 58, 87, 0.7);
+    }
+
+    /* Hyvor loading state */
+    .kbm-hyvor-wait {
+      margin: 1rem 0;
+      padding: 0.75rem 0.9rem;
+      border: 1px solid rgba(82, 104, 45, 0.22);
+      border-radius: 12px;
+      background: rgba(199, 216, 164, 0.18);
+      color: #2b2b2b;
+      font-size: 0.95rem;
+    }
+  </style>
+</BaseLayout>

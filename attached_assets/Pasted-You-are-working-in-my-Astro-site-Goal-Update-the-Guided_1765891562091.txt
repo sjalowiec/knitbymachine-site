@@ -1,0 +1,141 @@
+You are working in my Astro site.
+
+Goal: Update the Guided Workshop hub page to a new layout:
+
+Desktop
+
+2-column grid
+
+Left column (1/3) = “Map” (sticky) with simple text links (Day 1, Day 2, etc.)
+
+Right column (2/3) = “Action” containing Hyvor Talk
+
+Mobile
+
+Replace the left Map with a collapsible dropdown at the top called “Workshop Menu”
+
+The dropdown contains the same Day links
+
+The Hyvor section should stay near the top and not be pushed far down
+
+Requirements
+
+Find the hub page at:
+
+src/pages/guided-workshops/scarf-for-betty/hub.astro
+(If the path differs, locate the hub page for the scarf workshop and apply changes there.)
+
+Before editing, create a backup in the same folder:
+
+hub.astro.bak
+
+Do NOT add any new features (no video section, no “Sue’s guidance”, no VideoAsk).
+
+Keep the existing Hyvor Talk embed logic already on the page (script + container). Only reposition it into the right column.
+
+The Map should be simple text links only (no arrows/icons/cards).
+
+Use clean, modern CSS in the same file (or the page’s existing CSS approach).
+
+Implementation details
+A) Update the page markup
+
+Replace the main content area with this structure (adjust class names if you prefer, but keep the same layout):
+
+Outer wrapper: .gw-hub
+
+Desktop grid: .gw-layout
+
+Left sticky column: .gw-map (hidden on mobile)
+
+Mobile dropdown: .gw-map-mobile (visible only on mobile)
+
+Right column: .gw-action containing:
+
+A short section heading “Workshop Conversation”
+
+The Hyvor container (existing)
+
+The Map links can be placeholders for now, like:
+
+Day links (example URLs — match your real day page routes if they already exist):
+
+/guided-workshops/scarf-for-betty/day-1
+
+/guided-workshops/scarf-for-betty/day-2
+
+/guided-workshops/scarf-for-betty/day-3
+
+/guided-workshops/scarf-for-betty/day-4
+
+/guided-workshops/scarf-for-betty/day-5
+
+/guided-workshops/scarf-for-betty/day-6
+
+/guided-workshops/scarf-for-betty/day-7
+
+/guided-workshops/scarf-for-betty/day-8
+
+/guided-workshops/scarf-for-betty/day-9
+
+/guided-workshops/scarf-for-betty/day-10
+
+Use link text like:
+
+Day 1 — [Title]
+If you don’t know the titles yet, use:
+
+Day 1
+
+Day 2
+etc.
+
+B) Add mobile dropdown behavior (no JS framework)
+
+Use native HTML:
+
+<details> / <summary> for the dropdown menu
+
+Example behavior:
+
+On mobile, show the <details> dropdown at the top
+
+On desktop, hide it and show the sticky left map instead
+
+C) CSS requirements
+
+Add CSS that:
+
+Creates a two-column layout on desktop:
+
+grid-template-columns: 1fr 2fr;
+
+Makes the left map sticky:
+
+position: sticky; top: 1rem;
+
+On mobile (max-width ~ 900px):
+
+Switch to 1 column
+
+Hide .gw-map
+
+Show .gw-map-mobile
+
+Style the dropdown summary like a calm button row (not bright blue, no heavy borders)
+
+Ensure Hyvor container has spacing and doesn’t look jammed
+
+D) Hyvor embed
+
+Keep the existing Hyvor embed snippet as-is (script + div with the right ID). Just move it into the .gw-action column.
+
+Finish
+
+Ensure the page renders without errors
+
+Confirm the left column stays sticky while scrolling
+
+Confirm mobile shows the dropdown and the conversation stays near the top
+
+Proceed with the edit now.
