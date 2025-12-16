@@ -115,15 +115,22 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
       const websiteId = mount.dataset.websiteId || '14706';
       const pageId = mount.dataset.pageId || 'workshop-hub';
 
+      // TODO: remove dev=1 bypass after Outseta is wired
+      const devUnlock = new URLSearchParams(window.location.search).get('dev') === '1';
+
       // Quick auth check (2 seconds max, no spinner)
       const result = await waitForAuth({ timeoutMs: 2000, intervalMs: 100 });
+      const authorized = (result.ok && result.user) || devUnlock;
 
-      if (result.ok && result.user) {
-        // Authenticated: hide locked card, show Hyvor
+      if (authorized) {
+        // Authenticated or dev bypass: hide locked card, show Hyvor
         if (lockedCard) lockedCard.hidden = true;
         mount.hidden = false;
 
-        setHyvorIdentity({ websiteId, user: result.user });
+        // Only set identity if we have a real user
+        if (result.ok && result.user) {
+          setHyvorIdentity({ websiteId, user: result.user });
+        }
         
         // Create the Hyvor Talk element
         const hyvorEl = document.createElement('hyvor-talk-comments');
@@ -133,7 +140,7 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
         
         loadHyvorScript();
       }
-      // If no auth, do nothing - stay locked (card remains visible)
+      // If no auth and no dev bypass, do nothing - stay locked (card remains visible)
     }
   </script>
 
