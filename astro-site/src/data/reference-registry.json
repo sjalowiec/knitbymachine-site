@@ -8,5 +8,17 @@
     "pushed": "2025-12-14",
     "linkedFrom": [],
     "notes": "proof of concept from pdf"
+  },
+  {
+    "id": "ref_mj92c05v7h0u",
+    "title": "Choosing a Knitting Machine",
+    "slug": "/reference/choose-knitting-machine",
+    "topic": "machines",
+    "status": "in-progress",
+    "pushed": "2025-12-15",
+    "linkedFrom": [
+      "reference/choosing-knitting-machine"
+    ],
+    "notes": ""
   }
 ]
