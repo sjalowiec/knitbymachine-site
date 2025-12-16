@@ -40,49 +40,46 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
   <div class="gw-hub" data-workshop-slug={workshopSlug}>
-    
-    <!-- Mobile Dropdown Menu -->
-    <details class="gw-map-mobile">
-      <summary>Workshop Menu</summary>
-      <nav class="gw-map-mobile-nav">
-        {dayList.map(d => (
-          <a href={d.href} class={d.released ? '' : 'gw-map-link--locked'}>
-            {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
-          </a>
-        ))}
-      </nav>
-    </details>
 
-    <!-- Two-Column Layout -->
+    <!-- Mobile workshop menu (only visible on mobile) -->
+    <div class="gw-map-mobile">
+      <details class="gw-menu">
+        <summary class="gw-menu-summary">Workshop Menu</summary>
+        <div class="gw-menu-panel">
+          <ul class="ref-scan-list">
+            {dayList.map(d => (
+              <li>
+                <a href={d.href} class={d.released ? '' : 'gw-link--locked'}>
+                  {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+    </div>
+
     <div class="gw-layout">
-      
-      <!-- Left Column: Sticky Map -->
-      <aside class="gw-map">
-        <h2 class="gw-map-heading">Your {totalDays}-Day Plan</h2>
-        <nav class="gw-map-nav">
+      <!-- Desktop sticky map (only visible on desktop) -->
+      <aside class="ref-scan gw-map">
+        <h2 class="ref-scan-title">Workshop Steps</h2>
+        <ul class="ref-scan-list">
           {dayList.map(d => (
-            <a 
-              href={d.href} 
-              class={`gw-map-link ${d.released ? '' : 'gw-map-link--locked'}`}
-            >
-              {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
-            </a>
+            <li>
+              <a href={d.href} class={d.released ? '' : 'gw-link--locked'}>
+                {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
+              </a>
+            </li>
           ))}
-        </nav>
+        </ul>
       </aside>
 
-      <!-- Right Column: Hyvor Conversation -->
-      <main class="gw-action">
-        <h2 class="gw-action-heading">Workshop Conversation</h2>
-        <p class="gw-action-intro">
-          Post a quick update after you work on a step — I'll reply with what to check or do next.
-        </p>
+      <!-- Action column -->
+      <section class="gw-action">
+        <h2 class="gw-action-title">Workshop Conversation</h2>
 
-        <div class="gw-conversation">
-          <div id="hyvor-talk-view" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId}></div>
-        </div>
-      </main>
-
+        <div id="hyvor-talk-view" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId}></div>
+      </section>
     </div>
   </div>
 
@@ -140,183 +137,80 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
   </script>
 
   <style>
-    /* Hub Container */
+    /* Hub container */
     .gw-hub {
-      max-width: 1100px;
+      max-width: 1000px;
       margin: 0 auto;
       padding: 1.5rem 1rem 3rem;
     }
 
-    /* Two-Column Grid Layout */
+    /* Two-column grid layout */
     .gw-layout {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.25rem;
+      align-items: start;
     }
 
-    @media (min-width: 900px) {
-      .gw-layout {
-        grid-template-columns: 1fr 2fr;
-        gap: 2.5rem;
-      }
-    }
-
-    /* Left Column: Map (hidden on mobile) */
+    /* Desktop sticky map */
     .gw-map {
-      display: none;
+      position: sticky;
+      top: calc(var(--header-height, 0px) + 1rem);
     }
 
-    @media (min-width: 900px) {
-      .gw-map {
-        display: block;
-        position: sticky;
-        top: 1rem;
-        align-self: start;
-      }
-    }
-
-    .gw-map-heading {
-      margin: 0 0 1rem;
+    /* Action column */
+    .gw-action-title {
+      margin: 0 0 0.75rem;
       font-size: 1.1rem;
       font-weight: 700;
-      color: #2b2b2b;
     }
 
-    .gw-map-nav {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+    /* Mobile menu hidden on desktop */
+    .gw-map-mobile { 
+      display: none; 
     }
 
-    .gw-map-link {
-      display: block;
-      padding: 0.5rem 0;
-      font-size: 0.95rem;
-      color: #52682d;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-      transition: color 0.15s ease;
-    }
-
-    .gw-map-link:hover {
-      color: #3d4f22;
-    }
-
-    .gw-map-link:last-child {
-      border-bottom: none;
-    }
-
-    .gw-map-link--locked {
-      color: rgba(0, 0, 0, 0.4);
-      pointer-events: none;
-    }
-
-    /* Mobile Dropdown Menu */
-    .gw-map-mobile {
-      display: block;
-      margin-bottom: 1.5rem;
-    }
-
-    @media (min-width: 900px) {
-      .gw-map-mobile {
-        display: none;
+    /* Mobile */
+    @media (max-width: 900px) {
+      .gw-layout { 
+        grid-template-columns: 1fr; 
+      }
+      .gw-map { 
+        display: none; 
+      }
+      .gw-map-mobile { 
+        display: block; 
+        margin-bottom: 1rem; 
       }
     }
 
-    .gw-map-mobile summary {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1rem;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #2b2b2b;
-      background: rgba(248, 250, 245, 0.95);
-      border: 1px solid rgba(82, 104, 45, 0.2);
-      border-radius: 10px;
+    /* Dropdown chrome only (do NOT restyle the list) */
+    .gw-menu {
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.75);
+      overflow: hidden;
+    }
+
+    .gw-menu-summary {
+      padding: 0.85rem 1rem;
+      font-weight: 700;
       cursor: pointer;
       list-style: none;
-      transition: background 0.15s ease, border-color 0.15s ease;
     }
 
-    .gw-map-mobile summary::-webkit-details-marker {
-      display: none;
+    .gw-menu-summary::-webkit-details-marker { 
+      display: none; 
     }
 
-    .gw-map-mobile summary::after {
-      content: '▼';
-      font-size: 0.7rem;
-      color: rgba(0, 0, 0, 0.5);
-      transition: transform 0.2s ease;
+    .gw-menu-panel {
+      padding: 0.75rem 1rem 1rem;
     }
 
-    .gw-map-mobile[open] summary::after {
-      transform: rotate(180deg);
-    }
-
-    .gw-map-mobile summary:hover {
-      background: rgba(199, 216, 164, 0.25);
-      border-color: rgba(82, 104, 45, 0.35);
-    }
-
-    .gw-map-mobile-nav {
-      display: flex;
-      flex-direction: column;
-      margin-top: 0.5rem;
-      padding: 0.75rem 1rem;
-      background: rgba(255, 255, 255, 0.98);
-      border: 1px solid rgba(82, 104, 45, 0.15);
-      border-radius: 10px;
-    }
-
-    .gw-map-mobile-nav a {
-      display: block;
-      padding: 0.6rem 0;
-      font-size: 0.95rem;
-      color: #52682d;
-      text-decoration: none;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.06);
-    }
-
-    .gw-map-mobile-nav a:last-child {
-      border-bottom: none;
-    }
-
-    .gw-map-mobile-nav a:hover {
-      color: #3d4f22;
-    }
-
-    .gw-map-mobile-nav a.gw-map-link--locked {
-      color: rgba(0, 0, 0, 0.4);
+    /* Locked link state */
+    .gw-link--locked {
+      opacity: 0.5;
       pointer-events: none;
-    }
-
-    /* Right Column: Action/Conversation */
-    .gw-action {
-      min-width: 0;
-    }
-
-    .gw-action-heading {
-      margin: 0 0 0.5rem;
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #2b2b2b;
-    }
-
-    .gw-action-intro {
-      margin: 0 0 1.25rem;
-      font-size: 1rem;
-      line-height: 1.5;
-      color: rgba(0, 0, 0, 0.7);
-    }
-
-    /* Conversation Container */
-    .gw-conversation {
-      padding: 1.25rem;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.98);
-      border: 1px solid rgba(82, 104, 45, 0.15);
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     }
 
     /* Hyvor loading state */

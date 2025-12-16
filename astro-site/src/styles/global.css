@@ -781,3 +781,58 @@ p {
   color: rgba(44, 58, 87, 0.78);
   font-size: 0.95rem;
 }
+
+/* === Reference Quick Scan Styles (reusable) === */
+.ref-scan {
+  border: 1px solid rgba(44, 58, 87, 0.12);
+  border-radius: 14px;
+  padding: 1rem;
+  background: rgba(44, 58, 87, 0.02);
+}
+
+.ref-scan-title {
+  font-size: 1rem;
+  margin: 0 0 0.75rem;
+  font-weight: 700;
+}
+
+.ref-scan-list {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.ref-scan-list li {
+  display: flex;
+  align-items: center;
+  margin: 0.45rem 0;
+  transition: transform 0.15s ease;
+}
+
+.ref-scan-list li:hover {
+  transform: translateX(4px);
+}
+
+.ref-scan-list li::before {
+  content: "›";
+  flex-shrink: 0;
+  margin-right: 8px;
+  font-size: 1.1em;
+  font-weight: 600;
+  color: #52682d;
+}
+
+.ref-scan-list a { 
+  color: #52682d;
+  font-weight: 600;
+  text-decoration: none; 
+}
+
+.ref-scan-list li:hover a { 
+  color: #C2614E;
+  text-decoration: underline; 
+}
+
+.ref-scan-list li:hover::before {
+  color: #C2614E;
+}

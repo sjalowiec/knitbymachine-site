@@ -1,0 +1,175 @@
+You are working in my Astro site.
+
+Target
+
+Update the Guided Workshop hub page:
+
+File: src/pages/guided-workshops/scarf-for-betty/hub.astro
+
+Before editing, create a backup: src/pages/guided-workshops/scarf-for-betty/hub.astro.bak
+
+Goal
+
+Implement a communication-first hub layout:
+
+Desktop
+
+2-column grid
+
+Left column (1/3) = “Map” (sticky) containing a link list styled exactly like the “Quick scan” box from /reference/bobbin-intarsia-knitting
+
+Right column (2/3) = “Action” containing the existing Hyvor Talk thread (no extra sections)
+
+Mobile
+
+Hide the left sticky Map entirely
+
+Show a collapsible “Workshop Menu” dropdown at the top (use <details>/<summary>)
+
+Inside the dropdown, render the SAME list using the same Reference “Quick scan” classes
+
+Keep the Hyvor conversation near the top (do not push it down with a big menu)
+
+Critical constraints
+
+Do NOT add “Sue’s guidance”, do NOT add VideoAsk, do NOT add any new features.
+
+Reuse the Reference list styles. Specifically reuse these existing classes:
+
+ref-scan
+
+ref-scan-title
+
+ref-scan-list
+
+Do NOT invent new link styling. Use the site’s existing link styles.
+
+Keep my existing Hyvor Talk embed code exactly as-is (script + thread container). Only move it into the right column.
+
+Only add minimal CSS required for grid + sticky + responsive behavior. Do NOT restyle ref-scan itself.
+
+Markup changes
+
+Replace the hub page’s main content area with this structure (adapting to the existing layout wrapper on the page):
+
+<div class="gw-hub">
+
+  <!-- Mobile workshop menu (only visible on mobile) -->
+  <div class="gw-map-mobile">
+    <details class="gw-menu">
+      <summary class="gw-menu-summary">Workshop Menu</summary>
+      <div class="gw-menu-panel">
+        <ul class="ref-scan-list">
+          <li><a href="/guided-workshops/scarf-for-betty/day-1">Day 1</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-2">Day 2</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-3">Day 3</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-4">Day 4</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-5">Day 5</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-6">Day 6</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-7">Day 7</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-8">Day 8</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-9">Day 9</a></li>
+          <li><a href="/guided-workshops/scarf-for-betty/day-10">Day 10</a></li>
+        </ul>
+      </div>
+    </details>
+  </div>
+
+  <div class="gw-layout">
+    <!-- Desktop sticky map (only visible on desktop) -->
+    <aside class="ref-scan gw-map">
+      <h2 class="ref-scan-title">Workshop Steps</h2>
+      <ul class="ref-scan-list">
+        <li><a href="/guided-workshops/scarf-for-betty/day-1">Day 1</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-2">Day 2</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-3">Day 3</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-4">Day 4</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-5">Day 5</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-6">Day 6</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-7">Day 7</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-8">Day 8</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-9">Day 9</a></li>
+        <li><a href="/guided-workshops/scarf-for-betty/day-10">Day 10</a></li>
+      </ul>
+    </aside>
+
+    <!-- Action column -->
+    <section class="gw-action">
+      <h2 class="gw-action-title">Workshop Conversation</h2>
+
+      <!-- Keep the existing Hyvor container exactly as it is below -->
+      <!-- (move your current Hyvor embed container here unchanged) -->
+    </section>
+  </div>
+</div>
+
+
+If the page already has a main wrapper/section structure, integrate this inside it, but keep the class names above.
+
+CSS (minimal layout only)
+
+Add styles in this page (or wherever this page currently defines CSS) to achieve the layout:
+
+Desktop grid: 1/3 + 2/3
+
+Sticky left map with correct top offset using the existing --header-height variable (already used on your site)
+
+Add this CSS (do not change any .ref-scan* styles):
+
+.gw-layout {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.gw-map {
+  position: sticky;
+  top: calc(var(--header-height, 0px) + 1rem);
+}
+
+.gw-action-title {
+  margin: 0 0 0.75rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.gw-map-mobile { display: none; }
+
+/* Mobile */
+@media (max-width: 900px) {
+  .gw-layout { grid-template-columns: 1fr; }
+  .gw-map { display: none; }
+  .gw-map-mobile { display: block; margin-bottom: 1rem; }
+}
+
+/* Dropdown chrome only (do NOT restyle the list) */
+.gw-menu {
+  border: 1px solid rgba(0,0,0,0.10);
+  border-radius: 12px;
+  background: rgba(255,255,255,0.75);
+  overflow: hidden;
+}
+
+.gw-menu-summary {
+  padding: 0.85rem 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.gw-menu-summary::-webkit-details-marker { display: none; }
+
+.gw-menu-panel {
+  padding: 0.75rem 1rem 1rem;
+}
+
+Finish
+
+Ensure the Map uses the same visual style as the Reference “Quick scan” box (because it reuses ref-scan, ref-scan-title, ref-scan-list)
+
+Confirm the left column stays sticky on desktop while scrolling
+
+Confirm on mobile the dropdown appears and the Hyvor thread is visible near the top
+
+Proceed with the edit.
