@@ -55,7 +55,7 @@ const dayDescription = curriculumDay?.shortDescription || outlineDay?.goal || ''
 const isReleased = outlineDay?.released ?? true;
 // Total days should always come from outline (the authoritative schedule)
 const totalDays = workshop.outline.days.length;
-const estimatedTime = curriculumDay?.estimatedTime;
+// estimatedTime disabled per user request
 const blocks = curriculumDay?.blocks || [];
 
 const title = `Day ${dayNumber}: ${dayTitle} | ${workshop.workshop.title}`;
@@ -80,7 +80,6 @@ function renderMarkdown(content: string): string {
       <a href={hubUrl} class="day-back-link">← Back to Hub</a>
       <div class="day-meta-row">
         <span class="day-meta">Day {dayNumber} of {totalDays}</span>
-        {estimatedTime && <span class="day-time">⏱ {estimatedTime}</span>}
       </div>
       <h1>{dayTitle}</h1>
       {dayDescription && <p class="day-subtitle">{dayDescription}</p>}
