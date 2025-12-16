@@ -1,0 +1,171 @@
+Update the Guided Workshop system so the Welcome section is fully customizable per workshop via JSON, and supports a name placeholder that prefers Outseta (when available) but can fall back to a name stored in the workshop JSON.
+
+A) Backups
+
+Before editing, create backups:
+
+src/data/guided-workshops.json.bak (or .bak2 if it exists)
+
+src/pages/guided-workshops/[workshopSlug]/hub.astro.bak (or .bak2 if it exists)
+
+If you edit admin files, back them up too.
+
+B) Add fields to the workshop JSON
+
+In src/data/guided-workshops.json (or wherever your workshops live), add these optional fields to each workshop object:
+
+"welcomeTitle": "Welcome, {name}",
+"welcomeBody": "Your custom welcome message here…",
+"clientName": "Betty"
+
+
+Notes:
+
+welcomeTitle supports {name} placeholder.
+
+clientName is the fallback name if Outseta isn’t available yet.
+
+If you don’t want to store a name, omit clientName and it will use “there”.
+
+Do NOT break existing workshops: keep these fields optional.
+
+C) Update hub page to use workshop data + name resolution
+
+Edit: src/pages/guided-workshops/[workshopSlug]/hub.astro
+
+In the frontmatter (top of file), you should already be loading workshop data by workshopSlug. Add logic to compute:
+
+const fallbackName = workshop?.clientName || "there";
+
+const welcomeTitleTemplate = workshop?.welcomeTitle || "Welcome, {name}";
+
+const welcomeBodyText = workshop?.welcomeBody || workshop?.description || "";
+
+const initialName = fallbackName; (will be replaced client-side if Outseta is present)
+
+const renderedWelcomeTitle = welcomeTitleTemplate.replace("{name}", initialName);
+
+In the Welcome markup, replace hard-coded title/body with the variables:
+
+Use:
+
+{renderedWelcomeTitle} for the <h1>
+
+{welcomeBodyText} for the <p>
+
+Example (keep your existing image + dismiss button + layout):
+
+<h1 class="gw-welcome-title">{renderedWelcomeTitle}</h1>
+<p class="gw-welcome-body">{welcomeBodyText}</p>
+
+
+Add a tiny client-side enhancement that swaps in Outseta name if available.
+Right after the existing welcome dismiss script (or in the same script block area), add a small script that:
+
+Looks for a user name from Outseta (try common locations without throwing errors)
+
+If found, replaces {name} in the title text
+
+If not found, leaves the server-rendered fallback name alone
+
+Add this in the page (module script is fine):
+
+<script type="module">
+  (function () {
+    const titleEl = document.querySelector('.gw-welcome-title');
+    if (!titleEl) return;
+
+    // If already dismissed, don't waste time
+    const dismissed = localStorage.getItem('kbm_gw_welcome_dismissed') === '1';
+    if (dismissed) return;
+
+    // Try to pull a name from Outseta (non-fatal if not present)
+    const tryGetName = () => {
+      try {
+        // Common possibilities depending on Outseta setup
+        const o =
+          window.Outseta ||
+          window.outseta ||
+          window.os ||
+          null;
+
+        // Try a few plausible shapes without assuming too much
+        const fromPossibleObject =
+          o?.user?.FullName ||
+          o?.user?.fullName ||
+          o?.user?.Name ||
+          o?.user?.name ||
+          o?.auth?.user?.FullName ||
+          o?.auth?.user?.fullName ||
+          o?.auth?.user?.name ||
+          null;
+
+        if (typeof fromPossibleObject === 'string' && fromPossibleObject.trim()) {
+          return fromPossibleObject.trim();
+        }
+
+        // As a final fallback, sometimes user info is stashed in localStorage by auth layers
+        const ls =
+          localStorage.getItem('outseta_user') ||
+          localStorage.getItem('OutsetaUser') ||
+          null;
+
+        if (ls) {
+          const parsed = JSON.parse(ls);
+          const n = parsed?.FullName || parsed?.fullName || parsed?.name;
+          if (typeof n === 'string' && n.trim()) return n.trim();
+        }
+      } catch (e) {
+        // ignore
+      }
+      return null;
+    };
+
+    const name = tryGetName();
+    if (!name) return;
+
+    // Replace only if template style exists, otherwise append politely
+    const current = titleEl.textContent || '';
+    if (current.includes('{name}')) {
+      titleEl.textContent = current.replace('{name}', name);
+    } else if (current.toLowerCase().includes('welcome')) {
+      // If already rendered (server used fallback), swap the part after comma if it looks like "Welcome, X"
+      titleEl.textContent = current.replace(/^(Welcome,\s*)(.+)$/i, `$1${name}`);
+    }
+  })();
+</script>
+
+
+Important:
+
+This does NOT require Outseta to be fully wired today.
+
+It will “just start working” later when Outseta user data exists on the page.
+
+D) Admin: add fields so you can edit welcomeTitle/welcomeBody/clientName
+
+In your admin “Guided Workshops” editor (where you create/edit workshop JSON records):
+
+Add form inputs:
+
+welcomeTitle (text input)
+
+welcomeBody (textarea)
+
+clientName (text input)
+
+Make sure saving writes these fields to the JSON record.
+
+If you have validation/schema for workshop records, add these as optional string fields.
+
+E) Acceptance tests
+
+If welcomeTitle is missing → shows “Welcome, {name}” using fallback name.
+
+If clientName is missing → uses “there”.
+
+If Outseta user name becomes available later → title updates to the real name.
+
+Welcome dismiss still works and persists.
+
+Implement all changes. Do not remove any existing dismiss/localStorage logic.

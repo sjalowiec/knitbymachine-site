@@ -119,6 +119,10 @@ export interface GuidedWorkshopFile {
   level: string;
   imageUrl: string;
   imageAlt: string;
+  // Optional customizable welcome fields
+  welcomeTitle?: string;  // Supports {name} placeholder
+  welcomeBody?: string;
+  clientName?: string;    // Fallback name if Outseta not available
   curriculum: {
     version: number;
     days: Array<{
@@ -139,9 +143,16 @@ export interface GuidedWorkshopFile {
 
 // Adapt new guided workshop format to expected Workshop interface
 function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
-  // Extract client name from title if it contains "for [Name]"
-  const nameMatch = gw.title.match(/for\s+(\w+)/i);
-  const clientName = nameMatch ? nameMatch[1] : 'Friend';
+  // Use explicit clientName, or extract from title "for [Name]", or default to "there"
+  let clientName = gw.clientName;
+  if (!clientName) {
+    const nameMatch = gw.title.match(/for\s+(\w+)/i);
+    clientName = nameMatch ? nameMatch[1] : 'there';
+  }
+  
+  // Support {name} placeholder in welcomeTitle
+  const welcomeTitleTemplate = gw.welcomeTitle || 'Welcome, {name}';
+  const renderedWelcomeTitle = welcomeTitleTemplate.replace('{name}', clientName);
   
   return {
     version: 1,
@@ -166,8 +177,8 @@ function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
       }))
     },
     hub: {
-      welcomeTitle: `Welcome, ${clientName}`,
-      welcomeBody: gw.description,
+      welcomeTitle: renderedWelcomeTitle,
+      welcomeBody: gw.welcomeBody || gw.description,
       todayLabel: 'Your workshop is ready',
       showVideoReplyPlaceholder: true // Enable video reply placeholder by default
     },
