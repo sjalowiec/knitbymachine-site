@@ -318,7 +318,11 @@ const description = "A practical, beginner-friendly reference for choosing a kni
   </main>
 
   <style>
-    .page--reference { padding-bottom: 3rem; }
+    .page--reference { 
+      padding-bottom: 3rem;
+      margin-top: calc(-1 * var(--header-height, 6rem));
+      padding-top: var(--header-height, 6rem);
+    }
 
     .ref-hero {
       background: #ffffff;
