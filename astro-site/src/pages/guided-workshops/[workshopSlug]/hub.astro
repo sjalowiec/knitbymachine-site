@@ -41,6 +41,36 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
   <div class="gw-hub" data-workshop-slug={workshopSlug}>
 
+    <!-- Dismissible Welcome section -->
+    <section class="gw-welcome" id="gw-welcome">
+      <div class="gw-welcome-message">
+        <h1 class="gw-welcome-title">{hub.welcomeTitle || `Welcome to ${workshopInfo.title}`}</h1>
+        <p class="gw-welcome-body">{hub.welcomeBody}</p>
+        <button class="gw-welcome-dismiss" type="button">Hide this message</button>
+      </div>
+    </section>
+
+    <!-- Welcome dismiss script -->
+    <script>
+      (function () {
+        const STORAGE_KEY = 'kbm_gw_welcome_dismissed';
+        const welcome = document.getElementById('gw-welcome');
+        const dismissBtn = welcome?.querySelector('.gw-welcome-dismiss');
+
+        // Hide immediately if previously dismissed
+        if (localStorage.getItem(STORAGE_KEY) === 'true') {
+          welcome?.remove();
+          return;
+        }
+
+        // Handle dismiss click
+        dismissBtn?.addEventListener('click', () => {
+          localStorage.setItem(STORAGE_KEY, 'true');
+          welcome?.remove();
+        });
+      })();
+    </script>
+
     <!-- Mobile workshop menu (only visible on mobile) -->
     <div class="gw-map-mobile">
       <details class="gw-menu">
@@ -273,6 +303,48 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
     /* Hyvor container */
     .gw-hyvor-container {
       min-height: 200px;
+    }
+
+    /* Welcome section */
+    .gw-welcome {
+      margin-bottom: 1.5rem;
+    }
+
+    .gw-welcome-message {
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(82, 104, 45, 0.15);
+      border-radius: 12px;
+      background: rgba(199, 216, 164, 0.12);
+    }
+
+    .gw-welcome-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+
+    .gw-welcome-body {
+      margin: 0;
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.75);
+      line-height: 1.5;
+    }
+
+    .gw-welcome-dismiss {
+      margin-top: 0.75rem;
+      padding: 0;
+      background: none;
+      border: none;
+      font-size: 0.85rem;
+      color: inherit;
+      opacity: 0.55;
+      cursor: pointer;
+    }
+
+    .gw-welcome-dismiss:hover {
+      opacity: 1;
+      text-decoration: underline;
     }
   </style>
 </BaseLayout>

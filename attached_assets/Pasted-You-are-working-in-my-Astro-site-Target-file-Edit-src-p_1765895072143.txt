@@ -1,0 +1,97 @@
+You are working in my Astro site.
+
+Target file
+
+Edit: src/pages/guided-workshops/scarf-for-betty/hub.astro
+
+Before editing, create a backup:
+
+hub.astro.bak
+
+Goal
+
+Allow the user to dismiss the Welcome section once, and prevent it from showing again on future visits.
+
+This should:
+
+Work on desktop and mobile
+
+Persist using localStorage
+
+Require no authentication
+
+Not affect any other page sections
+
+Implementation requirements
+1. Add a dismiss button to the Welcome section
+
+Inside .gw-welcome-message, add a small button or link:
+
+<button class="gw-welcome-dismiss" type="button">
+  Hide this message
+</button>
+
+
+Place it at the bottom of the welcome message.
+
+2. Wrap the Welcome section with an identifiable container
+
+Ensure the welcome section has an ID:
+
+<section class="gw-welcome" id="gw-welcome">
+
+3. Add client-side logic (inline script is fine)
+
+Add this script below the Welcome section markup (or at the bottom of the page):
+
+<script>
+  (function () {
+    const STORAGE_KEY = 'kbm_gw_welcome_dismissed';
+    const welcome = document.getElementById('gw-welcome');
+    const dismissBtn = welcome?.querySelector('.gw-welcome-dismiss');
+
+    // Hide immediately if previously dismissed
+    if (localStorage.getItem(STORAGE_KEY) === 'true') {
+      welcome?.remove();
+      return;
+    }
+
+    // Handle dismiss click
+    dismissBtn?.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, 'true');
+      welcome.remove();
+    });
+  })();
+</script>
+
+4. Minimal styling for the dismiss button
+
+Add subtle styling (do NOT make it loud):
+
+.gw-welcome-dismiss {
+  margin-top: 0.5rem;
+  padding: 0;
+  background: none;
+  border: none;
+  font-size: 0.85rem;
+  color: inherit;
+  opacity: 0.65;
+  cursor: pointer;
+}
+
+.gw-welcome-dismiss:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+Constraints (do not break these)
+
+Do NOT use cookies
+
+Do NOT require login
+
+Do NOT animate heavily
+
+Do NOT block page load
+
+Do NOT affect Hyvor
