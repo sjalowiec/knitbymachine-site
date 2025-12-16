@@ -1,0 +1,101 @@
+Update src/pages/guided-workshops/[workshopSlug]/hub.astro (this affects scarf-for-betty and future workshops) to change the Welcome section to a side-by-side photo + message layout, while keeping the existing dismiss logic and localStorage key untouched.
+
+1) Backup
+
+Create hub.astro.bak before editing. If it already exists, create hub.astro.bak2.
+
+2) Replace ONLY the Welcome section markup
+
+Find this current block:
+
+<!-- Dismissible Welcome section -->
+<section class="gw-welcome" id="gw-welcome">
+  <div class="gw-welcome-message">
+    <h1 class="gw-welcome-title">Welcome, Betty</h1>
+    <p class="gw-welcome-body">This guided workshop takes you through the complete process...</p>
+    <button class="gw-welcome-dismiss" type="button">Hide this message</button>
+  </div>
+</section>
+
+
+Replace it with this (keep the same gw-welcome id and the same dismiss button class):
+
+<!-- Dismissible Welcome section -->
+<section class="gw-welcome" id="gw-welcome">
+  <div class="gw-welcome-inner">
+    <div class="gw-welcome-photo">
+      <img
+        src="/images/knit-by-machine-sue.png"
+        alt="Sue from Knit by Machine"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="gw-welcome-message">
+      <h1 class="gw-welcome-title">Welcome, Betty</h1>
+
+      <p class="gw-welcome-body">
+        This guided workshop takes you through the complete process of knitting a beautiful scarf, from choosing yarn to blocking the finished piece.
+      </p>
+
+      <button class="gw-welcome-dismiss" type="button">Hide this message</button>
+    </div>
+  </div>
+</section>
+
+
+Notes:
+
+Do not change the script that dismisses the welcome section.
+
+Do not change the localStorage key (kbm_gw_welcome_dismissed).
+
+3) Update CSS (in the same file’s <style> block)
+
+You currently have these welcome styles:
+
+.gw-welcome { ... }
+
+.gw-welcome-message { ... }
+
+.gw-welcome-title { ... }
+
+.gw-welcome-body { ... }
+
+.gw-welcome-dismiss { ... }
+
+Keep those, but ADD these new styles (and do not remove existing ones):
+
+.gw-welcome-inner {
+  display: grid;
+  grid-template-columns: 140px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.gw-welcome-photo img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .gw-welcome-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .gw-welcome-photo {
+    max-width: 160px;
+  }
+}
+
+4) Acceptance checks
+
+Desktop: photo left, welcome message right.
+
+Mobile: stacks, photo above.
+
+“Hide this message” still hides it immediately and stays hidden on refresh.
+
+Proceed.

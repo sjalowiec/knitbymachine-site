@@ -43,20 +43,10 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
 
     <!-- Dismissible Welcome section -->
     <section class="gw-welcome" id="gw-welcome">
-      <div class="gw-welcome-inner">
-        <div class="gw-welcome-photo">
-          <img
-            src="/images/knit-by-machine-sue.png"
-            alt="Sue from Knit by Machine"
-            loading="lazy"
-          />
-        </div>
-
-        <div class="gw-welcome-message">
-          <h1 class="gw-welcome-title">{hub.welcomeTitle || `Welcome to ${workshopInfo.title}`}</h1>
-          <p class="gw-welcome-body">{hub.welcomeBody}</p>
-          <button class="gw-welcome-dismiss" type="button">Hide this message</button>
-        </div>
+      <div class="gw-welcome-message">
+        <h1 class="gw-welcome-title">{hub.welcomeTitle || `Welcome to ${workshopInfo.title}`}</h1>
+        <p class="gw-welcome-body">{hub.welcomeBody}</p>
+        <button class="gw-welcome-dismiss" type="button">Hide this message</button>
       </div>
     </section>
 
@@ -320,36 +310,11 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
       margin-bottom: 1.5rem;
     }
 
-    .gw-welcome-inner {
-      display: grid;
-      grid-template-columns: 140px 1fr;
-      gap: 1rem;
-      align-items: center;
+    .gw-welcome-message {
       padding: 1.25rem 1.5rem;
       border: 1px solid rgba(82, 104, 45, 0.15);
       border-radius: 12px;
       background: rgba(199, 216, 164, 0.12);
-    }
-
-    .gw-welcome-photo img {
-      width: 100%;
-      height: auto;
-      display: block;
-      border-radius: 12px;
-    }
-
-    .gw-welcome-message {
-      /* No extra padding/border - handled by .gw-welcome-inner */
-    }
-
-    @media (max-width: 900px) {
-      .gw-welcome-inner {
-        grid-template-columns: 1fr;
-      }
-
-      .gw-welcome-photo {
-        max-width: 160px;
-      }
     }
 
     .gw-welcome-title {
