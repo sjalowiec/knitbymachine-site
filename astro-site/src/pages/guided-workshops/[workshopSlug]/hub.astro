@@ -78,7 +78,16 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
       <section class="gw-action">
         <h2 class="gw-action-title">Workshop Conversation</h2>
 
-        <div id="hyvor-talk-view" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId}></div>
+        <!-- Locked state: shown by default when not logged in -->
+        <div id="gw-locked" class="gw-locked-card">
+          <div class="gw-locked-icon" aria-hidden="true">🔒</div>
+          <h3 class="gw-locked-title">Log in to access your workshop hub</h3>
+          <p class="gw-locked-body">This page is private for workshop members.</p>
+          <a href="/login" class="gw-locked-btn">Log in</a>
+        </div>
+
+        <!-- Unlocked state: hidden by default, shown after auth confirmed -->
+        <div id="hyvor-talk-view" class="gw-hyvor-container" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId} hidden></div>
       </section>
     </div>
   </div>
@@ -99,23 +108,20 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
   <script type="module">
     import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/scripts/hyvorLoader.js';
 
+    const lockedCard = document.getElementById('gw-locked');
     const mount = document.getElementById('hyvor-talk-view');
+
     if (mount) {
       const websiteId = mount.dataset.websiteId || '14706';
       const pageId = mount.dataset.pageId || 'workshop-hub';
 
-      // Show loading state
-      mount.insertAdjacentHTML('beforebegin', `
-        <div class="kbm-hyvor-wait" id="kbm-hyvor-wait">
-          Loading your workshop conversation…
-        </div>
-      `);
-
-      const result = await waitForAuth({ timeoutMs: 8000 });
+      // Quick auth check (2 seconds max, no spinner)
+      const result = await waitForAuth({ timeoutMs: 2000, intervalMs: 100 });
 
       if (result.ok && result.user) {
-        const waitEl = document.getElementById('kbm-hyvor-wait');
-        if (waitEl) waitEl.remove();
+        // Authenticated: hide locked card, show Hyvor
+        if (lockedCard) lockedCard.hidden = true;
+        mount.hidden = false;
 
         setHyvorIdentity({ websiteId, user: result.user });
         
@@ -126,13 +132,8 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
         mount.appendChild(hyvorEl);
         
         loadHyvorScript();
-      } else {
-        // No auth - show timeout message
-        const waitEl = document.getElementById('kbm-hyvor-wait');
-        if (waitEl) {
-          waitEl.innerHTML = 'Loading is taking longer than expected. Refresh this page if needed.';
-        }
       }
+      // If no auth, do nothing - stay locked (card remains visible)
     }
   </script>
 
@@ -213,15 +214,58 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
       pointer-events: none;
     }
 
-    /* Hyvor loading state */
-    .kbm-hyvor-wait {
-      margin: 0.75rem 0;
-      padding: 0.75rem 1rem;
-      border: 1px solid rgba(82, 104, 45, 0.22);
-      border-radius: 10px;
-      background: rgba(199, 216, 164, 0.18);
+    /* Locked card UI */
+    .gw-locked-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(44, 58, 87, 0.12);
+      border-radius: 14px;
+      background: rgba(44, 58, 87, 0.02);
+    }
+
+    .gw-locked-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .gw-locked-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
       color: #2b2b2b;
+    }
+
+    .gw-locked-body {
+      margin: 0 0 1.25rem;
       font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .gw-locked-btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .gw-locked-btn:hover {
+      background: #3d4f22;
+    }
+
+    .gw-locked-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Hyvor container */
+    .gw-hyvor-container {
+      min-height: 200px;
     }
   </style>
 </BaseLayout>
