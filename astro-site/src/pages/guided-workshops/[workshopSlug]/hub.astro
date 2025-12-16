@@ -97,7 +97,7 @@ const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
 
   <!-- Hyvor Talk Auth-Aware Loader -->
   <script type="module">
-    import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/src/lib/hyvorLoader.js';
+    import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/scripts/hyvorLoader.js';
 
     const mount = document.getElementById('hyvor-talk-view');
     if (mount) {
