@@ -1,4 +1,7 @@
 ---
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
 const SITE_URL = "https://knitbymachine.com";
 const PAGE_PATH = "/reference/designaknit-upgrades";
 const CANONICAL_URL = `${SITE_URL}${PAGE_PATH}`;
@@ -85,17 +88,15 @@ const jsonLd = {
     }
   ]
 };
----
 
-<head>
-  <title>DesignaKnit 9 Upgrade Pricing | Knit by Machine</title>
-  <meta
-    name="description"
-    content="DesignaKnit 9 upgrade pricing based on the version you already own. Reference page with email purchase option."
-  />
-  <link rel="canonical" href={CANONICAL_URL} />
-  <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-</head>
+const title = "DesignaKnit 9 Upgrade Pricing | Knit by Machine";
+const description = "DesignaKnit 9 upgrade pricing based on the version you already own. Reference page with email purchase option.";
+---
+<BaseLayout {title} {description}>
+  <Fragment slot="head">
+    <link rel="canonical" href={CANONICAL_URL} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </Fragment>
 
 <style>
   :root{
@@ -215,3 +216,4 @@ const jsonLd = {
     </section>
   </section>
 </main>
+</BaseLayout>
