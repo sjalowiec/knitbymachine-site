@@ -1,0 +1,192 @@
+You are working in my existing admin app. Before changing anything, create backups of every file you touch by writing a .bak copy in the same folder (example: EditWorkshop.tsx.bak). Do not skip backups.
+
+If a .bak already exists, create a timestamped backup like .bak.20251217-1310.
+
+Goal
+
+On the workshop edit page (currently has tabs like Workshop Setup and Curriculum), add a third tab labeled To-Do. The To-Do tab should show a compact DO / DONE checklist plus an Internal Notes textarea. Changes on this tab should have a minimal autosave draft to localStorage (not the backend), and the workshop should still persist only when the user clicks Save Changes (existing behavior).
+
+Requirements
+1) Backups first (mandatory)
+
+For every file you modify, create a .bak copy of the original file before editing it.
+
+If .bak exists, create timestamped backup.
+
+2) Add a new tab
+
+Add a tab labeled: To-Do
+
+Place it alongside the existing tabs.
+
+Do not change existing tab behavior.
+
+3) Extend the workshop record model
+
+Add these fields to the workshop record shape (wherever the workshop type/schema/defaults live):
+
+Checklist booleans (default false)
+checklist: {
+  approved: boolean;
+  invoiceSent: boolean;
+  paid: boolean;
+  hubCreated: boolean;
+  day1Written: boolean;
+  outlineDrafted: boolean;
+  linksAdded: boolean;
+  conversationEnabled: boolean;
+  youreInSent: boolean;
+  markedActive: boolean;
+}
+
+Notes (default empty string)
+notes: string
+
+
+Implementation details:
+
+If your persistence is JSON: update the schema + default initializer so missing fields are added safely.
+
+If you have API/routes: ensure these fields are loaded/saved with the workshop record.
+
+Do not rename existing fields; only extend.
+
+4) UI in the To-Do tab
+
+Create a new component for the tab, e.g. WorkshopTodoTab.tsx, and render it inside the new tab.
+
+Layout
+
+Single-screen card layout, consistent with admin styling.
+
+Top row buttons:
+
+Mark all done → sets all checklist values to true
+
+Reset → sets all checklist values to false
+
+Two columns
+
+Left column: DO (unchecked items)
+
+Right column: DONE (checked items)
+
+Each checklist item is a checkbox row with these labels (exact text):
+
+Approved
+
+Invoice sent
+
+Paid
+
+Hub created
+
+Day 1 written
+
+Outline drafted
+
+Links added
+
+Conversation enabled
+
+“You’re in” sent
+
+Marked active
+
+Notes area (below checklist)
+
+Add a section:
+
+Header: Internal notes
+
+Small helper text (optional): Internal only. Not visible to the customer.
+
+A <textarea> bound to workshop.notes
+
+5) Autosave draft (localStorage) for To-Do tab only
+
+Implement a minimal “draft autosave” that protects checklist + notes from refresh/navigation, WITHOUT writing to backend automatically.
+
+What to autosave
+
+checklist
+
+notes
+
+updatedAt timestamp
+
+Where to store
+
+Use a stable key based on workshop id or slug:
+
+Prefer id if available, otherwise slug:
+
+kbm:workshopDraft:${workshop.id || workshop.slug}
+
+When to save
+
+Any time checklist or notes changes in the To-Do tab.
+
+Use debounce 800ms to avoid spamming localStorage.
+
+Restore behavior
+
+On To-Do tab mount:
+
+Check for an existing draft in localStorage.
+
+If draft exists and differs from the currently loaded values, show a small inline banner at the top of the To-Do tab:
+
+Banner text:
+
+Unsaved draft found.
+
+Banner actions:
+
+Restore → replaces current To-Do state (checklist + notes) with draft values
+
+Dismiss → deletes the draft from localStorage
+
+Clear on successful Save Changes
+
+When the user clicks the existing Save Changes button and the save succeeds:
+
+Remove the localStorage draft for this workshop key.
+
+Implementation notes:
+
+You may need to pass a callback from the parent “save success” handler into WorkshopTodoTab, OR the parent can clear the draft after save since it knows the workshop id/slug.
+
+Keep this minimal; no new global state management.
+
+6) Non-breaking / minimal change rule
+
+Do not modify or refactor unrelated admin screens.
+
+Do not change how Save Changes works.
+
+The To-Do tab should piggyback on existing workshop edit state and save pipeline.
+
+Suggested implementation steps
+
+Locate workshop edit page component with tabs. Back it up.
+
+Add a new To-Do tab entry and render WorkshopTodoTab.
+
+Update workshop type/schema/default workshop initializer to include:
+
+checklist defaults
+
+notes: ''
+
+Implement WorkshopTodoTab:
+
+DO/DONE split rendering based on booleans
+
+Notes textarea bound to workshop state
+
+Debounced localStorage draft save
+
+Restore/Dismiss banner
+
+Clear draft on successful save (hook into existing save success flow).
