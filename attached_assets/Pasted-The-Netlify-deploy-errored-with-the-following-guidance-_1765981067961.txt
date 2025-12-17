@@ -1,0 +1,61 @@
+The Netlify deploy errored, with the following guidance provided:
+
+Diagnosis  
+- [Line 32](#L32) shows the build failing during `npm install`.  
+- [Lines 33-54](#L33-L54) detail an `ERESOLVE` peer-dependency conflict: the project pins `@neondatabase/serverless@^0.9.0`, but `drizzle-orm@0.36.4` requires `@neondatabase/serverless@>=0.10.0`.
+
+Solution  
+Update the project to use a compatible `@neondatabase/serverless` version.  
+1. Verify that `@neondatabase/serverless` is listed in your `package.json`.  
+2. Bump it to a version that satisfies Drizzle’s requirement (e.g. `^1.0.2`) and reinstall dependencies:
+
+```bash
+npm install @neondatabase/serverless@^1.0.2
+npm install
+```
+
+This will update your lockfile so Netlify can resolve dependencies successfully.
+
+The relevant error logs are:
+
+Line 22: Now using node v20.19.6 (npm v10.8.2)
+Line 23: Enabling Node.js Corepack
+Line 24: Started restoring cached build plugins
+Line 25: Finished restoring cached build plugins
+Line 26: Started restoring cached corepack dependencies
+Line 27: Finished restoring cached corepack dependencies
+Line 28: No npm workspaces detected
+Line 29: Started restoring cached node modules
+Line 30: Finished restoring cached node modules
+Line 31: Installing npm packages using npm version 10.8.2
+Line 32: Failed during stage 'Install dependencies': dependency_installation script returned non-zero exit code: 1
+Line 33: npm error code ERESOLVE
+Line 34: npm error ERESOLVE could not resolve
+Line 35: npm error
+Line 36: npm error While resolving: drizzle-orm@0.36.4
+Line 37: npm error Found: @neondatabase/serverless@0.9.5
+Line 38: npm error node_modules/@neondatabase/serverless
+Line 39: npm error   @neondatabase/serverless@"^0.9.0" from the root project
+Line 40: npm error
+Line 41: npm error Could not resolve dependency:
+Line 42: npm error peerOptional @neondatabase/serverless@">=0.10.0" from drizzle-orm@0.36.4
+Line 43: npm error node_modules/drizzle-orm
+Line 44: npm error   drizzle-orm@"^0.36.0" from the root project
+Line 45: npm error
+Line 46: npm error Conflicting peer dependency: @neondatabase/serverless@1.0.2
+Line 47: npm error node_modules/@neondatabase/serverless
+Line 48: npm error   peerOptional @neondatabase/serverless@">=0.10.0" from drizzle-orm@0.36.4
+Line 49: npm error   node_modules/drizzle-orm
+Line 50: npm error     drizzle-orm@"^0.36.0" from the root project
+Line 51: npm error
+Line 52: npm error Fix the upstream dependency conflict, or retry
+Line 53: npm error this command with --force or --legacy-peer-deps
+Line 54: npm error to accept an incorrect (and potentially broken) dependency resolution.
+Line 55: npm error
+Line 56: npm error
+Line 57: npm error For a full report see:
+Line 58: npm error /opt/buildhome/.npm/_logs/2025-12-17T14_12_42_594Z-eresolve-report.txt
+Line 59: npm error A complete log of this run can be found in: /opt/buildhome/.npm/_logs/2025-12-17T14_12_42_594Z-debug-0.log
+Line 60: Error during npm install
+Line 61: Failing build: Failed to install dependencies
+Line 62: Finished processing build request in 19.354s
