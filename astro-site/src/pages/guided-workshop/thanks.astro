@@ -4,8 +4,6 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 const title = "Application received | Guided Workshop | Knit by Machine";
 const description =
   "Your Guided Workshop application has been received. Here's what happens next.";
-
-const workshopId = Astro.url.searchParams.get('id');
 ---
 
 <BaseLayout {title} {description}>
@@ -21,13 +19,6 @@ const workshopId = Astro.url.searchParams.get('id');
         />
 
         <h1 data-testid="text-page-title">Your application has been received</h1>
-
-        {workshopId && (
-          <div class="reference-box" data-testid="container-reference">
-            <p class="reference-label">Your reference number</p>
-            <p class="reference-id" data-testid="text-workshop-id">{workshopId}</p>
-          </div>
-        )}
 
         <p data-testid="text-intro">
           Thanks for applying for a Guided Workshop.
@@ -92,31 +83,6 @@ const workshopId = Astro.url.searchParams.get('id');
     color: var(--kbm-green);
     margin: 0 0 1.25rem;
     line-height: 1.2;
-  }
-
-  .reference-box {
-    background: #f5f7f2;
-    border: 1px solid #e5e8e0;
-    border-radius: 8px;
-    padding: 1rem 1.5rem;
-    margin: 0 auto 1.5rem;
-    max-width: 280px;
-  }
-
-  .reference-label {
-    font-size: 0.85rem;
-    color: #6b7a5a;
-    margin: 0 0 0.25rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-  }
-
-  .reference-id {
-    font-size: 1.25rem;
-    font-weight: 600;
-    font-family: monospace;
-    color: var(--kbm-green);
-    margin: 0;
   }
 
   p {

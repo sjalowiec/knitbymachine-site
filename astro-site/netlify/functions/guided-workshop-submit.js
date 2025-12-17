@@ -214,12 +214,8 @@ export const handler = async (event) => {
     console.log('ActiveCampaign not configured, skipping CRM integration');
   }
 
-  const redirectUrl = workshopId 
-    ? `/guided-workshop/thanks?id=${workshopId}`
-    : '/guided-workshop/thanks';
-
   return {
     statusCode: 302,
-    headers: { Location: redirectUrl }
+    headers: { Location: '/guided-workshop/thanks' }
   };
 };

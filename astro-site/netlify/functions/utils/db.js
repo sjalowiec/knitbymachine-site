@@ -32,6 +32,7 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
       const result = await sql`
         INSERT INTO guided_workshops (
           workshop_id,
+          slug,
           status,
           applicant_name,
           applicant_email,
@@ -41,6 +42,7 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
           created_at,
           updated_at
         ) VALUES (
+          ${workshopId},
           ${workshopId},
           'pending',
           ${applicantName},
