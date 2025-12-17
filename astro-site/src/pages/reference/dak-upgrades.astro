@@ -153,6 +153,30 @@ const description = "DesignaKnit 9 upgrade pricing based on the version you alre
   .item small{display:block;color:var(--muted);margin-top:2px}
   .price{font-weight:900;white-space:nowrap}
   @media (max-width:900px){.card{grid-column:span 12}h1{font-size:28px}}
+
+  /* Modal styles */
+  .kbm-modal{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;opacity:0;visibility:hidden;transition:opacity .2s,visibility .2s}
+  .kbm-modal[aria-hidden="false"]{opacity:1;visibility:visible}
+  .kbm-modal__overlay{position:absolute;inset:0;background:rgba(15,23,42,.5);backdrop-filter:blur(2px)}
+  .kbm-modal__panel{position:relative;background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);max-width:900px;width:calc(100% - 32px);max-height:calc(100vh - 64px);display:flex;flex-direction:column;overflow:hidden}
+  .kbm-modal__header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:20px 24px;border-bottom:1px solid var(--border)}
+  .kbm-modal__title{margin:0;font-size:20px;font-weight:700;color:var(--ink)}
+  .kbm-modal__subtitle{margin:4px 0 0;font-size:14px;color:var(--muted)}
+  .kbm-modal__close{background:none;border:none;font-size:28px;line-height:1;color:var(--muted);cursor:pointer;padding:0;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:8px;transition:background .15s}
+  .kbm-modal__close:hover{background:var(--soft)}
+  .kbm-modal__body{padding:24px;overflow-y:auto}
+  .kbm-table-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .kbm-compare{width:100%;border-collapse:collapse;font-size:14px}
+  .kbm-compare th,.kbm-compare td{padding:12px 16px;text-align:left;border-bottom:1px solid var(--border)}
+  .kbm-compare th{background:var(--soft);font-weight:700;font-size:13px;white-space:nowrap}
+  .kbm-compare td:first-child{min-width:280px}
+  .kbm-compare td:not(:first-child){text-align:center;white-space:nowrap}
+  .kbm-yes{color:var(--kbm-green);font-weight:700}
+  .kbm-no{color:var(--muted)}
+  .kbm-note{font-size:12px;color:var(--muted);margin-top:4px;font-style:italic}
+  .kbm-modal__fineprint{margin:16px 0 0;font-size:13px;color:var(--muted);text-align:center}
+  .btn-secondary{padding:8px 14px;border-radius:999px;font-weight:700;font-size:14px;background:var(--soft);color:var(--ink);border:1px solid var(--border);cursor:pointer;margin-top:10px}
+  .btn-secondary:hover{background:var(--border)}
 </style>
 
 <main class="wrap">
@@ -160,8 +184,7 @@ const description = "DesignaKnit 9 upgrade pricing based on the version you alre
     <span class="ref-kicker">Reference</span>
     <h1>DesignaKnit 9 upgrade pricing</h1>
     <p class="ref-subhead">
-      This page exists so you have one easy link to share when someone asks about DesignaKnit upgrades.
-      To purchase an upgrade, email me and I’ll confirm the right option and pricing before anything is processed.
+            To purchase an upgrade, email me and I’ll confirm the right option and pricing before anything is processed.
     </p>
 
     <div class="ref-actions">
@@ -171,6 +194,9 @@ const description = "DesignaKnit 9 upgrade pricing based on the version you alre
     <p class="ref-footnote">
       Upgrades require version verification. Prices are shown for reference and may change.
     </p>
+    <button class="btn-secondary" type="button" data-open-modal="dakCompare">
+      Compare DAK versions
+    </button>
   </header>
 
   <section class="grid" aria-label="DesignaKnit 9 upgrade prices">
@@ -216,4 +242,145 @@ const description = "DesignaKnit 9 upgrade pricing based on the version you alre
     </section>
   </section>
 </main>
+
+<!-- Compare DAK versions modal -->
+<div class="kbm-modal" id="dakCompare" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Compare DesignaKnit versions">
+  <div class="kbm-modal__overlay" data-close-modal="dakCompare"></div>
+
+  <div class="kbm-modal__panel" role="document">
+    <div class="kbm-modal__header">
+      <div>
+        <h2 class="kbm-modal__title">Compare DesignaKnit versions</h2>
+        <p class="kbm-modal__subtitle">Quick scan of what's included in each level.</p>
+      </div>
+      <button class="kbm-modal__close" type="button" aria-label="Close" data-close-modal="dakCompare">×</button>
+    </div>
+
+    <div class="kbm-modal__body">
+      <div class="kbm-table-wrap" tabindex="0">
+        <table class="kbm-compare" aria-label="DesignaKnit edition comparison table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Hand Knit</th>
+              <th>Machine Standard</th>
+              <th>Machine Pro</th>
+              <th>Complete</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Includes: Standard Garment Styling, Stitch Designer, Interactive Knitting, Graphics Studio</td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                Includes Original Pattern Drafting
+                <div class="kbm-note">Garments designed in a higher level may be knitted (but not modified) using Machine Standard.</div>
+              </td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>Can use optional cable links to knitting machines</td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                Can design and print hand knitting patterns
+                <div class="kbm-note">Hand knit stitch patterns can be opened in Machine Standard/Pro, but are treated as machine knit patterns.</div>
+              </td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                Can open hand knitting patterns as machine knitting patterns
+                <div class="kbm-note">Machine knit stitch patterns can be opened in Hand Knit, but are treated as hand knit patterns.</div>
+              </td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>Can design machine knitting patterns and print KnitLeader, KnitRadar, colour changes printouts, and punch card &amp; mylar templates</td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>Can design using stitch cable crossings over 6 stitches wide</td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+            <tr>
+              <td>Can enter knitting instructions for custom stitch cables</td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-no" aria-label="Not included">—</span></td>
+              <td><span class="kbm-yes" aria-label="Included">✓</span></td>
+            </tr>
+
+          </tbody>
+        </table>
+      </div>
+
+      <p class="kbm-modal__fineprint">
+        This comparison is here as a quick reference. If you're unsure which level you need, email me and I'll help you choose.
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const openBtns = document.querySelectorAll('[data-open-modal]');
+    const closeBtns = document.querySelectorAll('[data-close-modal]');
+
+    openBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modalId = btn.getAttribute('data-open-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) modal.setAttribute('aria-hidden', 'false');
+      });
+    });
+
+    closeBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const modalId = btn.getAttribute('data-close-modal');
+        const modal = document.getElementById(modalId);
+        if (modal) modal.setAttribute('aria-hidden', 'true');
+      });
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.kbm-modal[aria-hidden="false"]').forEach(modal => {
+          modal.setAttribute('aria-hidden', 'true');
+        });
+      }
+    });
+  });
+</script>
 </BaseLayout>
