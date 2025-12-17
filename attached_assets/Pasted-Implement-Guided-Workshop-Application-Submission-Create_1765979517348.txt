@@ -1,0 +1,100 @@
+Implement “Guided Workshop Application Submission → Create Pending Workshop Record + Notifications”.
+
+Context:
+
+We already have generateGuidedWorkshopId() in shared/schema.ts that returns IDs like gw-x7k2p9.
+
+The guided workshops table/schema already includes workshopId (unique).
+
+The admin UI already shows workshopId read-only for guided workshop records.
+
+Public pages already exist:
+
+/guided-workshops
+
+/guided-workshops/apply
+
+/guided-workshop/thanks
+
+Goal:
+When a user submits the Guided Workshop application form, do ALL of the following:
+
+Create a new guided workshop record in the database with:
+
+workshopId: generated via generateGuidedWorkshopId()
+
+status: "pending"
+
+applicantName, applicantEmail (from the submission)
+
+applicationData: store the full raw submission payload as JSON (do not map every field yet)
+
+price: null
+
+slug: null (or empty) — do NOT create a public slug/hub yet
+
+title: null/empty is OK at this stage (optional: “Pending – {applicantName}” but do NOT use this for slugs/URLs)
+
+Ensure uniqueness:
+
+If there is a collision on workshopId (extremely rare), regenerate and retry up to 5 times, then fail with a clear error.
+
+Do not overwrite any existing record.
+
+Multiple submissions from the same email should create multiple pending records.
+
+Internal notification email to Sue:
+
+Send an email to a configured admin address (use an env var, e.g. ADMIN_NOTIFICATIONS_EMAIL).
+
+Subject MUST include the workshopId, e.g. New Guided Workshop Application – gw-x7k2p9
+
+Body should include: workshopId, name, email, and a pretty-printed summary of the applicationData JSON.
+
+If email is not configured yet, implement it using Nodemailer with SMTP env vars:
+
+SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS, SMTP_FROM
+
+If these env vars are missing, log a warning and still return success for the submission (do not break the user flow).
+
+User confirmation email:
+
+Send a confirmation email to the applicant (same email system as above).
+
+Subject SHOULD include the workshopId, e.g. We received your Guided Workshop application (gw-x7k2p9)
+
+Email content should NOT promise acceptance or a specific price; it should say I’ll review and follow up personally.
+
+Include the workshopId in the body as their reference number.
+
+Thank you page:
+
+After successful submission, the user should be redirected to /guided-workshop/thanks.
+
+Optionally pass the workshopId in the redirect query string as ?id=gw-x7k2p9 so the thanks page can display “Your reference: gw-x7k2p9”.
+
+If you implement the query string display, keep it subtle and optional; do not expose personal info.
+
+Admin UI:
+
+Update the guided workshops list to support filtering by status and show pending items clearly (e.g. a “Pending” badge).
+
+Implementation notes / constraints:
+
+Identify the actual server endpoint that receives the application form submission (Netlify function or Express route). Implement the logic there.
+
+Do not refactor unrelated code.
+
+Do not create hub pages or curriculum on pending.
+
+Keep routing changes minimal.
+
+Deliverables:
+
+Show the exact file(s) and route(s) updated for the application submit handler.
+
+Show any schema changes needed (add status, applicantName, applicantEmail, applicationData, price, slug fields if missing).
+
+Show the email sending implementation and the required environment variables.
+
+Confirm the redirect to /guided-workshop/thanks works end-to-end.
