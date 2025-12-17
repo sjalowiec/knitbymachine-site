@@ -1,0 +1,118 @@
+Add “start from beginning” gate + redirect to ANA Catalog on /guided-workshops/apply
+
+You are working in my Astro site for Knit by Machine.
+
+Page
+
+Route: /guided-workshops/apply
+Live: https://knitbymachine.com/guided-workshops/apply
+
+Goal
+
+On the application form there is a question:
+
+“Are you ready to start this project from the beginning?”
+
+If the user selects:
+
+✅ Yes — I’m starting from the beginning → proceed normally
+
+❌ No — my project is already in progress → STOP them (block submission) and direct them to the ANA Catalog page.
+
+ANA Catalog link:
+https://knitbymachine.com/ana-catalog
+
+Field names (use exactly)
+
+startFromBeginning (required): one of
+
+"yes"
+
+"no_in_progress"
+
+UI behavior (client-side)
+
+Ensure the radio group exists with name="startFromBeginning" and is required.
+
+Add a stop-message container directly beneath the radios:
+
+wrapper id: startGateMessage
+
+hidden by default
+
+When startFromBeginning === "no_in_progress":
+
+show startGateMessage
+
+disable the submit button
+
+Add id="applySubmitBtn" to the submit button if it doesn’t already exist
+
+Set disabled = true
+
+Add aria-disabled="true"
+
+Apply existing disabled styling (or add minimal styling like opacity-50 cursor-not-allowed)
+
+prevent submission (if there’s any custom JS submit handler, ensure it returns early)
+
+When startFromBeginning === "yes":
+
+hide startGateMessage
+
+enable submit button
+
+Add a comment marker in the script:
+// GW_APPLICATION: startFromBeginning gate
+
+Stop message copy (use this exact tone + include link)
+
+Headline: This application is for new projects
+
+Body:
+“Guided Workshops are designed for start-to-finish progress so I can support you step by step. If your project is already underway, this format won’t be a good fit.”
+
+CTA line with link:
+“Your best next step is the Ask ’n Answer Catalog — quick, practical answers you can use right away.”
+Link the words Ask ’n Answer Catalog to:
+https://knitbymachine.com/ana-catalog
+
+Keep this compact and visually consistent with existing form callouts (use existing alert/callout component if present).
+
+Server-side enforcement (required)
+
+Find the form submission handler (Astro action or API route) that processes /guided-workshops/apply.
+
+Add validation rules:
+
+startFromBeginning must be "yes" or "no_in_progress"
+
+If "no_in_progress":
+
+return an inline error for this field
+
+DO NOT:
+
+create/save any application record
+
+send any emails
+
+send anything to ActiveCampaign
+
+Use the error message (short version):
+“Guided Workshops are for new projects (start-to-finish). For in-progress help, please use the Ask ’n Answer Catalog.”
+
+(If your system has a central errors object, attach this under startFromBeginning.)
+
+Implementation hygiene
+
+First locate the exact route/component for this page:
+
+Likely src/pages/guided-workshops/apply.astro or src/pages/guided-workshops/apply/index.astro
+
+Or a component imported by that page.
+
+Do not duplicate the question if it already exists — wire this logic to the existing radios.
+
+Add a comment near the markup:
+<!-- GW_APPLICATION: startFromBeginning gate UI -->

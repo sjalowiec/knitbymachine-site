@@ -122,22 +122,25 @@ const error = Astro.url.searchParams.get('error');
 
           <hr class="kbm-divider" />
 
+          <!-- GW_APPLICATION: startFromBeginning gate UI -->
           <fieldset class="form-field">
             <legend>Are you ready to start this project from the beginning? <span class="required">*</span></legend>
             <p class="helper-text">Guided Workshops are designed for new projects started from the beginning. They’re not a good fit for rescuing or reworking projects already in progress.</p>
             <div class="radio-group">
               <label class="radio-label">
-                <input type="radio" name="startingFresh" value="yes" required data-testid="radio-starting-fresh-yes" />
+                <input type="radio" name="startFromBeginning" value="yes" required data-testid="radio-start-from-beginning-yes" />
                 <span>Yes — I'm starting from the beginning</span>
               </label>
               <label class="radio-label">
-                <input type="radio" name="startingFresh" value="no" data-testid="radio-starting-fresh-no" />
+                <input type="radio" name="startFromBeginning" value="no_in_progress" data-testid="radio-start-from-beginning-no" />
                 <span>No — my project is already in progress</span>
               </label>
             </div>
-            <p id="start-fresh-warning" class="form-warning" hidden aria-live="polite">
-              Guided Workshops are designed for projects started from the beginning. If your project is already in progress, this application can't move forward.
-            </p>
+            <div id="startGateMessage" class="gate-message" hidden aria-live="polite" data-testid="container-gate-message">
+              <p class="gate-headline">This application is for new projects</p>
+              <p class="gate-body">Guided Workshops are designed for start-to-finish progress so I can support you step by step. If your project is already underway, this format won't be a good fit.</p>
+              <p class="gate-cta">Your best next step is the <a href="https://knitbymachine.com/ana-catalog" data-testid="link-ana-catalog">Ask 'n Answer Catalog</a> — quick, practical answers you can use right away.</p>
+            </div>
           </fieldset>
 
           <hr class="kbm-divider" />
@@ -291,7 +294,7 @@ const error = Astro.url.searchParams.get('error');
           </div>
 
           <div class="form-actions">
-              <button type="submit" class="button button--primary button--large" data-testid="button-submit">
+              <button type="submit" id="applySubmitBtn" class="button button--primary button--large" data-testid="button-submit">
                 Submit Application
               </button>
             </div>
@@ -714,6 +717,47 @@ const error = Astro.url.searchParams.get('error');
     border-radius: 6px;
   }
 
+  .gate-message {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    background: #fff8f5;
+    border: 1px solid #e8c8b8;
+    border-left: 4px solid #c2614e;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .gate-headline {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #8b4c3a;
+    margin: 0 0 0.75rem;
+  }
+
+  .gate-body {
+    font-size: 0.95rem;
+    color: #5a3b2e;
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+  }
+
+  .gate-cta {
+    font-size: 0.95rem;
+    color: #5a3b2e;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .gate-cta a {
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .gate-cta a:hover {
+    color: var(--kbm-green-hover, #445626);
+  }
+
   @media (max-width: 768px) {
     .page--apply {
       padding: 1.5rem 1rem 3rem;
@@ -729,3 +773,43 @@ const error = Astro.url.searchParams.get('error');
     }
   }
 </style>
+
+<script>
+  // GW_APPLICATION: startFromBeginning gate
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('workshop-form');
+    const gateMessage = document.getElementById('startGateMessage');
+    const submitBtn = document.getElementById('applySubmitBtn');
+    const radios = document.querySelectorAll('input[name="startFromBeginning"]');
+
+    function updateGateState() {
+      const selected = document.querySelector('input[name="startFromBeginning"]:checked');
+      
+      if (selected && selected.value === 'no_in_progress') {
+        gateMessage.hidden = false;
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-disabled', 'true');
+      } else {
+        gateMessage.hidden = true;
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute('aria-disabled');
+      }
+    }
+
+    radios.forEach(radio => {
+      radio.addEventListener('change', updateGateState);
+    });
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const selected = document.querySelector('input[name="startFromBeginning"]:checked');
+        if (selected && selected.value === 'no_in_progress') {
+          e.preventDefault();
+          return false;
+        }
+      });
+    }
+
+    updateGateState();
+  });
+</script>

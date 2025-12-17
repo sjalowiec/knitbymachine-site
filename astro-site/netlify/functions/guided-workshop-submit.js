@@ -31,7 +31,16 @@ export const handler = async (event) => {
     };
   }
 
-  if (data.startingFresh !== 'yes') {
+  // Server-side validation for startFromBeginning gate
+  const startFromBeginning = data.startFromBeginning;
+  if (startFromBeginning !== 'yes' && startFromBeginning !== 'no_in_progress') {
+    return {
+      statusCode: 302,
+      headers: { Location: '/guided-workshops/apply?error=invalid-start' }
+    };
+  }
+
+  if (startFromBeginning === 'no_in_progress') {
     return {
       statusCode: 302,
       headers: { Location: '/guided-workshops/apply?error=not-fresh' }
@@ -48,7 +57,7 @@ export const handler = async (event) => {
     fullName: data.fullName,
     email: data.email,
     projectDirection: data.projectDirection,
-    startingFresh: data.startingFresh,
+    startFromBeginning: data.startFromBeginning,
     machineModel: data.machineModel,
     machineComfortLevel: data.machineComfortLevel,
     experienceLevel: data.experienceLevel,
@@ -108,7 +117,7 @@ export const handler = async (event) => {
   const AC_API_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
 
   if (AC_API_URL && AC_API_KEY) {
-    const startingFreshMap = { 'yes': 'Yes', 'no': 'No' };
+    const startFromBeginningMap = { 'yes': 'Yes', 'no_in_progress': 'No - In Progress' };
     const comfortMap = { 'new': 'Brand new', 'some': 'Can do basics', 'ok': 'Fairly comfortable', 'confident': 'Confident' };
     const experienceMap = { 'beginner': 'Brand new', 'some': 'Few projects', 'comfortable': 'Comfortable', 'experienced': 'Experienced' };
     const patternMap = { 'haveOne': 'Have one', 'fewOptions': 'Few options', 'needGuidance': 'Need guidance', 'openToKBM': 'Open to KBM' };
@@ -122,7 +131,7 @@ export const handler = async (event) => {
         lastName: lastName,
         fieldValues: [
           { field: '11', value: data.projectDirection || '' },
-          { field: '12', value: startingFreshMap[data.startingFresh] || data.startingFresh || '' },
+          { field: '12', value: startFromBeginningMap[data.startFromBeginning] || data.startFromBeginning || '' },
           { field: '13', value: data.machineModel || '' },
           { field: '14', value: comfortMap[data.machineComfortLevel] || data.machineComfortLevel || '' },
           { field: '15', value: experienceMap[data.experienceLevel] || data.experienceLevel || '' },
