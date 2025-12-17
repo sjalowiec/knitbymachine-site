@@ -20,5 +20,17 @@
       "reference/choosing-knitting-machine"
     ],
     "notes": ""
+  },
+  {
+    "id": "ref_mja7v3v9tkhu",
+    "title": "DesignaKnit Upgrades",
+    "slug": "/reference/dak-upgrades",
+    "topic": "Designaknit",
+    "status": "in-progress",
+    "pushed": "2025-12-17",
+    "linkedFrom": [
+      "reference/DesignaKnit-Upgrades"
+    ],
+    "notes": ""
   }
 ]
