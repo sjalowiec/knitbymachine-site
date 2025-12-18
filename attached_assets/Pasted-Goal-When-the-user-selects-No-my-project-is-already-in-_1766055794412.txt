@@ -1,0 +1,81 @@
+Goal:
+When the user selects “No — my project is already in progress” on the Guided Workshop application form, the Submit button remains disabled and a clear helper message appears directly under the disabled button explaining why submission is blocked, with a link to the Ask ’n Answer Catalog.
+
+Requirements:
+
+Do NOT change existing validation logic
+
+The submit button is already correctly disabled.
+
+Keep that behavior exactly as-is.
+
+Add helper text under the disabled submit button
+
+Text must only appear when:
+
+The field “Are you ready to start this project from the beginning?”
+
+Is answered No / already in progress
+
+Text must hide automatically if the user switches back to “Yes”.
+
+Helper message copy (exact wording):
+
+Submit is disabled because guided workshops are for new projects.
+
+Guided Workshops are designed for start-to-finish progress so I can support you step by step.
+If your project is already underway, this format won't be a good fit.
+
+Your best next step is the Ask ’n Answer Catalog.
+
+
+“Ask ’n Answer Catalog” must link to:
+/ana-catalog
+
+Placement & UX
+
+Insert the helper message immediately below the Submit button
+
+Do not shift the layout significantly
+
+Message should be readable, calm, and clearly associated with the disabled button
+
+Implementation details
+
+Use JavaScript to:
+
+Detect the selected value of the radio group for “ready to start”
+
+Toggle the helper message visibility
+
+The solution must:
+
+Automatically locate the submit button
+
+Not rely on hard-coded element IDs unless they already exist
+
+Code should be resilient to minor form layout changes
+
+Accessibility
+
+Helper text should:
+
+Be announced by screen readers when it appears
+
+Use role="status" or similar where appropriate
+
+Files
+
+Apply this change to the Guided Workshop application page
+
+If the page uses inline JS, add the logic near the bottom of the file
+
+If the page uses a shared JS file, add it there instead (prefer minimal scope)
+
+Deliverables:
+
+Updated code implementing the helper message behavior
+
+No changes to form submission, backend, or validation logic
+
+No visual regressions elsewhere on the page
