@@ -1,0 +1,156 @@
+You are working on the Guided Workshops application flow for Knit by Machine.
+
+Goal
+
+Fix ActiveCampaign onboarding so that when an application is submitted:
+
+The contact is created/updated in ActiveCampaign
+
+The contact is explicitly subscribed to the “Knit by Machine” list as ACTIVE (status = 1)
+
+The tag GW: Applied is added
+
+The AC automation trigger email sends reliably
+
+Right now, contacts show the list but no Active status, and ActiveCampaign treats them as “non-emailable/phone-only,” so automations don’t send emails.
+
+What to do
+1) Find the application submission handler
+
+Search the repo for where ActiveCampaign is called from the Guided Workshops apply submission.
+
+Run a search for any of:
+
+activecampaign
+
+/api/3
+
+contactTags
+
+contactLists
+
+GW
+
+Applied
+
+apply
+
+guided-workshops
+
+Identify the server route/function that processes the application form submission (likely a Netlify function or Astro API route).
+
+2) Add/confirm required env vars
+
+Ensure these env vars are read from Netlify/Replit env:
+
+ACTIVE_CAMPAIGN_API_URL (like https://xxxx.api-us1.com)
+
+ACTIVE_CAMPAIGN_API_KEY
+
+ACTIVE_CAMPAIGN_LIST_ID_KBM (the list ID for “Knit by Machine”)
+
+ACTIVE_CAMPAIGN_TAG_ID_GW_APPLIED (tag ID for “GW: Applied”)
+
+If the code currently uses tag/list names, change it to use IDs.
+
+3) Implement a reliable “upsert + subscribe + tag” sequence
+
+In the apply handler, implement this sequence:
+
+A) Create or update contact
+
+Use AC v3:
+
+POST /api/3/contacts with { contact: { email, firstName, lastName } }
+If it returns “already exists,” then:
+
+Find contact by email: GET /api/3/contacts?email=...
+
+Use that contact ID
+
+B) Subscribe contact to KBM list as ACTIVE (this is the fix)
+
+Call:
+
+POST /api/3/contactLists
+Body:
+
+{
+  "contactList": {
+    "contact": "<CONTACT_ID>",
+    "list": "<LIST_ID>",
+    "status": 1
+  }
+}
+
+
+If a contactList record already exists, update it:
+
+GET /api/3/contactLists?contact=<CONTACT_ID>&list=<LIST_ID>
+If found, use:
+
+PUT /api/3/contactLists/<CONTACT_LIST_ID>
+with { contactList: { status: 1 } }
+
+(Important: status must be 1 = Active.)
+
+C) Add GW tag (by tag ID)
+
+Call:
+
+POST /api/3/contactTags
+Body:
+
+{
+  "contactTag": {
+    "contact": "<CONTACT_ID>",
+    "tag": "<TAG_ID>"
+  }
+}
+
+
+If duplicate, ignore safely.
+
+4) Add logging so we can verify in Netlify logs
+
+Add server logs (console.log) that print:
+
+email submitted
+
+resolved ActiveCampaign contactId
+
+listId used
+
+tagId used
+
+result of contactLists subscribe call (success/failure)
+
+result of contactTags call (success/failure)
+
+If any AC call fails, return an HTTP 500 with a clear message in the response JSON.
+
+5) Do NOT change the automation in ActiveCampaign
+
+We are fixing data entering AC correctly so the existing automation trigger works.
+
+Acceptance Test
+
+After deploy, submit a new application with a brand-new email and confirm:
+
+Contact exists in ActiveCampaign
+
+Contact is on list “Knit by Machine” with Status = Active
+
+Tag GW: Applied is present
+
+Contact enters “GW — Application Received” automation
+
+Confirmation email is sent
+
+Deliverables
+
+Commit the code changes
+
+Tell me exactly which file(s) were changed and where in the apply flow the fix was made
+
+Provide the final env var names required in Netlify
