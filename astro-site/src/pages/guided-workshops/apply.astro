@@ -700,6 +700,28 @@ const error = Astro.url.searchParams.get('error');
     cursor: not-allowed;
   }
 
+  .button--loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
   .honeypot {
     position: absolute;
     left: -9999px;
@@ -884,6 +906,14 @@ const error = Astro.url.searchParams.get('error');
           e.preventDefault();
           return false;
         }
+        
+        // Show loading state on submit button
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <span class="spinner"></span>
+          Submitting...
+        `;
+        submitBtn.classList.add('button--loading');
       });
     }
 

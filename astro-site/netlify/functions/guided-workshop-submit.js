@@ -223,8 +223,9 @@ export const handler = async (event) => {
     console.log('ActiveCampaign not configured, skipping CRM integration');
   }
 
+  const encodedFirstName = encodeURIComponent((firstName || '').trim());
   return {
     statusCode: 302,
-    headers: { Location: '/guided-workshop/thanks' }
+    headers: { Location: `/guided-workshop/thanks${encodedFirstName ? `?name=${encodedFirstName}` : ''}` }
   };
 };

@@ -4,6 +4,8 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 const title = "Application received | Guided Workshop | Knit by Machine";
 const description =
   "Your Guided Workshop application has been received. Here's what happens next.";
+
+const firstName = Astro.url.searchParams.get('name') || '';
 ---
 
 <BaseLayout {title} {description}>
@@ -21,7 +23,7 @@ const description =
         <h1 data-testid="text-page-title">Your application has been received</h1>
 
         <p data-testid="text-intro">
-          Thanks for applying for a Guided Workshop.
+          {firstName ? `${firstName}, thanks` : 'Thanks'} for applying for a Guided Workshop.
         </p>
 
         <p>
