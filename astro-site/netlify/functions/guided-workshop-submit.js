@@ -162,7 +162,7 @@ export const handler = async (event) => {
         const contactId = result.contact?.id;
         console.log('Contact synced:', contactId);
 
-        const TAG_NAME = 'GW – Applied';
+        const TAG_NAME = 'GW: Applied';
         let tagId = null;
 
         const tagSearchResponse = await fetch(
