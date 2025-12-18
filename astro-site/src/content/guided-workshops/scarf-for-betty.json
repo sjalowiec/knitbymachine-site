@@ -1,4 +1,5 @@
 {
+  "workshopId": "gw-k7m3x9",
   "title": "Scarf Workshop for Betty",
   "slug": "scarf-for-betty",
   "shortDescription": "A guided 10-day workshop to knit your first scarf",
@@ -8,24 +9,17 @@
     "scarf",
     "accessories"
   ],
-  "isDraft": false,
-  "publishedDate": "2025-12-15",
   "durationDays": 10,
   "level": "beginner",
   "imageUrl": "",
   "imageAlt": "",
+  "metaTitle": "",
+  "metaDescription": "",
   "curriculum": {
-    "version": 1,
     "days": [
       {
         "day": 1,
         "title": "Define the scarf",
-        "shortDescription": "Choose stitch, width, and finish line.",
-        "estimatedTime": "15 min",
-        "release": {
-          "mode": "relative",
-          "dayOffset": 0
-        },
         "blocks": [
           {
             "type": "richText",
@@ -39,7 +33,6 @@
           },
           {
             "type": "checklist",
-            "title": "Today's tasks",
             "items": [
               {
                 "text": "Choose your stitch pattern",
@@ -53,119 +46,119 @@
                 "text": "Post your decisions in the hub comments",
                 "isOptional": true
               }
-            ]
+            ],
+            "title": "Today's tasks"
           }
-        ]
+        ],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 0
+        },
+        "estimatedTime": "15 min",
+        "shortDescription": "Choose stitch, width, and finish line."
       },
       {
         "day": 2,
         "title": "Swatch + set tension",
-        "shortDescription": "Create a small swatch and confirm your numbers.",
-        "estimatedTime": "30 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 1
         },
-        "blocks": []
+        "estimatedTime": "30 min",
+        "shortDescription": "Create a small swatch and confirm your numbers."
       },
       {
         "day": 3,
         "title": "Cast on + start knitting",
-        "shortDescription": "Get a clean start and knit the first section.",
-        "estimatedTime": "30–45 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 2
         },
-        "blocks": []
+        "estimatedTime": "30–45 min",
+        "shortDescription": "Get a clean start and knit the first section."
       },
       {
         "day": 4,
         "title": "Rhythm check",
-        "shortDescription": "Confirm edges, weight, and consistency.",
-        "estimatedTime": "15–20 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 3
         },
-        "blocks": []
+        "estimatedTime": "15–20 min",
+        "shortDescription": "Confirm edges, weight, and consistency."
       },
       {
         "day": 5,
         "title": "Midpoint reset",
-        "shortDescription": "Measure, adjust, and keep going with confidence.",
-        "estimatedTime": "15–20 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 4
         },
-        "blocks": []
+        "estimatedTime": "15–20 min",
+        "shortDescription": "Measure, adjust, and keep going with confidence."
       },
       {
         "day": 6,
         "title": "Finish planning",
-        "shortDescription": "Choose your ending and finishing method.",
-        "estimatedTime": "20 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 5
         },
-        "blocks": []
+        "estimatedTime": "20 min",
+        "shortDescription": "Choose your ending and finishing method."
       },
       {
         "day": 7,
         "title": "Knit to length",
-        "shortDescription": "Reach your finish line with clean edges.",
-        "estimatedTime": "30–60 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 6
         },
-        "blocks": []
+        "estimatedTime": "30–60 min",
+        "shortDescription": "Reach your finish line with clean edges."
       },
       {
         "day": 8,
         "title": "Bind off",
-        "shortDescription": "Use a bind-off that matches the scarf's stretch and look.",
-        "estimatedTime": "20–30 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 7
         },
-        "blocks": []
+        "estimatedTime": "20–30 min",
+        "shortDescription": "Use a bind-off that matches the scarf's stretch and look."
       },
       {
         "day": 9,
         "title": "Finishing",
-        "shortDescription": "Weave ends, tidy edges, optional fringe.",
-        "estimatedTime": "30–45 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 8
         },
-        "blocks": []
+        "estimatedTime": "30–45 min",
+        "shortDescription": "Weave ends, tidy edges, optional fringe."
       },
       {
         "day": 10,
         "title": "Block + photo",
-        "shortDescription": "Final polish and a simple 'done' share.",
-        "estimatedTime": "30–45 min",
+        "blocks": [],
         "release": {
           "mode": "relative",
           "dayOffset": 9
         },
-        "blocks": []
+        "estimatedTime": "30–45 min",
+        "shortDescription": "Final polish and a simple 'done' share."
       },
       {
         "day": 99,
         "title": "Bonus: Variations + what to knit next",
-        "shortDescription": "Optional ideas to extend this scarf or confidently knit the next one.",
-        "estimatedTime": "10–15 min",
-        "isBonus": true,
-        "release": {
-          "mode": "relative",
-          "dayOffset": 10
-        },
         "blocks": [
           {
             "type": "richText",
@@ -173,7 +166,6 @@
           },
           {
             "type": "checklist",
-            "title": "Optional ideas",
             "items": [
               {
                 "text": "Try the same scarf with a different stitch",
@@ -187,7 +179,8 @@
                 "text": "Make a second scarf using what you learned",
                 "isOptional": true
               }
-            ]
+            ],
+            "title": "Optional ideas"
           },
           {
             "type": "callout",
@@ -195,8 +188,19 @@
             "title": "No pressure",
             "content": "If you're done and happy, that's success. This bonus is here only if you want it."
           }
-        ]
+        ],
+        "isBonus": true,
+        "release": {
+          "mode": "relative",
+          "dayOffset": 10
+        },
+        "estimatedTime": "10–15 min",
+        "shortDescription": "Optional ideas to extend this scarf or confidently knit the next one."
       }
-    ]
-  }
+    ],
+    "version": 1
+  },
+  "isDraft": false,
+  "pendingPublish": false,
+  "publishedDate": "2025-12-15"
 }
