@@ -47,7 +47,7 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Skill Builders";
+const title = "Practice Projects";
 const description = "Interactive step-by-step journeys to master knitting machine techniques. Learn at your own pace with hands-on practice.";
 const bodyClass = "has-catalog-search";
 
@@ -68,10 +68,10 @@ const levels = [
       <!-- Top row: 3 columns - Icon | Text | Search -->
       <div class="hero-top">
         <div class="hero-icon">
-          <img src="/images/practice-icon.svg" alt="Skill Builders" class="header-icon" />
+          <img src="/images/practice-icon.svg" alt="Practice Projects" class="header-icon" />
         </div>
         <div class="hero-content">
-          <h1 class="hero-title">Skill Builders</h1>
+          <h1 class="hero-title">Practice Projects</h1>
           <p class="hero-tagline">Master your machine one skill at a time.</p>
           <p class="hero-subtitle">Step-by-step interactive journeys designed to build your confidence and expertise with hands-on practice.</p>
         </div>
@@ -81,7 +81,7 @@ const levels = [
             class="search-input" 
             id="searchInput" 
             placeholder="Search..."
-            aria-label="Search skill builders"
+            aria-label="Search Practice Projects"
           >
         </div>
       </div>
@@ -114,8 +114,8 @@ const levels = [
     <div id="catalogueContent" class="catalogue-content" data-builders={JSON.stringify(builders)}>
       {errorMessage && (
         <div class="error">
-          <p><strong>Error loading skill builders</strong></p>
-          <p>Unable to fetch skill builders. Please try again later.</p>
+          <p><strong>Error loading Practice Projects</strong></p>
+          <p>Unable to fetch Practice Projects. Please try again later.</p>
           <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
         </div>
       )}
@@ -640,7 +640,7 @@ const levels = [
     if (builders.length === 0) {
       catalogueContent.innerHTML = `
         <div class="empty-state">
-          <h3>No skill builders found</h3>
+          <h3>No Practice Projects found</h3>
           <p>Try adjusting your search or check back later for new content.</p>
         </div>
       `;
