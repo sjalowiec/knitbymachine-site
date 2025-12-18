@@ -230,7 +230,8 @@ const error = Astro.url.searchParams.get('error');
             </div>
           </fieldset>
 
-          <div id="pattern-name-field" class="form-field form-field--supplemental" hidden>
+                    <!-- GW_APPLICATION: patternReference conditional field -->
+          <div id="pattern-name-field" class="form-field form-field--supplemental" hidden aria-hidden="true">
             <label for="patternReference">If you have a pattern, what is it?</label>
             <p class="helper-text">Sharing this is optional — a title or link is enough.</p>
             <input 
@@ -928,6 +929,33 @@ const error = Astro.url.searchParams.get('error');
     if (emailInput && emailFeedback) {
       emailInput.addEventListener('input', validateEmail);
       emailInput.addEventListener('blur', validateEmail);
+    }
+
+    // GW_APPLICATION: patternStatus/patternReference conditional logic
+    const patternRadios = document.querySelectorAll('input[name="patternStatus"]');
+    const patternField = document.getElementById('pattern-name-field');
+    const patternInput = document.getElementById('patternReference');
+
+    function updatePatternFieldVisibility() {
+      const selected = document.querySelector('input[name="patternStatus"]:checked');
+      
+      if (selected && (selected.value === 'haveOne' || selected.value === 'fewOptions')) {
+        patternField.hidden = false;
+        patternField.setAttribute('aria-hidden', 'false');
+      } else {
+        patternField.hidden = true;
+        patternField.setAttribute('aria-hidden', 'true');
+        if (patternInput) {
+          patternInput.value = '';
+        }
+      }
+    }
+
+    if (patternField && patternRadios.length > 0) {
+      patternRadios.forEach(radio => {
+        radio.addEventListener('change', updatePatternFieldVisibility);
+      });
+      updatePatternFieldVisibility();
     }
   });
 </script>
