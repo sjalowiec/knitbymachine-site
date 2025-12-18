@@ -59,13 +59,6 @@ import "../styles/global.css";
           <p>Knit by Machine is a new, modern home for machine knitters. It's built around clear tools, practical guidance, and confidence-building next steps — without the overwhelm.</p>
           <a href="/about" class="kbm-drawer-link" data-testid="link-about-drawer">Visit the About page</a>
         </div>
-        <footer class="kbm-drawer-footer">
-          <button 
-            type="button" 
-            class="kbm-drawer-stay-btn" 
-            data-testid="button-stay-here"
-          >Stay here</button>
-        </footer>
       </div>
     </dialog>
 
@@ -73,7 +66,6 @@ import "../styles/global.css";
       const openBtn = document.getElementById('open-intro-drawer');
       const drawer = document.getElementById('intro-drawer') as HTMLDialogElement;
       const closeBtn = drawer?.querySelector('.kbm-drawer-close');
-      const stayBtn = drawer?.querySelector('.kbm-drawer-stay-btn');
 
       function openDrawer() {
         drawer?.showModal();
@@ -87,7 +79,6 @@ import "../styles/global.css";
 
       openBtn?.addEventListener('click', openDrawer);
       closeBtn?.addEventListener('click', closeDrawer);
-      stayBtn?.addEventListener('click', closeDrawer);
 
       drawer?.addEventListener('click', (e) => {
         if (e.target === drawer) {
@@ -911,30 +902,6 @@ import "../styles/global.css";
 
   .kbm-drawer-link:hover {
     text-decoration-thickness: 2px;
-  }
-
-  .kbm-drawer-footer {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e0e5d8;
-  }
-
-  .kbm-drawer-stay-btn {
-    display: inline-block;
-    padding: 0.65rem 1.4rem;
-    border-radius: 999px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border: 1px solid var(--kbm-green);
-    background: transparent;
-    color: var(--kbm-green);
-    cursor: pointer;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  .kbm-drawer-stay-btn:hover {
-    background-color: var(--kbm-green);
-    color: #fff;
   }
 
   @media (max-width: 480px) {
