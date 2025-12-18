@@ -297,6 +297,11 @@ const error = Astro.url.searchParams.get('error');
               <button type="submit" id="applySubmitBtn" class="button button--primary button--large" data-testid="button-submit">
                 Submit Application
               </button>
+              <div id="submitDisabledHelper" class="submit-disabled-helper" hidden role="status" aria-live="polite" data-testid="text-submit-disabled-helper">
+                <p class="helper-headline">Submit is disabled because guided workshops are for new projects.</p>
+                <p class="helper-body">Guided Workshops are designed for start-to-finish progress so I can support you step by step. If your project is already underway, this format won't be a good fit.</p>
+                <p class="helper-cta">Your best next step is the <a href="/ana-catalog" data-testid="link-submit-helper-ana-catalog">Ask 'n Answer Catalog</a>.</p>
+              </div>
             </div>
 
             <p class="next-steps-note">After you submit, I’ll personally review your application and follow up. You’ll only be asked for payment if you decide to move forward.</p>
@@ -758,6 +763,47 @@ const error = Astro.url.searchParams.get('error');
     color: var(--kbm-green-hover, #445626);
   }
 
+  .submit-disabled-helper {
+    margin-top: 1rem;
+    background: #fff8f5;
+    border: 1px solid #e8c8b8;
+    border-left: 4px solid #c2614e;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    text-align: left;
+  }
+
+  .submit-disabled-helper .helper-headline {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #8b4c3a;
+    margin: 0 0 0.5rem;
+  }
+
+  .submit-disabled-helper .helper-body {
+    font-size: 0.9rem;
+    color: #5a3b2e;
+    line-height: 1.5;
+    margin: 0 0 0.5rem;
+  }
+
+  .submit-disabled-helper .helper-cta {
+    font-size: 0.9rem;
+    color: #5a3b2e;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .submit-disabled-helper .helper-cta a {
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .submit-disabled-helper .helper-cta a:hover {
+    color: var(--kbm-green-hover, #445626);
+  }
+
   @media (max-width: 768px) {
     .page--apply {
       padding: 1.5rem 1rem 3rem;
@@ -780,6 +826,7 @@ const error = Astro.url.searchParams.get('error');
     const form = document.getElementById('workshop-form');
     const gateMessage = document.getElementById('startGateMessage');
     const submitBtn = document.getElementById('applySubmitBtn');
+    const submitDisabledHelper = document.getElementById('submitDisabledHelper');
     const radios = document.querySelectorAll('input[name="startFromBeginning"]');
 
     function updateGateState() {
@@ -789,10 +836,16 @@ const error = Astro.url.searchParams.get('error');
         gateMessage.hidden = false;
         submitBtn.disabled = true;
         submitBtn.setAttribute('aria-disabled', 'true');
+        if (submitDisabledHelper) {
+          submitDisabledHelper.hidden = false;
+        }
       } else {
         gateMessage.hidden = true;
         submitBtn.disabled = false;
         submitBtn.removeAttribute('aria-disabled');
+        if (submitDisabledHelper) {
+          submitDisabledHelper.hidden = true;
+        }
       }
     }
 
