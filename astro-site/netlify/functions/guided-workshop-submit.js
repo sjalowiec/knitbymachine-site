@@ -47,14 +47,23 @@ export const handler = async (event) => {
     };
   }
 
-  const nameParts = (data.fullName || '').trim().split(' ');
-  const firstName = nameParts[0] || '';
-  const lastName = nameParts.slice(1).join(' ') || '';
-  const applicantName = data.fullName?.trim() || '';
+  // Support both new firstName/lastName fields and legacy fullName field
+  let firstName = (data.firstName || '').trim();
+  let lastName = (data.lastName || '').trim();
+  
+  // Fallback: parse fullName if firstName/lastName are empty (legacy form submissions)
+  if (!firstName && !lastName && data.fullName) {
+    const nameParts = data.fullName.trim().split(' ');
+    firstName = nameParts[0] || '';
+    lastName = nameParts.slice(1).join(' ') || '';
+  }
+  
+  const applicantName = [firstName, lastName].filter(Boolean).join(' ');
   const applicantEmail = data.email?.trim() || '';
 
   const applicationData = {
-    fullName: data.fullName,
+    firstName: firstName,
+    lastName: lastName,
     email: data.email,
     projectDirection: data.projectDirection,
     startFromBeginning: data.startFromBeginning,
