@@ -108,6 +108,7 @@ export interface Workshop {
 
 // New guided workshop format (from admin)
 export interface GuidedWorkshopFile {
+  workshopId: string;
   title: string;
   slug: string;
   shortDescription: string;
@@ -156,7 +157,7 @@ function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
   
   return {
     version: 1,
-    slug: gw.slug,
+    slug: gw.workshopId, // Use workshopId for URL routing (privacy)
     client: {
       firstName: clientName
     },
@@ -167,7 +168,7 @@ function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
       status: 'active'
     },
     outline: {
-      id: gw.slug,
+      id: gw.workshopId,
       days: gw.curriculum.days.map(d => ({
         day: d.day,
         title: d.title,
@@ -185,7 +186,7 @@ function adaptGuidedWorkshop(gw: GuidedWorkshopFile): Workshop {
     hyvor: {
       enabled: true,
       websiteId: '14706', // Default Hyvor website ID
-      pageId: `guided-workshop-${gw.slug}-hub`
+      pageId: `guided-workshop-${gw.workshopId}-hub`
     },
     curriculum: {
       version: gw.curriculum.version,
@@ -222,7 +223,7 @@ function getOldWorkshopSlugs(): string[] {
   }
 }
 
-// Get slugs from new guided-workshops directory
+// Get workshopIds from new guided-workshops directory (files named by workshopId, e.g., gw-abc123.json)
 function getGuidedWorkshopSlugs(): string[] {
   try {
     if (!fs.existsSync(GUIDED_WORKSHOPS_DIR)) {
@@ -235,8 +236,8 @@ function getGuidedWorkshopSlugs(): string[] {
         try {
           const filePath = path.join(GUIDED_WORKSHOPS_DIR, file);
           const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
-          // New format has curriculum but no hub/outline/client
-          return content.curriculum && content.slug && !content.hub && !content.isDraft;
+          // New format has curriculum and workshopId, no hub/outline/client
+          return content.curriculum && content.workshopId && !content.hub && !content.isDraft;
         } catch {
           return false;
         }
@@ -277,7 +278,7 @@ export function getWorkshopBySlug(slug: string): Workshop | null {
     // Continue to try guided workshops
   }
   
-  // Then try new guided-workshops directory
+  // Then try new guided-workshops directory (files named by workshopId)
   try {
     const filePath = path.join(GUIDED_WORKSHOPS_DIR, `${slug}.json`);
     if (fs.existsSync(filePath)) {
@@ -285,7 +286,7 @@ export function getWorkshopBySlug(slug: string): Workshop | null {
       const gw = JSON.parse(content) as GuidedWorkshopFile;
       
       // Validate it's the new guided workshop structure and not a draft
-      if (gw.curriculum && gw.slug && !gw.isDraft) {
+      if (gw.curriculum && gw.workshopId && !gw.isDraft) {
         return adaptGuidedWorkshop(gw);
       }
     }
