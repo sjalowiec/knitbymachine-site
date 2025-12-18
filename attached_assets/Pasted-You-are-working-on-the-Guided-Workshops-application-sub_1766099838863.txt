@@ -1,0 +1,135 @@
+You are working on the Guided Workshops application submission flow for Knit by Machine.
+
+Goal
+
+Update the application submit handler so that ActiveCampaign only receives minimal contact data and no longer receives detailed application answers.
+
+ActiveCampaign should be used only for:
+
+Contact identity
+
+List subscription (Active)
+
+Tags to trigger automations
+
+The admin/database is the single source of truth for the full application.
+
+What to change
+1) Locate the ActiveCampaign payload
+
+Find where the application submit handler builds the ActiveCampaign request body.
+
+Search for:
+
+fieldValues
+
+customField
+
+application
+
+answers
+
+project
+
+pattern
+
+machine
+
+any mapping of form fields → AC fields
+
+This is usually in the same function that:
+
+creates/updates the AC contact
+
+applies the GW: Applied tag
+
+subscribes to the list
+
+2) Remove application answer fields from AC
+
+Delete or comment out all logic that sends:
+
+long text answers
+
+URLs
+
+project descriptions
+
+pattern notes
+
+machine setup details
+
+anything beyond name/email
+
+Specifically remove:
+
+fieldValues arrays
+
+customFields objects
+
+any loops that iterate over form answers and push them into AC
+
+Do not remove the contact creation itself.
+
+3) Keep ONLY this data going to ActiveCampaign
+
+The AC payload should include only:
+
+{
+  "contact": {
+    "email": "...",
+    "firstName": "...",
+    "lastName": "..."
+  }
+}
+
+
+Then, separately:
+
+Subscribe the contact to the KBM list with status = Active
+
+Apply the tag GW: Applied
+
+No other fields.
+
+4) (Optional but recommended) Add a single reference field
+
+If the code already sends a workshop/application ID, you may keep one simple field:
+
+gw_application_id (string)
+
+If this exists, keep it.
+If not, do not add new fields.
+
+5) Add a safety comment in code
+
+Add a short comment near the AC logic explaining the intent, for future-you:
+
+// ActiveCampaign receives identity + automation data only.
+// Full application data is stored in the KBM admin/database.
+
+Acceptance checklist
+
+After the change:
+
+Submitting an application:
+
+✅ Creates admin/workshop record with full answers
+
+✅ Creates/updates AC contact (name + email)
+
+✅ Subscribes contact to KBM list as Active
+
+✅ Applies GW: Applied tag
+
+✅ Triggers confirmation automation
+
+No application answers appear in ActiveCampaign contact fields
+
+Deliverables
+
+Update the submit handler to remove AC field mapping
+
+Confirm which file(s) were modified
+
+Confirm AC payload now includes only name + email + list + tag

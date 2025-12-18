@@ -128,34 +128,18 @@ export const handler = async (event) => {
   const AC_TAG_ID = process.env.ACTIVECAMPAIGN_TAG_ID_GW_APPLIED;
 
   if (AC_API_URL && AC_API_KEY) {
+    // ActiveCampaign receives identity + automation data only.
+    // Full application data is stored in the KBM admin/database.
     console.log('[AC] Starting ActiveCampaign sync for:', data.email);
     console.log('[AC] List ID:', AC_LIST_ID || 'NOT SET');
     console.log('[AC] Tag ID:', AC_TAG_ID || 'NOT SET');
-
-    const startFromBeginningMap = { 'yes': 'Yes', 'no_in_progress': 'No - In Progress' };
-    const comfortMap = { 'new': 'Brand new', 'some': 'Can do basics', 'ok': 'Fairly comfortable', 'confident': 'Confident' };
-    const experienceMap = { 'beginner': 'Brand new', 'some': 'Few projects', 'comfortable': 'Comfortable', 'experienced': 'Experienced' };
-    const patternMap = { 'haveOne': 'Have one', 'fewOptions': 'Few options', 'needGuidance': 'Need guidance', 'openToKBM': 'Open to KBM' };
-    const yarnMap = { 'haveYarn': 'Have yarn', 'haveUnsure': 'Have but unsure', 'buyAfterApproval': 'Buy after approval', 'needRecs': 'Need recommendations' };
-    const startWindowMap = { 'within2weeks': 'Within 2 weeks', '2to4weeks': '2-4 weeks', 'notSure': 'Not sure' };
 
     const contactPayload = {
       contact: {
         email: data.email,
         firstName: firstName,
         lastName: lastName,
-        fieldValues: [
-          { field: '11', value: data.projectDirection || '' },
-          { field: '12', value: startFromBeginningMap[data.startFromBeginning] || data.startFromBeginning || '' },
-          { field: '13', value: data.machineModel || '' },
-          { field: '14', value: comfortMap[data.machineComfortLevel] || data.machineComfortLevel || '' },
-          { field: '15', value: experienceMap[data.experienceLevel] || data.experienceLevel || '' },
-          { field: '16', value: patternMap[data.patternStatus] || data.patternStatus || '' },
-          { field: '17', value: data.patternReference || '' },
-          { field: '18', value: yarnMap[data.yarnStatus] || data.yarnStatus || '' },
-          { field: '19', value: startWindowMap[data.startWindow] || data.startWindow || '' },
-          ...(workshopId ? [{ field: '20', value: workshopId }] : [])
-        ]
+        ...(workshopId ? { fieldValues: [{ field: '20', value: workshopId }] } : {})
       }
     };
 
