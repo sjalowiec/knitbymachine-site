@@ -93,7 +93,7 @@ const error = Astro.url.searchParams.get('error');
             />
           </div>
 
-          <div class="form-field">
+          <div class="form-field" id="emailField">
             <label for="email">Email address <span class="required">*</span></label>
             <input 
               type="email" 
@@ -102,6 +102,7 @@ const error = Astro.url.searchParams.get('error');
               required 
               data-testid="input-email"
             />
+            <p id="emailFeedback" class="email-feedback" hidden aria-live="polite" data-testid="text-email-feedback"></p>
           </div>
 
           <hr class="kbm-divider" />
@@ -804,6 +805,28 @@ const error = Astro.url.searchParams.get('error');
     color: var(--kbm-green-hover, #445626);
   }
 
+  .email-feedback {
+    margin: 0.5rem 0 0 1rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .email-feedback.email-feedback--valid {
+    color: #52682d;
+  }
+
+  .email-feedback.email-feedback--invalid {
+    color: #c2614e;
+  }
+
+  .form-field input.input--valid {
+    border-color: #52682d;
+  }
+
+  .form-field input.input--invalid {
+    border-color: #c2614e;
+  }
+
   @media (max-width: 768px) {
     .page--apply {
       padding: 1.5rem 1rem 3rem;
@@ -864,5 +887,47 @@ const error = Astro.url.searchParams.get('error');
     }
 
     updateGateState();
+
+    // Real-time email validation
+    const emailInput = document.getElementById('email');
+    const emailFeedback = document.getElementById('emailFeedback');
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function validateEmail() {
+      const value = emailInput.value.trim();
+      
+      if (value === '') {
+        emailInput.classList.remove('input--valid', 'input--invalid');
+        emailFeedback.hidden = true;
+        emailFeedback.textContent = '';
+        emailFeedback.classList.remove('email-feedback--valid', 'email-feedback--invalid');
+        return;
+      }
+
+      if (isValidEmail(value)) {
+        emailInput.classList.remove('input--invalid');
+        emailInput.classList.add('input--valid');
+        emailFeedback.hidden = false;
+        emailFeedback.textContent = 'Looks good!';
+        emailFeedback.classList.remove('email-feedback--invalid');
+        emailFeedback.classList.add('email-feedback--valid');
+      } else {
+        emailInput.classList.remove('input--valid');
+        emailInput.classList.add('input--invalid');
+        emailFeedback.hidden = false;
+        emailFeedback.textContent = 'Please enter a valid email address';
+        emailFeedback.classList.remove('email-feedback--valid');
+        emailFeedback.classList.add('email-feedback--invalid');
+      }
+    }
+
+    if (emailInput && emailFeedback) {
+      emailInput.addEventListener('input', validateEmail);
+      emailInput.addEventListener('blur', validateEmail);
+    }
   });
 </script>
