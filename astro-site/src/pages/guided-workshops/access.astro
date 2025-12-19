@@ -4,6 +4,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 export const prerender = false;
 
 const returnTo = Astro.url.searchParams.get('returnTo') || '';
+const hasReturnToParam = !!returnTo;
 
 // Outseta login widget URL
 const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=login';
@@ -13,9 +14,19 @@ const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=l
   <div class="access-container">
     <div class="access-card" id="access-card">
       <h1 class="access-title">Workshop Access</h1>
-      <p class="access-message" id="access-message">
-        This workshop is private. Please log in to continue.
-      </p>
+      
+      {hasReturnToParam ? (
+        <!-- User arrived from hub gate - show login UI -->
+        <p class="access-message" id="access-message">
+          This workshop is private. Please log in to continue.
+        </p>
+      ) : (
+        <!-- User arrived after login (no returnTo param) - check auth -->
+        <p class="access-message" id="access-message">
+          If you just logged in, sending you to your workshop...
+        </p>
+      )}
+      
       <a href={loginUrl} class="access-btn" id="login-btn" data-testid="button-login">
         Log in
       </a>
@@ -25,52 +36,85 @@ const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=l
     </div>
   </div>
   
-  <script define:vars={{ returnTo }}>
-    // Step 1: If returnTo is in the URL, store it in localStorage with timestamp
-    if (returnTo) {
+  <script define:vars={{ returnTo, hasReturnToParam }}>
+    // A) If returnTo param exists, store it and wait for user to click login
+    if (hasReturnToParam && returnTo) {
       localStorage.setItem('kbm:returnTo', returnTo);
-      localStorage.setItem('kbm:returnToSetAt', Date.now().toString());
     }
 
-    // Step 2: Check if user is logged in via Outseta (client-side)
-    // This runs after login when Outseta redirects back to /guided-workshops/access
-    function checkAuthAndRedirect() {
-      if (typeof window.Outseta === 'undefined') {
-        // Outseta not loaded yet, retry in 200ms
-        setTimeout(checkAuthAndRedirect, 200);
-        return;
-      }
+    // B) If NO returnTo param, this is likely a post-login redirect from Outseta
+    // Attempt to redirect to stored returnTo after confirming auth
+    if (!hasReturnToParam) {
+      const storedReturnTo = localStorage.getItem('kbm:returnTo');
+      
+      // Safety: only redirect to /guided-workshops/ paths
+      const isValidPath = storedReturnTo && storedReturnTo.startsWith('/guided-workshops/');
+      
+      // Loop guard: don't redirect if we're already in a redirect attempt
+      const isRedirecting = sessionStorage.getItem('kbm:redirecting') === '1';
+      
+      if (isValidPath && !isRedirecting) {
+        // Retry delays: 250ms, 750ms, 1500ms
+        const delays = [250, 750, 1500];
+        let attempt = 0;
 
-      window.Outseta.getUser()
-        .then(function(user) {
-          if (user) {
-            // User is logged in - check for stored returnTo
-            const storedReturnTo = localStorage.getItem('kbm:returnTo');
-            
-            if (storedReturnTo && storedReturnTo.startsWith('/guided-workshops/')) {
-              // Clear localStorage BEFORE redirect to prevent loops
-              localStorage.removeItem('kbm:returnTo');
-              localStorage.removeItem('kbm:returnToSetAt');
-              
-              // Update UI to show redirecting message
-              const msgEl = document.getElementById('access-message');
-              const btnEl = document.getElementById('login-btn');
-              if (msgEl) msgEl.textContent = 'Redirecting you to your workshop...';
-              if (btnEl) btnEl.style.display = 'none';
-              
-              // Redirect to the stored path
-              window.location.assign(storedReturnTo);
+        function attemptRedirect() {
+          if (typeof window.Outseta === 'undefined') {
+            // Outseta not loaded yet, retry
+            if (attempt < delays.length) {
+              setTimeout(attemptRedirect, delays[attempt]);
+              attempt++;
             }
+            return;
           }
-        })
-        .catch(function(err) {
-          // Not logged in or error - do nothing, show login UI
-          console.log('Outseta auth check:', err);
-        });
-    }
 
-    // Start the auth check
-    checkAuthAndRedirect();
+          window.Outseta.getUser()
+            .then(function(user) {
+              if (user) {
+                // User confirmed - set loop guard and redirect
+                sessionStorage.setItem('kbm:redirecting', '1');
+                
+                // Update UI
+                const msgEl = document.getElementById('access-message');
+                const btnEl = document.getElementById('login-btn');
+                if (msgEl) msgEl.textContent = 'Redirecting you to your workshop...';
+                if (btnEl) btnEl.style.display = 'none';
+                
+                // Redirect (don't clear localStorage yet - hub will clear it)
+                window.location.assign(storedReturnTo);
+              } else {
+                // No user - retry if attempts remain
+                if (attempt < delays.length) {
+                  setTimeout(attemptRedirect, delays[attempt]);
+                  attempt++;
+                } else {
+                  // All retries exhausted, show login button
+                  const msgEl = document.getElementById('access-message');
+                  if (msgEl) msgEl.textContent = 'Please log in to access your workshop.';
+                }
+              }
+            })
+            .catch(function(err) {
+              // Error checking auth - retry or show login
+              if (attempt < delays.length) {
+                setTimeout(attemptRedirect, delays[attempt]);
+                attempt++;
+              } else {
+                const msgEl = document.getElementById('access-message');
+                if (msgEl) msgEl.textContent = 'Please log in to access your workshop.';
+              }
+            });
+        }
+
+        // Start first attempt after initial delay
+        setTimeout(attemptRedirect, delays[0]);
+        attempt++;
+      } else if (!isValidPath && !isRedirecting) {
+        // No valid returnTo stored, show login message
+        const msgEl = document.getElementById('access-message');
+        if (msgEl) msgEl.textContent = 'Please log in to access your workshop.';
+      }
+    }
   </script>
   
   <style>

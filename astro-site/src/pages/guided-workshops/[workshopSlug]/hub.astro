@@ -73,6 +73,12 @@ const mockNextStep = {
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
 
+  <!-- Clear redirect flags on successful hub load (prevents redirect loops) -->
+  <script>
+    localStorage.removeItem('kbm:returnTo');
+    sessionStorage.removeItem('kbm:redirecting');
+  </script>
+
   {showV2 ? (
     <!-- ===== HUB V2 PREVIEW ===== -->
     <HubV2

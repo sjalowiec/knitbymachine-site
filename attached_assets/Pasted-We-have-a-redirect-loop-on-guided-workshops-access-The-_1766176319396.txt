@@ -1,0 +1,60 @@
+We have a redirect loop on /guided-workshops/access:
+The “redirecting” message and login message flash repeatedly.
+
+CAUSE
+Access page redirects to the hub too aggressively before the server-side hub auth gate
+recognizes the new session. Hub bounces back to access, causing a loop.
+
+GOAL
+Make /guided-workshops/access stable and loop-proof:
+- Only redirect AFTER Outseta confirms a logged-in user.
+- Redirect only ONCE per page load.
+- Use a short retry/backoff to allow the server-side session to be ready.
+- Do NOT clear returnTo until we confirm the hub page actually loaded.
+
+FILES
+1) astro-site/src/pages/guided-workshops/access.astro
+2) astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro (small addition to clear flags AFTER successful hub load)
+
+ACCESS.PAGE REQUIREMENTS
+A) If query param returnTo exists:
+   - store it in localStorage "kbm:returnTo"
+   - render the login message + button (no auto redirect yet)
+
+B) If no returnTo param:
+   - show a calm message:
+     "If you just logged in, sending you to your workshop…"
+   - run ONE inline script that:
+       1) reads localStorage kbm:returnTo
+       2) uses window.Outseta.getUser() (Promise) to confirm user
+       3) if no user -> do NOTHING (show login button)
+       4) if user exists -> attempt redirect to returnTo with a retry/backoff:
+            - set sessionStorage "kbm:redirecting" = "1" before redirect
+            - redirect only if that flag is not already set
+            - do NOT use setInterval
+            - use setTimeout retries: 250ms, 750ms, 1500ms (max 3 tries)
+         Keep localStorage returnTo for now (don’t clear here)
+
+C) Add “loop guard”:
+   - if sessionStorage kbm:redirecting is set, do not trigger another redirect
+
+HUB.PAGE REQUIREMENTS
+On successful hub render (authenticated allowed), add a tiny inline script near top of the hub body:
+- clear localStorage keys:
+    kbm:returnTo
+- clear sessionStorage key:
+    kbm:redirecting
+
+This ensures once the user reaches the hub, the loop cannot restart.
+
+SAFETY
+Only redirect if returnTo starts with "/guided-workshops/"
+
+VALIDATION
+Fresh incognito:
+1) Visit /guided-workshops/gw-9nincs/hub/ -> access page with returnTo param
+2) Click Log in -> login completes -> Outseta returns to /guided-workshops/access
+3) Access page either:
+   - redirects once to the hub, OR
+   - shows login button if not actually logged in
+4) Once hub loads, loop stops permanently and flags are cleared.
