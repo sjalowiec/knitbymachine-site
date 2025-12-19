@@ -1,0 +1,62 @@
+PIVOT STEP 2: Magic-link access for Guided Workshop hubs (no Outseta login).
+
+GOAL
+Gate workshop hub pages using a per-workshop accessToken stored in DB.
+Hub URL becomes:
+  /guided-workshops/{workshopSlug}/hub/?t=ACCESS_TOKEN
+
+If token missing/invalid, show access page message (no login).
+
+CHANGES
+
+1) DATABASE / MODEL
+- Add a new field to the guided workshops table/model:
+  accessToken TEXT (or VARCHAR) NOT NULL
+- For existing workshops, backfill with a generated token.
+
+Token requirements:
+- 32+ chars, URL-safe (e.g., crypto.randomBytes(24).toString("base64url") or hex)
+- Stored server-side only (in DB)
+- Never changes unless manually reset later
+
+2) RECORD CREATION
+When a workshop record is created (including pending applications),
+auto-generate and save accessToken.
+
+3) HUB ROUTE GATING
+File: astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro
+
+- Read query param t from Astro.url.searchParams
+- Load workshop record by workshopSlug (existing DB util)
+- If workshop not found -> 404 page (existing behavior)
+- If workshop.status === "pending" -> redirect to:
+    /guided-workshops/access?reason=pending
+- If t is missing OR t !== workshop.accessToken -> redirect to:
+    /guided-workshops/access?reason=token&returnTo=<currentPathWithoutToken>
+- Else render hub content normally (HubV2 or existing hub UI)
+
+4) ACCESS PAGE
+Create or update:
+  astro-site/src/pages/guided-workshops/access.astro
+
+- Show message by reason:
+  - token: "This workshop link is private. Please use the access link from your email."
+  - pending: "Your workshop is being prepared. You’ll get your access link when it’s ready."
+- Include one button/link:
+  "Email me the link" -> mailto:sue@knitbymachine.com with subject "Workshop access link"
+- Also include a small input box (optional) where user can paste their access link (full URL) and a button "Go"
+  (this is just a convenience; it can simply window.location = pasted URL)
+
+5) ADMIN UI
+In the admin workshop record view:
+- Display a read-only field: Access Link
+  Format:
+   https://knitbymachine.com/guided-workshops/{workshopSlug}/hub/?t={accessToken}
+- Add a "Copy" button.
+
+STOP after Step 2 is complete and tested.
+
+VALIDATION
+- Visiting hub URL WITHOUT ?t=... redirects to /guided-workshops/access?reason=token
+- Visiting hub URL WITH wrong token redirects to access
+- Visiting hub URL WITH correct token renders hub
