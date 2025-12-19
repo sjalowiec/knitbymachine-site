@@ -5,9 +5,6 @@ export const prerender = false;
 
 const returnTo = Astro.url.searchParams.get('returnTo') || '';
 const hasReturnToParam = !!returnTo;
-
-// Outseta login widget URL
-const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=login';
 ---
 
 <BaseLayout title="Workshop Access" description="Log in to access your guided workshop">
@@ -27,9 +24,9 @@ const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=l
         </p>
       )}
       
-      <a href={loginUrl} class="access-btn" id="login-btn" data-testid="button-login">
+      <button class="access-btn" id="login-btn" data-testid="button-login" data-outseta-auth="login">
         Log in
-      </a>
+      </button>
       <p class="access-help">
         Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
       </p>
