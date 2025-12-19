@@ -3,23 +3,45 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HubV2 from '../../../components/guided-workshops/HubV2.astro';
 import { getWorkshopBySlug } from '../../../lib/workshops';
 
-// SSR mode - page is rendered per-request so we can check auth
+// SSR mode - page is rendered per-request so we can check token
 export const prerender = false;
 
 const { workshopSlug } = Astro.params;
 
-// ===== SERVER-SIDE AUTH CHECK =====
-// Check for Outseta access token cookie (set when tokenStorage: "cookie" is configured)
-// Outseta stores the token in a cookie named "Outseta.accessToken" or similar
-const cookies = Astro.cookies;
-const accessToken = cookies.get('Outseta.accessToken')?.value || 
-                    cookies.get('outseta-access-token')?.value ||
-                    cookies.get('o_accessToken')?.value;
+// ===== MAGIC LINK TOKEN VALIDATION =====
+// Hub access requires a valid ?t= token parameter
+// Token is validated against the admin API (database-stored tokens)
+const token = Astro.url.searchParams.get('t');
+const currentPath = Astro.url.pathname;
 
-// If no access token cookie, redirect to access page
-if (!accessToken) {
-  const returnTo = Astro.url.pathname;
-  return Astro.redirect(`/guided-workshops/access?reason=not-auth&returnTo=${encodeURIComponent(returnTo)}`);
+// If no token, redirect to access page
+if (!token) {
+  return Astro.redirect(`/guided-workshops/access?reason=token&returnTo=${encodeURIComponent(currentPath)}`);
+}
+
+// Validate token via admin API
+const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knitbymachine-admin.replit.app';
+let tokenValid = false;
+let tokenReason = 'unknown';
+
+try {
+  const validateUrl = `${adminApiUrl}/api/public/validate-workshop-token?workshopId=${encodeURIComponent(workshopSlug as string)}&token=${encodeURIComponent(token)}`;
+  const response = await fetch(validateUrl);
+  const result = await response.json();
+  
+  tokenValid = result.valid === true;
+  tokenReason = result.reason || 'unknown';
+} catch (error) {
+  console.error('Token validation failed:', error);
+  tokenReason = 'server_error';
+}
+
+// Handle invalid tokens
+if (!tokenValid) {
+  if (tokenReason === 'pending') {
+    return Astro.redirect('/guided-workshops/access?reason=pending');
+  }
+  return Astro.redirect(`/guided-workshops/access?reason=token&returnTo=${encodeURIComponent(currentPath)}`);
 }
 
 // Get workshop data
