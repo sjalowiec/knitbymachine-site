@@ -115,6 +115,7 @@ export interface GuidedWorkshopFile {
   description: string;
   tags: string[];
   isDraft: boolean;
+  status?: 'pending' | 'approved' | 'active' | 'completed' | 'declined';
   publishedDate: string;
   durationDays: number;
   level: string;
@@ -237,7 +238,8 @@ function getGuidedWorkshopSlugs(): string[] {
           const filePath = path.join(GUIDED_WORKSHOPS_DIR, file);
           const content = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
           // New format has curriculum and workshopId, no hub/outline/client
-          return content.curriculum && content.workshopId && !content.hub && !content.isDraft;
+          // Filter by status='active' (Status is the single workflow indicator)
+          return content.curriculum && content.workshopId && !content.hub && content.status === 'active';
         } catch {
           return false;
         }
@@ -285,8 +287,8 @@ export function getWorkshopBySlug(slug: string): Workshop | null {
       const content = fs.readFileSync(filePath, 'utf-8');
       const gw = JSON.parse(content) as GuidedWorkshopFile;
       
-      // Validate it's the new guided workshop structure and not a draft
-      if (gw.curriculum && gw.workshopId && !gw.isDraft) {
+      // Validate it's the new guided workshop structure and has active status
+      if (gw.curriculum && gw.workshopId && gw.status === 'active') {
         return adaptGuidedWorkshop(gw);
       }
     }
