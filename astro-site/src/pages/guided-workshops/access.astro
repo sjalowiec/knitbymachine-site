@@ -3,123 +3,82 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export const prerender = false;
 
+const reason = Astro.url.searchParams.get('reason') || '';
 const returnTo = Astro.url.searchParams.get('returnTo') || '';
-const hasReturnToParam = !!returnTo;
+
+type ReasonConfig = {
+  title: string;
+  message: string;
+  showContactHelp: boolean;
+};
+
+const reasonMessages: Record<string, ReasonConfig> = {
+  token: {
+    title: 'Access Link Required',
+    message: 'This workshop requires a private access link. Please use the link provided in your welcome email to access your workshop.',
+    showContactHelp: true,
+  },
+  pending: {
+    title: 'Workshop Coming Soon',
+    message: 'Your workshop is being prepared and will be available soon. You\'ll receive an email with your access link when it\'s ready.',
+    showContactHelp: true,
+  },
+  not_active: {
+    title: 'Workshop Unavailable',
+    message: 'This workshop is not currently available. Please contact us if you believe this is an error.',
+    showContactHelp: true,
+  },
+  default: {
+    title: 'Workshop Access',
+    message: 'Please use the access link from your welcome email to view this workshop.',
+    showContactHelp: true,
+  },
+};
+
+const config = reasonMessages[reason] || reasonMessages.default;
 ---
 
-<BaseLayout title="Workshop Access" description="Log in to access your guided workshop">
+<BaseLayout title={config.title} description="Access your guided workshop">
   <div class="access-container">
-    <div class="access-card" id="access-card">
-      <h1 class="access-title">Workshop Access</h1>
+    <div class="access-card">
+      <div class="access-icon">
+        {reason === 'pending' ? (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        ) : reason === 'not_active' ? (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        )}
+      </div>
       
-      {hasReturnToParam ? (
-        <!-- User arrived from hub gate - show login UI -->
-        <p class="access-message" id="access-message">
-          This workshop is private. Please log in to continue.
-        </p>
-      ) : (
-        <!-- User arrived after login (no returnTo param) - check auth -->
-        <p class="access-message" id="access-message">
-          If you just logged in, sending you to your workshop...
-        </p>
+      <h1 class="access-title">{config.title}</h1>
+      
+      <p class="access-message">{config.message}</p>
+      
+      {config.showContactHelp && (
+        <div class="access-help">
+          <p>Need help?</p>
+          <a href="mailto:sue@knitbymachine.com" class="access-email">
+            sue@knitbymachine.com
+          </a>
+        </div>
       )}
       
-      <button
-        data-o-auth="1"
-        data-mode="popup"
-        data-widget-mode="login"
-        class="access-btn"
-        id="login-btn"
-        data-testid="button-login"
-      >
-        Log in
-      </button>
-      <p class="access-help">
-        Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
-      </p>
+      <a href="/guided-workshops" class="access-link">
+        ← Browse all workshops
+      </a>
     </div>
   </div>
-  
-  <script define:vars={{ returnTo, hasReturnToParam }}>
-    // A) If returnTo param exists, store it and wait for user to click login
-    if (hasReturnToParam && returnTo) {
-      localStorage.setItem('kbm:returnTo', returnTo);
-    }
-
-    // B) If NO returnTo param, this is likely a post-login redirect from Outseta
-    // Attempt to redirect to stored returnTo after confirming auth
-    if (!hasReturnToParam) {
-      const storedReturnTo = localStorage.getItem('kbm:returnTo');
-      
-      // Safety: only redirect to /guided-workshops/ paths
-      const isValidPath = storedReturnTo && storedReturnTo.startsWith('/guided-workshops/');
-      
-      // Loop guard: don't redirect if we're already in a redirect attempt
-      const isRedirecting = sessionStorage.getItem('kbm:redirecting') === '1';
-      
-      if (isValidPath && !isRedirecting) {
-        // Retry delays: 250ms, 750ms, 1500ms
-        const delays = [250, 750, 1500];
-        let attempt = 0;
-
-        function attemptRedirect() {
-          if (typeof window.Outseta === 'undefined') {
-            // Outseta not loaded yet, retry
-            if (attempt < delays.length) {
-              setTimeout(attemptRedirect, delays[attempt]);
-              attempt++;
-            }
-            return;
-          }
-
-          window.Outseta.getUser()
-            .then(function(user) {
-              if (user) {
-                // User confirmed - set loop guard and redirect
-                sessionStorage.setItem('kbm:redirecting', '1');
-                
-                // Update UI
-                const msgEl = document.getElementById('access-message');
-                const btnEl = document.getElementById('login-btn');
-                if (msgEl) msgEl.textContent = 'Redirecting you to your workshop...';
-                if (btnEl) btnEl.style.display = 'none';
-                
-                // Redirect (don't clear localStorage yet - hub will clear it)
-                window.location.assign(storedReturnTo);
-              } else {
-                // No user - retry if attempts remain
-                if (attempt < delays.length) {
-                  setTimeout(attemptRedirect, delays[attempt]);
-                  attempt++;
-                } else {
-                  // All retries exhausted, show login button
-                  const msgEl = document.getElementById('access-message');
-                  if (msgEl) msgEl.textContent = 'Please log in to access your workshop.';
-                }
-              }
-            })
-            .catch(function(err) {
-              // Error checking auth - retry or show login
-              if (attempt < delays.length) {
-                setTimeout(attemptRedirect, delays[attempt]);
-                attempt++;
-              } else {
-                const msgEl = document.getElementById('access-message');
-                if (msgEl) msgEl.textContent = 'Please log in to access your workshop.';
-              }
-            });
-        }
-
-        // Start first attempt after initial delay
-        setTimeout(attemptRedirect, delays[0]);
-        attempt++;
-      } else if (!isValidPath && !isRedirecting) {
-        // No valid returnTo stored, show login message
-        const msgEl = document.getElementById('access-message');
-        if (msgEl) msgEl.textContent = 'Please log in to access your workshop.';
-      }
-    }
-  </script>
   
   <style>
     .access-container {
@@ -139,6 +98,21 @@ const hasReturnToParam = !!returnTo;
       background: rgba(248, 250, 245, 0.5);
     }
     
+    .access-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.5rem;
+      padding: 1rem;
+      border-radius: 50%;
+      background: rgba(82, 104, 45, 0.1);
+      color: #52682d;
+    }
+    
+    .access-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    
     .access-title {
       margin: 0 0 1rem;
       font-size: 1.5rem;
@@ -150,37 +124,43 @@ const hasReturnToParam = !!returnTo;
       margin: 0 0 1.5rem;
       font-size: 1rem;
       color: #555;
-      line-height: 1.5;
-    }
-    
-    .access-btn {
-      display: inline-block;
-      padding: 0.85rem 2rem;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #fff;
-      background: #52682d;
-      border: none;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.15s ease, transform 0.1s ease;
-    }
-    
-    .access-btn:hover {
-      background: #3d4f22;
-    }
-    
-    .access-btn:active {
-      transform: scale(0.98);
+      line-height: 1.6;
     }
     
     .access-help {
-      margin: 1.5rem 0 0;
-      font-size: 0.875rem;
-      color: #888;
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba(82, 104, 45, 0.05);
+      border-radius: 8px;
     }
     
-    .access-help a {
+    .access-help p {
+      margin: 0 0 0.5rem;
+      font-size: 0.875rem;
+      color: #666;
+    }
+    
+    .access-email {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #52682d;
+      text-decoration: none;
+    }
+    
+    .access-email:hover {
+      text-decoration: underline;
+    }
+    
+    .access-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: #888;
+      text-decoration: none;
+    }
+    
+    .access-link:hover {
       color: #52682d;
     }
   </style>
