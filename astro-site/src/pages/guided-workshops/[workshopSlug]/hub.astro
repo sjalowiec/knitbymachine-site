@@ -63,6 +63,33 @@ const mockNextStep = {
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
 
+  <!-- Auth gate: redirect to Outseta login if not authenticated -->
+  <script is:inline>
+    (function() {
+      // Dev bypass: ?dev=1 skips auth check
+      if (new URLSearchParams(window.location.search).get('dev') === '1') return;
+      
+      // Wait for Outseta to initialize, then check auth
+      function checkAuth() {
+        // Outseta stores user in window.Outseta after init
+        if (window.Outseta && typeof window.Outseta.getUser === 'function') {
+          const user = window.Outseta.getUser();
+          if (!user) {
+            // Not authenticated - redirect to Outseta login
+            const returnTo = encodeURIComponent(window.location.href);
+            window.location.href = 'https://knitbymachinecom.outseta.com/#/login?redirectUri=' + returnTo;
+          }
+        } else {
+          // Outseta not ready yet, try again
+          setTimeout(checkAuth, 100);
+        }
+      }
+      
+      // Start checking after a brief delay for Outseta to load
+      setTimeout(checkAuth, 500);
+    })();
+  </script>
+
   {showV2 ? (
     <!-- ===== HUB V2 PREVIEW ===== -->
     <HubV2
