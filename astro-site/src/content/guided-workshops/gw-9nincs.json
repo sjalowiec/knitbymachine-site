@@ -1,0 +1,24 @@
+{
+  "workshopId": "gw-9nincs",
+  "title": "TEST-PUBLISH abcdelllasdf sdf sf",
+  "slug": "gw-9nincs",
+  "shortDescription": "",
+  "description": "dffafafsd",
+  "tags": [],
+  "durationDays": null,
+  "level": "",
+  "imageUrl": "",
+  "imageAlt": "",
+  "welcomeTitle": "",
+  "welcomeBody": "",
+  "metaTitle": "",
+  "metaDescription": "",
+  "curriculum": {
+    "days": [],
+    "version": 1
+  },
+  "status": "active",
+  "isDraft": false,
+  "pendingPublish": false,
+  "publishedDate": "2025-12-19"
+}
