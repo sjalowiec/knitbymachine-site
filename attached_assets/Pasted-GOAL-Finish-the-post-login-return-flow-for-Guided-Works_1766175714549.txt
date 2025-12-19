@@ -1,0 +1,47 @@
+GOAL
+Finish the post-login return flow for Guided Workshops.
+
+We have set Outseta "Post login URL" to:
+https://knitbymachine.com/guided-workshops/access
+
+Now implement logic on the access page so that:
+- If the user is NOT logged in, show the access message + Log in button
+- If the user IS logged in, immediately redirect them to the returnTo URL
+
+FILES
+1) astro-site/src/pages/guided-workshops/[workshopSlug]/hub.astro
+   - When not authenticated, it should redirect to:
+     /guided-workshops/access?reason=not-auth&returnTo=<currentPath>
+
+2) astro-site/src/pages/guided-workshops/access.astro
+   - Implement the logic described below
+
+ACCESS PAGE LOGIC
+- Read query param returnTo (default to "/guided-workshops/")
+- Also read reason (optional)
+- Store returnTo in localStorage as "kbm:returnTo" (only if present)
+- The "Log in" button should use the Outseta login widget link (already in place):
+  https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=login
+
+After login (Outseta redirects back to /guided-workshops/access):
+- access.astro should check if the user is authenticated (use the SAME server-side auth helper the hub uses)
+- If authenticated:
+   - Determine destination:
+       a) query param returnTo if present
+       b) else localStorage "kbm:returnTo" (client-side fallback)
+       c) else "/guided-workshops/"
+   - Redirect them to that destination (prefer server-side redirect when returnTo is in the URL)
+
+IMPORTANT
+- Keep it simple: primary path is server-side redirect when returnTo exists in query string.
+- If the auth helper can’t run on access.astro server-side, then do a client-side redirect fallback using a small inline script that reads localStorage and window.location.assign() after detecting Outseta user on the client.
+
+VALIDATION TEST
+1) Brand-new incognito:
+   visit /guided-workshops/gw-9nincs/hub/
+   -> should land on /guided-workshops/access?returnTo=/guided-workshops/gw-9nincs/hub/
+2) Click Log in -> complete login
+3) After login -> should land on /guided-workshops/access then immediately go to the hub
+
+STOP when this test passes.
+Report what auth helper you used for server-side checks on access.astro.

@@ -1,35 +1,67 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
+export const prerender = false;
+
 const reason = Astro.url.searchParams.get('reason') || '';
-const returnTo = Astro.url.searchParams.get('returnTo') || '/guided-workshops/';
+const returnTo = Astro.url.searchParams.get('returnTo') || '';
+const defaultDestination = '/guided-workshops/';
 
-// Build full redirect URL back to our site
-const siteUrl = 'https://knitbymachine.com';
-const fullReturnUrl = siteUrl + returnTo;
+// Server-side auth check (same helper as hub.astro)
+const cookies = Astro.cookies;
+const accessToken = cookies.get('Outseta.accessToken')?.value || 
+                    cookies.get('outseta-access-token')?.value ||
+                    cookies.get('o_accessToken')?.value;
 
-// Outseta login widget URL (popup)
+const isAuthenticated = !!accessToken;
+
+// If authenticated and returnTo is in query string, redirect immediately (server-side)
+if (isAuthenticated && returnTo) {
+  return Astro.redirect(returnTo);
+}
+
+// Outseta login widget URL
 const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=login';
 ---
 
 <BaseLayout title="Workshop Access" description="Log in to access your guided workshop">
   <div class="access-container">
-    <div class="access-card">
-      <h1 class="access-title">Workshop Access</h1>
-      
-      <p class="access-message">
-        This workshop is private. Please log in to continue.
-      </p>
-      
-      <a href={loginUrl} class="access-btn">
-        Log in
-      </a>
-      
-      <p class="access-help">
-        Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
-      </p>
+    <div class="access-card" id="access-card">
+      {isAuthenticated ? (
+        <!-- Authenticated but no returnTo in URL - client-side redirect via localStorage -->
+        <p class="access-message">Redirecting you to your workshop...</p>
+      ) : (
+        <!-- Not authenticated - show login UI -->
+        <>
+          <h1 class="access-title">Workshop Access</h1>
+          <p class="access-message">
+            This workshop is private. Please log in to continue.
+          </p>
+          <a href={loginUrl} class="access-btn" data-testid="button-login">
+            Log in
+          </a>
+          <p class="access-help">
+            Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
+          </p>
+        </>
+      )}
     </div>
   </div>
+  
+  <script define:vars={{ returnTo, isAuthenticated, defaultDestination }}>
+    // Store returnTo in localStorage when present (for post-login redirect)
+    if (returnTo) {
+      localStorage.setItem('kbm:returnTo', returnTo);
+    }
+
+    // Client-side redirect fallback for authenticated users without returnTo in URL
+    if (isAuthenticated) {
+      const storedReturnTo = localStorage.getItem('kbm:returnTo');
+      const destination = storedReturnTo || defaultDestination;
+      localStorage.removeItem('kbm:returnTo');
+      window.location.assign(destination);
+    }
+  </script>
   
   <style>
     .access-container {
