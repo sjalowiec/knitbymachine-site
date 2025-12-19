@@ -3,22 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export const prerender = false;
 
-const reason = Astro.url.searchParams.get('reason') || '';
 const returnTo = Astro.url.searchParams.get('returnTo') || '';
-const defaultDestination = '/guided-workshops/';
-
-// Server-side auth check (same helper as hub.astro)
-const cookies = Astro.cookies;
-const accessToken = cookies.get('Outseta.accessToken')?.value || 
-                    cookies.get('outseta-access-token')?.value ||
-                    cookies.get('o_accessToken')?.value;
-
-const isAuthenticated = !!accessToken;
-
-// If authenticated and returnTo is in query string, redirect immediately (server-side)
-if (isAuthenticated && returnTo) {
-  return Astro.redirect(returnTo);
-}
 
 // Outseta login widget URL
 const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=login';
@@ -27,40 +12,65 @@ const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=l
 <BaseLayout title="Workshop Access" description="Log in to access your guided workshop">
   <div class="access-container">
     <div class="access-card" id="access-card">
-      {isAuthenticated ? (
-        <!-- Authenticated but no returnTo in URL - client-side redirect via localStorage -->
-        <p class="access-message">Redirecting you to your workshop...</p>
-      ) : (
-        <!-- Not authenticated - show login UI -->
-        <>
-          <h1 class="access-title">Workshop Access</h1>
-          <p class="access-message">
-            This workshop is private. Please log in to continue.
-          </p>
-          <a href={loginUrl} class="access-btn" data-testid="button-login">
-            Log in
-          </a>
-          <p class="access-help">
-            Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
-          </p>
-        </>
-      )}
+      <h1 class="access-title">Workshop Access</h1>
+      <p class="access-message" id="access-message">
+        This workshop is private. Please log in to continue.
+      </p>
+      <a href={loginUrl} class="access-btn" id="login-btn" data-testid="button-login">
+        Log in
+      </a>
+      <p class="access-help">
+        Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
+      </p>
     </div>
   </div>
   
-  <script define:vars={{ returnTo, isAuthenticated, defaultDestination }}>
-    // Store returnTo in localStorage when present (for post-login redirect)
+  <script define:vars={{ returnTo }}>
+    // Step 1: If returnTo is in the URL, store it in localStorage with timestamp
     if (returnTo) {
       localStorage.setItem('kbm:returnTo', returnTo);
+      localStorage.setItem('kbm:returnToSetAt', Date.now().toString());
     }
 
-    // Client-side redirect fallback for authenticated users without returnTo in URL
-    if (isAuthenticated) {
-      const storedReturnTo = localStorage.getItem('kbm:returnTo');
-      const destination = storedReturnTo || defaultDestination;
-      localStorage.removeItem('kbm:returnTo');
-      window.location.assign(destination);
+    // Step 2: Check if user is logged in via Outseta (client-side)
+    // This runs after login when Outseta redirects back to /guided-workshops/access
+    function checkAuthAndRedirect() {
+      if (typeof window.Outseta === 'undefined') {
+        // Outseta not loaded yet, retry in 200ms
+        setTimeout(checkAuthAndRedirect, 200);
+        return;
+      }
+
+      window.Outseta.getUser()
+        .then(function(user) {
+          if (user) {
+            // User is logged in - check for stored returnTo
+            const storedReturnTo = localStorage.getItem('kbm:returnTo');
+            
+            if (storedReturnTo && storedReturnTo.startsWith('/guided-workshops/')) {
+              // Clear localStorage BEFORE redirect to prevent loops
+              localStorage.removeItem('kbm:returnTo');
+              localStorage.removeItem('kbm:returnToSetAt');
+              
+              // Update UI to show redirecting message
+              const msgEl = document.getElementById('access-message');
+              const btnEl = document.getElementById('login-btn');
+              if (msgEl) msgEl.textContent = 'Redirecting you to your workshop...';
+              if (btnEl) btnEl.style.display = 'none';
+              
+              // Redirect to the stored path
+              window.location.assign(storedReturnTo);
+            }
+          }
+        })
+        .catch(function(err) {
+          // Not logged in or error - do nothing, show login UI
+          console.log('Outseta auth check:', err);
+        });
     }
+
+    // Start the auth check
+    checkAuthAndRedirect();
   </script>
   
   <style>
