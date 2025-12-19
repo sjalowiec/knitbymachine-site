@@ -63,33 +63,62 @@ const mockNextStep = {
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
 
-  <!-- Auth gate: redirect to Outseta login if not authenticated -->
+  <!-- Auth gate: hide content until Outseta auth is confirmed -->
+  <div id="hub-auth-gate" style="display:flex;align-items:center;justify-content:center;min-height:60vh;flex-direction:column;gap:1rem;">
+    <div style="width:32px;height:32px;border:3px solid #e5e5e5;border-top-color:#52682d;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+    <p style="color:#666;font-size:0.95rem;">Checking access...</p>
+  </div>
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+    #hub-content { display: none; }
+    #hub-content.authenticated { display: block; }
+  </style>
+  
   <script is:inline>
     (function() {
-      // Dev bypass: ?dev=1 skips auth check
-      if (new URLSearchParams(window.location.search).get('dev') === '1') return;
+      var gate = document.getElementById('hub-auth-gate');
+      var content = document.getElementById('hub-content');
+      var maxAttempts = 50; // 5 seconds max
+      var attempts = 0;
       
-      // Wait for Outseta to initialize, then check auth
+      // Dev bypass: ?dev=1 skips auth check
+      if (new URLSearchParams(window.location.search).get('dev') === '1') {
+        if (gate) gate.style.display = 'none';
+        if (content) content.classList.add('authenticated');
+        return;
+      }
+      
       function checkAuth() {
-        // Outseta stores user in window.Outseta after init
+        attempts++;
+        
+        // Check if Outseta is ready and has getUser method
         if (window.Outseta && typeof window.Outseta.getUser === 'function') {
-          const user = window.Outseta.getUser();
-          if (!user) {
+          var user = window.Outseta.getUser();
+          if (user) {
+            // Authenticated - show content
+            if (gate) gate.style.display = 'none';
+            if (content) content.classList.add('authenticated');
+          } else {
             // Not authenticated - redirect to Outseta login
-            const returnTo = encodeURIComponent(window.location.href);
-            window.location.href = 'https://knitbymachinecom.outseta.com/#/login?redirectUri=' + returnTo;
+            var returnTo = encodeURIComponent(window.location.pathname);
+            window.location.href = 'https://knitbymachinecom.outseta.com/#/login?postLoginRedirect=' + returnTo;
           }
-        } else {
+        } else if (attempts < maxAttempts) {
           // Outseta not ready yet, try again
           setTimeout(checkAuth, 100);
+        } else {
+          // Timeout - assume not authenticated
+          var returnTo = encodeURIComponent(window.location.pathname);
+          window.location.href = 'https://knitbymachinecom.outseta.com/#/login?postLoginRedirect=' + returnTo;
         }
       }
       
-      // Start checking after a brief delay for Outseta to load
-      setTimeout(checkAuth, 500);
+      // Start checking immediately
+      checkAuth();
     })();
   </script>
 
+  <div id="hub-content">
   {showV2 ? (
     <!-- ===== HUB V2 PREVIEW ===== -->
     <HubV2
@@ -517,4 +546,5 @@ const mockNextStep = {
       text-decoration: underline;
     }
   </style>
+  </div><!-- end #hub-content -->
 </BaseLayout>
