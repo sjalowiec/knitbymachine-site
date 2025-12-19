@@ -25,11 +25,11 @@ let tokenValid = false;
 let tokenReason = 'unknown';
 
 try {
-  const validateUrl = `${adminApiUrl}/api/public/validate-workshop-token?workshopId=${encodeURIComponent(workshopSlug as string)}&token=${encodeURIComponent(token)}`;
+  const validateUrl = `${adminApiUrl}/api/public/validate-workshop-token?slug=${encodeURIComponent(workshopSlug as string)}&t=${encodeURIComponent(token)}`;
   const response = await fetch(validateUrl);
   const result = await response.json();
   
-  tokenValid = result.valid === true;
+  tokenValid = result.ok === true;
   tokenReason = result.reason || 'unknown';
 } catch (error) {
   console.error('Token validation failed:', error);
