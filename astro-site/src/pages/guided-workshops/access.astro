@@ -8,8 +8,8 @@ const returnTo = Astro.url.searchParams.get('returnTo') || '/guided-workshops/';
 const siteUrl = 'https://knitbymachine.com';
 const fullReturnUrl = siteUrl + returnTo;
 
-// Outseta login URL with redirect back to our site after login
-const loginUrl = `https://knitbymachinecom.outseta.com/#/auth/login?returnTo=${encodeURIComponent(fullReturnUrl)}`;
+// Outseta login widget URL (popup)
+const loginUrl = 'https://knitbymachinecom.outseta.com/widgets/auth?widgetMode=login';
 ---
 
 <BaseLayout title="Workshop Access" description="Log in to access your guided workshop">
