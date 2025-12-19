@@ -2,6 +2,29 @@ import { neon } from '@neondatabase/serverless';
 
 const MAX_RETRIES = 5;
 
+// Default internal notes template for new guided workshop applications
+const INTERNAL_NOTES_TEMPLATE = `APPLICATION SUMMARY
+- Project direction:
+- Yarn status:
+- Starting from scratch or in progress:
+
+CLARIFICATION (if needed)
+[ ] Clarification email sent on:
+Questions asked:
+- 
+- 
+- 
+
+APPLICANT RESPONSE
+[ ] Response received on:
+- 
+
+DECISION
+[ ] Approved
+[ ] Not a fit
+Decision date:
+Notes:`;
+
 function generateWorkshopId() {
   const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let result = 'gw-';
@@ -37,6 +60,7 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
           applicant_name,
           applicant_email,
           application_data,
+          internal_notes,
           is_draft,
           pending_publish,
           created_at,
@@ -48,6 +72,7 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
           ${applicantName},
           ${applicantEmail},
           ${JSON.stringify(applicationData)},
+          ${INTERNAL_NOTES_TEMPLATE},
           true,
           false,
           NOW(),
