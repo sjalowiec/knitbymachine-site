@@ -63,36 +63,55 @@ const mockNextStep = {
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
 
-  <!-- DEBUG: Temporary test line - remove after confirming -->
-  <div style="padding:12px;border:1px solid #ccc;background:#f9f9f9;text-align:center;">hub body rendering</div>
+  <!-- DEBUG: Temporary test line - remove after confirming auth works -->
+  <div id="hub-debug" style="padding:12px;border:1px solid #ccc;background:#f9f9f9;text-align:center;">hub body rendering</div>
 
-  <!-- Auth gate: redirect if not authenticated -->
+  <!-- Auth gate: redirect if not authenticated (Outseta.getUser returns Promise) -->
   <script is:inline>
     (function() {
+      var loginUrl = 'https://knitbymachinecom.outseta.com/#/login';
+      var returnTo = encodeURIComponent(window.location.pathname);
+      var redirectUrl = loginUrl + '?postLoginRedirect=' + returnTo;
+      
       // Dev bypass: ?dev=1 skips auth check
-      if (new URLSearchParams(window.location.search).get('dev') === '1') return;
+      if (new URLSearchParams(window.location.search).get('dev') === '1') {
+        console.log('[Hub Auth] Dev bypass active');
+        return;
+      }
       
-      var maxAttempts = 50;
-      var attempts = 0;
+      var maxWait = 5000; // 5 seconds max wait for Outseta
+      var start = Date.now();
       
-      function checkAuth() {
-        attempts++;
+      function checkOutseta() {
+        // Check if Outseta is ready
         if (window.Outseta && typeof window.Outseta.getUser === 'function') {
-          var user = window.Outseta.getUser();
-          if (!user) {
-            var returnTo = encodeURIComponent(window.location.pathname);
-            window.location.href = 'https://knitbymachinecom.outseta.com/#/login?postLoginRedirect=' + returnTo;
-          }
-          // If user exists, do nothing - let page render
-        } else if (attempts < maxAttempts) {
-          setTimeout(checkAuth, 100);
+          // Outseta.getUser() returns a Promise
+          window.Outseta.getUser()
+            .then(function(user) {
+              if (user) {
+                console.log('[Hub Auth] User authenticated:', user.Email || user.FullName);
+                // User is logged in - do nothing, let page render
+              } else {
+                console.log('[Hub Auth] No user found, redirecting to login');
+                window.location.href = redirectUrl;
+              }
+            })
+            .catch(function(err) {
+              console.log('[Hub Auth] getUser error, redirecting to login:', err);
+              window.location.href = redirectUrl;
+            });
+        } else if (Date.now() - start < maxWait) {
+          // Outseta not ready yet, retry
+          setTimeout(checkOutseta, 100);
         } else {
-          // Timeout - redirect to login
-          var returnTo = encodeURIComponent(window.location.pathname);
-          window.location.href = 'https://knitbymachinecom.outseta.com/#/login?postLoginRedirect=' + returnTo;
+          // Timeout waiting for Outseta - redirect to login
+          console.log('[Hub Auth] Outseta timeout, redirecting to login');
+          window.location.href = redirectUrl;
         }
       }
-      checkAuth();
+      
+      // Start checking
+      checkOutseta();
     })();
   </script>
 
