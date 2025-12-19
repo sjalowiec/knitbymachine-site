@@ -36,11 +36,19 @@ try {
   tokenReason = 'server_error';
 }
 
-// Handle invalid tokens
+// Handle invalid tokens with specific reason codes
 if (!tokenValid) {
+  // Route to access page with appropriate reason
   if (tokenReason === 'pending') {
     return Astro.redirect('/guided-workshops/access?reason=pending');
   }
+  if (tokenReason === 'not_active') {
+    return Astro.redirect('/guided-workshops/access?reason=not_active');
+  }
+  if (tokenReason === 'server_error') {
+    return Astro.redirect('/guided-workshops/access?reason=error');
+  }
+  // Default: invalid_token, not_found, or unknown reasons
   return Astro.redirect(`/guided-workshops/access?reason=token&returnTo=${encodeURIComponent(currentPath)}`);
 }
 
