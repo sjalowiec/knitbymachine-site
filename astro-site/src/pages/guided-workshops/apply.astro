@@ -122,7 +122,7 @@ const error = Astro.url.searchParams.get('error');
 
           <div class="form-field">
             <label for="projectDirection">What are you hoping to make in this workshop? <span class="required">*</span></label>
-            <p class="helper-text">A clear direction is enough — this doesn't need to be final.</p>
+            <p class="helper-text--below">A clear direction is enough — this doesn't need to be final.</p>
             <textarea 
               id="projectDirection" 
               name="projectDirection" 
@@ -131,7 +131,7 @@ const error = Astro.url.searchParams.get('error');
               placeholder="Example: A cardigan using a mid-weight yarn, likely with set-in sleeves. I'm comfortable with basic shaping but want help planning the construction and finishing."
               data-testid="textarea-project-direction"
             ></textarea>
-            <p class="helper-text helper-text--below">A sentence or two is perfect. You don't need final decisions — just enough detail to understand the kind of project you have in mind.</p>
+            <p class="helper-text helper-text--below">If you’ve seen something you’d like to make (for example, a sweater you found online), you can mention that here. We’ll talk about patterns next.</p>
           </div>
 
           <hr class="kbm-divider" />
@@ -585,6 +585,8 @@ const error = Astro.url.searchParams.get('error');
 
   .helper-text--below {
     margin: 0.5rem 0 0 1rem;
+    font-style: italic;
+    opacity: 0.85;
   }
 
   .form-field input[type="text"],
