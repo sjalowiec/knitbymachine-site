@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const reason = Astro.url.searchParams.get('reason') || '';
+const returnTo = Astro.url.searchParams.get('returnTo') || '/guided-workshops/';
+
+const loginUrl = `https://knitbymachinecom.outseta.com/#/login?postLoginRedirect=${encodeURIComponent(returnTo)}`;
+---
+
+<BaseLayout title="Workshop Access" description="Log in to access your guided workshop">
+  <div class="access-container">
+    <div class="access-card">
+      <h1 class="access-title">Workshop Access Required</h1>
+      
+      {reason === 'not-auth' && (
+        <p class="access-message">
+          Please log in to access your guided workshop hub.
+        </p>
+      )}
+      
+      {!reason && (
+        <p class="access-message">
+          This area is for enrolled workshop participants.
+        </p>
+      )}
+      
+      <a href={loginUrl} class="access-btn">
+        Log In to Continue
+      </a>
+      
+      <p class="access-help">
+        Need help? Contact <a href="mailto:sue@knitbymachine.com">sue@knitbymachine.com</a>
+      </p>
+    </div>
+  </div>
+  
+  <style>
+    .access-container {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    
+    .access-card {
+      max-width: 420px;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(82, 104, 45, 0.15);
+      border-radius: 16px;
+      background: rgba(248, 250, 245, 0.5);
+    }
+    
+    .access-title {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    
+    .access-message {
+      margin: 0 0 1.5rem;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.5;
+    }
+    
+    .access-btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+    
+    .access-btn:hover {
+      background: #3d4f22;
+    }
+    
+    .access-btn:active {
+      transform: scale(0.98);
+    }
+    
+    .access-help {
+      margin: 1.5rem 0 0;
+      font-size: 0.875rem;
+      color: #888;
+    }
+    
+    .access-help a {
+      color: #52682d;
+    }
+  </style>
+</BaseLayout>

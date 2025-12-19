@@ -1,18 +1,28 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import HubV2 from '../../../components/guided-workshops/HubV2.astro';
-import { getWorkshopSlugs, getWorkshopBySlug } from '../../../lib/workshops';
+import { getWorkshopBySlug } from '../../../lib/workshops';
 
-export const prerender = true;
-
-export async function getStaticPaths() {
-  const slugs = getWorkshopSlugs();
-  return slugs.map(slug => ({
-    params: { workshopSlug: slug }
-  }));
-}
+// SSR mode - page is rendered per-request so we can check auth
+export const prerender = false;
 
 const { workshopSlug } = Astro.params;
+
+// ===== SERVER-SIDE AUTH CHECK =====
+// Check for Outseta access token cookie (set when tokenStorage: "cookie" is configured)
+// Outseta stores the token in a cookie named "Outseta.accessToken" or similar
+const cookies = Astro.cookies;
+const accessToken = cookies.get('Outseta.accessToken')?.value || 
+                    cookies.get('outseta-access-token')?.value ||
+                    cookies.get('o_accessToken')?.value;
+
+// If no access token cookie, redirect to access page
+if (!accessToken) {
+  const returnTo = Astro.url.pathname;
+  return Astro.redirect(`/guided-workshops/access?reason=not-auth&returnTo=${encodeURIComponent(returnTo)}`);
+}
+
+// Get workshop data
 const workshop = getWorkshopBySlug(workshopSlug as string);
 
 if (!workshop) {
@@ -62,58 +72,6 @@ const mockNextStep = {
 ---
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
-
-  <!-- DEBUG: Temporary test line - remove after confirming auth works -->
-  <div id="hub-debug" style="padding:12px;border:1px solid #ccc;background:#f9f9f9;text-align:center;">hub body rendering</div>
-
-  <!-- Auth gate: redirect if not authenticated (Outseta.getUser returns Promise) -->
-  <script is:inline>
-    (function() {
-      var loginUrl = 'https://knitbymachinecom.outseta.com/#/login';
-      var returnTo = encodeURIComponent(window.location.pathname);
-      var redirectUrl = loginUrl + '?postLoginRedirect=' + returnTo;
-      
-      // Dev bypass: ?dev=1 skips auth check
-      if (new URLSearchParams(window.location.search).get('dev') === '1') {
-        console.log('[Hub Auth] Dev bypass active');
-        return;
-      }
-      
-      var maxWait = 5000; // 5 seconds max wait for Outseta
-      var start = Date.now();
-      
-      function checkOutseta() {
-        // Check if Outseta is ready
-        if (window.Outseta && typeof window.Outseta.getUser === 'function') {
-          // Outseta.getUser() returns a Promise
-          window.Outseta.getUser()
-            .then(function(user) {
-              if (user) {
-                console.log('[Hub Auth] User authenticated:', user.Email || user.FullName);
-                // User is logged in - do nothing, let page render
-              } else {
-                console.log('[Hub Auth] No user found, redirecting to login');
-                window.location.href = redirectUrl;
-              }
-            })
-            .catch(function(err) {
-              console.log('[Hub Auth] getUser error, redirecting to login:', err);
-              window.location.href = redirectUrl;
-            });
-        } else if (Date.now() - start < maxWait) {
-          // Outseta not ready yet, retry
-          setTimeout(checkOutseta, 100);
-        } else {
-          // Timeout waiting for Outseta - redirect to login
-          console.log('[Hub Auth] Outseta timeout, redirecting to login');
-          window.location.href = redirectUrl;
-        }
-      }
-      
-      // Start checking
-      checkOutseta();
-    })();
-  </script>
 
   {showV2 ? (
     <!-- ===== HUB V2 PREVIEW ===== -->

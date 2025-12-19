@@ -41,7 +41,10 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
     
     <!-- Outseta authentication & membership -->
     <script is:inline>
-      window.o_options = { domain: "knitbymachinecom.outseta.com" };
+      window.o_options = { 
+        domain: "knitbymachinecom.outseta.com",
+        tokenStorage: "cookie"
+      };
     </script>
     <script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options"></script>
     
