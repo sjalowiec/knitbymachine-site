@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import HubV2 from '../../../components/guided-workshops/HubV2.astro';
 import { getWorkshopSlugs, getWorkshopBySlug } from '../../../lib/workshops';
 
 export const prerender = true;
@@ -36,9 +37,50 @@ const dayList = outline.days.map(od => {
 
 // Total days counts only regular days (excludes bonus days like Day 99)
 const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
+
+// ===== HUB V2 MOCK DATA =====
+// Temporary mock data for visual approval of HubV2 layout
+const showV2 = true; // Toggle to switch between V2 and original hub
+
+const mockSteps = [
+  { day: 1, title: 'Planning & sizing', status: 'completed' as const },
+  { day: 2, title: 'Stitch setup', status: 'current' as const },
+  { day: 3, title: 'Knitting', status: 'upcoming' as const },
+  { day: 4, title: 'Finishing', status: 'upcoming' as const },
+  { day: 'Wrap-up', title: 'Final touches', status: 'upcoming' as const },
+];
+
+const mockNextStep = {
+  day: 2,
+  title: 'Set up your stitch pattern',
+  bullets: [
+    'Review stitch pattern options for your yarn weight',
+    'Calculate your gauge swatch requirements',
+    'Prepare your machine for the pattern test'
+  ]
+};
 ---
 
 <BaseLayout {title} {description} skipGlobalHyvor={true}>
+
+  {showV2 ? (
+    <!-- ===== HUB V2 PREVIEW ===== -->
+    <HubV2
+      workshopTitle={workshopInfo.title}
+      currentDay={2}
+      totalDays={7}
+      nextStep={mockNextStep}
+      steps={mockSteps}
+      hyvor={{ websiteId: hyvor.websiteId, pageId: hyvor.pageId }}
+      workshopSlug={workshopSlug as string}
+    />
+    
+    <!-- Divider showing this is a preview -->
+    <div style="max-width: 720px; margin: 2rem auto; padding: 1rem; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; text-align: center;">
+      <strong>Hub V2 Preview</strong> — Old hub is below for comparison. Toggle <code>showV2</code> in frontmatter to switch.
+    </div>
+  ) : null}
+
   <div class="gw-hub" data-workshop-slug={workshopSlug}>
 
     <!-- Dismissible Welcome section -->

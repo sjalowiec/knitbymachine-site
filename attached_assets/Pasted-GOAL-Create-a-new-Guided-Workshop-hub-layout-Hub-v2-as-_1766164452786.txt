@@ -1,0 +1,84 @@
+GOAL
+Create a new Guided Workshop hub layout (Hub v2) as a reusable component.
+This is a layout-only task. Do NOT add authentication, access gating, redirects,
+or business logic yet.
+
+We will temporarily render this component inside the existing hub page
+to visually approve the experience.
+
+SCOPE (VERY IMPORTANT)
+- Layout and structure ONLY
+- No auth
+- No redirects
+- No DB changes
+- No removal of existing hub yet
+
+FILE TO CREATE
+Create a new component:
+src/components/guided-workshops/HubV2.astro
+
+TEMPORARY RENDER
+Update the existing hub page (where /guided-workshops/{id}/hub/ currently renders)
+to temporarily render <HubV2 /> with mock data so we can see the layout in the browser.
+
+DO NOT DELETE OR MODIFY THE OLD HUB COMPONENT.
+This is a parallel v2.
+
+HUB V2 STRUCTURE (LOCK THIS)
+
+1) Orientation Header (top of page, no card)
+   - Workshop title (mock)
+   - Subtext line: "Day 2 of 7 • You’re right on track"
+   - No welcome paragraph
+
+2) NEXT STEP (Hero Card — full width)
+   Content:
+     Heading: "Your Next Step"
+     Subheading: "Day 2 — Set up your stitch pattern"
+     Bullet list (3 items, mock text ok)
+     Primary button: "Go to Day 2"
+
+   Design:
+     - Visually dominant
+     - Soft background
+     - This must be the most prominent element on the page
+
+3) Workshop Conversation (PRIMARY WORK AREA)
+   - Heading: "Workshop Conversation"
+   - Short helper text: "Ask questions, share progress, and get feedback here."
+   - Embed existing Hyvor Talk component exactly as used elsewhere
+   - This section comes immediately AFTER the Next Step card
+
+4) Workshop Steps / Progress
+   - Heading: "Workshop Steps"
+   - Vertical list of steps with status icons:
+       ✓ Day 1 — Planning & sizing
+       → Day 2 — Stitch setup
+       ○ Day 3 — Knitting
+       ○ Day 4 — Finishing
+       ○ Wrap-up
+   - Future steps visually muted
+
+5) Support Expectations (small, near bottom)
+   Text:
+     "Support
+      I check in Monday–Thursday.
+      You’ll hear back within one business day."
+
+DESIGN GUIDELINES
+- Calm, minimal, modern
+- No marketing language
+- No multiple CTAs
+- No login language
+- Mobile-first friendly
+- Hyvor Talk should feel central, not an afterthought
+
+STOP CONDITIONS
+Stop once HubV2 renders visually in the browser with mock content.
+Do NOT proceed to access gating or logic.
+
+CONFIRMATION
+After implementation, report:
+- File path created
+- Screenshot or description of layout
+- Confirmation that old hub remains untouched
