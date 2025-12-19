@@ -183,17 +183,22 @@ export const handler = async (event) => {
 
           if (contactListId) {
             // Update existing subscription to Active
+            const updatePayload = {
+              contactList: {
+                contact: String(contactId),
+                list: String(AC_LIST_ID),
+                status: 1 // 1 = Active
+              }
+            };
+            console.log('[AC] PUT contactLists - contactId:', contactId, 'listId:', AC_LIST_ID, 'contactListId:', contactListId, 'payload keys:', Object.keys(updatePayload.contactList));
+            
             const updateListResponse = await fetch(`${AC_API_URL}/api/3/contactLists/${contactListId}`, {
               method: 'PUT',
               headers: {
                 'Api-Token': AC_API_KEY,
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({
-                contactList: {
-                  status: 1 // 1 = Active
-                }
-              })
+              body: JSON.stringify(updatePayload)
             });
             
             if (updateListResponse.ok) {
