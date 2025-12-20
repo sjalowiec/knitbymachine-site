@@ -3,6 +3,8 @@
   "slug": "hat-builder",
   "hero": "Design the perfect custom hat with precise sizing, brim options, and crown shaping.",
   "description": "<p>Create your custom hat pattern with ease. Choose from standard sizes or enter your own measurements. Select from 4 brim styles, 4 crown shapings, and 4 fit types. Get complete knitting instructions with an illustrated diagram showing your exact measurements.</p>",
+  "excerpt": "Design the perfect custom hat with precise sizing, brim options, and crown shaping.",
+  "whyUseThisTool": "",
   "category": "pattern",
   "tags": [
     "hat",
@@ -10,6 +12,8 @@
     "sizing",
     "calculator"
   ],
+  "keywords": [],
+  "aliases": [],
   "videoUrl": "",
   "accessLevel": "free",
   "price": "",
@@ -23,6 +27,5 @@
   "schemaMarkup": null,
   "isDraft": false,
   "publishedDate": "2024-11-14",
-  "pendingPublish": false,
-  "excerpt": "Design the perfect custom hat with precise sizing, brim options, and crown shaping."
+  "pendingPublish": false
 }
