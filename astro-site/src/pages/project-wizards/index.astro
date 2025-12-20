@@ -28,7 +28,7 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
             derivedContentType = 'pattern';
           } else if (cat.includes('skill builder') || cat.includes('practice')) {
             derivedContentType = 'practice project';
-          } else if (cat.includes('smart guide') || cat.includes('project planner') || entryType === 'agent') {
+          } else if (cat.includes('smart guide') || cat.includes('project planner') || cat.includes('project wizard') || entryType === 'agent') {
             derivedContentType = 'project wizard';
           } else {
             derivedContentType = 'tool';
