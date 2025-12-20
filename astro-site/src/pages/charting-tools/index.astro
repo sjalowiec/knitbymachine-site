@@ -61,9 +61,9 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
   }
 }
 
-function isPattern(contentType: string): boolean {
+function isTool(contentType: string): boolean {
   const ct = (contentType || '').toLowerCase().trim();
-  return ct === 'pattern' || ct === 'patterns';
+  return ct === 'tool' || ct === 'tools';
 }
 
 try {
@@ -73,7 +73,7 @@ try {
   ]);
   
   const allEntries = [...wizardEntries, ...agentEntries];
-  entries = allEntries.filter(entry => isPattern(entry.contentType));
+  entries = allEntries.filter(entry => isTool(entry.contentType));
   
   entries.sort((a, b) => a.title.localeCompare(b.title));
 } catch (error) {
@@ -81,29 +81,29 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Patterns";
-const description = "Custom-fit patterns for your knitting machine. Tell the wizard what you want to knit and get a plan that fits your yarn, gauge, and style.";
+const title = "Charting Tools";
+const description = "Machine-knitting tools that do the math for you. Let the wizards handle the numbers so you can stay at the machine.";
 ---
 
 <BaseLayout {title} {description}>
   <div class="page-container">
     <SectionHero 
-      title="Patterns" 
-      iconPath="/images/pattern_icon.png"
-      iconAlt="Pattern icon"
+      title="Charting Tools" 
+      subtitle="Choose a tool, enter your gauge, get the numbers — ready to use at your machine."
+      iconPath="/images/tools_icon.png"
+      iconAlt="Charting Tools icon"
     />
 
     <div class="intro-section">
-      <p class="intro-headline">Tell the wizard what you want to knit — get a plan that fits your yarn, gauge, and style.</p>
       <p class="intro-text">
-        Pattern wizards help you move from "I'd love to make this" to "Here's exactly how." You set the basics — size, style, yarn, and gauge — and the wizard builds a roadmap you can follow at the machine.
+        Knit by Machine charting tools turn tricky calculations into clear, usable results. Enter your yarn and gauge once, and each tool gives you stitch counts, row spacing, and shaping numbers you can apply immediately as you knit.
       </p>
     </div>
 
-    <div class="guides-grid" data-testid="patterns-grid">
+    <div class="guides-grid" data-testid="charting-tools-grid">
       {errorMessage && (
         <div class="error">
-          <p><strong>Error loading Patterns</strong></p>
+          <p><strong>Error loading Charting Tools</strong></p>
           <p>Unable to fetch entries. Please try again later.</p>
           <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
         </div>
@@ -111,30 +111,28 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
       
       {entries.length === 0 && !errorMessage && (
         <div class="no-results">
-          <p>Patterns are coming soon! Check back for custom-fit pattern wizards.</p>
+          <p>Charting Tools are coming soon! Check back for machine-knitting calculators and helpers.</p>
         </div>
       )}
       
       {entries.map((entry, index) => {
         const basePath = entry.entryType === 'agent' ? '/agents' : '/wizards';
         const displayText = entry.excerpt || entry.hero || '';
-        const badgeClass = `badge-${entry.accessLevel}`;
-        const badgeText = entry.accessLevel === 'paid' && entry.price 
-          ? `$${entry.price}` 
-          : entry.accessLevel.charAt(0).toUpperCase() + entry.accessLevel.slice(1);
+        const isFree = entry.accessLevel === 'free';
         
         return (
           <a 
             href={`${basePath}/${entry.slug}`} 
-            class="guide-card" 
-            data-testid={`card-pattern-${entry.slug}`}
+            class="guide-card kbm-card" 
+            data-testid={`card-charting-tool-${entry.slug}`}
             style={`animation-delay: ${index * 0.1}s`}
           >
-            <h2 class="guide-card-title">{entry.title}</h2>
+            {isFree && <span class="kbm-card-ribbon">Free</span>}
+            <h2 class="guide-card-title kbm-card__title">{entry.title}</h2>
             {displayText && (
-              <p class="guide-card-description">{displayText}</p>
+              <p class="guide-card-description kbm-card__desc">{displayText}</p>
             )}
-            <span class={`guide-card-badge ${badgeClass}`}>{badgeText}</span>
+            <div class="kbm-card__meta">Open calculator →</div>
           </a>
         );
       })}
@@ -153,14 +151,6 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
     max-width: 800px;
     margin: 0 auto 3rem;
     text-align: center;
-  }
-
-  .intro-headline {
-    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
-    font-weight: 700;
-    color: #52682D;
-    line-height: 1.4;
-    margin: 0 0 0.5rem 0;
   }
 
   .intro-text {
@@ -202,29 +192,12 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
     border-color: #52682D;
   }
 
-  .guide-card-icon {
-    position: absolute;
-    top: 1.75rem;
-    right: 1.75rem;
-    width: 56px;
-    height: 56px;
-    object-fit: contain;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .guide-card:hover .guide-card-icon {
-    opacity: 1;
-  }
-
   .guide-card-title {
     font-size: clamp(1.4rem, 3vw, 1.6rem);
     font-weight: 700;
     color: #52682D;
     margin: 0;
     line-height: 1.3;
-    padding-right: 70px;
   }
 
   .guide-card-description {
@@ -238,31 +211,6 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .guide-card-badge {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border-radius: 12px;
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    font-weight: 600;
-    text-transform: uppercase;
-    align-self: flex-start;
-  }
-
-  .badge-free {
-    background-color: #C7D8A4;
-    color: #52682D;
-  }
-
-  .badge-paid {
-    background-color: #52682D;
-    color: white;
-  }
-
-  .badge-membership {
-    background-color: #8BA556;
-    color: white;
   }
 
   @keyframes fadeInUp {

@@ -1,0 +1,63 @@
+You are working in my Astro site repo for Knit by Machine.
+
+Goal
+We removed the “Wizards” concept from the UI. Previously there was a /wizards-catalog page. We will no longer use it.
+
+New user-facing catalog structure (4 categories only)
+1) Project Wizards (was “Smart Guides”)
+2) Charting Tools (was “Tools”)
+3) Patterns (unchanged)
+4) Practice Projects (was “Skill Builder Catalog”)
+
+Requirements
+- There must be NO “Wizards” menu item anywhere.
+- There must be NO links in header nav or footer to /wizards-catalog.
+- /wizards-catalog should not be referenced anywhere in the codebase.
+- Each of the 4 categories above must have its own catalog page with clear titles and correct content.
+- Any UI labels, cards, buttons, headings, and internal nav references must be updated to match the new names.
+- Smart Guides must be renamed everywhere to Project Wizards.
+- Tools must be renamed everywhere to Charting Tools.
+- skillbuilder-catalog must be renamed everywhere to Practice Projects.
+- Patterns remain Patterns.
+
+Routing / Redirect handling
+- Keep the old /wizards-catalog route from breaking existing links:
+  Option A (preferred): make /wizards-catalog redirect to /project-wizards (or the most appropriate new page).
+  Option B: keep a minimal stub page at /wizards-catalog that explains the change and links to the 4 catalogs.
+Choose A if we already have redirect support in Astro/Netlify; otherwise do B.
+
+Implementation steps
+1) Search the repo for the following terms and list each file to be changed before editing:
+   - "wizards-catalog"
+   - "Wizards"
+   - "Smart Guides"
+   - "smart-guides"
+   - "Tools"
+   - "skillbuilder-catalog"
+   - "Skill Builder"
+   - "Skill Builders"
+2) Update nav components (header + footer) to remove Wizards and update labels/links for the 4 catalogs.
+3) Create or update the four catalog pages:
+   - /project-wizards
+   - /charting-tools
+   - /patterns (if it already exists, just ensure it matches the new nav pattern)
+   - /practice-projects
+   Each page should:
+   - have a consistent layout/hero block like my other catalog pages
+   - show the correct items for that category (same data source logic you currently use, just filtered/mapped correctly)
+   - use the correct page title and intro text (short, practical)
+4) Remove or deprecate the old /wizards-catalog page:
+   - implement redirect to /project-wizards OR create the stub page if redirect is not feasible.
+5) Update any internal links in cards, CTAs, and section components that still point to old routes.
+6) Confirm build passes locally after changes (npm run build or equivalent).
+
+Rules
+- Do NOT invent new categories beyond these four.
+- Do NOT rename Guided Workshops, Ask & Answer, Glossary, or Blog as part of this change.
+- Make changes minimal and targeted: rename labels, routes, and filtering logic only.
+- If you are unsure where a route is defined, search first—do not guess.
+
+Deliverables
+- A summary of every file changed and what was changed.
+- The final list of catalog URLs and their page titles.
+- Confirmation that /wizards-catalog no longer appears anywhere except (if needed) in the redirect/stub implementation.

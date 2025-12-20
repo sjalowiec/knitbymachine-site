@@ -61,9 +61,9 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
   }
 }
 
-function isPattern(contentType: string): boolean {
+function isPracticeProject(contentType: string): boolean {
   const ct = (contentType || '').toLowerCase().trim();
-  return ct === 'pattern' || ct === 'patterns';
+  return ct.includes('practice project') || ct.includes('practice-project');
 }
 
 try {
@@ -73,7 +73,7 @@ try {
   ]);
   
   const allEntries = [...wizardEntries, ...agentEntries];
-  entries = allEntries.filter(entry => isPattern(entry.contentType));
+  entries = allEntries.filter(entry => isPracticeProject(entry.contentType));
   
   entries.sort((a, b) => a.title.localeCompare(b.title));
 } catch (error) {
@@ -81,29 +81,29 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Patterns";
-const description = "Custom-fit patterns for your knitting machine. Tell the wizard what you want to knit and get a plan that fits your yarn, gauge, and style.";
+const title = "Practice Projects";
+const description = "Hands-on learning projects to build your machine knitting skills. Start small, learn the techniques, then apply them to bigger projects.";
 ---
 
 <BaseLayout {title} {description}>
   <div class="page-container">
     <SectionHero 
-      title="Patterns" 
-      iconPath="/images/pattern_icon.png"
-      iconAlt="Pattern icon"
+      title="Practice Projects" 
+      iconPath="/images/practice-icon.png"
+      iconAlt="Practice Projects icon"
     />
 
     <div class="intro-section">
-      <p class="intro-headline">Tell the wizard what you want to knit — get a plan that fits your yarn, gauge, and style.</p>
+      <p class="intro-headline">Build skills through practice.</p>
       <p class="intro-text">
-        Pattern wizards help you move from "I'd love to make this" to "Here's exactly how." You set the basics — size, style, yarn, and gauge — and the wizard builds a roadmap you can follow at the machine.
+        These focused projects help you master specific techniques step by step. Each one builds on what you know and prepares you for more complex work at the machine.
       </p>
     </div>
 
-    <div class="guides-grid" data-testid="patterns-grid">
+    <div class="guides-grid" data-testid="practice-projects-grid">
       {errorMessage && (
         <div class="error">
-          <p><strong>Error loading Patterns</strong></p>
+          <p><strong>Error loading Practice Projects</strong></p>
           <p>Unable to fetch entries. Please try again later.</p>
           <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
         </div>
@@ -111,7 +111,7 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
       
       {entries.length === 0 && !errorMessage && (
         <div class="no-results">
-          <p>Patterns are coming soon! Check back for custom-fit pattern wizards.</p>
+          <p>Practice Projects are coming soon! Check back for hands-on learning exercises.</p>
         </div>
       )}
       
@@ -127,9 +127,12 @@ const description = "Custom-fit patterns for your knitting machine. Tell the wiz
           <a 
             href={`${basePath}/${entry.slug}`} 
             class="guide-card" 
-            data-testid={`card-pattern-${entry.slug}`}
+            data-testid={`card-practice-project-${entry.slug}`}
             style={`animation-delay: ${index * 0.1}s`}
           >
+            {entry.iconUrl && (
+              <img src={entry.iconUrl} alt="" class="guide-card-icon" />
+            )}
             <h2 class="guide-card-title">{entry.title}</h2>
             {displayText && (
               <p class="guide-card-description">{displayText}</p>

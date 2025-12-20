@@ -1,0 +1,84 @@
+You are working in my Astro site repo for Knit by Machine.
+
+Goal
+We removed the generic “Wizards” concept from the UI.
+There is NO standalone “Wizards” category anymore.
+
+Important clarification
+- “Project Wizards” IS a valid, required category and menu item.
+- “Wizards” by itself is NOT a valid category, menu item, label, or route.
+- Do not remove or rename “Project Wizards”.
+
+Important naming rule (internal vs public)
+- Public URLs should NOT include “-catalog”.
+- Internally (file names, component names, constants) using “-catalog” IS allowed and preferred for clarity.
+
+Final public URL hierarchy (sanity-checked — build everything to match this)
+CATALOG (listing) pages — public:
+1) /project-wizards        (menu item: “Project Wizards”)
+2) /charting-tools         (menu item: “Charting Tools”)
+3) /patterns               (menu item: “Patterns”)
+4) /practice-projects      (menu item: “Practice Projects”)
+
+New user-facing category structure (4 categories only)
+1) Project Wizards (was “Smart Guides”)
+2) Charting Tools (was “Tools”)
+3) Patterns (unchanged)
+4) Practice Projects (was “Skill Builder Catalog”)
+
+Explicit requirements
+- Header and footer MUST include a menu item labeled exactly “Project Wizards” that links to /project-wizards.
+- There must be NO menu item labeled “Wizards”.
+- There must be NO route, label, or navigation destination named “Wizards” by itself.
+- /wizards-catalog must not appear as a normal navigation destination.
+- Smart Guides must be renamed everywhere in UI to Project Wizards.
+- Tools must be renamed everywhere in UI to Charting Tools.
+- skillbuilder / skillbuilder-catalog / Skill Builders must be renamed everywhere in UI to Practice Projects.
+- Patterns remain Patterns.
+- Guided Workshops, Ask & Answer, Glossary, Blog are NOT part of this change.
+
+Routing / Backward compatibility for old /wizards-catalog
+We want old links not to break.
+Preferred behavior:
+- /wizards-catalog should redirect to /project-wizards.
+If redirect support already exists (Netlify redirects or Astro middleware), use that.
+If not feasible:
+- Keep a minimal stub page at /wizards-catalog explaining the change and linking to:
+  /project-wizards
+  /charting-tools
+  /patterns
+  /practice-projects
+
+Implementation steps (do not skip the search step)
+1) Search the repo and list each file that contains any of these terms BEFORE editing:
+   - "wizards-catalog"
+   - "Wizards"
+   - "Smart Guides"
+   - "smart-guides"
+   - "Tools"
+   - "skillbuilder-catalog"
+   - "Skill Builder"
+   - "Skill Builders"
+2) Update header nav + footer nav:
+   - Remove any standalone “Wizards” item
+   - Ensure “Project Wizards” exists and links to /project-wizards
+   - Ensure the other 3 catalog links use the public URLs above
+3) Catalog pages:
+   - Ensure public routes exist exactly as listed above
+   - Internally, you may use “-catalog” in file/component names
+   - Do not expose “-catalog” in URLs
+4) Remove/deprecate the old /wizards-catalog as a public destination
+5) Update any internal links pointing to old routes or labels
+6) Run the build and resolve errors
+
+Rules
+- Do NOT invent new categories beyond these four.
+- Do NOT remove “Project Wizards”.
+- Do NOT rename Guided Workshops, Ask & Answer, Glossary, or Blog.
+- Search first; do not guess.
+
+Deliverables
+- List of files changed and what was changed.
+- Confirmation that “Project Wizards” appears in the menu and works.
+- Confirmation that “Wizards” by itself does not appear anywhere.
+- Confirmation that /wizards-catalog is handled only via redirect or stub.
