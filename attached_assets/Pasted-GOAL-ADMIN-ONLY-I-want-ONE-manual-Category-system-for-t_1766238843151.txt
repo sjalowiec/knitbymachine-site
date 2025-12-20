@@ -1,0 +1,112 @@
+GOAL (ADMIN ONLY)
+I want ONE manual “Category” system for the “wizard-ish” library items I manage in Admin, with exactly these four allowed values:
+
+- Pattern
+- Tool
+- Practice Project
+- Project Wizard
+
+This category system applies ONLY to the admin sections currently related to:
+- Smart Guides
+- Wizards
+- AI Agents (MindPal Agents)
+- Skill Builders
+
+It does NOT apply to:
+- Guided Workshops
+- Ask ’n Answer
+- Glossary
+- Blog Posts
+
+IMPORTANT: Category must be HUMAN-assigned (me). No automatic assignment.
+
+SAFETY
+1) Before editing any file, create a .bak backup.
+2) Make changes only in the Admin app/routes/components + API endpoints used by Admin.
+
+PHASE 1 — AUDIT WHAT DATA POWERS EACH MENU ITEM (DO THIS FIRST)
+Find where the admin sidebar/nav is defined and identify the routes/components for:
+- Smart Guides
+- Wizards
+- AI Agents
+- Skill Builders
+
+For each one, determine:
+A) Which page/component renders the list
+B) Which API endpoint(s) it calls
+C) Which database table / collection / JSON source it reads/writes
+
+Create a short “source map” report like:
+- Smart Guides → route X → component Y → endpoint Z → table/collection ___
+- Wizards → ...
+- AI Agents → ...
+- Skill Builders → ...
+
+If Smart Guides and Wizards are the same route/component, explicitly confirm that.
+
+PHASE 2 — IMPLEMENT A SINGLE CATEGORY SYSTEM (WITHOUT MERGING DATASETS YET)
+Regardless of whether these are separate datasets, add a consistent “category” field that can exist on EACH record type shown in those four admin areas.
+
+Rules:
+- Canonical admin values: "Pattern", "Tool", "Practice Project", "Project Wizard"
+- category is optional for legacy records (may be blank initially)
+- category must be required for NEW records moving forward (admin must choose before saving)
+
+If each section uses different tables/models, add category to each:
+- wizards table/model
+- skill_builders table/model
+- mindpal_agents (or whatever AI agents table/model is called)
+(Only for these admin-managed lists, not Guided Workshops etc.)
+
+PHASE 3 — NORMALIZE LEGACY VALUES (DISPLAY ONLY)
+Add a normalization function used when rendering list + filters in Admin:
+Map old/legacy values into the new 4 categories IF POSSIBLE, otherwise show as Uncategorized.
+
+Mapping:
+Pattern: "pattern", "patterns"
+Tool: "tool", "tools", "calculator", "generator"
+Practice Project: "practice", "practice project", "practice projects", "skill builder", "skill builders"
+Project Wizard: "project wizard", "wizard", "wizards", "smart guide", "smart guides", "ai agent", "agent", "mindpal"
+
+If missing/unknown, normalizedCategory = null.
+
+IMPORTANT:
+- Do NOT auto-save these mappings back to the database.
+- Only persist category when I explicitly edit and click Save.
+
+PHASE 4 — ADMIN LIST FILTERS (EACH SECTION)
+In each of the four admin list screens (Smart Guides/Wizards/AI Agents/Skill Builders), add filter tabs/chips:
+- All
+- Uncategorized
+- Pattern
+- Tool
+- Practice Project
+- Project Wizard
+
+Filtering should use the normalized category:
+- Uncategorized = category missing/invalid
+- Others = exact match on canonical values
+
+PHASE 5 — EDIT/DETAIL UI
+On the edit screen for items in those four sections:
+- Add/replace category control with a dropdown using exactly the 4 values.
+- For NEW items: block save until category is chosen (inline error message).
+- For existing items: allow saving without category only if it was already missing, BUT strongly prefer prompting (e.g., show a warning banner “Category not set”).
+
+PHASE 6 — REMOVE AUTO-ASSIGNMENT
+Search and remove any code that automatically sets category/type based on:
+- which menu item you clicked
+- slug
+- tags
+- template
+- anything else
+Category changes ONLY by user input.
+
+DELIVERABLES
+Return:
+1) The PHASE 1 source map (routes → endpoints → tables/collections)
+2) The list of files changed
+3) Confirmation that:
+   - Smart Guides and Wizards behavior is clarified
+   - Each of the four sections can filter by the 4 categories + Uncategorized
+   - Category can be manually set and persists on save
