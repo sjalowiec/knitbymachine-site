@@ -57,10 +57,10 @@ const bodyClass = "has-catalog-search";
 <BaseLayout {title} {description} {bodyClass}>
   <div class="page-container">
     <SectionHero 
-      title="Studio Sessions" 
+      title="Project Walkthroughs" 
       subtitle="Develop your machine knitting skills through guided instruction. Join live sessions or watch on-demand."
       iconPath="/images/workshop.svg"
-      iconAlt="Studio Sessions"
+      iconAlt="Project Walkthroughs"
     >
       <div slot="toolbar" class="workshops-toolbar">
         <div class="search-wrapper">
@@ -68,14 +68,14 @@ const bodyClass = "has-catalog-search";
             type="text" 
             class="search-input" 
             id="searchInput" 
-            placeholder="Search workshops..."
-            aria-label="Search workshops"
+            placeholder="Search Project Walkthroughs..."
+            aria-label="Search Project Walkthroughs"
           >
         </div>
         
         <div class="category-filters-wrapper">
           <div class="category-filters">
-            <button class="filter-btn active" data-category="all" aria-label="Show all workshops">
+            <button class="filter-btn active" data-category="all" aria-label="Show all Project Walkthroughs">
               <img src="/images/all_icon.svg" alt="All" class="filter-icon-img" />
               <span class="filter-text">All</span>
             </button>
@@ -95,7 +95,7 @@ const bodyClass = "has-catalog-search";
     <div id="catalogueContent" class="catalogue-content" data-entries={JSON.stringify(entries)}>
       {errorMessage && (
         <div class="error">
-          <p><strong>Error loading workshops</strong></p>
+          <p><strong>Error loading Project Walkthroughs</strong></p>
           <p>Unable to fetch workshop entries. Please try again later.</p>
           <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
         </div>
