@@ -21,6 +21,22 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
       .map(async (file: any) => {
         const fileResponse = await fetch(file.download_url);
         const data = await fileResponse.json();
+        
+        // Derive contentType from explicit field, or fall back to mapping from category
+        let derivedContentType = data.contentType;
+        if (!derivedContentType) {
+          const cat = (data.category || '').toLowerCase();
+          if (cat.includes('pattern')) {
+            derivedContentType = 'pattern';
+          } else if (cat.includes('skill builder') || cat.includes('practice')) {
+            derivedContentType = 'practice project';
+          } else if (cat.includes('smart guide') || cat.includes('project planner') || entryType === 'agent') {
+            derivedContentType = 'project wizard';
+          } else {
+            derivedContentType = 'tool';
+          }
+        }
+        
         return {
           title: data.title,
           slug: data.slug,
@@ -29,6 +45,7 @@ async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent')
           description: data.description || '',
           whyUseThisTool: data.whyUseThisTool || '',
           category: data.category || 'Uncategorized',
+          contentType: derivedContentType,
           tags: data.tags || [],
           keywords: data.keywords || [],
           aliases: data.aliases || [],
@@ -73,7 +90,7 @@ const description = "Browse all our knitting calculators and interactive tools t
     <!-- Hero Header (NOT sticky) -->
     <SectionHero 
       title="Get knitting" 
-      subtitle="Patterns, tools, and skill builders to help you start your next project."
+      subtitle="Patterns, tools, and practice projects to help you start your next project."
       iconPath="/images/knit_icon.svg"
       iconAlt="Knitting icon"
     />
@@ -91,17 +108,21 @@ const description = "Browse all our knitting calculators and interactive tools t
       </div>
       
       <div class="wizard-controls__filters">
-        <button class="filter-icon active" data-category="pattern" aria-label="Filter by Pattern" title="Pattern Wizards">
+        <button class="filter-icon active" data-content-type="pattern" aria-label="Filter by Pattern" title="Patterns">
           <img src="/images/pattern_icon.png" alt="Pattern" />
           <span class="filter-text">Patterns</span>
         </button>
-        <button class="filter-icon" data-category="tool" aria-label="Filter by Tools" title="Tools Wizards">
+        <button class="filter-icon" data-content-type="tool" aria-label="Filter by Tools" title="Tools">
           <img src="/images/tools_icon.png" alt="Tools" />
           <span class="filter-text">Tools</span>
         </button>
-        <button class="filter-icon" data-category="skill builder" aria-label="Filter by Skill Builders" title="Skill Builders">
-          <img src="/images/practice-icon.png" alt="Skill Builders" />
-          <span class="filter-text">Skill Builders</span>
+        <button class="filter-icon" data-content-type="practice project" aria-label="Filter by Practice Projects" title="Practice Projects">
+          <img src="/images/practice-icon.png" alt="Practice Projects" />
+          <span class="filter-text">Practice Projects</span>
+        </button>
+        <button class="filter-icon" data-content-type="project wizard" aria-label="Filter by Project Wizards" title="Project Wizards">
+          <img src="/images/guide_icon.png" alt="Project Wizards" />
+          <span class="filter-text">Project Wizards</span>
         </button>
       </div>
     </div>
@@ -673,7 +694,7 @@ const description = "Browse all our knitting calculators and interactive tools t
 <script>
   let allEntries = [];
   let displayedEntries = [];
-  let currentCategory = 'pattern';
+  let currentContentType = 'pattern';
 
   function sortEntries(entries, sortBy) {
     const sorted = [...entries];
@@ -701,54 +722,51 @@ const description = "Browse all our knitting calculators and interactive tools t
     return sorted;
   }
 
-  function normalizeCategory(category) {
-    // Normalize category names for consistent grouping
-    const cat = (category || 'Uncategorized').toLowerCase().trim();
+  function normalizeContentType(contentType) {
+    // Normalize contentType names for consistent grouping
+    const ct = (contentType || 'tool').toLowerCase().trim();
     
-    // Normalize "smart guide" and "project planner" variations to "Project Planner"
-    if (cat.includes('smart guide') || cat.includes('project planner')) {
-      return 'Project Planner';
+    // Normalize to the 4 standard content types
+    if (ct.includes('project wizard') || ct.includes('project-wizard')) {
+      return 'Project Wizard';
     }
-    // Normalize "skill builder" variations
-    if (cat.includes('skill builder')) {
-      return 'Skill Builder';
+    if (ct.includes('practice project') || ct.includes('practice-project') || ct.includes('skill builder')) {
+      return 'Practice Project';
     }
-    // Normalize "tool" variations
-    if (cat.includes('tool')) {
+    if (ct.includes('tool')) {
       return 'Tool';
     }
-    // Normalize "pattern" variations
-    if (cat.includes('pattern')) {
+    if (ct.includes('pattern')) {
       return 'Pattern';
     }
     
     // Return original with first letter capitalized
-    return category.split(' ')
+    return contentType.split(' ')
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(' ');
   }
 
-  function groupByCategory(entries) {
+  function groupByContentType(entries) {
     const grouped = {};
     entries.forEach(entry => {
-      const normalizedCategory = normalizeCategory(entry.category);
-      if (!grouped[normalizedCategory]) {
-        grouped[normalizedCategory] = [];
+      const normalizedContentType = normalizeContentType(entry.contentType);
+      if (!grouped[normalizedContentType]) {
+        grouped[normalizedContentType] = [];
       }
-      grouped[normalizedCategory].push(entry);
+      grouped[normalizedContentType].push(entry);
     });
     return grouped;
   }
 
-  function getCategoryIcon(category) {
-    const categoryLower = category.toLowerCase();
-    if (categoryLower.includes('pattern')) {
+  function getContentTypeIcon(contentType) {
+    const ctLower = contentType.toLowerCase();
+    if (ctLower.includes('pattern')) {
       return '/images/pattern_icon.png';
-    } else if (categoryLower.includes('practice') || categoryLower.includes('skill builder')) {
+    } else if (ctLower.includes('practice project')) {
       return '/images/practice-icon.svg';
-    } else if (categoryLower.includes('calculator') || categoryLower.includes('tool')) {
+    } else if (ctLower.includes('tool')) {
       return '/images/tools_icon.png';
-    } else if (categoryLower.includes('guide') || categoryLower.includes('smart')) {
+    } else if (ctLower.includes('project wizard')) {
       return '/images/guide_icon.png';
     }
     // Default to tools icon
@@ -765,41 +783,40 @@ const description = "Browse all our knitting calculators and interactive tools t
   function renderCatalogue(entries) {
     const container = document.getElementById('catalogueContent');
     
-    // Filter by selected category (if one is active)
+    // Filter by selected content type (if one is active)
     let filteredEntries = entries;
-    if (currentCategory) {
+    if (currentContentType) {
       filteredEntries = entries.filter(entry => {
-        const entryCategory = (entry.category || '').toLowerCase();
-        const selectedCategory = currentCategory.toLowerCase();
+        const entryContentType = (entry.contentType || '').toLowerCase();
+        const selectedContentType = currentContentType.toLowerCase();
         
-        // Match if the entry category contains the selected category
-        // This handles cases like "Tools" matching "Calculator Tools" or just "Tools"
-        return entryCategory.includes(selectedCategory) || 
-               selectedCategory.includes(entryCategory) ||
-               entry.category === currentCategory;
+        // Match if the entry contentType contains the selected contentType
+        return entryContentType.includes(selectedContentType) || 
+               selectedContentType.includes(entryContentType) ||
+               entry.contentType === currentContentType;
       });
     }
     
     const sortedEntries = sortEntries(filteredEntries, 'alphabetical');
-    const grouped = groupByCategory(sortedEntries);
-    const categories = Object.keys(grouped).sort();
+    const grouped = groupByContentType(sortedEntries);
+    const contentTypes = Object.keys(grouped).sort();
 
-    if (categories.length === 0) {
+    if (contentTypes.length === 0) {
       container.innerHTML = '<div class="no-results">No wizards found matching your search.</div>';
       return;
     }
 
     let html = '';
 
-    categories.forEach(category => {
-      const categoryEntries = grouped[category];
-      const categoryIcon = getCategoryIcon(category);
-      const categoryDisplayName = capitalizeCategoryName(category);
+    contentTypes.forEach(contentType => {
+      const contentTypeEntries = grouped[contentType];
+      const contentTypeIcon = getContentTypeIcon(contentType);
+      const contentTypeDisplayName = capitalizeCategoryName(contentType);
 
       html += `
-        <div class="category-section" data-category="${category}">
+        <div class="category-section" data-content-type="${contentType}">
           <div class="wizards-grid">
-            ${categoryEntries.map(entry => {
+            ${contentTypeEntries.map(entry => {
               const badgeClass = `badge-${entry.accessLevel}`;
               const badgeText = entry.accessLevel === 'paid' && entry.price 
                 ? `$${entry.price}` 
@@ -810,9 +827,9 @@ const description = "Browse all our knitting calculators and interactive tools t
               const keywordsStr = Array.isArray(entry.keywords) ? entry.keywords.join(' ').toLowerCase() : '';
               const aliasesStr = Array.isArray(entry.aliases) ? entry.aliases.join(' ').toLowerCase() : '';
               
-              // Determine which icon to show: category icon for skill builders, or entry's own icon
-              const isSkillBuilder = entry.category.toLowerCase() === 'skill builder';
-              const cardIcon = isSkillBuilder 
+              // Determine which icon to show: practice project icon, or entry's own icon
+              const isPracticeProject = (entry.contentType || '').toLowerCase().includes('practice project');
+              const cardIcon = isPracticeProject 
                 ? '/images/practice-icon-light.svg'
                 : entry.iconUrl;
               
@@ -841,7 +858,7 @@ const description = "Browse all our knitting calculators and interactive tools t
                   data-tags="${entry.tags.join(' ').toLowerCase()}"
                   data-keywords="${keywordsStr}"
                   data-aliases="${aliasesStr}">
-                  ${cardIcon ? `<img src="${cardIcon}" alt="${isSkillBuilder ? 'Skill Builder' : entry.title} icon" class="wizard-card-icon" />` : ''}
+                  ${cardIcon ? `<img src="${cardIcon}" alt="${isPracticeProject ? 'Practice Project' : entry.title} icon" class="wizard-card-icon" />` : ''}
                   <h3 class="wizard-card-title">${entry.title}</h3>
                   ${cardDescription ? `<p class="wizard-card-description">${cardDescription}</p>` : ''}
                   ${whyTooltip}
@@ -968,17 +985,17 @@ const description = "Browse all our knitting calculators and interactive tools t
       allEntries = JSON.parse(entriesData);
       displayedEntries = allEntries;
       
-      // Check for category filter in URL
+      // Check for content type filter in URL
       const urlParams = new URLSearchParams(window.location.search);
-      const categoryFilter = urlParams.get('category');
+      const contentTypeFilter = urlParams.get('contentType');
       
-      if (categoryFilter) {
-        currentCategory = categoryFilter;
+      if (contentTypeFilter) {
+        currentContentType = contentTypeFilter;
         
         // Update active state on filter buttons
         document.querySelectorAll('.filter-icon').forEach(btn => {
           btn.classList.remove('active');
-          if (btn.dataset.category === categoryFilter) {
+          if (btn.dataset.contentType === contentTypeFilter) {
             btn.classList.add('active');
           }
         });
@@ -994,10 +1011,10 @@ const description = "Browse all our knitting calculators and interactive tools t
     filterCatalogue(e.target.value);
   });
 
-  // Category filter buttons (toggleable - click active filter to show all)
+  // Content type filter buttons (toggleable - click active filter to show all)
   document.querySelectorAll('.filter-icon').forEach(button => {
     button.addEventListener('click', () => {
-      const category = button.dataset.category;
+      const contentType = button.dataset.contentType;
       const isAlreadyActive = button.classList.contains('active');
       
       // Update active state
@@ -1008,10 +1025,10 @@ const description = "Browse all our knitting calculators and interactive tools t
       // Toggle behavior: if clicking the active filter, deactivate it (show all)
       // Otherwise, activate the clicked filter
       if (isAlreadyActive) {
-        currentCategory = ''; // Show all entries
+        currentContentType = ''; // Show all entries
       } else {
         button.classList.add('active');
-        currentCategory = category;
+        currentContentType = contentType;
       }
       
       displayedEntries = allEntries;
