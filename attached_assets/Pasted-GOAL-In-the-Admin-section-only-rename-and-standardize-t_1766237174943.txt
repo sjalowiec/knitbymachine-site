@@ -1,0 +1,84 @@
+GOAL
+In the Admin section only, rename and standardize the content category options to exactly:
+
+- pattern
+- tool
+- practice project
+- project wizard
+
+These replace the old category labels (patterns, tools, skill builders, smart guides, wizards, etc.).
+
+SCOPE (ADMIN ONLY)
+✅ Update admin forms, filters, labels, and any validation that references categories
+✅ Update defaults for new records
+✅ Migrate existing records to the new category values
+✅ Keep existing data intact (no deletions)
+❌ Do NOT change site menu, public pages, routes, or front-end rendering outside admin (we’ll do that in a separate prompt)
+
+IMPORTANT SAFETY
+1) Before editing any file, make a backup copy with a .bak extension.
+2) After the change, run/preview Admin and confirm:
+   - Existing records still load
+   - Category filter still works
+   - You can edit and save a record
+   - Category values persist and are one of the four allowed values
+
+STEP 1 — FIND ALL CATEGORY REFERENCES
+Search the codebase for these terms and list the files you’ll change:
+category
+categories
+wizard
+wizards
+smart guide
+smart guides
+skill builder
+skill builders
+pattern(s)
+tool(s)
+
+This should include:
+- any schema/validation
+- any admin dropdown/select
+- any admin filter tabs
+- any seed/default objects
+- any normalization or display mapping
+
+STEP 2 — DEFINE THE NEW CANONICAL CATEGORY LIST
+Create a single source of truth constant in the admin code (wherever you keep enums/constants), e.g.:
+CATEGORIES = ["pattern","tool","practice project","project wizard"]
+
+Use this constant everywhere the admin needs category options.
+
+STEP 3 — UPDATE ADMIN UI CONTROLS
+Update any dropdown/select/radio UI in admin to use only the 4 new values.
+Update any filter chips/tabs in admin that used old labels.
+
+STEP 4 — MIGRATE EXISTING DATA (NORMALIZATION)
+Add a migration/normalization step in admin load/save logic so existing records are mapped to the new categories.
+
+Use this mapping:
+- "patterns", "pattern" → "pattern"
+- "tools", "tool" → "tool"
+- "skill builders", "skill builder", "practice", "practice projects" → "practice project"
+- "smart guides", "smart guide", "wizard", "wizards", "project wizard" → "project wizard"
+
+Notes:
+- If a record has an unknown/empty category, default it to "tool" (safe default) BUT do not overwrite silently unless the record is saved; it’s OK to normalize in memory for display and only persist when saved.
+
+STEP 5 — VALIDATION
+Wherever category is validated, restrict it to the 4 new values only.
+If an invalid value is encountered, surface a simple admin warning and fall back to "tool" for display.
+
+STEP 6 — TEST CHECKLIST
+After changes:
+- Admin list page shows categories correctly
+- Filtering by each category works
+- Editing category and saving works
+- Existing older records now display under the correct new category
+- No references remain to “smart guides” or “skill builders” or “wizards” as category values in admin
+
+DELIVERABLE
+Return:
+1) the list of files changed
+2) a short summary of what was updated (schema/UI/migration)
+3) confirmation that admin preview works and categories are now restricted to the four values above
