@@ -34,6 +34,15 @@ function generateWorkshopId() {
   return result;
 }
 
+function generateAccessToken() {
+  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  let result = '';
+  for (let i = 0; i < 32; i++) {
+    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return result;
+}
+
 export async function createPendingWorkshop({ applicantName, applicantEmail, applicationData }) {
   const { DATABASE_URL } = process.env;
   
@@ -45,10 +54,12 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
   const sql = neon(DATABASE_URL);
   
   let workshopId;
+  let accessToken;
   let attempts = 0;
   
   while (attempts < MAX_RETRIES) {
     workshopId = generateWorkshopId();
+    accessToken = generateAccessToken();
     attempts++;
     
     try {
@@ -61,6 +72,7 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
           applicant_email,
           application_data,
           internal_notes,
+          access_token,
           is_draft,
           pending_publish,
           created_at,
@@ -73,6 +85,7 @@ export async function createPendingWorkshop({ applicantName, applicantEmail, app
           ${applicantEmail},
           ${JSON.stringify(applicationData)},
           ${INTERNAL_NOTES_TEMPLATE},
+          ${accessToken},
           true,
           false,
           NOW(),
