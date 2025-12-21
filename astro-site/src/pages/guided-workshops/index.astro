@@ -21,6 +21,26 @@ const description = "A hands-on, personal workshop designed to help you make rea
                 A 10-day, call-free workshop where you finish one real project on your machine — with focused, written guidance at each step.
               </p>
             </div>
+            <!-- Hero CTA moved to left column -->
+            <div class="hero-cta hero-cta--left">
+              <a
+                class="button button--primary button--large"
+                href="/guided-workshops/apply?utm_source=kbm&utm_medium=guided-workshop-page&utm_campaign=guided-workshop-application&utm_content=hero-cta"
+                data-testid="button-cta-hero"
+              >
+                Apply for Your Guided Workshop
+              </a>
+              <p class="cta-note"><em>You won't pay yet — Sue reviews your project first and sends a custom quote.</em></p>
+              <p class="how-it-works-link">
+                <a href="#how-it-works">See how it works →</a>
+              </p>
+            </div>
+            <!-- Intro text in left column -->
+            <div class="hero-intro-text hero-intro-text--left">
+              <p>
+                You bring the project, and I help you move it forward with clear written guidance, short video replies, and support that fits your pace. No calls, no time zones — just steady, practical help as you knit.
+              </p>
+            </div>
           </div>
 
           <div class="hero-right">
@@ -28,28 +48,6 @@ const description = "A hands-on, personal workshop designed to help you make rea
               <img src="/images/knit-by-machine-sue.png" alt="Sue at her knitting machine, ready to guide you" class="hero-image" />
             </div>
           </div>
-        </div>
-
-        <!-- Full-width intro text -->
-        <div class="hero-intro-text">
-          <p>
-            You bring the project, and I help you move it forward with clear written guidance, short video replies, and support that fits your pace. No calls, no time zones — just steady, practical help as you knit.
-          </p>
-        </div>
-
-        <!-- Centered CTA -->
-        <div class="hero-cta hero-cta--centered">
-          <a
-            class="button button--primary button--large"
-            href="/guided-workshops/apply"
-            data-testid="button-cta-hero"
-          >
-            Apply for Your Guided Workshop
-          </a>
-          <p class="cta-note"><em>You won't pay yet — Sue reviews your project first and sends a custom quote.</em></p>
-          <p class="how-it-works-link">
-            <a href="#how-it-works">See how it works →</a>
-          </p>
         </div>
       </div>
     </section>
@@ -557,23 +555,48 @@ This helps me understand your project before I confirm it's a good fit.
     margin-bottom: 0.5rem;
   }
 
-  /* How It Works Link */
+  /* Hero CTA in left column */
+  .hero-cta--left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-cta--left .cta-note {
+    text-align: left;
+  }
+
+  /* Hero intro text in left column */
+  .hero-intro-text--left {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  /* How It Works Link - enhanced visibility */
   .how-it-works-link {
     margin-top: 0.5rem;
     text-align: center;
   }
 
+  .hero-cta--left .how-it-works-link {
+    text-align: left;
+  }
+
   .how-it-works-link a {
     font-size: 0.95rem;
-    color: #2C3A57;
+    color: #3d4a2e;
+    font-weight: 500;
     text-decoration: underline;
-    text-underline-offset: 2px;
-    opacity: 0.85;
-    transition: opacity 0.2s ease;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
   }
 
   .how-it-works-link a:hover {
-    opacity: 1;
+    color: var(--kbm-green);
+    text-decoration-thickness: 2px;
   }
 
   /* Included List */
