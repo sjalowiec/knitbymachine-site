@@ -47,21 +47,21 @@ const error = Astro.url.searchParams.get('error');
             <div>
               <h3><i class="fa-solid fa-check fa-xl"></i> This is likely a good fit if you:</h3>
               <ul class="check-list">
-                <li><i class="fa-solid fa-check"></i> <strong>Want to start one project</strong> from the beginning and move it forward with clarity</li>
-                <li><i class="fa-solid fa-check"></i> <strong>Prefer written guidance,</strong> voice notes, and short videos over scheduling live calls</li>
-                <li><i class="fa-solid fa-check"></i> <strong>Want specific, project-focused support</strong> — not a big course or content library</li>
-                <li><i class="fa-solid fa-check"></i> <strong>Are willing to take small, steady actions</strong> over a 10-day window</li>
-                <li><i class="fa-solid fa-check"></i> <strong>Appreciate honest, kind feedback</strong> grounded in real machine-knitting practice</li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Want to start one project</strong> from the beginning and move it forward with clarity</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Prefer written guidance,</strong> voice notes, and short videos over scheduling live calls</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Want specific, project-focused support</strong> — not a big course or content library</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Are willing to take small, steady actions</strong> over a 10-day window</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Appreciate honest, kind feedback</strong> grounded in real machine-knitting practice</span></li>
               </ul>
             </div>
 
             <div>
               <h3><i class="fa-solid fa-xmark fa-xl"></i> It's probably not a fit if you:</h3>
-              <ul>
-                <li><strong>Want a full custom pattern</strong> designed from scratch</li>
-                <li><strong>Are looking to fix or rescue</strong> a project that's already well underway</li>
-                <li><strong>Have a very large, open-ended,</strong> or long-term project</li>
-                <li><strong>Prefer live, real-time coaching</strong> calls</li>
+              <ul class="not-fit-list">
+                <li><span class="bullet-text"><strong>Want a full custom pattern</strong> designed from scratch</span></li>
+                <li><span class="bullet-text"><strong>Are looking to fix or rescue</strong> a project that's already well underway</span></li>
+                <li><span class="bullet-text"><strong>Have a very large, open-ended,</strong> or long-term project</span></li>
+                <li><span class="bullet-text"><strong>Prefer live, real-time coaching</strong> calls</span></li>
               </ul>
             </div>
           </div>
@@ -450,28 +450,52 @@ const error = Astro.url.searchParams.get('error');
     margin: 0;
   }
 
-  .section--fit ul.check-list {
+  .section--fit ul.check-list,
+  .section--fit ul.not-fit-list {
     list-style: none;
     padding-left: 0;
   }
 
   .section--fit ul.check-list li {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
     gap: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .section--fit ul.check-list li .fa-check {
     color: #52682d;
-    margin-top: 0.25rem;
     flex-shrink: 0;
+    font-size: 0.85em;
+    position: relative;
+    top: 0.1em;
+  }
+
+  .section--fit ul.not-fit-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section--fit ul.not-fit-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #5a6b47;
   }
 
   .section--fit li {
     font-size: clamp(0.95rem, 1.5vw, 1rem);
     color: #5a6b47;
     line-height: 1.6;
-    margin-bottom: 0.5rem;
+  }
+
+  .section--fit .bullet-text {
+    display: inline;
+  }
+
+  .section--fit .bullet-text strong {
+    font-weight: 600;
   }
 
   .fit-note {
