@@ -1,0 +1,61 @@
+Goal
+Update the Guided Workshops admin “Send Payment Request” feature so I can choose a price tier ($297 Standard or $397 Premium) and trigger the correct ActiveCampaign automation + email link (which points to the correct Outseta checkout product).
+
+What to build
+
+1) Data model
+- Add a new field on the guided workshop application record:
+  - paymentTier: "standard" | "premium" | null
+- Add/keep:
+  - paymentRequestSentAt: datetime | null (already planned)
+  - paymentRequestSentTier: "standard" | "premium" | null (store what was actually sent)
+  - paymentRequestSentBy: string | null (optional if you already track admin user)
+
+2) Admin UI
+- On the application detail view, when status === "approved":
+  - show a small tier selector (radio buttons or dropdown):
+    - Standard — $297
+    - Premium — $397
+  - default selection:
+    - if paymentTier is already set, use it
+    - else default to "premium" (safer default), but make it editable
+  - add a single button: “Send Payment Request”
+  - button disabled if paymentRequestSentAt is set
+  - button also disabled if paymentTier is null (must choose a tier)
+
+3) Behavior on click
+When admin clicks “Send Payment Request”:
+- Validate:
+  - record status is "approved"
+  - applicantEmail exists
+  - paymentTier is "standard" or "premium"
+  - paymentRequestSentAt is null (idempotency)
+- Then:
+  A) Add the correct ActiveCampaign tag to the contact:
+     - If standard: tag "GW: Approved Standard"
+     - If premium:  tag "GW: Approved Premium"
+  B) Persist:
+     - paymentRequestSentAt = now()
+     - paymentRequestSentTier = paymentTier
+- Return success to UI and show a subtle “Payment request sent” message.
+
+4) ActiveCampaign
+- Do NOT send emails directly from the backend.
+- The only outbound action is applying the correct AC tag.
+- ActiveCampaign automations will send the email containing the correct Outseta checkout link.
+
+5) Configuration
+- Put these tag names in one place (constants/config), not scattered in UI logic.
+- If you already have an AC helper, add a function:
+  addTagByEmail(email, tagName)
+
+6) Safeguards / debugging
+- Log (server-side) a single line on success:
+  [GW] Payment request sent {workshopId} {email} {tier} {tagName}
+- If the AC API call fails, do NOT set paymentRequestSentAt; return an error to UI.
+
+Deliverables
+- Migration / schema update for paymentTier + paymentRequestSentTier fields
+- UI changes (tier selector + button state)
+- API endpoint update or new endpoint for “send payment request”
+- Uses existing ActiveCampaign integration; minimal refactor elsewhere
