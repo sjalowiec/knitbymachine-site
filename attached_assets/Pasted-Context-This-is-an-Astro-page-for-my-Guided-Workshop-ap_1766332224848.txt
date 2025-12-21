@@ -1,0 +1,53 @@
+Context
+This is an Astro page for my Guided Workshop application form. I want a small UX improvement: keep the two “what do you want to knit?” questions back-to-back, and tweak the helper text on the first question.
+
+What to change (UX)
+Right now the form has:
+A) Textarea question: “What are you hoping to make in this workshop?” (required)
+B) Radio question: “Do you already have a pattern in mind?” (required) with options:
+   - Yes, I have one
+   - I have a few options
+   - I’ll need guidance choosing one
+   - I’m open to using a KBM pattern
+C) Conditional follow-up input shown for some selections:
+   - “If you have a pattern, what is it?” (optional)
+   - Help: “Sharing this is optional — a title or link is enough.”
+
+Task 1 — Reorder questions
+In the Astro page where the form fields are defined/rendered (likely an array of fields or a sequence of components), ensure the order is:
+
+1) “What are you hoping to make in this workshop?”
+2) “Do you already have a pattern in mind?”
+3) “If you have a pattern, what is it?” (conditional — keep it tied to the pattern question)
+
+Important: preserve the existing conditional logic exactly:
+- Show the “If you have a pattern, what is it?” input when the user selects:
+  - “Yes, I have one”
+  - “I have a few options”
+- Hide it for:
+  - “I’ll need guidance choosing one”
+  - “I’m open to using a KBM pattern”
+
+Implementation notes (do NOT break this)
+- If the show/hide logic currently depends on array indexes or DOM order, refactor it to depend on stable field ids or radio values.
+- The conditional field should remain immediately after the radio group in the markup for best UX/accessibility.
+- Keep required/validation behavior unchanged.
+
+Task 2 — Tweak helper text
+Update the helper text under “What are you hoping to make in this workshop?” to:
+
+“A clear direction is enough — this doesn’t need to be final. We’ll talk about patterns next.”
+
+Keep the rest of the question the same.
+
+Acceptance criteria
+- On the rendered page, the radio pattern question appears immediately after the textarea question.
+- Selecting “Yes, I have one” or “I have a few options” reveals the optional pattern input.
+- Selecting either other option hides the pattern input.
+- Form submission still posts the same payload fields as before.
+- No console errors.
+
+Please reply with:
+- The Astro file path you changed
+- The ids/keys used for these fields
+- The exact condition used to show/hide the optional pattern input
