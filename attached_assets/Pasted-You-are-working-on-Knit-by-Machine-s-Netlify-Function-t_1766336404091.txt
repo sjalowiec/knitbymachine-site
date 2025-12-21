@@ -1,0 +1,65 @@
+You are working on Knit by Machine’s Netlify Function that handles Guided Workshop applications.
+
+GOAL
+Right now the function redirects to the “thanks” page even when the database insert fails. That makes submissions look successful even when no “pending” record is created. Fix this by:
+
+1) Failing loudly when DATABASE_URL is missing (redirect back to the apply page with an error code).
+2) If createPendingWorkshop() fails for any reason, DO NOT continue to the thanks page — redirect back to the apply page with an error code.
+3) Keep the existing success behavior (redirect to thanks with workshopId and applicantName).
+
+FILES
+Update only the Netlify function file that receives the form submission:
+- netlify/functions/guided-workshop-submit.js  (or .ts if that’s what we have)
+
+CHANGES (implement exactly)
+
+A) After the METHOD check (right after `if (event.httpMethod !== 'POST') { ... }`),
+add this guard:
+
+```js
+  // Prevent silent failures: if DB env var isn't set in Netlify Production, we can't write the pending record
+  if (!process.env.DATABASE_URL) {
+    console.error('[GW SUBMIT] DATABASE_URL is missing in this environment.');
+    return {
+      statusCode: 302,
+      headers: { Location: '/guided-workshops/apply?error=database_not_configured' }
+    };
+  }
+B) After calling createPendingWorkshop(...), change the dbResult handling so we STOP on failure.
+
+Find the block that currently looks like:
+
+js
+Copy code
+  if (dbResult.success) {
+    workshopId = dbResult.workshopId;
+    console.log(`Created pending workshop: ${workshopId}`);
+  } else {
+    console.error('Failed to create pending workshop:', dbResult.reason);
+  }
+Replace it with:
+
+js
+Copy code
+  if (dbResult.success) {
+    workshopId = dbResult.workshopId;
+    console.log(`[GW SUBMIT] Created pending workshop: ${workshopId}`);
+  } else {
+    console.error('[GW SUBMIT] Failed to create pending workshop:', dbResult);
+    const reason = dbResult?.reason || 'unknown_error';
+    return {
+      statusCode: 302,
+      headers: { Location: `/guided-workshops/apply?error=${encodeURIComponent(reason)}` }
+    };
+  }
+C) Do NOT change the success redirect to /guided-workshop/thanks. Keep it exactly as-is.
+
+D) Make sure we still return JSON parse errors and missing required fields the same way they are handled now. Only change the DB failure behavior described above.
+
+E) After making changes, run any formatter/linter if present, and ensure the function file still exports handler.
+
+DELIVERABLE
+
+Commit the changes to the repo (if this project commits via Replit).
+
+Tell me exactly which file you modified and show me the updated handler function (or at least the modified sections).
