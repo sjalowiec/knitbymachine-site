@@ -38,6 +38,15 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
+
+    <!-- Outseta Quickstart -->
+    <script is:inline>
+    var o_options = {
+        domain: 'knitbymachinecom.outseta.com',
+        load: 'auth,customForm,emailList,leadCapture,nocode,profile,support'
+    };
+    </script>
+    <script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options"></script>
     
     <slot name="head" />
   </head>
