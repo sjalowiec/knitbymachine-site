@@ -1,0 +1,45 @@
+Build a Version 1 “Pay Now” page for Guided Workshops.
+
+GOAL
+Create a page at:
+  /guided-workshops/pay/[workshopId]
+that:
+1) Looks up the guided workshop by workshopId.
+2) Shows a Pay Now button ONLY if the workshop status is "approved".
+3) If status is "pending" show a calm message: “I’m reviewing your application—check your email soon.”
+4) If status is "paid" show: “You’re already in.” and a button “Go to your hub” linking to the hub URL (use access_token if that is how the hub is gated).
+5) If record is not found, show: “This link doesn’t look right—please email Sue.”
+
+PAYMENT
+This is a ONE-TIME purchase via Outseta checkout.
+- The Pay Now button should open Outseta checkout for the Guided Workshop one-time product/plan.
+- We must pass workshopId through the checkout so the payment webhook can update the correct DB record.
+
+IMPLEMENTATION DETAILS
+A) Create a new Astro route file:
+  astro-site/src/pages/guided-workshops/pay/[workshopId].astro
+(or the equivalent location in this repo if different)
+
+B) On page load:
+- read params.workshopId
+- call the existing API/DB lookup to fetch the workshop record (use the same method your admin uses; DO NOT use the JSON content files—this is DB-driven)
+
+C) Add an Outseta checkout URL for the one-time product/plan.
+- Add a constant for the Outseta plan/product identifier (use an env var if you already store Outseta IDs that way).
+- The Pay Now link must include workshopId as metadata or as a return parameter so we can recover it in the webhook.
+  Preferred approaches (use the best supported by our current Outseta setup):
+  1) Add `?workshopId=gw-xxxxxx` to the checkout success return URL
+  OR
+  2) Include workshopId in custom fields/metadata if our Outseta checkout supports it
+
+D) The Pay Now page should show:
+- Headline: “You’re almost in”
+- Short line: “Complete payment to receive your hub link and next steps.”
+- One primary button: “Complete payment”
+
+E) Keep design consistent with KBM UI (simple, calm, no sales copy).
+
+DELIVERABLE
+- Create the new Pay Now page route.
+- Show me the final Outseta checkout link format you used and where workshopId is being passed through.
+- Ensure the page behaves correctly for statuses: pending / approved / paid / not found.
