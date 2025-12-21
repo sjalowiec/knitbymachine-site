@@ -37,36 +37,40 @@ const error = Astro.url.searchParams.get('error');
     )}
 
     <section class="section section--fit">
-      <div class="section-inner">
-        <h2>Is a Guided Workshop right for you?</h2>
+      <details class="fit-accordion" open data-testid="accordion-fit-check">
+        <summary class="fit-accordion__summary" data-testid="button-accordion-toggle">
+          <span class="fit-accordion__title">Is a Guided Workshop right for you?</span>
+          <span class="fit-accordion__helper">Quick check to make sure this format fits your project</span>
+        </summary>
+        <div class="fit-accordion__content">
+          <div class="grid grid--two">
+            <div>
+              <h3><i class="fa-solid fa-check fa-xl"></i> This is likely a good fit if you:</h3>
+              <ul class="check-list">
+                <li><i class="fa-solid fa-check"></i> <strong>Want to start one project</strong> from the beginning and move it forward with clarity</li>
+                <li><i class="fa-solid fa-check"></i> <strong>Prefer written guidance,</strong> voice notes, and short videos over scheduling live calls</li>
+                <li><i class="fa-solid fa-check"></i> <strong>Want specific, project-focused support</strong> — not a big course or content library</li>
+                <li><i class="fa-solid fa-check"></i> <strong>Are willing to take small, steady actions</strong> over a 10-day window</li>
+                <li><i class="fa-solid fa-check"></i> <strong>Appreciate honest, kind feedback</strong> grounded in real machine-knitting practice</li>
+              </ul>
+            </div>
 
-        <div class="grid grid--two">
-          <div>
-            <h3><i class="fa-solid fa-check fa-xl"></i> This is likely a good fit if you:</h3>
-            <ul class="check-list">
-              <li><i class="fa-solid fa-check"></i> Want to start one project from the beginning and move it forward with clarity</li>
-              <li><i class="fa-solid fa-check"></i> Prefer written guidance, voice notes, and short videos over scheduling live calls</li>
-              <li><i class="fa-solid fa-check"></i> Want specific, project-focused support — not a big course or content library</li>
-              <li><i class="fa-solid fa-check"></i> Are willing to take small, steady actions over a 10-day window</li>
-              <li><i class="fa-solid fa-check"></i> Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
-            </ul>
+            <div>
+              <h3><i class="fa-solid fa-xmark fa-xl"></i> It's probably not a fit if you:</h3>
+              <ul>
+                <li><strong>Want a full custom pattern</strong> designed from scratch</li>
+                <li><strong>Are looking to fix or rescue</strong> a project that's already well underway</li>
+                <li><strong>Have a very large, open-ended,</strong> or long-term project</li>
+                <li><strong>Prefer live, real-time coaching</strong> calls</li>
+              </ul>
+            </div>
           </div>
 
-          <div>
-            <h3><i class="fa-solid fa-xmark fa-xl"></i> It's probably not a fit if you:</h3>
-            <ul>
-              <li>Want a full custom pattern designed from scratch</li>
-              <li>Are looking to fix or rescue a project that's already well underway</li>
-              <li>Have a very large, open-ended, or long-term project</li>
-              <li>Prefer live, real-time coaching calls</li>
-            </ul>
-          </div>
+          <p class="fit-note">
+            If your project isn't the right match for this format, I'll let you know before you're asked to pay.
+          </p>
         </div>
-
-        <p class="fit-note">
-          If your project isn't the right match for this format, I'll let you know before you're asked to pay.
-        </p>
-      </div>
+      </details>
     </section>
 
     <section class="section section--form">
@@ -479,6 +483,69 @@ const error = Astro.url.searchParams.get('error');
     padding: 0.75rem;
     background: rgba(255, 255, 255, 0.6);
     border-radius: 8px;
+  }
+
+  /* Fit Accordion Styles */
+  .fit-accordion {
+    border: none;
+  }
+
+  .fit-accordion__summary {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+  }
+
+  .fit-accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .fit-accordion__summary::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0.5rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 2px solid var(--kbm-green);
+    border-bottom: 2px solid var(--kbm-green);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .fit-accordion[open] > .fit-accordion__summary::after {
+    transform: rotate(-135deg);
+    top: 0.75rem;
+  }
+
+  .fit-accordion__title {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .fit-accordion__helper {
+    font-size: 0.9rem;
+    color: #6b7a5a;
+    margin-top: 0.35rem;
+    font-style: italic;
+  }
+
+  .fit-accordion__content {
+    padding-top: 1.5rem;
+  }
+
+  .fit-accordion:not([open]) + .section--form {
+    margin-top: -0.5rem;
+  }
+
+  .section--fit:has(.fit-accordion:not([open])) {
+    padding-bottom: 1.25rem;
   }
 
   .application-form {
