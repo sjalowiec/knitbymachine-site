@@ -15,6 +15,7 @@ interface WorkshopStatusResponse {
   price?: string;
   applicantName?: string;
   title?: string;
+  approvedPlanUid?: string;
 }
 
 let workshop: WorkshopStatusResponse | null = null;
@@ -40,9 +41,11 @@ const isPending = workshop?.ok && workshop.status === 'pending';
 const isApproved = workshop?.ok && workshop.status === 'approved';
 const isPaid = workshop?.ok && (workshop.status === 'active' || workshop.status === 'completed' || workshop.status === 'paid');
 const isNotFound = !workshop?.ok && workshop?.reason === 'not_found';
+const isMissingPlanUid = isApproved && !workshop?.approvedPlanUid;
 
-const outsetaCheckoutUrl = workshop?.workshopId
-  ? `https://knitbymachine.outseta.com/checkout/dQezMjm4?meta_workshopId=${encodeURIComponent(workshop.workshopId)}`
+// Outseta checkout URL with the approved planUid
+const outsetaCheckoutUrl = workshop?.workshopId && workshop?.approvedPlanUid
+  ? `https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=${workshop.approvedPlanUid}&planPaymentTerm=oneTime&skipPlanOptions=true&meta_workshopId=${encodeURIComponent(workshop.workshopId)}#o-anonymous`
   : null;
 
 const pageTitle = isPending ? 'Application Under Review' 
@@ -104,7 +107,7 @@ const pageTitle = isPending ? 'Application Under Review'
         </div>
       )}
 
-      {isApproved && (
+      {isApproved && !isMissingPlanUid && (
         <div class="pay-content">
           <div class="pay-icon pay-icon--approved">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -122,6 +125,22 @@ const pageTitle = isPending ? 'Application Under Review'
               Complete Payment
             </a>
           )}
+        </div>
+      )}
+
+      {isMissingPlanUid && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--pending">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">Almost Ready</h1>
+          <p class="pay-message">This payment link isn't ready yet—please email Sue.</p>
+          <div class="pay-help">
+            <a href="mailto:sue@knitbymachine.com" class="pay-email">sue@knitbymachine.com</a>
+          </div>
         </div>
       )}
 
