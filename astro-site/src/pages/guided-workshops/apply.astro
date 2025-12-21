@@ -122,7 +122,7 @@ const error = Astro.url.searchParams.get('error');
 
           <div class="form-field">
             <label for="projectDirection">What are you hoping to make in this workshop? <span class="required">*</span></label>
-            <p class="helper-text--below">A clear direction is enough — this doesn't need to be final.</p>
+            <p class="helper-text--below">A clear direction is enough — this doesn't need to be final. We'll talk about patterns next.</p>
             <textarea 
               id="projectDirection" 
               name="projectDirection" 
@@ -131,7 +131,41 @@ const error = Astro.url.searchParams.get('error');
               placeholder="Example: A cardigan using a mid-weight yarn, likely with set-in sleeves. I'm comfortable with basic shaping but want help planning the construction and finishing."
               data-testid="textarea-project-direction"
             ></textarea>
-            <p class="helper-text helper-text--below">If you’ve seen something you’d like to make (for example, a sweater you found online), you can mention that here. We’ll talk about patterns next.</p>
+          </div>
+
+          <fieldset class="form-field">
+            <legend>Do you already have a pattern in mind? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="haveOne" required data-testid="radio-pattern-have-one" />
+                <span>Yes, I have one</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="fewOptions" data-testid="radio-pattern-few-options" />
+                <span>I have a few options</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="needGuidance" data-testid="radio-pattern-need-guidance" />
+                <span>I'll need guidance choosing one</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="openToKBM" data-testid="radio-pattern-open-kbm" />
+                <span>I'm open to using a KBM pattern</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- GW_APPLICATION: patternReference conditional field -->
+          <div id="pattern-name-field" class="form-field form-field--supplemental" hidden aria-hidden="true">
+            <label for="patternReference">If you have a pattern, what is it?</label>
+            <p class="helper-text">Sharing this is optional — a title or link is enough.</p>
+            <input 
+              type="text" 
+              id="patternReference" 
+              name="patternReference" 
+              placeholder="Pattern name or link"
+              data-testid="input-pattern-reference"
+            />
           </div>
 
           <hr class="kbm-divider" />
@@ -218,43 +252,6 @@ const error = Astro.url.searchParams.get('error');
               </label>
             </div>
           </fieldset>
-
-          <hr class="kbm-divider" />
-
-          <fieldset class="form-field">
-            <legend>Do you already have a pattern in mind? <span class="required">*</span></legend>
-            <div class="radio-group">
-              <label class="radio-label">
-                <input type="radio" name="patternStatus" value="haveOne" required data-testid="radio-pattern-have-one" />
-                <span>Yes, I have one</span>
-              </label>
-              <label class="radio-label">
-                <input type="radio" name="patternStatus" value="fewOptions" data-testid="radio-pattern-few-options" />
-                <span>I have a few options</span>
-              </label>
-              <label class="radio-label">
-                <input type="radio" name="patternStatus" value="needGuidance" data-testid="radio-pattern-need-guidance" />
-                <span>I'll need guidance choosing one</span>
-              </label>
-              <label class="radio-label">
-                <input type="radio" name="patternStatus" value="openToKBM" data-testid="radio-pattern-open-kbm" />
-                <span>I'm open to using a KBM pattern</span>
-              </label>
-            </div>
-          </fieldset>
-
-                    <!-- GW_APPLICATION: patternReference conditional field -->
-          <div id="pattern-name-field" class="form-field form-field--supplemental" hidden aria-hidden="true">
-            <label for="patternReference">If you have a pattern, what is it?</label>
-            <p class="helper-text">Sharing this is optional — a title or link is enough.</p>
-            <input 
-              type="text" 
-              id="patternReference" 
-              name="patternReference" 
-              placeholder="Pattern name or link"
-              data-testid="input-pattern-reference"
-            />
-          </div>
 
           <hr class="kbm-divider" />
 
