@@ -1,0 +1,37 @@
+You are working in the Knit by Machine Astro site.
+
+Goal: Guided Workshop landing page hero improvements.
+
+Tasks (do ALL of these, minimal changes):
+
+1) Move the first “Apply for Your Guided Workshop” button so it sits directly BELOW the hero text (the short 10-day description) in the LEFT column, above the paragraph that begins “You bring the project…”.
+   - Keep the same button component/styles (same classes, same markup) — only move its placement in the hero layout.
+   - Do NOT change the image size or layout.
+   - Confirm the button is above the fold on desktop at typical viewport (e.g., 1366x768).
+
+2) Add UTM parameters to this FIRST hero button’s link (only this first button for now).
+   - Append these query params to the existing href URL:
+     utm_source=kbm
+     utm_medium=guided-workshop-page
+     utm_campaign=guided-workshop-application
+     utm_content=hero-cta
+   - Important:
+     - If the href already contains query params, append with “&” not “?”.
+     - If href is a relative URL, preserve it and append query string correctly.
+     - If the button opens an Outseta widget or routes to an /apply page, still append these UTMs to the final URL used by the anchor/button.
+
+3) Make the “See how it works →” link slightly more visible without turning it into a second primary CTA.
+   - Keep it as a text link (not a button).
+   - Increase visibility by ONE subtle step:
+     - darker text color (use existing palette / CSS tokens if present), and/or
+     - slightly increased font-weight, and/or
+     - add a simple underline on hover and/or default underline.
+   - Do NOT increase its size dramatically and do NOT use the primary button green background.
+
+Implementation notes:
+- Locate the Guided Workshop landing page component/template and make changes only there.
+- Keep spacing consistent with the existing design system.
+- After changes, show me the exact file(s) edited and the specific before/after snippet for:
+  a) the hero section markup around the moved button
+  b) the hero button href with UTMs
+  c) the “See how it works →” link classes/styles
