@@ -1,0 +1,43 @@
+Implement Option 1 for Guided Workshop payment: choose Standard vs Premium during approval, then Pay Now page shows the correct Outseta one-time checkout.
+
+Outseta planUids:
+- Premium: OW4Rv4Qg
+- Standard: ZmNe52W2
+
+BUSINESS RULE
+Premium is for more complex projects (e.g., sweater, converting a hand-knitting pattern to machine knitting). Standard is for simpler projects.
+
+GOAL
+1) Store the approved tier on the guided_workshops DB record (as an Outseta planUid).
+2) In the admin record editor, add a simple dropdown: Approved tier = Standard / Premium.
+3) Pay Now page (/guided-workshops/pay/[workshopId]) shows ONE “Complete payment” button using the stored planUid.
+
+DATABASE / MODEL
+Add a nullable string field to guided_workshops:
+- approvedPlanUid (string, nullable)
+(If you already have a “price” field, keep it; this is separate and specifically for Outseta checkout.)
+
+ADMIN UI
+In the guided workshop editor (where status is set), add:
+- Label: “Approved tier”
+- Dropdown options:
+  - Standard (sets approvedPlanUid to ZmNe52W2)
+  - Premium (sets approvedPlanUid to OW4Rv4Qg)
+- Only show/enable this field when status is approved (or always show, but it must be saved with the record).
+
+PAY NOW PAGE
+Route: /guided-workshops/pay/[workshopId]
+Behavior:
+- Fetch workshop by workshopId from DB.
+- If status is "approved":
+    - If approvedPlanUid is missing: show message “This payment link isn’t ready yet—please email Sue.”
+    - Else render a single button “Complete payment” linking to:
+      https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid={approvedPlanUid}&planPaymentTerm=oneTime&skipPlanOptions=true#o-anonymous
+- If status is "pending": show “I’m reviewing your application—check your email soon.”
+- If status is "paid": show “You’re already in.” + link to hub (use access_token gating if that’s your approach).
+- If not found: show “This link doesn’t look right—please email Sue.”
+
+DELIVERABLE
+- Tell me which files you changed.
+- Show the admin dropdown code and the Pay Now URL construction.
+- Confirm approvedPlanUid is saved and retrieved correctly.
