@@ -36,6 +36,34 @@ const error = Astro.url.searchParams.get('error');
       </div>
     )}
 
+    {error === 'database_not_configured' && (
+      <div class="error-message" data-testid="text-error-database-config">
+        <p><strong>Something went wrong on our end.</strong></p>
+        <p>Please try again later, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'database_error' && (
+      <div class="error-message" data-testid="text-error-database">
+        <p><strong>Something went wrong saving your application.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'id_generation_failed' && (
+      <div class="error-message" data-testid="text-error-id-generation">
+        <p><strong>Something went wrong processing your application.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'unknown_error' && (
+      <div class="error-message" data-testid="text-error-unknown">
+        <p><strong>Something unexpected went wrong.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
     <section class="section section--fit">
       <details class="fit-accordion" open data-testid="accordion-fit-check">
         <summary class="fit-accordion__summary" data-testid="button-accordion-toggle">

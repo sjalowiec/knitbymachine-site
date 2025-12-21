@@ -6,6 +6,15 @@ export const handler = async (event) => {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
+  // Prevent silent failures: if DB env var isn't set in Netlify Production, we can't write the pending record
+  if (!process.env.DATABASE_URL) {
+    console.error('[GW SUBMIT] DATABASE_URL is missing in this environment.');
+    return {
+      statusCode: 302,
+      headers: { Location: '/guided-workshops/apply?error=database_not_configured' }
+    };
+  }
+
   let data;
   
   const contentType = event.headers['content-type'] || '';
@@ -88,9 +97,14 @@ export const handler = async (event) => {
 
   if (dbResult.success) {
     workshopId = dbResult.workshopId;
-    console.log(`Created pending workshop: ${workshopId}`);
+    console.log(`[GW SUBMIT] Created pending workshop: ${workshopId}`);
   } else {
-    console.error('Failed to create pending workshop:', dbResult.reason);
+    console.error('[GW SUBMIT] Failed to create pending workshop:', dbResult);
+    const reason = dbResult?.reason || 'unknown_error';
+    return {
+      statusCode: 302,
+      headers: { Location: `/guided-workshops/apply?error=${encodeURIComponent(reason)}` }
+    };
   }
 
   if (workshopId) {
