@@ -1,0 +1,87 @@
+You are working in my Astro repo.
+
+Context
+I already have an access page at:
+  astro-site/src/pages/guided-workshops/access.astro
+It uses BaseLayout and a centered “access-card” UI.
+
+Goal
+Create a new page:
+  astro-site/src/pages/guided-workshops/enter.astro
+This page is the single link I can email to customers.
+It should:
+- accept a destination hub path via query param `to`
+- if NOT logged in, send them to Outseta login and return back to this page
+- if logged in, immediately redirect them to the hub destination
+
+Important: This site uses Outseta embed script already (window.Outseta exists on pages).
+
+URL + validation
+- /guided-workshops/enter?to=/guided-workshops/<slug>
+- Validate `to` so it is safe:
+  - must start with "/guided-workshops/"
+  - must NOT contain "http", "https", "//", ":" or "\" (prevent open redirect / weird paths)
+- If missing/invalid, redirect to:
+  /guided-workshops/access?reason=token
+
+Return param
+- Use `returnTo` query param for Outseta redirect back:
+  returnTo = "/guided-workshops/enter?to=ENCODED_TO"
+- Outseta login URL should be:
+  https://knitbymachinecom.outseta.com/auth?widgetMode=login&returnTo=ENCODED_RETURNTO
+
+UI requirements
+- Match the styling and layout of the existing access page (reuse the same CSS classes and card design).
+- Show title: "Enter Your Workshop"
+- Show message:
+  "To keep your workshop private, please log in first. After login, we’ll take you straight to your hub."
+- Show primary button: "Log in"
+- Show small note under the button:
+  "New here? You may be asked to set a password — that only happens once."
+
+Behavior requirements
+1) In Astro frontmatter:
+   - Read `to` from Astro.url.searchParams
+   - Validate it per rules above
+   - If invalid: return Astro.redirect("/guided-workshops/access?reason=token")
+
+   - Compute:
+       const destination = validatedTo
+       const returnTo = `/guided-workshops/enter?to=${encodeURIComponent(destination)}`
+       const outsetaLoginUrl = `https://knitbymachinecom.outseta.com/auth?widgetMode=login&returnTo=${encodeURIComponent(returnTo)}`
+
+2) Client-side login detection + redirect
+   - Add a small inline <script> that:
+     a) waits for Outseta to be ready (if window.Outseta is undefined, wait up to ~2 seconds with a short interval)
+     b) determines logged-in state.
+        Use the best available checks without breaking:
+        - If window.Outseta?.auth?.getAccessToken exists, call it; if it returns a non-empty string => logged in
+        - Else if window.Outseta?.auth?.user exists/truthy => logged in
+        - Else not logged in
+
+     c) If logged in:
+        - show "Taking you to your workshop..." (optional)
+        - immediately redirect:
+            window.location.assign(destination)
+
+     d) If not logged in:
+        - do NOT auto-redirect; show the login button.
+        - the login button href should be outsetaLoginUrl computed server-side.
+
+3) IMPORTANT
+- Do not use server-side redirects to the destination because login state is client-side.
+- Keep prerender = false.
+
+Also update messaging path
+- In our onboarding emails (wherever they are templated), replace direct hub links with:
+  https://knitbymachine.com/guided-workshops/enter?to=/guided-workshops/<slug>
+Do not add 2 links anymore.
+
+Acceptance criteria
+- In incognito, visiting /guided-workshops/enter?to=/guided-workshops/some-slug shows the login card + button.
+- Clicking button goes to Outseta login.
+- After login, user returns to enter page and is redirected to destination.
+- Invalid/missing `to` sends to /guided-workshops/access?reason=token
+- No console errors.
+
+Implement now.
