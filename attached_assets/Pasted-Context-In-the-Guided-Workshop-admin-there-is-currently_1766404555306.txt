@@ -1,0 +1,57 @@
+Context:
+In the Guided Workshop admin, there is currently a "Send Payment Request" button that:
+- validates approved status
+- assigns an ActiveCampaign tag (GW: Approved Standard / Premium)
+- relies on an ActiveCampaign automation to send the payment email
+- records paymentRequestSentAt and paymentRequestSentTier
+
+Change request:
+I want to STOP automatically triggering the ActiveCampaign automation for now.
+I want to manually send the payment email myself from ActiveCampaign.
+
+What I need instead:
+
+1) Disable the ActiveCampaign tag assignment
+- Do NOT add or remove any tags in ActiveCampaign when clicking the button
+- No AC automation should be triggered from this action
+
+2) Keep the database tracking
+- Continue to set:
+  - paymentRequestSentAt (timestamp)
+  - paymentRequestSentTier ("standard" or "premium")
+- This is still useful as an internal marker
+
+3) Replace the button behavior with a manual-helper UI
+When status = "approved":
+
+- Replace "Send Payment Request" with a button labeled:
+  "Prepare Payment Email (Manual)"
+
+- Clicking the button should:
+  a) Mark paymentRequestSentAt and paymentRequestSentTier
+  b) Display a confirmation message like:
+     "Payment email prepared. Send manually in ActiveCampaign."
+
+4) Show me the ActiveCampaign campaign editor link directly in the UI
+This is important.
+
+- Display this link visibly in the admin so I don’t have to hunt for it:
+  https://knitbymachine.activehosted.com/campaign/editor/?cid=28
+
+- The link should:
+  - Open in a new tab
+  - Be clearly labeled, e.g.:
+    "Open Payment Email in ActiveCampaign"
+
+5) Important constraints
+- Do NOT delete any existing automation or AC-related code; just bypass it for now
+- Do NOT remove existing fields or validation
+- Keep this change minimal and reversible later
+- Show me exactly which files were modified and what changed
+
+Goal:
+This lets me:
+- choose Standard vs Premium
+- click once to log that a payment request was sent
+- manually customize and send the payment email myself in ActiveCampaign
+- avoid accidental auto-sends while pricing and messaging are still in flux
