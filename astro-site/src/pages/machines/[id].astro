@@ -20,6 +20,17 @@ if (!machine) {
 }
 
 const gaugeShort = machine.gauge.replace('-Gauge', '').replace(' Gauge', '');
+
+const cycaInfo: Record<number, { label: string; description: string }> = {
+  0: { label: 'Lace', description: 'CYCA 0 — Lace weight' },
+  1: { label: 'Fingering', description: 'CYCA 1 — Fingering / Sock (often ~28–32 sts per 4" / 10 cm)' },
+  2: { label: 'Sport', description: 'CYCA 2 — Sport (often ~24–26 sts per 4" / 10 cm)' },
+  3: { label: 'DK', description: 'CYCA 3 — DK / Light Worsted (often ~21–24 sts per 4" / 10 cm)' },
+  4: { label: 'Worsted', description: 'CYCA 4 — Worsted / Aran (often ~16–20 sts per 4" / 10 cm)' },
+  5: { label: 'Bulky', description: 'CYCA 5 — Bulky (often ~12–15 sts per 4" / 10 cm)' },
+  6: { label: 'Super Bulky', description: 'CYCA 6 — Super Bulky (often ~7–11 sts per 4" / 10 cm)' },
+  7: { label: 'Jumbo', description: 'CYCA 7 — Jumbo (typically under ~7 sts per 4" / 10 cm)' }
+};
 ---
 
 <BaseLayout 
@@ -99,7 +110,43 @@ const gaugeShort = machine.gauge.replace('-Gauge', '').replace(' Gauge', '');
         </div>
         <div class="spec-item">
           <span class="spec-label">CYCA Weight</span>
-          <span class="spec-value">{machine.cycaMin}–{machine.cycaMax}</span>
+          <span class="spec-value cyca-icons">
+            {typeof machine.cycaMin === "number" && cycaInfo[machine.cycaMin] && (
+              <span
+                class="kbm-tooltip"
+                data-tip={cycaInfo[machine.cycaMin].description}
+              >
+                <img
+                  src={`/images/yarn-weights/${machine.cycaMin}.svg`}
+                  alt={cycaInfo[machine.cycaMin].label}
+                  width="28"
+                  height="28"
+                  loading="lazy"
+                  style="vertical-align: middle;"
+                />
+              </span>
+            )}
+            {machine.cycaMin !== machine.cycaMax && (
+              <>
+                <span class="cyca-separator">–</span>
+                {typeof machine.cycaMax === "number" && cycaInfo[machine.cycaMax] && (
+                  <span
+                    class="kbm-tooltip"
+                    data-tip={cycaInfo[machine.cycaMax].description}
+                  >
+                    <img
+                      src={`/images/yarn-weights/${machine.cycaMax}.svg`}
+                      alt={cycaInfo[machine.cycaMax].label}
+                      width="28"
+                      height="28"
+                      loading="lazy"
+                      style="vertical-align: middle;"
+                    />
+                  </span>
+                )}
+              </>
+            )}
+          </span>
         </div>
         {machine.operationType && (
           <div class="spec-item">
