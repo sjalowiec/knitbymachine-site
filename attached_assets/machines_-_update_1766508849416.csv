@@ -1,0 +1,405 @@
+model,product id,Brand,product type,status,gauge,needlePitch,bedWidthNeedles,bedWidthCm,yarnYppMin,yarnYppMax,CYCAmin,CYCAmax,operationType,softwareRequiredForPatterning,patternInputMethod,learningCurve,beginnerFriendly,idealFirstMachine,compatibleRibbers,machineWeightlbs,shortDescription,keyBenefits,includedItems,warrantyNotes,priceUSD,availability,leadTimeNotes,isBundle,bundleIncludes,primaryImage,galleryImages,agentVisible,adminNotes,lastUpdated,shopifyProductID,BuyButtonDivid,buyButtonEmbed
+TH160,TH160,Taitexma,machine,active,Mid-Gauge,6mm(6g),164,"44""",800,2000,3,4,manual,no,hand,low,yes,yes,yes,31,Mid-gauge 6 mm single-bed machine with manual patterning and built-in intarsia capability. Great mid-weight machine that bridges standard and bulky yarn ranges.,"Mid-gauge (6 mm) expands yarn options
+Balanced between standard and bulky
+Handles mid-weight yarns well
+Simple operation
+Best for: Mid-weight sweaters, hats, scarves","Main knitting machine
+Standard accessories (tools, needles, weights)",US Warranty: 90 Days labor on defects in materials and workmanship.,1109,pre-order,12-14 weeks,no,,https://knitbymachine.com/images/machines/taitexma-th160-knitting-machine.webp,,yes,,12-23-2025,7898139492421,product-component-7898139492421,"<div id='product-component-7898139492421'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: 'knit-by-machine.myshopify.com',
+      storefrontAccessToken: '66fba9d9b42bfea416c8e0af7987dc94'
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139492421',
+        node: document.getElementById('product-component-7898139492421'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH860,TH860,Taitexma,machine,active,Standard-Gauge,4.5mm (4g),200,"53""","2,000",10000,0,2,punchcard,no,punchcard,medium,yes,yes,yes,31,"Standard-gauge 4.5 mm (standard) punch-card knitting machine modeled after classic Brother KH-series beds. Good for multi-stitch patterns like slip, tuck, weave, and Fair Isle; usually includes lace carriage.","Standard-gauge versatility (everyday yarns)
+Punch-card patterning built in
+Good for fair isle, tuck, slip, weave stitches
+Reliable and approachable for hobbyists
+Best for: Everyday sweaters, accessories, patterned knits","Main knitting machine
+Patterning system (punch-card)
+Standard accessories (tools, needles, weights)",US Warranty: 90 Days labor on defects in materials and workmanship.,1799,pre-order,12-14 weeks,no,,https://knitbymachine.com/images/machines/taitexma-860-knitting-machine.webp,,yes,,12-23-2025,7898139525189,product-component-7898139525189,"<div id='product-component-7898139525189'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '66fba9d9b42bfea416c8e0af7987dc94',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139525189',
+        node: document.getElementById('product-component-7898139525189'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH260,TH260,Taitexma,machine,active,Bulky Gauge,9mm (9g),114,"53""",500,800,5,6,punchcard,no,punchcard,medium,yes,yes,yes,35,"Bulky 9 mm gauge punch-card knitting machine with ~114 needles. Perfect for heavier yarns and quick knitting of sweaters, blankets, and textured stitches.","Bulky-gauge (9 mm) for thick yarns
+Knits quickly
+Great texture & statement stitches
+Less fine tension fuss
+Best for: Chunky sweaters, hats, quick projects","Main knitting machine
+Patterning system (punch-card)
+Standard accessories (tools, needles, weights)",US Warranty: 90 Days labor on defects in materials and workmanship.,2099,pre-order,12-14 weeks,no,,https://knitbymachine.com/images/machines/taitexma-th260-knitting-machine.webp,,yes,,12-23-2025,7898139557957,product-component-7898139557957,"<div id='product-component-7898139557957'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139557957',
+        node: document.getElementById('product-component-7898139557957'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH160 Ribber,TH160 Ribber,Taitexma,ribber,active,Mid-Gauge,6mm(6g),164,"44""",800,2000,3,4,,no,,medium,yes,no,,30,adds ribbing capability,"Adds elastic ribbing for cuffs/collars/hems
+Enables 1×1 and 2×2 rib stitches
+Improves fit and stretch
+Expands stitch variety (double-bed techniques)
+Faster than hand-knitting ribbing",Includes the standard tools and accessories required for normal operation.,US Warranty: 90 Days labor on defects in materials and workmanship.,1099,pre-order,12-14 weeks,no,,https://knitbymachine.com/images/machines/kniting-machine-ribber.webp,,no,,12-23-2025,7898139590725,product-component-7898139590725,"<div id='product-component-7898139590725'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139590725',
+        node: document.getElementById('product-component-7898139590725'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH850 Ribber,TH850 Ribber,Taitexma,ribber,active,Standard-Gauge,4.5mm (4g),200,"53""","2,000",10000,0,2,,no,,medium,yes,no,,30,adds ribbing capability,"Adds elastic ribbing for cuffs/collars/hems
+Enables 1×1 and 2×2 rib stitches
+Improves fit and stretch
+Expands stitch variety (double-bed techniques)
+Faster than hand-knitting ribbing",Includes the standard tools and accessories required for normal operation.,US Warranty: 90 Days labor on defects in materials and workmanship.,1449,pre-order,12-14 weeks,no,,https://knitbymachine.com/images/machines/kniting-machine-ribber.webp,,no,,12-23-2025,7898139623493,product-component-7898139623493,"<div id='product-component-7898139623493'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139623493',
+        node: document.getElementById('product-component-7898139623493'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH260 Ribber,TH260 Ribber,Taitexma,ribber,active,Bulky Gauge,9mm (9g),114,"53""",500,800,5,6,,no,,medium,yes,no,,30,adds ribbing capability,"Adds elastic ribbing for cuffs/collars/hems
+Enables 1×1 and 2×2 rib stitches
+Improves fit and stretch
+Expands stitch variety (double-bed techniques)
+Faster than hand-knitting ribbing",Includes the standard tools and accessories required for normal operation.,US Warranty: 90 Days labor on defects in materials and workmanship.,1120,pre-order,12-14 weeks,no,,https://knitbymachine.com/images/machines/kniting-machine-ribber.webp,,no,,12-23-2025,7898139656261,product-component-7898139656261,"<div id='product-component-7898139656261'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139656261',
+        node: document.getElementById('product-component-7898139656261'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH/TR160 Bundle,TH/TR160 Bundle,Taitexma,bundle,active,Mid-Gauge,6mm(6g),164,"44""",800,2000,3,4,manual,no,hand,medium,yes,no,,45,standard-gauge combo ,"Complete garment capability with machine + ribber
+Professional ribbed edges (cuffs, collars, hems)
+Expanded stitch options (single + double bed)
+Improved garment fit and elasticity
+Faster than hand-knitting ribbing","Main knitting machine
+Matching ribber
+Standard accessories for both beds",US Warranty 90 Days labor on defects in materials and workmanship.,2199,pre-order,12-14 weeks,yes,"Main knitting machine
+Matching ribber
+Standard accessories",https://knitbymachine.com/images/machines/taitexma-th160-knitting-machine-ribber.webp,,yes,,12-23-2025,7898139689029,product-component-7898139689029,"<div id='product-component-7898139689029'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139689029',
+        node: document.getElementById('product-component-7898139689029'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH/TR860 Bundle,TH/TR860 Bundle,Taitexma,bundle,active,Standard-Gauge,4.5mm (4g),200,"53""","2,000",10000,0,2,punchcard,no,punchcard,medium,yes,no,,45,Mid-gauge combo ,"Complete garment capability with machine + ribber
+Professional ribbed edges (cuffs, collars, hems)
+Expanded stitch options (single + double bed)
+Improved garment fit and elasticity
+Faster than hand-knitting ribbing","Main knitting machine
+Matching ribber
+Standard accessories for both beds",US Warranty: 90 Days labor on defects in materials and workmanship.,3199,pre-order,12-14 weeks,yes,"Main knitting machine
+Matching ribber
+Standard accessories",,,yes,,12-23-2025,7898139721797,product-component-7898139721797,"<div id='product-component-7898139721797'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139721797',
+        node: document.getElementById('product-component-7898139721797'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
+TH/TR260 Bundle,TH/TR260 Bundle,Taitexma,bundle,active,Bulky Gauge,9mm (9g),114,"53""",500,800,5,6,punchcard,no,punchcard,medium,yes,no,,50,Bulky-gauge combo ,"Complete garment capability with machine + ribber
+Professional ribbed edges (cuffs, collars, hems)
+Expanded stitch options (single + double bed)
+Improved garment fit and elasticity
+Faster than hand-knitting ribbing","Main knitting machine
+Matching ribber
+Standard accessories for both beds",US Warranty: 90 Days labor on defects in materials and workmanship.,3299,pre-order,12-14 weeks,yes,"Main knitting machine
+Matching ribber
+Standard accessories",,,yes,,12-23-2025,7898139754565,product-component-7898139754565,"<div id='product-component-7898139754565'></div>
+<script type='text/javascript'>
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) { if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } } else { loadScript(); }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: '',
+      storefrontAccessToken: ''
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '7898139754565',
+        node: document.getElementById('product-component-7898139754565'),
+        options: {
+          product: {
+            styles: {
+              button: {
+                'background-color': '#52682d',
+                ':hover': { 'background-color': '#4a5e29' },
+                ':focus': { 'background-color': '#4a5e29' },
+                'border-radius': '11px'
+              }
+            },
+            text: { button: 'Add to cart' }
+          }
+        }
+      });
+    });
+  }
+})();
+</script>"
