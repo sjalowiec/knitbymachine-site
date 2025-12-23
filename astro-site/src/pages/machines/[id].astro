@@ -29,28 +29,27 @@ const subhead = machine.shortDescription ||
   title={`${machine.displayName} | Knit by Machine`}
   description={machine.shortDescription || machine.bestFor}
 >
-  <article class="machine-detail-page py-8">
+  <article class="machine-detail-page">
     
     <!-- Hero Section -->
-    <section class="hero-section mb-12">
-      <div class="grid md:grid-cols-2 gap-8 items-center">
-        <div class="hero-image aspect-square bg-gray-100 rounded-xl overflow-hidden">
+    <section class="hero-section">
+      <div class="hero-grid">
+        <div class="hero-image">
           {machine.imageMain ? (
             <img 
               src={machine.imageMain} 
               alt={machine.imageAlt || machine.displayName}
-              class="w-full h-full object-cover"
             />
           ) : (
-            <div class="w-full h-full flex items-center justify-center bg-gray-200">
-              <span class="text-gray-400">Image coming soon</span>
+            <div class="image-placeholder">
+              <span>Image coming soon</span>
             </div>
           )}
         </div>
         
         <div class="hero-content">
-          <div class="flex items-center gap-3 mb-3">
-            <span class="text-sm font-medium text-gray-500 bg-gray-100 px-3 py-1 rounded-full">
+          <div class="hero-badges">
+            <span class="gauge-badge">
               {machine.gaugeLabel} {machine.gaugeName} Gauge
             </span>
             <AvailabilityBadge 
@@ -60,25 +59,15 @@ const subhead = machine.shortDescription ||
             />
           </div>
           
-          <h1 class="text-3xl md:text-4xl font-bold text-[var(--kbm-green)] mb-4">
-            {machine.displayName}
-          </h1>
+          <h1>{machine.displayName}</h1>
           
-          <p class="text-lg text-gray-700 mb-6 leading-relaxed">
-            {subhead}
-          </p>
+          <p class="subhead">{subhead}</p>
           
-          <div class="flex flex-wrap gap-3">
-            <a 
-              href="/machines/choose" 
-              class="inline-flex items-center px-6 py-3 bg-[var(--kbm-green)] text-white font-medium rounded-lg hover:bg-[var(--kbm-green-2)] transition-colors"
-            >
+          <div class="hero-actions">
+            <a href="/machines/choose" class="btn-primary">
               Help me choose
             </a>
-            <a 
-              href="/machines" 
-              class="inline-flex items-center px-6 py-3 border-2 border-[var(--kbm-green)] text-[var(--kbm-green)] font-medium rounded-lg hover:bg-[var(--kbm-bg)] transition-colors"
-            >
+            <a href="/machines" class="btn-secondary">
               Browse all machines
             </a>
           </div>
@@ -88,41 +77,35 @@ const subhead = machine.shortDescription ||
 
     <!-- Benefits Section -->
     {machine.keyBenefits && machine.keyBenefits.length > 0 && (
-      <section class="benefits-section bg-white rounded-xl border border-gray-200 p-6 md:p-8 mb-8">
-        <h2 class="text-2xl font-semibold text-[var(--kbm-green)] mb-4">
-          What this machine does well
-        </h2>
-        <ul class="space-y-3 mb-4">
+      <section class="content-card benefits-section">
+        <h2>What this machine does well</h2>
+        <ul class="benefits-list">
           {machine.keyBenefits.map((benefit) => (
-            <li class="flex items-start gap-3">
-              <svg class="w-5 h-5 text-[var(--kbm-green-2)] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--kbm-green-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 13l4 4L19 7" />
               </svg>
-              <span class="text-gray-700">{benefit}</span>
+              <span>{benefit}</span>
             </li>
           ))}
         </ul>
         {machine.bestFor && (
-          <p class="text-sm text-gray-600 border-t border-gray-100 pt-4 mt-4">
-            <strong class="text-gray-700">Best for:</strong> {machine.bestFor}
+          <p class="best-for">
+            <strong>Best for:</strong> {machine.bestFor}
           </p>
         )}
       </section>
     )}
 
     <!-- Gauge Explainer Section -->
-    <section class="gauge-section bg-[var(--kbm-bg)] rounded-xl p-6 md:p-8 mb-8">
-      <h2 class="text-2xl font-semibold text-[var(--kbm-green)] mb-4">
-        Understanding Gauge
-      </h2>
+    <section class="content-card gauge-section">
+      <h2>Understanding Gauge</h2>
       <GaugeOverview currentGaugeName={machine.gaugeName} showExplainer={true} />
     </section>
 
     <!-- Availability Section -->
-    <section class="availability-section bg-white rounded-xl border border-gray-200 p-6 md:p-8 mb-8">
-      <h2 class="text-2xl font-semibold text-[var(--kbm-green)] mb-4">
-        Availability
-      </h2>
+    <section class="content-card">
+      <h2>Availability</h2>
       <AvailabilityBadge 
         status={machine.availabilityStatus} 
         leadTimeMinWeeks={machine.leadTimeMinWeeks}
@@ -133,14 +116,12 @@ const subhead = machine.shortDescription ||
 
     <!-- Bundles Section -->
     {hasBundles && (
-      <section class="bundles-section mb-8">
-        <h2 class="text-2xl font-semibold text-[var(--kbm-green)] mb-4">
-          Bundle Options
-        </h2>
-        <p class="text-gray-600 mb-6">
+      <section class="bundles-section">
+        <h2>Bundle Options</h2>
+        <p class="bundles-intro">
           Get started with everything you need in one package.
         </p>
-        <div class="grid md:grid-cols-2 gap-4">
+        <div class="bundles-grid">
           {machine.bundleOptions!.map((bundle) => (
             <BundleCard bundle={bundle} />
           ))}
@@ -149,42 +130,27 @@ const subhead = machine.shortDescription ||
     )}
 
     <!-- Comparison CTA Section -->
-    <section class="comparison-section bg-[var(--kbm-bg)] rounded-xl p-6 md:p-8 mb-8 text-center">
-      <h2 class="text-xl font-semibold text-[var(--kbm-green)] mb-2">
-        Want to compare?
-      </h2>
-      <p class="text-gray-600 mb-4">
-        See how the {machine.displayName} stacks up against other machines.
-      </p>
-      <a 
-        href={`/machines?compare=${machine.id}`}
-        class="inline-flex items-center px-6 py-3 bg-[var(--kbm-green)] text-white font-medium rounded-lg hover:bg-[var(--kbm-green-2)] transition-colors"
-      >
+    <section class="content-card cta-section">
+      <h2>Want to compare?</h2>
+      <p>See how the {machine.displayName} stacks up against other machines.</p>
+      <a href={`/machines?compare=${machine.id}`} class="btn-primary">
         Compare machines
       </a>
     </section>
 
     <!-- Help Section -->
-    <section class="help-section bg-white rounded-xl border border-gray-200 p-6 md:p-8">
-      <h2 class="text-xl font-semibold text-[var(--kbm-green)] mb-4">
-        Need help deciding?
-      </h2>
-      <div class="flex flex-wrap gap-4">
-        <a 
-          href="/contact"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+    <section class="content-card help-section">
+      <h2>Need help deciding?</h2>
+      <div class="help-links">
+        <a href="/contact" class="help-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
           Ask a question
         </a>
-        <a 
-          href="/machines/choose"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
-        >
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+        <a href="/machines/choose" class="help-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
           Not sure where to start?
         </a>
@@ -193,3 +159,252 @@ const subhead = machine.shortDescription ||
 
   </article>
 </BaseLayout>
+
+<style>
+  .machine-detail-page {
+    padding: 2rem 0;
+  }
+
+  .hero-section {
+    margin-bottom: 3rem;
+  }
+
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .hero-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .hero-image {
+    aspect-ratio: 1;
+    background: #f3f4f6;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #e5e7eb;
+    color: #9ca3af;
+  }
+
+  .hero-badges {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .gauge-badge {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #6b7280;
+    background: #f3f4f6;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+  }
+
+  .hero-content h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-content h1 {
+      font-size: 2.5rem;
+    }
+  }
+
+  .subhead {
+    font-size: 1.125rem;
+    color: #374151;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    background: var(--kbm-green);
+    color: white;
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--kbm-green-2);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid var(--kbm-green);
+    color: var(--kbm-green);
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--kbm-bg);
+  }
+
+  .content-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .content-card {
+      padding: 2rem;
+    }
+  }
+
+  .content-card h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .gauge-section {
+    background: var(--kbm-bg);
+    border: none;
+  }
+
+  .benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1rem 0;
+  }
+
+  .benefits-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .benefits-list li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .benefits-list li span {
+    color: #374151;
+  }
+
+  .best-for {
+    font-size: 0.875rem;
+    color: #6b7280;
+    border-top: 1px solid #f3f4f6;
+    padding-top: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .best-for strong {
+    color: #374151;
+  }
+
+  .bundles-section {
+    margin-bottom: 2rem;
+  }
+
+  .bundles-section h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .bundles-intro {
+    color: #6b7280;
+    margin-bottom: 1.5rem;
+  }
+
+  .bundles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .bundles-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .cta-section {
+    background: var(--kbm-bg);
+    border: none;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .cta-section p {
+    color: #6b7280;
+    margin-bottom: 1rem;
+  }
+
+  .help-section h2 {
+    font-size: 1.25rem;
+  }
+
+  .help-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .help-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.25rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #374151;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .help-link:hover {
+    background: #f9fafb;
+  }
+
+  .help-link svg {
+    flex-shrink: 0;
+  }
+</style>

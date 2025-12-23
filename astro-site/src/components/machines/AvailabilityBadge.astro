@@ -23,22 +23,51 @@ const info = getAvailabilityInfo(
   leadTimeMaxWeeks
 );
 
-const sizeClasses = size === 'sm' 
-  ? 'text-xs px-2 py-0.5' 
-  : 'text-sm px-3 py-1';
+const badgeStyles: Record<string, string> = {
+  'bg-green-100 text-green-800 border-green-200': 'background: #dcfce7; color: #166534; border-color: #bbf7d0;',
+  'bg-emerald-100 text-emerald-800 border-emerald-200': 'background: #d1fae5; color: #065f46; border-color: #a7f3d0;',
+  'bg-amber-100 text-amber-800 border-amber-200': 'background: #fef3c7; color: #92400e; border-color: #fde68a;',
+  'bg-blue-100 text-blue-800 border-blue-200': 'background: #dbeafe; color: #1e40af; border-color: #bfdbfe;',
+  'bg-orange-100 text-orange-800 border-orange-200': 'background: #ffedd5; color: #9a3412; border-color: #fed7aa;',
+  'bg-yellow-100 text-yellow-800 border-yellow-200': 'background: #fef9c3; color: #854d0e; border-color: #fef08a;',
+  'bg-gray-100 text-gray-600 border-gray-200': 'background: #f3f4f6; color: #4b5563; border-color: #e5e7eb;'
+};
+
+const inlineStyle = badgeStyles[info.colorClass] || badgeStyles['bg-gray-100 text-gray-600 border-gray-200'];
+const fontSize = size === 'sm' ? '0.75rem' : '0.875rem';
+const padding = size === 'sm' ? '0.125rem 0.5rem' : '0.25rem 0.75rem';
 ---
 
 <div class="availability-badge-wrapper">
   <span 
-    class:list={[
-      'inline-block rounded-full font-medium border',
-      info.colorClass,
-      sizeClasses
-    ]}
+    class="availability-badge"
+    style={`${inlineStyle} font-size: ${fontSize}; padding: ${padding};`}
   >
     {info.label}
   </span>
   {showMessage && (
-    <p class="text-sm text-gray-600 mt-1">{info.message}</p>
+    <p class="availability-message">{info.message}</p>
   )}
 </div>
+
+<style>
+  .availability-badge-wrapper {
+    display: inline-block;
+  }
+
+  .availability-badge {
+    display: inline-block;
+    border-radius: 9999px;
+    font-weight: 500;
+    border-width: 1px;
+    border-style: solid;
+    white-space: nowrap;
+  }
+
+  .availability-message {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+  }
+</style>

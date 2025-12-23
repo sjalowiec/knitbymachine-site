@@ -9,11 +9,9 @@ interface Props {
 const { bundle } = Astro.props;
 ---
 
-<div class="bundle-card bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
-  <div class="flex items-start justify-between gap-3 mb-3">
-    <h4 class="text-lg font-semibold text-[var(--kbm-green)]">
-      {bundle.bundleName}
-    </h4>
+<div class="bundle-card">
+  <div class="bundle-header">
+    <h4>{bundle.bundleName}</h4>
     <AvailabilityBadge 
       status={bundle.bundleAvailabilityStatus} 
       leadTimeMinWeeks={bundle.bundleLeadTimeMinWeeks}
@@ -22,18 +20,16 @@ const { bundle } = Astro.props;
     />
   </div>
   
-  <p class="text-gray-600 text-sm mb-4">
-    {bundle.bundleShortDescription}
-  </p>
+  <p class="bundle-description">{bundle.bundleShortDescription}</p>
   
   {bundle.bundleIncludes && bundle.bundleIncludes.length > 0 && (
-    <div class="mt-3">
-      <p class="text-xs font-medium text-gray-500 uppercase tracking-wide mb-2">Includes:</p>
-      <ul class="space-y-1">
+    <div class="bundle-includes">
+      <p class="includes-label">Includes:</p>
+      <ul>
         {bundle.bundleIncludes.map((item) => (
-          <li class="flex items-start gap-2 text-sm text-gray-700">
-            <svg class="w-4 h-4 text-[var(--kbm-green-2)] mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+          <li>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--kbm-green-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M5 13l4 4L19 7" />
             </svg>
             <span>{item}</span>
           </li>
@@ -42,3 +38,71 @@ const { bundle } = Astro.props;
     </div>
   )}
 </div>
+
+<style>
+  .bundle-card {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s;
+  }
+
+  .bundle-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  }
+
+  .bundle-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .bundle-header h4 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0;
+  }
+
+  .bundle-description {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-bottom: 1rem;
+  }
+
+  .bundle-includes {
+    margin-top: 0.75rem;
+  }
+
+  .includes-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .bundle-includes ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .bundle-includes li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+  }
+
+  .bundle-includes li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+</style>
