@@ -1,25 +1,33 @@
 ---
 import AvailabilityBadge from './AvailabilityBadge.astro';
 import type { Machine } from '../../lib/machines/getMachineById';
+import { formatPrice } from '../../lib/machines/getMachineById';
 
 interface Props {
   machine: Machine;
 }
 
 const { machine } = Astro.props;
+
+const typeLabels: Record<string, string> = {
+  'machine': 'Machine',
+  'bundle': 'Bundle',
+  'ribber': 'Ribber'
+};
 ---
 
 <article 
   class="machine-card"
-  data-gauge={machine.gaugeName}
-  data-availability={machine.availabilityStatus}
+  data-gauge={machine.gauge}
+  data-type={machine.productType}
+  data-availability={machine.availability}
 >
   <a href={`/machines/${machine.id}`}>
     <div class="card-image">
-      {machine.imageMain ? (
+      {machine.primaryImage ? (
         <img 
-          src={machine.imageMain} 
-          alt={machine.imageAlt || machine.displayName}
+          src={machine.primaryImage} 
+          alt={machine.model}
           loading="lazy"
         />
       ) : (
@@ -27,26 +35,32 @@ const { machine } = Astro.props;
           <span>Image coming soon</span>
         </div>
       )}
+      {machine.isBundle && (
+        <span class="bundle-badge">Bundle</span>
+      )}
     </div>
     
     <div class="card-content">
       <div class="card-badges">
         <span class="gauge-badge">
-          {machine.gaugeLabel} {machine.gaugeName}
+          {machine.gaugeLabel} {machine.gauge.replace('-Gauge', '').replace(' Gauge', '')}
         </span>
-        <AvailabilityBadge status={machine.availabilityStatus} size="sm" />
+        <AvailabilityBadge status={machine.availability} size="sm" />
       </div>
       
-      <h3>{machine.displayName}</h3>
+      <h3>{machine.model}</h3>
       
-      <p class="card-description">{machine.bestFor}</p>
+      <p class="card-description">{machine.shortDescription}</p>
       
-      <span class="view-link">
-        View details
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M9 5l7 7-7 7" />
-        </svg>
-      </span>
+      <div class="card-footer">
+        <span class="price">{formatPrice(machine.priceUSD)}</span>
+        <span class="view-link">
+          View details
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 5l7 7-7 7" />
+          </svg>
+        </span>
+      </div>
     </div>
   </a>
 </article>
@@ -73,6 +87,7 @@ const { machine } = Astro.props;
     aspect-ratio: 1;
     background: #f3f4f6;
     overflow: hidden;
+    position: relative;
   }
 
   .card-image img {
@@ -90,6 +105,18 @@ const { machine } = Astro.props;
     background: #e5e7eb;
     color: #9ca3af;
     font-size: 0.875rem;
+  }
+
+  .bundle-badge {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: var(--kbm-green);
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
   }
 
   .card-content {
@@ -128,6 +155,18 @@ const { machine } = Astro.props;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
+  }
+
+  .card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--kbm-green);
   }
 
   .view-link {

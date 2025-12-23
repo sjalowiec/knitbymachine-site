@@ -1,17 +1,18 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import MachineCard from '../../components/machines/MachineCard.astro';
-import { getAllMachines, getUniqueGaugeNames, getUniqueAvailabilityStatuses } from '../../lib/machines/getMachineById';
-import { getAvailabilityInfo, type AvailabilityStatus } from '../../lib/machines/availability';
+import { getVisibleMachines, getUniqueGauges, getUniqueProductTypes } from '../../lib/machines/getMachineById';
+import { getAvailabilityInfo } from '../../lib/machines/availability';
 
-const machines = getAllMachines();
-const gaugeNames = getUniqueGaugeNames();
-const availabilityStatuses = getUniqueAvailabilityStatuses();
+const machines = getVisibleMachines();
+const gauges = getUniqueGauges();
+const productTypes = getUniqueProductTypes();
 
-const statusLabels = availabilityStatuses.map(status => ({
-  value: status,
-  label: getAvailabilityInfo(status as AvailabilityStatus).label
-}));
+const productTypeLabels: Record<string, string> = {
+  'machine': 'Machines',
+  'bundle': 'Bundles',
+  'ribber': 'Ribbers'
+};
 ---
 
 <BaseLayout 
@@ -21,7 +22,7 @@ const statusLabels = availabilityStatuses.map(status => ({
   <div class="machines-page">
     <header class="page-header">
       <h1>Knitting Machines</h1>
-      <p>Find the right machine for your knitting journey. Filter by gauge or availability to narrow your search.</p>
+      <p>Find the right machine for your knitting journey. Filter by gauge or type to narrow your search.</p>
     </header>
 
     <div class="filters-section">
@@ -30,18 +31,18 @@ const statusLabels = availabilityStatuses.map(status => ({
           <label for="gauge-filter">Gauge</label>
           <select id="gauge-filter">
             <option value="">All Gauges</option>
-            {gaugeNames.map((gauge) => (
+            {gauges.map((gauge) => (
               <option value={gauge}>{gauge}</option>
             ))}
           </select>
         </div>
 
         <div class="filter-group">
-          <label for="availability-filter">Availability</label>
-          <select id="availability-filter">
-            <option value="">All Availability</option>
-            {statusLabels.map(({ value, label }) => (
-              <option value={value}>{label}</option>
+          <label for="type-filter">Type</label>
+          <select id="type-filter">
+            <option value="">All Types</option>
+            {productTypes.map((type) => (
+              <option value={type}>{productTypeLabels[type] || type}</option>
             ))}
           </select>
         </div>
@@ -165,26 +166,26 @@ const statusLabels = availabilityStatuses.map(status => ({
 <script is:inline>
   document.addEventListener('DOMContentLoaded', function() {
     var gaugeFilter = document.getElementById('gauge-filter');
-    var availabilityFilter = document.getElementById('availability-filter');
+    var typeFilter = document.getElementById('type-filter');
     var clearFiltersBtn = document.getElementById('clear-filters');
     var machinesGrid = document.getElementById('machines-grid');
     var noResults = document.getElementById('no-results');
     
     function filterMachines() {
       var gaugeValue = gaugeFilter ? gaugeFilter.value : '';
-      var availabilityValue = availabilityFilter ? availabilityFilter.value : '';
+      var typeValue = typeFilter ? typeFilter.value : '';
       
       var cards = machinesGrid ? machinesGrid.querySelectorAll('.machine-card') : [];
       var visibleCount = 0;
       
       cards.forEach(function(card) {
         var cardGauge = card.dataset.gauge || '';
-        var cardAvailability = card.dataset.availability || '';
+        var cardType = card.dataset.type || '';
         
         var matchesGauge = !gaugeValue || cardGauge === gaugeValue;
-        var matchesAvailability = !availabilityValue || cardAvailability === availabilityValue;
+        var matchesType = !typeValue || cardType === typeValue;
         
-        if (matchesGauge && matchesAvailability) {
+        if (matchesGauge && matchesType) {
           card.style.display = '';
           visibleCount++;
         } else {
@@ -202,12 +203,12 @@ const statusLabels = availabilityStatuses.map(status => ({
     
     function clearFilters() {
       if (gaugeFilter) gaugeFilter.value = '';
-      if (availabilityFilter) availabilityFilter.value = '';
+      if (typeFilter) typeFilter.value = '';
       filterMachines();
     }
     
     if (gaugeFilter) gaugeFilter.addEventListener('change', filterMachines);
-    if (availabilityFilter) availabilityFilter.addEventListener('change', filterMachines);
+    if (typeFilter) typeFilter.addEventListener('change', filterMachines);
     if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
   });
 </script>

@@ -2,8 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AvailabilityBadge from '../../components/machines/AvailabilityBadge.astro';
 import GaugeOverview from '../../components/machines/GaugeOverview.astro';
-import BundleCard from '../../components/machines/BundleCard.astro';
-import { getAllMachines, getMachineById } from '../../lib/machines/getMachineById';
+import { getAllMachines, getMachineById, formatPrice } from '../../lib/machines/getMachineById';
 
 export async function getStaticPaths() {
   const machines = getAllMachines();
@@ -20,14 +19,12 @@ if (!machine) {
   return Astro.redirect('/machines');
 }
 
-const hasBundles = machine.bundleOptions && machine.bundleOptions.length > 0;
-const subhead = machine.shortDescription || 
-  `A ${machine.gaugeName.toLowerCase()} gauge machine ${machine.bestFor ? `perfect for ${machine.bestFor.toLowerCase()}` : ''}`;
+const gaugeShort = machine.gauge.replace('-Gauge', '').replace(' Gauge', '');
 ---
 
 <BaseLayout 
-  title={`${machine.displayName} | Knit by Machine`}
-  description={machine.shortDescription || machine.bestFor}
+  title={`${machine.model} | Knit by Machine`}
+  description={machine.shortDescription}
 >
   <article class="machine-detail-page">
     
@@ -35,38 +32,47 @@ const subhead = machine.shortDescription ||
     <section class="hero-section">
       <div class="hero-grid">
         <div class="hero-image">
-          {machine.imageMain ? (
+          {machine.primaryImage ? (
             <img 
-              src={machine.imageMain} 
-              alt={machine.imageAlt || machine.displayName}
+              src={machine.primaryImage} 
+              alt={machine.model}
             />
           ) : (
             <div class="image-placeholder">
               <span>Image coming soon</span>
             </div>
           )}
+          {machine.isBundle && (
+            <span class="bundle-badge">Bundle</span>
+          )}
         </div>
         
         <div class="hero-content">
           <div class="hero-badges">
             <span class="gauge-badge">
-              {machine.gaugeLabel} {machine.gaugeName} Gauge
+              {machine.gaugeLabel} {gaugeShort}
             </span>
             <AvailabilityBadge 
-              status={machine.availabilityStatus} 
-              leadTimeMinWeeks={machine.leadTimeMinWeeks}
-              leadTimeMaxWeeks={machine.leadTimeMaxWeeks}
+              status={machine.availability} 
+              leadTimeNotes={machine.leadTimeNotes}
             />
           </div>
           
-          <h1>{machine.displayName}</h1>
+          <h1>{machine.model}</h1>
           
-          <p class="subhead">{subhead}</p>
+          <p class="subhead">{machine.shortDescription}</p>
+          
+          <div class="price-section">
+            <span class="price">{formatPrice(machine.priceUSD)}</span>
+            {machine.leadTimeNotes && (
+              <span class="lead-time">Lead time: {machine.leadTimeNotes}</span>
+            )}
+          </div>
+          
+          <!-- Shopify Buy Button -->
+          <div class="buy-button-container" id={machine.buyButtonDivId}></div>
           
           <div class="hero-actions">
-            <a href="/machines/choose" class="btn-primary">
-              Help me choose
-            </a>
             <a href="/machines" class="btn-secondary">
               Browse all machines
             </a>
@@ -75,10 +81,43 @@ const subhead = machine.shortDescription ||
       </div>
     </section>
 
+    <!-- Specs Section -->
+    <section class="content-card specs-section">
+      <h2>Specifications</h2>
+      <div class="specs-grid">
+        <div class="spec-item">
+          <span class="spec-label">Gauge</span>
+          <span class="spec-value">{machine.gaugeLabel} ({machine.gaugeMm}mm)</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Needle Bed</span>
+          <span class="spec-value">{machine.bedWidthNeedles} needles ({machine.bedWidthCm})</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">Yarn Range</span>
+          <span class="spec-value">{machine.yarnYppMin.toLocaleString()}–{machine.yarnYppMax.toLocaleString()} YPP</span>
+        </div>
+        <div class="spec-item">
+          <span class="spec-label">CYCA Weight</span>
+          <span class="spec-value">{machine.cycaMin}–{machine.cycaMax}</span>
+        </div>
+        {machine.operationType && (
+          <div class="spec-item">
+            <span class="spec-label">Patterning</span>
+            <span class="spec-value" style="text-transform: capitalize;">{machine.operationType}</span>
+          </div>
+        )}
+        <div class="spec-item">
+          <span class="spec-label">Weight</span>
+          <span class="spec-value">{machine.machineWeightLbs} lbs</span>
+        </div>
+      </div>
+    </section>
+
     <!-- Benefits Section -->
     {machine.keyBenefits && machine.keyBenefits.length > 0 && (
       <section class="content-card benefits-section">
-        <h2>What this machine does well</h2>
+        <h2>What this {machine.isBundle ? 'bundle' : 'machine'} does well</h2>
         <ul class="benefits-list">
           {machine.keyBenefits.map((benefit) => (
             <li>
@@ -89,54 +128,57 @@ const subhead = machine.shortDescription ||
             </li>
           ))}
         </ul>
-        {machine.bestFor && (
-          <p class="best-for">
-            <strong>Best for:</strong> {machine.bestFor}
-          </p>
-        )}
+      </section>
+    )}
+
+    <!-- What's Included Section -->
+    {machine.includedItems && machine.includedItems.length > 0 && (
+      <section class="content-card">
+        <h2>What's Included</h2>
+        <ul class="included-list">
+          {machine.includedItems.map((item) => (
+            <li>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--kbm-green-2)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 13l4 4L19 7" />
+              </svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
+
+    <!-- Bundle Contents (if bundle) -->
+    {machine.isBundle && machine.bundleIncludes && machine.bundleIncludes.length > 0 && (
+      <section class="content-card bundle-section">
+        <h2>Bundle Contents</h2>
+        <ul class="bundle-list">
+          {machine.bundleIncludes.map((item) => (
+            <li>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--kbm-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                <path d="M9 12l2 2 4-4" />
+              </svg>
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
       </section>
     )}
 
     <!-- Gauge Explainer Section -->
     <section class="content-card gauge-section">
       <h2>Understanding Gauge</h2>
-      <GaugeOverview currentGaugeName={machine.gaugeName} showExplainer={true} />
+      <GaugeOverview currentGaugeName={gaugeShort} showExplainer={true} />
     </section>
 
-    <!-- Availability Section -->
-    <section class="content-card">
-      <h2>Availability</h2>
-      <AvailabilityBadge 
-        status={machine.availabilityStatus} 
-        leadTimeMinWeeks={machine.leadTimeMinWeeks}
-        leadTimeMaxWeeks={machine.leadTimeMaxWeeks}
-        showMessage={true}
-      />
-    </section>
-
-    <!-- Bundles Section -->
-    {hasBundles && (
-      <section class="bundles-section">
-        <h2>Bundle Options</h2>
-        <p class="bundles-intro">
-          Get started with everything you need in one package.
-        </p>
-        <div class="bundles-grid">
-          {machine.bundleOptions!.map((bundle) => (
-            <BundleCard bundle={bundle} />
-          ))}
-        </div>
+    <!-- Warranty & Info -->
+    {machine.warrantyNotes && (
+      <section class="content-card">
+        <h2>Warranty</h2>
+        <p class="warranty-text">{machine.warrantyNotes}</p>
       </section>
     )}
-
-    <!-- Comparison CTA Section -->
-    <section class="content-card cta-section">
-      <h2>Want to compare?</h2>
-      <p>See how the {machine.displayName} stacks up against other machines.</p>
-      <a href={`/machines?compare=${machine.id}`} class="btn-primary">
-        Compare machines
-      </a>
-    </section>
 
     <!-- Help Section -->
     <section class="content-card help-section">
@@ -148,11 +190,11 @@ const subhead = machine.shortDescription ||
           </svg>
           Ask a question
         </a>
-        <a href="/machines/choose" class="help-link">
+        <a href="/machines" class="help-link">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
           </svg>
-          Not sure where to start?
+          Compare machines
         </a>
       </div>
     </section>
@@ -160,20 +202,74 @@ const subhead = machine.shortDescription ||
   </article>
 </BaseLayout>
 
+<!-- Shopify Buy Button Script -->
+<script is:inline define:vars={{ shopifyProductId: machine.shopifyProductId, buyButtonDivId: machine.buyButtonDivId }}>
+  (function () {
+    var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+    if (window.ShopifyBuy) { 
+      if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } 
+    } else { 
+      loadScript(); 
+    }
+    
+    function loadScript() {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = scriptURL;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+      script.onload = ShopifyBuyInit;
+    }
+    
+    function ShopifyBuyInit() {
+      var client = ShopifyBuy.buildClient({
+        domain: 'knit-by-machine.myshopify.com',
+        storefrontAccessToken: '66fba9d9b42bfea416c8e0af7987dc94'
+      });
+      ShopifyBuy.UI.onReady(client).then(function (ui) {
+        ui.createComponent('product', {
+          id: shopifyProductId,
+          node: document.getElementById(buyButtonDivId),
+          options: {
+            product: {
+              styles: {
+                button: {
+                  'background-color': '#52682d',
+                  ':hover': { 'background-color': '#4a5e29' },
+                  ':focus': { 'background-color': '#4a5e29' },
+                  'border-radius': '11px',
+                  'font-weight': '600',
+                  'padding': '12px 24px'
+                }
+              },
+              text: { button: 'Add to cart' },
+              contents: {
+                img: false,
+                title: false,
+                price: false,
+                description: false
+              }
+            }
+          }
+        });
+      });
+    }
+  })();
+</script>
+
 <style>
   .machine-detail-page {
     padding: 2rem 0;
   }
 
   .hero-section {
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
   }
 
   .hero-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
-    align-items: center;
+    align-items: start;
   }
 
   @media (min-width: 768px) {
@@ -187,6 +283,7 @@ const subhead = machine.shortDescription ||
     background: #f3f4f6;
     border-radius: 12px;
     overflow: hidden;
+    position: relative;
   }
 
   .hero-image img {
@@ -203,6 +300,18 @@ const subhead = machine.shortDescription ||
     justify-content: center;
     background: #e5e7eb;
     color: #9ca3af;
+  }
+
+  .bundle-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--kbm-green);
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
   }
 
   .hero-badges {
@@ -238,6 +347,29 @@ const subhead = machine.shortDescription ||
     color: #374151;
     margin-bottom: 1.5rem;
     line-height: 1.6;
+  }
+
+  .price-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .price {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--kbm-green);
+    display: block;
+  }
+
+  .lead-time {
+    font-size: 0.875rem;
+    color: #6b7280;
+    display: block;
+    margin-top: 0.25rem;
+  }
+
+  .buy-button-container {
+    margin-bottom: 1rem;
+    min-height: 50px;
   }
 
   .hero-actions {
@@ -283,7 +415,7 @@ const subhead = machine.shortDescription ||
     border-radius: 12px;
     border: 1px solid #e5e7eb;
     padding: 1.5rem;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
   @media (min-width: 768px) {
@@ -302,80 +434,71 @@ const subhead = machine.shortDescription ||
     border: none;
   }
 
-  .benefits-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 1rem 0;
+  .specs-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
   }
 
-  .benefits-list li {
+  @media (min-width: 640px) {
+    .specs-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .spec-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .spec-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b7280;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .spec-value {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #1f2937;
+  }
+
+  .benefits-list,
+  .included-list,
+  .bundle-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .benefits-list li,
+  .included-list li,
+  .bundle-list li {
     display: flex;
     align-items: flex-start;
     gap: 0.75rem;
     margin-bottom: 0.75rem;
   }
 
-  .benefits-list li svg {
+  .benefits-list li svg,
+  .included-list li svg,
+  .bundle-list li svg {
     flex-shrink: 0;
     margin-top: 2px;
   }
 
-  .benefits-list li span {
+  .benefits-list li span,
+  .included-list li span,
+  .bundle-list li span {
     color: #374151;
   }
 
-  .best-for {
-    font-size: 0.875rem;
+  .warranty-text {
     color: #6b7280;
-    border-top: 1px solid #f3f4f6;
-    padding-top: 1rem;
-    margin-top: 1rem;
-    margin-bottom: 0;
-  }
-
-  .best-for strong {
-    color: #374151;
-  }
-
-  .bundles-section {
-    margin-bottom: 2rem;
-  }
-
-  .bundles-section h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .bundles-intro {
-    color: #6b7280;
-    margin-bottom: 1.5rem;
-  }
-
-  .bundles-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  @media (min-width: 768px) {
-    .bundles-grid {
-      grid-template-columns: 1fr 1fr;
-    }
-  }
-
-  .cta-section {
-    background: var(--kbm-bg);
-    border: none;
-    text-align: center;
-  }
-
-  .cta-section h2 {
-    font-size: 1.25rem;
-  }
-
-  .cta-section p {
-    color: #6b7280;
-    margin-bottom: 1rem;
+    margin: 0;
   }
 
   .help-section h2 {

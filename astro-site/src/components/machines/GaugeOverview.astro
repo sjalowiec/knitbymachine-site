@@ -42,7 +42,7 @@ const gauges = [
   
   <div class="gauge-grid">
     {gauges.map((gauge) => {
-      const isActive = gauge.name === currentGaugeName;
+      const isActive = currentGaugeName && currentGaugeName.toLowerCase().includes(gauge.name.toLowerCase());
       return (
         <div class={`gauge-card ${isActive ? 'active' : ''}`}>
           <div class="gauge-label">{gauge.label}</div>

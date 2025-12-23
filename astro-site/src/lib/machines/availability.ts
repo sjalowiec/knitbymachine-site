@@ -1,8 +1,7 @@
 export type AvailabilityStatus = 
-  | 'in_stock' 
-  | 'usually_in_stock' 
-  | 'on_order' 
-  | 'pre_order' 
+  | 'in-stock' 
+  | 'pre-order' 
+  | 'on-order' 
   | 'limited' 
   | 'backorder' 
   | 'discontinued';
@@ -11,84 +10,57 @@ export interface AvailabilityInfo {
   label: string;
   message: string;
   colorClass: string;
+  inlineStyle: string;
 }
 
 export function getAvailabilityInfo(
-  status: AvailabilityStatus,
-  leadTimeMinWeeks?: number | null,
-  leadTimeMaxWeeks?: number | null
+  status: string,
+  leadTimeNotes?: string | null
 ): AvailabilityInfo {
-  const leadTimeText = getLeadTimeText(leadTimeMinWeeks, leadTimeMaxWeeks);
-
-  const statusMap: Record<AvailabilityStatus, AvailabilityInfo> = {
-    in_stock: {
+  const statusMap: Record<string, AvailabilityInfo> = {
+    'in-stock': {
       label: 'In Stock',
       message: 'Available and ready to ship.',
-      colorClass: 'bg-green-100 text-green-800 border-green-200'
+      colorClass: 'availability-in-stock',
+      inlineStyle: 'background: #dcfce7; color: #166534; border-color: #bbf7d0;'
     },
-    usually_in_stock: {
-      label: 'Usually In Stock',
-      message: leadTimeText 
-        ? `Typically available. ${leadTimeText}` 
-        : 'Typically available with short lead times.',
-      colorClass: 'bg-emerald-100 text-emerald-800 border-emerald-200'
-    },
-    on_order: {
-      label: 'On Order',
-      message: leadTimeText 
-        ? `Currently on order. ${leadTimeText}` 
-        : 'Currently on order from the manufacturer.',
-      colorClass: 'bg-amber-100 text-amber-800 border-amber-200'
-    },
-    pre_order: {
+    'pre-order': {
       label: 'Pre-Order',
-      message: leadTimeText 
-        ? `Available for pre-order. ${leadTimeText}` 
+      message: leadTimeNotes 
+        ? `Available for pre-order. Expected lead time: ${leadTimeNotes}.` 
         : 'Available for pre-order.',
-      colorClass: 'bg-blue-100 text-blue-800 border-blue-200'
+      colorClass: 'availability-pre-order',
+      inlineStyle: 'background: #dbeafe; color: #1e40af; border-color: #bfdbfe;'
     },
-    limited: {
-      label: 'Limited Availability',
+    'on-order': {
+      label: 'On Order',
+      message: leadTimeNotes 
+        ? `Currently on order. Expected: ${leadTimeNotes}.` 
+        : 'Currently on order from the manufacturer.',
+      colorClass: 'availability-on-order',
+      inlineStyle: 'background: #fef3c7; color: #92400e; border-color: #fde68a;'
+    },
+    'limited': {
+      label: 'Limited',
       message: 'Limited quantities available.',
-      colorClass: 'bg-orange-100 text-orange-800 border-orange-200'
+      colorClass: 'availability-limited',
+      inlineStyle: 'background: #ffedd5; color: #9a3412; border-color: #fed7aa;'
     },
-    backorder: {
+    'backorder': {
       label: 'Backorder',
-      message: leadTimeText 
-        ? `Currently backordered. ${leadTimeText}` 
+      message: leadTimeNotes 
+        ? `Currently backordered. ${leadTimeNotes}.` 
         : 'Currently backordered.',
-      colorClass: 'bg-yellow-100 text-yellow-800 border-yellow-200'
+      colorClass: 'availability-backorder',
+      inlineStyle: 'background: #fef9c3; color: #854d0e; border-color: #fef08a;'
     },
-    discontinued: {
+    'discontinued': {
       label: 'Discontinued',
       message: 'This model has been discontinued.',
-      colorClass: 'bg-gray-100 text-gray-600 border-gray-200'
+      colorClass: 'availability-discontinued',
+      inlineStyle: 'background: #f3f4f6; color: #4b5563; border-color: #e5e7eb;'
     }
   };
 
-  return statusMap[status] || statusMap.in_stock;
-}
-
-function getLeadTimeText(
-  minWeeks?: number | null, 
-  maxWeeks?: number | null
-): string {
-  if (!minWeeks && !maxWeeks) return '';
-  
-  if (minWeeks && maxWeeks) {
-    if (minWeeks === maxWeeks) {
-      return `Expected in about ${minWeeks} week${minWeeks === 1 ? '' : 's'}.`;
-    }
-    return `Expected in ${minWeeks}–${maxWeeks} weeks.`;
-  }
-  
-  if (minWeeks) {
-    return `Expected in ${minWeeks}+ weeks.`;
-  }
-  
-  if (maxWeeks) {
-    return `Expected within ${maxWeeks} week${maxWeeks === 1 ? '' : 's'}.`;
-  }
-  
-  return '';
+  return statusMap[status] || statusMap['pre-order'];
 }
