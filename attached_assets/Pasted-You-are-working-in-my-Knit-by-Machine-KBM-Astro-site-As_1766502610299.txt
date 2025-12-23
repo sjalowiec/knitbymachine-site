@@ -1,0 +1,116 @@
+You are working in my Knit by Machine (KBM) Astro site (Astro + Tailwind). I want a reusable Machine Sales Page template powered by my Machines dataset.
+
+Goal
+Create a reusable Astro template that can render a sales page for ANY machine using structured machine data, and a list page that shows all machines as cards with filters. The spreadsheet remains the source of truth for now, but assume we already have (or will have) a local data file generated from it (JSON) inside the repo.
+
+Do NOT build a full CMS. Do NOT add complex multi-step flows. Keep it modular and “lego block” style.
+
+Data source (assume this file exists; if not, create a placeholder with 2 machines):
+/src/data/machines/machines.json
+
+Each machine object should support these fields (use what exists; handle missing gracefully):
+- id (string, unique, URL-safe)
+- brand (string)
+- model (string)
+- displayName (string)  // e.g., "Taitexma TH-860"
+- gaugeMm (number)      // 4.5, 6, 9
+- gaugeLabel (string)   // "4G", "6G", "9G"
+- gaugeName (string)    // "Standard", "Mid", "Bulky"
+- shortDescription (string)
+- bestFor (string)
+- keyBenefits (string[]) // array of bullet points
+- availabilityStatus (string) // enum: in_stock, usually_in_stock, on_order, pre_order, limited, backorder, discontinued
+- leadTimeMinWeeks (number|null)
+- leadTimeMaxWeeks (number|null)
+- imageMain (string) // path under /public/images/machines/...
+- imageAlt (string)
+- bundleOptions (optional array of bundles):
+  - bundleId, bundleName, bundleShortDescription, bundleIncludes (string[]), bundleAvailabilityStatus, bundleLeadTimeMinWeeks, bundleLeadTimeMaxWeeks
+
+What to build
+1) A reusable machine detail template:
+- Route: /machines/[id].astro
+- It loads the machine by id from machines.json
+- It renders a sales-page style layout (not just specs)
+
+Sections (lego blocks; each can be a component)
+A. Hero
+- Title: machine.displayName
+- Subhead: machine.shortDescription (fallback to a generated sentence using gaugeName + bestFor)
+- CTAs:
+  - Primary: “Help me choose” (for now link to /machines/choose or #choose placeholder)
+  - Secondary: “Browse all machines” (/machines)
+
+B. “What this machine does well”
+- Render machine.keyBenefits as bullets
+- “Best for” line beneath
+
+C. Gauge explainer (small)
+- Show machine.gaugeMm + gaugeLabel + gaugeName
+- Include a short 2–3 sentence explanation of why gauge matters (static copy)
+- Optional: show a tiny 3-card gauge overview (Standard/Mid/Bulky) with current machine highlighted
+
+D. Availability
+- Show a badge and a 1–2 line message derived from availabilityStatus + lead time
+- Use a helper function to map status => label and status => default message
+- Keep copy calm and factual; no urgency language
+
+E. Bundles (only if bundleOptions exists and has items)
+- Show bundle cards with bundleName, bundleShortDescription, bundleIncludes bullets, and availability message
+
+F. Comparison CTA
+- Simple section: “Want to compare?” button linking to /machines with this machine pre-selected (use querystring like ?compare=th-860)
+
+G. Help section
+- Two links:
+  - “Ask a question” -> /help (or existing help hub path)
+  - “Not sure where to start?” -> /machines/choose (placeholder ok)
+
+2) Machines list page:
+- Route: /machines/index.astro
+- Shows machine cards in a grid
+- Each card:
+  - square image
+  - displayName
+  - gaugeLabel + gaugeName
+  - availability badge
+  - bestFor (1 line)
+  - CTA: “View details”
+- Add simple client-side filters (minimal JS):
+  - Filter by gaugeName (Standard/Mid/Bulky)
+  - Filter by availabilityStatus (In stock/Usually in stock/On order)
+- Keep filters optional; default shows all.
+
+3) Components + helpers
+Create these reusable components under /src/components/machines/:
+- MachineCard.astro
+- AvailabilityBadge.astro
+- GaugeOverview.astro (small)
+- BundleCard.astro (optional)
+Create helper(s) under /src/lib/machines/:
+- availability.ts (maps status to label + message)
+- getMachineById.ts (load JSON, find machine)
+- optional: filters.ts
+
+Implementation notes
+- Use Tailwind classes consistent with existing KBM styling.
+- Keep layout clean: generous whitespace, readable headings, short sections.
+- Do not hardcode brand/model-specific copy in the template; use the data fields.
+- Handle missing images by showing a simple placeholder div.
+- Use accessible markup: proper headings, alt text, button semantics.
+- Ensure pages build with Astro (no React required). If you need interactivity for filters, use a tiny vanilla JS script inside the list page.
+
+Deliverables
+- /src/pages/machines/index.astro
+- /src/pages/machines/[id].astro
+- /src/components/machines/* components above
+- /src/lib/machines/* helpers above
+- /src/data/machines/machines.json (placeholder if missing)
+- Add basic styles only through Tailwind utility classes (no new global CSS unless absolutely necessary)
+
+Acceptance criteria
+- Visiting /machines shows a grid of machine cards with working filters.
+- Clicking a card goes to /machines/{id} and renders a complete sales-style page.
+- Availability badges/messages are derived from structured data.
+- Bundles render only when present.
+- No admin CRUD for machines is created; this is purely front-end rendering from JSON.
