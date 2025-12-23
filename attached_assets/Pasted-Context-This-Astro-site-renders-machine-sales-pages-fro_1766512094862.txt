@@ -1,0 +1,63 @@
+Context:
+This Astro site renders machine sales pages from:
+src/pages/machines/[slug].astro
+
+Each machine record includes:
+- cycaWeight (number 0–7)
+
+SVG icons already exist at:
+ /images/yarn-weights/0.svg
+ /images/yarn-weights/1.svg
+ ...
+ /images/yarn-weights/7.svg
+
+The site already has a working tooltip system using:
+.kbm-tooltip and data-tip
+
+Goal:
+Replace any numeric CYCA weight display with:
+- an SVG icon
+- wrapped in a tooltip explaining the CYCA category
+No Tailwind. No new tooltip system.
+
+Instructions:
+1. Open src/pages/machines/[slug].astro
+2. Add this lookup near the top of the file (frontmatter section):
+
+const cycaInfo = {
+  0: { label: 'Lace', description: 'CYCA 0 — Lace weight' },
+  1: { label: 'Fingering', description: 'CYCA 1 — Fingering / Sock (often ~28–32 sts per 4\" / 10 cm)' },
+  2: { label: 'Sport', description: 'CYCA 2 — Sport (often ~24–26 sts per 4\" / 10 cm)' },
+  3: { label: 'DK', description: 'CYCA 3 — DK / Light Worsted (often ~21–24 sts per 4\" / 10 cm)' },
+  4: { label: 'Worsted', description: 'CYCA 4 — Worsted / Aran (often ~16–20 sts per 4\" / 10 cm)' },
+  5: { label: 'Bulky', description: 'CYCA 5 — Bulky (often ~12–15 sts per 4\" / 10 cm)' },
+  6: { label: 'Super Bulky', description: 'CYCA 6 — Super Bulky (often ~7–11 sts per 4\" / 10 cm)' },
+  7: { label: 'Jumbo', description: 'CYCA 7 — Jumbo (typically under ~7 sts per 4\" / 10 cm)' }
+};
+
+3. Find where cycaWeight is currently rendered as a number and replace it with:
+
+{typeof machine?.cycaWeight === "number" && cycaInfo[machine.cycaWeight] && (
+  <span
+    class="kbm-tooltip"
+    data-tip={cycaInfo[machine.cycaWeight].description}
+  >
+    <img
+      src={`/images/yarn-weights/${machine.cycaWeight}.svg`}
+      alt={cycaInfo[machine.cycaWeight].label}
+      width="28"
+      height="28"
+      loading="lazy"
+      style="vertical-align: middle;"
+    />
+  </span>
+)}
+
+4. Do not change any CSS files.
+5. Do not add inline styles beyond what is shown.
+6. Do not alter the data model.
+
+Deliverable:
+- Update src/pages/machines/[slug].astro
+- Tell me what line or section you replaced
+- Confirm how to test on one machine page
