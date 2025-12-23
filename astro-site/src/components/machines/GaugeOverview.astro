@@ -1,0 +1,75 @@
+---
+interface Props {
+  currentGaugeName?: string;
+  showExplainer?: boolean;
+}
+
+const { currentGaugeName, showExplainer = true } = Astro.props;
+
+const gauges = [
+  {
+    name: 'Standard',
+    label: '4.5G',
+    mm: '4.5mm',
+    yarns: 'Fingering to DK',
+    description: 'Fine, drapey fabrics'
+  },
+  {
+    name: 'Mid',
+    label: '6G',
+    mm: '6mm',
+    yarns: 'DK to Worsted',
+    description: 'Versatile everyday knits'
+  },
+  {
+    name: 'Bulky',
+    label: '9G',
+    mm: '9mm',
+    yarns: 'Bulky to Super Bulky',
+    description: 'Quick, cozy projects'
+  }
+];
+---
+
+<div class="gauge-overview">
+  {showExplainer && (
+    <div class="mb-4">
+      <p class="text-gray-700 text-sm leading-relaxed">
+        Machine gauge determines the spacing between needles and what yarn weights work best. 
+        A smaller gauge (like 4.5G) creates finer fabrics with thinner yarns, while a larger gauge 
+        (like 9G) handles bulky yarns for faster, chunkier knitting.
+      </p>
+    </div>
+  )}
+  
+  <div class="grid grid-cols-3 gap-3">
+    {gauges.map((gauge) => {
+      const isActive = gauge.name === currentGaugeName;
+      return (
+        <div 
+          class:list={[
+            'rounded-lg p-3 text-center border-2 transition-all',
+            isActive 
+              ? 'border-[var(--kbm-green)] bg-[var(--kbm-bg)]' 
+              : 'border-gray-200 bg-white'
+          ]}
+        >
+          <div class:list={[
+            'text-lg font-bold',
+            isActive ? 'text-[var(--kbm-green)]' : 'text-gray-700'
+          ]}>
+            {gauge.label}
+          </div>
+          <div class="text-xs text-gray-500 mb-1">{gauge.mm} spacing</div>
+          <div class:list={[
+            'text-sm font-medium',
+            isActive ? 'text-[var(--kbm-green)]' : 'text-gray-800'
+          ]}>
+            {gauge.name}
+          </div>
+          <div class="text-xs text-gray-600 mt-1">{gauge.yarns}</div>
+        </div>
+      );
+    })}
+  </div>
+</div>

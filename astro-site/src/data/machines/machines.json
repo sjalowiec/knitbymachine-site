@@ -1,0 +1,104 @@
+[
+  {
+    "id": "th-860",
+    "brand": "Taitexma",
+    "model": "TH-860",
+    "displayName": "Taitexma TH-860",
+    "gaugeMm": 4.5,
+    "gaugeLabel": "4.5G",
+    "gaugeName": "Standard",
+    "shortDescription": "A versatile standard-gauge machine perfect for fingering to DK weight yarns.",
+    "bestFor": "Knitters working with sock yarns, fingering weight, and light DK yarns who want fine detail and drape.",
+    "keyBenefits": [
+      "Works beautifully with fingering and sock weight yarns",
+      "Creates fine, drapey fabrics ideal for garments",
+      "Large needle bed for wide panels and blankets",
+      "Electronic patterning capabilities for colorwork",
+      "Compatible with ribber attachment for double-bed knitting"
+    ],
+    "availabilityStatus": "usually_in_stock",
+    "leadTimeMinWeeks": null,
+    "leadTimeMaxWeeks": null,
+    "imageMain": "/images/machines/taitexma-TH860-knitting-machine.webp",
+    "imageAlt": "Taitexma TH-860 standard gauge knitting machine",
+    "bundleOptions": [
+      {
+        "bundleId": "th-860-starter",
+        "bundleName": "Starter Bundle",
+        "bundleShortDescription": "Everything you need to get started with your TH-860.",
+        "bundleIncludes": [
+          "TH-860 knitting machine",
+          "Standard accessory kit",
+          "Getting started video course access",
+          "30-day email support"
+        ],
+        "bundleAvailabilityStatus": "in_stock",
+        "bundleLeadTimeMinWeeks": null,
+        "bundleLeadTimeMaxWeeks": null
+      },
+      {
+        "bundleId": "th-860-complete",
+        "bundleName": "Complete Studio Bundle",
+        "bundleShortDescription": "The full setup for serious machine knitters.",
+        "bundleIncludes": [
+          "TH-860 knitting machine",
+          "TH-160 ribber attachment",
+          "Extended accessory kit",
+          "Full video course library access",
+          "90-day priority support"
+        ],
+        "bundleAvailabilityStatus": "usually_in_stock",
+        "bundleLeadTimeMinWeeks": 1,
+        "bundleLeadTimeMaxWeeks": 2
+      }
+    ]
+  },
+  {
+    "id": "th-160",
+    "brand": "Taitexma",
+    "model": "TH-160",
+    "displayName": "Taitexma TH-160",
+    "gaugeMm": 6,
+    "gaugeLabel": "6G",
+    "gaugeName": "Mid",
+    "shortDescription": "A mid-gauge machine ideal for DK to worsted weight yarns with excellent versatility.",
+    "bestFor": "Knitters who want flexibility across a wide range of yarn weights from sport to light worsted.",
+    "keyBenefits": [
+      "Handles DK and worsted weight yarns with ease",
+      "Great for sweaters, hats, and accessories",
+      "Faster knitting than standard gauge",
+      "Good balance of detail and speed",
+      "Works as a ribber for the TH-860"
+    ],
+    "availabilityStatus": "in_stock",
+    "leadTimeMinWeeks": null,
+    "leadTimeMaxWeeks": null,
+    "imageMain": "/images/machines/taitexma-th160-knitting-machine.webp",
+    "imageAlt": "Taitexma TH-160 mid gauge knitting machine",
+    "bundleOptions": []
+  },
+  {
+    "id": "th-260",
+    "brand": "Taitexma",
+    "model": "TH-260",
+    "displayName": "Taitexma TH-260",
+    "gaugeMm": 9,
+    "gaugeLabel": "9G",
+    "gaugeName": "Bulky",
+    "shortDescription": "A chunky-gauge machine designed for bulky yarns and quick projects.",
+    "bestFor": "Knitters who love thick, cozy fabrics and want to complete projects fast.",
+    "keyBenefits": [
+      "Perfect for bulky and super bulky yarns",
+      "Fastest knitting speed of any gauge",
+      "Great for blankets, chunky sweaters, and home decor",
+      "Beginner-friendly due to larger stitches",
+      "Excellent for textured stitch patterns"
+    ],
+    "availabilityStatus": "on_order",
+    "leadTimeMinWeeks": 4,
+    "leadTimeMaxWeeks": 6,
+    "imageMain": "/images/machines/taitexma-th260-knitting-machine.webp",
+    "imageAlt": "Taitexma TH-260 bulky gauge knitting machine",
+    "bundleOptions": []
+  }
+]
