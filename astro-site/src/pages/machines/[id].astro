@@ -80,6 +80,16 @@ const cycaInfo: Record<number, { label: string; description: string }> = {
             )}
           </div>
           
+          <p class="shipping-notice">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="1" y="3" width="15" height="13" />
+              <polygon points="16 8 20 8 23 11 23 16 16 16 16 8" />
+              <circle cx="5.5" cy="18.5" r="2.5" />
+              <circle cx="18.5" cy="18.5" r="2.5" />
+            </svg>
+            Ships to Continental US only
+          </p>
+          
           <!-- Shopify Buy Button -->
           <div class="buy-button-container" id={machine.buyButtonDivId}></div>
           
@@ -109,7 +119,7 @@ const cycaInfo: Record<number, { label: string; description: string }> = {
           <span class="spec-value">{machine.yarnYppMin.toLocaleString()}–{machine.yarnYppMax.toLocaleString()} YPP</span>
         </div>
         <div class="spec-item">
-          <span class="spec-label">CYCA Weight</span>
+          <span class="spec-label">Craft Yarn Council Standards</span>
           <span class="spec-value cyca-icons">
             {typeof machine.cycaMin === "number" && cycaInfo[machine.cycaMin] && (
               <span
@@ -412,6 +422,19 @@ const cycaInfo: Record<number, { label: string; description: string }> = {
     color: #6b7280;
     display: block;
     margin-top: 0.25rem;
+  }
+
+  .shipping-notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0 0 1rem 0;
+  }
+
+  .shipping-notice svg {
+    flex-shrink: 0;
   }
 
   .buy-button-container {
