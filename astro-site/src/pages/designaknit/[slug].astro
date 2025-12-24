@@ -24,15 +24,45 @@ if (!product) {
 >
   <article class="software-detail-page">
     
-    {product.icon && (
-      <div class="product-icon">
-        <img src={product.icon} alt={product.name} />
+    <!-- Shared Intro Section -->
+    <section class="intro-section">
+      <h2>What is DesignaKnit?</h2>
+      <p>
+        DesignaKnit is professional knitting design software that helps you create, edit, and print patterns for both hand and machine knitting. 
+        It includes powerful tools for garment shaping, stitch charting, and graphics—so you can bring your ideas to life with precision. 
+        Machine versions can connect directly to compatible electronic knitting machines, sending patterns straight from your computer.
+      </p>
+    </section>
+    
+    <section class="why-section">
+      <h2>Why knitters use it</h2>
+      <ul>
+        <li>Create professional stitch charts and colorwork patterns</li>
+        <li>Edit and resize existing patterns to fit any gauge or size</li>
+        <li>Get repeatable, accurate results every time you knit</li>
+        <li>Print row-by-row instructions, charts, and templates</li>
+        <li>Design original garment shapes with built-in shaping tools</li>
+        <li>Send patterns directly to electronic machines (Machine versions)</li>
+      </ul>
+    </section>
+    
+    <hr class="section-divider" />
+    
+    <!-- Product Hero -->
+    <div class="product-hero">
+      {product.icon && (
+        <div class="product-icon">
+          <img src={product.icon} alt={product.name} />
+        </div>
+      )}
+      
+      <div class="product-info">
+        <h1>{product.name}</h1>
+        <p class="tagline">{product.tagline}</p>
       </div>
-    )}
+    </div>
     
-    <h1>{product.name}</h1>
-    <p class="tagline">{product.tagline}</p>
-    
+    <!-- Version-Specific Content -->
     <section class="outcomes-section">
       <h2>What You Can Do With This Version</h2>
       <ul>
@@ -55,6 +85,23 @@ if (!product) {
       <a href={product.purchaseUrl} class="btn-primary">Buy / Upgrade</a>
     </div>
     
+    <hr class="section-divider" />
+    
+    <!-- Callouts -->
+    <div class="callout-grid">
+      <div class="callout">
+        <h3>Not sure which version?</h3>
+        <p>See what's included in each DesignaKnit edition and find the right fit for your projects.</p>
+        <a href="/designaknit/compare" class="btn-secondary">Compare DesignaKnit versions</a>
+      </div>
+      
+      <div class="callout">
+        <h3>Already own DesignaKnit?</h3>
+        <p>Upgrade to unlock additional features and get the most out of your knitting software.</p>
+        <a href="/designaknit/upgrades" class="btn-secondary">View upgrade options</a>
+      </div>
+    </div>
+    
   </article>
 </BaseLayout>
 
@@ -65,26 +112,73 @@ if (!product) {
     padding: 2rem 1rem;
   }
 
-  .product-icon {
+  .intro-section,
+  .why-section {
     margin-bottom: 1.5rem;
   }
 
+  .intro-section p {
+    color: #444;
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  .why-section ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+
+  .why-section li {
+    margin-bottom: 0.5rem;
+    color: #444;
+    line-height: 1.5;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid #e5e7eb;
+    margin: 2rem 0;
+  }
+
+  .product-hero {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  @media (max-width: 480px) {
+    .product-hero {
+      flex-direction: column;
+    }
+  }
+
+  .product-icon {
+    flex-shrink: 0;
+  }
+
   .product-icon img {
-    max-width: 200px;
+    width: 140px;
     height: auto;
     border-radius: 8px;
   }
 
+  .product-info {
+    flex: 1;
+  }
+
   h1 {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.75rem;
+    margin: 0 0 0.5rem 0;
     color: var(--kbm-green);
   }
 
   .tagline {
     font-size: 1.125rem;
     color: #555;
-    margin-bottom: 2rem;
+    margin: 0;
+    line-height: 1.5;
   }
 
   h2 {
@@ -95,23 +189,25 @@ if (!product) {
 
   .outcomes-section,
   .included-section {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
   }
 
-  ul {
+  .outcomes-section ul,
+  .included-section ul {
     list-style: disc;
     padding-left: 1.5rem;
     margin: 0;
   }
 
-  li {
+  .outcomes-section li,
+  .included-section li {
     margin-bottom: 0.5rem;
     color: #444;
     line-height: 1.5;
   }
 
   .cta-section {
-    margin-top: 2rem;
+    margin: 2rem 0;
   }
 
   .btn-primary {
@@ -127,5 +223,53 @@ if (!product) {
 
   .btn-primary:hover {
     background: var(--kbm-green-2);
+  }
+
+  .callout-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 540px) {
+    .callout-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .callout {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 1.25rem;
+  }
+
+  .callout h3 {
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    color: #333;
+  }
+
+  .callout p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 1rem 0;
+    line-height: 1.5;
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.625rem 1.25rem;
+    border: 2px solid var(--kbm-green);
+    color: var(--kbm-green);
+    font-weight: 500;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--kbm-bg);
   }
 </style>
