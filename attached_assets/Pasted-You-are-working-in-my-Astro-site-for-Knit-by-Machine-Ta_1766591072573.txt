@@ -1,0 +1,53 @@
+You are working in my Astro site for Knit by Machine.
+
+Task: Create a new Shop landing page that routes buyers to 5 “what I sell” categories. This page is a simple navigation hub (not a full shop buildout). Keep it clean and consistent with my KBM card style system.
+
+GOAL:
+Build a Shop landing page with 5 category cards:
+1) Knitting Machines
+2) Accessories (machine-focused)
+3) Software (DesignaKnit)
+4) Cables (DesignaKnit only)
+5) Guided Workshops
+
+NAV / ROUTING REQUIREMENTS:
+- The main menu “Shop” (or the existing “Machines & Software” nav item if that’s what I have) should point to this new Shop landing page.
+- Each card must link to an existing destination:
+  - Machines -> existing machines list page (current route used today)
+  - Accessories -> existing accessories page/collection route (or create a placeholder page if none exists yet)
+  - Software -> DesignaKnit page (the version chooser/buy page you just updated)
+  - Cables -> cable destination (if there is no cables page yet, create a simple placeholder page at /shop/cables with a short message + contact CTA)
+  - Guided Workshops -> existing guided workshops list/apply page
+If any route does not exist, create the minimal placeholder page (same BaseLayout) with 1–2 sentences and a “Contact us” button linking to my existing contact route.
+
+PAGE CONTENT / DESIGN:
+- Page title: “Shop”
+- Intro line (short): “Choose what you’re looking for.”
+- Render the 5 cards in a responsive grid (2 columns desktop, 1 column mobile is fine).
+- Each card includes:
+  - Category name (strong heading)
+  - One-sentence description (KBM tone, calm and clear)
+  - A single CTA button: “Shop machines”, “Shop accessories”, “Shop software”, “Shop cables”, “View workshops” (or similar)
+- Use existing KBM card/button components if available; otherwise match existing classes used on other hub pages.
+
+COPY (use this unless a better existing pattern already exists):
+- Knitting Machines: “Compare machines and bundles so you can choose with confidence.”
+- Accessories: “Tools and add-ons for the machines you already own.”
+- Software: “DesignaKnit versions and upgrades.”
+- Cables: “Machine-specific cables for connecting DesignaKnit.” (DesignaKnit-only)
+- Guided Workshops: “Guided project experiences with step-by-step support.”
+
+IMPLEMENTATION STEPS:
+1) Find how my navigation is built (likely a header/nav component). Identify the current “Machines & Software” link that goes to the machines page.
+2) Create a new route for the Shop landing page (suggest: /shop or /shop/index). Use BaseLayout and keep styling consistent.
+3) Update nav so “Shop” (or “Machines & Software”) links to /shop.
+4) Add the 5 cards and route links.
+5) If /shop/cables or /shop/accessories doesn’t exist, create minimal placeholder pages:
+   - Title: “Cables” / “Accessories”
+   - 1–2 sentences
+   - “Contact us” button linking to the existing contact route
+6) Verify the page works in dev preview and all links resolve (no 404s).
+
+DELIVERABLE:
+- Provide the list of files created/edited and the final route paths used for each of the 5 cards.
+- Confirm the nav now goes to the Shop landing page instead of the machines page.
