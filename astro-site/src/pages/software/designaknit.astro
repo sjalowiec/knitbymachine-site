@@ -126,7 +126,7 @@ const priceByKey: Record<string, number> = {
             <li>You're focused on stitch work, charts, and repeats</li>
             <li>You don't need garment shaping tools</li>
           </ul>
-          <a href="REPLACE_ME_STANDARD" class="btn-primary">Choose this option</a>
+          <div id="dak-standard-btn" class="dak-buy-button"></div>
           <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
@@ -145,7 +145,7 @@ const priceByKey: Record<string, number> = {
             <li>You care about structure, shaping, and fit</li>
             <li>You don't need hand-knitting outputs or advanced cable complexity</li>
           </ul>
-          <a href="REPLACE_ME_PRO" class="btn-primary">Choose this option</a>
+          <div id="dak-professional-btn" class="dak-buy-button"></div>
           <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
@@ -164,7 +164,7 @@ const priceByKey: Record<string, number> = {
             <li>You want maximum flexibility now and later</li>
             <li>You don't want to wonder if something is missing</li>
           </ul>
-          <a href="REPLACE_ME_PROFESSIONAL" class="btn-primary">Choose this option</a>
+          <div id="dak-complete-btn" class="dak-buy-button"></div>
           <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
@@ -182,7 +182,7 @@ const priceByKey: Record<string, number> = {
             <li>You want charts and written hand-knitting instructions</li>
             <li>You're not using a knitting machine</li>
           </ul>
-          <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Choose this option</a>
+          <div id="dak-hand-btn" class="dak-buy-button"></div>
           <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
       </div>
@@ -574,4 +574,82 @@ const priceByKey: Record<string, number> = {
   .btn-secondary:hover {
     background: rgba(82, 104, 45, 0.08);
   }
+
+  .dak-buy-button {
+    min-height: 50px;
+    margin-bottom: 0.25rem;
+  }
 </style>
+
+<!-- Shopify Buy Button Script for DAK Products -->
+<script is:inline>
+  (function () {
+    var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+    
+    var dakProducts = [
+      { id: '7899666382917', node: 'dak-standard-btn' },
+      { id: '7899668316229', node: 'dak-professional-btn' },
+      { id: '7899665825861', node: 'dak-complete-btn' },
+      { id: '7899667628101', node: 'dak-hand-btn' }
+    ];
+    
+    if (window.ShopifyBuy) { 
+      if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } 
+    } else { 
+      loadScript(); 
+    }
+    
+    function loadScript() {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = scriptURL;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+      script.onload = ShopifyBuyInit;
+    }
+    
+    function ShopifyBuyInit() {
+      var client = ShopifyBuy.buildClient({
+        domain: 'ku0uaq-tv.myshopify.com',
+        storefrontAccessToken: '66fba9d9b42bfea416c8e0af7987dc94'
+      });
+      
+      ShopifyBuy.UI.onReady(client).then(function (ui) {
+        dakProducts.forEach(function (product) {
+          var nodeElement = document.getElementById(product.node);
+          if (nodeElement) {
+            ui.createComponent('product', {
+              id: product.id,
+              node: nodeElement,
+              options: {
+                product: {
+                  styles: {
+                    button: {
+                      'background-color': '#52682d',
+                      ':hover': { 'background-color': '#4a5e29' },
+                      ':focus': { 'background-color': '#4a5e29' },
+                      'border-radius': '11px',
+                      'font-weight': '600',
+                      'padding': '12px 24px'
+                    }
+                  },
+                  text: { button: 'Add to cart' },
+                  contents: {
+                    img: false,
+                    title: false,
+                    price: false,
+                    description: false
+                  }
+                },
+                cart: {
+                  text: {
+                    button: 'Checkout'
+                  }
+                }
+              }
+            });
+          }
+        });
+      });
+    }
+  })();
+</script>
