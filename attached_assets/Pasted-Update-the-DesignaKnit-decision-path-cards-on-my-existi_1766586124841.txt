@@ -1,0 +1,52 @@
+Update the DesignaKnit decision-path cards on my existing Astro page (NOT Tailwind).
+
+GOAL
+Reorder the hierarchy inside each decision card so the self-identifying quoted statement is the PRIMARY headline. The version name becomes secondary.
+
+WHERE
+This is the “Choose your DesignaKnit option” section with 4 cards (Hand Knit, Standard, Pro, Professional) on:
+src/pages/software/designaknit.astro
+
+CHANGES (do these exactly)
+
+1) Card content order
+For EACH card, change the internal order to:
+
+A) Self-identifying statement (currently the quoted line) → move to the TOP of the card and style as the main headline.
+B) Version name (Hand Knit / Standard / Pro / Professional) → move BELOW the statement and style as secondary label.
+C) Sue’s Recommendation badge (for Pro + Professional) → keep near the version name (same row if it fits cleanly).
+D) Bullets → unchanged.
+E) Buy button → unchanged.
+
+2) Styling (NO Tailwind)
+- The self-identifying statement should be visually strongest:
+  - slightly larger font than body
+  - medium/bold weight
+  - normal line-height (readable)
+  - NOT italic
+  - Keep quotation marks if they’re already present
+- The version name should be visually secondary:
+  - smaller size than the statement
+  - slightly muted color
+  - still readable
+- Badge (“Sue’s Recommendation”) should remain subtle:
+  - small pill
+  - no loud color blocks
+
+3) Layout behavior
+- Keep the existing 2-column grid for cards.
+- Keep spacing calm and consistent.
+- Do NOT change the card grid, bullets, button styles, or overall section layout—only the hierarchy inside each card.
+
+4) Implementation notes
+- Use semantic markup where possible:
+  - Put the self-identifying statement in a <p> or <h3> styled class (choose what best matches the existing heading structure; don’t introduce multiple H1s).
+  - Put the version name in a <div> or <p> with a “label” style.
+- If you need CSS updates, add/adjust only the classes for:
+  - statement headline
+  - version label row
+  - badge placement
+Do NOT modify global styles.
+
+OUTPUT
+Return the updated src/pages/software/designaknit.astro file with the reordered card hierarchy and any minimal scoped CSS needed.
