@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout 
+  title="DesignaKnit (DAK) | Knit by Machine"
+  description="DesignaKnit is a design-to-knitting system for machine knitters. It helps you work out ideas, then turns those decisions into clear, knit-ready instructions."
+>
+  <article class="designaknit-page">
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <h1>DesignaKnit (DAK)</h1>
+      <p class="intro-definition">
+        DesignaKnit is a design-to-knitting system for machine knitters. 
+        It helps you work out ideas, then turns those decisions into clear, knit-ready instructions — bridging the gap between ideas and knitting.
+      </p>
+      <p class="intro-support">
+        Whether you're planning your first shaped garment or designing something entirely your own, DesignaKnit gives you tools to think through the details before you start knitting.
+      </p>
+    </section>
+    
+    <!-- What Changes Section -->
+    <section class="content-section">
+      <h2>What changes when you use DesignaKnit</h2>
+      <ul>
+        <li>You stop guessing and start knowing exactly what to do at each row</li>
+        <li>Shaping decisions are worked out ahead of time, not on the fly</li>
+        <li>You can resize patterns to fit any gauge or measurement</li>
+        <li>Colorwork and stitch patterns become easier to visualize and edit</li>
+        <li>Your notes, charts, and instructions live in one place</li>
+        <li>Mistakes get caught on screen, not in the knitting</li>
+      </ul>
+    </section>
+    
+    <!-- What It Helps You Do Section -->
+    <section class="content-section">
+      <h2>What DesignaKnit helps you do</h2>
+      <ul>
+        <li>Design garments from scratch using built-in shaping tools</li>
+        <li>Create and edit stitch patterns, colorwork, and charts</li>
+        <li>Adjust existing patterns to match your gauge and sizing</li>
+        <li>Print row-by-row instructions, templates, and charts</li>
+        <li>Send patterns directly to compatible electronic knitting machines</li>
+        <li>Keep track of your projects and revisit past work easily</li>
+      </ul>
+    </section>
+    
+    <!-- Reassurance Section -->
+    <section class="content-section reassurance-section">
+      <h2>You don't have to use everything at once</h2>
+      <p>
+        DesignaKnit has a lot of features, and that can feel overwhelming at first. 
+        But you don't need to learn it all before you start. Many knitters begin with just one part — 
+        like charting a stitch pattern or adjusting a neckline — and explore the rest over time.
+      </p>
+      <p>
+        There's no pressure to master everything. Use what helps you now, and grow into the rest when you're ready.
+      </p>
+    </section>
+    
+    <!-- Who It's For Section -->
+    <section class="content-section">
+      <h2>Who DesignaKnit is for</h2>
+      <p>
+        DesignaKnit is for machine knitters who want more control over their projects. 
+        It's especially helpful if you:
+      </p>
+      <ul>
+        <li>Want to design your own garments or modify existing patterns</li>
+        <li>Prefer to plan and visualize before you knit</li>
+        <li>Use an electronic knitting machine and want to send patterns directly</li>
+        <li>Like having clear, printed instructions to follow at your machine</li>
+        <li>Enjoy experimenting with stitch patterns, colorwork, or shaping</li>
+      </ul>
+      <p class="closing-note">
+        You don't need to be an expert. DesignaKnit is a thinking tool — it helps you work through decisions at your own pace.
+      </p>
+    </section>
+    
+    <!-- Final CTA Section -->
+    <section class="cta-section">
+      <h2>Ready to explore?</h2>
+      <p>Find the right option for your knitting, or reach out if you have questions.</p>
+      <div class="cta-buttons">
+        <a href="/designaknit/compare" class="btn-primary">Choose your DesignaKnit option</a>
+        <a href="/contact" class="btn-secondary">Ask a question</a>
+      </div>
+    </section>
+    
+  </article>
+</BaseLayout>
+
+<style>
+  .designaknit-page {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+  }
+
+  .hero-section {
+    margin-bottom: 2.5rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+    color: var(--kbm-green);
+    margin-bottom: 1rem;
+  }
+
+  .intro-definition {
+    font-size: 1.125rem;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .intro-support {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .content-section {
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 0.75rem;
+  }
+
+  .content-section p {
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .content-section ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+
+  .content-section li {
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .reassurance-section {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 3px solid var(--kbm-green);
+  }
+
+  .reassurance-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .closing-note {
+    font-style: italic;
+    color: #666;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  .cta-section {
+    background: var(--kbm-bg);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-section p {
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    background: var(--kbm-green);
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--kbm-green-2);
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    border: 2px solid var(--kbm-green);
+    color: var(--kbm-green);
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(82, 104, 45, 0.08);
+  }
+</style>
