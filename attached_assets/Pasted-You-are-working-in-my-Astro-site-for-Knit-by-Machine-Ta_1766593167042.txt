@@ -1,0 +1,54 @@
+You are working in my Astro site for Knit by Machine.
+
+Task: Replace the CTA links/buttons on my DesignaKnit (DAK) version chooser page with Shopify Buy Buttons so clicking goes to Shopify cart/checkout flow (NO Shopify product pages).
+
+Context:
+- I already use Shopify Buy Button embeds for machines.
+- Use the same Shopify store + token:
+  domain: ku0uaq-tv.myshopify.com
+  storefrontAccessToken: 66fba9d9b42bfea416c8e0af7987dc94
+- DAK Shopify Product IDs:
+  Hand Knit: 7899667628101
+  Standard: 7899666382917
+  Professional: 7899668316229
+  Complete: 7899665825861
+
+GOAL BEHAVIOR:
+- Each DAK card shows an “Add to cart” button rendered by Shopify Buy Button SDK.
+- Clicking the button adds that DAK product to cart and opens the cart drawer with a “Checkout” button.
+- No redirects to Shopify product pages.
+
+SCOPE (minimal changes):
+1) Locate the Astro page/component that renders the 4 DAK decision cards and their CTA buttons (search for “DesignaKnit”, the 4 cards, and the current CTA text like “Choose this option”).
+2) In each card, replace the CTA link/button with a placeholder div:
+   - Hand:        <div id="dak-hand-btn"></div>
+   - Standard:    <div id="dak-standard-btn"></div>
+   - Professional:<div id="dak-professional-btn"></div>
+   - Complete:    <div id="dak-complete-btn"></div>
+   Keep the “U.S. addresses only.” line directly beneath the button area.
+
+3) Add ONE shared script (only once on the page or in a shared component) that:
+   - Loads https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js once
+   - Builds ShopifyBuy client with the domain/token above
+   - Creates 4 product components using ui.createComponent('product', …) mapped to the 4 placeholder divs
+   - Uses KBM button styling (same as my machines): background #52682d, hover/focus #4a5e29, border-radius 11px
+   - Button text: “Add to cart”
+   - Cart checkout button text: “Checkout”
+
+4) Do NOT duplicate the script per card. Do NOT add this embed to any spreadsheet/JSON. Keep it in code.
+
+Implementation details (use this exact mapping):
+- 7899667628101 -> node dak-hand-btn
+- 7899666382917 -> node dak-standard-btn
+- 7899668316229 -> node dak-professional-btn
+- 7899665825861 -> node dak-complete-btn
+
+Verification:
+- Confirm the DAK page loads with 4 buttons.
+- Clicking each adds the correct product to cart.
+- Cart drawer appears and “Checkout” is visible.
+- No console errors.
+
+Deliverable:
+- List the file(s) changed and where you placed the shared script.
+- Confirm all four buttons work and map to the correct product IDs.
