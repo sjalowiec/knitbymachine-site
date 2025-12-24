@@ -1,0 +1,99 @@
+[
+  {
+    "id": "dak-hk",
+    "slug": "hand-knit",
+    "name": "DesignaKnit Hand Knit",
+    "type": "software",
+    "versionKey": "hand-knit",
+    "purchaseUrl": "[Outseta link]",
+    "outcomes": [
+      "Create and print hand knitting patterns",
+      "Use Stitch Designer and Graphics Studio",
+      "Work with garment sizing and shaping tools"
+    ],
+    "tagline": "Pattern design and charting for hand knitting",
+    "included": [
+      "Standard Garment Styling",
+      "Stitch Designer",
+      "Interactive Knitting",
+      "Graphics Studio"
+    ],
+    "comparePopupId": "compare-dak-versions",
+    "upgradeInfoUrl": "/designaknit/upgrades",
+    "icon": "/images/designaknit/designaknit_hand.jpg"
+  },
+  {
+    "id": "dak-ms",
+    "slug": "machine-standard",
+    "name": "DesignaKnit Machine Standard",
+    "type": "software",
+    "versionKey": "machine-standard",
+    "purchaseUrl": "[Outseta link]",
+    "outcomes": [
+      "Create machine knitting patterns",
+      "Send patterns to compatible electronic machines",
+      "Print KnitLeader and machine templates"
+    ],
+    "tagline": "Core machine knitting patterning with electronic machine support",
+    "included": [
+      "Standard Garment Styling",
+      "Stitch Designer",
+      "Interactive Knitting",
+      "Graphics Studio"
+    ],
+    "comparePopupId": "compare-dak-versions",
+    "upgradeInfoUrl": "/designaknit/upgrades",
+    "icon": "/images/designaknit/designaknit_standard.jpg"
+  },
+  {
+    "id": "dak-mp",
+    "slug": "machine-pro",
+    "name": "DesignaKnit Machine Pro",
+    "type": "software",
+    "versionKey": "machine-pro",
+    "purchaseUrl": "[Outseta link]",
+    "outcomes": [
+      "Draft original garment patterns",
+      "Create and edit machine stitch patterns",
+      "Send patterns directly to electronic machines",
+      "Print professional charts and instructions"
+    ],
+    "tagline": "Advanced pattern drafting and full electronic machine control",
+    "included": [
+      "Standard Garment Styling",
+      "Stitch Designer",
+      "Interactive Knitting",
+      "Graphics Studio",
+      "Original Pattern Drafting"
+    ],
+    "comparePopupId": "compare-dak-versions",
+    "upgradeInfoUrl": "/designaknit/upgrades",
+    "icon": "/images/designaknit/designaknit_pro.jpg"
+  },
+  {
+    "id": "dak-complete",
+    "slug": "complete",
+    "name": "DesignaKnit Complete",
+    "type": "software",
+    "versionKey": "complete",
+    "purchaseUrl": "[Outseta link]",
+    "outcomes": [
+      "Design both hand and machine knitting patterns",
+      "Convert hand patterns to machine knitting",
+      "Create advanced cables and custom stitch instructions",
+      "Control electronic machines"
+    ],
+    "tagline": "Full DesignaKnit feature set for hand and machine knitting",
+    "included": [
+      "Standard Garment Styling",
+      "Stitch Designer",
+      "Interactive Knitting",
+      "Graphics Studio",
+      "Original Pattern Drafting",
+      "Hand & Machine Pattern Support"
+    ],
+    "comparePopupId": "compare-dak-versions",
+    "upgradeInfoUrl": "/designaknit/upgrades",
+    "icon": "/images/designaknit/designaknit_complete.jpg"
+  }
+]
