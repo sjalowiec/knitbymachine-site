@@ -114,6 +114,7 @@ const priceByKey: Record<string, number> = {
       <div class="dak-choice-grid">
         <!-- Standard Card -->
         <div class="dak-choice-card">
+          <p class="dak-card-label">Stitch Design</p>
           <p class="dak-statement">"I'm only interested in stitch designs. I won't be creating garment designs."</p>
           <p class="dak-capability">Stitch patterns only</p>
           <div class="dak-version-row">
@@ -131,6 +132,7 @@ const priceByKey: Record<string, number> = {
         
         <!-- Pro Card -->
         <div class="dak-choice-card">
+          <p class="dak-card-label">Garment Design</p>
           <p class="dak-statement">"I will be designing stitch patterns and garments, but I'm not interested in hand knitting instructions or complicated cable instructions."</p>
           <p class="dak-capability">Garments + basic cables</p>
           <div class="dak-version-row">
@@ -149,6 +151,7 @@ const priceByKey: Record<string, number> = {
         
         <!-- Complete Card -->
         <div class="dak-choice-card">
+          <p class="dak-card-label">Complete Suite</p>
           <p class="dak-statement">"I want all of the functionality of DesignaKnit."</p>
           <p class="dak-capability">Advanced garments + complex cables</p>
           <div class="dak-version-row">
@@ -167,6 +170,7 @@ const priceByKey: Record<string, number> = {
         
         <!-- Hand Knit Card -->
         <div class="dak-choice-card">
+          <p class="dak-card-label">Hand Knit</p>
           <p class="dak-statement">"I'm a hand knitter and I want to write hand-knitting patterns only."</p>
           <p class="dak-capability">Hand knitting patterns only</p>
           <div class="dak-version-row">
@@ -414,11 +418,21 @@ const priceByKey: Record<string, number> = {
     flex-direction: column;
   }
 
-  /* Statement as primary headline */
-  .dak-statement {
-    font-size: 1.1rem;
+  /* Card label - primary scannable headline */
+  .dak-card-label {
+    font-size: 1.125rem;
     font-weight: 600;
+    letter-spacing: 0.01em;
     color: #333;
+    margin: 0 0 0.5rem 0;
+  }
+
+  /* Statement - demoted to supporting text */
+  .dak-statement {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #666;
+    font-style: italic;
     line-height: 1.5;
     margin: 0 0 0.5rem 0;
   }
