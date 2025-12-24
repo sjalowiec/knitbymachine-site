@@ -107,36 +107,15 @@ const priceByKey: Record<string, number> = {
         All DesignaKnit options use the same core system. The difference is how far you want to take it today. You don't have to choose for your entire future — just where you are now.
       </p>
       
-      <!-- Orienting CTA -->
-      <div class="dak-orienting">
-        <p class="dak-orienting-heading">Not sure which version you need yet?</p>
-        <p class="dak-orienting-line">See which DesignaKnit option fits how you knit right now.</p>
-      </div>
-      
       <p class="dak-starting-point">These aren't lifetime decisions — they're starting points based on how you knit today.</p>
       
       <p class="dak-compatibility">DesignaKnit works with compatible electronic knitting machines.</p>
       
       <div class="dak-choice-grid">
-        <!-- Hand Knit Card -->
-        <div class="dak-choice-card">
-          <p class="dak-statement">"I'm a hand knitter and I want to write hand-knitting patterns only."</p>
-          <div class="dak-version-row">
-            <span class="dak-version-label">Hand Knit</span>
-            <span class="dak-price">${priceByKey.hand}</span>
-          </div>
-          <ul>
-            <li>You design or write hand-knitting patterns</li>
-            <li>You want charts and written hand-knitting instructions</li>
-            <li>You're not using a knitting machine</li>
-          </ul>
-          <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Choose this option</a>
-          <p class="dak-shipping-note">U.S. addresses only.</p>
-        </div>
-        
         <!-- Standard Card -->
         <div class="dak-choice-card">
           <p class="dak-statement">"I'm only interested in stitch designs. I won't be creating garment designs."</p>
+          <p class="dak-capability">Stitch patterns only</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Standard</span>
             <span class="dak-price">${priceByKey.standard}</span>
@@ -153,6 +132,7 @@ const priceByKey: Record<string, number> = {
         <!-- Pro Card -->
         <div class="dak-choice-card">
           <p class="dak-statement">"I will be designing stitch patterns and garments, but I'm not interested in hand knitting instructions or complicated cable instructions."</p>
+          <p class="dak-capability">Garments + basic cables</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Pro</span>
             <span class="dak-price">${priceByKey.professional}</span>
@@ -167,9 +147,10 @@ const priceByKey: Record<string, number> = {
           <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
-        <!-- Professional Card -->
+        <!-- Complete Card -->
         <div class="dak-choice-card">
           <p class="dak-statement">"I want all of the functionality of DesignaKnit."</p>
+          <p class="dak-capability">Advanced garments + complex cables</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Complete</span>
             <span class="dak-price">${priceByKey.complete}</span>
@@ -183,22 +164,40 @@ const priceByKey: Record<string, number> = {
           <a href="REPLACE_ME_PROFESSIONAL" class="btn-primary">Choose this option</a>
           <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
+        
+        <!-- Hand Knit Card -->
+        <div class="dak-choice-card">
+          <p class="dak-statement">"I'm a hand knitter and I want to write hand-knitting patterns only."</p>
+          <p class="dak-capability">Hand knitting patterns only</p>
+          <div class="dak-version-row">
+            <span class="dak-version-label">Hand Knit</span>
+            <span class="dak-price">${priceByKey.hand}</span>
+          </div>
+          <ul>
+            <li>You design or write hand-knitting patterns</li>
+            <li>You want charts and written hand-knitting instructions</li>
+            <li>You're not using a knitting machine</li>
+          </ul>
+          <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Choose this option</a>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
+        </div>
       </div>
       
       <p class="dak-post-choice">You're not locked in — you can upgrade later if your needs change.</p>
       
-      <p class="dak-still-not-sure">
-        Still not sure? <a href="REPLACE_ME_HELP_LINK">Ask a question</a> before you buy.
-      </p>
+      <!-- Not sure box moved below grid -->
+      <div class="dak-orienting">
+        <p class="dak-orienting-heading">Not sure which version you need yet?</p>
+        <p class="dak-orienting-line">See which DesignaKnit option fits how you knit right now.</p>
+      </div>
     </section>
     
-    <!-- Final CTA Section -->
+    <!-- Final CTA Section - converted to support style -->
     <section class="cta-section">
-      <h2>Ready to explore?</h2>
-      <p>Find the right option for your knitting, or reach out if you have questions.</p>
+      <h2>Have questions?</h2>
+      <p>We're happy to help you find the right option for your knitting.</p>
       <div class="cta-buttons">
-        <a href="/designaknit/compare" class="btn-primary">See which option fits you</a>
-        <a href="/contact" class="btn-secondary">Ask a question</a>
+        <a href="/contact" class="btn-primary">Contact us</a>
       </div>
     </section>
     
@@ -359,9 +358,13 @@ const priceByKey: Record<string, number> = {
     max-width: 700px;
   }
 
-  /* Orienting CTA block */
+  /* Orienting escape-hatch block (now positioned below grid) */
   .dak-orienting {
-    margin-bottom: 0.75rem;
+    background: #f6f8f4;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+    text-align: center;
   }
 
   .dak-orienting-heading {
@@ -417,6 +420,14 @@ const priceByKey: Record<string, number> = {
     font-weight: 600;
     color: #333;
     line-height: 1.5;
+    margin: 0 0 0.5rem 0;
+  }
+
+  /* Capability line - emphasized short summary */
+  .dak-capability {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--kbm-green);
     margin: 0 0 0.75rem 0;
   }
 
