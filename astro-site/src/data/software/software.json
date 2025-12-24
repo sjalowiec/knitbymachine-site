@@ -20,7 +20,7 @@
     ],
     "comparePopupId": "compare-dak-versions",
     "upgradeInfoUrl": "/designaknit/upgrades",
-    "icon": "/images/designaknit/designaknit_hand.jpg"
+    "icon": "https://knitbymachine.com/images/designaknit/designaknit_hand.jpg"
   },
   {
     "id": "dak-ms",
@@ -43,7 +43,7 @@
     ],
     "comparePopupId": "compare-dak-versions",
     "upgradeInfoUrl": "/designaknit/upgrades",
-    "icon": "/images/designaknit/designaknit_standard.jpg"
+    "icon": "https://knitbymachine.com/images/designaknit/designaknit_standard.jpg"
   },
   {
     "id": "dak-mp",
@@ -68,7 +68,7 @@
     ],
     "comparePopupId": "compare-dak-versions",
     "upgradeInfoUrl": "/designaknit/upgrades",
-    "icon": "/images/designaknit/designaknit_pro.jpg"
+    "icon": "https://knitbymachine.com/images/designaknit/designaknit_pro.jpg"
   },
   {
     "id": "dak-complete",
@@ -94,6 +94,6 @@
     ],
     "comparePopupId": "compare-dak-versions",
     "upgradeInfoUrl": "/designaknit/upgrades",
-    "icon": "/images/designaknit/designaknit_complete.jpg"
+    "icon": "https://knitbymachine.com/images/designaknit/designaknit_complete.jpg"
   }
 ]
