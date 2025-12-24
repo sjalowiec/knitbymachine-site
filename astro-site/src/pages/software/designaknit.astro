@@ -28,33 +28,37 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
     </section>
     
-    <!-- Side-by-side bullet sections -->
+    <!-- Side-by-side bullet sections with soft panels -->
     <div class="two-column-sections">
       <!-- What Changes Section -->
-      <section class="content-section">
-        <h2>What changes when you use DesignaKnit</h2>
-        <ul>
-          <li>You stop guessing and start knowing exactly what to do at each row</li>
-          <li>Shaping decisions are worked out ahead of time, not on the fly</li>
-          <li>You can resize patterns to fit any gauge or measurement</li>
-          <li>Colorwork and stitch patterns become easier to visualize and edit</li>
-          <li>Your notes, charts, and instructions live in one place</li>
-          <li>Mistakes get caught on screen, not in the knitting</li>
-        </ul>
-      </section>
+      <div class="soft-panel">
+        <section class="content-section">
+          <h2>What changes when you use DesignaKnit</h2>
+          <ul>
+            <li>You stop guessing and start knowing exactly what to do at each row</li>
+            <li>Shaping decisions are worked out ahead of time, not on the fly</li>
+            <li>You can resize patterns to fit any gauge or measurement</li>
+            <li>Colorwork and stitch patterns become easier to visualize and edit</li>
+            <li>Your notes, charts, and instructions live in one place</li>
+            <li>Mistakes get caught on screen, not in the knitting</li>
+          </ul>
+        </section>
+      </div>
       
       <!-- What It Helps You Do Section -->
-      <section class="content-section">
-        <h2>What DesignaKnit helps you do</h2>
-        <ul>
-          <li>Design garments from scratch using built-in shaping tools</li>
-          <li>Create and edit stitch patterns, colorwork, and charts</li>
-          <li>Adjust existing patterns to match your gauge and sizing</li>
-          <li>Print row-by-row instructions, templates, and charts</li>
-          <li>Send patterns directly to compatible electronic knitting machines</li>
-          <li>Keep track of your projects and revisit past work easily</li>
-        </ul>
-      </section>
+      <div class="soft-panel">
+        <section class="content-section">
+          <h2>What DesignaKnit helps you do</h2>
+          <ul>
+            <li>Design garments from scratch using built-in shaping tools</li>
+            <li>Create and edit stitch patterns, colorwork, and charts</li>
+            <li>Adjust existing patterns to match your gauge and sizing</li>
+            <li>Print row-by-row instructions, templates, and charts</li>
+            <li>Send patterns directly to compatible electronic knitting machines</li>
+            <li>Keep track of your projects and revisit past work easily</li>
+          </ul>
+        </section>
+      </div>
     </div>
     
     <!-- Reassurance Section -->
@@ -86,6 +90,74 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </ul>
       <p class="closing-note">
         You don't need to be an expert. DesignaKnit is a thinking tool — it helps you work through decisions at your own pace.
+      </p>
+    </section>
+    
+    <!-- Decision-Path Cards Section -->
+    <section class="dak-choice-section">
+      <h2>Choose your DesignaKnit option</h2>
+      <p class="dak-choice-intro">
+        All DesignaKnit options use the same core system. The difference is how far you want to take it today. You don't have to choose for your entire future — just where you are now.
+      </p>
+      
+      <div class="dak-choice-grid">
+        <!-- Hand Knit Card -->
+        <div class="dak-choice-card">
+          <h3>Hand Knit</h3>
+          <p class="dak-lead">"I'm a hand knitter and I want to write hand-knitting patterns only."</p>
+          <ul>
+            <li>You design or write hand-knitting patterns</li>
+            <li>You want charts and written hand-knitting instructions</li>
+            <li>You're not using a knitting machine</li>
+          </ul>
+          <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Buy Hand Knit</a>
+        </div>
+        
+        <!-- Standard Card -->
+        <div class="dak-choice-card">
+          <h3>Standard</h3>
+          <p class="dak-lead">"I'm only interested in stitch designs. I won't be creating garment designs."</p>
+          <ul>
+            <li>You want to create and edit stitch patterns</li>
+            <li>You're focused on stitch work, charts, and repeats</li>
+            <li>You don't need garment shaping tools</li>
+          </ul>
+          <a href="REPLACE_ME_STANDARD" class="btn-primary">Buy Standard</a>
+        </div>
+        
+        <!-- Pro Card -->
+        <div class="dak-choice-card">
+          <div class="dak-card-header">
+            <h3>Pro</h3>
+            <span class="dak-badge">Sue's Recommendation</span>
+          </div>
+          <p class="dak-lead">"I will be designing stitch patterns and garments, but I'm not interested in hand knitting instructions or complicated cable instructions."</p>
+          <ul>
+            <li>You want stitch patterns + garment design</li>
+            <li>You care about structure, shaping, and fit</li>
+            <li>You don't need hand-knitting outputs or advanced cable complexity</li>
+          </ul>
+          <a href="REPLACE_ME_PRO" class="btn-primary">Buy Pro</a>
+        </div>
+        
+        <!-- Professional Card -->
+        <div class="dak-choice-card">
+          <div class="dak-card-header">
+            <h3>Professional</h3>
+            <span class="dak-badge">Sue's Recommendation</span>
+          </div>
+          <p class="dak-lead">"I want all of the functionality of DesignaKnit."</p>
+          <ul>
+            <li>You want the complete DesignaKnit system</li>
+            <li>You want maximum flexibility now and later</li>
+            <li>You don't want to wonder if something is missing</li>
+          </ul>
+          <a href="REPLACE_ME_PROFESSIONAL" class="btn-primary">Buy Professional</a>
+        </div>
+      </div>
+      
+      <p class="dak-still-not-sure">
+        Still not sure? <a href="REPLACE_ME_HELP_LINK">Ask a question</a> before you buy.
       </p>
     </section>
     
@@ -167,23 +239,30 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     margin: 0;
   }
 
+  /* Soft Panel styling */
+  .soft-panel {
+    background: #f8faf6;
+    border-radius: 10px;
+    padding: 1.5rem;
+  }
+
+  .soft-panel .content-section {
+    margin-bottom: 0;
+  }
+
   /* Two-column bullet sections */
   .two-column-sections {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
     margin-bottom: 2.5rem;
   }
 
   @media (min-width: 640px) {
     .two-column-sections {
       grid-template-columns: 1fr 1fr;
-      gap: 2.5rem;
+      gap: 2rem;
     }
-  }
-
-  .two-column-sections .content-section {
-    margin-bottom: 0;
   }
 
   .content-section {
@@ -232,6 +311,117 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     margin-bottom: 0;
   }
 
+  /* Decision-Path Cards Section */
+  .dak-choice-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .dak-choice-section > h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .dak-choice-intro {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    max-width: 700px;
+  }
+
+  .dak-choice-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .dak-choice-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .dak-choice-card {
+    background: #fafbf9;
+    border: 1px solid #e8ebe4;
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .dak-choice-card h3 {
+    font-size: 1.125rem;
+    color: #333;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .dak-card-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .dak-card-header h3 {
+    margin: 0;
+  }
+
+  .dak-badge {
+    display: inline-block;
+    background: #e8f0dc;
+    color: #4a5d31;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+  }
+
+  .dak-lead {
+    font-style: italic;
+    color: #555;
+    line-height: 1.6;
+    margin: 0 0 1rem 0;
+    font-size: 0.95rem;
+  }
+
+  .dak-choice-card ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0 0 1.25rem 0;
+    flex-grow: 1;
+  }
+
+  .dak-choice-card li {
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 0.375rem;
+    font-size: 0.9rem;
+  }
+
+  .dak-choice-card .btn-primary {
+    align-self: flex-start;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .dak-still-not-sure {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  .dak-still-not-sure a {
+    color: var(--kbm-green);
+    text-decoration: underline;
+  }
+
+  .dak-still-not-sure a:hover {
+    text-decoration: none;
+  }
+
+  /* Final CTA */
   .cta-section {
     background: var(--kbm-bg);
     border-radius: 8px;

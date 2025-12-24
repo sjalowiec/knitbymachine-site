@@ -1,0 +1,122 @@
+Update my existing Astro page for DesignaKnit (DAK). This is NOT a redesign—only add (1) soft panels behind the two bullet sections and (2) a new “decision-path cards” section placed between “Who DesignaKnit is for” and “Ready to explore?”.
+
+File to edit:
+src/pages/software/designaknit.astro
+
+IMPORTANT CONSTRAINTS
+- My site is NOT Tailwind. Do not add Tailwind classes.
+- Reuse existing global classes if they exist. If not, add a small scoped <style> block in THIS page only.
+- Do not change existing copy in the hero, the two bullet lists, the reassurance box, or “Who DesignaKnit is for”.
+- Do not change the “Ready to explore?” CTA block wording, but it will move DOWN since we’re inserting a new section above it.
+- All purchase links should be obvious placeholders starting with REPLACE_ME.
+
+TASK A — Add “soft panels” behind the two bullet sections
+Locate the two side-by-side bullet sections with headings:
+1) “What changes when you use DesignaKnit”
+2) “What DesignaKnit helps you do”
+
+Wrap EACH of these sections in a soft panel container (div) so they look visually grouped.
+
+Soft panel styling goals:
+- subtle tinted background (very light—KBM calm style)
+- rounded corners
+- comfortable padding
+- NO heavy border, NO shadow
+- headings remain at top of each panel
+- maintain existing 2-column layout on desktop and stacked layout on mobile
+
+If there is an existing “panel/card” class used elsewhere in my site, reuse it.
+Otherwise implement minimal CSS in a scoped <style> block (only for this page).
+
+TASK B — Insert “Choose your DesignaKnit option” decision-path cards
+Insert a NEW section BETWEEN the end of “Who DesignaKnit is for” section and the “Ready to explore?” CTA block.
+
+Section content (use exactly this wording):
+
+SECTION HEADING: “Choose your DesignaKnit option”
+Intro text:
+“All DesignaKnit options use the same core system. The difference is how far you want to take it today. You don’t have to choose for your entire future — just where you are now.”
+
+Create 4 cards (KBM style: clean, modern, calm). Each card includes: title, optional badge, a short lead statement (in quotes), 3–4 bullets, and a button.
+
+CARD 1
+Title: Hand Knit
+Lead statement:
+“I’m a hand knitter and I want to write hand-knitting patterns only.”
+Bullets:
+- You design or write hand-knitting patterns
+- You want charts and written hand-knitting instructions
+- You’re not using a knitting machine
+Button:
+Text: “Buy Hand Knit”
+Href: “REPLACE_ME_HAND_KNIT”
+
+CARD 2
+Title: Standard
+Lead statement:
+“I’m only interested in stitch designs. I won’t be creating garment designs.”
+Bullets:
+- You want to create and edit stitch patterns
+- You’re focused on stitch work, charts, and repeats
+- You don’t need garment shaping tools
+Button:
+Text: “Buy Standard”
+Href: “REPLACE_ME_STANDARD”
+
+CARD 3
+Title: Pro
+Badge: “Sue’s Recommendation”
+Lead statement:
+“I will be designing stitch patterns and garments, but I’m not interested in hand knitting instructions or complicated cable instructions.”
+Bullets:
+- You want stitch patterns + garment design
+- You care about structure, shaping, and fit
+- You don’t need hand-knitting outputs or advanced cable complexity
+Button:
+Text: “Buy Pro”
+Href: “REPLACE_ME_PRO”
+
+CARD 4
+Title: Professional
+Badge: “Sue’s Recommendation”
+Lead statement:
+“I want all of the functionality of DesignaKnit.”
+Bullets:
+- You want the complete DesignaKnit system
+- You want maximum flexibility now and later
+- You don’t want to wonder if something is missing
+Button:
+Text: “Buy Professional”
+Href: “REPLACE_ME_PROFESSIONAL”
+
+Below the cards add a small “Still not sure?” line:
+“Still not sure? Ask a question before you buy.”
+Link text: “Ask a question”
+Href: “REPLACE_ME_HELP_LINK”
+
+LAYOUT / STYLING FOR CARDS (NO Tailwind)
+- Use a responsive grid:
+  - Desktop: 2 columns
+  - Tablet: 2 columns
+  - Mobile: 1 column
+- Cards should match KBM “lego block” style:
+  - subtle border OR very light background tint
+  - rounded corners
+  - comfortable padding
+  - calm spacing
+  - no loud shadows
+- Badge should be a small pill (subtle), placed near the title.
+- Buttons must use existing button styles/components if present; otherwise style minimally in this page.
+
+SCOPED CSS (ONLY if needed)
+If you need CSS, add a small <style> block at the bottom of this page that includes only:
+- .soft-panel (background, padding, radius)
+- .two-panel-grid (grid layout + gap + responsive stacking)
+- .dak-choice-grid and .dak-choice-card (grid + spacing)
+- .dak-badge (pill styling)
+Do not change global typography or colors. Use neutral/KBM-like subtle tones.
+
+OUTPUT
+Return the full updated src/pages/software/designaknit.astro file with:
+1) Soft panels applied to the two bullet sections
+2) The new decision-path card section inserted between “Who DesignaKnit is for” and “Ready to explore?”
