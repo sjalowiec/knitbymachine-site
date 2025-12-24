@@ -1,0 +1,41 @@
+You are working in my Astro site for Knit by Machine. I need a small set of UI/hierarchy changes on my DesignaKnit “choose your version” page (and any shared card component it uses). Keep this minimal and consistent with my KBM card styling.
+
+GOAL (4 changes):
+1) Improve at-a-glance differentiation on the 4 version cards:
+   - Add ONE short “capability line” near the top of each card (just under the quote/lead line, above the bullets).
+   - This capability line should be visually emphasized (e.g., stronger font-weight), but not a new section.
+   - Use these capability lines (exact text is ok to tweak slightly for consistency):
+     • Standard: “Stitch patterns only”
+     • Pro: “Garments + basic cables”
+     • Professional: “Advanced garments + complex cables”
+     • Hand: “Hand knitting patterns only”
+   - Do NOT rewrite the bullet lists unless required for layout.
+
+2) Reorder the cards so “Hand” appears LAST in the grid/order (Standard, Pro, Professional, Hand).
+   - Do this by controlling the render order in code (not by changing data files).
+   - If cards are built from a list/JSON, create a preferredOrder array and sort by it.
+
+3) Remove or neutralize the redundant bottom CTA that repeats “See which option fits you”.
+   - If there is a final CTA section below the grid that repeats the same action, remove it.
+   - If it must remain for layout, change it to a support-style CTA instead (e.g., “Still not sure? Contact us.”) and do NOT link back to the same section.
+
+4) Fix the “Not sure which version you need yet?” box placement so it doesn’t interrupt the decision moment:
+   - If that box currently appears ABOVE the choice grid, move it to BELOW the grid.
+   - Keep the styling, just relocate it so it becomes an “escape hatch” after someone has tried to choose.
+
+CONSTRAINTS:
+- Minimal changes only. No new pages, no major layout redesign.
+- Keep my KBM design system and spacing intact.
+- Do not change JSON structure or Shopify links.
+- Ensure mobile layout still looks clean (cards stack in the same order).
+
+PROCESS:
+A) Locate the file(s) that render the DesignaKnit decision grid (search for “DesignaKnit”, the card quote text, the “Not sure which version…” box, and the repeated CTA).
+B) Implement the capability line and ordering either in the page or in the shared card component (whichever is already used).
+C) Remove/neutralize the redundant bottom CTA.
+D) Move the “Not sure which version…” box below the grid.
+E) Test quickly in dev preview for desktop + mobile.
+
+DELIVERABLE:
+- List the exact files changed and summarize each change in 1–2 bullets.
+- Confirm the final visible order is: Standard → Pro → Professional → Hand.
