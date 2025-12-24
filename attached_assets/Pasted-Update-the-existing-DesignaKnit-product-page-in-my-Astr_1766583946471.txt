@@ -1,0 +1,61 @@
+Update the existing DesignaKnit product page in my Astro site.
+
+CONTEXT
+- This page already exists and uses my global CSS (NOT Tailwind).
+- The image file is already uploaded at:
+  /images/designaknit/designaknit.webp
+- This page is a sales/details page.
+
+TASK 1 — Hero layout update
+Modify the hero section so it becomes a two-column layout on desktop:
+
+LEFT column:
+- Display the image at:
+  /images/designaknit/designaknit.webp
+- Image should be responsive
+- Add appropriate alt text:
+  "DesignaKnit software showing stitch design, garment shaping, pattern layout, and knit-ready instructions"
+- Image should not overflow the container
+- Use rounded corners and a subtle shadow if consistent with existing styles
+
+RIGHT column:
+- Keep the existing hero content:
+  - H1: “DesignaKnit (DAK)”
+  - The anchor definition text
+  - Intro paragraph(s)
+- Do not change the wording of the definition
+
+Mobile behavior:
+- Stack vertically
+- Text first, image below
+- Maintain comfortable spacing
+
+TASK 2 — Side-by-side bullet sections
+For the two sections:
+- “What changes when you use DesignaKnit”
+- “What DesignaKnit helps you do”
+
+Update layout so that:
+- On desktop, these two sections appear side by side (two columns)
+- On mobile, they stack vertically
+- Headings remain above their respective bullet lists
+- Bullet content does not change
+
+TASK 3 — Styling constraints
+- Do NOT use Tailwind classes
+- Reuse existing layout/container classes if available
+- If needed, add a small scoped <style> block in this page only
+- Use CSS Grid or Flexbox (prefer Grid if possible)
+- Ensure spacing feels calm and readable (not dense)
+
+TASK 4 — Safety checks
+- Do not change page structure outside these two areas
+- Do not introduce new copy
+- Do not rename sections
+- Do not add animations or decorative effects
+
+OUTPUT
+Return the updated .astro file with:
+- The hero section updated to include the image on the left
+- The two bullet sections displayed side by side on desktop
+- Clean, readable, maintainable markup

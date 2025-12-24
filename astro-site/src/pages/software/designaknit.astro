@@ -10,41 +10,52 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     
     <!-- Hero Section -->
     <section class="hero-section">
-      <h1>DesignaKnit (DAK)</h1>
-      <p class="intro-definition">
-        DesignaKnit is a design-to-knitting system for machine knitters. 
-        It helps you work out ideas, then turns those decisions into clear, knit-ready instructions — bridging the gap between ideas and knitting.
-      </p>
-      <p class="intro-support">
-        Whether you're planning your first shaped garment or designing something entirely your own, DesignaKnit gives you tools to think through the details before you start knitting.
-      </p>
+      <div class="hero-text">
+        <h1>DesignaKnit (DAK)</h1>
+        <p class="intro-definition">
+          DesignaKnit is a design-to-knitting system for machine knitters. 
+          It helps you work out ideas, then turns those decisions into clear, knit-ready instructions — bridging the gap between ideas and knitting.
+        </p>
+        <p class="intro-support">
+          Whether you're planning your first shaped garment or designing something entirely your own, DesignaKnit gives you tools to think through the details before you start knitting.
+        </p>
+      </div>
+      <div class="hero-image">
+        <img 
+          src="/images/designaknit/designaknit.webp" 
+          alt="DesignaKnit software showing stitch design, garment shaping, pattern layout, and knit-ready instructions"
+        />
+      </div>
     </section>
     
-    <!-- What Changes Section -->
-    <section class="content-section">
-      <h2>What changes when you use DesignaKnit</h2>
-      <ul>
-        <li>You stop guessing and start knowing exactly what to do at each row</li>
-        <li>Shaping decisions are worked out ahead of time, not on the fly</li>
-        <li>You can resize patterns to fit any gauge or measurement</li>
-        <li>Colorwork and stitch patterns become easier to visualize and edit</li>
-        <li>Your notes, charts, and instructions live in one place</li>
-        <li>Mistakes get caught on screen, not in the knitting</li>
-      </ul>
-    </section>
-    
-    <!-- What It Helps You Do Section -->
-    <section class="content-section">
-      <h2>What DesignaKnit helps you do</h2>
-      <ul>
-        <li>Design garments from scratch using built-in shaping tools</li>
-        <li>Create and edit stitch patterns, colorwork, and charts</li>
-        <li>Adjust existing patterns to match your gauge and sizing</li>
-        <li>Print row-by-row instructions, templates, and charts</li>
-        <li>Send patterns directly to compatible electronic knitting machines</li>
-        <li>Keep track of your projects and revisit past work easily</li>
-      </ul>
-    </section>
+    <!-- Side-by-side bullet sections -->
+    <div class="two-column-sections">
+      <!-- What Changes Section -->
+      <section class="content-section">
+        <h2>What changes when you use DesignaKnit</h2>
+        <ul>
+          <li>You stop guessing and start knowing exactly what to do at each row</li>
+          <li>Shaping decisions are worked out ahead of time, not on the fly</li>
+          <li>You can resize patterns to fit any gauge or measurement</li>
+          <li>Colorwork and stitch patterns become easier to visualize and edit</li>
+          <li>Your notes, charts, and instructions live in one place</li>
+          <li>Mistakes get caught on screen, not in the knitting</li>
+        </ul>
+      </section>
+      
+      <!-- What It Helps You Do Section -->
+      <section class="content-section">
+        <h2>What DesignaKnit helps you do</h2>
+        <ul>
+          <li>Design garments from scratch using built-in shaping tools</li>
+          <li>Create and edit stitch patterns, colorwork, and charts</li>
+          <li>Adjust existing patterns to match your gauge and sizing</li>
+          <li>Print row-by-row instructions, templates, and charts</li>
+          <li>Send patterns directly to compatible electronic knitting machines</li>
+          <li>Keep track of your projects and revisit past work easily</li>
+        </ul>
+      </section>
+    </div>
     
     <!-- Reassurance Section -->
     <section class="content-section reassurance-section">
@@ -93,13 +104,47 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 <style>
   .designaknit-page {
-    max-width: 720px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 2rem 1rem 3rem;
   }
 
+  /* Hero: two-column on desktop, stacked on mobile (text first) */
   .hero-section {
-    margin-bottom: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .hero-text {
+    order: 1;
+  }
+
+  .hero-image {
+    order: 2;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    .hero-text {
+      order: 2;
+    }
+
+    .hero-image {
+      order: 1;
+    }
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
   }
 
   h1 {
@@ -120,6 +165,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     color: #555;
     line-height: 1.6;
     margin: 0;
+  }
+
+  /* Two-column bullet sections */
+  .two-column-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .two-column-sections {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+  }
+
+  .two-column-sections .content-section {
+    margin-bottom: 0;
   }
 
   .content-section {
