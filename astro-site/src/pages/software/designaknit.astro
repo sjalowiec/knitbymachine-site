@@ -100,6 +100,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         All DesignaKnit options use the same core system. The difference is how far you want to take it today. You don't have to choose for your entire future — just where you are now.
       </p>
       
+      <!-- Orienting CTA -->
+      <div class="dak-orienting">
+        <p class="dak-orienting-heading">Not sure which version you need yet?</p>
+        <p class="dak-orienting-line">See which DesignaKnit option fits how you knit right now.</p>
+      </div>
+      
+      <p class="dak-starting-point">These aren't lifetime decisions — they're starting points based on how you knit today.</p>
+      
       <div class="dak-choice-grid">
         <!-- Hand Knit Card -->
         <div class="dak-choice-card">
@@ -112,7 +120,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You want charts and written hand-knitting instructions</li>
             <li>You're not using a knitting machine</li>
           </ul>
-          <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Buy Hand Knit</a>
+          <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Choose this option</a>
         </div>
         
         <!-- Standard Card -->
@@ -126,7 +134,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You're focused on stitch work, charts, and repeats</li>
             <li>You don't need garment shaping tools</li>
           </ul>
-          <a href="REPLACE_ME_STANDARD" class="btn-primary">Buy Standard</a>
+          <a href="REPLACE_ME_STANDARD" class="btn-primary">Choose this option</a>
         </div>
         
         <!-- Pro Card -->
@@ -141,7 +149,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You care about structure, shaping, and fit</li>
             <li>You don't need hand-knitting outputs or advanced cable complexity</li>
           </ul>
-          <a href="REPLACE_ME_PRO" class="btn-primary">Buy Pro</a>
+          <a href="REPLACE_ME_PRO" class="btn-primary">Choose this option</a>
         </div>
         
         <!-- Professional Card -->
@@ -156,9 +164,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You want maximum flexibility now and later</li>
             <li>You don't want to wonder if something is missing</li>
           </ul>
-          <a href="REPLACE_ME_PROFESSIONAL" class="btn-primary">Buy Professional</a>
+          <a href="REPLACE_ME_PROFESSIONAL" class="btn-primary">Choose this option</a>
         </div>
       </div>
+      
+      <p class="dak-post-choice">You're not locked in — you can upgrade later if your needs change.</p>
       
       <p class="dak-still-not-sure">
         Still not sure? <a href="REPLACE_ME_HELP_LINK">Ask a question</a> before you buy.
@@ -170,7 +180,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <h2>Ready to explore?</h2>
       <p>Find the right option for your knitting, or reach out if you have questions.</p>
       <div class="cta-buttons">
-        <a href="/designaknit/compare" class="btn-primary">Choose your DesignaKnit option</a>
+        <a href="/designaknit/compare" class="btn-primary">See which option fits you</a>
         <a href="/contact" class="btn-secondary">Ask a question</a>
       </div>
     </section>
@@ -243,12 +253,11 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     margin: 0;
   }
 
-  /* Soft Panel styling */
+  /* Soft Panel styling - lightened */
   .soft-panel {
-    background: #f0f4ec;
-    border: 1px solid #e0e6d8;
+    background: #f6f8f4;
     border-radius: 10px;
-    padding: 1.5rem;
+    padding: 1.25rem;
   }
 
   .soft-panel .content-section {
@@ -259,14 +268,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .two-column-sections {
     display: grid;
     grid-template-columns: 1fr;
-    gap: 1.5rem;
+    gap: 1.75rem;
     margin-bottom: 2.5rem;
   }
 
   @media (min-width: 640px) {
     .two-column-sections {
       grid-template-columns: 1fr 1fr;
-      gap: 2rem;
+      gap: 2.25rem;
     }
   }
 
@@ -329,15 +338,39 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .dak-choice-intro {
     color: #555;
     line-height: 1.7;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     max-width: 700px;
+  }
+
+  /* Orienting CTA block */
+  .dak-orienting {
+    margin-bottom: 0.75rem;
+  }
+
+  .dak-orienting-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .dak-orienting-line {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .dak-starting-point {
+    font-size: 0.95rem;
+    color: #777;
+    margin: 0 0 1.75rem 0;
   }
 
   .dak-choice-grid {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   @media (min-width: 640px) {
@@ -407,6 +440,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     align-self: flex-start;
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+  }
+
+  .dak-post-choice {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0 0 1rem 0;
   }
 
   .dak-still-not-sure {

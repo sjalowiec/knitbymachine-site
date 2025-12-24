@@ -1,0 +1,69 @@
+Update my existing Astro DesignaKnit page to reduce decision friction and unify CTA language.
+
+File:
+src/pages/software/designaknit.astro
+
+IMPORTANT
+- NO Tailwind.
+- Keep existing copy and layout unless explicitly changed below.
+- This is micro-polish only (wording + tiny UI tweaks).
+- Do not add new sections elsewhere, only adjust the decision area and slightly soften the bullet panels.
+- Preserve all existing links/hrefs (including REPLACE_ME placeholders).
+
+CHANGES TO MAKE (do all)
+
+1) Add ONE primary orienting CTA above the decision cards
+In the section that currently starts with:
+“Choose your DesignaKnit option”
+Add a short orienting block ABOVE the cards (between the intro text and the grid), using this exact copy:
+
+Heading (small, not H1): “Not sure which version you need yet?”
+Line under it: “See which DesignaKnit option fits how you knit right now.”
+
+This should read as guidance, not a button. (If you want to style it like a subtle callout line, that’s fine, but keep it calm.)
+
+2) Add a “starting point” sentence before the cards
+Immediately under the above orienting CTA (still above the grid), add this one line:
+
+“These aren’t lifetime decisions — they’re starting points based on how you knit today.”
+
+Style it as a normal paragraph (slightly muted is fine).
+
+3) Change button language on all four cards
+In each decision card, change the button text from:
+“Buy Hand Knit” / “Buy Standard” / “Buy Pro” / “Buy Professional”
+to:
+“Choose this option”
+
+Do NOT change the hrefs. Only change the visible button label.
+
+4) Add post-choice reassurance directly under the card grid
+Immediately BELOW the 4-card grid (before any “Still not sure?” line or before the next CTA area), add this exact line:
+
+“You’re not locked in — you can upgrade later if your needs change.”
+
+Style: small, calm, slightly muted. (Do not hide it in an accordion or tooltip.)
+
+5) Unify CTA language near the decision area
+If there is a section CTA button nearby that currently says “Choose your DesignaKnit option”, update it to match the same mental mode, using this wording:
+“See which option fits you”
+(Only change this if that button is part of the same flow leading into the cards; do not change unrelated CTAs elsewhere.)
+
+6) Reduce visual weight of the two bullet panels slightly (light touch)
+The two bullet sections (“What changes when you use DesignaKnit” and “What DesignaKnit helps you do”) currently appear as soft panels.
+Make them feel lighter by doing ONE of the following (choose the smallest change that matches my existing styles):
+- Reduce the panel background tint by ~30–50% (lighter)
+OR
+- Reduce the panel padding slightly (e.g., from 24px to 20px) and increase the gap between the two panels a touch
+
+Do NOT add shadows. Do NOT add borders. Keep calm KBM styling.
+
+CSS RULES
+- Reuse existing classes if present.
+- If you need CSS adjustments, keep them scoped to this page only and limited to:
+  - decision intro block styling (optional)
+  - post-choice reassurance text styling (optional)
+  - slight panel background/padding tweak
+
+OUTPUT
+Return the full updated src/pages/software/designaknit.astro file with all changes applied.
