@@ -16,6 +16,15 @@ const product = getSoftwareBySlug(slug);
 if (!product) {
   return Astro.redirect('/404');
 }
+
+const priceBySlug: Record<string, number> = {
+  'designaknit-hand': 199,
+  'designaknit-standard': 330,
+  'designaknit-professional': 450,
+  'designaknit-complete': 500
+};
+
+const price = priceBySlug[slug || ''];
 ---
 
 <BaseLayout 
@@ -58,6 +67,7 @@ if (!product) {
       
       <div class="product-info">
         <h1>{product.name}</h1>
+        {price && <p class="product-price">${price}</p>}
         <p class="tagline">{product.tagline}</p>
       </div>
     </div>
@@ -81,8 +91,11 @@ if (!product) {
       </ul>
     </section>
     
+    <p class="compatibility-note">DesignaKnit works with compatible electronic knitting machines.</p>
+    
     <div class="cta-section">
       <a href={product.purchaseUrl} class="btn-primary">Buy / Upgrade</a>
+      <p class="shipping-note">U.S. addresses only.</p>
     </div>
     
     <hr class="section-divider" />
@@ -174,6 +187,13 @@ if (!product) {
     color: var(--kbm-green);
   }
 
+  .product-price {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+  }
+
   .tagline {
     font-size: 1.125rem;
     color: #555;
@@ -206,6 +226,12 @@ if (!product) {
     line-height: 1.5;
   }
 
+  .compatibility-note {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 1.5rem 0 0 0;
+  }
+
   .cta-section {
     margin: 2rem 0;
   }
@@ -223,6 +249,12 @@ if (!product) {
 
   .btn-primary:hover {
     background: var(--kbm-green-2);
+  }
+
+  .shipping-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.5rem 0 0 0;
   }
 
   .callout-grid {

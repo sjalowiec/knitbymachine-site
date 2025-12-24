@@ -1,5 +1,12 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const priceByKey: Record<string, number> = {
+  hand: 199,
+  standard: 330,
+  professional: 450,
+  complete: 500
+};
 ---
 
 <BaseLayout 
@@ -108,12 +115,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       
       <p class="dak-starting-point">These aren't lifetime decisions — they're starting points based on how you knit today.</p>
       
+      <p class="dak-compatibility">DesignaKnit works with compatible electronic knitting machines.</p>
+      
       <div class="dak-choice-grid">
         <!-- Hand Knit Card -->
         <div class="dak-choice-card">
           <p class="dak-statement">"I'm a hand knitter and I want to write hand-knitting patterns only."</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Hand Knit</span>
+            <span class="dak-price">${priceByKey.hand}</span>
           </div>
           <ul>
             <li>You design or write hand-knitting patterns</li>
@@ -121,6 +131,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You're not using a knitting machine</li>
           </ul>
           <a href="REPLACE_ME_HAND_KNIT" class="btn-primary">Choose this option</a>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
         <!-- Standard Card -->
@@ -128,6 +139,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <p class="dak-statement">"I'm only interested in stitch designs. I won't be creating garment designs."</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Standard</span>
+            <span class="dak-price">${priceByKey.standard}</span>
           </div>
           <ul>
             <li>You want to create and edit stitch patterns</li>
@@ -135,6 +147,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You don't need garment shaping tools</li>
           </ul>
           <a href="REPLACE_ME_STANDARD" class="btn-primary">Choose this option</a>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
         <!-- Pro Card -->
@@ -142,6 +155,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
           <p class="dak-statement">"I will be designing stitch patterns and garments, but I'm not interested in hand knitting instructions or complicated cable instructions."</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Pro</span>
+            <span class="dak-price">${priceByKey.professional}</span>
             <span class="dak-badge">Sue's Recommendation</span>
           </div>
           <ul>
@@ -150,13 +164,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You don't need hand-knitting outputs or advanced cable complexity</li>
           </ul>
           <a href="REPLACE_ME_PRO" class="btn-primary">Choose this option</a>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
         
         <!-- Professional Card -->
         <div class="dak-choice-card">
           <p class="dak-statement">"I want all of the functionality of DesignaKnit."</p>
           <div class="dak-version-row">
-            <span class="dak-version-label">Professional</span>
+            <span class="dak-version-label">Complete</span>
+            <span class="dak-price">${priceByKey.complete}</span>
             <span class="dak-badge">Sue's Recommendation</span>
           </div>
           <ul>
@@ -165,6 +181,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
             <li>You don't want to wonder if something is missing</li>
           </ul>
           <a href="REPLACE_ME_PROFESSIONAL" class="btn-primary">Choose this option</a>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
         </div>
       </div>
       
@@ -363,7 +380,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   .dak-starting-point {
     font-size: 0.95rem;
     color: #777;
-    margin: 0 0 1.75rem 0;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .dak-compatibility {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0 0 1.5rem 0;
   }
 
   .dak-choice-grid {
@@ -412,6 +435,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     font-weight: 500;
   }
 
+  .dak-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
   .dak-badge {
     display: inline-block;
     background: #e8f0dc;
@@ -440,6 +469,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     align-self: flex-start;
     padding: 0.75rem 1.5rem;
     font-size: 0.9rem;
+  }
+
+  .dak-shipping-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.5rem 0 0 0;
   }
 
   .dak-post-choice {
