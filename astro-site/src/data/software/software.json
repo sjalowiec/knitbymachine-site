@@ -5,7 +5,7 @@
     "name": "DesignaKnit Hand Knit",
     "type": "software",
     "versionKey": "hand-knit",
-    "purchaseUrl": "[Outseta link]",
+    "purchaseUrl": "https://admin.shopify.com/store/knit-by-machine/products/7899667628101",
     "outcomes": [
       "Create and print hand knitting patterns",
       "Use Stitch Designer and Graphics Studio",
@@ -28,7 +28,7 @@
     "name": "DesignaKnit Machine Standard",
     "type": "software",
     "versionKey": "machine-standard",
-    "purchaseUrl": "[Outseta link]",
+    "purchaseUrl": "https://admin.shopify.com/store/knit-by-machine/products/7899666382917",
     "outcomes": [
       "Create machine knitting patterns",
       "Send patterns to compatible electronic machines",
@@ -48,10 +48,10 @@
   {
     "id": "dak-mp",
     "slug": "machine-pro",
-    "name": "DesignaKnit Machine Pro",
+    "name": "DesignaKnit Machine Professional",
     "type": "software",
     "versionKey": "machine-pro",
-    "purchaseUrl": "[Outseta link]",
+    "purchaseUrl": "https://admin.shopify.com/store/knit-by-machine/products/7899668316229",
     "outcomes": [
       "Draft original garment patterns",
       "Create and edit machine stitch patterns",
@@ -76,7 +76,7 @@
     "name": "DesignaKnit Complete",
     "type": "software",
     "versionKey": "complete",
-    "purchaseUrl": "[Outseta link]",
+    "purchaseUrl": "https://admin.shopify.com/store/knit-by-machine/products/7899665825861",
     "outcomes": [
       "Design both hand and machine knitting patterns",
       "Convert hand patterns to machine knitting",
