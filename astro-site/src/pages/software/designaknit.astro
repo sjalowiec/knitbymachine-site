@@ -493,12 +493,6 @@ const priceByKey: Record<string, number> = {
     font-size: 0.9rem;
   }
 
-  .dak-shipping-note {
-    font-size: 0.8rem;
-    color: #888;
-    margin: 0.5rem 0 0 0;
-  }
-
   .dak-post-choice {
     text-align: center;
     font-size: 0.9rem;
@@ -578,6 +572,18 @@ const priceByKey: Record<string, number> = {
   .dak-buy-button {
     min-height: 50px;
     margin-bottom: 0.25rem;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+  }
+
+  .dak-shipping-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.5rem 0 0 0;
+    text-align: center;
+    align-self: center;
+    width: 100%;
   }
 </style>
 
@@ -632,7 +638,7 @@ const priceByKey: Record<string, number> = {
                       'padding': '12px 24px'
                     }
                   },
-                  text: { button: 'Add to cart' },
+                  text: { button: 'Choose this option' },
                   contents: {
                     img: false,
                     title: false,
