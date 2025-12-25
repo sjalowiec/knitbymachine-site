@@ -717,9 +717,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     const brimDepth = brimDepths[brim];
     const brimRows = Math.round(brimDepth * rowGaugePerInch);
     
-    // Crown calculations
-    const crownStart = hatHeight - brimDepth;
-    const crownRows = Math.round((hatHeight - crownStart) * rowGaugePerInch);
+    // Crown row calculations - compute FIRST to derive body height correctly
+    // Helper to calculate wedge crown rows
+    function calcWedgeCrownRowsForCalc(wedgeCount, originalCastOn) {
+      const adjustedCastOn = originalCastOn - (originalCastOn % wedgeCount);
+      const wedgeStitches = adjustedCastOn / wedgeCount;
+      const targetStitchesPerWedge = 2;
+      const decreaseRows = Math.max(0, Math.floor((wedgeStitches - targetStitchesPerWedge) / 2));
+      return decreaseRows * 2; // Each decrease row followed by a knit row
+    }
+    
+    let crownRowCount = 0;
+    if (crown === 'gathered') {
+      crownRowCount = 0; // No decrease rows, body extends to full height
+    } else if (crown === 'wedge-4') {
+      crownRowCount = calcWedgeCrownRowsForCalc(4, castOnSts);
+    } else if (crown === 'wedge-6') {
+      crownRowCount = calcWedgeCrownRowsForCalc(6, castOnSts);
+    } else if (crown === 'spiral') {
+      crownRowCount = 18; // Approximate for spiral crown
+    }
+    
+    // Calculate body height: total height minus brim minus crown
+    const crownHeightInches = crownRowCount / rowGaugePerInch;
+    const bodyHeightInches = Math.max(0, hatHeight - brimDepth - crownHeightInches);
+    const bodyRows = Math.round(bodyHeightInches * rowGaugePerInch);
     
     // Generate pattern
     generatePattern({
@@ -729,8 +751,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       hatHeight,
       brimDepth,
       brimRows,
-      crownStart,
-      crownRows,
+      bodyRows,
+      crownRowCount,
       brim,
       crown,
       fit,
@@ -807,7 +829,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   function generatePattern(calc) {
     const currentUnit = unitStore.get();
-    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, brim, crown, fit, stGaugePerInch, rowGaugePerInch, stitchGaugeRaw, rowGaugeRaw } = calc;
+    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, bodyRows, crownRowCount, brim, crown, fit, stGaugePerInch, rowGaugePerInch, stitchGaugeRaw, rowGaugeRaw } = calc;
     
     // Convert display values
     const displayHeadCirc = currentUnit === 'inches' 
@@ -836,8 +858,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       hem: 'Work stockinette for half the brim depth, place a turning row (purl on knit side or use picot edge), then work stockinette for remaining rows. Fold at turning row and tack hem to wrong side.'
     };
     
-    // Crown shaping
-    const bodyRows = Math.round((crownStart - brimDepth) * rowGaugePerInch);
+    // Crown shaping - bodyRows already calculated and passed in
     let crownInstructions = '';
     let crownHeading = 'Crown Shaping';
     
@@ -969,48 +990,25 @@ document.addEventListener('DOMContentLoaded', async function() {
     generateDiagram(calc);
     
     // Generate At-a-Glance summary
-    generateSummary(calc, bodyRows);
+    generateSummary(calc);
   }
   
-  function generateSummary(calc, bodyRows) {
-    const { castOnSts, brimRows, crown } = calc;
+  function generateSummary(calc) {
+    const { castOnSts, brimRows, bodyRows, crownRowCount, crown } = calc;
     
-    // Calculate crown rows based on crown type
-    let crownRowCount = 0;
+    // Get crown style label and adjusted cast-on for display
     let crownStyleLabel = '';
     let patternCastOnSts = castOnSts; // Default: use original cast-on
     
-    // Helper to calculate segmented wedge crown rows (using adjusted cast-on)
-    function calcWedgeCrownRows(wedgeCount, adjustedCastOn) {
-      const wedgeStitches = adjustedCastOn / wedgeCount;
-      const targetStitchesPerWedge = 2;
-      const decreaseRows = Math.max(0, Math.floor((wedgeStitches - targetStitchesPerWedge) / 2));
-      // Crown height = rows for one wedge (each wedge is same height)
-      return decreaseRows * 2;
-    }
-    
     if (crown === 'gathered') {
-      crownRowCount = 0;
       crownStyleLabel = 'No Decreases (Gathered)';
     } else if (crown === 'wedge-4') {
-      // 4-wedge (segmented): adjust cast-on to multiple of 4
-      const adjustedCastOn = castOnSts - (castOnSts % 4);
-      patternCastOnSts = adjustedCastOn;
-      crownRowCount = calcWedgeCrownRows(4, adjustedCastOn);
+      patternCastOnSts = castOnSts - (castOnSts % 4);
       crownStyleLabel = '4-Wedge';
     } else if (crown === 'wedge-6') {
-      // 6-wedge (segmented): adjust cast-on to multiple of 6
-      const adjustedCastOn = castOnSts - (castOnSts % 6);
-      patternCastOnSts = adjustedCastOn;
-      crownRowCount = calcWedgeCrownRows(6, adjustedCastOn);
+      patternCastOnSts = castOnSts - (castOnSts % 6);
       crownStyleLabel = '6-Wedge';
     } else if (crown === 'spiral') {
-      // Spiral Crown: two-phase system
-      // Phase 1: decrease every 3rd row (starting at 8, then 7, 6, 5, 4 spacing) until ~12 sts remain
-      // Phase 2: decrease every row until 4-6 sts remain
-      // Estimate: Phase 1 takes ~5 decrease rows with 2 even rows between = ~15 rows
-      // Phase 2 takes ~3-4 rows
-      crownRowCount = 18; // Approximate for summary
       crownStyleLabel = 'Spiral Crown';
     }
     
