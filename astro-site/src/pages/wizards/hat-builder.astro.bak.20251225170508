@@ -1041,28 +1041,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       `;
     }
     
-    // Terms data for the pattern
-    const patternTerms = [
-      { term: 'Decrease', definition: 'Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.' },
-      { term: 'Scrap off', definition: 'Remove knitting from the machine using waste yarn to hold live stitches.' },
-      { term: 'Mock ribbing', definition: 'Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.' },
-      { term: 'Mattress stitch', definition: 'An invisible, right-side seaming method that joins two edges neatly.' },
-      { term: 'Block', definition: 'Wet or steam to set the finished shape.' }
-    ];
-    
-    // Build Terms block HTML (mirrors TermsBlock.astro component)
-    function buildTermsBlock(terms, title = 'Terms') {
-      const termItems = terms.map(item => 
-        `<p><span class="pattern-term" data-tooltip="${item.tooltipText || item.definition}">${item.term}:</span> ${item.definition}</p>`
-      ).join('\n        ');
-      
-      return `
-      <section class="pattern-terms">
-        <h4>${title}</h4>
-        ${termItems}
-      </section>`;
-    }
-    
     // Pattern HTML
     const patternHTML = `
       <h3>Your Custom Hat Pattern</h3>
@@ -1095,7 +1073,14 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p>Seam each crown wedge first, then seam the body using <span class="pattern-term" data-tooltip="An invisible, right-side seaming method that joins two edges neatly.">mattress stitch</span> or your preferred method. <span class="pattern-term" data-tooltip="Wet or steam to set the finished shape.">Block</span> if desired and weave in all ends.</p>
       ${crown === 'gathered' ? '<div class="pattern-tip" data-tip><strong>Tip:</strong> Use the bind-off method of your choice.</div>' : ''}
       
-      ${buildTermsBlock(patternTerms)}
+      <section class="pattern-terms">
+        <h4>Terms</h4>
+        <p><span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease:</span> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+        <p><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off:</span> Remove knitting from the machine using waste yarn to hold live stitches.</p>
+        <p><span class="pattern-term" data-tooltip="Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.">Mock ribbing:</span> Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.</p>
+        <p><span class="pattern-term" data-tooltip="An invisible, right-side seaming method that joins two edges neatly.">Mattress stitch:</span> An invisible, right-side seaming method that joins two edges neatly.</p>
+        <p><span class="pattern-term" data-tooltip="Wet or steam to set the finished shape.">Block:</span> Wet or steam to set the finished shape.</p>
+      </section>
     `;
     
     updateHTML('#pattern-content', patternHTML);
