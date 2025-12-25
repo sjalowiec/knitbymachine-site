@@ -104,60 +104,6 @@ try {
   visibility: visible;
 }
 
-/* At-a-Glance summary block styling */
-.summary-block {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 8px;
-  padding: 1.25rem;
-  margin-top: 1.5rem;
-}
-
-.summary-block h4 {
-  margin: 0 0 1rem 0;
-  font-size: 1.1rem;
-  color: #333;
-}
-
-.summary-total {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #52682D;
-  margin-bottom: 1rem;
-}
-
-.summary-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 0.95rem;
-}
-
-.summary-table th,
-.summary-table td {
-  padding: 0.5rem 0.75rem;
-  text-align: left;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.summary-table th {
-  font-weight: 600;
-  color: #555;
-  background: #f0f0f0;
-}
-
-.summary-table td:nth-child(2),
-.summary-table td:nth-child(3),
-.summary-table th:nth-child(2),
-.summary-table th:nth-child(3) {
-  text-align: center;
-}
-
-.summary-crown-style {
-  margin-top: 0.75rem;
-  font-size: 0.9rem;
-  color: #666;
-}
-
 /* Print-specific overrides for hat patterns */
 @media print {
   * {
@@ -304,10 +250,6 @@ try {
             <div id="diagram-content">
               <!-- Will be populated by JavaScript -->
             </div>
-          </div>
-
-          <div id="summary-container" class="summary-block">
-            <!-- Will be populated by JavaScript -->
           </div>
           
         </div>
@@ -665,80 +607,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Generate diagram
     generateDiagram(calc);
-    
-    // Generate At-a-Glance summary
-    generateSummary(calc, bodyRows);
-  }
-  
-  function generateSummary(calc, bodyRows) {
-    const { castOnSts, brimRows, crown } = calc;
-    
-    // Calculate crown rows based on crown type
-    // Each wedge decreases by (wedgeCount) stitches per decrease row
-    // Decrease rows happen every other row until ~3-6 stitches remain
-    let crownRowCount = 0;
-    let crownStyleLabel = '';
-    
-    if (crown === 'gathered') {
-      crownRowCount = 0;
-      crownStyleLabel = 'No Decreases (Gathered)';
-    } else if (crown === 'wedge-4') {
-      // 4-wedge: decrease 4 stitches per decrease row (1 per wedge)
-      // Need to reduce from castOnSts to ~4 stitches
-      const stitchesToDecrease = castOnSts - 4;
-      const decreaseRows = Math.ceil(stitchesToDecrease / 4);
-      crownRowCount = decreaseRows * 2; // decrease every other row
-      crownStyleLabel = '4-Wedge Decreases';
-    } else if (crown === 'wedge-6') {
-      // 6-wedge: decrease 6 stitches per decrease row (1 per wedge)
-      // Need to reduce from castOnSts to ~6 stitches
-      const stitchesToDecrease = castOnSts - 6;
-      const decreaseRows = Math.ceil(stitchesToDecrease / 6);
-      crownRowCount = decreaseRows * 2; // decrease every other row
-      crownStyleLabel = '6-Wedge Decreases';
-    } else if (crown === 'spiral') {
-      // Spiral: decrease 8 stitches every 3rd round until ~8-12 remain
-      const stitchesToDecrease = castOnSts - 10;
-      const decreaseRounds = Math.ceil(stitchesToDecrease / 8);
-      crownRowCount = decreaseRounds * 3; // decrease every 3rd round
-      crownStyleLabel = 'Spiral Decreases';
-    }
-    
-    const totalRows = brimRows + bodyRows + crownRowCount;
-    
-    const summaryHTML = `
-      <h4>At-a-Glance</h4>
-      <div class="summary-total">Total Rows: ${totalRows}</div>
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th>Section</th>
-            <th>Rows</th>
-            <th>Stitches</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Brim</td>
-            <td>${brimRows}</td>
-            <td>${castOnSts}</td>
-          </tr>
-          <tr>
-            <td>Body</td>
-            <td>${bodyRows}</td>
-            <td>${castOnSts}</td>
-          </tr>
-          <tr>
-            <td>Crown</td>
-            <td>${crownRowCount}</td>
-            <td>${castOnSts}</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="summary-crown-style">Crown Style: ${crownStyleLabel}</p>
-    `;
-    
-    updateHTML('#summary-container', summaryHTML);
   }
   
   async function generateDiagram(calc) {
