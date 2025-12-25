@@ -584,59 +584,29 @@ document.addEventListener('DOMContentLoaded', async function() {
     let crownHeading = 'Crown Shaping';
     
     // Helper function to build wedge crown sections (segmented wedge approach)
-    function buildWedgeCrownSection(wedgeCount, totalStitches, bodyRowsAfterBrim) {
-      const smallWedgeStitches = Math.floor(totalStitches / wedgeCount);
-      const remainder = totalStitches % wedgeCount;
-      const largeWedgeStitches = smallWedgeStitches + (remainder > 0 ? 1 : 0);
+    // Uses adjusted cast-on (rounded down to multiple of wedgeCount) for even wedges
+    function buildWedgeCrownSection(wedgeCount, originalCastOn, adjustedCastOn, bodyRowsAfterBrim) {
+      const wedgeStitches = adjustedCastOn / wedgeCount;
       const targetStitchesPerWedge = 2;
+      const decreaseRows = Math.max(0, Math.floor((wedgeStitches - targetStitchesPerWedge) / 2));
+      const scrapOffStitches = adjustedCastOn - wedgeStitches;
       
-      // Calculate decrease rows for each wedge size
-      const decreaseRowsLarge = Math.max(0, Math.floor((largeWedgeStitches - targetStitchesPerWedge) / 2));
-      const decreaseRowsSmall = Math.max(0, Math.floor((smallWedgeStitches - targetStitchesPerWedge) / 2));
-      
-      // Fraction of stitches to scrap off (e.g., 3/4 for 4-wedge, 5/6 for 6-wedge)
-      const scrapFraction = `${wedgeCount - 1}/${wedgeCount}`;
-      
-      // Even division - simple case
-      if (remainder === 0) {
-        return `
-          <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
-          <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
-          <p><strong>Work one wedge at a time:</strong></p>
-          <ul>
-            <li><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off</span> / place on waste yarn ${scrapFraction} of the stitches, leaving 1 wedge (${smallWedgeStitches} stitches) on the machine.</li>
-            <li>Shape the wedge by decreasing at BOTH edges every other row:<br/>
-              <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND decrease 1 stitch at the right edge. (2 stitches decreased total)<br/>
-              Knit the row.</li>
-            <li>Repeat the decrease row every other row ${decreaseRowsSmall} times, until ${targetStitchesPerWedge} stitches remain for that wedge.</li>
-            <li>Scrap off the finished wedge stitches.</li>
-          </ul>
-          <p>Rehang the next wedge stitches and repeat until all ${wedgeCount} wedges are complete.</p>
-          <p><strong>Finish:</strong> Thread yarn through the remaining crown stitches and pull tight to close the top; secure.</p>
-          <p><em>Note: Keeping decreases at the same points on each wedge creates clean crown "seams".</em></p>
-        `;
-      }
-      
-      // Uneven division - need to specify both wedge sizes
-      const smallWedgeCount = wedgeCount - remainder;
-      const largeWedgeCount = remainder;
-      
-      // Calculate final stitches for each size
-      const finalSmall = smallWedgeStitches - (decreaseRowsSmall * 2);
-      const finalLarge = largeWedgeStitches - (decreaseRowsLarge * 2);
+      // Build adjustment note if cast-on was adjusted
+      const adjustmentNote = (originalCastOn !== adjustedCastOn) 
+        ? `<p><em>Note: Cast on has been adjusted from ${originalCastOn} to ${adjustedCastOn} stitches to create evenly sized wedges.</em></p>`
+        : '';
       
       return `
         <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
+        ${adjustmentNote}
         <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
-        <p><em>Note: ${totalStitches} stitches don't divide evenly by ${wedgeCount}. You'll have ${largeWedgeCount} wedge(s) with ${largeWedgeStitches} stitches and ${smallWedgeCount} wedge(s) with ${smallWedgeStitches} stitches.</em></p>
         <p><strong>Work one wedge at a time:</strong></p>
         <ul>
-          <li><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off</span> / place on waste yarn ${scrapFraction} of the stitches, leaving 1 wedge on the machine.</li>
+          <li><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off</span> / place on waste yarn ${scrapOffStitches} stitches, leaving ${wedgeStitches} stitches (one wedge) on the machine.</li>
           <li>Shape the wedge by decreasing at BOTH edges every other row:<br/>
             <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND decrease 1 stitch at the right edge. (2 stitches decreased total)<br/>
             Knit the row.</li>
-          <li>For ${largeWedgeStitches}-stitch wedges: Repeat the decrease row ${decreaseRowsLarge} times (${finalLarge} stitches remain).</li>
-          <li>For ${smallWedgeStitches}-stitch wedges: Repeat the decrease row ${decreaseRowsSmall} times (${finalSmall} stitches remain).</li>
+          <li>For each wedge: Repeat the decrease row ${decreaseRows} times (${targetStitchesPerWedge} stitches remain).</li>
           <li>Scrap off the finished wedge stitches.</li>
         </ul>
         <p>Rehang the next wedge stitches and repeat until all ${wedgeCount} wedges are complete.</p>
@@ -645,6 +615,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       `;
     }
     
+    // Calculate adjusted cast-on for segmented wedge crowns (round down to multiple of wedgeCount)
+    let patternCastOnSts = castOnSts; // Default: use original cast-on
+    
     if (crown === 'gathered') {
       crownHeading = 'Crown Shaping (No Decreases)';
       crownInstructions = `
@@ -652,9 +625,13 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p><strong>Finish:</strong> Gather the remaining stitches to close the top and secure.</p>
       `;
     } else if (crown === 'wedge-4') {
-      crownInstructions = buildWedgeCrownSection(4, castOnSts, bodyRows);
+      const adjustedCastOn = castOnSts - (castOnSts % 4);
+      patternCastOnSts = adjustedCastOn;
+      crownInstructions = buildWedgeCrownSection(4, castOnSts, adjustedCastOn, bodyRows);
     } else if (crown === 'wedge-6') {
-      crownInstructions = buildWedgeCrownSection(6, castOnSts, bodyRows);
+      const adjustedCastOn = castOnSts - (castOnSts % 6);
+      patternCastOnSts = adjustedCastOn;
+      crownInstructions = buildWedgeCrownSection(6, castOnSts, adjustedCastOn, bodyRows);
     } else if (crown === 'spiral') {
       const decreaseInterval = Math.floor(castOnSts / 8);
       crownInstructions = `
@@ -686,7 +663,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p>${stitchGaugeRaw} stitches & ${rowGaugeRaw} rows per 4" (10cm)</p>
       
       <h4>Cast-On</h4>
-      <p>Cast on <strong>${castOnSts} stitches</strong>.</p>
+      <p>Cast on <strong>${patternCastOnSts} stitches</strong>.</p>
       
       <h4>Brim (${displayBrimDepth} ${unit})</h4>
       <p>Work ${brimRows} rows:</p>
@@ -715,40 +692,33 @@ document.addEventListener('DOMContentLoaded', async function() {
     const { castOnSts, brimRows, crown } = calc;
     
     // Calculate crown rows based on crown type
-    // Each wedge decreases by (wedgeCount) stitches per decrease row
-    // Decrease rows happen every other row until ~3-6 stitches remain
     let crownRowCount = 0;
     let crownStyleLabel = '';
+    let patternCastOnSts = castOnSts; // Default: use original cast-on
     
-    // Helper to calculate segmented wedge crown rows
-    function calcWedgeCrownRows(wedgeCount, totalStitches) {
-      const smallWedgeStitches = Math.floor(totalStitches / wedgeCount);
-      const remainder = totalStitches % wedgeCount;
-      const largeWedgeStitches = smallWedgeStitches + (remainder > 0 ? 1 : 0);
+    // Helper to calculate segmented wedge crown rows (using adjusted cast-on)
+    function calcWedgeCrownRows(wedgeCount, adjustedCastOn) {
+      const wedgeStitches = adjustedCastOn / wedgeCount;
       const targetStitchesPerWedge = 2;
-      
-      // Calculate decrease rows for each wedge size
-      const decreaseRowsLarge = Math.max(0, Math.floor((largeWedgeStitches - targetStitchesPerWedge) / 2));
-      const decreaseRowsSmall = Math.max(0, Math.floor((smallWedgeStitches - targetStitchesPerWedge) / 2));
-      
-      // Count of each wedge type
-      const largeWedgeCount = remainder;
-      const smallWedgeCount = wedgeCount - remainder;
-      
-      // Total rows = sum of (decrease rows * 2) for each wedge
-      return (largeWedgeCount * decreaseRowsLarge * 2) + (smallWedgeCount * decreaseRowsSmall * 2);
+      const decreaseRows = Math.max(0, Math.floor((wedgeStitches - targetStitchesPerWedge) / 2));
+      // Total rows = wedgeCount * (decreaseRows * 2) since each wedge is knit separately
+      return wedgeCount * decreaseRows * 2;
     }
     
     if (crown === 'gathered') {
       crownRowCount = 0;
       crownStyleLabel = 'No Decreases (Gathered)';
     } else if (crown === 'wedge-4') {
-      // 4-wedge (segmented): each wedge knit separately
-      crownRowCount = calcWedgeCrownRows(4, castOnSts);
+      // 4-wedge (segmented): adjust cast-on to multiple of 4
+      const adjustedCastOn = castOnSts - (castOnSts % 4);
+      patternCastOnSts = adjustedCastOn;
+      crownRowCount = calcWedgeCrownRows(4, adjustedCastOn);
       crownStyleLabel = '4-Wedge (Segmented)';
     } else if (crown === 'wedge-6') {
-      // 6-wedge (segmented): each wedge knit separately
-      crownRowCount = calcWedgeCrownRows(6, castOnSts);
+      // 6-wedge (segmented): adjust cast-on to multiple of 6
+      const adjustedCastOn = castOnSts - (castOnSts % 6);
+      patternCastOnSts = adjustedCastOn;
+      crownRowCount = calcWedgeCrownRows(6, adjustedCastOn);
       crownStyleLabel = '6-Wedge (Segmented)';
     } else if (crown === 'spiral') {
       // Spiral: decrease 8 stitches every 3rd round until ~8-12 remain
@@ -775,17 +745,17 @@ document.addEventListener('DOMContentLoaded', async function() {
           <tr>
             <td>Brim</td>
             <td>${brimRows}</td>
-            <td>${castOnSts}</td>
+            <td>${patternCastOnSts}</td>
           </tr>
           <tr>
             <td>Body</td>
             <td>${bodyRows}</td>
-            <td>${castOnSts}</td>
+            <td>${patternCastOnSts}</td>
           </tr>
           <tr>
             <td>Crown</td>
             <td>${crownRowCount}</td>
-            <td>${castOnSts}</td>
+            <td>${patternCastOnSts}</td>
           </tr>
         </tbody>
       </table>
