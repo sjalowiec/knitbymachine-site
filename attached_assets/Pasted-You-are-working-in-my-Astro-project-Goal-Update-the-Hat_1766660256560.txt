@@ -1,0 +1,79 @@
+You are working in my Astro project.
+
+Goal:
+Update the Hat Builder Wizard crown output (4-wedge and 6-wedge options) with TWO copy fixes:
+1) Reposition and relabel the “Decrease 1 stitch” text so it reads as a definition (not an instruction in the flow).
+2) Replace “Work ___ rows in stockinette stitch…” with “Work ___ rows in pattern…” so knitters can use any stitch pattern.
+
+Files:
+- Wizard page: astro-site/src/pages/wizards/hat-builder.astro
+- Wizard metadata/catalog: astro-site/src/content/wizards/hat-builder.json (only change if you need to adjust UI labels; otherwise leave it)
+
+Rules:
+- Create a backup of any file you edit (same folder, add .bak timestamp).
+- Do NOT change any math (stitch counts, group size, repeats).
+- Do NOT change the meaning of the crown shaping—only wording/placement.
+- Apply changes to BOTH wedge options (4 and 6). No-decrease option should not gain wedge-only text.
+
+------------------------------------------------------------
+CHANGE 1 — “Decrease 1 stitch” should be a definition block
+------------------------------------------------------------
+Current issue:
+The line “Decrease 1 stitch: Transfer…” appears in the main instruction flow and feels out of place.
+
+Fix:
+For wedge options only (4 and 6), keep the exact definition text but present it as a clearly labeled definition immediately under the crown headings, separated from the steps.
+
+Required wording (exact):
+Decrease 1 stitch (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.
+
+Placement:
+Crown Shaping
+4-Wedge Crown
+[definition line here]
+[blank line]
+then the regular crown steps begin
+
+Same for 6-wedge crown.
+
+Do NOT show this definition for the “No decreases” option.
+
+Also keep the step text “Decrease 1 stitch.” inside the Decrease Row as-is (it should refer back to the definition).
+
+------------------------------------------------------------
+CHANGE 2 — Replace “stockinette stitch” with “in pattern”
+------------------------------------------------------------
+For ALL crown options (No decreases, 4 wedges, 6 wedges), wherever the wizard currently outputs something like:
+“Work {N} rows in stockinette stitch after the brim.”
+change it to:
+“Work {N} rows in pattern after the brim.”
+
+If there are other nearby lines like “Switch to stockinette stitch…” in the body section, do NOT change those in this task unless they are part of the crown block itself. Keep scope limited to the crown text output.
+
+------------------------------------------------------------
+IMPLEMENTATION GUIDANCE
+------------------------------------------------------------
+1) In astro-site/src/pages/wizards/hat-builder.astro, locate the function / template that assembles the Crown Shaping section.
+2) For wedge options, insert the definition line as described (under headings, before steps).
+3) Update the crown “work rows” sentence to use “in pattern” instead of “in stockinette stitch”.
+4) Verify output formatting stays consistent (headings, spacing, line breaks).
+
+------------------------------------------------------------
+ACCEPTANCE CHECKS
+------------------------------------------------------------
+In the browser:
+
+- 4 wedges:
+  - Under “Crown Shaping / 4-Wedge Crown” the definition line appears exactly as:
+    “Decrease 1 stitch (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.”
+  - The next instruction line begins with “Work {N} rows in pattern after the brim.”
+  - The Decrease Row still contains “Decrease 1 stitch.” as a short step.
+
+- 6 wedges:
+  - Same behavior as 4 wedges.
+
+- No decreases:
+  - Does NOT show the decrease definition line.
+  - Uses “Work {N} rows in pattern …” if a crown “work rows” line exists in that option.
+
+Do not proceed beyond these two changes.
