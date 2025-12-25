@@ -505,9 +505,18 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
     
     // Convert to inches for calculations
-    const headCircInches = currentUnit === 'inches' 
-      ? headCirc 
-      : convertLength(headCirc, 'cm', 'inches');
+    // Note: Sizing data from dropdown is always in inches
+    // Only convert custom input when in cm mode
+    let headCircInches;
+    if (useCustomCheckbox.checked) {
+      // Custom input - convert if in cm mode
+      headCircInches = currentUnit === 'inches' 
+        ? headCirc 
+        : convertLength(headCirc, 'cm', 'inches');
+    } else {
+      // Standard size from dropdown - already in inches
+      headCircInches = headCirc;
+    }
     
     const stGaugePerInch = gaugeToPerUnit(stitchGauge, currentUnit);
     const rowGaugePerInch = gaugeToPerUnit(rowGauge, currentUnit);
