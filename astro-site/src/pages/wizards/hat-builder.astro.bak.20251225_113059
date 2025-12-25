@@ -63,47 +63,6 @@ try {
   display: inline-block;
 }
 
-/* Pattern term tooltip styling */
-.pattern-term {
-  text-decoration: underline;
-  text-decoration-style: dotted;
-  text-decoration-color: #52682D;
-  text-underline-offset: 2px;
-  cursor: help;
-  position: relative;
-}
-
-.pattern-term::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  bottom: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #333;
-  color: #fff;
-  padding: 0.5rem 0.75rem;
-  border-radius: 4px;
-  font-size: 0.85rem;
-  font-style: normal;
-  font-weight: normal;
-  white-space: normal;
-  width: max-content;
-  max-width: 280px;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s, visibility 0.2s;
-  z-index: 100;
-  pointer-events: none;
-  margin-bottom: 4px;
-  line-height: 1.4;
-}
-
-.pattern-term:hover::after,
-.pattern-term:focus::after {
-  opacity: 1;
-  visibility: visible;
-}
-
 /* Print-specific overrides for hat patterns */
 @media print {
   * {
@@ -123,10 +82,6 @@ try {
     background: white !important;
     border-left: 2px solid #333 !important;
     padding: 0.5rem !important;
-  }
-  
-  .pattern-term::after {
-    display: none !important;
   }
 }
 </style>
@@ -531,12 +486,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       return `
         <p><strong>${wedgeCount}-Wedge Crown</strong></p>
-        <p><em><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+        <p><em>Decrease 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
         <br/>
         <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
         <p>Mentally group the stitches into ${wedgeCount} equal sections of ${groupSize} stitches.</p>
         <p><strong>Decrease Row</strong> (work in groups of ${groupSize} stitches):</p>
-        <p>Count ${groupSizeMinus2} stitches.<br/><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch.</p>
+        <p>Count ${groupSizeMinus2} stitches.<br/>Decrease 1 stitch.</p>
         <p>Repeat this sequence for each group.</p>
         <p>Knit the row.</p>
         <p>Work the decrease row every other row.<br/>Repeat ${repeatCount} times, or until the crown is nearly closed — typically 3–6 stitches remain.</p>

@@ -1,0 +1,58 @@
+You are working in my Astro project.
+
+Goal:
+Add a subtle visual indicator + tooltip for the term “Decrease” in ONE pattern,
+without changing any pattern logic, wording, or math.
+
+Scope (very important):
+- This is a STYLING + UI affordance change only.
+- Do NOT change stitch counts, rows, pattern text, or structure.
+- Do NOT refactor the wizard or pattern generation logic.
+- Do NOT rename “Decrease 1 stitch” or rewrite any instructions.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+(and any small related CSS file if needed)
+
+--------------------------------
+WHAT TO CHANGE
+--------------------------------
+
+1) Identify the word “Decrease” in:
+   a) the definition line:
+      “Decrease 1 stitch (definition): …”
+   b) the instruction step:
+      “Decrease 1 stitch.”
+
+2) Wrap ONLY the word “Decrease” (not the whole sentence) in both places
+   with the same semantic wrapper (e.g. <span class="pattern-term">).
+
+3) Apply identical styling to both occurrences:
+   - subtle underline (thin or dotted)
+   - uses existing KBM color palette
+   - visually indicates “this word has a definition”
+   - not styled like a hyperlink
+
+4) Add a tooltip on hover / tap (screen only) that displays:
+   “Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.”
+
+5) Print behavior:
+   - underline remains visible
+   - tooltip does NOT appear in print
+
+--------------------------------
+GUARDRAILS
+--------------------------------
+- Do NOT duplicate the definition text elsewhere.
+- Do NOT add icons, labels, or explanatory copy.
+- Do NOT apply this styling to any other words.
+- Do NOT create a global glossary system.
+- This is local to this pattern only.
+
+--------------------------------
+ACCEPTANCE CHECK
+--------------------------------
+- Both occurrences of “Decrease” look the same.
+- Hovering either shows the same tooltip.
+- Pattern text reads exactly the same as before.
+- No other parts of the wizard change.
