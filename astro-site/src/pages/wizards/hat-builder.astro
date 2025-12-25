@@ -533,7 +533,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       crown,
       fit,
       stGaugePerInch,
-      rowGaugePerInch
+      rowGaugePerInch,
+      stitchGaugeRaw: stitchGauge,
+      rowGaugeRaw: rowGauge
     });
     
     // Show results
@@ -547,7 +549,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   function generatePattern(calc) {
     const currentUnit = unitStore.get();
-    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, brim, crown, fit, stGaugePerInch, rowGaugePerInch } = calc;
+    const { headCircInches, targetWidth, castOnSts, hatHeight, brimDepth, brimRows, crownStart, crownRows, brim, crown, fit, stGaugePerInch, rowGaugePerInch, stitchGaugeRaw, rowGaugeRaw } = calc;
     
     // Convert display values
     const displayHeadCirc = currentUnit === 'inches' 
@@ -599,14 +601,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       if (remainder === 0) {
         return `
           <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
-          <p><em><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
-          <br/>
           <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
           <p><strong>Work one wedge at a time:</strong></p>
           <ul>
             <li>Scrap off / place on waste yarn ${scrapFraction} of the stitches, leaving 1 wedge (${smallWedgeStitches} stitches) on the machine.</li>
             <li>Shape the wedge by decreasing at BOTH edges every other row:<br/>
-              <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">decrease</span> 1 stitch at the right edge. (2 stitches decreased total)<br/>
+              <strong>Decrease Row:</strong> Decrease 1 stitch at the left edge AND decrease 1 stitch at the right edge. (2 stitches decreased total)<br/>
               Knit the row.</li>
             <li>Repeat the decrease row every other row ${decreaseRowsSmall} times, until ${targetStitchesPerWedge} stitches remain for that wedge.</li>
             <li>Scrap off the finished wedge stitches.</li>
@@ -627,15 +627,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       return `
         <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
-        <p><em><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
-        <br/>
         <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
         <p><em>Note: ${totalStitches} stitches don't divide evenly by ${wedgeCount}. You'll have ${largeWedgeCount} wedge(s) with ${largeWedgeStitches} stitches and ${smallWedgeCount} wedge(s) with ${smallWedgeStitches} stitches.</em></p>
         <p><strong>Work one wedge at a time:</strong></p>
         <ul>
           <li>Scrap off / place on waste yarn ${scrapFraction} of the stitches, leaving 1 wedge on the machine.</li>
           <li>Shape the wedge by decreasing at BOTH edges every other row:<br/>
-            <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">decrease</span> 1 stitch at the right edge. (2 stitches decreased total)<br/>
+            <strong>Decrease Row:</strong> Decrease 1 stitch at the left edge AND decrease 1 stitch at the right edge. (2 stitches decreased total)<br/>
             Knit the row.</li>
           <li>For ${largeWedgeStitches}-stitch wedges: Repeat the decrease row ${decreaseRowsLarge} times (${finalLarge} stitches remain).</li>
           <li>For ${smallWedgeStitches}-stitch wedges: Repeat the decrease row ${decreaseRowsSmall} times (${finalSmall} stitches remain).</li>
@@ -680,13 +678,12 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p>Total Height: ${displayHeight} ${unit} | Brim Depth: ${displayBrimDepth} ${unit}</p>
       </div>
       
-      <h4>Materials</h4>
-      <p>• Yarn of your choice</p>
-      <p>• Stitch markers (for wedge crowns)</p>
-      <p>• Tapestry needle</p>
+      <h4>Terms</h4>
+      <p><strong>Decrease:</strong> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+      <p><strong>Scrap off:</strong> Remove knitting from the machine using waste yarn to hold live stitches.</p>
       
       <h4>Gauge</h4>
-      <p>${stGaugePerInch.toFixed(1)} stitches per inch | ${rowGaugePerInch.toFixed(1)} rows per inch</p>
+      <p>${stitchGaugeRaw} stitches & ${rowGaugeRaw} rows per 4" (10cm)</p>
       
       <h4>Cast-On</h4>
       <p>Cast on <strong>${castOnSts} stitches</strong>.</p>

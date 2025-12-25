@@ -27,8 +27,15 @@ window.WizardUtils = {
     return `${formatted}${symbol}`;
   },
   
+  // Convert gauge (per 4" or per 10cm) to per-inch (always returns per-inch for calculations)
   gaugeToPerUnit: function(gauge, inputUnit) {
-    return inputUnit === 'inches' ? gauge / 4 : gauge / 10;
+    if (inputUnit === 'inches') {
+      // Input is per 4", divide by 4 to get per inch
+      return gauge / 4;
+    } else {
+      // Input is per 10cm, divide by 10 to get per cm, then multiply by 2.54 to get per inch
+      return (gauge / 10) * INCH_TO_CM;
+    }
   },
   
   getPlaceholders: function(unit) {
