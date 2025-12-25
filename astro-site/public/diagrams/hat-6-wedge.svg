@@ -54,9 +54,9 @@
   <text x="410" y="210" text-anchor="start" font-size="14" font-weight="600" fill="#374151">
     Height: {{HEIGHT}}
   </text>
-  <!-- Body rows (secondary, smaller) -->
+  <!-- Total rows (secondary, smaller) -->
   <text x="410" y="225" text-anchor="start" font-size="10" fill="#52682D">
-    {{BODY_ROWS}}
+    {{TOTAL_ROWS}}
   </text>
   
   <!-- Brim depth -->
