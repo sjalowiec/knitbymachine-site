@@ -901,14 +901,14 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p><strong>PHASE 1 — Establish the Spiral</strong></p>
         
         <p><strong>Decrease Row:</strong><br/>
-        Count 8 stitches. Decrease 1 stitch (transfer and shift).<br/>
+        Count 8 stitches. Decrease 1 stitch.<br/>
         Repeat evenly across the row.<br/>
         Knit the row.</p>
         
         <p>Work 2 rows even.</p>
         
         <p><strong>Next Decrease Row:</strong><br/>
-        Count 7 stitches. Decrease 1 stitch (transfer and shift).<br/>
+        Count 7 stitches. Decrease 1 stitch.<br/>
         Repeat evenly across the row.<br/>
         Knit the row.</p>
         
