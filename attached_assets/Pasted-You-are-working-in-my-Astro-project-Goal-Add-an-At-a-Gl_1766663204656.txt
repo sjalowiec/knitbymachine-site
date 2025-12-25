@@ -1,0 +1,67 @@
+You are working in my Astro project.
+
+Goal:
+Add an “At-a-Glance” Pattern Summary block to the Hat Builder Wizard output so knitters can see key totals (especially total rows) without reading the whole pattern.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+- (Only if needed for label text) astro-site/src/content/wizards/hat-builder.json
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change existing math, stitch counts, row counts, or pattern instruction wording.
+- This change only ADDS a summary block that reuses values the wizard already computes/displays.
+
+Placement:
+- Place the summary block near the sizing SVG (directly below it or directly above it).
+- It should be visible on screen and should print (unless there is already a print-hiding rule for this area — if so, keep consistent).
+
+Content requirements (must include):
+1) Total Rows (single number) for the whole hat (from Cast On through last crown row), based on the wizard’s existing row counts:
+   totalRows = brimRows + bodyRowsAfterBrim + crownRows
+   - If the wizard has different body row logic, use whatever values it already shows, but totalRows must be the sum of the sections shown in the pattern.
+
+2) A compact section breakdown (rows + stitches) in one place, similar to the old KIN “legend”.
+   Use a small table or stacked rows/cards—whichever matches the site style best.
+
+Minimum rows to include:
+- Brim: rows, and stitch count during brim (usually castOnStitches)
+- Body: rows (the “work ___ rows in pattern after the brim”), and stitch count during body
+- Crown: rows (the crown shaping row count the wizard already outputs), and stitch count at crown start
+- Optional but nice: “Crown option” label (No decreases / 4 wedges / 6 wedges)
+
+Stitch counts (use existing wizard values; do not invent):
+- Cast On stitches (totalStitches)
+- Crown start stitches (should usually equal totalStitches unless your wizard changes stitch count before crown)
+- If the wizard computes/knows an “ending stitches after repeats” number, you may show it, but it’s optional. Do not derive new math that conflicts with existing wording.
+
+Wording / UI:
+- Title: “At-a-Glance” or “Pattern Summary” (choose one, consistent with KBM tone)
+- Show Total Rows prominently (largest item)
+- Keep the rest calm and scannable
+
+Example layout (content, not exact formatting):
+At-a-Glance
+Total Rows: 72
+
+Section     Rows    Stitches
+Brim        12      72
+Body        36      72
+Crown       12      72
+Crown Style: 6-Wedge
+
+Notes:
+- Do NOT force inches here unless those values already exist; this block is primarily rows/stitches.
+- Measurements rounding note is optional.
+
+Implementation guidance:
+- Identify where the wizard currently computes brimRows, bodyRowsAfterBrim (or equivalent), and crown row count.
+- Create a small helper function (e.g., buildSummaryData()) that returns { totalRows, sections: [...] }.
+- Render the summary block from that data.
+- Do NOT refactor the existing pattern generator; just reuse the same variables.
+
+Acceptance checks:
+- Switching crown option (none / 4 / 6) updates the summary’s Crown row count and Crown Style label correctly.
+- Total Rows updates correctly when any input (size, gauge, height, brim) changes.
+- No pattern instruction text changes.
+- No math changes; summary matches the numbers already shown in the pattern sections.
