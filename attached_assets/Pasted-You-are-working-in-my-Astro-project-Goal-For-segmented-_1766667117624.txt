@@ -1,0 +1,98 @@
+You are working in my Astro project.
+
+Goal:
+For segmented wedge crowns (Knit Wedges Separately), remove uneven-wedge branching by automatically adjusting the cast-on stitch count to a multiple of the selected wedge count (4 or 6), and update the crown instructions accordingly.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+- (Only if needed) astro-site/src/content/wizards/hat-builder.json
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change the “No decreases” option.
+- Do NOT change spiral logic (if any) in this task.
+- Do NOT change gauge math, sizing UI, or the SVG diagram.
+- This change applies ONLY when the user selects:
+  - “4-Wedge Crown (Knit Wedges Separately)”
+  - “6-Wedge Crown (Knit Wedges Separately)”
+- Keep the existing “Decrease 1 stitch (definition)” text and any existing underline/tooltip behavior intact.
+
+------------------------------------------------------------
+1) CAST-ON ADJUSTMENT (SEGMENTED WEDGES ONLY)
+------------------------------------------------------------
+
+Current issue:
+If cast-on stitches do not divide evenly by wedgeCount, the pattern includes special-case text like:
+“For 21-stitch wedges…” / “For 20-stitch wedges…”
+
+Fix:
+When segmented wedge crown is selected, adjust the cast-on stitch count to an even multiple of wedgeCount so all wedges are identical.
+
+Definitions:
+- wedgeCount = 4 or 6
+- originalCastOn = the wizard’s computed cast-on stitches before this adjustment
+- adjustedCastOn = the nearest lower multiple of wedgeCount (round DOWN)
+  adjustedCastOn = originalCastOn - (originalCastOn % wedgeCount)
+
+Important:
+- Only apply this adjustment for segmented wedge crowns.
+- For all other crown types, keep originalCastOn unchanged.
+
+The pattern should use adjustedCastOn everywhere it references cast-on stitches for segmented wedge crowns (including any body/crown stitch counts).
+
+Also compute:
+- wedgeStitches = adjustedCastOn / wedgeCount
+
+------------------------------------------------------------
+2) UPDATE CROWN TEXT OUTPUT (SEGMENTED WEDGES)
+------------------------------------------------------------
+
+Remove any “does not divide evenly” note and any per-wedge branching.
+
+Update the segmented wedge crown text to:
+
+- Include a single note line (only if adjustedCastOn != originalCastOn):
+  Note: Cast on has been adjusted from {originalCastOn} to {adjustedCastOn} stitches to create evenly sized wedges.
+
+- In the “scrap off” line, include explicit stitch counts:
+  For 4 wedges:
+    “Scrap off / place on waste yarn {adjustedCastOn - wedgeStitches} stitches, leaving {wedgeStitches} stitches (one wedge) on the machine.”
+  For 6 wedges:
+    same formula, different wedgeCount
+
+- Keep the wedge shaping logic as-is (decrease at BOTH edges every other row), but ensure the repeat count is computed using wedgeStitches only (single repeat count for all wedges).
+
+Math for repeat count (segmented wedge):
+- targetStitchesPerWedge = 2 (default)
+- requiredDecreaseRows = floor((wedgeStitches - targetStitchesPerWedge) / 2)
+
+Then output:
+“For each wedge: Repeat the decrease row {requiredDecreaseRows} times ({targetStitchesPerWedge} stitches remain).”
+
+Remove these lines if they exist:
+- “For 21-stitch wedges: …”
+- “For 20-stitch wedges: …”
+
+Everything else in the crown section should remain the same.
+
+------------------------------------------------------------
+3) ACCEPTANCE CHECKS
+------------------------------------------------------------
+
+Test at least one case where originalCastOn is NOT divisible by wedgeCount (e.g., 81 with 4 wedges):
+
+- With 4-wedge segmented option:
+  - adjustedCastOn is a multiple of 4 (e.g., 80)
+  - crown text includes the adjustment note (81 → 80)
+  - wedgeStitches is equal for all wedges (20)
+  - scrap-off line shows explicit counts (60 off, 20 on)
+  - only one repeat count appears (no per-wedge branching)
+
+- With 6-wedge segmented option:
+  - adjustedCastOn is a multiple of 6
+  - same behavior
+
+- With No decreases option:
+  - no change from current behavior
+
+Do not proceed beyond this scope.
