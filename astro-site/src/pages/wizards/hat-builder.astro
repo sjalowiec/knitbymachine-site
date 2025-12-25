@@ -486,8 +486,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       return `
         <p><strong>${wedgeCount}-Wedge Crown</strong></p>
-        <p><em>Decrease 1 stitch:</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
-        <p>Work ${bodyRowsAfterBrim} rows in stockinette stitch after the brim.</p>
+        <p><em>Decrease 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+        <br/>
+        <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
         <p>Mentally group the stitches into ${wedgeCount} equal sections of ${groupSize} stitches.</p>
         <p><strong>Decrease Row</strong> (work in groups of ${groupSize} stitches):</p>
         <p>Knit ${groupSizeMinus2} stitches.<br/>Decrease 1 stitch.</p>
@@ -501,7 +502,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     if (crown === 'gathered') {
       crownHeading = 'Crown Shaping (No Decreases)';
       crownInstructions = `
-        <p>Work even in stockinette stitch until desired height.</p>
+        <p>Work even in pattern until desired height.</p>
         <p><strong>Finish:</strong> Gather the remaining stitches to close the top and secure.</p>
       `;
     } else if (crown === 'wedge-4') {
@@ -512,7 +513,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const decreaseInterval = Math.floor(castOnSts / 8);
       crownInstructions = `
         <p><strong>Spiral Crown:</strong></p>
-        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Work ${bodyRows} rows in pattern after brim.</p>
         <p>Decrease Round: *K${decreaseInterval - 2}, k2tog*. Repeat around.</p>
         <p>Knit 2 rounds even.</p>
         <p>Next Decrease: *K${decreaseInterval - 3}, k2tog*. Repeat around.</p>
