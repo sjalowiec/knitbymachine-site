@@ -28,14 +28,11 @@ window.WizardUtils = {
   },
   
   // Convert gauge (per 4" or per 10cm) to per-inch (always returns per-inch for calculations)
+  // Note: 4" and 10cm are treated as equivalent for knitting gauge purposes
   gaugeToPerUnit: function(gauge, inputUnit) {
-    if (inputUnit === 'inches') {
-      // Input is per 4", divide by 4 to get per inch
-      return gauge / 4;
-    } else {
-      // Input is per 10cm, divide by 10 to get per cm, then multiply by 2.54 to get per inch
-      return (gauge / 10) * INCH_TO_CM;
-    }
+    // Both 4" and 10cm are treated as equivalent standard gauge measurements
+    // Divide by 4 in both cases to get per-inch value
+    return gauge / 4;
   },
   
   getPlaceholders: function(unit) {
