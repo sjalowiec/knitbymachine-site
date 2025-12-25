@@ -22,7 +22,7 @@ window.WizardUtils = {
   },
   
   formatLengthWithUnit: function(value, unit) {
-    const formatted = this.formatLength(value, unit);
+    const formatted = unit === 'inches' ? value.toFixed(1) : Math.round(value).toString();
     const symbol = unit === 'inches' ? '"' : 'cm';
     return `${formatted}${symbol}`;
   },
