@@ -1,0 +1,75 @@
+You are working in my Astro project.
+
+Goal:
+Fix ONLY the 4-wedge and 6-wedge crown options in the Hat Builder wizard so they match segmented wedge knitting:
+- Each wedge (gore) is knit separately.
+- Other stitches are held (scrapped off / on waste yarn).
+- Each wedge is shaped by decreasing 1 stitch at EACH EDGE every other row (2 stitches decreased per decrease row).
+- Then rehang the next wedge and repeat.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+
+Rules:
+- Make a backup of any file you edit (.bak timestamp).
+- Do NOT change no-decrease crown option.
+- Do NOT add spiral crown option yet.
+- Do NOT change the sizing SVG or other pattern sections.
+- Update only the Crown Shaping output text + the repeat count math for wedge options.
+
+------------------------------------------------------------
+WEDGE CROWN MATH (SEGMENTED)
+------------------------------------------------------------
+For wedge crowns:
+- totalStitches = cast-on stitches at crown start
+- wedgeCount = 4 or 6
+- wedgeStitches = totalStitches / wedgeCount
+  If not divisible, distribute remainder by adding +1 stitch to the first few wedges; reflect that in text as “work wedges as evenly as possible”.
+
+- Each decrease row reduces the wedge by 2 stitches (1 at each edge).
+- Choose targetStitchesPerWedge = 2 (default for now; classic finish)
+- requiredDecreaseRows = floor((wedgeStitches - targetStitchesPerWedge) / 2)
+
+Crown instruction should use requiredDecreaseRows.
+
+Note: If wedgeStitches is small, ensure requiredDecreaseRows does not go negative.
+
+------------------------------------------------------------
+WEDGE CROWN WORDING (MACHINE-NATIVE)
+------------------------------------------------------------
+Replace any “groups across the row” / “Decrease Row repeat for each group” language for wedge crowns.
+
+For 4-wedge option, output:
+
+Crown Shaping
+4-Wedge Crown (Knit Wedges Separately)
+
+Decrease 1 stitch (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.
+
+Work {bodyRowsAfterBrim} rows in pattern after the brim.
+
+Work one wedge at a time:
+- Scrap off / place on waste yarn 3/4 of the stitches, leaving 1 wedge ({wedgeStitches} stitches) on the machine.
+- Shape the wedge by decreasing at BOTH edges every other row:
+  Decrease Row: Decrease 1 stitch at the left edge AND decrease 1 stitch at the right edge. (2 stitches decreased total)
+  Knit the row.
+- Repeat the decrease row every other row {requiredDecreaseRows} times, until {targetStitchesPerWedge} stitches remain for that wedge.
+- Scrap off the finished wedge stitches.
+
+Rehang the next wedge stitches and repeat until all 4 wedges are complete.
+Finish: Thread yarn through the remaining crown stitches and pull tight to close the top; secure.
+
+For 6-wedge option, same structure but:
+- Scrap off / waste yarn 5/6 of stitches
+- Repeat for 6 wedges
+
+Optional note line at end:
+Note: Keeping decreases at the same points on each wedge creates clean crown “seams”.
+
+------------------------------------------------------------
+ACCEPTANCE CHECKS
+------------------------------------------------------------
+- 4-wedge and 6-wedge outputs clearly describe knitting wedges separately (scrap off, shape wedge, rehang next wedge).
+- Repeat count is computed using 2 stitches decreased per decrease row per wedge.
+- No-decrease crown option unchanged.
+- No other pattern sections changed.
