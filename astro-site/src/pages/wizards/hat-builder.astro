@@ -567,11 +567,14 @@ document.addEventListener('DOMContentLoaded', async function() {
   tipsToggleBtn.textContent = savedShowTips ? 'Hide tips' : 'Show tips';
   
   tipsToggleBtn.addEventListener('click', () => {
+    console.log('Tips toggle clicked');
+    console.log('Current showTips:', patternContent.dataset.showTips);
     const isShowing = patternContent.dataset.showTips === 'true';
     const newState = !isShowing;
     patternContent.dataset.showTips = newState ? 'true' : 'false';
     tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
     localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
+    console.log('New showTips:', patternContent.dataset.showTips);
   });
   
   // Calculate Function
