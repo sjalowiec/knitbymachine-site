@@ -185,8 +185,8 @@ try {
   color: #666;
 }
 
-/* Tips styling */
-.pattern-tip {
+/* Tips styling - :global needed for dynamically generated content */
+:global(.pattern-tip) {
   font-size: 0.85rem;
   color: #666;
   border-left: 2px solid #ccc;
@@ -195,7 +195,7 @@ try {
   line-height: 1.4;
 }
 
-.pattern-tip strong {
+:global(.pattern-tip strong) {
   color: #555;
 }
 
@@ -226,11 +226,11 @@ try {
 }
 
 /* Tips visibility control - hidden by default, syncs screen and print */
-#pattern-content[data-show-tips="false"] .pattern-tip {
+:global(#pattern-content[data-show-tips="false"] .pattern-tip) {
   display: none;
 }
 
-#pattern-content[data-show-tips="true"] .pattern-tip {
+:global(#pattern-content[data-show-tips="true"] .pattern-tip) {
   display: block;
 }
 
@@ -272,11 +272,11 @@ try {
   }
   
   /* Print tips visibility syncs with screen visibility */
-  #pattern-content[data-show-tips="false"] .pattern-tip {
+  :global(#pattern-content[data-show-tips="false"] .pattern-tip) {
     display: none !important;
   }
   
-  #pattern-content[data-show-tips="true"] .pattern-tip {
+  :global(#pattern-content[data-show-tips="true"] .pattern-tip) {
     display: block !important;
     border-left: 1px solid #333 !important;
   }
@@ -567,14 +567,11 @@ document.addEventListener('DOMContentLoaded', async function() {
   tipsToggleBtn.textContent = savedShowTips ? 'Hide tips' : 'Show tips';
   
   tipsToggleBtn.addEventListener('click', () => {
-    console.log('Tips toggle clicked');
-    console.log('Current showTips:', patternContent.dataset.showTips);
     const isShowing = patternContent.dataset.showTips === 'true';
     const newState = !isShowing;
     patternContent.dataset.showTips = newState ? 'true' : 'false';
     tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
     localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
-    console.log('New showTips:', patternContent.dataset.showTips);
   });
   
   // Calculate Function

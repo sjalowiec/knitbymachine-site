@@ -1,0 +1,65 @@
+You are working in my Astro project.
+
+Goal:
+Visually separate “Tip” lines from the main knitting instructions so they read as optional helper text, not part of the instruction flow.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+- (Optional) existing CSS file used for pattern styling
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change any pattern wording.
+- Do NOT change pattern logic or math.
+- Do NOT change when or where tips appear.
+- This is a VISUAL-ONLY change.
+
+--------------------------------
+WHAT TO CHANGE
+--------------------------------
+
+1) Identify the existing markup used for tips
+   (e.g. elements with class `.pattern-tip`, `[data-tip]`, or similar).
+
+2) Update styling so tips:
+   - are visually distinct from instructions
+   - clearly read as optional helper text
+   - do NOT visually blend into the next instruction or section header
+
+--------------------------------
+STYLING REQUIREMENTS
+--------------------------------
+
+Apply the following visual cues (light touch):
+
+- Add vertical spacing:
+  - margin-top and margin-bottom so the tip does not “run into” the next line
+
+- Make tips visually secondary:
+  - slightly smaller font than instructions
+  - muted color (still readable)
+  - optional left indent or soft left border
+
+- Keep emphasis minimal:
+  - “Tip:” label remains bold
+  - do NOT bold or italicize the full line
+  - no icons or heavy boxes
+
+Example intent (not literal CSS):
+- Tip text should feel like a quiet aside
+- Instructions should remain visually dominant
+
+--------------------------------
+WHAT NOT TO DO
+--------------------------------
+- Do NOT change print behavior.
+- Do NOT introduce new components.
+- Do NOT restyle other pattern sections.
+- Do NOT add animations or interactions.
+
+--------------------------------
+ACCEPTANCE CHECK
+--------------------------------
+- Tips are clearly separated from surrounding instructions.
+- The next instruction or header does not visually attach to the tip.
+- The pattern reads cleanly and calmly with tips on or off.
