@@ -1050,7 +1050,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   async function generateDiagram(calc) {
     const currentUnit = unitStore.get();
-    const { hatHeight, brimDepth, targetWidth } = calc;
+    const { hatHeight, brimDepth, targetWidth, castOnSts, brimRows, bodyRows, crown } = calc;
     
     // Format values with units
     const displayWidth = formatLengthWithUnit(
@@ -1068,8 +1068,15 @@ document.addEventListener('DOMContentLoaded', async function() {
       currentUnit
     );
     
+    // Calculate adjusted cast-on for wedge crowns (for display)
+    let displayCastOnSts = castOnSts;
+    if (crown === 'wedge-4') {
+      displayCastOnSts = castOnSts - (castOnSts % 4);
+    } else if (crown === 'wedge-6') {
+      displayCastOnSts = castOnSts - (castOnSts % 6);
+    }
+    
     // Map crown type to template name
-    const crown = crownSelect.value;
     let templateName;
     
     // Map crown values to correct SVG filenames
@@ -1090,7 +1097,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       svgContent = svgContent
         .replace(/{{WIDTH}}/g, displayWidth)
         .replace(/{{HEIGHT}}/g, displayHeight)
-        .replace(/{{BRIM_DEPTH}}/g, displayBrimDepth);
+        .replace(/{{BRIM_DEPTH}}/g, displayBrimDepth)
+        .replace(/{{CAST_ON_STS}}/g, `${displayCastOnSts} sts`)
+        .replace(/{{BRIM_ROWS}}/g, `${brimRows} rows`)
+        .replace(/{{BODY_ROWS}}/g, `${bodyRows} rows`);
       
       updateHTML('#diagram-content', svgContent);
     } catch (error) {
