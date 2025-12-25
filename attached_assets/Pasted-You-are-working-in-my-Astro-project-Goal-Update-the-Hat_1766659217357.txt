@@ -1,0 +1,120 @@
+You are working in my Astro project.
+
+Goal:
+Update the Hat Builder Wizard so the crown/decrease instructions are machine-knitter-native, clear, and consistent for all three crown options:
+1) No decreases
+2) 4-wedge crown
+3) 6-wedge crown
+
+Files:
+- Wizard page: astro-site/src/pages/wizards/hat-builder.astro
+- Wizard metadata/catalog: astro-site/src/content/wizards/hat-builder.json
+
+Rules:
+- Before editing, create a backup copy of any file you change (same folder, add a .bak timestamp).
+- Do NOT change unrelated parts of the wizard or pattern output.
+- Do NOT add a tips toggle, photos, diagrams, or printing logic.
+- This task ONLY updates crown/decrease wording and structure.
+
+--------------------------------
+GENERAL LANGUAGE RULES
+--------------------------------
+- Remove all hand-knitting terminology (k2tog, slip marker, knit to marker, etc.).
+- Use machine-knitting actions only.
+- Use group-based logic.
+- Use the exact phrase:
+  “Mentally group the stitches into …”
+  (This wording is intentional — do not substitute “divide”.)
+
+--------------------------------
+DECREASE DEFINITION
+--------------------------------
+For wedge options only (4 or 6), include this definition ONCE at the start of Crown Shaping:
+
+Decrease 1 stitch: Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.
+
+Do NOT include this definition for the “No decreases” option.
+
+--------------------------------
+CROWN SHAPING OUTPUT BY OPTION
+--------------------------------
+
+OPTION 1 — No Decreases
+Heading:
+Crown Shaping (No Decreases)
+
+Output text:
+Work even in stockinette stitch until desired height.
+Finish: Gather the remaining stitches to close the top and secure.
+
+(No group language. No decrease definition.)
+
+--------------------------------
+
+OPTION 2 — 4-Wedge Crown
+Heading:
+Crown Shaping
+4-Wedge Crown
+
+Output structure:
+
+Work {bodyRowsAfterBrim} rows in stockinette stitch after the brim.
+
+Mentally group the stitches into 4 equal sections of {groupSize} stitches.
+
+Decrease Row (work in groups of {groupSize} stitches):
+Knit {groupSizeMinus2} stitches.
+Decrease 1 stitch.
+
+Repeat this sequence for each group.
+
+Work the decrease row every other row.
+Repeat {repeatCount} times, or until the crown is nearly closed — typically 3–6 stitches remain.
+
+Cut yarn, thread through remaining stitches, pull tight, and secure.
+
+After the decrease row description (not inside the steps), add this single note line:
+
+Note: For symmetrical wedges, transfer stitches toward the center of each group.
+
+--------------------------------
+
+OPTION 3 — 6-Wedge Crown
+Same structure and wording as the 4-wedge crown, except:
+
+- Replace “4 equal sections” with “6 equal sections”.
+- groupSize = totalStitches / 6 (use existing wizard math).
+- Decreases per decrease row should effectively be 6 (one per group).
+- repeatCount should use the wizard’s existing logic.
+
+--------------------------------
+IMPLEMENTATION GUIDANCE
+--------------------------------
+- Locate where the wizard assembles the Crown Shaping text in hat-builder.astro.
+- Refactor crown generation into a helper function if helpful (e.g. buildCrownSection).
+- Ensure 4- and 6-wedge crowns share the same template and differ only by wedgeCount and math.
+- Preserve the existing formatting style (headings, spacing, line breaks).
+
+--------------------------------
+ACCEPTANCE CHECKS
+--------------------------------
+In the browser:
+
+- Selecting “No decreases”:
+  - No decrease definition
+  - No group language
+  - No leaning note
+
+- Selecting “4 wedges”:
+  - Includes the exact phrase “Mentally group the stitches into 4 equal sections of …”
+  - Includes the decrease definition (exact wording)
+  - Uses “Decrease Row (work in groups of …)”
+  - Ends with “typically 3–6 stitches remain”
+  - Includes the single leaning note line
+
+- Selecting “6 wedges”:
+  - Same structure, updated numbers only
+
+After changes:
+- Confirm the wizard renders without errors.
+- Do not modify other pattern sections.
