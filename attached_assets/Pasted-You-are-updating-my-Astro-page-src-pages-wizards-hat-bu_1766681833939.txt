@@ -1,0 +1,88 @@
+You are updating my Astro page: src/pages/wizards/hat-builder.astro
+
+GOAL
+Right now hat length is locked to a dropdown (Beanie/Watch Cap/Relaxed/Slouchy). Keep those as a good starting point, but add an option for users to enter a custom total hat length.
+- Do NOT use the words “preset” or “fit style” anywhere.
+- Mirror the existing “custom head circumference” pattern (checkbox + conditional input) for consistency.
+
+SAFETY
+1) Make a local backup copy of src/pages/wizards/hat-builder.astro (e.g., hat-builder.astro.bak) before editing.
+2) Keep changes limited to hat length selection + the single source of truth for total hat length. Don’t refactor unrelated areas.
+
+UI CHANGES (HAT LENGTH)
+3) Find the existing hat length dropdown that currently includes options like:
+   - Beanie (7" total height)
+   - Watch Cap (8.5" total height)
+   - Relaxed (9" total height)
+   - Slouchy (10" total height)
+
+4) Update the dropdown label text to:
+   "Hat length options"
+
+5) Directly below the dropdown, add a checkbox:
+   Label: "Use a custom hat length"
+
+6) When checkbox is OFF:
+   - Dropdown is enabled and drives hat total height (as it does today).
+   - Custom input is hidden.
+
+7) When checkbox is ON:
+   - Disable the dropdown (visually muted + disabled).
+   - Show a numeric input:
+       Label: "Custom hat length"
+       Helper text (one line): "Measure from the cast-on edge to the top of the hat."
+     Units:
+       - Use the same unit system already used on this page (if you already support inches/cm toggle, display and store consistently).
+     Validation:
+       - Must be > 0. If empty/invalid, show a small inline message and fall back gracefully (do not crash).
+
+   - UX enhancement (gentle, optional, no animation):
+       When the checkbox is checked:
+       • Automatically focus the “Custom hat length” input
+       • If the input is below the fold, scroll it into view using a soft, non-jarring method
+       • Do not use aggressive animation or smooth-scroll libraries
+       • This should feel calm and helpful, not attention-grabbing
+
+STATE / DATA
+8) Add two new state fields in the same place/state pattern used for “custom head circumference”:
+   - useCustomHatLength (boolean, default false)
+   - customHatLength (number/string depending on existing patterns)
+
+9) Default behavior:
+   - Initialize customHatLength to the currently selected dropdown length value (so toggling ON starts with a sensible value).
+
+SINGLE SOURCE OF TRUTH
+10) Introduce ONE computed variable that everything downstream uses:
+   totalHatLength =
+     useCustomHatLength && customHatLength is valid
+       ? customHatLength
+       : selectedOptionHatLength
+
+11) Ensure totalHatLength feeds:
+   - Any displayed “total height” text in the UI
+   - Any calculations for body rows / crown depth / finishing instructions that depend on overall length
+   - The SVG diagram replacement logic if total height is inserted into the SVG
+
+SVG / DIAGRAM INTEGRATION
+12) Locate generateDiagram() (or equivalent) in this file.
+   - If it currently uses the dropdown-derived height, change it to use totalHatLength.
+   - Continue fetching the template SVG from /diagrams/... as-is.
+   - Continue replacing placeholders as-is—just make sure the replaced “height/total height” value comes from totalHatLength.
+
+CODE QUALITY
+13) Match existing naming conventions and formatting.
+14) Keep the markup/styling consistent with existing fields (same classes, spacing, checkbox styling).
+
+TESTS (MANUAL)
+15) Verify:
+   - Toggling “Use a custom hat length” disables/enables dropdown correctly.
+   - Custom input receives focus when enabled.
+   - Changing custom length updates outputs immediately.
+   - No console errors.
+   - Diagram updates if it displays total height.
+
+DELIVERABLE
+16) Return:
+   - The exact code changes (diff-style or clearly separated sections)
+   - A short list of what values now use totalHatLength
+   - Confirm the file edited: src/pages/wizards/hat-builder.astro
