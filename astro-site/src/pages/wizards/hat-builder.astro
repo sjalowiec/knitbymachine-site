@@ -17,6 +17,8 @@ const pageUrl = "https://knitbymachine.com/wizards/hat-builder";
 // Fetch wizard metadata at build time
 const wizardSlug = 'hat-builder';
 let whyUseThisTool = '';
+let wizardTitle = 'Hat Builder'; // Fallback title
+let wizardDescription = 'Design the perfect custom hat with precise sizing, brim options, and crown shaping. Get complete knitting instructions with an illustrated diagram.';
 
 try {
   const response = await fetch(`https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/astro-site/src/content/wizards/${wizardSlug}.json`);
@@ -27,16 +29,18 @@ try {
     if (contentResponse.ok) {
       const wizardData = await contentResponse.json();
       whyUseThisTool = wizardData.whyUseThisTool || '';
+      wizardTitle = wizardData.title || wizardTitle;
+      wizardDescription = wizardData.hero || wizardData.excerpt || wizardDescription;
     }
   }
 } catch (e) {
-  // Silently fail - tooltip just won't show
+  // Silently fail - use fallback values
 }
 ---
 
 <BaseLayout 
-  title="Hat Builder | Knit by Machine" 
-  description="Design your perfect custom hat with precise sizing, brim options, and crown shaping. Get complete knitting instructions with an illustrated diagram.">
+  title={`${wizardTitle} | Knit by Machine`}
+  description={wizardDescription}>
 
 <style>
 /* Hat-specific styles only */
@@ -347,7 +351,7 @@ try {
     <div class="page-header-title">
       <h1>
         <img src="/images/hat.svg" alt="Hat" class="title-icon" />
-        Hat Builder
+        {wizardTitle}
       </h1>
       {whyUseThisTool ? (
         <WhyUseThisToolTooltip text={whyUseThisTool} variant="inline" />
@@ -358,7 +362,7 @@ try {
       )}
     </div>
     <p>
-      Design the perfect custom hat with precise sizing, brim options, and crown shaping. Get complete knitting instructions with an illustrated diagram.
+      {wizardDescription}
     </p>
   </div>
   
@@ -442,7 +446,7 @@ try {
       <GaugeInput id="hat" showToggle={false} toggleId="hat" />
 
       <!-- Print Header (hidden on screen, shown on print) -->
-      <div class="print-header" style="display: none;">Hat Builder Pattern</div>
+      <div class="print-header" style="display: none;" id="print-header-title">{wizardTitle} Pattern</div>
       
       <!-- Print Summary (hidden on screen, shown on print) -->
       <div id="print-summary" class="print-summary">
@@ -491,7 +495,7 @@ try {
 
 <script>
 document.addEventListener('DOMContentLoaded', async function() {
-  console.log('Hat Builder initializing...');
+  console.log('Wizard initializing...');
   
   // Use shared wizard utilities from window.WizardUtils (or shorthand WU)
   const {
