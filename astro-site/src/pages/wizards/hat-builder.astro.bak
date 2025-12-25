@@ -129,6 +129,22 @@ try {
   margin: 0.25rem 0;
 }
 
+/* Disabled select styling */
+select.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background-color: #f5f5f5;
+}
+
+/* Helper text for inputs */
+.helper-text {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+  line-height: 1.4;
+}
+
 /* At-a-Glance summary block styling */
 .summary-block {
   background: #f8f9fa;
@@ -430,16 +446,35 @@ try {
         </select>
       </div>
 
-      <!-- Fit Type -->
-      <h3 class="section-title">Hat Fit</h3>
+      <!-- Hat Length -->
+      <h3 class="section-title">Hat Length</h3>
       <div class="input-group">
-        <label for="fit">Fit Style</label>
+        <label for="fit">Hat length options</label>
         <select id="fit" data-testid="select-fit">
           <option value="beanie">Beanie (7" total height)</option>
           <option value="watchcap">Watch Cap (8.5" total height)</option>
           <option value="slouchy">Slouchy (10" total height)</option>
           <option value="relaxed">Relaxed (9" total height)</option>
         </select>
+      </div>
+      
+      <div class="checkbox-group">
+        <input type="checkbox" id="use-custom-length" data-testid="checkbox-custom-length">
+        <label for="use-custom-length">Use a custom hat length</label>
+      </div>
+      
+      <div id="custom-length-div" style="display: none;">
+        <div class="input-group">
+          <label for="custom-hat-length">Custom hat length</label>
+          <input 
+            type="number" 
+            id="custom-hat-length" 
+            step="0.25" 
+            placeholder="Enter total hat length"
+            data-testid="input-custom-hat-length"
+          />
+          <small class="helper-text">Measure from the cast-on edge to the top of the hat.</small>
+        </div>
       </div>
 
       <!-- Gauge (using shared GaugeInput component) -->
@@ -522,6 +557,9 @@ document.addEventListener('DOMContentLoaded', async function() {
   const brimSelect = document.getElementById('brim');
   const crownSelect = document.getElementById('crown');
   const fitSelect = document.getElementById('fit');
+  const useCustomLengthCheckbox = document.getElementById('use-custom-length');
+  const customLengthDiv = document.getElementById('custom-length-div');
+  const customHatLengthInput = document.getElementById('custom-hat-length');
   const stitchGaugeInput = document.getElementById('hat-stitch-gauge');
   const rowGaugeInput = document.getElementById('hat-row-gauge');
   const printBtn = document.getElementById('print-btn');
@@ -595,9 +633,41 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
   
+  // Custom Hat Length Toggle
+  useCustomLengthCheckbox.addEventListener('change', (e) => {
+    if (e.target.checked) {
+      // Get the current dropdown value to pre-fill
+      const fitHeightsInit = { beanie: 7, watchcap: 8.5, slouchy: 10, relaxed: 9 };
+      const currentFit = fitSelect.value || 'beanie';
+      const currentHeight = fitHeightsInit[currentFit] || 7;
+      
+      // Convert to current unit if needed
+      const currentUnit = unitStore.get();
+      const displayHeight = currentUnit === 'inches' 
+        ? currentHeight 
+        : convertLength(currentHeight, 'inches', 'cm');
+      
+      customHatLengthInput.value = displayHeight.toFixed(1);
+      fitSelect.disabled = true;
+      fitSelect.classList.add('disabled');
+      customLengthDiv.style.display = 'block';
+      
+      // Focus the input and scroll into view gently
+      setTimeout(() => {
+        customHatLengthInput.focus();
+        customHatLengthInput.scrollIntoView({ behavior: 'auto', block: 'nearest' });
+      }, 50);
+    } else {
+      fitSelect.disabled = false;
+      fitSelect.classList.remove('disabled');
+      customLengthDiv.style.display = 'none';
+      customHatLengthInput.value = '';
+    }
+  });
+  
   // Auto-calculate
   setupAutoCalculate(
-    [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, stitchGaugeInput, rowGaugeInput],
+    [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, customHatLengthInput, stitchGaugeInput, rowGaugeInput],
     calculate
   );
   
@@ -615,6 +685,11 @@ document.addEventListener('DOMContentLoaded', async function() {
     brimSelect.value = 'rib';
     crownSelect.value = 'gathered';
     fitSelect.value = 'beanie';
+    fitSelect.disabled = false;
+    fitSelect.classList.remove('disabled');
+    useCustomLengthCheckbox.checked = false;
+    customLengthDiv.style.display = 'none';
+    customHatLengthInput.value = '';
     stitchGaugeInput.value = '';
     rowGaugeInput.value = '';
     document.getElementById('results').style.display = 'none';
@@ -693,14 +768,31 @@ document.addEventListener('DOMContentLoaded', async function() {
     const targetWidth = headCircInches * negativeEase;
     const castOnSts = Math.round(targetWidth * stGaugePerInch);
     
-    // Hat heights (fixed heights per fit type)
+    // Hat heights - single source of truth: totalHatLength
     const fitHeights = {
       beanie: 7,
       watchcap: 8.5,
       slouchy: 10,
       relaxed: 9
     };
-    const hatHeight = fitHeights[fit];
+    
+    // Determine totalHatLength from custom input or dropdown
+    let totalHatLength;
+    if (useCustomLengthCheckbox.checked) {
+      const customLengthValue = parseFloat(customHatLengthInput.value) || 0;
+      if (customLengthValue > 0) {
+        // Convert from current unit to inches if needed
+        totalHatLength = currentUnit === 'inches' 
+          ? customLengthValue 
+          : convertLength(customLengthValue, 'cm', 'inches');
+      } else {
+        // Invalid custom length, fall back to dropdown
+        totalHatLength = fitHeights[fit] || 7;
+      }
+    } else {
+      totalHatLength = fitHeights[fit] || 7;
+    }
+    const hatHeight = totalHatLength;
     
     // Brim calculations
     const brimDepths = {
@@ -775,15 +867,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       brim,
       crown,
       fit,
+      hatHeight,
       stitchGauge,
       rowGauge,
       isCustom: useCustomCheckbox.checked,
+      isCustomLength: useCustomLengthCheckbox.checked,
       currentUnit
     });
   }
   
   function updatePrintSummary(data) {
-    const { headCirc, headCircInches, brim, crown, fit, stitchGauge, rowGauge, isCustom, currentUnit } = data;
+    const { headCirc, headCircInches, brim, crown, fit, hatHeight, stitchGauge, rowGauge, isCustom, isCustomLength, currentUnit } = data;
     
     // Size display
     const sizeLabel = isCustom 
@@ -809,14 +903,23 @@ document.addEventListener('DOMContentLoaded', async function() {
     };
     document.getElementById('print-crown').textContent = `Crown: ${crownLabels[crown]}`;
     
-    // Fit display
-    const fitLabels = {
-      beanie: 'Beanie (7" height)',
-      watchcap: 'Watch Cap (8.5" height)',
-      slouchy: 'Slouchy (10" height)',
-      relaxed: 'Relaxed (9" height)'
-    };
-    document.getElementById('print-fit').textContent = `Fit: ${fitLabels[fit]}`;
+    // Hat length display
+    let lengthLabel;
+    if (isCustomLength) {
+      const displayHeight = currentUnit === 'inches' 
+        ? hatHeight 
+        : convertLength(hatHeight, 'inches', 'cm');
+      lengthLabel = `Custom — ${displayHeight.toFixed(1)}${currentUnit === 'inches' ? '"' : ' cm'}`;
+    } else {
+      const fitLabels = {
+        beanie: 'Beanie (7" height)',
+        watchcap: 'Watch Cap (8.5" height)',
+        slouchy: 'Slouchy (10" height)',
+        relaxed: 'Relaxed (9" height)'
+      };
+      lengthLabel = fitLabels[fit];
+    }
+    document.getElementById('print-fit').textContent = `Hat length: ${lengthLabel}`;
     
     // Gauge display
     document.getElementById('print-gauge').textContent = `Gauge: ${stitchGauge} sts / ${rowGauge} rows per 4"`;
