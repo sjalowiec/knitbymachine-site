@@ -1,0 +1,94 @@
+You are working in my Astro project.
+
+Goal:
+When printing the Hat Pattern Builder page, hide all interactive input controls
+and replace them with a compact, read-only summary of the user’s selections.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+- (Optional) existing CSS file for print styles
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change any wizard logic or calculations.
+- Do NOT change on-screen behavior.
+- This change affects PRINT ONLY.
+
+--------------------------------
+PRINT BEHAVIOR (REQUIRED)
+--------------------------------
+
+1) On screen (default):
+- Keep all inputs, selectors, and controls exactly as they are.
+
+2) On print:
+- Hide all form controls:
+  - input
+  - select
+  - textarea
+  - radio buttons
+  - checkboxes
+  - sliders
+  - buttons
+- Hide section dividers meant only for interaction.
+
+3) On print, replace the wizard UI with a summary block that:
+- Lists the selected values for:
+  - Hat size (custom or standard)
+  - Brim style
+  - Crown style
+  - Fit style
+  - Gauge (stitches and rows over 4")
+- Displays these as plain text (no inputs).
+
+--------------------------------
+IMPLEMENTATION GUIDANCE
+--------------------------------
+
+Option A (preferred, minimal logic):
+- Add a hidden “print-summary” container in the wizard markup that:
+  - mirrors the selected values using the same state variables
+  - is hidden on screen
+  - shown only in print
+
+CSS example intent (not literal):
+
+@media print {
+  .wizard-inputs { display: none !important; }
+  .wizard-print-summary { display: block !important; }
+}
+
+@media screen {
+  .wizard-print-summary { display: none; }
+}
+
+Option B (acceptable fallback):
+- Hide the entire wizard input section in print
+- Rely on the generated pattern output below as confirmation
+
+--------------------------------
+STYLING REQUIREMENTS (PRINT SUMMARY)
+--------------------------------
+
+- Compact
+- No borders
+- Smaller than pattern text
+- Reads like a confirmation, not instructions
+
+Example structure:
+
+Your Hat Settings
+Hat size: Custom — 19"
+Brim: Folded rib
+Crown: 4-wedge (knit wedges separately)
+Fit: Snug
+Gauge: 16 sts / 24 rows per 4"
+
+--------------------------------
+ACCEPTANCE CHECK
+--------------------------------
+
+- Print preview shows NO input fields.
+- Print preview shows a clean summary of selections.
+- Pattern instructions begin immediately after the summary.
+- On screen, nothing changes.

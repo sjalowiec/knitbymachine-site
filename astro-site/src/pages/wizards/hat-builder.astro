@@ -225,6 +225,24 @@ try {
   background: #e9ecef;
 }
 
+/* Print summary - hidden on screen, shown on print */
+.print-summary {
+  display: none;
+}
+
+.print-summary h3 {
+  font-size: 0.95rem;
+  margin: 0 0 0.5rem 0;
+  font-weight: 600;
+  color: #333;
+}
+
+.print-summary p {
+  margin: 0.15rem 0;
+  font-size: 0.85rem;
+  color: #444;
+}
+
 /* Tips visibility control - hidden by default, syncs screen and print */
 :global(#pattern-content[data-show-tips="false"] .pattern-tip) {
   display: none;
@@ -269,6 +287,25 @@ try {
   /* Hide tips controls in print */
   .tips-controls {
     display: none !important;
+  }
+  
+  /* Hide wizard inputs on print */
+  .section-title,
+  .input-group,
+  .checkbox-group,
+  .wizard-header,
+  #standard-size,
+  #custom-size,
+  .gauge-inputs {
+    display: none !important;
+  }
+  
+  /* Show print summary on print */
+  .print-summary {
+    display: block !important;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid #ccc;
   }
   
   /* Print tips visibility syncs with screen visibility */
@@ -385,6 +422,16 @@ try {
 
       <!-- Gauge (using shared GaugeInput component) -->
       <GaugeInput id="hat" showToggle={false} toggleId="hat" />
+
+      <!-- Print Summary (hidden on screen, shown on print) -->
+      <div id="print-summary" class="print-summary">
+        <h3>Your Hat Settings</h3>
+        <p id="print-size"></p>
+        <p id="print-brim"></p>
+        <p id="print-crown"></p>
+        <p id="print-fit"></p>
+        <p id="print-gauge"></p>
+      </div>
 
       <!-- Results Section -->
       <div id="results" style="display: none;">
@@ -678,6 +725,59 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Show tips controls
     tipsControls.style.display = 'flex';
+    
+    // Update print summary
+    updatePrintSummary({
+      headCirc,
+      headCircInches,
+      brim,
+      crown,
+      fit,
+      stitchGauge,
+      rowGauge,
+      isCustom: useCustomCheckbox.checked,
+      currentUnit
+    });
+  }
+  
+  function updatePrintSummary(data) {
+    const { headCirc, headCircInches, brim, crown, fit, stitchGauge, rowGauge, isCustom, currentUnit } = data;
+    
+    // Size display
+    const sizeLabel = isCustom 
+      ? `Custom — ${headCirc}${currentUnit === 'inches' ? '"' : ' cm'}`
+      : hatSizeSelect.options[hatSizeSelect.selectedIndex].text;
+    document.getElementById('print-size').textContent = `Hat size: ${sizeLabel}`;
+    
+    // Brim display
+    const brimLabels = {
+      rib: 'Ribbed (1x1, 2x2, or Mock Ribbing)',
+      roll: 'Rolled Edge',
+      fold: 'Fold-Up Brim',
+      hem: 'Hung Hem'
+    };
+    document.getElementById('print-brim').textContent = `Brim: ${brimLabels[brim]}`;
+    
+    // Crown display
+    const crownLabels = {
+      gathered: 'Gathered (cinched top)',
+      'wedge-4': '4-Wedge Decreases',
+      'wedge-6': '6-Wedge Decreases',
+      spiral: 'Spiral Decreases'
+    };
+    document.getElementById('print-crown').textContent = `Crown: ${crownLabels[crown]}`;
+    
+    // Fit display
+    const fitLabels = {
+      beanie: 'Beanie (7" height)',
+      watchcap: 'Watch Cap (8.5" height)',
+      slouchy: 'Slouchy (10" height)',
+      relaxed: 'Relaxed (9" height)'
+    };
+    document.getElementById('print-fit').textContent = `Fit: ${fitLabels[fit]}`;
+    
+    // Gauge display
+    document.getElementById('print-gauge').textContent = `Gauge: ${stitchGauge} sts / ${rowGauge} rows per 4"`;
   }
   
   function generatePattern(calc) {
