@@ -254,6 +254,13 @@ try {
 
 /* Print-specific overrides for hat patterns */
 @media print {
+  @page {
+    margin: 0.75in;
+    @bottom-center {
+      content: "Page " counter(page) " of " counter(pages);
+    }
+  }
+  
   * {
     background: white !important;
     background-color: white !important;
@@ -265,6 +272,17 @@ try {
   
   .page-header, .video-button {
     display: none;
+  }
+  
+  /* Print header with pattern name */
+  .print-header {
+    display: block !important;
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #333;
   }
   
   .highlight-box {
@@ -423,6 +441,9 @@ try {
       <!-- Gauge (using shared GaugeInput component) -->
       <GaugeInput id="hat" showToggle={false} toggleId="hat" />
 
+      <!-- Print Header (hidden on screen, shown on print) -->
+      <div class="print-header" style="display: none;">Hat Builder Pattern</div>
+      
       <!-- Print Summary (hidden on screen, shown on print) -->
       <div id="print-summary" class="print-summary">
         <h3>Your Hat Settings</h3>
