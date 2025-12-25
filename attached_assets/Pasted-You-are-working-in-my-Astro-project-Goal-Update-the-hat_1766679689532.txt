@@ -1,0 +1,85 @@
+You are working in my Astro project.
+
+Goal:
+Update the hat diagram SVG templates so they display BOTH:
+- inch measurements (already working)
+- stitch and row counts (new)
+
+The wizard currently:
+- fetches SVG templates from astro-site/public/diagrams/
+- uses generateDiagram() to replace placeholder tokens with calculated values
+- inserts the modified SVG into the page
+
+SVG templates to update (exact files):
+- astro-site/public/diagrams/hat-4-wedge.svg
+- astro-site/public/diagrams/hat-6-wedge.svg
+- astro-site/public/diagrams/hat-gathered.svg
+- astro-site/public/diagrams/hat-spiral.svg
+
+Also update the code that performs replacements:
+- generateDiagram() (wherever it lives; likely in astro-site/src/pages/wizards/hat-builder.astro)
+
+Rules:
+- Create backups of any file you edit (.bak timestamp).
+- Do NOT change any pattern math.
+- Do NOT add a separate chart/table on the page.
+- Only add placeholder text nodes + token replacements.
+
+------------------------------------------------------------
+1) ADD PLACEHOLDER TOKENS IN EACH SVG FILE
+------------------------------------------------------------
+
+Add these placeholder text tokens as visible text elements in each SVG:
+
+A) Cast-on stitches:
+Token: {{CAST_ON_STS}}
+Rendered example: "99 sts"
+Placement: centered near the bottom width line, above the “Width: …” label.
+
+B) Brim rows:
+Token: {{BRIM_ROWS}}
+Rendered example: "12 rows"
+Placement: directly under (or near) the existing “Brim: …” label on the left.
+
+C) Body rows (rows worked after brim to crown start):
+Token: {{BODY_ROWS}}
+Rendered example: "42 rows"
+Placement: near the right-side vertical callout where height/crown start is shown, as a secondary line beneath the inches value.
+
+Style requirements (within the SVG):
+- Rows/sts should be visually secondary to the inches values:
+  - smaller font-size than the inches text
+  - same font-family as existing labels
+  - use the same accent color already used for the small red numbers I’m showing (match existing SVG style if present)
+- Keep it clean: no boxes, no table, no legend.
+
+Make sure these tokens exist in all 4 SVG templates.
+
+------------------------------------------------------------
+2) UPDATE generateDiagram() TO REPLACE THESE TOKENS
+------------------------------------------------------------
+
+In generateDiagram(), after the existing replacements (width, height, brim depth, etc.), add:
+
+- Replace {{CAST_ON_STS}} with: `${castOnStitches} sts`
+- Replace {{BRIM_ROWS}} with: `${brimRows} rows`
+- Replace {{BODY_ROWS}} with: `${bodyRows} rows`
+
+Important:
+- Do not invent new calculations.
+- Use the existing computed values already used elsewhere in the pattern output.
+- Make replacements resilient:
+  - If a token is missing (should not be), don’t crash.
+
+------------------------------------------------------------
+3) ACCEPTANCE CHECK
+------------------------------------------------------------
+
+- All 4 templates render the three new values:
+  - “{castOnStitches} sts”
+  - “{brimRows} rows”
+  - “{bodyRows} rows”
+- Inch measurements remain unchanged.
+- No separate chart appears on the page.
+- SVG updates dynamically when wizard inputs change.
+- No console errors in preview or production.
