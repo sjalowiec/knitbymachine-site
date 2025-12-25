@@ -12,8 +12,21 @@
     "sizing",
     "calculator"
   ],
-  "keywords": [],
-  "aliases": [],
+  "keywords": [
+    "pattern",
+    "hat",
+    "beanie",
+    "cap"
+  ],
+  "aliases": [
+    "machine knit hat pattern",
+    "custom fit hat pattern",
+    "machine knitting hat",
+    "knit hat on a knitting machine",
+    "beanie machine knit pattern",
+    "adjustable fit hat pattern",
+    "gauge-based hat pattern"
+  ],
   "videoUrl": "",
   "accessLevel": "free",
   "price": "",
@@ -22,9 +35,23 @@
   "imageUrl": "",
   "imageAlt": "",
   "iconUrl": "https://www.knitbymachine.com/images/hat.svg",
-  "metaTitle": "",
-  "metaDescription": "",
-  "schemaMarkup": null,
+  "metaTitle": "Machine-Knit Hat Pattern – Custom Fit with Multiple Crown Styles",
+  "metaDescription": "Create a perfectly fitting machine-knit hat using your own gauge. One pattern includes multiple crown styles with clear, machine-knitting specific instructions.",
+  "schemaMarkup": {
+    "name": "Custom-Fit Machine-Knit Hat",
+    "@type": "Product",
+    "brand": {
+      "name": "Knit by Machine",
+      "@type": "Brand"
+    },
+    "@context": "https://schema.org",
+    "audience": {
+      "@type": "Audience",
+      "audienceType": "Machine Knitters"
+    },
+    "category": "Knitting Pattern",
+    "description": "A customizable machine-knit hat pattern designed for your gauge and fit, with multiple crown styles and clear, machine-native instructions."
+  },
   "isDraft": false,
   "publishedDate": "2024-11-14",
   "pendingPublish": false
