@@ -403,7 +403,14 @@ try {
         
         <div class="results-section">
           <div class="pattern-card">
-            <div id="pattern-content">
+            <div class="tips-controls" id="tips-controls" style="display: none;">
+              <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">Show tips</button>
+              <label class="tips-print-label">
+                <input type="checkbox" id="tips-print-checkbox" data-testid="checkbox-tips-print" />
+                Include tips in print
+              </label>
+            </div>
+            <div id="pattern-content" data-show-tips="false" data-print-tips="false">
               <!-- Will be populated by JavaScript -->
             </div>
           </div>
@@ -562,6 +569,36 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('action-bar').style.display = 'none';
   });
   
+  // Tips Toggle Functionality
+  const tipsControls = document.getElementById('tips-controls');
+  const tipsToggleBtn = document.getElementById('tips-toggle-btn');
+  const tipsPrintCheckbox = document.getElementById('tips-print-checkbox');
+  const patternContent = document.getElementById('pattern-content');
+  
+  // Load saved preferences from localStorage
+  const savedShowTips = localStorage.getItem('hat-show-tips') === 'true';
+  const savedPrintTips = localStorage.getItem('hat-print-tips') === 'true';
+  
+  // Apply saved preferences
+  patternContent.dataset.showTips = savedShowTips ? 'true' : 'false';
+  patternContent.dataset.printTips = savedPrintTips ? 'true' : 'false';
+  tipsToggleBtn.textContent = savedShowTips ? 'Hide tips' : 'Show tips';
+  tipsPrintCheckbox.checked = savedPrintTips;
+  
+  tipsToggleBtn.addEventListener('click', () => {
+    const isShowing = patternContent.dataset.showTips === 'true';
+    const newState = !isShowing;
+    patternContent.dataset.showTips = newState ? 'true' : 'false';
+    tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
+    localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
+  });
+  
+  tipsPrintCheckbox.addEventListener('change', () => {
+    const printTips = tipsPrintCheckbox.checked;
+    patternContent.dataset.printTips = printTips ? 'true' : 'false';
+    localStorage.setItem('hat-print-tips', printTips ? 'true' : 'false');
+  });
+  
   // Calculate Function
   function calculate() {
     const currentUnit = unitStore.get();
@@ -663,6 +700,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       printButtonSelector: '#print-btn',
       printFooterSelector: '#print-footer'
     });
+    
+    // Show tips controls
+    tipsControls.style.display = 'flex';
   }
   
   function generatePattern(calc) {
@@ -803,6 +843,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       <h4>Cast-On</h4>
       <p>Cast on <strong>${patternCastOnSts} stitches</strong>.</p>
+      <div class="pattern-tip" data-tip><strong>Tip:</strong> Use the cast-on method of your choice.</div>
       
       <h4>Brim (${displayBrimDepth} ${unit})</h4>
       <p>Work ${brimRows} rows:</p>
@@ -816,6 +857,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       
       <h4>Finishing</h4>
       <p>Seam each crown wedge first, then seam the body using <span class="pattern-term" data-tooltip="An invisible, right-side seaming method that joins two edges neatly.">mattress stitch</span> or your preferred method. <span class="pattern-term" data-tooltip="Wet or steam to set the finished shape.">Block</span> if desired and weave in all ends.</p>
+      <div class="pattern-tip" data-tip><strong>Tip:</strong> Use the bind-off method of your choice.</div>
       
       <section class="pattern-terms">
         <h4>Terms</h4>
