@@ -1050,7 +1050,7 @@ document.addEventListener('DOMContentLoaded', async function() {
   
   async function generateDiagram(calc) {
     const currentUnit = unitStore.get();
-    const { hatHeight, brimDepth, targetWidth, castOnSts, brimRows, bodyRows, crown } = calc;
+    const { hatHeight, brimDepth, targetWidth, castOnSts, brimRows, bodyRows, crown, crownRowCount } = calc;
     
     // Format values with units
     const displayWidth = formatLengthWithUnit(
@@ -1100,7 +1100,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         .replace(/{{BRIM_DEPTH}}/g, displayBrimDepth)
         .replace(/{{CAST_ON_STS}}/g, `${displayCastOnSts} sts`)
         .replace(/{{BRIM_ROWS}}/g, `${brimRows} rows`)
-        .replace(/{{BODY_ROWS}}/g, `${bodyRows} rows`);
+        .replace(/{{BODY_ROWS}}/g, `${bodyRows} rows`)
+        .replace(/{{CROWN_ROWS}}/g, `${crownRowCount} rows`);
       
       updateHTML('#diagram-content', svgContent);
     } catch (error) {
