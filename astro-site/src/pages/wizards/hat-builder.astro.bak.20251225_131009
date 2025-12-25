@@ -620,6 +620,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       return `
         <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
         ${adjustmentNote}
+        <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
         <p><strong>Work one wedge at a time:</strong></p>
         <ul>
           <li><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off</span> / place on waste yarn ${scrapOffStitches} stitches, leaving ${wedgeStitches} stitches (one wedge) on the machine.</li>
@@ -655,6 +656,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const decreaseInterval = Math.floor(castOnSts / 8);
       crownInstructions = `
         <p><strong>Spiral Crown:</strong></p>
+        <p>Work ${bodyRows} rows in pattern after brim.</p>
         <p>Decrease Round: *K${decreaseInterval - 2}, k2tog*. Repeat around.</p>
         <p>Knit 2 rounds even.</p>
         <p>Next Decrease: *K${decreaseInterval - 3}, k2tog*. Repeat around.</p>
@@ -690,7 +692,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <p>${brimInstructions[brim]}</p>
       
       <h4>Body</h4>
-      <p>Work ${bodyRows} rows in pattern after the brim.</p>
+      <p>Switch to stockinette stitch and continue for body of hat.</p>
       
       <h4>${crownHeading}</h4>
       ${crownInstructions}
