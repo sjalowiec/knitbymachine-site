@@ -97,6 +97,7 @@ export function initializeActionBar(config: WizardConfig): void {
           config.onStartOver();
         }
         hideResults(config);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
     }
   }
