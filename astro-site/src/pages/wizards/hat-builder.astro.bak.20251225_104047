@@ -476,38 +476,35 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Crown shaping
     const bodyRows = Math.round((crownStart - brimDepth) * rowGaugePerInch);
     let crownInstructions = '';
-    let crownHeading = 'Crown Shaping';
-    
-    // Helper function to build wedge crown sections
-    function buildWedgeCrownSection(wedgeCount, totalStitches, bodyRowsAfterBrim) {
-      const groupSize = Math.floor(totalStitches / wedgeCount);
-      const groupSizeMinus2 = groupSize - 2;
-      const repeatCount = Math.ceil(groupSize / 2);
-      
-      return `
-        <p><strong>${wedgeCount}-Wedge Crown</strong></p>
-        <p><em>Decrease 1 stitch:</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
-        <p>Work ${bodyRowsAfterBrim} rows in stockinette stitch after the brim.</p>
-        <p>Mentally group the stitches into ${wedgeCount} equal sections of ${groupSize} stitches.</p>
-        <p><strong>Decrease Row</strong> (work in groups of ${groupSize} stitches):</p>
-        <p>Knit ${groupSizeMinus2} stitches.<br/>Decrease 1 stitch.</p>
-        <p>Repeat this sequence for each group.</p>
-        <p>Work the decrease row every other row.<br/>Repeat ${repeatCount} times, or until the crown is nearly closed — typically 3–6 stitches remain.</p>
-        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
-        <p><em>Note: For symmetrical wedges, transfer stitches toward the center of each group.</em></p>
-      `;
-    }
     
     if (crown === 'gathered') {
-      crownHeading = 'Crown Shaping (No Decreases)';
       crownInstructions = `
-        <p>Work even in stockinette stitch until desired height.</p>
-        <p><strong>Finish:</strong> Gather the remaining stitches to close the top and secure.</p>
+        <p><strong>Gathered Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Cut yarn leaving a 20" tail. Thread through all ${castOnSts} stitches, pull tight to gather, and secure.</p>
       `;
     } else if (crown === 'wedge-4') {
-      crownInstructions = buildWedgeCrownSection(4, castOnSts, bodyRows);
+      const stsPerWedge = Math.floor(castOnSts / 4);
+      const decreaseRounds = Math.ceil(stsPerWedge / 2);
+      crownInstructions = `
+        <p><strong>4-Wedge Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Place 4 markers evenly around hat (every ${stsPerWedge} stitches).</p>
+        <p>Decrease Round: *Knit to 2 stitches before marker, k2tog, slip marker*. Repeat around all 4 markers.</p>
+        <p>Repeat decrease round every other row ${decreaseRounds} times until 8-12 stitches remain.</p>
+        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
+      `;
     } else if (crown === 'wedge-6') {
-      crownInstructions = buildWedgeCrownSection(6, castOnSts, bodyRows);
+      const stsPerWedge = Math.floor(castOnSts / 6);
+      const decreaseRounds = Math.ceil(stsPerWedge / 2);
+      crownInstructions = `
+        <p><strong>6-Wedge Crown:</strong></p>
+        <p>Work ${bodyRows} rows in stockinette stitch after brim.</p>
+        <p>Place 6 markers evenly around hat (every ${stsPerWedge} stitches).</p>
+        <p>Decrease Round: *Knit to 2 stitches before marker, k2tog, slip marker*. Repeat around all 6 markers.</p>
+        <p>Repeat decrease round every other row ${decreaseRounds} times until 12-18 stitches remain.</p>
+        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
+      `;
     } else if (crown === 'spiral') {
       const decreaseInterval = Math.floor(castOnSts / 8);
       crownInstructions = `
@@ -549,7 +546,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       <h4>Body</h4>
       <p>Switch to stockinette stitch and continue for body of hat.</p>
       
-      <h4>${crownHeading}</h4>
+      <h4>Crown Shaping</h4>
       ${crownInstructions}
       
       <h4>Finishing</h4>
