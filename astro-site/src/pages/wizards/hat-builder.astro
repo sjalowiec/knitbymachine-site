@@ -1093,10 +1093,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       const response = await fetch(`/diagrams/${templateName}.svg`);
       let svgContent = await response.text();
       
-      // Calculate total rows for the height dimension
-      const { crownRowCount } = calc;
-      const totalRows = brimRows + bodyRows + crownRowCount;
-      
       // Replace placeholders with fully-formatted values (including units)
       svgContent = svgContent
         .replace(/{{WIDTH}}/g, displayWidth)
@@ -1104,7 +1100,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         .replace(/{{BRIM_DEPTH}}/g, displayBrimDepth)
         .replace(/{{CAST_ON_STS}}/g, `${displayCastOnSts} sts`)
         .replace(/{{BRIM_ROWS}}/g, `${brimRows} rows`)
-        .replace(/{{TOTAL_ROWS}}/g, `${totalRows} rows`);
+        .replace(/{{BODY_ROWS}}/g, `${bodyRows} rows`);
       
       updateHTML('#diagram-content', svgContent);
     } catch (error) {
