@@ -581,25 +581,69 @@ document.addEventListener('DOMContentLoaded', async function() {
     let crownInstructions = '';
     let crownHeading = 'Crown Shaping';
     
-    // Helper function to build wedge crown sections
+    // Helper function to build wedge crown sections (segmented wedge approach)
     function buildWedgeCrownSection(wedgeCount, totalStitches, bodyRowsAfterBrim) {
-      const groupSize = Math.floor(totalStitches / wedgeCount);
-      const groupSizeMinus2 = groupSize - 2;
-      const repeatCount = Math.ceil(groupSize / 2);
+      const smallWedgeStitches = Math.floor(totalStitches / wedgeCount);
+      const remainder = totalStitches % wedgeCount;
+      const largeWedgeStitches = smallWedgeStitches + (remainder > 0 ? 1 : 0);
+      const targetStitchesPerWedge = 2;
+      
+      // Calculate decrease rows for each wedge size
+      const decreaseRowsLarge = Math.max(0, Math.floor((largeWedgeStitches - targetStitchesPerWedge) / 2));
+      const decreaseRowsSmall = Math.max(0, Math.floor((smallWedgeStitches - targetStitchesPerWedge) / 2));
+      
+      // Fraction of stitches to scrap off (e.g., 3/4 for 4-wedge, 5/6 for 6-wedge)
+      const scrapFraction = `${wedgeCount - 1}/${wedgeCount}`;
+      
+      // Even division - simple case
+      if (remainder === 0) {
+        return `
+          <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
+          <p><em><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+          <br/>
+          <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
+          <p><strong>Work one wedge at a time:</strong></p>
+          <ul>
+            <li>Scrap off / place on waste yarn ${scrapFraction} of the stitches, leaving 1 wedge (${smallWedgeStitches} stitches) on the machine.</li>
+            <li>Shape the wedge by decreasing at BOTH edges every other row:<br/>
+              <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">decrease</span> 1 stitch at the right edge. (2 stitches decreased total)<br/>
+              Knit the row.</li>
+            <li>Repeat the decrease row every other row ${decreaseRowsSmall} times, until ${targetStitchesPerWedge} stitches remain for that wedge.</li>
+            <li>Scrap off the finished wedge stitches.</li>
+          </ul>
+          <p>Rehang the next wedge stitches and repeat until all ${wedgeCount} wedges are complete.</p>
+          <p><strong>Finish:</strong> Thread yarn through the remaining crown stitches and pull tight to close the top; secure.</p>
+          <p><em>Note: Keeping decreases at the same points on each wedge creates clean crown "seams".</em></p>
+        `;
+      }
+      
+      // Uneven division - need to specify both wedge sizes
+      const smallWedgeCount = wedgeCount - remainder;
+      const largeWedgeCount = remainder;
+      
+      // Calculate final stitches for each size
+      const finalSmall = smallWedgeStitches - (decreaseRowsSmall * 2);
+      const finalLarge = largeWedgeStitches - (decreaseRowsLarge * 2);
       
       return `
-        <p><strong>${wedgeCount}-Wedge Crown</strong></p>
+        <p><strong>${wedgeCount}-Wedge Crown (Knit Wedges Separately)</strong></p>
         <p><em><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch (definition):</em> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
         <br/>
         <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
-        <p>Mentally group the stitches into ${wedgeCount} equal sections of ${groupSize} stitches.</p>
-        <p><strong>Decrease Row</strong> (work in groups of ${groupSize} stitches):</p>
-        <p>Count ${groupSizeMinus2} stitches.<br/><span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch.</p>
-        <p>Repeat this sequence for each group.</p>
-        <p>Knit the row.</p>
-        <p>Work the decrease row every other row.<br/>Repeat ${repeatCount} times, or until the crown is nearly closed — typically 3–6 stitches remain.</p>
-        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
-        <p><em>Note: For symmetrical wedges, transfer stitches toward the center of each group.</em></p>
+        <p><em>Note: ${totalStitches} stitches don't divide evenly by ${wedgeCount}. You'll have ${largeWedgeCount} wedge(s) with ${largeWedgeStitches} stitches and ${smallWedgeCount} wedge(s) with ${smallWedgeStitches} stitches.</em></p>
+        <p><strong>Work one wedge at a time:</strong></p>
+        <ul>
+          <li>Scrap off / place on waste yarn ${scrapFraction} of the stitches, leaving 1 wedge on the machine.</li>
+          <li>Shape the wedge by decreasing at BOTH edges every other row:<br/>
+            <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND <span class="pattern-term" data-tooltip="Decrease (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">decrease</span> 1 stitch at the right edge. (2 stitches decreased total)<br/>
+            Knit the row.</li>
+          <li>For ${largeWedgeStitches}-stitch wedges: Repeat the decrease row ${decreaseRowsLarge} times (${finalLarge} stitches remain).</li>
+          <li>For ${smallWedgeStitches}-stitch wedges: Repeat the decrease row ${decreaseRowsSmall} times (${finalSmall} stitches remain).</li>
+          <li>Scrap off the finished wedge stitches.</li>
+        </ul>
+        <p>Rehang the next wedge stitches and repeat until all ${wedgeCount} wedges are complete.</p>
+        <p><strong>Finish:</strong> Thread yarn through the remaining crown stitches and pull tight to close the top; secure.</p>
+        <p><em>Note: Keeping decreases at the same points on each wedge creates clean crown "seams".</em></p>
       `;
     }
     
@@ -679,23 +723,36 @@ document.addEventListener('DOMContentLoaded', async function() {
     let crownRowCount = 0;
     let crownStyleLabel = '';
     
+    // Helper to calculate segmented wedge crown rows
+    function calcWedgeCrownRows(wedgeCount, totalStitches) {
+      const smallWedgeStitches = Math.floor(totalStitches / wedgeCount);
+      const remainder = totalStitches % wedgeCount;
+      const largeWedgeStitches = smallWedgeStitches + (remainder > 0 ? 1 : 0);
+      const targetStitchesPerWedge = 2;
+      
+      // Calculate decrease rows for each wedge size
+      const decreaseRowsLarge = Math.max(0, Math.floor((largeWedgeStitches - targetStitchesPerWedge) / 2));
+      const decreaseRowsSmall = Math.max(0, Math.floor((smallWedgeStitches - targetStitchesPerWedge) / 2));
+      
+      // Count of each wedge type
+      const largeWedgeCount = remainder;
+      const smallWedgeCount = wedgeCount - remainder;
+      
+      // Total rows = sum of (decrease rows * 2) for each wedge
+      return (largeWedgeCount * decreaseRowsLarge * 2) + (smallWedgeCount * decreaseRowsSmall * 2);
+    }
+    
     if (crown === 'gathered') {
       crownRowCount = 0;
       crownStyleLabel = 'No Decreases (Gathered)';
     } else if (crown === 'wedge-4') {
-      // 4-wedge: decrease 4 stitches per decrease row (1 per wedge)
-      // Need to reduce from castOnSts to ~4 stitches
-      const stitchesToDecrease = castOnSts - 4;
-      const decreaseRows = Math.ceil(stitchesToDecrease / 4);
-      crownRowCount = decreaseRows * 2; // decrease every other row
-      crownStyleLabel = '4-Wedge Decreases';
+      // 4-wedge (segmented): each wedge knit separately
+      crownRowCount = calcWedgeCrownRows(4, castOnSts);
+      crownStyleLabel = '4-Wedge (Segmented)';
     } else if (crown === 'wedge-6') {
-      // 6-wedge: decrease 6 stitches per decrease row (1 per wedge)
-      // Need to reduce from castOnSts to ~6 stitches
-      const stitchesToDecrease = castOnSts - 6;
-      const decreaseRows = Math.ceil(stitchesToDecrease / 6);
-      crownRowCount = decreaseRows * 2; // decrease every other row
-      crownStyleLabel = '6-Wedge Decreases';
+      // 6-wedge (segmented): each wedge knit separately
+      crownRowCount = calcWedgeCrownRows(6, castOnSts);
+      crownStyleLabel = '6-Wedge (Segmented)';
     } else if (crown === 'spiral') {
       // Spiral: decrease 8 stitches every 3rd round until ~8-12 remain
       const stitchesToDecrease = castOnSts - 10;
