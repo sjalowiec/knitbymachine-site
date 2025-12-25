@@ -526,6 +526,17 @@ document.addEventListener('DOMContentLoaded', async function() {
     const targetWidth = headCircInches * negativeEase;
     const castOnSts = Math.round(targetWidth * stGaugePerInch);
     
+    // DEBUG: Trace calculation values
+    console.log('=== Hat Calculation Debug ===');
+    console.log('currentUnit:', currentUnit);
+    console.log('useCustomCheckbox.checked:', useCustomCheckbox.checked);
+    console.log('headCirc (raw input):', headCirc);
+    console.log('headCircInches (after conversion):', headCircInches);
+    console.log('stitchGauge (raw):', stitchGauge);
+    console.log('stGaugePerInch:', stGaugePerInch);
+    console.log('targetWidth:', targetWidth);
+    console.log('castOnSts:', castOnSts);
+    
     // Hat heights
     const fitHeights = {
       beanie: depth || 7,
