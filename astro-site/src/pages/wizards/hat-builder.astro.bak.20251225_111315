@@ -491,9 +491,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p>Work ${bodyRowsAfterBrim} rows in pattern after the brim.</p>
         <p>Mentally group the stitches into ${wedgeCount} equal sections of ${groupSize} stitches.</p>
         <p><strong>Decrease Row</strong> (work in groups of ${groupSize} stitches):</p>
-        <p>Count ${groupSizeMinus2} stitches.<br/>Decrease 1 stitch.</p>
+        <p>Knit ${groupSizeMinus2} stitches.<br/>Decrease 1 stitch.</p>
         <p>Repeat this sequence for each group.</p>
-        <p>Knit the row.</p>
         <p>Work the decrease row every other row.<br/>Repeat ${repeatCount} times, or until the crown is nearly closed — typically 3–6 stitches remain.</p>
         <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
         <p><em>Note: For symmetrical wedges, transfer stitches toward the center of each group.</em></p>

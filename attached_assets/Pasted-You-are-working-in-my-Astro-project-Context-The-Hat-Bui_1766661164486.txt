@@ -1,0 +1,79 @@
+You are working in my Astro project.
+
+Context:
+The Hat Builder Wizard already has updated crown shaping language (groups, decrease definition, “in pattern” wording).
+This task is a small correction to make the decrease row instructions accurately reflect machine-knitting workflow.
+
+Files:
+- Wizard page: astro-site/src/pages/wizards/hat-builder.astro
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change stitch counts, group sizes, repeat counts, or math.
+- Do NOT change the wording of the decrease definition.
+- Do NOT add tips, videos, or UI changes.
+- Apply this change to BOTH 4-wedge and 6-wedge crown options.
+
+------------------------------------------------------------
+CHANGE REQUIRED — Decrease Row wording
+------------------------------------------------------------
+
+Current issue:
+The decrease row instructions include wording like:
+“Knit {X} stitches”
+This implies fabric is knitted before transfers, which is incorrect for machine knitting.
+
+Fix:
+Update the decrease row instructions so they clearly separate:
+1) counting to position the decrease
+2) performing the decrease (as already defined)
+3) knitting the row AFTER all decreases are set up
+
+------------------------------------------------------------
+REQUIRED WORDING CHANGES
+------------------------------------------------------------
+
+Inside the Decrease Row block for wedge options:
+
+REPLACE any step that says:
+“Knit {groupSizeMinus2} stitches.”
+
+WITH:
+“Count {groupSizeMinus2} stitches.”
+
+Keep the step:
+“Decrease 1 stitch.”
+(do NOT expand it — it refers to the existing definition)
+
+After the line:
+“Repeat this sequence for each group.”
+
+ADD this new line:
+“Knit the row.”
+
+------------------------------------------------------------
+EXPECTED FINAL STRUCTURE (example)
+------------------------------------------------------------
+
+Decrease Row (work in groups of {groupSize} stitches):
+Count {groupSizeMinus2} stitches.
+Decrease 1 stitch.
+
+Repeat this sequence for each group.
+Knit the row.
+
+------------------------------------------------------------
+ACCEPTANCE CHECKS
+------------------------------------------------------------
+
+In the browser:
+
+- For 4-wedge and 6-wedge crowns:
+  - Decrease row uses “Count … stitches”
+  - “Decrease 1 stitch.” remains short and unchanged
+  - “Knit the row.” appears AFTER the group sequence
+  - No “Knit X stitches” wording remains in the decrease row
+
+- No-decrease option is unchanged.
+
+Do not proceed beyond this scope.
