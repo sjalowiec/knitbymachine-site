@@ -104,27 +104,6 @@ try {
   visibility: visible;
 }
 
-/* Pattern Terms section - compact reference block */
-:global(.pattern-terms) {
-  background: #f8f9fa;
-  border: 1px solid #e9ecef;
-  border-radius: 6px;
-  padding: 0.75rem 1rem;
-  margin-bottom: 1rem;
-  font-size: 0.9rem;
-  line-height: 1.5;
-}
-
-:global(.pattern-terms) h4 {
-  margin: 0 0 0.5rem 0;
-  font-size: 0.95rem;
-  color: #52682D;
-}
-
-:global(.pattern-terms) p {
-  margin: 0.25rem 0;
-}
-
 /* At-a-Glance summary block styling */
 .summary-block {
   background: #f8f9fa;
@@ -675,11 +654,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         <p>Total Height: ${displayHeight} ${unit} | Brim Depth: ${displayBrimDepth} ${unit}</p>
       </div>
       
-      <section class="pattern-terms">
-        <h4>Terms</h4>
-        <p><span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease:</span> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
-        <p><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off:</span> Remove knitting from the machine using waste yarn to hold live stitches.</p>
-      </section>
+      <h4>Terms</h4>
+      <p><span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease:</span> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+      <p><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off:</span> Remove knitting from the machine using waste yarn to hold live stitches.</p>
       
       <h4>Gauge</h4>
       <p>${stitchGaugeRaw} stitches & ${rowGaugeRaw} rows per 4" (10cm)</p>
