@@ -185,6 +185,67 @@ try {
   color: #666;
 }
 
+/* Tips styling */
+.pattern-tip {
+  font-size: 0.85rem;
+  color: #666;
+  border-left: 2px solid #ccc;
+  padding-left: 0.75rem;
+  margin: 0.5rem 0 0.75rem 0.5rem;
+  line-height: 1.4;
+}
+
+.pattern-tip strong {
+  color: #555;
+}
+
+/* Tips toggle controls */
+.tips-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding: 0.5rem 0.75rem;
+  background: #f8f9fa;
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.tips-toggle-btn {
+  background: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.35rem 0.75rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #555;
+}
+
+.tips-toggle-btn:hover {
+  background: #e9ecef;
+}
+
+.tips-print-label {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.tips-print-label input {
+  margin: 0;
+}
+
+/* Tips visibility control - hidden by default */
+#pattern-content[data-show-tips="false"] .pattern-tip {
+  display: none;
+}
+
+#pattern-content[data-show-tips="true"] .pattern-tip {
+  display: block;
+}
+
 /* Print-specific overrides for hat patterns */
 @media print {
   * {
@@ -215,6 +276,20 @@ try {
     border: 1px solid #333 !important;
     padding: 0.75rem !important;
     margin-top: 1rem !important;
+  }
+  
+  /* Tips print control */
+  .tips-controls {
+    display: none !important;
+  }
+  
+  #pattern-content[data-print-tips="false"] .pattern-tip {
+    display: none !important;
+  }
+  
+  #pattern-content[data-print-tips="true"] .pattern-tip {
+    display: block !important;
+    border-left: 1px solid #333 !important;
   }
 }
 </style>

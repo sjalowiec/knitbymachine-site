@@ -1,0 +1,97 @@
+You are working in my Astro project.
+
+Goal:
+Add an optional “Tips” layer to the Hat Builder pattern output.
+Tips should be:
+- positioned inline exactly where they apply
+- toggleable on screen (Show tips / Hide tips)
+- optionally included/excluded from print (Print tips checkbox or print mode)
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+(+ a small CSS addition if needed)
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change any existing pattern math or instruction wording.
+- Tips are additional lines only.
+- Tips must not be required for understanding the pattern.
+
+------------------------------------------------------------
+1) TIP DATA MODEL (minimal)
+------------------------------------------------------------
+Implement a simple Tip component or helper that renders inline tips.
+
+Example markup (you can choose exact implementation):
+<div class="pattern-tip" data-tip>
+  <strong>Tip:</strong> Use the cast-on method of your choice.
+</div>
+
+and another:
+<div class="pattern-tip" data-tip>
+  <strong>Tip:</strong> Use the bind-off method of your choice.
+</div>
+
+These tips should appear:
+- Cast-on tip: immediately under the “Cast on ___ stitches” line
+- Bind-off tip: immediately under the bind-off / finishing step where bind-off is mentioned
+
+------------------------------------------------------------
+2) ON-SCREEN TOGGLE (Show tips / Hide tips)
+------------------------------------------------------------
+Add a toggle control near the top of the pattern output (above instructions, near Terms/Summary).
+
+Behavior:
+- Default state: tips hidden (calm print-like view)
+- Toggle on: tips shown inline
+- Store preference in localStorage so it persists while browsing
+
+Implementation:
+- Add a button or switch labeled:
+  “Show tips” (when tips are hidden)
+  “Hide tips” (when tips are shown)
+
+- When hidden, tips should not take space (display:none).
+
+Use a body or container class to control visibility, e.g.:
+.pattern-output[data-show-tips="true"] [data-tip] { display: block; }
+.pattern-output[data-show-tips="false"] [data-tip] { display: none; }
+
+------------------------------------------------------------
+3) PRINT CONTROL (include or exclude tips)
+------------------------------------------------------------
+Add a print option control near the same toggle:
+- Checkbox: “Include tips in print”
+Default: unchecked (tips do NOT print)
+
+Print behavior:
+- If unchecked: tips are hidden in print (even if user is viewing tips on screen)
+- If checked: tips are visible in print
+
+Implementation suggestion:
+- Add a class on the container, e.g. data-print-tips="true/false"
+- CSS print rule:
+  @media print {
+    .pattern-output[data-print-tips="false"] [data-tip] { display: none !important; }
+    .pattern-output[data-print-tips="true"]  [data-tip] { display: block !important; }
+  }
+
+Persist print preference in localStorage as well.
+
+------------------------------------------------------------
+4) STYLING (subtle)
+------------------------------------------------------------
+Tips should look like quiet helper text:
+- smaller font than instructions
+- slightly muted
+- indented or with a soft border/left rule
+- no icons
+
+------------------------------------------------------------
+ACCEPTANCE CHECKS
+------------------------------------------------------------
+- Tips appear in the correct locations (cast-on, bind-off) when shown.
+- “Show tips / Hide tips” works instantly without affecting other pattern content.
+- Print output hides tips by default.
+- Checking “Include tips in print” causes tips to appear in print.
+- No changes to existing pattern instructions, math, or structure besides inserting tips.
