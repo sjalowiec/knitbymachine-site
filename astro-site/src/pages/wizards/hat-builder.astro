@@ -661,14 +661,42 @@ document.addEventListener('DOMContentLoaded', async function() {
       patternCastOnSts = adjustedCastOn;
       crownInstructions = buildWedgeCrownSection(6, castOnSts, adjustedCastOn, bodyRows);
     } else if (crown === 'spiral') {
-      const decreaseInterval = Math.floor(castOnSts / 8);
+      // Spiral Decreases: machine-native approach
+      // Choose spiralDecreaseCount: prefer 6 if divisible, else 4 if divisible, else default to 6
+      let spiralDecreaseCount;
+      if (castOnSts % 6 === 0) {
+        spiralDecreaseCount = 6;
+      } else if (castOnSts % 4 === 0) {
+        spiralDecreaseCount = 4;
+      } else {
+        spiralDecreaseCount = 6;
+      }
+      
+      const targetRemainingStitches = 4;
+      const requiredDecreaseRows = Math.ceil((castOnSts - targetRemainingStitches) / spiralDecreaseCount);
+      const spacing = Math.floor(castOnSts / spiralDecreaseCount);
+      
       crownInstructions = `
-        <p><strong>Spiral Crown:</strong></p>
-        <p>Decrease Round: *K${decreaseInterval - 2}, k2tog*. Repeat around.</p>
-        <p>Knit 2 rounds even.</p>
-        <p>Next Decrease: *K${decreaseInterval - 3}, k2tog*. Repeat around.</p>
-        <p>Continue decreasing every 3rd round, working 1 less stitch between decreases, until 8-12 stitches remain.</p>
-        <p>Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
+        <p><strong>Spiral Decreases</strong></p>
+        <p><span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease 1 stitch:</span> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
+        <p><em>This crown uses ${spiralDecreaseCount} decreases per decrease row, spaced evenly across the row.</em></p>
+        <p><em>Each decrease row, the decrease positions shift by 1 stitch to create a smooth spiral crown.</em></p>
+        
+        <p><strong>Spiral Decrease Row</strong> (setup decreases first, then knit):</p>
+        <ul>
+          <li><strong>Starting point:</strong> 0 stitches from the beginning of the row (first row).</li>
+          <li>Work across the row placing ${spiralDecreaseCount} decreases as evenly as possible:<br/>
+            "Count ${spacing} stitches. <span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch." (repeat across the row)</li>
+          <li>Knit the row.</li>
+          <li>Knit the next row plain (no decreases).</li>
+        </ul>
+        
+        <p><strong>Repeat:</strong> Work the spiral decrease row every other row, approximately ${requiredDecreaseRows} times, or stop earlier if the crown is nearly closed.</p>
+        
+        <p><strong>Shifting behavior:</strong> For each new Spiral Decrease Row, shift the starting point by 1 stitch (wrap around if needed). This is what creates the spiral.</p>
+        <p><em>Example: Next Spiral Decrease Row: shift the starting point by 1 stitch and repeat.</em></p>
+        
+        <p><strong>Finish:</strong> Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
       `;
     }
     
@@ -750,10 +778,19 @@ document.addEventListener('DOMContentLoaded', async function() {
       crownRowCount = calcWedgeCrownRows(6, adjustedCastOn);
       crownStyleLabel = '6-Wedge (Segmented)';
     } else if (crown === 'spiral') {
-      // Spiral: decrease 8 stitches every 3rd round until ~8-12 remain
-      const stitchesToDecrease = castOnSts - 10;
-      const decreaseRounds = Math.ceil(stitchesToDecrease / 8);
-      crownRowCount = decreaseRounds * 3; // decrease every 3rd round
+      // Spiral: choose decrease count based on divisibility
+      let spiralDecreaseCount;
+      if (castOnSts % 6 === 0) {
+        spiralDecreaseCount = 6;
+      } else if (castOnSts % 4 === 0) {
+        spiralDecreaseCount = 4;
+      } else {
+        spiralDecreaseCount = 6;
+      }
+      const targetRemainingStitches = 4;
+      const requiredDecreaseRows = Math.ceil((castOnSts - targetRemainingStitches) / spiralDecreaseCount);
+      // Each decrease row is followed by a plain row (every other row pattern)
+      crownRowCount = requiredDecreaseRows * 2;
       crownStyleLabel = 'Spiral Decreases';
     }
     

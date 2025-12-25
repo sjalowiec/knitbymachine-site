@@ -1,0 +1,104 @@
+You are working in my Astro project.
+
+Goal:
+update the crown option to the Hat Builder Wizard:
+“Spiral Decreases”
+
+This option should generate machine-knitting instructions where the decrease positions shift each decrease row, producing a continuous spiral crown with no fixed wedge seams.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+- (Only if needed for option label) astro-site/src/content/wizards/hat-builder.json
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change existing crown options (No decreases, 4-wedge segmented, 6-wedge segmented).
+- Do NOT change existing math for cast-on adjustments for wedge crowns.
+- Do NOT change the SVG diagram or the At-a-Glance/Terms styling.
+- This task ONLY adds the Spiral crown option and its output.
+
+------------------------------------------------------------
+SPIRAL CROWN: MATH + PARAMETERS
+------------------------------------------------------------
+
+Definitions:
+- totalStitchesAtCrownStart = stitch count at crown start (use the same stitch count the pattern uses in Body, after any cast-on adjustments that apply to OTHER crown options; for Spiral, do NOT force a multiple of 4/6 unless the wizard already does globally).
+- targetRemainingStitches = 4 (fixed constant for now)
+- spiralDecreaseCount = number of decreases per decrease row
+
+Choose spiralDecreaseCount with a simple rule:
+- Prefer 6 if totalStitchesAtCrownStart divisible by 6
+- Else prefer 4 if divisible by 4
+- Else default to 6 (space decreases as evenly as possible)
+
+Each spiral decrease row reduces stitch count by spiralDecreaseCount.
+
+Compute:
+- requiredDecreaseRows = ceil((totalStitchesAtCrownStart - targetRemainingStitches) / spiralDecreaseCount)
+
+Decrease frequency:
+- Use every other row (match existing crown convention).
+
+So crown rows (displayed) should be consistent with existing conventions:
+- “Work the spiral decrease row every other row.”
+- “Repeat {requiredDecreaseRows} times, or stop earlier if the crown is nearly closed.”
+
+------------------------------------------------------------
+SPIRAL CROWN: INSTRUCTIONS (MACHINE-NATIVE)
+------------------------------------------------------------
+
+Output structure:
+
+Crown Shaping
+Spiral Decreases
+
+Include Terms definition line (same style/tooltip behavior as other terms):
+Decrease 1 stitch (definition): Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.
+
+Then add two short concept lines:
+- “This crown uses {spiralDecreaseCount} decreases per decrease row, spaced evenly across the row.”
+- “Each decrease row, the decrease positions shift by 1 stitch to create a smooth spiral crown.”
+
+Then provide the working instructions:
+
+Spiral Decrease Row (setup decreases first, then knit):
+- Starting point: {startOffset} stitches from the beginning of the row
+- Work across the row placing {spiralDecreaseCount} decreases as evenly as possible:
+  “Count {spacing} stitches. Decrease 1 stitch.” (repeat across the row)
+- Knit the row.
+
+Shifting behavior:
+- For each new Spiral Decrease Row, increase startOffset by 1 (wrap around using modulo total stitches).
+This is what creates the spiral.
+
+Implementation detail:
+- You do NOT need to list every row with different offsets.
+- Provide a clear repeat instruction, plus a small example line showing the shift:
+
+Example line:
+“Next Spiral Decrease Row: shift the starting point by 1 stitch and repeat.”
+
+Finish:
+- “Cut yarn, thread through remaining stitches, pull tight, and secure.”
+
+No wedge-specific leaning note for spiral.
+
+------------------------------------------------------------
+OUTPUT CLARITY REQUIREMENTS
+------------------------------------------------------------
+- Do NOT use hand-knitting terms like k2tog, markers, knit to marker, etc.
+- Use “Count … stitches” not “Knit … stitches” when positioning decreases.
+- Keep instructions concise (no row-by-row list).
+
+------------------------------------------------------------
+ACCEPTANCE CHECKS
+------------------------------------------------------------
+- Spiral option appears in the crown selector and generates output.
+- Existing options are unchanged.
+- Spiral output:
+  - shows spiralDecreaseCount
+  - shows requiredDecreaseRows
+  - explains shift-by-1 behavior
+  - uses machine-native language
+- No cast-on rounding is applied specifically for spiral.
+- No diagram changes.
