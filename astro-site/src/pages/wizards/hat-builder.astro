@@ -609,9 +609,8 @@ document.addEventListener('DOMContentLoaded', async function() {
           <li>For each wedge: Repeat the decrease row ${decreaseRows} times (${targetStitchesPerWedge} stitches remain).</li>
           <li>Scrap off the finished wedge stitches.</li>
         </ul>
-        <p>Rehang the next wedge stitches and repeat until all ${wedgeCount} wedges are complete.</p>
+        <p>Rehang the next wedge (${wedgeStitches} stitches) and repeat until all ${wedgeCount} wedges are complete.</p>
         <p><strong>Finish:</strong> Thread yarn through the remaining crown stitches and pull tight to close the top; secure.</p>
-        <p><em>Note: Keeping decreases at the same points on each wedge creates clean crown "seams".</em></p>
       `;
     }
     
@@ -676,7 +675,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       ${crownInstructions}
       
       <h4>Finishing</h4>
-      <p>Seam the hat using mattress stitch or your preferred method. Weave in all ends and block if desired.</p>
+      <p>Seam the hat using mattress stitch or your preferred method. Block if desired and weave in all ends.</p>
     `;
     
     updateHTML('#pattern-content', patternHTML);
