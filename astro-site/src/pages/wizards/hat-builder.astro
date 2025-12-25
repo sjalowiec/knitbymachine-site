@@ -698,9 +698,9 @@ document.addEventListener('DOMContentLoaded', async function() {
     const targetWidth = headCircInches * negativeEase;
     const castOnSts = Math.round(targetWidth * stGaugePerInch);
     
-    // Hat heights
+    // Hat heights (fixed heights per fit type)
     const fitHeights = {
-      beanie: depth || 7,
+      beanie: 7,
       watchcap: 8.5,
       slouchy: 10,
       relaxed: 9
@@ -985,8 +985,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       const wedgeStitches = adjustedCastOn / wedgeCount;
       const targetStitchesPerWedge = 2;
       const decreaseRows = Math.max(0, Math.floor((wedgeStitches - targetStitchesPerWedge) / 2));
-      // Total rows = wedgeCount * (decreaseRows * 2) since each wedge is knit separately
-      return wedgeCount * decreaseRows * 2;
+      // Crown height = rows for one wedge (each wedge is same height)
+      return decreaseRows * 2;
     }
     
     if (crown === 'gathered') {
