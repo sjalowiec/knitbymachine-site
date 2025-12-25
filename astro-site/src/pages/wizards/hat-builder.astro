@@ -63,8 +63,8 @@ try {
   display: inline-block;
 }
 
-/* Pattern term tooltip styling */
-.pattern-term {
+/* Pattern term tooltip styling - :global needed for dynamically generated content */
+:global(.pattern-term) {
   text-decoration: underline;
   text-decoration-style: dotted;
   text-decoration-color: #52682D;
@@ -73,7 +73,7 @@ try {
   position: relative;
 }
 
-.pattern-term::after {
+:global(.pattern-term)::after {
   content: attr(data-tooltip);
   position: absolute;
   bottom: 100%;
@@ -98,8 +98,8 @@ try {
   line-height: 1.4;
 }
 
-.pattern-term:hover::after,
-.pattern-term:focus::after {
+:global(.pattern-term):hover::after,
+:global(.pattern-term):focus::after {
   opacity: 1;
   visibility: visible;
 }
@@ -125,7 +125,7 @@ try {
     padding: 0.5rem !important;
   }
   
-  .pattern-term::after {
+  :global(.pattern-term)::after {
     display: none !important;
   }
 }
