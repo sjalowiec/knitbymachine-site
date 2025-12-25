@@ -266,16 +266,17 @@ try {
     margin-top: 1rem !important;
   }
   
-  /* Tips print control */
+  /* Hide tips controls in print */
   .tips-controls {
     display: none !important;
   }
   
-  #pattern-content[data-print-tips="false"] .pattern-tip {
+  /* Print tips visibility syncs with screen visibility */
+  #pattern-content[data-show-tips="false"] .pattern-tip {
     display: none !important;
   }
   
-  #pattern-content[data-print-tips="true"] .pattern-tip {
+  #pattern-content[data-show-tips="true"] .pattern-tip {
     display: block !important;
     border-left: 1px solid #333 !important;
   }
@@ -556,18 +557,14 @@ document.addEventListener('DOMContentLoaded', async function() {
   // Tips Toggle Functionality
   const tipsControls = document.getElementById('tips-controls');
   const tipsToggleBtn = document.getElementById('tips-toggle-btn');
-  const tipsPrintCheckbox = document.getElementById('tips-print-checkbox');
   const patternContent = document.getElementById('pattern-content');
   
-  // Load saved preferences from localStorage
+  // Load saved preference from localStorage
   const savedShowTips = localStorage.getItem('hat-show-tips') === 'true';
-  const savedPrintTips = localStorage.getItem('hat-print-tips') === 'true';
   
-  // Apply saved preferences
+  // Apply saved preference
   patternContent.dataset.showTips = savedShowTips ? 'true' : 'false';
-  patternContent.dataset.printTips = savedPrintTips ? 'true' : 'false';
   tipsToggleBtn.textContent = savedShowTips ? 'Hide tips' : 'Show tips';
-  tipsPrintCheckbox.checked = savedPrintTips;
   
   tipsToggleBtn.addEventListener('click', () => {
     const isShowing = patternContent.dataset.showTips === 'true';
@@ -575,12 +572,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     patternContent.dataset.showTips = newState ? 'true' : 'false';
     tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
     localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
-  });
-  
-  tipsPrintCheckbox.addEventListener('change', () => {
-    const printTips = tipsPrintCheckbox.checked;
-    patternContent.dataset.printTips = printTips ? 'true' : 'false';
-    localStorage.setItem('hat-print-tips', printTips ? 'true' : 'false');
   });
   
   // Calculate Function
