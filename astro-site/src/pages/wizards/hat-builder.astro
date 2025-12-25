@@ -422,7 +422,7 @@ try {
           <option value="gathered">Gathered (cinched top)</option>
           <option value="wedge-4">4-Wedge Decreases</option>
           <option value="wedge-6">6-Wedge Decreases</option>
-          <option value="spiral">Spiral Decreases</option>
+          <option value="spiral">Spiral Crown (Smooth, Continuous)</option>
         </select>
       </div>
 
@@ -784,7 +784,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       gathered: 'Gathered (cinched top)',
       'wedge-4': '4-Wedge Decreases',
       'wedge-6': '6-Wedge Decreases',
-      spiral: 'Spiral Decreases'
+      spiral: 'Spiral Crown (Smooth, Continuous)'
     };
     document.getElementById('print-crown').textContent = `Crown: ${crownLabels[crown]}`;
     
@@ -885,40 +885,34 @@ document.addEventListener('DOMContentLoaded', async function() {
       patternCastOnSts = adjustedCastOn;
       crownInstructions = buildWedgeCrownSection(6, castOnSts, adjustedCastOn, bodyRows);
     } else if (crown === 'spiral') {
-      // Spiral Decreases: machine-native approach
-      // Choose spiralDecreaseCount: prefer 6 if divisible, else 4 if divisible, else default to 6
-      let spiralDecreaseCount;
-      if (castOnSts % 6 === 0) {
-        spiralDecreaseCount = 6;
-      } else if (castOnSts % 4 === 0) {
-        spiralDecreaseCount = 4;
-      } else {
-        spiralDecreaseCount = 6;
-      }
-      
-      const targetRemainingStitches = 4;
-      const requiredDecreaseRows = Math.ceil((castOnSts - targetRemainingStitches) / spiralDecreaseCount);
-      const spacing = Math.floor(castOnSts / spiralDecreaseCount);
-      
+      // Spiral Crown (Smooth, Continuous): two-phase decrease system
+      crownHeading = 'Crown Shaping';
       crownInstructions = `
-        <p><strong>Spiral Decreases</strong></p>
+        <p><strong>Spiral Crown (Smooth, Continuous)</strong></p>
+        
         <p><span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease 1 stitch:</span> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
-        <p><em>This crown uses ${spiralDecreaseCount} decreases per decrease row, spaced evenly across the row.</em></p>
-        <p><em>Each decrease row, the decrease positions shift by 1 stitch to create a smooth spiral crown.</em></p>
         
-        <p><strong>Spiral Decrease Row</strong> (setup decreases first, then knit):</p>
-        <ul>
-          <li><strong>Starting point:</strong> 0 stitches from the beginning of the row (first row).</li>
-          <li>Work across the row placing ${spiralDecreaseCount} decreases as evenly as possible:<br/>
-            "Count ${spacing} stitches. <span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch." (repeat across the row)</li>
-          <li>Knit the row.</li>
-          <li>Knit the next row plain (no decreases).</li>
-        </ul>
+        <p>Spiral decreases are worked in two phases. Each decrease round reduces the number of stitches between decreases, creating a smooth spiral effect.</p>
         
-        <p><strong>Repeat:</strong> Work the spiral decrease row every other row, approximately ${requiredDecreaseRows} times, or stop earlier if the crown is nearly closed.</p>
+        <p><strong>PHASE 1 — Establish the Spiral</strong></p>
         
-        <p><strong>Shifting behavior:</strong> For each new Spiral Decrease Row, shift the starting point by 1 stitch (wrap around if needed). This is what creates the spiral.</p>
-        <p><em>Example: Next Spiral Decrease Row: shift the starting point by 1 stitch and repeat.</em></p>
+        <p><strong>Decrease Row:</strong><br/>
+        Count 8 stitches. Decrease 1 stitch.<br/>
+        Repeat evenly across the row.<br/>
+        Knit the row.</p>
+        
+        <p>Work 2 rows even.</p>
+        
+        <p><strong>Next Decrease Row:</strong><br/>
+        Count 7 stitches. Decrease 1 stitch.<br/>
+        Repeat evenly across the row.<br/>
+        Knit the row.</p>
+        
+        <p>Continue working decrease rows every 3rd row, each time counting 1 fewer stitch between decreases (6, 5, 4, etc.), until approximately 12 stitches remain.</p>
+        
+        <p><strong>PHASE 2 — Close the Crown</strong></p>
+        
+        <p>Work decrease rows every row, continuing to reduce the spacing between decreases, until 4–6 stitches remain.</p>
         
         <p><strong>Finish:</strong> Cut yarn, thread through remaining stitches, pull tight, and secure.</p>
       `;
@@ -1007,20 +1001,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       crownRowCount = calcWedgeCrownRows(6, adjustedCastOn);
       crownStyleLabel = '6-Wedge';
     } else if (crown === 'spiral') {
-      // Spiral: choose decrease count based on divisibility
-      let spiralDecreaseCount;
-      if (castOnSts % 6 === 0) {
-        spiralDecreaseCount = 6;
-      } else if (castOnSts % 4 === 0) {
-        spiralDecreaseCount = 4;
-      } else {
-        spiralDecreaseCount = 6;
-      }
-      const targetRemainingStitches = 4;
-      const requiredDecreaseRows = Math.ceil((castOnSts - targetRemainingStitches) / spiralDecreaseCount);
-      // Each decrease row is followed by a plain row (every other row pattern)
-      crownRowCount = requiredDecreaseRows * 2;
-      crownStyleLabel = 'Spiral Decreases';
+      // Spiral Crown: two-phase system
+      // Phase 1: decrease every 3rd row (starting at 8, then 7, 6, 5, 4 spacing) until ~12 sts remain
+      // Phase 2: decrease every row until 4-6 sts remain
+      // Estimate: Phase 1 takes ~5 decrease rows with 2 even rows between = ~15 rows
+      // Phase 2 takes ~3-4 rows
+      crownRowCount = 18; // Approximate for summary
+      crownStyleLabel = 'Spiral Crown';
     }
     
     const totalRows = brimRows + bodyRows + crownRowCount;
