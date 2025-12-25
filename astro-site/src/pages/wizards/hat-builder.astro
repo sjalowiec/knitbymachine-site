@@ -179,6 +179,12 @@ try {
   color: #666;
 }
 
+.summary-crown-style-inline {
+  font-size: 0.85rem;
+  font-weight: normal;
+  color: #666;
+}
+
 /* Print-specific overrides for hat patterns */
 @media print {
   * {
@@ -526,17 +532,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     const targetWidth = headCircInches * negativeEase;
     const castOnSts = Math.round(targetWidth * stGaugePerInch);
     
-    // DEBUG: Trace calculation values
-    console.log('=== Hat Calculation Debug ===');
-    console.log('currentUnit:', currentUnit);
-    console.log('useCustomCheckbox.checked:', useCustomCheckbox.checked);
-    console.log('headCirc (raw input):', headCirc);
-    console.log('headCircInches (after conversion):', headCircInches);
-    console.log('stitchGauge (raw):', stitchGauge);
-    console.log('stGaugePerInch:', stGaugePerInch);
-    console.log('targetWidth:', targetWidth);
-    console.log('castOnSts:', castOnSts);
-    
     // Hat heights
     const fitHeights = {
       beanie: depth || 7,
@@ -613,7 +608,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Brim instructions
     const brimInstructions = {
-      rib: 'Work in 1x1 or 2x2 ribbing (knit 1, purl 1, or knit 2, purl 2 across all stitches). For Mock Ribbing: Work in stockinette and use slip stitch technique to create ribbed appearance.',
+      rib: 'Work in 1x1 or 2x2 ribbing or <span class="pattern-term" data-tooltip="Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.">mock ribbing</span>.',
       roll: 'Work in stockinette stitch. The edge will naturally roll.',
       fold: 'Work in stockinette stitch for a fold-up brim. Fold up when wearing.',
       hem: 'Work stockinette for half the brim depth, place a turning row (purl on knit side or use picot edge), then work stockinette for remaining rows. Fold at turning row and tack hem to wrong side.'
@@ -647,7 +642,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             <strong>Decrease Row:</strong> <span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease</span> 1 stitch at the left edge AND decrease 1 stitch at the right edge. (2 stitches decreased total)<br/>
             Knit the row.</li>
           <li>For each wedge: Repeat the decrease row ${decreaseRows} times (${targetStitchesPerWedge} stitches remain).</li>
-          <li>Scrap off the finished wedge stitches.</li>
+          <li>Pull tail thru the last stitches or put on stitch holder.</li>
         </ul>
         <p>Rehang the next wedge (${wedgeStitches} stitches) and repeat until all ${wedgeCount} wedges are complete.</p>
         <p><strong>Finish:</strong> Thread yarn through the remaining crown stitches and pull tight to close the top; secure.</p>
@@ -725,6 +720,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         <h4>Terms</h4>
         <p><span class="pattern-term" data-tooltip="Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.">Decrease:</span> Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.</p>
         <p><span class="pattern-term" data-tooltip="Remove knitting from the machine using waste yarn to hold live stitches.">Scrap off:</span> Remove knitting from the machine using waste yarn to hold live stitches.</p>
+        <p><span class="pattern-term" data-tooltip="Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.">Mock ribbing:</span> Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.</p>
       </section>
       
       <h4>Gauge</h4>
@@ -781,13 +777,13 @@ document.addEventListener('DOMContentLoaded', async function() {
       const adjustedCastOn = castOnSts - (castOnSts % 4);
       patternCastOnSts = adjustedCastOn;
       crownRowCount = calcWedgeCrownRows(4, adjustedCastOn);
-      crownStyleLabel = '4-Wedge (Segmented)';
+      crownStyleLabel = '4-Wedge';
     } else if (crown === 'wedge-6') {
       // 6-wedge (segmented): adjust cast-on to multiple of 6
       const adjustedCastOn = castOnSts - (castOnSts % 6);
       patternCastOnSts = adjustedCastOn;
       crownRowCount = calcWedgeCrownRows(6, adjustedCastOn);
-      crownStyleLabel = '6-Wedge (Segmented)';
+      crownStyleLabel = '6-Wedge';
     } else if (crown === 'spiral') {
       // Spiral: choose decrease count based on divisibility
       let spiralDecreaseCount;
@@ -808,7 +804,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const totalRows = brimRows + bodyRows + crownRowCount;
     
     const summaryHTML = `
-      <h4>At-a-Glance</h4>
+      <h4>At-a-Glance <span class="summary-crown-style-inline">(${crownStyleLabel})</span></h4>
       <div class="summary-total">Total Rows: ${totalRows}</div>
       <table class="summary-table">
         <thead>
@@ -836,7 +832,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           </tr>
         </tbody>
       </table>
-      <p class="summary-crown-style">Crown Style: ${crownStyleLabel}</p>
     `;
     
     updateHTML('#summary-container', summaryHTML);
