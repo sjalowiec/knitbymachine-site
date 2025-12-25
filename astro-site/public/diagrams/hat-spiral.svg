@@ -45,9 +45,19 @@
     Height: {{HEIGHT}}
   </text>
   
+  <!-- Crown dimension (left side, from top to crown start) -->
+  <line x1="100" y1="110" x2="100" y2="180" stroke="#52682D" stroke-width="1.5"/>
+  <circle cx="100" cy="110" r="3" fill="#52682D"/>
+  <circle cx="100" cy="180" r="3" fill="#52682D"/>
+  <text x="60" y="140" text-anchor="end" font-size="11" font-weight="600" fill="#52682D">
+    Crown
+  </text>
+  <text x="60" y="153" text-anchor="end" font-size="10" fill="#52682D">
+    {{CROWN_ROWS}}
+  </text>
+  
   <!-- Body dimension (left side, between crown start and brim) -->
   <line x1="100" y1="180" x2="100" y2="280" stroke="#52682D" stroke-width="1.5"/>
-  <circle cx="100" cy="180" r="3" fill="#52682D"/>
   <circle cx="100" cy="280" r="3" fill="#52682D"/>
   <text x="60" y="225" text-anchor="end" font-size="11" font-weight="600" fill="#52682D">
     Body

@@ -478,11 +478,6 @@ try {
               <!-- Will be populated by JavaScript -->
             </div>
           </div>
-
-          <div id="summary-container" class="summary-block">
-            <!-- Will be populated by JavaScript -->
-          </div>
-          
         </div>
       </div>
     </div>
@@ -988,64 +983,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Generate diagram
     generateDiagram(calc);
-    
-    // Generate At-a-Glance summary
-    generateSummary(calc);
-  }
-  
-  function generateSummary(calc) {
-    const { castOnSts, brimRows, bodyRows, crownRowCount, crown } = calc;
-    
-    // Get crown style label and adjusted cast-on for display
-    let crownStyleLabel = '';
-    let patternCastOnSts = castOnSts; // Default: use original cast-on
-    
-    if (crown === 'gathered') {
-      crownStyleLabel = 'No Decreases (Gathered)';
-    } else if (crown === 'wedge-4') {
-      patternCastOnSts = castOnSts - (castOnSts % 4);
-      crownStyleLabel = '4-Wedge';
-    } else if (crown === 'wedge-6') {
-      patternCastOnSts = castOnSts - (castOnSts % 6);
-      crownStyleLabel = '6-Wedge';
-    } else if (crown === 'spiral') {
-      crownStyleLabel = 'Spiral Crown';
-    }
-    
-    const totalRows = brimRows + bodyRows + crownRowCount;
-    
-    const summaryHTML = `
-      <h4>At-a-Glance <span class="summary-crown-style-inline">(${crownStyleLabel})</span></h4>
-      <div class="summary-total">Total Rows: ${totalRows}</div>
-      <table class="summary-table">
-        <thead>
-          <tr>
-            <th></th>
-            <th>Rows</th>
-            <th>Stitches</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Brim</td>
-            <td>${brimRows}</td>
-            <td>${patternCastOnSts}</td>
-          </tr>
-          <tr>
-            <td>Body</td>
-            <td>${bodyRows}</td>
-            <td>${patternCastOnSts}</td>
-          </tr>
-          <tr>
-            <td>Crown</td>
-            <td>${crownRowCount}</td>
-            <td>${patternCastOnSts}</td>
-          </tr>
-        </tbody>
-      </table>
-    `;
-    
-    updateHTML('#summary-container', summaryHTML);
   }
   
   async function generateDiagram(calc) {
