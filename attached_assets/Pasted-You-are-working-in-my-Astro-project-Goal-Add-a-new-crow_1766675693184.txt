@@ -1,0 +1,94 @@
+You are working in my Astro project.
+
+Goal:
+Add a new crown option to the Hat Pattern Builder:
+“Spiral Crown (Smooth, Continuous)”
+
+This spiral crown should follow the same logical structure used in Knit It Now patterns:
+a two-phase decrease system that creates a smooth, rotating crown with no visible seams.
+
+Files:
+- astro-site/src/pages/wizards/hat-builder.astro
+- (Only if needed) astro-site/src/content/wizards/hat-builder.json
+
+Rules:
+- Create a backup of any file you edit (.bak timestamp).
+- Do NOT change existing crown options:
+  - No decreases
+  - 4-Wedge Crown (knit wedges separately)
+  - 6-Wedge Crown (knit wedges separately)
+- Do NOT change cast-on math for any other crown type.
+- Do NOT add SVG or diagram changes.
+- Do NOT expose internal math calculations in the pattern text.
+
+------------------------------------------------------------
+SPIRAL CROWN — STRUCTURE & LOGIC
+------------------------------------------------------------
+
+Spiral decreases are worked in TWO PHASES.
+
+Phase 1 establishes the spiral visually.
+Phase 2 accelerates shaping to close the crown smoothly.
+
+The decrease positions shift naturally because the spacing between decreases is reduced each time.
+
+------------------------------------------------------------
+SPIRAL CROWN — PATTERN OUTPUT
+------------------------------------------------------------
+
+Output the following instructions when “Spiral Crown” is selected:
+
+------------------------------------------------------------
+
+Crown Shaping
+Spiral Crown (Smooth, Continuous)
+
+Decrease 1 stitch (definition):
+Transfer the next stitch to its neighboring needle, then shift stitches to fill the empty needle.
+
+Spiral decreases are worked in two phases. Each decrease round reduces the number of stitches between decreases, creating a smooth spiral effect.
+
+PHASE 1 — Establish the Spiral
+
+Decrease Row:
+Count 8 stitches. Decrease 1 stitch.
+Repeat evenly across the row.
+Knit the row.
+
+Work 2 rows even.
+
+Next Decrease Row:
+Count 7 stitches. Decrease 1 stitch.
+Repeat evenly across the row.
+Knit the row.
+
+Continue working decrease rows every 3rd row, each time counting 1 fewer stitch between decreases
+(6, 5, 4, etc.), until approximately 12 stitches remain.
+
+PHASE 2 — Close the Crown
+
+Work decrease rows every row, continuing to reduce the spacing between decreases,
+until 4–6 stitches remain.
+
+Finish:
+Cut yarn, thread through remaining stitches, pull tight, and secure.
+
+------------------------------------------------------------
+OUTPUT REQUIREMENTS
+------------------------------------------------------------
+
+- Use “Count X stitches” (not “Knit X stitches”) when positioning decreases.
+- Use “Decrease 1 stitch” consistently (do not use k2tog or hand-knitting terms).
+- Do NOT list every row individually.
+- Do NOT include markers, offsets, or rotation math.
+- Keep wording calm and instructional, matching the style of existing patterns.
+
+------------------------------------------------------------
+ACCEPTANCE CHECK
+------------------------------------------------------------
+
+- Spiral Crown appears as a selectable crown option.
+- Pattern output matches the two-phase structure above.
+- Existing crown options are unchanged.
+- The spiral instructions are readable without math anxiety.
+- No wedge or segmented language appears in spiral output.
