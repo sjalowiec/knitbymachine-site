@@ -56,8 +56,8 @@
 }
 
 /* Float/shrink label when focused or has value */
-.floating-input input:focus + label,
-.floating-input input:not(:placeholder-shown) + label {
+.floating-input input:focus ~ label,
+.floating-input input:not(:placeholder-shown) ~ label {
   top: 0.5rem;
   transform: translateY(0);
   font-size: 0.75rem;
@@ -66,7 +66,7 @@
 }
 
 /* Label error state */
-.floating-input input.error + label {
+.floating-input input.error ~ label {
   color: #dc3545;
 }
 
