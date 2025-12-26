@@ -676,24 +676,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     }
   });
   
-  // Auto-calculate
-  setupAutoCalculate(
-    [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, customHatLengthInput, stitchGaugeInput, rowGaugeInput],
-    calculate
-  );
+  // Auto-scroll state - resets when user edits after scrolling
+  let hasAutoScrolled = false;
   
-  // One-time auto-scroll on blur of last required input (row gauge)
-  // This prevents scroll interruption during typing
-  if (rowGaugeInput) {
-    rowGaugeInput.addEventListener('blur', () => {
-      const scrollKey = 'kbm_hat_builder_scrolled';
-      const resultsEl = document.getElementById('results');
-      const isPatternVisible = resultsEl && resultsEl.style.display !== 'none';
+  // Auto-scroll helper function
+  function maybeAutoScroll() {
+    const resultsEl = document.getElementById('results');
+    const isPatternVisible = resultsEl && resultsEl.style.display !== 'none';
+    
+    if (isPatternVisible && !hasAutoScrolled) {
+      hasAutoScrolled = true;
       
-      if (isPatternVisible && !sessionStorage.getItem(scrollKey)) {
-        sessionStorage.setItem(scrollKey, '1');
-        
-        requestAnimationFrame(() => {
+      // Use requestAnimationFrame for timing, then a small delay for DOM settle
+      requestAnimationFrame(() => {
+        setTimeout(() => {
           const headingEl = document.getElementById('hat-pattern-results-heading');
           if (headingEl) {
             const siteHeader = document.querySelector('.kbm-header-wrap');
@@ -707,7 +703,38 @@ document.addEventListener('DOMContentLoaded', async function() {
               behavior: prefersReducedMotion ? 'auto' : 'smooth'
             });
           }
-        });
+        }, 150); // Small delay for DOM to settle
+      });
+    }
+  }
+  
+  // Reset scroll flag when user edits any field after scrolling
+  const allInputs = [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, customHatLengthInput, stitchGaugeInput, rowGaugeInput];
+  allInputs.forEach(input => {
+    if (input) {
+      input.addEventListener('input', () => {
+        if (hasAutoScrolled) {
+          hasAutoScrolled = false;
+        }
+      });
+    }
+  });
+  
+  // Auto-calculate (live updates as user types)
+  setupAutoCalculate(
+    [hatSizeSelect, customCircInput, brimSelect, crownSelect, fitSelect, customHatLengthInput, stitchGaugeInput, rowGaugeInput],
+    calculate
+  );
+  
+  // Auto-scroll triggers on last required input (row gauge)
+  // Triggers on: blur OR Enter key press
+  if (rowGaugeInput) {
+    rowGaugeInput.addEventListener('blur', maybeAutoScroll);
+    
+    rowGaugeInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        rowGaugeInput.blur(); // Blur will trigger maybeAutoScroll
       }
     });
   }
@@ -735,6 +762,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     rowGaugeInput.value = '';
     document.getElementById('results').style.display = 'none';
     document.getElementById('action-bar').style.display = 'none';
+    hasAutoScrolled = false; // Reset scroll flag for next pattern generation
   });
   
   // Tips Toggle Functionality - called after pattern content is rendered

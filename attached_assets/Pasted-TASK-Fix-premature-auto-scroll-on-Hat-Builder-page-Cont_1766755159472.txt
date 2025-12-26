@@ -1,0 +1,60 @@
+TASK: Fix premature auto-scroll on Hat Builder page.
+
+Context:
+On /pages/wizards/hat-builder.astro (or the hat builder wizard page), the UI currently auto-scrolls to the “results / finished measurements / pattern” section too early—while the user is still typing in the last input field. This feels broken because the page jumps before they finish data entry.
+
+Goal:
+Change the scroll trigger so it does NOT run on every `input` event. Scroll should happen only when the user has actually completed entry.
+
+Implementation requirements:
+1) Locate the existing auto-scroll logic and identify what triggers it (likely an `input` listener on the final field, or a watcher that fires when “all fields have values” during typing).
+2) Remove/disable scroll calls from `input` event handlers.
+
+3) Replace with a safer trigger approach:
+   - Trigger scroll only on:
+     a) `blur` of the last required input (user leaves the field), OR
+     b) pressing Enter in the last required input, OR
+     c) clicking a “Build / Generate / Submit” button if one exists (if not, add a lightweight “Build Hat Pattern” button under the last input).
+   - Keep calculations live if you want, but scrolling must wait until one of the above completion events.
+
+4) Add a small debounce / settle delay before scrolling:
+   - Use `requestAnimationFrame` or a short `setTimeout(150–250ms)` after completion to ensure DOM updates (results section rendered) before calling scroll.
+
+5) Only scroll once per completed entry cycle:
+   - Add a `hasAutoScrolled` flag.
+   - Reset `hasAutoScrolled = false` when the user changes any required field AFTER the scroll (meaning they are editing again).
+
+6) Ensure the target scroll position accounts for your fixed site header:
+   - Use `scrollIntoView({ behavior: 'smooth', block: 'start' })` plus an offset technique:
+     - Preferred: add CSS `scroll-margin-top` on the results container (e.g. 90px / var(--header-height)).
+     - Or: calculate `element.getBoundingClientRect().top + window.scrollY - headerOffset` and `window.scrollTo`.
+
+7) Preserve current behavior:
+   - The “Start Over” and “Print” sticky buttons remain unchanged.
+   - The “Show Tips” button location/behavior is unchanged.
+   - Do not change the layout except adding an optional Build button if needed.
+
+Concrete steps:
+A) In hat-builder.astro, find the JS that:
+   - detects completion (all required inputs filled)
+   - renders pattern/results
+   - then calls scroll (scrollIntoView / window.scrollTo)
+B) Refactor into two separate functions:
+   - `updateResults()` → can run on input if desired
+   - `maybeAutoScroll()` → runs ONLY on completion events (blur/enter/button)
+
+C) Wire events:
+   - For each required input: on `input` → `updateResults()` and set `hasAutoScrolled=false`
+   - For the LAST required input:
+       - on `blur` → if form is complete and results exist and !hasAutoScrolled → `maybeAutoScroll()`
+       - on `keydown` Enter → same
+   - If adding a Build button:
+       - on click → validate completeness, updateResults(), then maybeAutoScroll()
+
+D) Apply `scroll-margin-top` to the results container:
+   - Add a class like `.patternResultsAnchor { scroll-margin-top: 110px; }`
+   - Use the actual header height you have (fixed header).
+
+Deliverable:
+- Commit changes to hat-builder.astro (and any small CSS additions).
+- After changes: typing in the last field should NOT scroll mid-entry. Scrolling should only happen after blur/Enter/click Build once the user has finished.
