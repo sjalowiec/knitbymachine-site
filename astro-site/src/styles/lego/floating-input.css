@@ -16,13 +16,14 @@
 
 .floating-input input {
   width: 100% !important;
+  min-height: 52px !important;
   padding: 1.25rem 0.75rem 0.5rem !important;
   border: 2px solid #e5e7eb !important;
   border-radius: 8px !important;
   font-family: var(--font);
   font-size: 1rem !important;
   color: var(--text-dark, #374151);
-  background: white;
+  background: white !important;
   transition: border-color 0.2s, box-shadow 0.2s;
   -moz-appearance: textfield;
   box-sizing: border-box;
