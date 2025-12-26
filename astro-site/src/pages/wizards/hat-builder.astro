@@ -953,7 +953,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       rib: 'Work in 1x1 or 2x2 ribbing or <span class="pattern-term" data-tooltip="Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.">mock ribbing</span>.',
       roll: 'Work in stockinette stitch. The edge will naturally roll.',
       fold: 'Work in stockinette stitch for a fold-up brim. Fold up when wearing.',
-      hem: 'Work stockinette for half the brim depth, place a turning row (purl on knit side or use picot edge), then work stockinette for remaining rows. Fold at turning row and tack hem to wrong side.'
+      hem: 'Work stockinette for half the brim depth, place a <span class="pattern-term" data-tooltip="For a doubled hem or band, a single row that creates a sharp crease at the fold line.">turning row</span> (purl on knit side or use picot edge), then work stockinette for remaining rows. Fold at turning row and tack hem to wrong side to create a <span class="pattern-term" data-tooltip="A folded, double-layer hem formed by hanging the cast-on stitches back onto the needles.">hung hem</span>.'
     };
     
     // Crown shaping - bodyRows already calculated and passed in
@@ -1047,7 +1047,9 @@ document.addEventListener('DOMContentLoaded', async function() {
       { term: 'Scrap off', definition: 'Remove knitting from the machine using waste yarn to hold live stitches.' },
       { term: 'Mock ribbing', definition: 'Stitch pattern that copies knit and purl ribbing by having needles out of work. A favorite for knitters without a ribber.' },
       { term: 'Mattress stitch', definition: 'An invisible, right-side seaming method that joins two edges neatly.' },
-      { term: 'Block', definition: 'Wet or steam to set the finished shape.' }
+      { term: 'Block', definition: 'Wet or steam to set the finished shape.' },
+      { term: 'Hung hem', definition: 'A folded, double-layer hem formed by hanging the cast-on stitches back onto the needles.' },
+      { term: 'Turning row', definition: 'For a doubled hem or band, a single row that creates a sharp crease at the fold line.' }
     ];
     
     // Build Terms block HTML (mirrors TermsBlock.astro component)
