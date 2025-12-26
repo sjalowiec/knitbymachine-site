@@ -1,0 +1,155 @@
+Goal: Create a reusable Astro component for KBM’s floating-label inputs (label shrinks/moves when focused or when the input has a value), then refactor /wizards/hat-builder to use it.
+
+1) Create the component
+
+Create a new file:
+
+src/components/lego/FloatingInput.astro
+
+With these requirements:
+
+Props:
+
+id (string, required)
+
+label (string, required)
+
+type (string, default "text")
+
+inputMode (string, optional)
+
+min (string|number, optional)
+
+max (string|number, optional)
+
+step (string|number, optional)
+
+placeholder (string, optional) — default should be " " (single space) to support :placeholder-shown
+
+required (boolean, default false)
+
+value (string|number, optional)
+
+testId (string, optional) → applies to input as data-testid
+
+errorId (string, optional) → id for the error span
+
+errorText (string, default "Please enter a valid number.")
+
+Markup structure must match the current working pattern:
+
+wrapper: <div class="floating-input">
+
+input then label immediately after input
+
+then error span
+
+Ensure accessibility:
+
+<label for={id}>
+
+input id={id}
+
+if errorId provided, set aria-describedby={errorId}
+
+set aria-invalid="true" only when an invalid prop is true (add prop invalid?: boolean = false)
+
+2) Add CSS once (global) so every page can use it
+
+Add a new global stylesheet (preferred):
+
+src/styles/lego/floating-input.css
+
+Put the floating-label styles there using this logic:
+
+Base:
+
+.floating-input { position: relative; }
+
+input has extra top padding to make room for label
+
+label sits “inside” the input by default
+
+Float/shrink when:
+
+input:focus + label
+
+input:not(:placeholder-shown) + label
+
+Error state:
+
+.floating-input input.error { border-color: ... }
+
+.floating-input .error-text { display:none; }
+
+.floating-input .error-text.show { display:block; }
+
+Keep styles compatible with existing classes you already use on that page.
+
+Then import this CSS globally:
+
+If you have a main global CSS entry (like src/styles/global.css or whatever BaseLayout imports), add:
+
+@import "./lego/floating-input.css";
+
+If your project uses Astro layout imports, import it in the main layout so it applies site-wide.
+
+3) Refactor this page to use the component
+
+Update the wizard page that currently contains the stitch/row inputs (the one that renders the .floating-input blocks) and replace each repeated block with the component.
+
+Example replacement pattern (keep the same ids because your JS depends on them):
+
+Starting stitches:
+
+id: startingStitches
+
+type: number
+
+min: 1
+
+step: 1
+
+required: true
+
+testId: input-starting-stitches
+
+errorId: startingStitchesError
+
+errorText: Please enter a valid number.
+
+Do the same for:
+
+endingStitches (min 0)
+
+totalRows
+
+stitchGauge (placeholder 16)
+
+rowGauge (placeholder 24)
+
+Important: preserve the id values and the ...Error span ids, because the existing JS toggles .error and .show based on those ids.
+
+4) Don’t break anything: verify behavior
+
+After refactor:
+
+Confirm the label floats on focus and after typing
+
+Confirm validation still works (JS adds/removes .error on input and .show on error span)
+
+Confirm the UI matches the current page layout
+
+5) (Optional) Add a “wide” variant later
+
+Do not add variants yet. Keep it 1:1 with current behavior first. We can add sizes/themes later if needed.
+
+Deliverables:
+
+New component file created
+
+New CSS file created + imported globally
+
+This wizard page refactored to use the component
+
+No JS changes unless required to preserve current validation
