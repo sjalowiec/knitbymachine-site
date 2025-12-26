@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
 import ToolActionBar from "../../components/wizards/ToolActionBar.astro";
-import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
+import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
 import "../../styles/wizard.css";
 
 const pageUrl = "https://knitbymachine.com/tools/graph-paper";
@@ -104,38 +104,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   <div class="tool-container">
     <!-- Gauge Section -->
     <div class="form-section">
-      <div class="kbm-header-layout">
-        <span class="section-label">Your Gauge</span>
-        <div id="kbm-units-toggle">
-          <UnitToggle id="graph" />
-        </div>
-      </div>
-      
-      <div class="input-grid">
-        <div class="input-group">
-          <label for="stitches" id="stitch-label">Stitches over 4 inches</label>
-          <input 
-            type="number" 
-            id="stitches" 
-            step="any"
-            min="1"
-            placeholder="sts over 4&quot;"
-            data-testid="input-stitches"
-          />
-        </div>
-        <div class="input-group">
-          <label for="rows" id="row-label">Rows over 4 inches</label>
-          <input 
-            type="number" 
-            id="rows" 
-            step="any"
-            min="1"
-            placeholder="rows over 4&quot;"
-            data-testid="input-rows"
-          />
-        </div>
-      </div>
-      <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm).</p>
+      <GaugeInput id="graph" showTitle={true} showToggle={true} />
       <p class="gauge-error" id="gauge-error" style="display: none; color: #dc2626; font-size: 0.9rem; margin-top: 0.5rem;">Please enter whole numbers only.</p>
     </div>
 
@@ -162,6 +131,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
   // State
   let unit = localStorage.getItem('graphpaper.unit') || 'in';
   let stitches = localStorage.getItem('graphpaper.sts') || '24';
@@ -171,11 +141,9 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   // DOM elements
   const btnInches = document.getElementById('graph-btn-inches');
   const btnCm = document.getElementById('graph-btn-cm');
-  const inputStitches = document.getElementById('stitches') as HTMLInputElement;
-  const inputRows = document.getElementById('rows') as HTMLInputElement;
+  const inputStitches = document.getElementById('graph-stitch-gauge') as HTMLInputElement;
+  const inputRows = document.getElementById('graph-row-gauge') as HTMLInputElement;
   const selectPaper = document.getElementById('paper-size') as HTMLSelectElement;
-  const stitchLabel = document.getElementById('stitch-label');
-  const rowLabel = document.getElementById('row-label');
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
 
   // Initialize inputs from localStorage
@@ -183,22 +151,14 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   if (inputRows) inputRows.value = rows;
   if (selectPaper) selectPaper.value = paperSize;
 
-  // Update UI based on unit
+  // Update UI based on unit - labels are handled by GaugeInput component
   function updateUnitsUI() {
     if (unit === 'in') {
       btnInches?.classList.add('active');
       btnCm?.classList.remove('active');
-      if (stitchLabel) stitchLabel.textContent = 'Stitches over 4 inches';
-      if (rowLabel) rowLabel.textContent = 'Rows over 4 inches';
-      if (inputStitches) inputStitches.placeholder = 'sts over 4"';
-      if (inputRows) inputRows.placeholder = 'rows over 4"';
     } else {
       btnCm?.classList.add('active');
       btnInches?.classList.remove('active');
-      if (stitchLabel) stitchLabel.textContent = 'Stitches over 10 cm';
-      if (rowLabel) rowLabel.textContent = 'Rows over 10 cm';
-      if (inputStitches) inputStitches.placeholder = 'sts over 10cm';
-      if (inputRows) inputRows.placeholder = 'rows over 10cm';
     }
   }
 
@@ -274,6 +234,7 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
 
   // Initial download link update
   updateDownloadLink();
+});
 </script>
 
 </BaseLayout>
