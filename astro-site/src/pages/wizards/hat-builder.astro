@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const isShowing = patternContent.dataset.showTips === 'true';
       const newState = !isShowing;
       patternContent.dataset.showTips = newState ? 'true' : 'false';
-      tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
+      tipsToggleBtn.textContent = newState ? 'Hide tips for this pattern' : 'Show tips for this pattern';
       localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
     });
   }
@@ -1088,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Pattern HTML - includes tips toggle button before Finished Measurements
     const savedShowTipsForBtn = localStorage.getItem('hat-show-tips') === 'true';
     const patternHTML = `
-      <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">${savedShowTipsForBtn ? 'Hide tips' : 'Show tips'}</button>
+      <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">${savedShowTipsForBtn ? 'Hide tips for this pattern' : 'Show tips for this pattern'}</button>
       <div class="highlight-box">
         <p><strong>Finished Measurements:</strong></p>
         <p>Head Circumference: ${displayHeadCirc} ${unit} → Hat Width: ${displayWidth} ${unit} (with negative ease)</p>
