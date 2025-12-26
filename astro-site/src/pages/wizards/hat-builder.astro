@@ -8,7 +8,6 @@ import Tooltip from "../../components/Tooltip.astro";
 import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
-import FloatingInput from "../../components/lego/FloatingInput.astro";
 
 // Import shared wizard styles
 import '../../styles/wizard.css';
@@ -422,16 +421,16 @@ select.disabled {
       </div>
 
       <div id="custom-size" style="display: none;">
-        <FloatingInput 
-          id="custom-circumference"
-          label="Head Circumference"
-          type="number"
-          step="0.25"
-          placeholder=" "
-          testId="input-custom-circumference"
-          errorId="custom-circumference-error"
-          errorText="Please enter a valid head circumference."
-        />
+        <div class="input-group">
+          <label for="custom-circumference">Head Circumference</label>
+          <input 
+            type="number" 
+            id="custom-circumference" 
+            step="0.25" 
+            placeholder="Enter head circumference"
+            data-testid="input-custom-circumference"
+          />
+        </div>
       </div>
 
       <!-- Brim Style -->
@@ -476,17 +475,17 @@ select.disabled {
       </div>
       
       <div id="custom-length-div" style="display: none;">
-        <FloatingInput 
-          id="custom-hat-length"
-          label="Custom hat length"
-          type="number"
-          step="0.25"
-          placeholder=" "
-          testId="input-custom-hat-length"
-          errorId="custom-hat-length-error"
-          errorText="Please enter a valid hat length."
-        />
-        <small class="helper-text">Measure from the cast-on edge to the top of the hat.</small>
+        <div class="input-group">
+          <label for="custom-hat-length">Custom hat length</label>
+          <input 
+            type="number" 
+            id="custom-hat-length" 
+            step="0.25" 
+            placeholder="Enter total hat length"
+            data-testid="input-custom-hat-length"
+          />
+          <small class="helper-text">Measure from the cast-on edge to the top of the hat.</small>
+        </div>
       </div>
 
       <!-- Gauge (using shared GaugeInput component) -->
