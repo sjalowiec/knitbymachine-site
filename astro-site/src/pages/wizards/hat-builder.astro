@@ -380,12 +380,8 @@ select.disabled {
         <img src="/images/hat.svg" alt="Hat" class="title-icon" />
         {wizardTitle}
       </h1>
-      {whyUseThisTool ? (
+      {whyUseThisTool && (
         <WhyUseThisToolTooltip text={whyUseThisTool} variant="inline" />
-      ) : (
-        <button class="video-button" onclick="alert('Video tutorial coming soon!')">
-          <i class="fas fa-play-circle"></i> Watch Tutorial
-        </button>
       )}
     </div>
     <p>

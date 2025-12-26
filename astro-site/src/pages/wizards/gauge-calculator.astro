@@ -326,12 +326,8 @@ try {
   <div class="page-header">
     <div class="page-header-title">
       <h1>Gauge Calculator</h1>
-      {whyUseThisTool ? (
+      {whyUseThisTool && (
         <WhyUseThisToolTooltip text={whyUseThisTool} variant="inline" />
-      ) : (
-        <button class="video-button" onclick="alert('Video tutorial coming soon!')">
-          <i class="fas fa-play-circle"></i> Watch Tutorial
-        </button>
       )}
     </div>
     <p>

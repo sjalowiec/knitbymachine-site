@@ -630,12 +630,8 @@ try {
   <div class="page-header">
     <div class="page-header-title">
       <h1>Shaping Formula – Stitches & Rows</h1>
-      {whyUseThisTool ? (
+      {whyUseThisTool && (
         <WhyUseThisToolTooltip text={whyUseThisTool} variant="inline" />
-      ) : (
-        <button class="video-button" data-testid="button-watch-tutorial" onclick="alert('Video tutorial coming soon!')">
-          <i class="fas fa-play-circle"></i> Watch Tutorial
-        </button>
       )}
     </div>
     {wizardDescription ? (
