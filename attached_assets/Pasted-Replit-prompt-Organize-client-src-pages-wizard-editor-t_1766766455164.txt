@@ -1,0 +1,160 @@
+Replit prompt: Organize client/src/pages/wizard-editor.tsx for calmer data entry
+
+Target file (only page to modify):
+client/src/pages/wizard-editor.tsx
+
+Goal: Make the wizard editor easier to use by adding:
+
+a top “Editor Header” with the Ready/Draft indicator moved to the top
+
+Internal Notes at the top (Sue-only, localStorage)
+
+JSON preview hidden by default with a toggle
+
+gentle section structure for long forms (wrappers only; no schema changes)
+
+Non-negotiables (safety rules)
+
+Do NOT change: wizard JSON schema/shape, field names, validation rules, save/submit/publish logic, API calls, route behavior.
+
+Do NOT refactor unrelated components.
+
+Do NOT reorder existing form fields except for:
+
+moving the status indicator display to the top
+
+moving the JSON preview into a collapsible “Advanced” area
+
+Create new small components only if needed, and keep them local/simple.
+
+Step 1 — Make a backup + tiny commit
+
+Duplicate wizard-editor.tsx to wizard-editor.tsx.bak in the same folder.
+
+Commit: admin wizard editor organize shell
+
+Step 2 — Add an “Editor Header” at the top
+
+At the top of the page layout in wizard-editor.tsx, add a compact header section above the form.
+
+Header includes:
+
+Status indicator (Ready to publish / Draft / etc.) moved here (display only)
+
+Wizard title + slug (whatever is already available in the page state)
+
+Rules
+
+Keep the same logic/state source currently driving the indicator.
+
+If there’s a toggle/control for publish status:
+
+keep the control where it is unless it is inseparable from the indicator
+
+moving the indicator display is enough
+
+Step 3 — Add “Internal Notes” directly under the header (Sue-only)
+
+Add a new block titled Internal notes under the header.
+
+Requirements
+
+Textarea (min-height ~120px)
+
+Helper text: “Private notes. Not published.”
+
+Persist via localStorage, keyed by slug:
+
+admin:wizard-notes:${slug}
+
+Load on mount and save on change
+
+Notes must never be included in wizard JSON preview or saved to backend
+
+Implementation
+Either inline in wizard-editor.tsx (fine) or create a reusable component:
+
+client/src/components/admin/AdminNotes.tsx
+
+Props:
+
+storageKey: string
+
+label?: string default “Internal notes”
+
+helpText?: string default “Private notes. Not published.”
+
+Use local component state + useEffect to read/write localStorage.
+
+Step 4 — Wrap the JSON preview in a collapsible panel (collapsed by default)
+
+Find the existing JSON preview rendering in wizard-editor.tsx (likely uses JSON.stringify(...) and a <pre>).
+
+Change it so:
+
+It is hidden by default
+
+There is a toggle button:
+
+“View JSON preview” → opens
+
+“Hide JSON preview” → closes
+
+When open, show the exact same JSON output as before (no logic changes)
+
+The JSON panel is scrollable and monospace
+
+Implementation
+Create a tiny reusable component:
+
+client/src/components/admin/CollapsiblePanel.tsx
+
+Props:
+
+title: string
+
+defaultOpen?: boolean (default false)
+
+children: ReactNode
+
+No fancy animation required—simple conditional render is fine.
+
+Step 5 — Organize the long form into clear sections (wrappers only)
+
+In wizard-editor.tsx, add lightweight section wrappers around the existing form content to improve scanning.
+
+Do not change any inputs. Only add headings + consistent spacing.
+
+Suggested structure:
+
+Section: “Basics”
+
+Section: “Content sections”
+
+Section: “Publishing”
+
+Section: “Advanced” (this is where the collapsible JSON preview lives)
+
+Optional: add id attributes for quick jump links:
+
+#basics
+
+#content
+
+#publishing
+
+#advanced
+
+Optional: add a small “Jump to” row under the header with anchor links.
+
+Step 6 — Styling rules (local only)
+
+Use existing admin styles/classes if they exist.
+
+If you must add CSS, keep it minimal and scoped:
+
+either module CSS used by this page
+
+or simple utility classes already in your stack
+
+No global admin CSS changes in this task.
