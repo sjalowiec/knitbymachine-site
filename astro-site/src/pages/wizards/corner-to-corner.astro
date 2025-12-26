@@ -345,17 +345,17 @@ const pageUrl = "https://knitbymachine.com/wizards/corner-to-corner";
   }
 }
 
-.back-link {
+:global(.back-link) {
   display: inline-block;
-  color: #52682D;
+  color: var(--kbm-green);
   text-decoration: none;
   font-weight: 500;
-  margin-bottom: 1.5rem;
-  padding: 0.5rem 0;
-  transition: color 0.2s;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
 }
 
-.back-link:hover {
+:global(.back-link:hover) {
   color: #3d4e21;
   text-decoration: underline;
 }
