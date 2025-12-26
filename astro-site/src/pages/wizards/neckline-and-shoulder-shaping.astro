@@ -4,6 +4,7 @@ import ActionBar from "../../components/wizards/ActionBar.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping";
 ---
@@ -343,40 +344,12 @@ const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping
 
   <div class="wizard-container">
     <div class="calculator-card">
-      <!-- Units Toggle -->
-      <div class="units-toggle">
-        <button class="unit-btn active" id="btn-inches">Inches</button>
-        <button class="unit-btn" id="btn-cm">Centimeters</button>
-      </div>
-
       <div class="info-box">
         <p><strong>Advanced Practice:</strong> This tool shows you how to work the neckline and shoulder shaping simultaneously — a key skill for professional-looking sweaters.</p>
       </div>
 
       <!-- Gauge Section -->
-      <h3 class="section-title">Your Gauge</h3>
-      <div class="input-grid">
-        <div class="input-group">
-          <label for="stitches-gauge">Stitch Gauge</label>
-          <input 
-            type="number" 
-            id="stitches-gauge" 
-            step="0.1" 
-            placeholder="stitches per 4&quot;"
-          />
-          <div class="validation-message" id="stitches-message"></div>
-        </div>
-        <div class="input-group">
-          <label for="rows-gauge">Row Gauge</label>
-          <input 
-            type="number" 
-            id="rows-gauge" 
-            step="0.1" 
-            placeholder="rows per 4&quot;"
-          />
-          <div class="validation-message" id="rows-message"></div>
-        </div>
-      </div>
+      <GaugeInput id="neckline" toggleId="neckline" showTitle={true} showToggle={true} />
 
       <!-- Practice Piece Dimensions -->
       <h3 class="section-title">Practice Piece Dimensions</h3>
@@ -472,6 +445,7 @@ const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping
 <ActionBar />
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
   // State
   let units = 'inches';
   let stitchesGauge = '';
@@ -481,90 +455,39 @@ const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping
   let neckWidth = '';
   let shoulderDepth = '';
 
-  // DOM elements
-  const btnInches = document.getElementById('btn-inches');
-  const btnCm = document.getElementById('btn-cm');
-  const inputStitches = document.getElementById('stitches-gauge');
-  const inputRows = document.getElementById('rows-gauge');
+  // DOM elements - using GaugeInput component IDs
+  const btnInches = document.getElementById('neckline-btn-inches');
+  const btnCm = document.getElementById('neckline-btn-cm');
+  const inputStitches = document.getElementById('neckline-stitch-gauge');
+  const inputRows = document.getElementById('neckline-row-gauge');
   const inputWidth = document.getElementById('piece-width');
   const inputDepth = document.getElementById('neckline-depth');
   const inputNeck = document.getElementById('neck-width');
   const inputShoulder = document.getElementById('shoulder-depth');
-  const stitchesMsg = document.getElementById('stitches-message');
-  const rowsMsg = document.getElementById('rows-message');
   const resultsSection = document.getElementById('results');
   const actionBar = document.getElementById('action-bar');
   const startOverBtn = document.getElementById('start-over-btn');
   const printBtn = document.getElementById('print-btn');
 
-  // Validation
-  function validateGauge(value, type) {
-    if (!value) return { valid: true, message: '', class: '' };
-    
-    const num = parseFloat(value);
-    if (isNaN(num)) {
-      return { valid: false, message: 'Please enter a valid number', class: 'error' };
-    }
-    if (num < 2) {
-      return { valid: false, message: 'Value must be at least 2', class: 'error' };
-    }
-    if (num > 80) {
-      return { valid: false, message: 'Value must be 80 or less', class: 'error' };
-    }
-    
-    if (type === 'stitches' && (num < 10 || num > 50)) {
-      return { valid: true, message: 'That seems unusual — double-check your entry', class: 'warning' };
-    }
-    if (type === 'rows' && (num < 10 || num > 60)) {
-      return { valid: true, message: 'That seems unusual — double-check your entry', class: 'warning' };
-    }
-    
-    return { valid: true, message: '', class: '' };
-  }
-
-  function updateValidation(input, msgEl, type) {
-    const validation = validateGauge(input.value, type);
-    input.className = validation.class;
-    if (validation.message) {
-      const icon = validation.class === 'error' ? 'exclamation-circle' : 'exclamation-triangle';
-      msgEl.className = `validation-message ${validation.class}`;
-      msgEl.innerHTML = `<i class="fas fa-${icon}"></i> ${validation.message}`;
-    } else {
-      msgEl.className = 'validation-message';
-      msgEl.innerHTML = '';
-    }
-    return validation.valid;
-  }
-
-  // Unit toggle
+  // Unit toggle - GaugeInput handles label updates automatically
   btnInches.addEventListener('click', () => {
     units = 'inches';
-    btnInches.classList.add('active');
-    btnCm.classList.remove('active');
-    inputStitches.placeholder = 'stitches per 4"';
-    inputRows.placeholder = 'rows per 4"';
     calculate();
   });
 
   btnCm.addEventListener('click', () => {
     units = 'cm';
-    btnCm.classList.add('active');
-    btnInches.classList.remove('active');
-    inputStitches.placeholder = 'stitches per 10cm';
-    inputRows.placeholder = 'rows per 10cm';
     calculate();
   });
 
   // Input handlers
   inputStitches.addEventListener('input', (e) => {
     stitchesGauge = e.target.value;
-    updateValidation(inputStitches, stitchesMsg, 'stitches');
     calculate();
   });
 
   inputRows.addEventListener('input', (e) => {
     rowsGauge = e.target.value;
-    updateValidation(inputRows, rowsMsg, 'rows');
     calculate();
   });
 
@@ -599,10 +522,6 @@ const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping
     units = 'inches';
     btnInches.classList.add('active');
     btnCm.classList.remove('active');
-    stitchesMsg.className = 'validation-message';
-    stitchesMsg.innerHTML = '';
-    rowsMsg.className = 'validation-message';
-    rowsMsg.innerHTML = '';
     resultsSection.style.display = 'none';
     actionBar.style.display = 'none';
   });
@@ -736,6 +655,7 @@ const pageUrl = "https://knitbymachine.com/wizards/neckline-and-shoulder-shaping
     actionBar.style.display = 'flex';
     printBtn.style.display = 'inline-flex';
   }
+});
 </script>
 
 </BaseLayout>
