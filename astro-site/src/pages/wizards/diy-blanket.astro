@@ -4,6 +4,7 @@ import ActionBar from "../../components/wizards/ActionBar.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/diy-blanket";
 ---
@@ -450,36 +451,12 @@ const pageUrl = "https://knitbymachine.com/wizards/diy-blanket";
     <div class="calculator-card">
       <!-- Units Toggle -->
       <div class="units-toggle">
-        <button class="unit-btn active" id="btn-inches">Inches</button>
-        <button class="unit-btn" id="btn-cm">Centimeters</button>
+        <button class="unit-btn active" id="diy-btn-inches">Inches</button>
+        <button class="unit-btn" id="diy-btn-cm">Centimeters</button>
       </div>
 
       <!-- Gauge Section -->
-      <h3 class="section-title">Your Gauge</h3>
-      <div class="input-grid">
-        <div class="input-group">
-          <label for="stitches-gauge">Stitch Gauge</label>
-          <input 
-            type="number" 
-            id="stitches-gauge" 
-            step="0.1" 
-            placeholder="stitches per 4&quot;"
-            data-testid="input-stitches"
-          />
-          <div class="validation-message" id="stitches-message"></div>
-        </div>
-        <div class="input-group">
-          <label for="rows-gauge">Row Gauge</label>
-          <input 
-            type="number" 
-            id="rows-gauge" 
-            step="0.1" 
-            placeholder="rows per 4&quot;"
-            data-testid="input-rows"
-          />
-          <div class="validation-message" id="rows-message"></div>
-        </div>
-      </div>
+      <GaugeInput id="diy" showTitle={true} showToggle={false} toggleId="diy" />
 
       <!-- Size Selection -->
       <h3 class="section-title">Select Blanket Size</h3>
@@ -633,12 +610,10 @@ document.addEventListener('DOMContentLoaded', function() {
   let swatchWeight = '';
 
   // DOM elements
-  const btnInches = document.getElementById('btn-inches');
-  const btnCm = document.getElementById('btn-cm');
-  const inputStitches = document.getElementById('stitches-gauge');
-  const inputRows = document.getElementById('rows-gauge');
-  const stitchesMsg = document.getElementById('stitches-message');
-  const rowsMsg = document.getElementById('rows-message');
+  const btnInches = document.getElementById('diy-btn-inches');
+  const btnCm = document.getElementById('diy-btn-cm');
+  const inputStitches = document.getElementById('diy-stitch-gauge');
+  const inputRows = document.getElementById('diy-row-gauge');
   const useCustomCheckbox = document.getElementById('use-custom');
   const standardSizesDiv = document.getElementById('standard-sizes');
   const customSizeDiv = document.getElementById('custom-size');
@@ -1059,8 +1034,7 @@ document.addEventListener('DOMContentLoaded', function() {
     units = 'inches';
     btnInches.classList.add('active');
     btnCm.classList.remove('active');
-    inputStitches.placeholder = 'stitches per 4"';
-    inputRows.placeholder = 'rows per 4"';
+    // Gauge input labels are handled by GaugeInput component
     updatePlaceholders();
     populateSizes();
     calculate();
@@ -1070,8 +1044,7 @@ document.addEventListener('DOMContentLoaded', function() {
     units = 'cm';
     btnCm.classList.add('active');
     btnInches.classList.remove('active');
-    inputStitches.placeholder = 'stitches per 10cm';
-    inputRows.placeholder = 'rows per 10cm';
+    // Gauge input labels are handled by GaugeInput component
     updatePlaceholders();
     populateSizes();
     calculate();
@@ -1079,14 +1052,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
   inputStitches.addEventListener('input', (e) => {
     stitchesGauge = e.target.value;
-    updateValidation(inputStitches, stitchesMsg, 'stitches');
     updateSizeCardsState();
     calculate();
   });
 
   inputRows.addEventListener('input', (e) => {
     rowsGauge = e.target.value;
-    updateValidation(inputRows, rowsMsg, 'rows');
     updateSizeCardsState();
     calculate();
   });
