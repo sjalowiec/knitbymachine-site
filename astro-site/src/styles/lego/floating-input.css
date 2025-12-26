@@ -12,9 +12,9 @@
 
 .floating-input input {
   width: 100%;
-  padding: 1.25rem 0.875rem 0.5rem;
-  border: 1px solid #d0d5cc;
-  border-radius: 6px;
+  padding: 1rem 0.75rem 0.5rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 8px;
   font-family: var(--font);
   font-size: 1rem;
   color: var(--text-dark, #374151);
@@ -44,7 +44,7 @@
 /* Label - positioned inside input by default */
 .floating-input label {
   position: absolute;
-  left: 0.875rem;
+  left: 0.75rem;
   top: 50%;
   transform: translateY(-50%);
   font-size: 0.95rem;
@@ -58,7 +58,7 @@
 /* Float/shrink label when focused or has value */
 .floating-input input:focus ~ label,
 .floating-input input:not(:placeholder-shown) ~ label {
-  top: 0.5rem;
+  top: 0.35rem;
   transform: translateY(0);
   font-size: 0.75rem;
   color: var(--kbm-green);
