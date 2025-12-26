@@ -873,7 +873,10 @@ document.addEventListener('DOMContentLoaded', async function() {
     requestAnimationFrame(() => {
       const headingEl = document.getElementById('hat-pattern-results-heading');
       if (headingEl) {
-        const headerOffset = 120; // Extra padding to ensure heading is clearly visible
+        // Dynamically measure the actual fixed header height
+        const siteHeader = document.querySelector('.kbm-header-wrap');
+        const headerHeight = siteHeader?.offsetHeight ?? 120;
+        const headerOffset = headerHeight + 16; // Add 16px extra padding
         const elementPosition = headingEl.getBoundingClientRect().top + window.scrollY;
         const offsetPosition = elementPosition - headerOffset;
         const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
