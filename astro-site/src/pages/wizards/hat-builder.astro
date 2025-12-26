@@ -868,14 +868,12 @@ document.addEventListener('DOMContentLoaded', async function() {
       printFooterSelector: '#print-footer'
     });
     
-    // One-time auto-scroll to results heading (per session)
-    const scrollKey = 'kbm_hat_builder_scrolled';
-    if (!sessionStorage.getItem(scrollKey)) {
-      sessionStorage.setItem(scrollKey, '1');
+    // Auto-scroll to results heading every time pattern is generated
+    requestAnimationFrame(() => {
       const headingEl = document.getElementById('hat-pattern-results-heading');
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       headingEl?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
-    }
+    });
     
     // Attach tips toggle event listener (button is now in pattern content)
     attachTipsToggleListener();
