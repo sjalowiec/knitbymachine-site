@@ -4,6 +4,7 @@ import ActionBar from "../../components/wizards/ActionBar.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/corner-to-corner";
 ---
@@ -413,8 +414,8 @@ const pageUrl = "https://knitbymachine.com/wizards/corner-to-corner";
       
       <!-- Units Toggle -->
       <div class="units-toggle">
-        <button class="unit-btn active" id="btn-inches" data-testid="button-inches">Inches</button>
-        <button class="unit-btn" id="btn-cm" data-testid="button-cm">Centimeters</button>
+        <button class="unit-btn active" id="c2c-btn-inches" data-testid="button-inches">Inches</button>
+        <button class="unit-btn" id="c2c-btn-cm" data-testid="button-cm">Centimeters</button>
       </div>
       
       <div id="error-message" class="error-message" role="alert" aria-live="polite">
@@ -436,31 +437,7 @@ const pageUrl = "https://knitbymachine.com/wizards/corner-to-corner";
         />
       </div>
       
-      <div class="gauge-row">
-        <div class="input-group">
-          <input 
-            type="number" 
-            id="stitch-gauge" 
-            class="input-field" 
-            placeholder="Stitches per 4&quot; (10cm)"
-            min="0.1"
-            step="0.1"
-            data-testid="input-stitch-gauge"
-          />
-        </div>
-        
-        <div class="input-group">
-          <input 
-            type="number" 
-            id="row-gauge" 
-            class="input-field" 
-            placeholder="Rows per 4&quot; (10cm)"
-            min="0.1"
-            step="0.1"
-            data-testid="input-row-gauge"
-          />
-        </div>
-      </div>
+      <GaugeInput id="c2c" showTitle={false} showToggle={false} toggleId="c2c" />
       
       <div class="button-row">
         <button class="calculate-btn" id="calculate-btn" data-testid="button-calculate">
@@ -518,8 +495,8 @@ const pageUrl = "https://knitbymachine.com/wizards/corner-to-corner";
 <script>
 document.addEventListener('DOMContentLoaded', function() {
   const needlesInput = document.getElementById('needles');
-  const stitchGaugeInput = document.getElementById('stitch-gauge');
-  const rowGaugeInput = document.getElementById('row-gauge');
+  const stitchGaugeInput = document.getElementById('c2c-stitch-gauge');
+  const rowGaugeInput = document.getElementById('c2c-row-gauge');
   const calculateBtn = document.getElementById('calculate-btn');
   const errorMessage = document.getElementById('error-message');
   const resultsContainer = document.getElementById('results');
@@ -535,8 +512,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const printBtn = document.getElementById('print-btn');
   
   // Unit toggle
-  const btnInches = document.getElementById('btn-inches');
-  const btnCm = document.getElementById('btn-cm');
+  const btnInches = document.getElementById('c2c-btn-inches');
+  const btnCm = document.getElementById('c2c-btn-cm');
   let currentUnit = localStorage.getItem('c2c-unit') || 'inches';
   
   // Initialize unit toggle
@@ -552,16 +529,8 @@ document.addEventListener('DOMContentLoaded', function() {
   }
   
   function updateLabels() {
-    // Update gauge input placeholders
-    if (currentUnit === 'inches') {
-      stitchGaugeInput.placeholder = 'Stitches per 4" (10cm)';
-      rowGaugeInput.placeholder = 'Rows per 4" (10cm)';
-    } else {
-      stitchGaugeInput.placeholder = 'Stitches per 10cm (4")';
-      rowGaugeInput.placeholder = 'Rows per 10cm (4")';
-    }
-    
-    // Update result units
+    // Gauge input labels are now handled by GaugeInput component's built-in JavaScript
+    // Just update result units here
     const resultUnits = document.querySelectorAll('.result-unit');
     resultUnits.forEach(unit => {
       unit.textContent = currentUnit === 'inches' ? 'inches' : 'cm';
