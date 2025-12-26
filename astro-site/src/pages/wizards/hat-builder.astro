@@ -869,17 +869,20 @@ document.addEventListener('DOMContentLoaded', async function() {
     });
     
     // Auto-scroll to results heading (accounts for fixed header)
-    const headingEl = document.getElementById('hat-pattern-results-heading');
-    if (headingEl) {
-      const headerOffset = 96;
-      const elementPosition = headingEl.getBoundingClientRect().top + window.scrollY;
-      const offsetPosition = elementPosition - headerOffset;
-      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({
-        top: offsetPosition,
-        behavior: prefersReducedMotion ? 'auto' : 'smooth'
-      });
-    }
+    // Use requestAnimationFrame to ensure DOM is fully rendered before calculating position
+    requestAnimationFrame(() => {
+      const headingEl = document.getElementById('hat-pattern-results-heading');
+      if (headingEl) {
+        const headerOffset = 120; // Extra padding to ensure heading is clearly visible
+        const elementPosition = headingEl.getBoundingClientRect().top + window.scrollY;
+        const offsetPosition = elementPosition - headerOffset;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: prefersReducedMotion ? 'auto' : 'smooth'
+        });
+      }
+    });
     
     // Attach tips toggle event listener (button is now in pattern content)
     attachTipsToggleListener();
