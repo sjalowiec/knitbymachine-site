@@ -5,6 +5,7 @@ import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
 import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/gauge-conversion-calculator";
 
@@ -391,63 +392,19 @@ try {
   <div class="wizard-container">
     <!-- Units Toggle -->
     <div class="units-toggle">
-      <button class="unit-btn active" id="btn-inches" data-unit="inches">
+      <button class="unit-btn active" id="gc-btn-inches" data-unit="inches">
         Inches
       </button>
-      <button class="unit-btn" id="btn-cm" data-unit="cm">
+      <button class="unit-btn" id="gc-btn-cm" data-unit="cm">
         Centimeters
       </button>
     </div>
 
     <!-- Pattern Gauge Section -->
-    <div class="section-divider">
-      <h3 class="section-title">Pattern Gauge (what the pattern calls for)</h3>
-      <div class="input-grid">
-        <div class="input-group">
-          <label for="pattern-stitches">Stitches</label>
-          <input 
-            type="number" 
-            id="pattern-stitches" 
-            step="0.1" 
-            placeholder="per 4 inches"
-          />
-        </div>
-        <div class="input-group">
-          <label for="pattern-rows">Rows</label>
-          <input 
-            type="number" 
-            id="pattern-rows" 
-            step="0.1" 
-            placeholder="per 4 inches"
-          />
-        </div>
-      </div>
-    </div>
+    <GaugeInput id="pattern" title="Pattern Gauge (what the pattern calls for)" showToggle={false} toggleId="gc" />
 
     <!-- Your Gauge Section -->
-    <div class="section-divider">
-      <h3 class="section-title">Your Gauge (what you actually get)</h3>
-      <div class="input-grid">
-        <div class="input-group">
-          <label for="your-stitches">Stitches</label>
-          <input 
-            type="number" 
-            id="your-stitches" 
-            step="0.1" 
-            placeholder="per 4 inches"
-          />
-        </div>
-        <div class="input-group">
-          <label for="your-rows">Rows</label>
-          <input 
-            type="number" 
-            id="your-rows" 
-            step="0.1" 
-            placeholder="per 4 inches"
-          />
-        </div>
-      </div>
-    </div>
+    <GaugeInput id="your" title="Your Gauge (what you actually get)" showToggle={false} toggleId="gc" />
 
     <!-- Multipliers Display -->
     <div id="multipliers" style="display: none;">
@@ -524,6 +481,7 @@ try {
 </div>
 
 <script>
+document.addEventListener('DOMContentLoaded', function() {
   // State management with localStorage
   let units = localStorage.getItem('gaugeConversion.unit') || 'inches';
   let patternStitches = localStorage.getItem('gaugeConversion.patternSts') || '';
@@ -534,12 +492,12 @@ try {
   let testRows = localStorage.getItem('gaugeConversion.testRows') || '';
 
   // DOM elements
-  const btnInches = document.getElementById('btn-inches');
-  const btnCm = document.getElementById('btn-cm');
-  const inputPatternStitches = document.getElementById('pattern-stitches');
-  const inputPatternRows = document.getElementById('pattern-rows');
-  const inputYourStitches = document.getElementById('your-stitches');
-  const inputYourRows = document.getElementById('your-rows');
+  const btnInches = document.getElementById('gc-btn-inches');
+  const btnCm = document.getElementById('gc-btn-cm');
+  const inputPatternStitches = document.getElementById('pattern-stitch-gauge');
+  const inputPatternRows = document.getElementById('pattern-row-gauge');
+  const inputYourStitches = document.getElementById('your-stitch-gauge');
+  const inputYourRows = document.getElementById('your-row-gauge');
   const inputTestStitches = document.getElementById('test-stitches');
   const inputTestRows = document.getElementById('test-rows');
   const multipliersSection = document.getElementById('multipliers');
@@ -580,22 +538,14 @@ try {
   inputTestStitches.value = testStitches;
   inputTestRows.value = testRows;
 
-  // Update units UI
+  // Update units UI - labels are now handled by GaugeInput component
   function updateUnitsUI() {
     if (units === 'inches') {
       btnInches.classList.add('active');
       btnCm.classList.remove('active');
-      inputPatternStitches.placeholder = 'per 4 inches';
-      inputPatternRows.placeholder = 'per 4 inches';
-      inputYourStitches.placeholder = 'per 4 inches';
-      inputYourRows.placeholder = 'per 4 inches';
     } else {
       btnCm.classList.add('active');
       btnInches.classList.remove('active');
-      inputPatternStitches.placeholder = 'per 10 cm';
-      inputPatternRows.placeholder = 'per 10 cm';
-      inputYourStitches.placeholder = 'per 10 cm';
-      inputYourRows.placeholder = 'per 10 cm';
     }
   }
 
@@ -718,6 +668,7 @@ try {
 
   // Initial calculation
   calculate();
+});
 </script>
 
 </BaseLayout>
