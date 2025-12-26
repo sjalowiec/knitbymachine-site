@@ -1,22 +1,26 @@
 /* ========================================
    Floating Input Component Styles
    Reusable floating-label input pattern
+   
+   USAGE: Use with FloatingInput.astro component
+   The label starts centered inside the input and
+   floats to the top-left when focused or has value.
    ======================================== */
 
 .floating-input {
-  position: relative;
+  position: relative !important;
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
 }
 
 .floating-input input {
-  width: 100%;
-  padding: 1rem 0.75rem 0.5rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 8px;
+  width: 100% !important;
+  padding: 0.75rem !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 8px !important;
   font-family: var(--font);
-  font-size: 1rem;
+  font-size: 1rem !important;
   color: var(--text-dark, #374151);
   background: white;
   transition: border-color 0.2s, box-shadow 0.2s;
@@ -32,51 +36,53 @@
 
 .floating-input input:focus {
   outline: none;
-  border-color: var(--kbm-green);
-  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+  border-color: var(--kbm-green) !important;
+  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1) !important;
 }
 
 /* Error state */
 .floating-input input.error {
-  border-color: #dc3545;
+  border-color: #dc3545 !important;
 }
 
 /* Label - positioned inside input by default */
 .floating-input label {
-  position: absolute;
-  left: 0.75rem;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 0.95rem;
-  color: #6b7280;
-  pointer-events: none;
-  transition: all 0.2s ease;
-  background: transparent;
-  padding: 0 2px;
+  position: absolute !important;
+  left: 0.75rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 0.95rem !important;
+  color: #6b7280 !important;
+  pointer-events: none !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  padding: 0 2px !important;
+  margin-bottom: 0 !important;
+  font-weight: normal !important;
 }
 
 /* Float/shrink label when focused or has value */
 .floating-input input:focus ~ label,
 .floating-input input:not(:placeholder-shown) ~ label {
-  top: 0.35rem;
-  transform: translateY(0);
-  font-size: 0.75rem;
-  color: var(--kbm-green);
-  font-weight: 500;
+  top: 0.35rem !important;
+  transform: translateY(0) !important;
+  font-size: 0.75rem !important;
+  color: var(--kbm-green) !important;
+  font-weight: 500 !important;
 }
 
 /* Label error state */
 .floating-input input.error ~ label {
-  color: #dc3545;
+  color: #dc3545 !important;
 }
 
-/* Placeholder styling */
+/* Placeholder styling - hide placeholder when label is visible */
 .floating-input input::placeholder {
-  color: transparent;
+  color: transparent !important;
 }
 
 .floating-input input:focus::placeholder {
-  color: #9ca3af;
+  color: #9ca3af !important;
 }
 
 /* Error text - hidden by default, shown when input has .error class */
