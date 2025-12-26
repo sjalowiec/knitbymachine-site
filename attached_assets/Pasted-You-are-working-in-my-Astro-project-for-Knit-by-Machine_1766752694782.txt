@@ -1,0 +1,93 @@
+You are working in my Astro project for Knit by Machine.
+
+Context
+Route: /wizards/hat-builder
+
+This page has:
+- a FIXED global site header (logo + nav) that stays at the top of the viewport
+- an auto-revealed pattern/results section that appears when inputs are complete
+- a pattern section header:
+  <h2 id="hat-pattern-results-heading">Your Custom Hat Pattern</h2>
+
+Problem to solve
+When the page auto-scrolls to reveal the pattern section, the fixed site header causes
+the pattern header to be partially or fully hidden behind it, and the scroll feels
+too subtle.
+
+Goal
+Ensure that when the pattern is revealed for the first time:
+- the page scrolls so the PATTERN HEADER is clearly visible
+- nothing is hidden behind the fixed SITE HEADER
+- the pattern feels “front and center”
+
+Important clarification
+- We do NOT scroll to the site header.
+- We scroll to the PATTERN HEADER.
+- We compensate for the site header height.
+
+Implementation (do exactly this)
+
+1) Add scroll offset via CSS (preferred solution)
+
+Apply scroll-margin-top to the PATTERN HEADER
+(this offsets scrollIntoView automatically for the fixed header).
+
+If using Tailwind:
+- Add a class to the pattern header:
+  scroll-mt-[96px]
+
+Example:
+<h2
+  id="hat-pattern-results-heading"
+  class="scroll-mt-[96px]"
+>
+  Your Custom Hat Pattern
+</h2>
+
+Notes:
+- 96px is a starting value (fixed header height + ~16px breathing room).
+- Adjust if needed, but do not remove the offset entirely.
+
+2) Keep the existing one-time auto-scroll logic simple
+
+When the pattern results section becomes visible for the first time:
+- Scroll to the PATTERN HEADER (not the site header).
+- Scroll only once per session.
+- Respect prefers-reduced-motion.
+
+Use sessionStorage key:
+  "kbm_hat_builder_scrolled"
+
+Scroll logic example:
+
+const headingEl = document.getElementById('hat-pattern-results-heading');
+if (!headingEl) return;
+
+const prefersReducedMotion = window.matchMedia(
+  '(prefers-reduced-motion: reduce)'
+).matches;
+
+headingEl.scrollIntoView({
+  behavior: prefersReducedMotion ? 'auto' : 'smooth',
+  block: 'start',
+});
+
+Do NOT:
+- scroll to <header>
+- manually subtract offsets in JS (CSS handles it)
+- re-trigger scroll on subsequent input changes
+
+3) Verify final behavior
+
+Confirm that on first reveal:
+- The page scrolls noticeably
+- “Your Custom Hat Pattern” is fully visible
+- Nothing is hidden behind the fixed site header
+- Inputs remain visible above if the user scrolls back up
+
+4) Safety steps
+
+- Create .bak backups of any file you modify.
+- List the file paths changed after implementation.
+
+Proceed now and implement cleanly.
