@@ -240,19 +240,8 @@ select.disabled {
   line-height: 1.4;
 }
 
-/* Tips toggle controls */
-.tips-controls {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-  padding: 0.5rem 0.75rem;
-  background: #f8f9fa;
-  border-radius: 4px;
-  font-size: 0.9rem;
-}
-
-.tips-toggle-btn {
+/* Tips toggle button - placed in pattern content above Finished Measurements */
+:global(.tips-toggle-btn) {
   background: none;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -260,9 +249,10 @@ select.disabled {
   cursor: pointer;
   font-size: 0.85rem;
   color: #555;
+  margin-bottom: 1rem;
 }
 
-.tips-toggle-btn:hover {
+:global(.tips-toggle-btn:hover) {
   background: #e9ecef;
 }
 
@@ -343,8 +333,8 @@ select.disabled {
     margin-top: 1rem !important;
   }
   
-  /* Hide tips controls in print */
-  .tips-controls {
+  /* Hide tips toggle button in print */
+  :global(.tips-toggle-btn) {
     display: none !important;
   }
   
@@ -518,10 +508,6 @@ select.disabled {
       <div id="results" class="results-container" style="display: none;">
         <h2 id="hat-pattern-results-heading" class="results-heading">Your Custom Hat Pattern</h2>
         <p class="results-reassurance">This pattern is generated from your measurements, gauge, and style choices. You can adjust inputs above at any time.</p>
-        
-        <div class="tips-controls" id="tips-controls" style="display: none;">
-          <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">Show tips</button>
-        </div>
         
         <ActionBar />
         
@@ -721,25 +707,25 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.getElementById('action-bar').style.display = 'none';
   });
   
-  // Tips Toggle Functionality
-  const tipsControls = document.getElementById('tips-controls');
-  const tipsToggleBtn = document.getElementById('tips-toggle-btn');
+  // Tips Toggle Functionality - called after pattern content is rendered
   const patternContent = document.getElementById('pattern-content');
   
-  // Load saved preference from localStorage
+  // Apply saved preference to pattern content on initial load
   const savedShowTips = localStorage.getItem('hat-show-tips') === 'true';
-  
-  // Apply saved preference
   patternContent.dataset.showTips = savedShowTips ? 'true' : 'false';
-  tipsToggleBtn.textContent = savedShowTips ? 'Hide tips' : 'Show tips';
   
-  tipsToggleBtn.addEventListener('click', () => {
-    const isShowing = patternContent.dataset.showTips === 'true';
-    const newState = !isShowing;
-    patternContent.dataset.showTips = newState ? 'true' : 'false';
-    tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
-    localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
-  });
+  function attachTipsToggleListener() {
+    const tipsToggleBtn = document.getElementById('tips-toggle-btn');
+    if (!tipsToggleBtn) return;
+    
+    tipsToggleBtn.addEventListener('click', () => {
+      const isShowing = patternContent.dataset.showTips === 'true';
+      const newState = !isShowing;
+      patternContent.dataset.showTips = newState ? 'true' : 'false';
+      tipsToggleBtn.textContent = newState ? 'Hide tips' : 'Show tips';
+      localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
+    });
+  }
   
   // Calculate Function
   function calculate() {
@@ -891,8 +877,8 @@ document.addEventListener('DOMContentLoaded', async function() {
       headingEl?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
     }
     
-    // Show tips controls
-    tipsControls.style.display = 'flex';
+    // Attach tips toggle event listener (button is now in pattern content)
+    attachTipsToggleListener();
     
     // Update print summary
     updatePrintSummary({
@@ -1099,8 +1085,10 @@ document.addEventListener('DOMContentLoaded', async function() {
       </section>`;
     }
     
-    // Pattern HTML
+    // Pattern HTML - includes tips toggle button before Finished Measurements
+    const savedShowTipsForBtn = localStorage.getItem('hat-show-tips') === 'true';
     const patternHTML = `
+      <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">${savedShowTipsForBtn ? 'Hide tips' : 'Show tips'}</button>
       <div class="highlight-box">
         <p><strong>Finished Measurements:</strong></p>
         <p>Head Circumference: ${displayHeadCirc} ${unit} → Hat Width: ${displayWidth} ${unit} (with negative ease)</p>
