@@ -610,8 +610,8 @@ document.addEventListener('DOMContentLoaded', async function() {
     const currentUnit = unitStore.get();
     const placeholders = getPlaceholders(currentUnit);
     
-    stitchGaugeInput.placeholder = placeholders.stitchGauge;
-    rowGaugeInput.placeholder = placeholders.rowGauge;
+    // Note: Gauge inputs use floating labels (handled by GaugeInput component)
+    // Only update circumference placeholder here
     customCircInput.placeholder = placeholders.circumference;
   }
   

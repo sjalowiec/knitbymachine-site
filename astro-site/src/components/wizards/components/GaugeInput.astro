@@ -101,7 +101,7 @@ const effectiveToggleId = toggleId || id;
   <p class="gauge-helper">Enter your measured gauge over 4" (or 10 cm).</p>
 </div>
 
-<style>
+<style is:global>
 .gauge-input-wrapper {
   margin-bottom: 1.5rem;
 }
@@ -130,6 +130,72 @@ const effectiveToggleId = toggleId || id;
   margin-top: 0.5rem;
   margin-bottom: 0;
   font-style: italic;
+}
+
+/* Floating input styles - higher specificity to override wizard.css */
+.gauge-input-wrapper .gauge-input-row .floating-input {
+  position: relative !important;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input input[type="number"] {
+  width: 100% !important;
+  padding: 0.75rem !important;
+  border: 2px solid #e5e7eb !important;
+  border-radius: 8px !important;
+  font-family: var(--font);
+  font-size: 1rem !important;
+  color: var(--text-dark, #374151);
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+  box-sizing: border-box;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input input::-webkit-outer-spin-button,
+.gauge-input-wrapper .gauge-input-row .floating-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input input:focus {
+  outline: none;
+  border-color: var(--kbm-green) !important;
+  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1) !important;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input label {
+  position: absolute !important;
+  left: 0.75rem !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  font-size: 0.95rem !important;
+  color: #6b7280 !important;
+  pointer-events: none !important;
+  transition: all 0.2s ease !important;
+  background: transparent !important;
+  padding: 0 2px !important;
+  margin-bottom: 0 !important;
+  font-weight: normal !important;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input input:focus ~ label,
+.gauge-input-wrapper .gauge-input-row .floating-input input:not(:placeholder-shown) ~ label {
+  top: 0.35rem !important;
+  transform: translateY(0) !important;
+  font-size: 0.75rem !important;
+  color: var(--kbm-green) !important;
+  font-weight: 500 !important;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input input::placeholder {
+  color: transparent !important;
+}
+
+.gauge-input-wrapper .gauge-input-row .floating-input input:focus::placeholder {
+  color: #9ca3af !important;
 }
 </style>
 
