@@ -682,6 +682,34 @@ document.addEventListener('DOMContentLoaded', async function() {
     calculate
   );
   
+  // One-time auto-scroll on blur of last required input (row gauge)
+  // This prevents scroll interruption during typing
+  rowGaugeInput.addEventListener('blur', () => {
+    const scrollKey = 'kbm_hat_builder_scrolled';
+    const resultsEl = document.getElementById('results');
+    const isPatternVisible = resultsEl && resultsEl.style.display !== 'none';
+    
+    if (isPatternVisible && !sessionStorage.getItem(scrollKey)) {
+      sessionStorage.setItem(scrollKey, '1');
+      
+      requestAnimationFrame(() => {
+        const headingEl = document.getElementById('hat-pattern-results-heading');
+        if (headingEl) {
+          const siteHeader = document.querySelector('.kbm-header-wrap');
+          const headerHeight = siteHeader?.offsetHeight ?? 120;
+          const headerOffset = headerHeight + 16;
+          const elementPosition = headingEl.getBoundingClientRect().top + window.scrollY;
+          const offsetPosition = elementPosition - headerOffset;
+          const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: prefersReducedMotion ? 'auto' : 'smooth'
+          });
+        }
+      });
+    }
+  });
+  
   // Action Bar
   printBtn.addEventListener('click', () => {
     window.print();
@@ -866,25 +894,6 @@ document.addEventListener('DOMContentLoaded', async function() {
       actionBarSelector: '#action-bar',
       printButtonSelector: '#print-btn',
       printFooterSelector: '#print-footer'
-    });
-    
-    // Auto-scroll to results heading (accounts for fixed header)
-    // Use requestAnimationFrame to ensure DOM is fully rendered before calculating position
-    requestAnimationFrame(() => {
-      const headingEl = document.getElementById('hat-pattern-results-heading');
-      if (headingEl) {
-        // Dynamically measure the actual fixed header height
-        const siteHeader = document.querySelector('.kbm-header-wrap');
-        const headerHeight = siteHeader?.offsetHeight ?? 120;
-        const headerOffset = headerHeight + 16; // Add 16px extra padding
-        const elementPosition = headingEl.getBoundingClientRect().top + window.scrollY;
-        const offsetPosition = elementPosition - headerOffset;
-        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        window.scrollTo({
-          top: offsetPosition,
-          behavior: prefersReducedMotion ? 'auto' : 'smooth'
-        });
-      }
     });
     
     // Attach tips toggle event listener (button is now in pattern content)

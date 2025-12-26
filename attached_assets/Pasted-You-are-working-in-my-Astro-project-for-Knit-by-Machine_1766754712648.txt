@@ -1,0 +1,89 @@
+You are working in my Astro project for Knit by Machine.
+
+Route
+/wizards/hat-builder
+
+Problem
+The page currently auto-scrolls as soon as the last required input becomes valid,
+which can happen mid-keystroke. This interrupts typing.
+
+Goal
+Defer the ONE-TIME auto-scroll until the user finishes interacting with the
+LAST required input field (on blur), not during typing.
+
+Important constraints
+- Keep live validation and auto-reveal exactly as-is.
+- Do NOT add a Generate / Submit button.
+- Do NOT scroll on every change.
+- Scroll only once per session.
+- Respect prefers-reduced-motion.
+- Do NOT scroll while the cursor is still in the input.
+
+Implementation strategy (Option A)
+Trigger the auto-scroll on the `blur` event of the last required input field,
+but ONLY if:
+- the pattern is now valid / revealed
+- the scroll has not already occurred
+
+Steps to implement
+
+1) Identify the “last required input”
+   - Find the input field that completes the required data set
+     (e.g., length, circumference, gauge rows, etc.).
+   - Add a clear identifier to this field:
+     id="hat-builder-final-input"
+
+   Do NOT change its validation logic.
+
+2) Add a one-time blur handler to that input
+
+   On blur:
+   - Check whether the pattern/results section is currently visible
+     (isValid / canShowPattern === true).
+   - Check sessionStorage key:
+     "kbm_hat_builder_scrolled"
+   - If NOT scrolled yet, trigger the scroll.
+
+3) Scroll target and behavior
+
+   - Scroll to:
+     #hat-pattern-results-heading
+   - Assume this heading already has scroll-margin-top applied
+     to account for the fixed site header.
+   - Respect reduced motion.
+
+   Example logic:
+
+   const hasScrolled = sessionStorage.getItem('kbm_hat_builder_scrolled');
+
+   if (canShowPattern && !hasScrolled) {
+     sessionStorage.setItem('kbm_hat_builder_scrolled', '1');
+
+     const headingEl = document.getElementById('hat-pattern-results-heading');
+     const prefersReducedMotion = window.matchMedia(
+       '(prefers-reduced-motion: reduce)'
+     ).matches;
+
+     headingEl?.scrollIntoView({
+       behavior: prefersReducedMotion ? 'auto' : 'smooth',
+       block: 'start',
+     });
+   }
+
+4) Ensure this runs client-side only
+   - Attach the blur handler inside the relevant component
+     or via an inline client script.
+   - Do not run during SSR.
+
+5) Safety checks
+   - Do NOT trigger scroll on input or change events.
+   - Do NOT retrigger scroll if the user edits values later.
+   - Confirm the cursor never moves while typing.
+
+6) Backups + reporting
+   - Create .bak copies of any file you edit.
+   - List the exact file paths changed.
+   - Confirm the scroll now occurs only after the user leaves
+     the final required input field.
+
+Proceed now and implement cleanly.
