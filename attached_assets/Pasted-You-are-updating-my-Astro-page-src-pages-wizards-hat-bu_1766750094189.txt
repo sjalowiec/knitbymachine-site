@@ -1,0 +1,65 @@
+You are updating my Astro page: src/pages/wizards/hat-builder.astro
+
+GOAL
+Add two new knitting terms to the hat pattern:
+- Include them in the Terms section (TermsBlock)
+- Add tooltips to the FIRST occurrence of each term in the pattern text
+
+Do NOT change calculations, layout, or any other pattern content.
+
+SAFETY
+1) Make a local backup copy of src/pages/wizards/hat-builder.astro (e.g., hat-builder.astro.bak).
+2) Keep changes limited to terms data + inline tooltip markup.
+
+TERMS TO ADD
+Add the following two terms exactly as written:
+
+1) Term: hung hem  
+   Definition:
+   "A folded, double-layer hem formed by hanging the cast-on stitches back onto the needles."
+
+2) Term: turning row  
+   Definition:
+   "For a doubled hem or band, a single row that creates a sharp crease at the fold line."
+
+TERMS SECTION (TermsBlock)
+3) Locate the existing TermsBlock data structure (array/object/list).
+4) Add both terms using the same schema as existing terms:
+   - term label
+   - definition text
+   - any existing id/slug/tooltip key pattern
+5) Ensure both terms appear in the rendered Terms section with tooltips enabled.
+
+INLINE TOOLTIP (FIRST USE ONLY)
+6) Locate the FIRST occurrence of:
+   - “hung hem”
+   - “turning row”
+   in the pattern text.
+
+7) Wrap ONLY the first occurrence of each term with the existing tooltip markup/component used elsewhere in this file.
+   - Do not tooltip subsequent occurrences.
+   - Match casing and spacing exactly as the visible text.
+   - Do not introduce new tooltip components or styles.
+
+8) If either term does not yet appear in the pattern text:
+   - Insert it naturally in the appropriate section (likely Brim or Hem instructions)
+   - Tooltip that first inserted occurrence.
+
+CODE QUALITY
+9) Follow existing naming conventions and tooltip patterns.
+10) Do not duplicate terms if they already exist.
+11) Keep definitions exactly as provided (no rewriting).
+
+TEST
+12) Verify:
+   - Both terms appear in the Terms section.
+   - Hovering the inline term shows the correct definition.
+   - Tooltips appear only on the first occurrence.
+   - No console errors.
+
+DELIVERABLE
+13) Confirm:
+   - File edited: src/pages/wizards/hat-builder.astro
+   - Show the exact snippets added to:
+     a) TermsBlock data
+     b) Inline tooltip markup for first use
