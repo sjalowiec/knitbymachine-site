@@ -1,0 +1,90 @@
+You are working in my Astro project for Knit by Machine.
+
+Target page
+Route: /wizards/hat-builder
+Find the Astro page + any component(s) it uses to render the Hat Builder inputs + the auto-revealed pattern/results section.
+
+Goal
+Implement 4 UX improvements to the hat builder’s “auto-reveal” results section (there is NO Generate/Calculate button). The pattern section appears automatically when required inputs are valid.
+
+The 4 changes to implement
+1) Add a clear results header at the very top of the revealed results section:
+   H2 text: “Your Custom Hat Pattern”
+   Give this heading a stable id so we can scroll to it:
+   id="hat-pattern-results-heading"
+
+2) Move the “Show tips” control so it appears BELOW:
+   - the results header, and
+   - the reassurance line (see #4),
+   NOT above the header.
+
+3) Add a one-time auto-scroll when results first become visible (per page load/session):
+   - Scroll should anchor to the results heading (#hat-pattern-results-heading)
+   - Scroll only once (do NOT scroll again on later input changes)
+   - Respect reduced motion:
+     if prefers-reduced-motion: reduce → use behavior: 'auto' (no smooth scroll)
+
+4) Add one short reassurance sentence directly under the results header (and above “Show tips”):
+   “This pattern is generated from your measurements, gauge, and style choices. You can adjust inputs above at any time.”
+
+Constraints
+- Do NOT add a “Generate” or “Calculate” button.
+- Do NOT navigate to a new page.
+- Do NOT clear/hide the input form when results appear.
+- Keep existing calculations and rendering logic intact.
+- Keep changes minimal: no redesign, no big copy rewrite.
+
+Implementation steps (do these in order)
+A) Locate the /wizards/hat-builder implementation:
+   - Identify the Astro page file and any imported component(s) that contain:
+     • the input form
+     • the “isComplete/isValid/canShowPattern” logic
+     • the conditional rendering of the pattern/results section
+
+B) Backup files before editing:
+   - For each file you edit, create a .bak copy beside it (same filename + .bak).
+
+C) Add stable container + heading
+   - Wrap the revealed results section in a container with:
+     id="hat-pattern-results"
+   - At the very top of that container, insert:
+     <h2 id="hat-pattern-results-heading">Your Custom Hat Pattern</h2>
+
+D) Insert reassurance line
+   - Immediately under the H2, add a short <p> with the reassurance sentence (#4).
+   - Keep it visually secondary (smaller/normal text, not a callout box).
+
+E) Reorder “Show tips”
+   - Ensure the “Show tips” toggle/button renders AFTER:
+     header + reassurance line
+   - Then the rest of the results content follows.
+
+F) One-time auto-scroll (critical behavior)
+   - Detect the transition from results hidden → visible.
+   - Use sessionStorage to persist the “already scrolled” flag for this session:
+     key: "kbm_hat_builder_scrolled"
+   - When results become visible AND the flag is not set:
+     1) set sessionStorage flag to "1"
+     2) scroll the heading into view:
+        const headingEl = document.getElementById('hat-pattern-results-heading');
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        headingEl?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+
+   Notes:
+   - Make sure this runs client-side only (e.g., inside a component effect or a small inline client script).
+   - Do NOT trigger scroll on every reactive change—only on the first time results appear.
+
+G) Tiny CSS polish (optional but recommended)
+   - Add a subtle “state change” separator for the results container without introducing new colors:
+     • a little top margin (e.g., mt-6 / margin-top)
+     • optional border-top + padding-top (use existing neutral border tokens/classes if you have them)
+   - Keep it calm and consistent with KBM styling.
+
+Deliverables
+1) List the exact file paths you modified (the /wizards/hat-builder page and any components/scripts).
+2) Confirm the results section order is now:
+   H2 header → reassurance sentence → Show tips toggle → results content.
+3) Confirm the one-time auto-scroll works and respects reduced motion.
+4) Mention where the sessionStorage flag is set and what key is used.
+
+Proceed now and implement cleanly.

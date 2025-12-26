@@ -219,6 +219,27 @@ select.disabled {
   color: #555;
 }
 
+/* Results container styling */
+.results-container {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #e9ecef;
+}
+
+.results-heading {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.results-reassurance {
+  margin: 0 0 1rem 0;
+  font-size: 0.9rem;
+  color: #666;
+  line-height: 1.4;
+}
+
 /* Tips toggle controls */
 .tips-controls {
   display: flex;
@@ -494,14 +515,18 @@ select.disabled {
       </div>
 
       <!-- Results Section -->
-      <div id="results" style="display: none;">
+      <div id="results" class="results-container" style="display: none;">
+        <h2 id="hat-pattern-results-heading" class="results-heading">Your Custom Hat Pattern</h2>
+        <p class="results-reassurance">This pattern is generated from your measurements, gauge, and style choices. You can adjust inputs above at any time.</p>
+        
+        <div class="tips-controls" id="tips-controls" style="display: none;">
+          <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">Show tips</button>
+        </div>
+        
         <ActionBar />
         
         <div class="results-section">
           <div class="pattern-card">
-            <div class="tips-controls" id="tips-controls" style="display: none;">
-              <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">Show tips</button>
-            </div>
             <div id="pattern-content" data-show-tips="false">
               <!-- Will be populated by JavaScript -->
             </div>
@@ -857,6 +882,15 @@ document.addEventListener('DOMContentLoaded', async function() {
       printFooterSelector: '#print-footer'
     });
     
+    // One-time auto-scroll to results heading (per session)
+    const scrollKey = 'kbm_hat_builder_scrolled';
+    if (!sessionStorage.getItem(scrollKey)) {
+      sessionStorage.setItem(scrollKey, '1');
+      const headingEl = document.getElementById('hat-pattern-results-heading');
+      const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      headingEl?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+    }
+    
     // Show tips controls
     tipsControls.style.display = 'flex';
     
@@ -1067,8 +1101,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     
     // Pattern HTML
     const patternHTML = `
-      <h3>Your Custom Hat Pattern</h3>
-      
       <div class="highlight-box">
         <p><strong>Finished Measurements:</strong></p>
         <p>Head Circumference: ${displayHeadCirc} ${unit} → Hat Width: ${displayWidth} ${unit} (with negative ease)</p>
