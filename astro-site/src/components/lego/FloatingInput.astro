@@ -1,0 +1,56 @@
+---
+interface Props {
+  id: string;
+  label: string;
+  type?: string;
+  inputMode?: string;
+  min?: string | number;
+  max?: string | number;
+  step?: string | number;
+  placeholder?: string;
+  required?: boolean;
+  value?: string | number;
+  testId?: string;
+  errorId?: string;
+  errorText?: string;
+  invalid?: boolean;
+}
+
+const {
+  id,
+  label,
+  type = "text",
+  inputMode,
+  min,
+  max,
+  step,
+  placeholder = " ",
+  required = false,
+  value,
+  testId,
+  errorId,
+  errorText = "Please enter a valid number.",
+  invalid = false,
+} = Astro.props;
+---
+
+<div class="floating-input">
+  <input
+    type={type}
+    id={id}
+    inputmode={inputMode}
+    min={min}
+    max={max}
+    step={step}
+    placeholder={placeholder}
+    required={required}
+    value={value}
+    data-testid={testId}
+    aria-describedby={errorId}
+    aria-invalid={invalid ? "true" : undefined}
+  />
+  <label for={id}>{label}</label>
+  {errorId && (
+    <span class="error-text" id={errorId}>{errorText}</span>
+  )}
+</div>

@@ -1,0 +1,92 @@
+/* ========================================
+   Floating Input Component Styles
+   Reusable floating-label input pattern
+   ======================================== */
+
+.floating-input {
+  position: relative;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.floating-input input {
+  width: 100%;
+  padding: 1.25rem 0.875rem 0.5rem;
+  border: 1px solid #d0d5cc;
+  border-radius: 6px;
+  font-family: var(--font);
+  font-size: 1rem;
+  color: var(--text-dark, #374151);
+  background: white;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -moz-appearance: textfield;
+  box-sizing: border-box;
+}
+
+.floating-input input::-webkit-outer-spin-button,
+.floating-input input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.floating-input input:focus {
+  outline: none;
+  border-color: var(--kbm-green);
+  box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+}
+
+/* Error state */
+.floating-input input.error {
+  border-color: #dc3545;
+}
+
+/* Label - positioned inside input by default */
+.floating-input label {
+  position: absolute;
+  left: 0.875rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.95rem;
+  color: #6b7280;
+  pointer-events: none;
+  transition: all 0.2s ease;
+  background: transparent;
+  padding: 0 2px;
+}
+
+/* Float/shrink label when focused or has value */
+.floating-input input:focus + label,
+.floating-input input:not(:placeholder-shown) + label {
+  top: 0.5rem;
+  transform: translateY(0);
+  font-size: 0.75rem;
+  color: var(--kbm-green);
+  font-weight: 500;
+}
+
+/* Label error state */
+.floating-input input.error + label {
+  color: #dc3545;
+}
+
+/* Placeholder styling */
+.floating-input input::placeholder {
+  color: transparent;
+}
+
+.floating-input input:focus::placeholder {
+  color: #9ca3af;
+}
+
+/* Error text - hidden by default */
+.floating-input .error-text {
+  color: #dc3545;
+  font-size: 0.8rem;
+  margin-top: 0.35rem;
+  display: none;
+}
+
+.floating-input .error-text.show {
+  display: block;
+}
