@@ -47,19 +47,26 @@
 }
 
 /* Label - positioned inside input by default */
+/* Override all wizard.css flex and layout rules */
 .floating-input label {
   position: absolute !important;
   left: 0.75rem !important;
   top: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
   transform: translateY(-50%) !important;
+  display: block !important;
+  width: auto !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 2px !important;
   font-size: 0.95rem !important;
+  font-weight: normal !important;
   color: #6b7280 !important;
   pointer-events: none !important;
   transition: all 0.2s ease !important;
   background: transparent !important;
-  padding: 0 2px !important;
-  margin-bottom: 0 !important;
-  font-weight: normal !important;
+  white-space: nowrap !important;
 }
 
 /* Float/shrink label when focused or has value */
