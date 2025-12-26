@@ -4,6 +4,7 @@ import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
 import ToolActionBar from "../../components/wizards/ToolActionBar.astro";
 import GaugeInput from "../../components/wizards/components/GaugeInput.astro";
+import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 import "../../styles/wizard.css";
 
 const pageUrl = "https://knitbymachine.com/tools/graph-paper";
@@ -102,9 +103,12 @@ const pageUrl = "https://knitbymachine.com/tools/graph-paper";
   </div>
 
   <div class="tool-container">
+    <!-- Unit Toggle - left-aligned, above first input -->
+    <UnitToggle id="graph" />
+
     <!-- Gauge Section -->
     <div class="form-section">
-      <GaugeInput id="graph" showTitle={true} showToggle={true} />
+      <GaugeInput id="graph" showTitle={true} showToggle={false} />
       <p class="gauge-error" id="gauge-error" style="display: none; color: #dc2626; font-size: 0.9rem; margin-top: 0.5rem;">Please enter whole numbers only.</p>
     </div>
 
@@ -146,9 +150,7 @@ document.addEventListener('DOMContentLoaded', function() {
   const selectPaper = document.getElementById('paper-size') as HTMLSelectElement;
   const downloadBtn = document.getElementById('download-btn') as HTMLAnchorElement;
 
-  // Initialize inputs from localStorage
-  if (inputStitches) inputStitches.value = stitches;
-  if (inputRows) inputRows.value = rows;
+  // Initialize paper size from localStorage (but NOT gauge inputs - they start blank)
   if (selectPaper) selectPaper.value = paperSize;
 
   // Update UI based on unit - labels are handled by GaugeInput component
@@ -196,6 +198,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
   btnCm?.addEventListener('click', () => {
     unit = 'cm';
+    updateUnitsUI();
+    updateDownloadLink();
+  });
+
+  // Listen for unit changes from UnitToggle component
+  window.addEventListener('kbm:units-change', (e: CustomEvent) => {
+    unit = e.detail.unit;
     updateUnitsUI();
     updateDownloadLink();
   });
