@@ -441,13 +441,10 @@ const pageUrl = "https://knitbymachine.com/wizards/triangle";
 
   <div class="wizard-container">
     <div class="calculator-card">
-      <!-- Wizard Header with Unit Toggle (KBM standardized layout) -->
-      <div class="wizard-header kbm-header-layout">
-        <h2 class="wizard-title">Step 1: Enter your triangle details</h2>
-        <div id="kbm-units-toggle">
-          <UnitToggle id="triangle" />
-        </div>
-      </div>
+      <h2 class="wizard-title">Step 1: Enter your triangle details</h2>
+      
+      <!-- Unit Toggle - left-aligned, above first input -->
+      <UnitToggle id="triangle" />
       
       <!-- Visual Triangle Diagram with Inputs -->
       <div class="triangle-diagram">

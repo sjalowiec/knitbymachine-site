@@ -1,0 +1,103 @@
+You are working in my Astro site (KBM).
+
+IMPORTANT NAMING CONSTRAINT
+- There is exactly ONE units toggle component.
+- Its name is **UnitToggle** (singular).
+- Do NOT create a new component.
+- Do NOT create or reference UnitsToggle (plural).
+- All updates must modify the existing UnitToggle component only.
+
+GOAL
+- Update the existing UnitToggle component to meet new UX + accessibility requirements.
+- Standardize usage of UnitToggle across ALL wizards and pattern builders.
+- UnitToggle must be SMALL, LEFT-ALIGNED, and appear ONCE per page.
+- Placement rule: UnitToggle appears immediately ABOVE the FIRST input section (start of user entry).
+- Do NOT right-align the toggle.
+- Do NOT tie the toggle semantically to a section title like “Gauge” (not all wizards have gauge).
+
+SAFETY
+- Before editing any file, create a backup copy next to it with the same name + `.bak`
+  Example: UnitToggle.astro.bak
+- Preserve existing unit behavior per page. Do NOT introduce new conversion logic.
+
+STEP 1 — Locate and inspect the existing component
+1) Locate **UnitToggle** (e.g. `UnitToggle.astro`).
+2) Report in your output:
+   - Exact file path
+   - Current props
+   - Current JS behavior
+
+STEP 2 — Update the existing UnitToggle component
+Update **UnitToggle** so it:
+
+STRUCTURE & A11Y
+- Renders a compact segmented control with two buttons:
+  - “Inches”
+  - “Centimeters”
+- Wrapper:
+  - `role="group"`
+  - `aria-label="Units"`
+- Buttons:
+  - `type="button"`
+  - `data-unit="in"` and `data-unit="cm"`
+  - reflect active state with `aria-pressed="true/false"`
+- Preserve or add these test IDs (do not rename existing ones):
+  - `data-testid="button-unit-inches"`
+  - `data-testid="button-unit-cm"`
+
+BEHAVIOR
+- On click, dispatch:
+  `window.dispatchEvent(new CustomEvent("kbm:units-change", { detail: { unit: "in" | "cm" } }))`
+- Maintain backward compatibility with any existing props such as:
+  - `unit`, `value`, or `defaultUnit` (if present)
+- Do NOT require consuming pages to change how they import the component unless necessary.
+
+HIDDEN INPUT (single source of truth)
+- Ensure the wizard form contains:
+  `<input type="hidden" name="unit" id="unit" value="in|cm" />`
+- If the hidden input is missing:
+  - Insert it at runtime into the nearest parent `<form>`
+  - Prefer a form with `id="wizard-form"` if present
+
+STEP 3 — Compact styling (minimal vertical space)
+- Reduce vertical height to approx **30–32px**
+- No tall wrappers, banners, or excessive margins
+- LEFT-ALIGNED only
+- Use existing brand CSS variables/colors (do NOT invent new ones)
+- Scope styles to UnitToggle or add them to existing wizard styles—match current project conventions
+
+STEP 4 — Migrate wizard & pattern pages
+For EACH wizard / pattern page:
+
+PLACEMENT
+- Insert **UnitToggle ONCE**
+- Place it immediately ABOVE the FIRST input section inside the form
+- Do NOT place it inside a section header or next to a title
+
+CLEANUP
+- Remove any duplicated unit toggles
+- Remove page-specific toggle markup now replaced by UnitToggle
+- Keep all calculation logic intact
+
+JS WIRING (only where needed)
+- Read unit from hidden input:
+  `#wizard-form #unit`
+- Listen for:
+  `"kbm:units-change"`
+- On change:
+  - Update the hidden input value
+  - Call existing functions to update labels and recalculate outputs
+- Do NOT modify scrolling, sticky buttons, or layout logic
+
+STEP 5 — Edge cases
+- If a wizard has unusual or unclear unit logic:
+  - Leave its existing logic intact
+  - Add a `TODO` comment explaining what you found
+  - Do NOT break the page
+
+OUTPUT
+- List every file changed
+- Briefly describe changes per file
+- Explicitly list any pages NOT migrated and why
+
+Proceed now.

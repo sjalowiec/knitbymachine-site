@@ -5,6 +5,7 @@ import WhyUseThisToolTooltip from "../../components/common/WhyUseThisToolTooltip
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/gauge-calculator";
 
@@ -108,35 +109,6 @@ try {
   box-shadow: 0 2px 8px rgba(0,0,0,0.08);
 }
 
-.units-toggle {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-  padding: 4px;
-  background: #f3f4f6;
-  border-radius: 8px;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.unit-btn {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  background: transparent;
-  color: #6b7280;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.95rem;
-}
-
-.unit-btn.active {
-  background: var(--kbm-green);
-  color: white;
-}
 
 .input-group {
   margin-bottom: 1.5rem;
@@ -368,15 +340,8 @@ try {
   </div>
 
   <div class="wizard-container">
-    <!-- Units Toggle -->
-    <div class="units-toggle">
-      <button class="unit-btn active" id="btn-inches" data-unit="inches">
-        Inches
-      </button>
-      <button class="unit-btn" id="btn-cm" data-unit="cm">
-        Centimeters
-      </button>
-    </div>
+    <!-- Unit Toggle - left-aligned, above first input -->
+    <UnitToggle id="gaugecalc" />
 
     <!-- Input Fields -->
     <div class="input-grid">
@@ -469,8 +434,8 @@ try {
   let rows = localStorage.getItem('gauge.rows') || '';
 
   // DOM elements
-  const btnInches = document.getElementById('btn-inches');
-  const btnCm = document.getElementById('btn-cm');
+  const btnInches = document.getElementById('gaugecalc-btn-inches');
+  const btnCm = document.getElementById('gaugecalc-btn-cm');
   const inputWidth = document.getElementById('swatch-width');
   const inputHeight = document.getElementById('swatch-height');
   const inputStitches = document.getElementById('stitches');
@@ -533,6 +498,14 @@ try {
 
   btnCm.addEventListener('click', () => {
     units = 'cm';
+    localStorage.setItem('gauge.unit', units);
+    updateUnitsUI();
+    calculateGauge();
+  });
+
+  // Listen for unit changes from UnitToggle component
+  window.addEventListener('kbm:units-change', (e) => {
+    units = e.detail.unit === 'in' ? 'inches' : 'cm';
     localStorage.setItem('gauge.unit', units);
     updateUnitsUI();
     calculateGauge();
