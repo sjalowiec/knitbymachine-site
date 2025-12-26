@@ -74,27 +74,27 @@ const effectiveToggleId = toggleId || id;
   )}
   
   <div class="gauge-input-row">
-    <div class="input-group">
-      <label for={`${id}-stitch-gauge`} id={`${id}-stitch-label`}>Stitches (over 4" / 10cm)</label>
+    <div class="floating-input">
       <input 
         type="number" 
         id={`${id}-stitch-gauge`}
         step="0.5" 
         min="1"
-        placeholder="sts per 4&quot;"
+        placeholder=" "
         data-testid={`input-${id}-stitch-gauge`}
       />
+      <label for={`${id}-stitch-gauge`} id={`${id}-stitch-label`}>Stitches (over 4")</label>
     </div>
-    <div class="input-group">
-      <label for={`${id}-row-gauge`} id={`${id}-row-label`}>Rows (over 4" / 10cm)</label>
+    <div class="floating-input">
       <input 
         type="number" 
         id={`${id}-row-gauge`}
         step="0.5" 
         min="1"
-        placeholder="rows per 4&quot;"
+        placeholder=" "
         data-testid={`input-${id}-row-gauge`}
       />
+      <label for={`${id}-row-gauge`} id={`${id}-row-label`}>Rows (over 4")</label>
     </div>
   </div>
   
@@ -151,18 +151,14 @@ const effectiveToggleId = toggleId || id;
       const rowLabel = document.getElementById(`${id}-row-label`);
       
       function updatePlaceholders(unit) {
-        if (!stitchInput || !rowInput) return;
+        if (!stitchLabel || !rowLabel) return;
         
         if (unit === 'cm') {
-          stitchInput.placeholder = 'sts per 10cm';
-          rowInput.placeholder = 'rows per 10cm';
-          if (stitchLabel) stitchLabel.textContent = 'Stitches (over 10 cm)';
-          if (rowLabel) rowLabel.textContent = 'Rows (over 10 cm)';
+          stitchLabel.textContent = 'Stitches (over 10 cm)';
+          rowLabel.textContent = 'Rows (over 10 cm)';
         } else {
-          stitchInput.placeholder = 'sts per 4"';
-          rowInput.placeholder = 'rows per 4"';
-          if (stitchLabel) stitchLabel.textContent = 'Stitches (over 4")';
-          if (rowLabel) rowLabel.textContent = 'Rows (over 4")';
+          stitchLabel.textContent = 'Stitches (over 4")';
+          rowLabel.textContent = 'Rows (over 4")';
         }
       }
       
