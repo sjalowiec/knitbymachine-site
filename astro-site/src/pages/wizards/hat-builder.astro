@@ -722,7 +722,7 @@ document.addEventListener('DOMContentLoaded', async function() {
       const isShowing = patternContent.dataset.showTips === 'true';
       const newState = !isShowing;
       patternContent.dataset.showTips = newState ? 'true' : 'false';
-      tipsToggleBtn.textContent = newState ? 'Hide tips for this pattern' : 'Show tips for this pattern';
+      tipsToggleBtn.textContent = newState ? 'Hide pattern tips' : 'Show pattern tips';
       localStorage.setItem('hat-show-tips', newState ? 'true' : 'false');
     });
   }
@@ -868,13 +868,17 @@ document.addEventListener('DOMContentLoaded', async function() {
       printFooterSelector: '#print-footer'
     });
     
-    // One-time auto-scroll to results heading (per session)
-    const scrollKey = 'kbm_hat_builder_scrolled';
-    if (!sessionStorage.getItem(scrollKey)) {
-      sessionStorage.setItem(scrollKey, '1');
-      const headingEl = document.getElementById('hat-pattern-results-heading');
+    // Auto-scroll to results heading (accounts for fixed header)
+    const headingEl = document.getElementById('hat-pattern-results-heading');
+    if (headingEl) {
+      const headerOffset = 96;
+      const elementPosition = headingEl.getBoundingClientRect().top + window.scrollY;
+      const offsetPosition = elementPosition - headerOffset;
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      headingEl?.scrollIntoView({ behavior: prefersReducedMotion ? 'auto' : 'smooth', block: 'start' });
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: prefersReducedMotion ? 'auto' : 'smooth'
+      });
     }
     
     // Attach tips toggle event listener (button is now in pattern content)
@@ -1088,7 +1092,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     // Pattern HTML - includes tips toggle button before Finished Measurements
     const savedShowTipsForBtn = localStorage.getItem('hat-show-tips') === 'true';
     const patternHTML = `
-      <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">${savedShowTipsForBtn ? 'Hide tips for this pattern' : 'Show tips for this pattern'}</button>
+      <button type="button" class="tips-toggle-btn" id="tips-toggle-btn" data-testid="button-tips-toggle">${savedShowTipsForBtn ? 'Hide pattern tips' : 'Show pattern tips'}</button>
       <div class="highlight-box">
         <p><strong>Finished Measurements:</strong></p>
         <p>Head Circumference: ${displayHeadCirc} ${unit} → Hat Width: ${displayWidth} ${unit} (with negative ease)</p>
