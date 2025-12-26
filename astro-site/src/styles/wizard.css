@@ -3,6 +3,21 @@
    Reusable CSS for all pattern wizards
    ======================================== */
 
+/* Back Link */
+.back-link {
+  display: inline-block;
+  color: var(--kbm-green);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: #3d4e21;
+  text-decoration: underline;
+}
+
 /* Page Layout */
 .wizard-page {
   padding-top: 120px;
