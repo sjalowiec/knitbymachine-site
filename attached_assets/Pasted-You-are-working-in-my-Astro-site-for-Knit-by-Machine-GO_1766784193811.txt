@@ -1,0 +1,85 @@
+You are working in my Astro site for Knit by Machine.
+
+GOAL
+Create a new “Card #1” landing page for the Start phase: “Just opened the box…”
+This page must use my existing site header/footer and all existing global CSS (so it should use my standard Layout component and not a standalone HTML file).
+
+IMPORTANT
+- Do not change any existing global styles.
+- Do not redesign other pages.
+- If you create any new CSS, scope it to this page only (either via a local <style> block or a new CSS file imported only by this page).
+- Keep the structure simple and readable.
+- Add clear TODO markers where I will paste video embed code and links later.
+
+STEP 1 — Create a backup
+Before editing anything, create a backup copy if you touch an existing file:
+- If you edit a file, save a .bak copy first (same folder).
+
+STEP 2 — Create the new page
+Create a new page at:
+- src/pages/start/just-opened-the-box.astro
+
+Use my existing site layout component so the header/footer render automatically.
+(If my project uses `src/layouts/Layout.astro`, import and use that. If it uses a different layout name, find the standard layout used by other pages and match it.)
+
+PAGE CONTENT (STRUCTURE)
+Top: Page title + one-sentence promise.
+
+Then 3 sections in this exact order:
+
+SECTION 1: Get Your Machine Ready
+- short intro paragraph (2–3 lines max)
+- a “Video” card with an embed placeholder:
+  - include a <div class="embed-placeholder">TODO: Paste video embed here</div>
+- a small “Quick Notes” list (3 bullets) with placeholders:
+  - TODO bullets: “Threading check”, “Yarn that works”, “Common snag”
+
+SECTION 2: Try It Now — Your First Cast On (Free Practice)
+- short intro paragraph (1–2 lines)
+- a “Skill Builder Lite” card that includes:
+  - a placeholder video embed area (same placeholder div)
+  - a numbered steps list (5–8 items) with simple placeholder steps
+  - a “You’re done when…” checklist with 3 checkboxes (use <ul> with check icons or plain checkmarks)
+
+SECTION 3: Optional — 5-Day Cast On + Bind Off Challenge (Paid)
+- one short paragraph describing it as optional structure
+- one primary button:
+  - text: “See the 5-Day Challenge”
+  - href: TODO placeholder (“#” for now)
+- one small helper line under the button:
+  - “Short daily practice. Clear steps. No overwhelm.”
+
+LAYOUT / UI REQUIREMENTS
+- Use a two-column layout on desktop: text/content on the left, a sticky “On this page” mini-nav on the right (simple anchor links to the 3 sections).
+- On mobile, collapse to one column and place the mini-nav at the top (non-sticky).
+- Use semantic headings (h1, h2).
+- Add section IDs: #ready, #caston, #challenge.
+- Include a simple breadcrumb link at top: “← Back to Home” (href “/”).
+- Use my existing button classes if they exist (search for a primary button class used elsewhere). If none exist, create a minimal class just for this page.
+
+STYLING
+- Prefer existing utility/classes already in the project.
+- If needed, add a small scoped <style> block inside this page:
+  - max-width container
+  - responsive grid
+  - “card” styling that matches the site (subtle border/radius/padding)
+  - embed placeholder styling (light background, dashed border)
+  - mini-nav styling
+
+STEP 3 — Add it to navigation (optional but helpful)
+If my site has a simple nav config or header links file, DO NOT add it globally.
+Instead, just ensure the page is accessible via URL:
+- /start/just-opened-the-box/
+
+STEP 4 — Verify
+- Run the dev server and confirm:
+  - header/footer appear
+  - global fonts/colors apply
+  - responsive layout works
+  - anchor links scroll to sections
+
+OUTPUT
+Provide:
+1) The full contents of src/pages/start/just-opened-the-box.astro
+2) Any new scoped CSS you added (prefer in-page <style>)
+3) A short note on how to access the page in the browser
