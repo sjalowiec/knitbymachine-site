@@ -836,3 +836,8 @@ p {
 .ref-scan-list li:hover::before {
   color: #C2614E;
 }
+
+/* ============================================
+   Lego Components - Import reusable styles
+   ============================================ */
+@import './lego/floating-input.css';
