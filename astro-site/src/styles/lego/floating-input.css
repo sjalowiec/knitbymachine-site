@@ -5,6 +5,9 @@
    USAGE: Use with FloatingInput.astro component
    The label starts centered inside the input and
    floats to the top-left when focused or has value.
+   
+   NAMESPACING: Uses .floating-label class to avoid
+   conflicts with wizard.css and other global styles.
    ======================================== */
 
 .floating-input {
@@ -46,9 +49,11 @@
   border-color: #dc3545 !important;
 }
 
-/* Label - positioned inside input by default */
-/* Override all wizard.css flex and layout rules */
-.floating-input label {
+/* ===========================================
+   FLOATING LABEL - Namespaced with .floating-label
+   to override wizard.css .input-group label rules
+   =========================================== */
+.floating-input .floating-label {
   position: absolute !important;
   left: 0.75rem !important;
   top: 50% !important;
@@ -67,11 +72,12 @@
   transition: all 0.2s ease !important;
   background: transparent !important;
   white-space: nowrap !important;
+  z-index: 1 !important;
 }
 
 /* Float/shrink label when focused or has value */
-.floating-input input:focus ~ label,
-.floating-input input:not(:placeholder-shown) ~ label {
+.floating-input input:focus ~ .floating-label,
+.floating-input input:not(:placeholder-shown) ~ .floating-label {
   top: 0.35rem !important;
   transform: translateY(0) !important;
   font-size: 0.75rem !important;
@@ -80,7 +86,7 @@
 }
 
 /* Label error state */
-.floating-input input.error ~ label {
+.floating-input input.error ~ .floating-label {
   color: #dc3545 !important;
 }
 

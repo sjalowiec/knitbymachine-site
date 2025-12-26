@@ -84,7 +84,7 @@ const {
     aria-invalid={invalid ? "true" : undefined}
     class:list={[{ error: invalid }]}
   />
-  <label for={id} id={labelId}>{label}</label>
+  <label for={id} id={labelId} class="floating-label">{label}</label>
   {errorId && (
     <span class="error-text" id={errorId}>{errorText}</span>
   )}
