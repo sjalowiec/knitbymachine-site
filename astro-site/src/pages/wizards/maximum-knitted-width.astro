@@ -4,6 +4,7 @@ import ActionBar from "../../components/wizards/ActionBar.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import WizardBackLink from "../../components/wizards/WizardBackLink.astro";
+import UnitToggle from "../../components/wizards/components/UnitToggle.astro";
 
 const pageUrl = "https://knitbymachine.com/wizards/maximum-knitted-width";
 ---
@@ -149,35 +150,6 @@ const pageUrl = "https://knitbymachine.com/wizards/maximum-knitted-width";
   font-size: 0.9rem;
 }
 
-.units-toggle {
-  display: flex;
-  gap: 0.5rem;
-  justify-content: center;
-  margin-bottom: 2rem;
-  padding: 4px;
-  background: #f3f4f6;
-  border-radius: 8px;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.unit-btn {
-  padding: 0.5rem 1.5rem;
-  border: none;
-  background: transparent;
-  color: #6b7280;
-  font-weight: 600;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-size: 0.95rem;
-}
-
-.unit-btn.active {
-  background: var(--kbm-green);
-  color: white;
-}
 
 .slider-container {
   position: relative;
@@ -357,12 +329,10 @@ const pageUrl = "https://knitbymachine.com/wizards/maximum-knitted-width";
 
   <div class="wizard-container">
     <div class="calculator-card">
-      <h2 class="section-title">Calculate Your Maximum Width</h2>
-      
-      <!-- Unit Toggle -->
-      <div class="units-toggle">
-        <button class="unit-btn active" id="inches-btn" data-unit="in">Inches</button>
-        <button class="unit-btn" id="cm-btn" data-unit="cm">Centimeters</button>
+      <!-- Header with Unit Toggle -->
+      <div class="kbm-header-layout">
+        <h2 class="section-title" style="margin: 0; border: none; padding: 0;">Calculate Your Maximum Width</h2>
+        <UnitToggle id="maxwidth" />
       </div>
       
       <!-- Needle Count Section -->
@@ -492,8 +462,8 @@ document.addEventListener('DOMContentLoaded', function() {
   const needleCounts = [100, 110, 150, 200, 272];
   
   // DOM elements
-  const inchesBtn = document.getElementById('inches-btn');
-  const cmBtn = document.getElementById('cm-btn');
+  const inchesBtn = document.getElementById('maxwidth-btn-inches');
+  const cmBtn = document.getElementById('maxwidth-btn-cm');
   const needleSlider = document.getElementById('needle-slider');
   const needleInput = document.getElementById('needle-input');
   const needleValue = document.getElementById('needle-value');
