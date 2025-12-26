@@ -79,7 +79,7 @@
   color: #9ca3af;
 }
 
-/* Error text - hidden by default */
+/* Error text - hidden by default, shown when input has .error class */
 .floating-input .error-text {
   color: #dc3545;
   font-size: 0.8rem;
@@ -88,5 +88,10 @@
 }
 
 .floating-input .error-text.show {
+  display: block;
+}
+
+/* Show error text when input has error class */
+.floating-input input.error ~ .error-text {
   display: block;
 }
