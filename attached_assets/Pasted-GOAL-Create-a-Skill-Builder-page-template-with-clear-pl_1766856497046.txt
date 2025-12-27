@@ -1,0 +1,57 @@
+GOAL
+Create a “Skill Builder” page template with clear placeholder content that I can edit directly in HTML/Astro.
+
+CONTEXT
+Astro site. I’m building a $19 Skill Builder offered from homepage Card 1. I want one polished page layout with placeholders, no JSON, no markdown, no admin system.
+
+DELIVERABLES
+1) Create a reusable layout component:
+- File: astro-site/src/components/skill-builders/SkillBuilderLayout.astro
+
+2) Create one starter Skill Builder page that uses that layout:
+- File: astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+- Slug should be: /practice/skill-builders/your-first-cast-on/
+
+3) Use ONLY placeholders (so I can replace them). The page must include these sections in this exact order:
+A) Hero (title, subtitle, price badge, time estimate, level)
+B) Quick Scan (3 columns or stacked cards: Best for / You’ll need / Watch for)
+C) What you’ll do (short paragraph)
+D) Video (embed placeholder + “Video length” line; if no URL, show a placeholder box)
+E) Steps (numbered list)
+F) Practice (bullets + “Practice swatch” mini-callout)
+G) Troubleshooting (3–5 collapsible FAQ rows if possible; if not, simple list)
+H) Terms used (2 short definitions: “Open cast-on” and “Closed cast-on”)
+I) What’s next (2–3 buttons/links)
+
+4) Styling:
+- Use existing site typography/colors.
+- Use simple, clean “lego block” cards and spacing.
+- Make it responsive (single column on mobile, multi-column on desktop).
+- No new global CSS unless necessary. If you add CSS, scope it to the component/page.
+
+5) Accessibility:
+- Proper headings (H1 then H2).
+- Buttons/links with visible focus.
+- Video iframe should have a title.
+
+PLACEHOLDER CONTENT (use this exact beginner focus)
+Title: “Your First Cast-On (ERAP)”
+Subtitle: “Start knitting with a secure edge—no overwhelm, just clear next moves.”
+Price: $19
+Level: Beginner
+Time: 15–30 minutes
+Outcome (What you’ll do): “You’ll cast on confidently and knit a short practice swatch.”
+
+Video placeholder label:
+Ensure there’s a single line in the Video section that says:
+“Optional: Open vs Closed — what edge did you just make? (5 min)”
+But do NOT add the full teaching content—just placeholder text.
+
+IMPORTANT
+- Do not create an index page, library page, or nav changes.
+- Do not create any paywall logic.
+- Do not introduce JSON or markdown authoring.
+- I just want a single page template + one starter page with placeholders.
+
+After implementation:
+- Add short comments in the code like: <!-- TODO: Replace ... --> next to each placeholder so I can find and edit quickly.
