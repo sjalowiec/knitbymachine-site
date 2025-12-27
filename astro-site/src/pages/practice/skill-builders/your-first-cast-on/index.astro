@@ -27,11 +27,11 @@ const faqs = [
   },
   {
     question: "The carriage won't move smoothly after cast-on",
-    answer: "Your cast-on may be too tight. Gently tug down on the cast-on comb to give the needles room to move. If it persists, you may need to restart with a looser wrap."
+    answer: "Your cast-on may be too tight. Gently tug down on the cast-on comb to give the needles room to move. If it persists, you may need to restart with a looser wrap. Try wrapping every other needle. Knit 1 row and put all needles in work and continue to knit"
   },
   {
     question: "How do I know if I'm wrapping in the right direction?",
-    answer: "For E-wrap (ERAP), wrap counter-clockwise around each needle when viewed from above. The yarn should form an \"e\" shape. Consistent direction matters more than which direction you choose."
+    answer: "For E-wrap, wrap counter-clockwise around each needle when viewed from above. The yarn should form an \"e\" shape. Consistent direction matters more than which direction you choose."
   }
 ];
 ---
@@ -101,21 +101,21 @@ const faqs = [
           <li>Notice the tension and hand positioning</li>
         </ul>
         <button type="button" class="kbm-modal-trigger" id="optionalVideoTrigger" aria-haspopup="dialog">
-          Optional: Open vs Closed — what edge did you just make? (5 min)
+           <i class="fa-solid fa-play"></i> Optional Video: Open vs Closed — what edge did you just make? (5 min)
         </button>
       </div>
       
-      <!-- RIGHT COLUMN: Main video -->
+      <!-- RIGHT COLUMN: Main video thumbnail -->
       <div class="kbm-video-embed">
-        <div class="kbm-video-wrapper-main">
-          <iframe 
-            src="https://player.vimeo.com/video/151860058?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
-            frameborder="0" 
-            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
-            referrerpolicy="strict-origin-when-cross-origin" 
-            title="E-Wrap Cast On"
-          ></iframe>
-        </div>
+        <button type="button" class="kbm-video-thumbnail" id="mainVideoTrigger" aria-haspopup="dialog" aria-label="Play E-Wrap Cast On video">
+          <img src="https://vumbnail.com/151860058.jpg" alt="E-Wrap Cast On video thumbnail" loading="lazy" />
+          <span class="kbm-play-icon" aria-hidden="true">
+            <svg viewBox="0 0 68 48" width="68" height="48">
+              <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#212121" fill-opacity="0.8"/>
+              <path d="M45 24L27 14v20" fill="#fff"/>
+            </svg>
+          </span>
+        </button>
       </div>
     </div>
   </div>
@@ -228,16 +228,37 @@ const faqs = [
   </div>
 
   <!-- ======================= -->
-  <!-- VIDEO MODAL             -->
+  <!-- MAIN VIDEO MODAL        -->
   <!-- ======================= -->
-  <div class="kbm-modal" id="optionalVideoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+  <div class="kbm-modal" id="mainVideoModal" role="dialog" aria-modal="true" aria-labelledby="mainModalTitle" hidden>
     <div class="kbm-modal-overlay"></div>
     <div class="kbm-modal-content">
       <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
-      <h3 id="modalTitle" class="kbm-modal-title">Open Cast-On vs Closed Cast-On</h3>
+      <h3 id="mainModalTitle" class="kbm-modal-title">E-Wrap Cast On</h3>
       <div class="kbm-video-wrapper">
         <iframe 
-          id="modalVideoFrame"
+          id="mainVideoFrame"
+          src="" 
+          title="E-Wrap Cast On"
+          frameborder="0" 
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= -->
+  <!-- OPTIONAL VIDEO MODAL    -->
+  <!-- ======================= -->
+  <div class="kbm-modal" id="optionalVideoModal" role="dialog" aria-modal="true" aria-labelledby="optionalModalTitle" hidden>
+    <div class="kbm-modal-overlay"></div>
+    <div class="kbm-modal-content">
+      <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="optionalModalTitle" class="kbm-modal-title">Open Cast-On vs Closed Cast-On</h3>
+      <div class="kbm-video-wrapper">
+        <iframe 
+          id="optionalVideoFrame"
           src="" 
           title="Open Cast-On vs Closed Cast-On"
           frameborder="0" 
@@ -287,6 +308,54 @@ const faqs = [
 
 .kbm-video-embed {
   width: 100%;
+}
+
+.kbm-video-thumbnail {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #000;
+  aspect-ratio: 16 / 9;
+}
+
+.kbm-video-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.2s ease;
+}
+
+.kbm-video-thumbnail:hover img,
+.kbm-video-thumbnail:focus img {
+  opacity: 0.85;
+}
+
+.kbm-video-thumbnail:focus {
+  outline: 3px solid var(--kbm-green, #52682d);
+  outline-offset: 2px;
+}
+
+.kbm-play-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.kbm-play-icon svg {
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  transition: transform 0.2s ease;
+}
+
+.kbm-video-thumbnail:hover .kbm-play-icon svg,
+.kbm-video-thumbnail:focus .kbm-play-icon svg {
+  transform: scale(1.1);
 }
 
 .kbm-video-wrapper-main {
@@ -478,27 +547,40 @@ const faqs = [
 </style>
 
 <script>
-// Video Modal - Accessible Implementation
+// Video Modal - Accessible Implementation (supports multiple modals)
 document.addEventListener('DOMContentLoaded', () => {
-  const trigger = document.getElementById('optionalVideoTrigger');
-  const modal = document.getElementById('optionalVideoModal');
-  const closeBtn = modal?.querySelector('.kbm-modal-close');
-  const overlay = modal?.querySelector('.kbm-modal-overlay');
-  const videoFrame = document.getElementById('modalVideoFrame');
-  
-  const VIDEO_URL = 'https://player.vimeo.com/video/312574558?badge=0&autopause=1';
+  // Modal configurations
+  const modals = [
+    {
+      triggerId: 'mainVideoTrigger',
+      modalId: 'mainVideoModal',
+      frameId: 'mainVideoFrame',
+      videoUrl: 'https://player.vimeo.com/video/151860058?badge=0&autopause=1&autoplay=1'
+    },
+    {
+      triggerId: 'optionalVideoTrigger',
+      modalId: 'optionalVideoModal',
+      frameId: 'optionalVideoFrame',
+      videoUrl: 'https://player.vimeo.com/video/312574558?badge=0&autopause=1&autoplay=1'
+    }
+  ];
   
   let previouslyFocused = null;
+  let activeModal = null;
   
-  function openModal() {
+  function openModal(config) {
+    const modal = document.getElementById(config.modalId);
+    const frame = document.getElementById(config.frameId);
+    const closeBtn = modal?.querySelector('.kbm-modal-close');
+    
     if (!modal) return;
     
-    // Save current focus
+    activeModal = { modal, frame, closeBtn };
     previouslyFocused = document.activeElement;
     
     // Load video
-    if (videoFrame) {
-      videoFrame.src = VIDEO_URL;
+    if (frame) {
+      frame.src = config.videoUrl;
     }
     
     // Show modal
@@ -513,15 +595,17 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   function closeModal() {
-    if (!modal) return;
+    if (!activeModal) return;
+    
+    const { modal, frame } = activeModal;
     
     // Hide modal
     modal.hidden = true;
     document.body.classList.remove('kbm-modal-open');
     
     // Stop video
-    if (videoFrame) {
-      videoFrame.src = '';
+    if (frame) {
+      frame.src = '';
     }
     
     // Restore focus
@@ -531,6 +615,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Remove ESC listener
     document.removeEventListener('keydown', handleEscape);
+    activeModal = null;
   }
   
   function handleEscape(e) {
@@ -539,9 +624,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   
-  // Event listeners
-  trigger?.addEventListener('click', openModal);
-  closeBtn?.addEventListener('click', closeModal);
-  overlay?.addEventListener('click', closeModal);
+  // Set up each modal
+  modals.forEach(config => {
+    const trigger = document.getElementById(config.triggerId);
+    const modal = document.getElementById(config.modalId);
+    const closeBtn = modal?.querySelector('.kbm-modal-close');
+    const overlay = modal?.querySelector('.kbm-modal-overlay');
+    
+    trigger?.addEventListener('click', () => openModal(config));
+    closeBtn?.addEventListener('click', closeModal);
+    overlay?.addEventListener('click', closeModal);
+  });
 });
 </script>
