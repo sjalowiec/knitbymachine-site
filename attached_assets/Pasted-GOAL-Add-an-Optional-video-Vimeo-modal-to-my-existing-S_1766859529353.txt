@@ -1,0 +1,54 @@
+GOAL
+Add an “Optional video” Vimeo modal to my existing Skill Builder page so the page stays uncluttered (no second thumbnail). Clicking the “Optional: Open vs Closed…” link should open a modal overlay with the Vimeo video embedded. Must be accessible (ESC closes, overlay click closes, focus returns).
+
+TARGET FILE
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+VIDEO
+Use this Vimeo video in the modal:
+https://player.vimeo.com/video/312574558?badge=0&autopause=1
+
+REQUIREMENTS
+1) Replace the current plain text line:
+“Optional: Open vs Closed — what edge did you just make? (5 min)”
+with a button or link-styled button that triggers the modal.
+- Text must remain exactly:
+Optional: Open vs Closed — what edge did you just make? (5 min)
+
+2) Add modal markup near the bottom of the page (just before closing layout/main wrapper is fine).
+Modal behavior:
+- Hidden by default
+- Opens on trigger click
+- Closes via: Close (×) button, clicking outside (overlay), pressing ESC
+- When opening: save the previously focused element
+- When closing: restore focus to the trigger
+- Prevent background scroll while modal is open
+
+3) Add scoped CSS (in the same page file if currently using a <style> block, otherwise add a <style is:global> ONLY if needed).
+- Do NOT affect global site styles.
+- Use existing KBM CSS vars where possible.
+- Modal should be centered, max-width 900px, responsive, with rounded corners.
+- Overlay should be semi-transparent dark.
+
+4) Video embed inside modal
+- Use responsive 16:9 wrapper (padding-top: 56.25%).
+- iframe must have title="Open Cast-On vs Closed Cast-On"
+- allow="autoplay; fullscreen; picture-in-picture"
+- Do NOT autoplay by default.
+
+5) Do NOT add any new dependencies.
+6) Do NOT add another video thumbnail on the page.
+7) Keep the rest of the Skill Builder layout unchanged.
+
+IMPLEMENTATION NOTES
+- Use simple vanilla JS inside a <script> tag in the page.
+- Add unique class names prefixed with kbm- to avoid collisions:
+  .kbm-modal, .kbm-modal-overlay, .kbm-modal-content, .kbm-modal-close,
+  .kbm-modal-trigger, .kbm-video-wrapper
+
+AFTER CHANGES
+- Verify the modal opens/closes correctly.
+- Verify ESC works.
+- Verify overlay click closes.
+- Verify focus returns to the trigger.
+- Verify background scroll is locked while open.

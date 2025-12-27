@@ -1,6 +1,6 @@
 ---
 /**
- * Your First Cast-On (ERAP) - Skill Builder Page
+ * Your First Cast-On (E-wrap) - Skill Builder Page
  * Slug: /practice/skill-builders/your-first-cast-on/
  * 
  * This is a starter template with placeholders. 
@@ -15,7 +15,7 @@ import SkillBuilderLayout from "../../../../components/skill-builders/SkillBuild
 const faqs = [
   {
     question: "My yarn keeps falling off the needles during cast-on",
-    answer: "Make sure each wrap is snug but not too tight. The yarn should sit securely in the needle hook. Try wrapping slightly lower on the needle shaft."
+    answer: "Make sure each wrap is snug but not too tight. The yarn should sit securely in the needle hook. Try wrapping slightly further back on the needle. Use the fingers of your opposite hand or a transfer tool to guide the loops."
   },
   {
     question: "The first row is too tight and hard to knit",
@@ -37,12 +37,11 @@ const faqs = [
 ---
 
 <SkillBuilderLayout
-  title="Your First Cast-On (ERAP)"
+  title="Your First Cast-On (E-wrap)"
   subtitle="Start knitting with a secure edge—no overwhelm, just clear next moves."
   price="$19"
   level="Beginner"
-  timeEstimate="15–30 minutes"
-  metaDescription="Learn your first cast-on technique for machine knitting. A beginner-friendly skill builder from Knit by Machine."
+   metaDescription="Learn your first cast-on technique for machine knitting. A beginner-friendly skill builder from Knit by Machine."
   faqs={faqs}
 >
 
@@ -55,7 +54,7 @@ const faqs = [
     <div class="sb-scan-card">
       <h3><i class="fa-solid fa-user-check"></i> Best For</h3>
       <!-- TODO: Replace with actual "Best For" content -->
-      <p>Complete beginners who have never cast on before, or knitters who want to learn the ERAP method.</p>
+      <p>Complete beginners who have never cast on before, or knitters who want to learn the E-wrap method.</p>
     </div>
     
     <div class="sb-scan-card">
@@ -63,7 +62,7 @@ const faqs = [
       <!-- TODO: Replace with actual "You'll Need" content -->
       <ul>
         <li>Your knitting machine (any brand)</li>
-        <li>Yarn (medium weight recommended)</li>
+        <li>Yarn appropriate for your machine (light coleo, medium weight recommended)</li>
         <li>Cast-on comb and weights</li>
       </ul>
     </div>
@@ -85,7 +84,7 @@ const faqs = [
   <!-- ======================= -->
   <div slot="what-youll-do">
     <!-- TODO: Replace placeholder paragraph -->
-    <p>You'll cast on confidently and knit a short practice swatch. By the end of this skill builder, you'll understand the basic mechanics of the E-wrap cast-on (also known as ERAP), feel comfortable setting up your machine, and have a finished practice piece to show for it.</p>
+    <p>You'll cast on confidently and knit a short practice swatch. By the end of this skill builder, you'll understand the basic mechanics of the E-wrap cast-on, feel comfortable setting up your machine, and have a finished practice piece to show for it.</p>
   </div>
 
   <!-- ======================= -->
@@ -97,11 +96,13 @@ const faqs = [
       <i class="fa-solid fa-video"></i>
       <p><strong>Video Placeholder</strong></p>
       <p>Embed your instructional video here using an iframe.</p>
-      <!-- Example: <iframe src="https://player.vimeo.com/video/XXXXXXX" width="100%" height="400" frameborder="0" allow="autoplay; fullscreen" allowfullscreen title="Your First Cast-On Video"></iframe> -->
+     <div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/151860058?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="E-Wrap Cast On"></iframe></div>
     </div>
     
-    <!-- TODO: Update video length if different -->
-    <p class="sb-video-note">Optional: Open vs Closed — what edge did you just make? (5 min)</p>
+    <!-- Optional video modal trigger -->
+    <button type="button" class="kbm-modal-trigger" id="optionalVideoTrigger" aria-haspopup="dialog">
+      Optional: Open vs Closed — what edge did you just make? (5 min)
+    </button>
   </div>
 
   <!-- ======================= -->
@@ -204,4 +205,218 @@ const faqs = [
     </div>
   </div>
 
+  <!-- ======================= -->
+  <!-- VIDEO MODAL             -->
+  <!-- ======================= -->
+  <div class="kbm-modal" id="optionalVideoModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" hidden>
+    <div class="kbm-modal-overlay"></div>
+    <div class="kbm-modal-content">
+      <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="modalTitle" class="kbm-modal-title">Open Cast-On vs Closed Cast-On</h3>
+      <div class="kbm-video-wrapper">
+        <iframe 
+          id="modalVideoFrame"
+          src="" 
+          title="Open Cast-On vs Closed Cast-On"
+          frameborder="0" 
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
 </SkillBuilderLayout>
+
+<style>
+/* ========== VIDEO MODAL SCOPED STYLES ========== */
+
+.kbm-modal-trigger {
+  display: inline-block;
+  background: transparent;
+  border: none;
+  color: var(--kbm-green, #52682d);
+  font-size: 0.9rem;
+  font-style: italic;
+  cursor: pointer;
+  padding: 0.5rem 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.2s ease;
+}
+
+.kbm-modal-trigger:hover,
+.kbm-modal-trigger:focus {
+  color: var(--kbm-green-hover, #445626);
+  outline: 2px solid var(--kbm-green-2, #738c52);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.kbm-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.kbm-modal[hidden] {
+  display: none;
+}
+
+.kbm-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.kbm-modal-content {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow: auto;
+  padding: 1.5rem;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+}
+
+.kbm-modal-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 2rem;
+  line-height: 1;
+  color: #666;
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.kbm-modal-close:hover,
+.kbm-modal-close:focus {
+  background: #f0f0f0;
+  color: #333;
+  outline: 2px solid var(--kbm-green-2, #738c52);
+  outline-offset: 2px;
+}
+
+.kbm-modal-title {
+  font-size: 1.25rem;
+  color: var(--kbm-green, #52682d);
+  margin: 0 0 1rem 0;
+  padding-right: 2.5rem;
+}
+
+.kbm-video-wrapper {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.kbm-video-wrapper iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Prevent body scroll when modal is open */
+:global(body.kbm-modal-open) {
+  overflow: hidden;
+}
+
+@media (max-width: 600px) {
+  .kbm-modal-content {
+    padding: 1rem;
+    border-radius: 8px;
+  }
+  
+  .kbm-modal-title {
+    font-size: 1.1rem;
+  }
+}
+</style>
+
+<script>
+// Video Modal - Accessible Implementation
+document.addEventListener('DOMContentLoaded', () => {
+  const trigger = document.getElementById('optionalVideoTrigger');
+  const modal = document.getElementById('optionalVideoModal');
+  const closeBtn = modal?.querySelector('.kbm-modal-close');
+  const overlay = modal?.querySelector('.kbm-modal-overlay');
+  const videoFrame = document.getElementById('modalVideoFrame');
+  
+  const VIDEO_URL = 'https://player.vimeo.com/video/312574558?badge=0&autopause=1';
+  
+  let previouslyFocused = null;
+  
+  function openModal() {
+    if (!modal) return;
+    
+    // Save current focus
+    previouslyFocused = document.activeElement;
+    
+    // Load video
+    if (videoFrame) {
+      videoFrame.src = VIDEO_URL;
+    }
+    
+    // Show modal
+    modal.hidden = false;
+    document.body.classList.add('kbm-modal-open');
+    
+    // Focus close button
+    closeBtn?.focus();
+    
+    // Add ESC listener
+    document.addEventListener('keydown', handleEscape);
+  }
+  
+  function closeModal() {
+    if (!modal) return;
+    
+    // Hide modal
+    modal.hidden = true;
+    document.body.classList.remove('kbm-modal-open');
+    
+    // Stop video
+    if (videoFrame) {
+      videoFrame.src = '';
+    }
+    
+    // Restore focus
+    if (previouslyFocused && previouslyFocused.focus) {
+      previouslyFocused.focus();
+    }
+    
+    // Remove ESC listener
+    document.removeEventListener('keydown', handleEscape);
+  }
+  
+  function handleEscape(e) {
+    if (e.key === 'Escape') {
+      closeModal();
+    }
+  }
+  
+  // Event listeners
+  trigger?.addEventListener('click', openModal);
+  closeBtn?.addEventListener('click', closeModal);
+  overlay?.addEventListener('click', closeModal);
+});
+</script>
