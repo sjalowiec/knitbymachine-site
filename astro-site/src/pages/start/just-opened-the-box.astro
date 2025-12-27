@@ -4,12 +4,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 const pageTitle = 'Just Opened the Box | Knit by Machine';
 const pageDescription = 'Your first steps after unboxing your knitting machine. Thread the mast, choose a machine-friendly yarn, and try an e-wrap cast on — your first step toward fabric.';
 
-// Fetch Vimeo oEmbed data for thumbnails
-const setupOembed = await fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/1149537564').then(r => r.json()).catch(() => null);
-const castonOembed = await fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/151860058').then(r => r.json()).catch(() => null);
-
-const setupThumbnail = setupOembed?.thumbnail_url || '/images/placeholder-video.jpg';
-const castonThumbnail = castonOembed?.thumbnail_url || '/images/placeholder-video.jpg';
+// Local video thumbnail images
+const setupThumbnail = '/images/video1.webp';
+const castonThumbnail = '/images/video2.webp';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -233,8 +230,7 @@ const castonThumbnail = castonOembed?.thumbnail_url || '/images/placeholder-vide
 
   /* Path SVG Container */
   .jotb-path-container {
-    text-align: center;
-    margin-bottom: 2.5rem;
+    margin-bottom: 0;
   }
 
   .jotb-path-svg {
@@ -251,10 +247,11 @@ const castonThumbnail = castonOembed?.thumbnail_url || '/images/placeholder-vide
   }
 
   .jotb-heading-arrow {
-    width: 22px;
+    width: 33px;
     height: auto;
     opacity: 0.8;
     flex: 0 0 auto;
+    transform: translateY(-0.3em);
   }
 
   .jotb-heading-row h2 {
