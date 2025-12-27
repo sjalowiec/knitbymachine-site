@@ -1,0 +1,57 @@
+Replit Prompt — Add “Start here” line under the hero promise (Just Opened the Box page)
+
+Goal
+Add a short, scannable orientation line directly under the existing hero promise text:
+“Start here: Set up and yarn → watch the video”
+Style it so it reads like a subtle helper cue (not a big headline), matches KBM tone, and stays clean on mobile.
+
+Files
+1) Locate the Astro page/component that renders the “Just Opened the Box…” page (title “Just Opened the Box…” and class “jotb-page”).
+   - It will contain: <div class="jotb-page"> and <header class="jotb-header">.
+
+Change — Add the line (DO NOT replace existing copy)
+Inside <header class="jotb-header"> you should currently have:
+- <h1>Just Opened the Box…</h1>
+- <p class="jotb-promise">You're about to take your first real step…</p>
+
+Immediately AFTER the existing <p class="jotb-promise">, insert:
+
+<p class="jotb-start-here" data-testid="text-start-here">
+  <strong>Start here:</strong> Set up and yarn → watch the video
+</p>
+
+Styling
+Add CSS for .jotb-start-here in the page’s CSS file (the one imported for this page, likely just-opened-the-box.*.css) OR in global.css if that’s how this page is styled.
+
+Use these rules (keep it subtle, readable, and consistent):
+
+.jotb-start-here {
+  margin-top: 0.5rem;
+  font-size: 0.98rem;           /* slightly smaller than body */
+  line-height: 1.35;
+  opacity: 0.95;                /* gentle, not loud */
+}
+
+.jotb-start-here strong {
+  font-weight: 700;
+}
+
+Optional small polish (safe)
+- If the hero has tight spacing on mobile, reduce top margin slightly at small widths:
+
+@media (max-width: 640px) {
+  .jotb-start-here {
+    margin-top: 0.4rem;
+    font-size: 0.95rem;
+  }
+}
+
+Notes / Constraints
+- Do NOT change the existing promise text.
+- Do NOT add a button; this is a text cue only.
+- Keep the new line inside the same hero header so it stays “front and center.”
+- Preserve existing data-testid attributes already on the page; only add the new data-testid shown above.
+
+After implementing
+- Verify on mobile and desktop that the new line sits under the promise and above the path image.
+- Confirm it doesn’t collide with the fixed header and that spacing still feels calm.

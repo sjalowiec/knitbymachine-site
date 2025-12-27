@@ -22,6 +22,9 @@ const castonThumbnail = '/images/video2.webp';
       <p class="jotb-promise" data-testid="text-promise">
         You're about to take your first real step with your knitting machine — no overwhelm, just clear next moves.
       </p>
+      <p class="jotb-start-here" data-testid="text-start-here">
+        <strong>Start here:</strong> Set up and yarn → watch the video
+      </p>
     </header>
 
     <!-- Path SVG -->
@@ -165,7 +168,7 @@ const castonThumbnail = '/images/video2.webp';
     <section id="next" class="jotb-text-section" data-testid="section-next">
       <h2 data-testid="text-section-4-title">What's next?</h2>
       <p>
-        Everyone who knits on a machine was once right here — figuring things out one small step at a time. You don't need to rush or decide what comes next today. When questions come up (or you just want to see how others are getting started), you're welcome to visit the Knit by Machine community and join the conversation:
+        Everyone who knits on a machine was once right where you are now, figuring things out one small step at a time. You don't need to rush or decide what comes next today. When questions come up (or you just want to see how others are getting started), you're welcome to visit the Knit by Machine community and join the conversation:
       </p>
       <p>
         <a href="https://knitbymachine.discourse.group/" class="jotb-community-link" data-testid="link-community">https://knitbymachine.discourse.group/</a>
@@ -231,6 +234,18 @@ const castonThumbnail = '/images/video2.webp';
     margin: 0 auto;
     line-height: 1.6;
     max-width: 700px;
+  }
+
+  .jotb-start-here {
+    margin-top: 0.5rem;
+    font-size: 0.98rem;
+    line-height: 1.35;
+    opacity: 0.95;
+    color: #5a6b40;
+  }
+
+  .jotb-start-here strong {
+    font-weight: 700;
   }
 
   /* Path SVG Container */
@@ -664,6 +679,11 @@ const castonThumbnail = '/images/video2.webp';
 
     .jotb-header h1 {
       font-size: 1.75rem;
+    }
+
+    .jotb-start-here {
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
     }
 
     .jotb-practice-card .jotb-heading-row h2 {
