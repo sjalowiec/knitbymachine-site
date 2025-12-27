@@ -450,10 +450,93 @@ p {
 }
 
 /* ============================================
-   ANA Bubble Overlap Styles (Global)
-   Ensures question overlaps answer on all ANA entries
+   ANA Bubble Pattern (Global)
+   Reusable speech bubble styles for Q&A and callouts
    ============================================ */
 
+/* Container for bubble groups */
+.ana-bubbles {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* Overlapping variant (question overlaps answer) */
+.ana-bubbles--overlap {
+  gap: 0;
+}
+
+.ana-bubbles--overlap .ana-bubble:first-child {
+  z-index: 2;
+  margin-bottom: -3rem;
+}
+
+.ana-bubbles--overlap .ana-bubble:last-child {
+  z-index: 1;
+}
+
+/* Base bubble */
+.ana-bubble {
+  position: relative;
+  max-width: 650px;
+  background: #ffffff;
+  border: 1px solid #d8e2cc;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+/* Alignment variants */
+.ana-bubble--left {
+  align-self: flex-start;
+}
+
+.ana-bubble--right {
+  align-self: flex-end;
+}
+
+/* Bubble content wrapper */
+.ana-bubble-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* Quote text (main message) */
+.ana-bubble-quote {
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: #2d3b1a;
+  margin: 0;
+}
+
+/* Details section (expandable or secondary info) */
+.ana-bubble-details {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #4a5739;
+  margin: 0;
+}
+
+/* Summary line (short descriptor) */
+.ana-bubble-summary {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #6b7a58;
+  margin: 0;
+}
+
+/* Author/attribution line */
+.ana-bubble-author {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: #8a9a72;
+  margin: 0;
+}
+
+/* Legacy class aliases (backward compatibility) */
 .bubbles-container {
   position: relative;
   display: flex;
@@ -467,16 +550,16 @@ p {
 .bubbles-container .thought-bubble {
   position: relative;
   z-index: 2;
-  margin-bottom: -3rem; /* Creates overlap */
+  margin-bottom: -3rem;
   max-width: 650px;
-  align-self: flex-start; /* Left-aligned */
+  align-self: flex-start;
 }
 
 .bubbles-container .speech-bubble {
   position: relative;
   z-index: 1;
   max-width: 650px;
-  align-self: flex-end; /* Right-aligned */
+  align-self: flex-end;
 }
 
 /* ============================================
