@@ -1,0 +1,107 @@
+GOAL
+Finalize my Skill Builder page by:
+1) Keeping Steps as a numbered list with a printable link above them, AND
+2) Converting the Video section into a clean 2-column layout (text left, main video right),
+   with the optional Open vs Closed video opening in a modal.
+
+TARGET FILE
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+DO NOT
+- Do not add JSON, markdown, or an admin.
+- Do not change other sections (Quick Scan, Practice, Troubleshooting, Terms Used, What’s Next).
+- Do not add a second inline video thumbnail for the optional video.
+- Do not introduce generic icons.
+
+────────────────────────
+A) VIDEO SECTION — 2 COLUMN LAYOUT
+────────────────────────
+1) Locate the existing “Video” section.
+
+2) Wrap the contents of the Video section in a container:
+   .kbm-video-grid
+
+3) Desktop behavior:
+- Two columns:
+  LEFT column = text/context
+  RIGHT column = MAIN instructional video iframe (existing embed)
+
+4) Mobile behavior:
+- Single column, stacked:
+  Text first, then video.
+
+5) LEFT COLUMN CONTENT (text only):
+- Small heading (e.g. “Watch first” or “Before you start”)
+- 2–4 short bullet points or sentences (placeholders are fine)
+- A text link that reads EXACTLY:
+  “Optional: Open vs Closed — what edge did you just make? (5 min)”
+
+6) RIGHT COLUMN CONTENT:
+- Keep the existing main ERAP video embed.
+- Ensure it remains responsive (16:9 wrapper).
+- Do not autoplay.
+
+────────────────────────
+B) OPTIONAL VIDEO — MODAL
+────────────────────────
+1) Convert the “Optional: Open vs Closed…” text into a link-styled button
+   that opens a modal.
+
+2) Modal must embed this Vimeo video:
+https://player.vimeo.com/video/312574558?badge=0&autopause=1
+
+3) Modal requirements:
+- Hidden by default
+- Opens on link click
+- Closes via:
+  • Close (×) button
+  • Clicking the overlay
+  • ESC key
+- Background scroll locked while open
+- Focus returns to the triggering link on close
+- Accessible attributes:
+  role="dialog", aria-modal="true", aria-hidden
+
+4) Do NOT add another thumbnail or inline iframe for this optional video.
+
+────────────────────────
+C) STEPS SECTION — CONFIRM + PRINTABLE LINK
+────────────────────────
+1) Ensure Steps are rendered as:
+<ol><li>…</li></ol>
+
+2) Directly under the “Steps” heading and ABOVE the <ol>, add a text link:
+“Download the practice checklist (PDF)”
+
+Link target:
+/downloads/skill-builders/your-first-cast-on-practice-checklist.pdf
+
+Attributes:
+target="_blank" rel="noopener"
+
+Optional helper text (small, subtle):
+“Print this for your machine-side notes.”
+
+────────────────────────
+D) STYLING
+────────────────────────
+- Add scoped CSS for:
+  • .kbm-video-grid (2 columns desktop, 1 column mobile)
+  • spacing between text/video
+  • modal overlay + modal container
+- Use existing KBM CSS variables where possible.
+- Keep everything visually calm and instructional.
+
+Use unique, scoped class names prefixed with:
+.kbm-
+
+────────────────────────
+E) VERIFICATION
+────────────────────────
+Confirm:
+- Video section shows 2 columns on desktop, stacked on mobile
+- Main video remains inline
+- Optional video opens in a modal
+- Steps are numbered
+- Printable link appears above Steps
+- No other sections changed

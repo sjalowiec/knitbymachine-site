@@ -91,25 +91,47 @@ const faqs = [
   <!-- D) VIDEO SECTION        -->
   <!-- ======================= -->
   <div slot="video">
-    <!-- TODO: Replace with actual video embed when ready -->
-    <div class="sb-video-placeholder">
-      <i class="fa-solid fa-video"></i>
-      <p><strong>Video Placeholder</strong></p>
-      <p>Embed your instructional video here using an iframe.</p>
-     <div style="padding:75% 0 0 0;position:relative;"><iframe src="https://player.vimeo.com/video/151860058?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="E-Wrap Cast On"></iframe></div>
+    <div class="kbm-video-grid">
+      <!-- LEFT COLUMN: Text/context -->
+      <div class="kbm-video-text">
+        <h3 class="kbm-video-heading">Watch first</h3>
+        <ul class="kbm-video-tips">
+          <li>This video demonstrates the complete E-wrap cast-on from start to finish</li>
+          <li>Pay attention to how the yarn wraps around each needle</li>
+          <li>Notice the tension and hand positioning</li>
+        </ul>
+        <button type="button" class="kbm-modal-trigger" id="optionalVideoTrigger" aria-haspopup="dialog">
+          Optional: Open vs Closed — what edge did you just make? (5 min)
+        </button>
+      </div>
+      
+      <!-- RIGHT COLUMN: Main video -->
+      <div class="kbm-video-embed">
+        <div class="kbm-video-wrapper-main">
+          <iframe 
+            src="https://player.vimeo.com/video/151860058?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" 
+            frameborder="0" 
+            allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" 
+            referrerpolicy="strict-origin-when-cross-origin" 
+            title="E-Wrap Cast On"
+          ></iframe>
+        </div>
+      </div>
     </div>
-    
-    <!-- Optional video modal trigger -->
-    <button type="button" class="kbm-modal-trigger" id="optionalVideoTrigger" aria-haspopup="dialog">
-      Optional: Open vs Closed — what edge did you just make? (5 min)
-    </button>
   </div>
 
   <!-- ======================= -->
   <!-- E) STEPS SECTION        -->
   <!-- ======================= -->
   <div slot="steps">
-    <!-- TODO: Replace placeholder steps with actual instructions -->
+    <!-- Printable checklist link -->
+    <div class="kbm-print-link">
+      <a href="/downloads/skill-builders/your-first-cast-on-practice-checklist.pdf" target="_blank" rel="noopener">
+        Download the practice checklist (PDF)
+      </a>
+      <span class="kbm-print-helper">Print this for your machine-side notes.</span>
+    </div>
+    
     <ol class="sb-steps">
       <li>
         <!-- TODO: Replace step 1 -->
@@ -229,7 +251,91 @@ const faqs = [
 </SkillBuilderLayout>
 
 <style>
-/* ========== VIDEO MODAL SCOPED STYLES ========== */
+/* ========== VIDEO SECTION 2-COLUMN LAYOUT ========== */
+
+.kbm-video-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.kbm-video-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.kbm-video-heading {
+  font-size: 1.1rem;
+  color: var(--kbm-green, #52682d);
+  margin: 0;
+  font-weight: 600;
+}
+
+.kbm-video-tips {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #555;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.kbm-video-tips li {
+  margin-bottom: 0.5rem;
+}
+
+.kbm-video-embed {
+  width: 100%;
+}
+
+.kbm-video-wrapper-main {
+  position: relative;
+  padding-top: 56.25%; /* 16:9 aspect ratio */
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.kbm-video-wrapper-main iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ========== PRINT LINK STYLES ========== */
+
+.kbm-print-link {
+  margin-bottom: 1.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--page-bg, #f7f8f7);
+  border-radius: 6px;
+  border: 1px solid var(--ring, #e5e8e0);
+}
+
+.kbm-print-link a {
+  color: var(--kbm-green, #52682d);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.kbm-print-link a:hover,
+.kbm-print-link a:focus {
+  color: var(--kbm-green-hover, #445626);
+}
+
+.kbm-print-helper {
+  display: block;
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 0.25rem;
+  font-style: italic;
+}
+
+/* ========== VIDEO MODAL STYLES ========== */
 
 .kbm-modal-trigger {
   display: inline-block;
@@ -340,6 +446,21 @@ const faqs = [
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .kbm-video-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .kbm-video-text {
+    order: 1;
+  }
+  
+  .kbm-video-embed {
+    order: 2;
+  }
+}
+
 @media (max-width: 600px) {
   .kbm-modal-content {
     padding: 1rem;
@@ -348,6 +469,10 @@ const faqs = [
   
   .kbm-modal-title {
     font-size: 1.1rem;
+  }
+  
+  .kbm-print-link {
+    padding: 0.5rem 0.75rem;
   }
 }
 </style>
