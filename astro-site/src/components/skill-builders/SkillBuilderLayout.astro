@@ -4,8 +4,16 @@
  * Reusable layout for $19 Skill Builder pages
  * 
  * Usage: Pass content via slots or props
+ * 
+ * FAQs: Pass faqs prop as array of {question, answer} objects.
+ * This generates both visible FAQ HTML and JSON-LD schema for SEO/AEO.
  */
 import BaseLayout from "../../layouts/BaseLayout.astro";
+
+interface FAQItem {
+  question: string;
+  answer: string;
+}
 
 interface Props {
   title: string;
@@ -14,6 +22,7 @@ interface Props {
   level: string;
   timeEstimate: string;
   metaDescription?: string;
+  faqs?: FAQItem[];
 }
 
 const { 
@@ -22,11 +31,32 @@ const {
   price, 
   level, 
   timeEstimate,
-  metaDescription = "Learn machine knitting skills step-by-step with Knit by Machine."
+  metaDescription = "Learn machine knitting skills step-by-step with Knit by Machine.",
+  faqs = []
 } = Astro.props;
+
+// Generate FAQPage JSON-LD schema if FAQs exist
+const faqSchema = faqs.length > 0 ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+}) : null;
 ---
 
 <BaseLayout title={`${title} | Skill Builder | Knit by Machine`} description={metaDescription}>
+  
+  {/* Inject FAQPage JSON-LD schema into head if FAQs exist */}
+  {faqSchema && (
+    <script type="application/ld+json" set:html={faqSchema} slot="head" />
+  )}
+
   <div class="skill-builder-page">
     
     <!-- A) HERO SECTION -->
@@ -75,7 +105,27 @@ const {
     <!-- G) TROUBLESHOOTING SECTION -->
     <section class="sb-section">
       <h2>Troubleshooting</h2>
-      <slot name="troubleshooting" />
+      {faqs.length > 0 ? (
+        <div class="sb-faq">
+          {faqs.map((faq, index) => (
+            <div class="sb-faq-item">
+              <button 
+                class="sb-faq-question" 
+                type="button"
+                aria-controls={`sb-faq-answer-${index}`}
+                aria-expanded="false"
+              >
+                {faq.question}
+              </button>
+              <div class="sb-faq-answer" id={`sb-faq-answer-${index}`}>
+                <p>{faq.answer}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <slot name="troubleshooting" />
+      )}
     </section>
 
     <!-- H) TERMS USED SECTION -->

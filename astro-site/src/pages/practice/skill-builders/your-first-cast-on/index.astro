@@ -7,6 +7,33 @@
  * Replace content marked with TODO comments.
  */
 import SkillBuilderLayout from "../../../../components/skill-builders/SkillBuilderLayout.astro";
+
+// =============================================
+// FAQ DATA - Single source of truth
+// Edit here to update both visible FAQ and JSON-LD schema
+// =============================================
+const faqs = [
+  {
+    question: "My yarn keeps falling off the needles during cast-on",
+    answer: "Make sure each wrap is snug but not too tight. The yarn should sit securely in the needle hook. Try wrapping slightly lower on the needle shaft."
+  },
+  {
+    question: "The first row is too tight and hard to knit",
+    answer: "This is common! Try loosening your tension dial by 1–2 numbers for just the first row, then adjust back to your normal setting."
+  },
+  {
+    question: "I'm getting dropped stitches on the edges",
+    answer: "Check that your end needles are properly wrapped. Edge stitches often need a slightly firmer wrap. Also ensure your weights are evenly distributed."
+  },
+  {
+    question: "The carriage won't move smoothly after cast-on",
+    answer: "Your cast-on may be too tight. Gently tug down on the cast-on comb to give the needles room to move. If it persists, you may need to restart with a looser wrap."
+  },
+  {
+    question: "How do I know if I'm wrapping in the right direction?",
+    answer: "For E-wrap (ERAP), wrap counter-clockwise around each needle when viewed from above. The yarn should form an \"e\" shape. Consistent direction matters more than which direction you choose."
+  }
+];
 ---
 
 <SkillBuilderLayout
@@ -16,6 +43,7 @@ import SkillBuilderLayout from "../../../../components/skill-builders/SkillBuild
   level="Beginner"
   timeEstimate="15–30 minutes"
   metaDescription="Learn your first cast-on technique for machine knitting. A beginner-friendly skill builder from Knit by Machine."
+  faqs={faqs}
 >
 
   <!-- ======================= -->
@@ -132,65 +160,8 @@ import SkillBuilderLayout from "../../../../components/skill-builders/SkillBuild
     </div>
   </div>
 
-  <!-- ======================= -->
-  <!-- G) TROUBLESHOOTING      -->
-  <!-- ======================= -->
-  <div slot="troubleshooting">
-    <div class="sb-faq">
-      
-      <!-- TODO: Replace placeholder FAQ items -->
-      <div class="sb-faq-item">
-        <button class="sb-faq-question" type="button">
-          My yarn keeps falling off the needles during cast-on
-        </button>
-        <div class="sb-faq-answer">
-          <!-- TODO: Replace with actual answer -->
-          <p>Make sure each wrap is snug but not too tight. The yarn should sit securely in the needle hook. Try wrapping slightly lower on the needle shaft.</p>
-        </div>
-      </div>
-      
-      <div class="sb-faq-item">
-        <button class="sb-faq-question" type="button">
-          The first row is too tight and hard to knit
-        </button>
-        <div class="sb-faq-answer">
-          <!-- TODO: Replace with actual answer -->
-          <p>This is common! Try loosening your tension dial by 1–2 numbers for just the first row, then adjust back to your normal setting.</p>
-        </div>
-      </div>
-      
-      <div class="sb-faq-item">
-        <button class="sb-faq-question" type="button">
-          I'm getting dropped stitches on the edges
-        </button>
-        <div class="sb-faq-answer">
-          <!-- TODO: Replace with actual answer -->
-          <p>Check that your end needles are properly wrapped. Edge stitches often need a slightly firmer wrap. Also ensure your weights are evenly distributed.</p>
-        </div>
-      </div>
-      
-      <div class="sb-faq-item">
-        <button class="sb-faq-question" type="button">
-          The carriage won't move smoothly after cast-on
-        </button>
-        <div class="sb-faq-answer">
-          <!-- TODO: Replace with actual answer -->
-          <p>Your cast-on may be too tight. Gently tug down on the cast-on comb to give the needles room to move. If it persists, you may need to restart with a looser wrap.</p>
-        </div>
-      </div>
-      
-      <div class="sb-faq-item">
-        <button class="sb-faq-question" type="button">
-          How do I know if I'm wrapping in the right direction?
-        </button>
-        <div class="sb-faq-answer">
-          <!-- TODO: Replace with actual answer -->
-          <p>For E-wrap (ERAP), wrap counter-clockwise around each needle when viewed from above. The yarn should form an "e" shape. Consistent direction matters more than which direction you choose.</p>
-        </div>
-      </div>
-      
-    </div>
-  </div>
+  <!-- G) TROUBLESHOOTING - Now auto-generated from faqs prop above -->
+  <!-- No slot needed - edit the faqs array in the frontmatter -->
 
   <!-- ======================= -->
   <!-- H) TERMS USED           -->
