@@ -143,17 +143,22 @@ const castonThumbnail = '/images/video2.webp';
     <section id="challenge" class="jotb-practice-card" data-testid="section-challenge">
       <div class="jotb-heading-row">
         <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="jotb-heading-arrow" />
-        <h2 data-testid="text-section-3-title">Optional — 5-Day Cast On + Bind Off Practice Project ($19)</h2>
+        <div class="jotb-practice-heading">
+          <p class="jotb-practice-leadin">Optional — Practice with a little more structure</p>
+          <h2 data-testid="text-section-3-title">5-Day Cast On + Bind Off Practice Project ($19)</h2>
+        </div>
       </div>
       <p>
-        Want a little more structure? This optional practice project breaks down the cast on and bind off into short daily sessions — perfect if you like a guided pace.
+        Want a little more structure? This optional practice project breaks the cast on and bind off into short daily sessions — perfect if you like a calm, guided pace and clear stopping points.
       </p>
-      <a href="#" class="jotb-btn-primary" data-testid="button-challenge">
-        See the 5-Day Practice Project
-      </a>
-      <p class="jotb-helper-text">
-        Short daily practice. Clear steps. No overwhelm.
-      </p>
+      <div class="jotb-cta-wrap">
+        <a href="#" class="jotb-btn-primary" data-testid="button-challenge">
+          See the 5-Day Practice Project
+        </a>
+        <p class="jotb-helper-text">
+          Short daily practice. Clear steps. No overwhelm.
+        </p>
+      </div>
     </section>
 
     <!-- SECTION 4: What's next? (Text-only) -->
@@ -443,8 +448,32 @@ const castonThumbnail = '/images/video2.webp';
     margin-bottom: 2.5rem;
   }
 
+  .jotb-practice-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .jotb-practice-leadin {
+    font-size: 0.95rem;
+    color: #6b7a58;
+    margin: 0;
+    font-weight: 500;
+  }
+
   .jotb-practice-card .jotb-heading-row h2 {
     font-size: 1.4rem;
+  }
+
+  .jotb-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .jotb-cta-wrap .jotb-helper-text {
+    margin-bottom: 0;
   }
 
   .jotb-practice-card p {
