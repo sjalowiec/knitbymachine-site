@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="a" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.1 10.51">
+  <defs>
+    <style>
+      .c {
+        fill: none;
+        stroke: #52682d;
+        stroke-miterlimit: 10;
+        stroke-width: 2.03px;
+      }
+
+      .d {
+        fill: #52682d;
+      }
+    </style>
+  </defs>
+  <path class="c" d="M.75,9.83S14.73-5.42,25.41,4.91"/>
+  <path class="d" d="M29.1,9.83c-2.62-1.62-6.25-3.33-9.14-3.9l4.89-1.58,2.75-4.34c-.17,2.94.58,6.89,1.51,9.83Z"/>
+</svg>

@@ -1,0 +1,136 @@
+Update this Astro page:
+pages/start/just-opened-the-box
+
+GOAL
+Convert both videos to MODALS (no inline embeds), and restructure the page into:
+0) Top path SVG image
+1) Section 1 (bordered): text/bullets left, “Watch video” button right (opens modal video #1)
+2) Section 2 (bordered): “Watch video” button left (opens modal video #2), text right
+3) Section 3: a card for the paid Practice Project (no video)
+4) “What’s next?” text-only section below (no border/card)
+
+IMPORTANT LANGUAGE
+- Do NOT use “Skill Builder” anywhere. Use “Practice Project”.
+- Price can be mentioned in text as $19.
+
+ASSETS
+- Top path SVG: /images/set-up.svg
+- Curved arrow SVG: /images/curved_arrow.svg
+
+VIMEO EMBEDS (use these exact iframe strings inside the modal)
+VIDEO 1 IFRAME (thread-the-tension-mast):
+<iframe src="https://player.vimeo.com/video/1149537564?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="thread-the-tension-mast"></iframe>
+
+VIDEO 2 IFRAME (E-Wrap Cast On):
+<iframe src="https://player.vimeo.com/video/151860058?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="E-Wrap Cast On"></iframe>
+
+LAYOUT / STRUCTURE
+
+SECTION 0: Top Path SVG
+- Insert below the page intro:
+  <img src="/images/set-up.svg" alt="Set up and yarn → First Cast On → Challenge" class="path-svg" />
+- Responsive: max-width: 100%; height: auto.
+
+SECTION 1 (Bordered): Set Up + Yarn
+- Two-column layout on desktop, stacked on mobile.
+- Left column:
+  - Heading: “Set up and yarn”
+  - Keep your existing short paragraph and Quick Notes bullets.
+- Right column:
+  - A “Watch: Setting Up Your Machine” button (not a link)
+  - Clicking opens modal with VIDEO 1.
+  - Include a small helper line under the button: “Opens in a large player.”
+
+Between Section 1 and Section 2:
+- Add curved arrow SVG on the left margin:
+  <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="section-arrow" />
+
+SECTION 2 (Bordered): First Cast On
+- Mirrored two-column layout on desktop, stacked on mobile.
+- Left column:
+  - A “Watch: E-Wrap Cast On” button (not a link)
+  - Clicking opens modal with VIDEO 2.
+  - Include helper line: “Opens in a large player.”
+- Right column:
+  - Heading: “First cast on”
+  - Keep existing “Steps to follow” + “You’re done when…” content if present.
+
+Between Section 2 and Section 3:
+- Add another curved arrow SVG (same styling).
+
+SECTION 3: Optional Paid Practice Project (Card)
+- Card (not bordered section like 1 and 2).
+- Heading: “Optional — 5-Day Cast On + Bind Off Practice Project (Paid)”
+- 1–2 short sentences about calm daily practice and clear steps.
+- CTA button:
+  - Text: “See the 5-Day Practice Project”
+  - href placeholder “#” is fine for now.
+- Small line under button: “Short daily practice. Clear steps. No overwhelm.”
+
+SECTION 4: What’s next? (Text-only)
+- Heading: “What’s next?”
+- One sentence: “You don’t need to decide now — here are a few directions when you’re ready.”
+- 2–3 simple text links (placeholders OK).
+
+MODAL REQUIREMENTS (single reusable modal on this page)
+- Add ONE modal in the page markup near the bottom (outside the sections).
+- It should be hidden by default and opened by either watch button.
+- When opened:
+  - lock body scroll
+  - focus moves to the close button
+- Close behaviors:
+  - Close button click
+  - Click on backdrop (outside dialog)
+  - ESC key
+- On close:
+  - remove iframe from modal container (stop playback)
+  - restore focus to the button that opened it
+  - restore body scroll
+
+IMPLEMENTATION DETAILS
+1) Create a modal wrapper like:
+   <div class="video-modal" id="video-modal" aria-hidden="true">
+     <div class="video-modal__backdrop" data-close></div>
+     <div class="video-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+       <div class="video-modal__header">
+         <h2 id="video-modal-title">Video</h2>
+         <button type="button" class="video-modal__close" data-close aria-label="Close video">✕</button>
+       </div>
+       <div class="video-modal__body">
+         <div class="video-frame" id="video-frame">
+           <!-- iframe injected here -->
+         </div>
+       </div>
+     </div>
+   </div>
+
+2) The watch buttons should look like:
+   <button type="button" class="watch-btn" data-video="setup">Watch: Setting Up Your Machine</button>
+   <button type="button" class="watch-btn" data-video="caston">Watch: E-Wrap Cast On</button>
+
+3) Add a small inline script on this page (vanilla JS) to:
+   - map data-video values to the exact iframe HTML strings above
+   - open/close modal
+   - inject/remove iframe
+   - handle ESC, backdrop close, focus restore, scroll lock
+
+STYLING (scoped to this page)
+- Single centered content column (max-width ~ 1000–1100px).
+- Section 1 and 2: bordered boxes with padding + rounded corners.
+- Section 3: card styling (slightly lighter / optional feel).
+- Watch buttons: clear, KBM-style button.
+- Modal:
+  - fixed full-screen overlay
+  - backdrop with mild opacity
+  - dialog centered with max-width (e.g., 900px), responsive padding
+  - video frame uses 16:9 padding-top ratio (56.25%) with iframe absolute positioned (same technique as your iframe style expects)
+- Ensure mobile: modal fits and the dialog scrolls if needed.
+
+REMOVE / AVOID
+- Remove/disable “On this page” sidebar/nav if it exists on this page.
+- No inline iframes in sections 1 or 2.
+
+DELIVERABLE
+- Updated page markup in pages/start/just-opened-the-box
+- Scoped CSS + inline JS on this page implementing the modal behavior
+- Verify: clicking each watch button opens the correct Vimeo video in the modal at a large size and closing stops playback.
