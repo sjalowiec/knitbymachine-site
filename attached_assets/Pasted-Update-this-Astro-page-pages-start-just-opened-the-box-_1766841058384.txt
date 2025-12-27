@@ -1,0 +1,138 @@
+Update this Astro page:
+pages/start/just-opened-the-box
+
+GOAL
+Refine the onboarding layout and video triggers:
+1) Curved arrows should be left-aligned (not centered).
+2) Replace “Watch” buttons with Vimeo thumbnail cards (click opens modal).
+3) Move curved-arrow.svg to sit inline with the section headers:
+   - “Set up and yarn”
+   - “First cast on”
+4) Add curved-arrow.svg inline with the “Optional — 5-Day…” heading.
+5) Update the “What’s next?” paragraph to the exact copy below, and link to the community.
+
+ASSETS
+- /images/curved_arrow.svg
+- /images/set-up.svg (keep as-is at top)
+
+KEEP
+- The modal video behavior already implemented (single reusable modal).
+- Modal title must match video title (already implemented via data-title).
+- No inline iframes in the page content (only inside modal).
+- Do NOT use “Skill Builder” anywhere (Practice Project only).
+
+VIDEO MODAL CONTENT (no change)
+- setup video iframe stays the same and is injected on open
+- caston video iframe stays the same and is injected on open
+
+TASKS
+
+A) MOVE ARROWS LEFT (NOT CENTERED)
+- Any existing arrow elements that are currently centered must be aligned to the left edge of the main content column.
+- Remove any CSS that centers the arrow (e.g., margin: 0 auto; text-align:center).
+- Arrows should align visually with the left edge of the section containers / headings.
+
+B) REPLACE BUTTONS WITH VIMEO THUMBNAIL VIDEO CARDS
+- Replace each “Watch …” button with a clickable thumbnail card that opens the same modal.
+- The thumbnail card must be implemented as a <button type="button"> (for accessibility) and keep:
+  - data-video="setup" / "caston"
+  - data-title="Setting Up Your Machine" / "E-Wrap Cast On"
+- Inside the button, render:
+  - A thumbnail <img> (16:9) pulled from Vimeo (see below)
+  - A play icon overlay (CSS overlay)
+  - Title + optional duration text (can be below thumbnail or as overlay)
+  - A small helper line “Opens in a large player.” (optional)
+
+IMPORTANT: Using Vimeo thumbnails
+- Implement a small build-time/server-side fetch for each video’s thumbnail using Vimeo oEmbed.
+- For each video, fetch:
+  https://vimeo.com/api/oembed.json?url=https://vimeo.com/VIDEO_ID
+- Parse the returned JSON and use `thumbnail_url` (or upgrade to a larger size if available).
+- VIDEO IDS:
+  - setup: 1149537564
+  - caston: 151860058
+
+Implementation guidance in Astro:
+- At the top of the .astro file, add an async fetch for both oEmbed JSON objects.
+- Example approach (pseudo):
+  const setupOembed = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/1149537564`).then(r=>r.json())
+  const castonOembed = await fetch(`https://vimeo.com/api/oembed.json?url=https://vimeo.com/151860058`).then(r=>r.json())
+- Then use setupOembed.thumbnail_url and castonOembed.thumbnail_url in the <img src="...">.
+- If the thumbnail_url contains a small size, attempt to use the provided URL as-is first.
+  (Optional: if it’s a `_295x166` style URL, replace with a larger size if Vimeo provides it; otherwise keep.)
+
+C) INLINE ARROW NEXT TO SECTION HEADERS (SAME LINE)
+- For these three headings:
+  1) “Set up and yarn”
+  2) “First cast on”
+  3) “Optional — 5-Day Cast On + Bind Off Practice Project (Paid)” (or “Optional — 5 day…” if that’s the exact heading)
+- Add a small curved arrow SVG inline, on the same line as the heading text, immediately to the left of the heading text.
+
+Required markup pattern:
+- Wrap heading content in a flex row:
+  <div class="heading-row">
+    <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="heading-arrow" />
+    <h2>Set up and yarn</h2>
+  </div>
+
+- Ensure:
+  - Arrow is small and subtle
+  - Arrow + text are vertically aligned
+  - Arrow does not wrap above the text on desktop; on mobile it may wrap, but prefer it stays inline
+
+D) REMOVE “BETWEEN SECTIONS” ARROWS (IF PRESENT)
+- If the page currently has arrows inserted between sections as separators, remove them.
+- We only want the arrows inline with the three headings (Sections 1, 2, and Optional card).
+
+E) WHAT’S NEXT COPY (REPLACE EXACTLY)
+Replace the existing “What’s next?” section content with:
+
+Heading:
+What’s next?
+
+Paragraph (exact text):
+Everyone who knits on a machine was once right here — figuring things out one small step at a time. You don’t need to rush or decide what comes next today. When questions come up (or you just want to see how others are getting started), you’re welcome to visit the Knit by Machine community and join the conversation:
+
+Then add a single link line (anchor tag) pointing to:
+https://knitbymachine.discourse.group/
+
+Make the URL clickable and visible as text.
+
+STYLING REQUIREMENTS (SCOPED TO THIS PAGE)
+1) Heading rows:
+- .heading-row { display:flex; align-items:center; gap:0.5rem; }
+- .heading-arrow { width: 22px; height:auto; opacity: 0.8; flex: 0 0 auto; }
+- Ensure headings keep their existing typography.
+
+2) Video thumbnail cards:
+- Button should look like a card (not a default button):
+  - display:block; width:100%;
+  - border + border-radius consistent with site
+  - background and hover/focus states
+  - cursor:pointer
+- Thumbnail wrapper must be 16:9:
+  - Use a .thumb-frame with padding-top:56.25% and absolutely positioned img inside
+  - Or use aspect-ratio: 16/9 if supported in your CSS pipeline
+- Play icon overlay:
+  - Centered play icon, subtle
+  - Not cheesy; simple triangle or minimal icon
+- Ensure focus ring is visible for keyboard users.
+
+3) Left alignment:
+- Ensure heading rows align with the left edge of each section container.
+- No centered arrows anywhere.
+
+ACCESSIBILITY
+- The clickable thumbnail is a <button> with aria-label like:
+  aria-label="Watch: Setting Up Your Machine"
+  aria-label="Watch: E-Wrap Cast On"
+- The heading arrows must be aria-hidden with empty alt.
+
+DELIVERABLE
+- Update pages/start/just-opened-the-box accordingly.
+- Confirm:
+  - Clicking each thumbnail opens the modal with the correct video
+  - Modal title matches the clicked video title
+  - Arrows appear inline with the three headings and are left-aligned
+  - No arrows are centered on the page
+  - “What’s next?” copy matches exactly and includes the community link.

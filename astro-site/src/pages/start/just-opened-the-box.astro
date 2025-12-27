@@ -3,6 +3,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const pageTitle = 'Just Opened the Box | Knit by Machine';
 const pageDescription = 'Your first steps after unboxing your knitting machine. Thread the mast, choose a machine-friendly yarn, and try an e-wrap cast on — your first step toward fabric.';
+
+// Fetch Vimeo oEmbed data for thumbnails
+const setupOembed = await fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/1149537564').then(r => r.json()).catch(() => null);
+const castonOembed = await fetch('https://vimeo.com/api/oembed.json?url=https://vimeo.com/151860058').then(r => r.json()).catch(() => null);
+
+const setupThumbnail = setupOembed?.thumbnail_url || '/images/placeholder-video.jpg';
+const castonThumbnail = castonOembed?.thumbnail_url || '/images/placeholder-video.jpg';
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -22,14 +29,17 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
 
     <!-- Path SVG -->
     <div class="jotb-path-container">
-      <img src="/images/set-up.svg" alt="Set up and yarn → First Cast On → Challenge" class="jotb-path-svg" data-testid="img-path" />
+      <img src="/images/setup.png" alt="Set up and yarn → First Cast On → Challenge" class="jotb-path-svg" data-testid="img-path" />
     </div>
 
     <!-- SECTION 1: Set Up + Yarn (Bordered) -->
     <section id="setup" class="jotb-bordered-section" data-testid="section-setup">
+      <div class="jotb-heading-row">
+        <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="jotb-heading-arrow" />
+        <h2 data-testid="text-section-1-title">Set up and yarn</h2>
+      </div>
       <div class="jotb-section-grid">
         <div class="jotb-section-content">
-          <h2 data-testid="text-section-1-title">Set up and yarn</h2>
           <p>
             Before you cast on, choose a machine-friendly yarn, thread the mast, and get familiar with the basic parts of your machine.
           </p>
@@ -46,40 +56,60 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
         <div class="jotb-section-action">
           <button
             type="button"
-            class="jotb-watch-btn"
+            class="jotb-video-card"
             data-video="setup"
             data-title="Setting Up Your Machine"
+            aria-label="Watch: Setting Up Your Machine"
             data-testid="button-watch-setup"
           >
-            Watch: Setting Up Your Machine
+            <div class="jotb-thumb-frame">
+              <img src={setupThumbnail} alt="" class="jotb-thumb-img" />
+              <div class="jotb-play-overlay" aria-hidden="true">
+                <svg class="jotb-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              </div>
+            </div>
+            <div class="jotb-card-label">
+              <span class="jotb-card-title">Setting Up Your Machine</span>
+              <span class="jotb-card-helper">Opens in a large player.</span>
+            </div>
           </button>
-          <p class="jotb-action-helper">Opens in a large player.</p>
         </div>
       </div>
     </section>
 
-    <!-- Curved Arrow -->
-    <div class="jotb-arrow-container">
-      <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="jotb-section-arrow" />
-    </div>
-
-    <!-- SECTION 2: First Cast On (Bordered, Mirrored) -->
-    <section id="caston" class="jotb-bordered-section jotb-bordered-section--mirrored" data-testid="section-caston">
+    <!-- SECTION 2: First Cast On (Bordered) -->
+    <section id="caston" class="jotb-bordered-section" data-testid="section-caston">
+      <div class="jotb-heading-row">
+        <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="jotb-heading-arrow" />
+        <h2 data-testid="text-section-2-title">First cast on</h2>
+      </div>
       <div class="jotb-section-grid jotb-section-grid--mirrored">
         <div class="jotb-section-action">
           <button
             type="button"
-            class="jotb-watch-btn"
+            class="jotb-video-card"
             data-video="caston"
             data-title="E-Wrap Cast On"
+            aria-label="Watch: E-Wrap Cast On"
             data-testid="button-watch-caston"
           >
-            Watch: E-Wrap Cast On
+            <div class="jotb-thumb-frame">
+              <img src={castonThumbnail} alt="" class="jotb-thumb-img" />
+              <div class="jotb-play-overlay" aria-hidden="true">
+                <svg class="jotb-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              </div>
+            </div>
+            <div class="jotb-card-label">
+              <span class="jotb-card-title">E-Wrap Cast On</span>
+              <span class="jotb-card-helper">Opens in a large player.</span>
+            </div>
           </button>
-          <p class="jotb-action-helper">Opens in a large player.</p>
         </div>
         <div class="jotb-section-content">
-          <h2 data-testid="text-section-2-title">First cast on</h2>
           <p>
             This is your hands-on moment. Follow along and you'll have stitches on your machine in minutes.
           </p>
@@ -112,14 +142,12 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
       </div>
     </section>
 
-    <!-- Curved Arrow -->
-    <div class="jotb-arrow-container">
-      <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="jotb-section-arrow" />
-    </div>
-
     <!-- SECTION 3: Optional Paid Practice Project (Card) -->
     <section id="challenge" class="jotb-practice-card" data-testid="section-challenge">
-      <h2 data-testid="text-section-3-title">Optional — 5-Day Cast On + Bind Off Practice Project ($19)</h2>
+      <div class="jotb-heading-row">
+        <img src="/images/curved_arrow.svg" alt="" aria-hidden="true" class="jotb-heading-arrow" />
+        <h2 data-testid="text-section-3-title">Optional — 5-Day Cast On + Bind Off Practice Project ($19)</h2>
+      </div>
       <p>
         Want a little more structure? This optional practice project breaks down the cast on and bind off into short daily sessions — perfect if you like a guided pace.
       </p>
@@ -135,13 +163,11 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
     <section id="next" class="jotb-text-section" data-testid="section-next">
       <h2 data-testid="text-section-4-title">What's next?</h2>
       <p>
-        You don't need to decide now — here are a few directions when you're ready.
+        Everyone who knits on a machine was once right here — figuring things out one small step at a time. You don't need to rush or decide what comes next today. When questions come up (or you just want to see how others are getting started), you're welcome to visit the Knit by Machine community and join the conversation:
       </p>
-      <ul class="jotb-next-links">
-        <li><a href="#">Explore more tutorials</a></li>
-        <li><a href="#">Browse patterns for beginners</a></li>
-        <li><a href="#">Join the community</a></li>
-      </ul>
+      <p>
+        <a href="https://knitbymachine.discourse.group/" class="jotb-community-link" data-testid="link-community">https://knitbymachine.discourse.group/</a>
+      </p>
     </section>
   </div>
 
@@ -216,29 +242,44 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
     height: auto;
   }
 
+  /* Heading Row with Inline Arrow */
+  .jotb-heading-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .jotb-heading-arrow {
+    width: 22px;
+    height: auto;
+    opacity: 0.8;
+    flex: 0 0 auto;
+  }
+
+  .jotb-heading-row h2 {
+    margin: 0;
+    color: var(--kbm-green, #52682d);
+  }
+
   /* Bordered Sections (1 & 2) */
   .jotb-bordered-section {
     background: #ffffff;
     border: 1px solid #c7d8a4;
     border-radius: 12px;
     padding: 2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
   }
 
   .jotb-section-grid {
     display: grid;
-    grid-template-columns: 1fr 280px;
+    grid-template-columns: 1fr 320px;
     gap: 2rem;
     align-items: flex-start;
   }
 
   .jotb-section-grid--mirrored {
-    grid-template-columns: 280px 1fr;
-  }
-
-  .jotb-section-content h2 {
-    margin: 0 0 1rem 0;
-    color: var(--kbm-green, #52682d);
+    grid-template-columns: 320px 1fr;
   }
 
   .jotb-section-content p {
@@ -300,60 +341,100 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
     flex-shrink: 0;
   }
 
-  /* Action Column (Watch Button) */
+  /* Action Column */
   .jotb-section-action {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    align-items: stretch;
   }
 
-  .jotb-watch-btn {
-    display: inline-block;
-    background: #6e8b3d;
-    color: #ffffff;
-    padding: 0.875rem 1.5rem;
-    border: none;
-    border-radius: 9999px;
-    font-size: 1rem;
-    font-weight: 600;
+  /* Video Thumbnail Card */
+  .jotb-video-card {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 10px;
+    padding: 0;
     cursor: pointer;
-    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
-    white-space: nowrap;
+    text-align: left;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
   }
 
-  .jotb-watch-btn:hover {
-    background-color: #52682d;
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(82, 104, 45, 0.3);
+  .jotb-video-card:hover {
+    border-color: #6e8b3d;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.15);
   }
 
-  .jotb-watch-btn:focus {
+  .jotb-video-card:focus {
     outline: 2px solid #52682d;
     outline-offset: 2px;
   }
 
-  .jotb-action-helper {
-    font-size: 0.85rem;
-    color: #6b7a58;
-    margin-top: 0.5rem;
-    font-style: italic;
+  .jotb-thumb-frame {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 */
+    overflow: hidden;
+    background: #e9eee0;
   }
 
-  /* Curved Arrow Between Sections */
-  .jotb-arrow-container {
+  .jotb-thumb-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .jotb-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     display: flex;
-    justify-content: flex-start;
-    padding-left: 2rem;
-    margin: 0.5rem 0;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+    transition: background 0.15s ease;
   }
 
-  .jotb-section-arrow {
-    width: 48px;
-    height: auto;
-    opacity: 0.6;
+  .jotb-video-card:hover .jotb-play-overlay {
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .jotb-play-icon {
+    width: 56px;
+    height: 56px;
+    color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+    transition: transform 0.15s ease;
+  }
+
+  .jotb-video-card:hover .jotb-play-icon {
+    transform: scale(1.1);
+  }
+
+  .jotb-card-label {
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .jotb-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #52682d;
+  }
+
+  .jotb-card-helper {
+    font-size: 0.8rem;
+    color: #6b7a58;
+    font-style: italic;
   }
 
   /* Practice Project Card (Section 3) */
@@ -363,12 +444,9 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2.5rem;
-    text-align: center;
   }
 
-  .jotb-practice-card h2 {
-    margin: 0 0 1rem 0;
-    color: var(--kbm-green, #52682d);
+  .jotb-practice-card .jotb-heading-row h2 {
     font-size: 1.4rem;
   }
 
@@ -423,23 +501,13 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
     color: #4a5739;
   }
 
-  .jotb-next-links {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .jotb-next-links li {
-    margin: 0.5rem 0;
-  }
-
-  .jotb-next-links a {
+  .jotb-community-link {
     color: var(--kbm-green, #52682d);
-    text-decoration: none;
     font-weight: 500;
+    word-break: break-all;
   }
 
-  .jotb-next-links a:hover {
+  .jotb-community-link:hover {
     text-decoration: underline;
   }
 
@@ -555,7 +623,7 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
       gap: 1.5rem;
     }
 
-    /* On mobile, always show content first, then button */
+    /* On mobile, always show content first, then video card */
     .jotb-section-grid--mirrored .jotb-section-action {
       order: 2;
     }
@@ -568,20 +636,11 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
       padding: 1.5rem;
     }
 
-    .jotb-arrow-container {
-      justify-content: center;
-      padding-left: 0;
-    }
-
-    .jotb-section-arrow {
-      transform: rotate(90deg);
-    }
-
     .jotb-header h1 {
       font-size: 1.75rem;
     }
 
-    .jotb-practice-card h2 {
+    .jotb-practice-card .jotb-heading-row h2 {
       font-size: 1.25rem;
     }
 
@@ -592,9 +651,9 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
   }
 
   @media (max-width: 480px) {
-    .jotb-watch-btn {
-      padding: 0.75rem 1.25rem;
-      font-size: 0.95rem;
+    .jotb-play-icon {
+      width: 44px;
+      height: 44px;
     }
   }
 </style>
@@ -604,7 +663,7 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
     var modal = document.getElementById('video-modal');
     var modalTitle = document.getElementById('video-modal-title');
     var videoFrame = document.getElementById('video-frame');
-    var watchButtons = document.querySelectorAll('.jotb-watch-btn');
+    var videoCards = document.querySelectorAll('.jotb-video-card');
     var closeButtons = modal ? modal.querySelectorAll('[data-close]') : [];
     
     var triggerButton = null;
@@ -652,12 +711,12 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
       triggerButton = null;
     }
 
-    // Watch button click handlers
-    watchButtons.forEach(function(btn) {
-      btn.addEventListener('click', function() {
-        var videoKey = btn.getAttribute('data-video') || '';
-        var title = btn.getAttribute('data-title') || 'Video';
-        openModal(videoKey, title, btn);
+    // Video card click handlers
+    videoCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        var videoKey = card.getAttribute('data-video') || '';
+        var title = card.getAttribute('data-title') || 'Video';
+        openModal(videoKey, title, card);
       });
     });
 
