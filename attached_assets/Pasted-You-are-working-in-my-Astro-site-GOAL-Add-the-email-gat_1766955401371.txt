@@ -1,0 +1,106 @@
+You are working in my Astro site.
+
+GOAL
+Add the email gate form + submit logic to this page:
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+This page already has 2 states (gated + open).  
+Your task is ONLY to place the form and wire it to the existing Netlify function.
+
+DO NOT add a second form.
+DO NOT embed an ActiveCampaign form.
+DO NOT add redirects.
+
+---
+
+STEP 1 — ADD THE FORM MARKUP
+
+Inside the existing GATED (closed-state) section of the page,
+insert this form:
+
+<form id="pp-caston-form" class="kbm-gate-form">
+  <label for="pp-email" class="sr-only">Email address</label>
+
+  <input
+    id="pp-email"
+    name="email"
+    type="email"
+    required
+    placeholder="Your email address"
+    class="kbm-input"
+  />
+
+  <button type="submit" class="kbm-button">
+    Start the practice
+  </button>
+
+  <p class="kbm-gate-help">
+    You’ll get updates when new practice projects are added. Unsub anytime.
+  </p>
+
+  <p id="pp-error" class="kbm-error" hidden></p>
+</form>
+
+---
+
+STEP 2 — ADD THE SUBMIT SCRIPT
+
+Immediately AFTER the form markup, add this script:
+
+<script>
+  const form = document.getElementById('pp-caston-form');
+  const errorEl = document.getElementById('pp-error');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.hidden = true;
+
+    const email = form.email.value.trim();
+    if (!email) return;
+
+    const button = form.querySelector('button');
+    button.disabled = true;
+    button.textContent = 'Starting…';
+
+    try {
+      const res = await fetch('/.netlify/functions/pp-unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          projectId: 'pp-caston'
+        })
+      });
+
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.message || 'Submit failed');
+
+      localStorage.setItem('kbm:pp-unlocked:pp-caston', '1');
+      location.reload();
+
+    } catch (err) {
+      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.hidden = false;
+      button.disabled = false;
+      button.textContent = 'Start the practice';
+    }
+  });
+</script>
+
+---
+
+STEP 3 — DO NOT TOUCH ANYTHING ELSE
+
+- Do not modify the Netlify function
+- Do not change the open-state content
+- Do not add styling beyond existing KBM classes
+- Do not introduce a second submit handler
+
+RESULT
+Submitting the email should:
+1) Call /.netlify/functions/pp-unlock
+2) Apply ActiveCampaign tag PP-caston (ID 11)
+3) Unlock the page via localStorage
+4) Reload into the open state
+
+After implementing, confirm it works in Replit preview and on Netlify.

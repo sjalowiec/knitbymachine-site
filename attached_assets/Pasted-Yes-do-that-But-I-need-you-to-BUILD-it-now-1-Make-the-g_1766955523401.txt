@@ -1,0 +1,78 @@
+Yes — do that. But I need you to BUILD it now.
+
+1) Make the gated state use EXACTLY this form markup (verbatim) inside:
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+<form id="pp-caston-form" class="kbm-gate-form">
+  <label for="pp-email" class="sr-only">Email address</label>
+
+  <input
+    id="pp-email"
+    name="email"
+    type="email"
+    required
+    placeholder="Your email address"
+    class="kbm-input"
+  />
+
+  <button type="submit" class="kbm-button">
+    Start the practice
+  </button>
+
+  <p class="kbm-gate-help">
+    You’ll get updates when new practice projects are added. Unsub anytime.
+  </p>
+
+  <p id="pp-error" class="kbm-error" hidden></p>
+</form>
+
+2) Immediately after the form, add EXACTLY this script (verbatim):
+
+<script>
+  const form = document.getElementById('pp-caston-form');
+  const errorEl = document.getElementById('pp-error');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    errorEl.hidden = true;
+
+    const email = form.email.value.trim();
+    if (!email) return;
+
+    const button = form.querySelector('button');
+    button.disabled = true;
+    button.textContent = 'Starting…';
+
+    try {
+      const res = await fetch('/.netlify/functions/pp-unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, projectId: 'pp-caston' })
+      });
+
+      const data = await res.json();
+      if (!data.ok) throw new Error(data.message || 'Submit failed');
+
+      localStorage.setItem('kbm:pp-unlocked:pp-caston', '1');
+      location.reload();
+
+    } catch (err) {
+      errorEl.textContent = 'Something went wrong. Please try again.';
+      errorEl.hidden = false;
+      button.disabled = false;
+      button.textContent = 'Start the practice';
+    }
+  });
+</script>
+
+3) Remove/replace the “elaborate gate block” you created so ONLY this minimal form remains in the gated view. Keep the open-state content unchanged and still wrapped/hidden until unlocked.
+
+4) DO NOT add extra framing copy, redirect, or animation. Reload on success is correct.
+
+5) Confirm:
+- The gated state shows the form
+- Submitting calls /.netlify/functions/pp-unlock
+- Success sets localStorage key kbm:pp-unlocked:pp-caston = 1
+- Page reloads into the open state
+
+Now implement the changes and show me the updated diff / file edits.
