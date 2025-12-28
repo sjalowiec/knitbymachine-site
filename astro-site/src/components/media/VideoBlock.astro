@@ -1,0 +1,141 @@
+---
+import { getCollection, render } from 'astro:content';
+import VimeoEmbed from './VimeoEmbed.astro';
+import Transcript from './Transcript.astro';
+
+interface Props {
+  videoId: string;
+  heading?: string;
+  showMeta?: boolean;
+}
+
+const { videoId, heading, showMeta = false } = Astro.props;
+
+const allVideos = await getCollection('videos');
+const videoEntry = allVideos.find(v => v.slug === videoId);
+
+if (!videoEntry) {
+  console.warn(`VideoBlock: Video with id "${videoId}" not found in videos collection.`);
+}
+
+const video = videoEntry?.data;
+
+let TranscriptContent: any = null;
+let hasTranscript = false;
+
+if (videoEntry && videoEntry.body && videoEntry.body.trim().length > 0) {
+  const rendered = await render(videoEntry);
+  TranscriptContent = rendered.Content;
+  hasTranscript = true;
+}
+
+const hasTranscriptSections = video?.transcriptSections && video.transcriptSections.length > 0;
+
+function formatDuration(seconds: number): string {
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return mins > 0 ? `${mins}:${secs.toString().padStart(2, '0')}` : `${secs}s`;
+}
+---
+
+{videoEntry && video && (
+  <div class="kbm-video-block" data-testid={`video-block-${videoId}`}>
+    {heading && (
+      <h3 class="kbm-video-block-heading">{heading}</h3>
+    )}
+    
+    <VimeoEmbed 
+      vimeoId={video.vimeoId} 
+      title={video.title} 
+    />
+    
+    {showMeta && (video.durationSeconds || (video.tags && video.tags.length > 0)) && (
+      <div class="kbm-video-block-meta">
+        {video.durationSeconds && (
+          <span class="kbm-video-duration">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            {formatDuration(video.durationSeconds)}
+          </span>
+        )}
+        {video.tags && video.tags.length > 0 && (
+          <span class="kbm-video-tags">
+            {video.tags.join(' · ')}
+          </span>
+        )}
+      </div>
+    )}
+    
+    {hasTranscript && TranscriptContent && (
+      <Transcript title="Read transcript">
+        <TranscriptContent />
+      </Transcript>
+    )}
+    
+    {!hasTranscript && hasTranscriptSections && (
+      <Transcript 
+        title="Read transcript" 
+        sections={video.transcriptSections} 
+      />
+    )}
+  </div>
+)}
+
+{!videoEntry && (
+  <div class="kbm-video-block-error" data-testid={`video-block-error-${videoId}`}>
+    <p>Video not found: <code>{videoId}</code></p>
+  </div>
+)}
+
+<style>
+  .kbm-video-block {
+    margin: 1.5rem 0;
+  }
+
+  .kbm-video-block-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682d);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .kbm-video-block-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+    color: #666;
+  }
+
+  .kbm-video-duration {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .kbm-video-duration svg {
+    opacity: 0.7;
+  }
+
+  .kbm-video-tags {
+    font-style: italic;
+  }
+
+  .kbm-video-block-error {
+    padding: 1rem;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    color: #991b1b;
+    font-size: 0.9rem;
+  }
+
+  .kbm-video-block-error code {
+    background: rgba(0,0,0,0.1);
+    padding: 0.1rem 0.3rem;
+    border-radius: 3px;
+  }
+</style>

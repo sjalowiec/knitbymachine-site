@@ -1,0 +1,292 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allVideos = await getCollection('videos');
+
+const videosWithCounts = allVideos.map(video => ({
+  ...video,
+  usedInCount: video.data.usedIn?.length || 0
+})).sort((a, b) => a.data.title.localeCompare(b.data.title));
+---
+
+<BaseLayout title="Video Library - Admin" description="Manage your video library">
+  <div class="admin-videos">
+    <header class="admin-header">
+      <h1>Video Library</h1>
+      <p class="admin-subtitle">Manage your video content collection</p>
+    </header>
+
+    <section class="admin-howto">
+      <h2>How to add a video</h2>
+      <ol>
+        <li>Create a new file in <code>src/content/videos/</code> with the filename as your video ID (e.g., <code>my-new-video.md</code>)</li>
+        <li>Add the frontmatter with <code>title</code> and <code>vimeoId</code></li>
+        <li>Add transcript text below the frontmatter (in markdown)</li>
+        <li>When you use the video on a page with <code>&lt;VideoBlock videoId="my-new-video" /&gt;</code>, add a <code>usedIn</code> reference to track usage</li>
+      </ol>
+      <details class="admin-example">
+        <summary>Example video file</summary>
+        <pre><code>---
+title: "My Video Title"
+vimeoId: "123456789"
+durationSeconds: 180
+tags: ["cast-on", "beginner"]
+usedIn:
+  - type: "skillBuilder"
+    id: "your-first-cast-on"
+    label: "Your First Cast-On"
+    url: "/practice/skill-builders/your-first-cast-on/"
+---
+
+This is where your transcript text goes.
+
+You can use markdown formatting here, including **bold**, *italics*, and paragraphs.</code></pre>
+      </details>
+    </section>
+
+    <section class="admin-list">
+      <h2>All Videos ({allVideos.length})</h2>
+      
+      {allVideos.length === 0 ? (
+        <p class="admin-empty">No videos found. Create your first video file in <code>src/content/videos/</code></p>
+      ) : (
+        <table class="admin-table" data-testid="videos-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Vimeo ID</th>
+              <th>Used In</th>
+              <th>File</th>
+            </tr>
+          </thead>
+          <tbody>
+            {videosWithCounts.map(video => (
+              <tr data-testid={`video-row-${video.slug}`}>
+                <td class="td-title">{video.data.title}</td>
+                <td class="td-vimeo">
+                  <a href={`https://vimeo.com/${video.data.vimeoId}`} target="_blank" rel="noopener">
+                    {video.data.vimeoId}
+                  </a>
+                </td>
+                <td class="td-used">
+                  <span class={`used-badge ${video.usedInCount > 0 ? 'used-active' : 'used-none'}`}>
+                    {video.usedInCount}
+                  </span>
+                  {video.data.usedIn && video.data.usedIn.length > 0 && (
+                    <div class="used-details">
+                      {video.data.usedIn.map(ref => (
+                        <span class="used-ref">
+                          {ref.url ? (
+                            <a href={ref.url}>{ref.label || ref.id}</a>
+                          ) : (
+                            <span>{ref.label || ref.id}</span>
+                          )}
+                          <span class="used-type">({ref.type})</span>
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </td>
+                <td class="td-file">
+                  <code>src/content/videos/{video.slug}.md</code>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .admin-videos {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .admin-header {
+    margin-bottom: 2rem;
+  }
+
+  .admin-header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+  }
+
+  .admin-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .admin-howto {
+    background: #f8faf5;
+    border: 1px solid #d8e2cc;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .admin-howto h2 {
+    font-size: 1.1rem;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .admin-howto ol {
+    margin: 0;
+    padding-left: 1.25rem;
+    line-height: 1.6;
+  }
+
+  .admin-howto ol li {
+    margin-bottom: 0.5rem;
+  }
+
+  .admin-howto code {
+    background: rgba(82, 104, 45, 0.1);
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .admin-example {
+    margin-top: 1rem;
+    border-top: 1px solid #d8e2cc;
+    padding-top: 0.75rem;
+  }
+
+  .admin-example summary {
+    cursor: pointer;
+    font-weight: 500;
+    color: var(--kbm-green);
+  }
+
+  .admin-example pre {
+    background: #fff;
+    border: 1px solid #e5e8e0;
+    border-radius: 6px;
+    padding: 1rem;
+    margin: 0.75rem 0 0 0;
+    overflow-x: auto;
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .admin-list h2 {
+    font-size: 1.25rem;
+    margin: 0 0 1rem 0;
+  }
+
+  .admin-empty {
+    color: #666;
+    font-style: italic;
+  }
+
+  .admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #e5e8e0;
+  }
+
+  .admin-table th {
+    background: #f8faf5;
+    font-weight: 600;
+    color: var(--kbm-green);
+  }
+
+  .admin-table tr:hover {
+    background: #fafbf8;
+  }
+
+  .td-title {
+    font-weight: 500;
+  }
+
+  .td-vimeo a {
+    color: var(--kbm-green);
+    text-decoration: none;
+  }
+
+  .td-vimeo a:hover {
+    text-decoration: underline;
+  }
+
+  .td-file code {
+    font-size: 0.8em;
+    background: rgba(82, 104, 45, 0.08);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    word-break: break-all;
+  }
+
+  .used-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .used-active {
+    background: #d8e2cc;
+    color: var(--kbm-green);
+  }
+
+  .used-none {
+    background: #f0f0f0;
+    color: #888;
+  }
+
+  .used-details {
+    margin-top: 0.4rem;
+  }
+
+  .used-ref {
+    display: block;
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .used-ref a {
+    color: var(--kbm-green);
+    text-decoration: none;
+  }
+
+  .used-ref a:hover {
+    text-decoration: underline;
+  }
+
+  .used-type {
+    color: #888;
+    font-size: 0.75em;
+    margin-left: 0.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .admin-table {
+      font-size: 0.85rem;
+    }
+
+    .admin-table th,
+    .admin-table td {
+      padding: 0.5rem;
+    }
+
+    .td-file {
+      display: none;
+    }
+  }
+</style>

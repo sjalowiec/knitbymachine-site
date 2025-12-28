@@ -90,29 +90,7 @@ const wizards = defineCollection({
   })
 });
 
-const videos = defineCollection({
-  type: 'content',
-  schema: z.object({
-    title: z.string(),
-    vimeoId: z.string(),
-    durationSeconds: z.number().optional(),
-    tags: z.array(z.string()).optional(),
-    searchRole: z.string().default("supporting"),
-    usedIn: z.array(z.object({
-      type: z.enum(["skillBuilder", "ana", "blog", "workshop"]),
-      id: z.string(),
-      label: z.string().optional(),
-      url: z.string().optional()
-    })).optional(),
-    transcriptSections: z.array(z.object({
-      heading: z.string().optional(),
-      text: z.string()
-    })).optional()
-  })
-});
-
 export const collections = {
   'ai-agents': aiAgents,
-  'wizards': wizards,
-  'videos': videos
+  'wizards': wizards
 };

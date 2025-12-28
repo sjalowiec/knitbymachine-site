@@ -7,6 +7,7 @@
  * Replace content marked with TODO comments.
  */
 import SkillBuilderLayout from "../../../../components/skill-builders/SkillBuilderLayout.astro";
+import VideoBlock from "../../../../components/media/VideoBlock.astro";
 
 // =============================================
 // FAQ DATA - Single source of truth
@@ -91,38 +92,26 @@ const faqs = [
   <!-- D) VIDEO SECTION        -->
   <!-- ======================= -->
   <div slot="video">
-    <div class="kbm-video-grid">
-      <!-- LEFT COLUMN: Text/context -->
-      <div class="kbm-video-text">
+    <!-- Cast On Video -->
+    <div class="kbm-video-section">
+      <div class="kbm-video-tips-box">
         <h3 class="kbm-video-heading">Watch first</h3>
         <ul class="kbm-video-tips">
           <li>This video demonstrates the complete E-wrap cast-on from start to finish</li>
           <li>Pay attention to how the yarn wraps around each needle</li>
           <li>Notice the tension and hand positioning</li>
         </ul>
-        <button type="button" class="kbm-modal-trigger" id="optionalVideoTrigger" aria-haspopup="dialog">
-           <i class="fa-solid fa-play"></i> Optional Video: Open vs Closed — what edge did you just make? (5 min)
-        </button>
+        <details class="kbm-optional-video">
+          <summary><i class="fa-solid fa-play"></i> Optional: Open vs Closed — what edge did you just make?</summary>
+          <VideoBlock videoId="open-vs-closed-cast-on" />
+        </details>
       </div>
-      
-      <!-- RIGHT COLUMN: Main video thumbnail -->
-      <div class="kbm-video-embed">
-        <button type="button" class="kbm-video-thumbnail" id="mainVideoTrigger" aria-haspopup="dialog" aria-label="Play E-Wrap Cast On video">
-          <img src="https://vumbnail.com/151860058.jpg" alt="E-Wrap Cast On video thumbnail" loading="lazy" />
-          <span class="kbm-play-icon" aria-hidden="true">
-            <svg viewBox="0 0 68 48" width="68" height="48">
-              <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#212121" fill-opacity="0.8"/>
-              <path d="M45 24L27 14v20" fill="#fff"/>
-            </svg>
-          </span>
-        </button>
-      </div>
+      <VideoBlock videoId="e-wrap-cast-on" heading="E-Wrap Cast On" />
     </div>
     
-    <!-- BIND OFF VIDEO GRID -->
-    <div class="kbm-video-grid" style="margin-top: 2rem;">
-      <!-- LEFT COLUMN: Text/context -->
-      <div class="kbm-video-text">
+    <!-- Bind Off Video -->
+    <div class="kbm-video-section" style="margin-top: 2.5rem;">
+      <div class="kbm-video-tips-box">
         <h3 class="kbm-video-heading">Finish your swatch</h3>
         <ul class="kbm-video-tips">
           <li>This video demonstrates a stitch-through-stitch bind off worked by hand</li>
@@ -130,19 +119,7 @@ const faqs = [
           <li>Watch how the yarn is controlled as stitches are worked off the machine</li>
         </ul>
       </div>
-      
-      <!-- RIGHT COLUMN: Bind off video thumbnail -->
-      <div class="kbm-video-embed">
-        <button type="button" class="kbm-video-thumbnail" id="bindOffVideoTrigger" aria-haspopup="dialog" aria-label="Play Stitch-Through-Stitch Bind Off video">
-          <img src="https://vumbnail.com/252258022.jpg" alt="Stitch-through-stitch bind off video thumbnail" loading="lazy" />
-          <span class="kbm-play-icon" aria-hidden="true">
-            <svg viewBox="0 0 68 48" width="68" height="48">
-              <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#212121" fill-opacity="0.8"/>
-              <path d="M45 24L27 14v20" fill="#fff"/>
-            </svg>
-          </span>
-        </button>
-      </div>
+      <VideoBlock videoId="stitch-through-stitch-bind-off" heading="Stitch-Through-Stitch Bind Off" />
     </div>
   </div>
 
@@ -263,96 +240,28 @@ const faqs = [
     </div>
   </div>
 
-  <!-- ======================= -->
-  <!-- MAIN VIDEO MODAL        -->
-  <!-- ======================= -->
-  <div class="kbm-modal" id="mainVideoModal" role="dialog" aria-modal="true" aria-labelledby="mainModalTitle" hidden>
-    <div class="kbm-modal-overlay"></div>
-    <div class="kbm-modal-content">
-      <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
-      <h3 id="mainModalTitle" class="kbm-modal-title">E-Wrap Cast On</h3>
-      <div class="kbm-video-wrapper">
-        <iframe 
-          id="mainVideoFrame"
-          src="" 
-          title="E-Wrap Cast On"
-          frameborder="0" 
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================= -->
-  <!-- OPTIONAL VIDEO MODAL    -->
-  <!-- ======================= -->
-  <div class="kbm-modal" id="optionalVideoModal" role="dialog" aria-modal="true" aria-labelledby="optionalModalTitle" hidden>
-    <div class="kbm-modal-overlay"></div>
-    <div class="kbm-modal-content">
-      <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
-      <h3 id="optionalModalTitle" class="kbm-modal-title">Open Cast-On vs Closed Cast-On</h3>
-      <div class="kbm-video-wrapper">
-        <iframe 
-          id="optionalVideoFrame"
-          src="" 
-          title="Open Cast-On vs Closed Cast-On"
-          frameborder="0" 
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </div>
-  </div>
-
-  <!-- ======================= -->
-  <!-- BIND OFF VIDEO MODAL    -->
-  <!-- ======================= -->
-  <div class="kbm-modal" id="bindOffVideoModal" role="dialog" aria-modal="true" aria-labelledby="bindOffModalTitle" hidden>
-    <div class="kbm-modal-overlay"></div>
-    <div class="kbm-modal-content">
-      <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
-      <h3 id="bindOffModalTitle" class="kbm-modal-title">Stitch-Through-Stitch Bind Off</h3>
-      <div class="kbm-video-wrapper">
-        <iframe 
-          id="bindOffVideoFrame"
-          src="" 
-          title="Stitch-Through-Stitch Bind Off"
-          frameborder="0" 
-          allow="autoplay; fullscreen; picture-in-picture"
-          allowfullscreen
-        ></iframe>
-      </div>
-    </div>
-  </div>
-
 </SkillBuilderLayout>
 
 <style>
-/* ========== VIDEO SECTION 2-COLUMN LAYOUT ========== */
+/* ========== VIDEO SECTION STYLES ========== */
 
-.kbm-video-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.5fr;
-  gap: 2rem;
-  align-items: start;
+.kbm-video-section {
+  margin-bottom: 1rem;
 }
 
-.kbm-video-text {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+.kbm-video-tips-box {
+  margin-bottom: 1rem;
 }
 
 .kbm-video-heading {
   font-size: 1.1rem;
   color: var(--kbm-green, #52682d);
-  margin: 0;
+  margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
 
 .kbm-video-tips {
-  margin: 0;
+  margin: 0 0 0.75rem 0;
   padding-left: 1.25rem;
   color: #555;
   font-size: 0.95rem;
@@ -363,72 +272,40 @@ const faqs = [
   margin-bottom: 0.5rem;
 }
 
-.kbm-video-embed {
-  width: 100%;
+.kbm-video-tips li:last-child {
+  margin-bottom: 0;
 }
 
-.kbm-video-thumbnail {
-  position: relative;
-  display: block;
-  width: 100%;
-  padding: 0;
-  border: none;
-  border-radius: 8px;
-  overflow: hidden;
+/* Optional video expandable section */
+.kbm-optional-video {
+  margin-top: 0.75rem;
+  border: 1px solid var(--ring, #e5e8e0);
+  border-radius: 6px;
+  background: var(--page-bg, #f7f8f7);
+}
+
+.kbm-optional-video summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--kbm-green, #52682d);
   cursor: pointer;
-  background: #000;
-  aspect-ratio: 16 / 9;
+  list-style: none;
 }
 
-.kbm-video-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: opacity 0.2s ease;
+.kbm-optional-video summary::-webkit-details-marker {
+  display: none;
 }
 
-.kbm-video-thumbnail:hover img,
-.kbm-video-thumbnail:focus img {
-  opacity: 0.85;
+.kbm-optional-video summary:hover {
+  background: rgba(82, 104, 45, 0.06);
 }
 
-.kbm-video-thumbnail:focus {
-  outline: 3px solid var(--kbm-green, #52682d);
-  outline-offset: 2px;
-}
-
-.kbm-play-icon {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-}
-
-.kbm-play-icon svg {
-  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-  transition: transform 0.2s ease;
-}
-
-.kbm-video-thumbnail:hover .kbm-play-icon svg,
-.kbm-video-thumbnail:focus .kbm-play-icon svg {
-  transform: scale(1.1);
-}
-
-.kbm-video-wrapper-main {
-  position: relative;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.kbm-video-wrapper-main iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+.kbm-optional-video[open] summary {
+  border-bottom: 1px solid var(--ring, #e5e8e0);
 }
 
 /* ========== PRINT LINK STYLES ========== */
@@ -461,242 +338,9 @@ const faqs = [
   font-style: italic;
 }
 
-/* ========== VIDEO MODAL STYLES ========== */
-
-.kbm-modal-trigger {
-  display: inline-block;
-  background: transparent;
-  border: none;
-  color: var(--kbm-green, #52682d);
-  font-size: 0.9rem;
-  font-style: italic;
-  cursor: pointer;
-  padding: 0.5rem 0;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: color 0.2s ease;
-}
-
-.kbm-modal-trigger:hover,
-.kbm-modal-trigger:focus {
-  color: var(--kbm-green-hover, #445626);
-  outline: 2px solid var(--kbm-green-2, #738c52);
-  outline-offset: 2px;
-  border-radius: 4px;
-}
-
-.kbm-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-}
-
-.kbm-modal[hidden] {
-  display: none;
-}
-
-.kbm-modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.75);
-}
-
-.kbm-modal-content {
-  position: relative;
-  background: #fff;
-  border-radius: 12px;
-  max-width: 900px;
-  width: 100%;
-  max-height: 90vh;
-  overflow: auto;
-  padding: 1.5rem;
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-}
-
-.kbm-modal-close {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  background: transparent;
-  border: none;
-  font-size: 2rem;
-  line-height: 1;
-  color: #666;
-  cursor: pointer;
-  width: 2.5rem;
-  height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  transition: background 0.2s ease, color 0.2s ease;
-}
-
-.kbm-modal-close:hover,
-.kbm-modal-close:focus {
-  background: #f0f0f0;
-  color: #333;
-  outline: 2px solid var(--kbm-green-2, #738c52);
-  outline-offset: 2px;
-}
-
-.kbm-modal-title {
-  font-size: 1.25rem;
-  color: var(--kbm-green, #52682d);
-  margin: 0 0 1rem 0;
-  padding-right: 2.5rem;
-}
-
-.kbm-video-wrapper {
-  position: relative;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-  background: #000;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.kbm-video-wrapper iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* Prevent body scroll when modal is open */
-:global(body.kbm-modal-open) {
-  overflow: hidden;
-}
-
-@media (max-width: 768px) {
-  .kbm-video-grid {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .kbm-video-text {
-    order: 1;
-  }
-  
-  .kbm-video-embed {
-    order: 2;
-  }
-}
-
 @media (max-width: 600px) {
-  .kbm-modal-content {
-    padding: 1rem;
-    border-radius: 8px;
-  }
-  
-  .kbm-modal-title {
-    font-size: 1.1rem;
-  }
-  
   .kbm-print-link {
     padding: 0.5rem 0.75rem;
   }
 }
 </style>
-
-<script>
-// Video Modal - Accessible Implementation (supports multiple modals)
-document.addEventListener('DOMContentLoaded', () => {
-  // Modal configurations
-  const modals = [
-    {
-      triggerId: 'mainVideoTrigger',
-      modalId: 'mainVideoModal',
-      frameId: 'mainVideoFrame',
-      videoUrl: 'https://player.vimeo.com/video/151860058?badge=0&autopause=1&autoplay=1'
-    },
-    {
-      triggerId: 'optionalVideoTrigger',
-      modalId: 'optionalVideoModal',
-      frameId: 'optionalVideoFrame',
-      videoUrl: 'https://player.vimeo.com/video/312574558?badge=0&autopause=1&autoplay=1'
-    },
-    {
-      triggerId: 'bindOffVideoTrigger',
-      modalId: 'bindOffVideoModal',
-      frameId: 'bindOffVideoFrame',
-      videoUrl: 'https://player.vimeo.com/video/252258022?badge=0&autopause=1&autoplay=1'
-    }
-  ];
-  
-  let previouslyFocused = null;
-  let activeModal = null;
-  
-  function openModal(config) {
-    const modal = document.getElementById(config.modalId);
-    const frame = document.getElementById(config.frameId);
-    const closeBtn = modal?.querySelector('.kbm-modal-close');
-    
-    if (!modal) return;
-    
-    activeModal = { modal, frame, closeBtn };
-    previouslyFocused = document.activeElement;
-    
-    // Load video
-    if (frame) {
-      frame.src = config.videoUrl;
-    }
-    
-    // Show modal
-    modal.hidden = false;
-    document.body.classList.add('kbm-modal-open');
-    
-    // Focus close button
-    closeBtn?.focus();
-    
-    // Add ESC listener
-    document.addEventListener('keydown', handleEscape);
-  }
-  
-  function closeModal() {
-    if (!activeModal) return;
-    
-    const { modal, frame } = activeModal;
-    
-    // Hide modal
-    modal.hidden = true;
-    document.body.classList.remove('kbm-modal-open');
-    
-    // Stop video
-    if (frame) {
-      frame.src = '';
-    }
-    
-    // Restore focus
-    if (previouslyFocused && previouslyFocused.focus) {
-      previouslyFocused.focus();
-    }
-    
-    // Remove ESC listener
-    document.removeEventListener('keydown', handleEscape);
-    activeModal = null;
-  }
-  
-  function handleEscape(e) {
-    if (e.key === 'Escape') {
-      closeModal();
-    }
-  }
-  
-  // Set up each modal
-  modals.forEach(config => {
-    const trigger = document.getElementById(config.triggerId);
-    const modal = document.getElementById(config.modalId);
-    const closeBtn = modal?.querySelector('.kbm-modal-close');
-    const overlay = modal?.querySelector('.kbm-modal-overlay');
-    
-    trigger?.addEventListener('click', () => openModal(config));
-    closeBtn?.addEventListener('click', closeModal);
-    overlay?.addEventListener('click', closeModal);
-  });
-});
-</script>
