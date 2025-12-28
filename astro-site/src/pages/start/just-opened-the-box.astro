@@ -18,12 +18,6 @@ const eWrapVideo = allVideos.find(v => v.slug === 'e-wrap-cast-on');
 // Get transcript HTML from the markdown body
 const setupTranscript = tensionMastVideo?.body ? await marked.parse(tensionMastVideo.body) : '';
 const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) : '';
-
-// Create transcripts object for client-side use
-const transcripts = {
-  setup: setupTranscript,
-  caston: castonTranscript
-};
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -87,6 +81,14 @@ const transcripts = {
               Secure in the clip
             </li>
           </ul>
+          <!-- Inline Transcript Accordion -->
+          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
+            <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
+              <span class="jotb-toggle-read">Read transcript</span>
+              <span class="jotb-toggle-hide">Hide transcript</span>
+            </summary>
+            <div class="jotb-transcript-content" set:html={setupTranscript} />
+          </details>
         </div>
         <div class="jotb-section-action">
           <p class="jotb-first-step" data-testid="text-first-hands-on">
@@ -176,6 +178,14 @@ const transcripts = {
               You can knit 5+ rows without dropped stitches
             </li>
           </ul>
+          <!-- Inline Transcript Accordion -->
+          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
+            <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
+              <span class="jotb-toggle-read">Read transcript</span>
+              <span class="jotb-toggle-hide">Hide transcript</span>
+            </summary>
+            <div class="jotb-transcript-content" set:html={castonTranscript} />
+          </details>
         </div>
       </div>
     </section>
@@ -216,7 +226,7 @@ const transcripts = {
     </section>
   </div>
 
-  <!-- VIDEO MODAL -->
+  <!-- VIDEO MODAL (video only) -->
   <div class="video-modal" id="video-modal" aria-hidden="true" data-testid="modal-video">
     <div class="video-modal__backdrop" data-close></div>
     <div class="video-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
@@ -226,22 +236,9 @@ const transcripts = {
       </div>
       <div class="video-modal__body">
         <div class="video-frame" id="video-frame"></div>
-        <div class="video-modal__actions">
-          <button type="button" id="transcript-toggle" class="transcript-btn" data-testid="button-read-transcript">Read transcript</button>
-        </div>
-      </div>
-      <!-- Transcript Drawer -->
-      <div class="transcript-drawer" id="transcript-drawer" aria-hidden="true" data-testid="drawer-transcript">
-        <div class="transcript-drawer__header">
-          <h3 id="transcript-drawer-title" tabindex="-1">Transcript</h3>
-          <button type="button" class="transcript-drawer__close" id="transcript-drawer-close" aria-label="Close transcript" data-testid="button-close-transcript">&#10005;</button>
-        </div>
-        <div class="transcript-drawer__content" id="transcript-text"></div>
       </div>
     </div>
   </div>
-
-  <script type="application/json" id="video-transcripts-data" set:html={JSON.stringify(transcripts)}></script>
 </BaseLayout>
 
 <style>
@@ -746,105 +743,81 @@ const transcripts = {
     overflow: hidden;
   }
 
-  /* Actions bar below video */
-  .video-modal__actions {
-    padding: 0.75rem 1.25rem;
+  /* ============================================
+     INLINE TRANSCRIPT ACCORDION
+     ============================================ */
+  
+  .jotb-transcript-accordion {
+    margin-top: 1.25rem;
     border-top: 1px solid #e5e7eb;
-    display: flex;
-    justify-content: center;
+    padding-top: 1rem;
   }
 
-  .transcript-btn {
-    background: none;
-    border: none;
+  .jotb-transcript-toggle {
     color: var(--kbm-green, #52682d);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     font-weight: 500;
     cursor: pointer;
-    padding: 0.5rem 1rem;
-    border-radius: 6px;
-    transition: background-color 0.15s ease;
+    padding: 0.5rem 0;
+    display: inline-block;
+    list-style: none;
   }
 
-  .transcript-btn:hover {
-    background-color: rgba(82, 104, 45, 0.08);
+  .jotb-transcript-toggle::-webkit-details-marker {
+    display: none;
   }
 
-  .transcript-btn:focus {
+  .jotb-transcript-toggle::before {
+    content: "▸ ";
+    display: inline-block;
+    transition: transform 0.15s ease;
+  }
+
+  .jotb-transcript-accordion[open] .jotb-transcript-toggle::before {
+    transform: rotate(90deg);
+  }
+
+  .jotb-transcript-toggle:hover {
+    text-decoration: underline;
+  }
+
+  /* Toggle text visibility based on open state */
+  .jotb-toggle-hide {
+    display: none;
+  }
+
+  .jotb-transcript-accordion[open] .jotb-toggle-read {
+    display: none;
+  }
+
+  .jotb-transcript-accordion[open] .jotb-toggle-hide {
+    display: inline;
+  }
+
+  .jotb-transcript-toggle:focus {
     outline: 2px solid #52682d;
     outline-offset: 2px;
   }
 
-  /* Transcript Drawer */
-  .transcript-drawer {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    max-height: 60vh;
-    background: #ffffff;
-    border-top: 1px solid #e5e7eb;
-    border-radius: 0 0 12px 12px;
-    transform: translateY(100%);
-    transition: transform 200ms ease;
-    display: flex;
-    flex-direction: column;
-    z-index: 10;
-  }
-
-  .transcript-drawer[aria-hidden="false"] {
-    transform: translateY(0);
-  }
-
-  .transcript-drawer__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0.75rem 1.25rem;
-    border-bottom: 1px solid #e5e7eb;
-    flex-shrink: 0;
-  }
-
-  .transcript-drawer__header h3 {
-    margin: 0;
-    font-size: 1rem;
-    color: #333;
-  }
-
-  .transcript-drawer__close {
-    background: none;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-    color: #666;
-    padding: 0.25rem;
-    line-height: 1;
-    transition: color 0.15s ease;
-  }
-
-  .transcript-drawer__close:hover {
-    color: #333;
-  }
-
-  .transcript-drawer__close:focus {
-    outline: 2px solid #52682d;
-    outline-offset: 2px;
-  }
-
-  .transcript-drawer__content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1rem 1.25rem 1.5rem;
+  .jotb-transcript-content {
+    margin-top: 0.75rem;
+    padding: 1rem 1.25rem;
+    background: rgba(82, 104, 45, 0.04);
+    border-radius: 8px;
     font-size: 0.9rem;
-    line-height: 1.6;
+    line-height: 1.7;
     color: #4a5739;
   }
 
-  .transcript-drawer__content p {
+  .jotb-transcript-content :global(p) {
     margin: 0 0 0.75rem 0;
   }
 
-  .transcript-drawer__content strong {
+  .jotb-transcript-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .jotb-transcript-content :global(strong) {
     color: #52682d;
   }
 
@@ -903,10 +876,6 @@ const transcripts = {
       width: 95%;
       max-height: 85vh;
     }
-
-    .transcript-drawer {
-      max-height: 70vh;
-    }
   }
 
   @media (max-width: 480px) {
@@ -924,20 +893,13 @@ const transcripts = {
     var videoFrame = document.getElementById('video-frame');
     var videoCards = document.querySelectorAll('.jotb-video-card');
     var closeButtons = modal ? modal.querySelectorAll('[data-close]') : [];
-    var transcriptToggle = document.getElementById('transcript-toggle');
-    var transcriptDrawer = document.getElementById('transcript-drawer');
-    var transcriptDrawerClose = document.getElementById('transcript-drawer-close');
-    var transcriptDrawerTitle = document.getElementById('transcript-drawer-title');
-    var transcriptText = document.getElementById('transcript-text');
     
     var triggerButton = null;
-    var currentVideoKey = null;
-    var isTranscriptOpen = false;
 
     var videoData = {
       setup: {
         src: 'https://player.vimeo.com/video/1149537564?badge=0&autopause=0&player_id=0&app_id=58479',
-        title: 'thread-the-tension-mast'
+        title: 'Setting Up Your Machine'
       },
       caston: {
         src: 'https://player.vimeo.com/video/151860058?badge=0&autopause=0&player_id=0&app_id=58479',
@@ -945,52 +907,10 @@ const transcripts = {
       }
     };
 
-    // Load transcripts from JSON data
-    var transcriptsData = {};
-    var transcriptsScript = document.getElementById('video-transcripts-data');
-    if (transcriptsScript) {
-      try {
-        transcriptsData = JSON.parse(transcriptsScript.textContent || '{}');
-      } catch (e) {
-        console.error('Failed to parse transcripts data:', e);
-      }
-    }
-
-    function openTranscriptDrawer() {
-      if (!transcriptDrawer || !transcriptText || !currentVideoKey) return;
-      
-      // Load transcript content
-      var transcript = transcriptsData[currentVideoKey] || '';
-      transcriptText.innerHTML = transcript || '<p>No transcript available.</p>';
-      
-      // Open drawer
-      transcriptDrawer.setAttribute('aria-hidden', 'false');
-      isTranscriptOpen = true;
-      
-      // Focus the drawer heading for accessibility
-      if (transcriptDrawerTitle) {
-        transcriptDrawerTitle.focus();
-      }
-    }
-
-    function closeTranscriptDrawer() {
-      if (!transcriptDrawer) return;
-      
-      // Close drawer
-      transcriptDrawer.setAttribute('aria-hidden', 'true');
-      isTranscriptOpen = false;
-      
-      // Return focus to the transcript button
-      if (transcriptToggle) {
-        transcriptToggle.focus();
-      }
-    }
-
     function openModal(videoKey, title, trigger) {
       if (!modal || !videoFrame || !modalTitle) return;
       
       triggerButton = trigger;
-      currentVideoKey = videoKey;
       
       // Set dynamic title
       modalTitle.textContent = title;
@@ -1021,12 +941,6 @@ const transcripts = {
         iframe.src = data.src;
       }
       
-      // Reset transcript drawer state
-      if (transcriptDrawer) {
-        transcriptDrawer.setAttribute('aria-hidden', 'true');
-      }
-      isTranscriptOpen = false;
-      
       // Show modal
       modal.setAttribute('aria-hidden', 'false');
       document.body.classList.add('modal-open');
@@ -1039,12 +953,6 @@ const transcripts = {
     function closeModal() {
       if (!modal || !videoFrame || !modalTitle) return;
       
-      // Close transcript drawer first
-      if (transcriptDrawer) {
-        transcriptDrawer.setAttribute('aria-hidden', 'true');
-      }
-      isTranscriptOpen = false;
-      
       // Hide modal
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
@@ -1056,31 +964,9 @@ const transcripts = {
       // Reset title
       modalTitle.textContent = 'Video';
       
-      // Reset transcript content
-      if (transcriptText) {
-        transcriptText.innerHTML = '';
-      }
-      currentVideoKey = null;
-      
       // Restore focus to trigger button
       if (triggerButton) triggerButton.focus();
       triggerButton = null;
-    }
-
-    // Transcript toggle button handler
-    if (transcriptToggle) {
-      transcriptToggle.addEventListener('click', function(e) {
-        e.preventDefault();
-        openTranscriptDrawer();
-      });
-    }
-
-    // Transcript drawer close button handler
-    if (transcriptDrawerClose) {
-      transcriptDrawerClose.addEventListener('click', function(e) {
-        e.preventDefault();
-        closeTranscriptDrawer();
-      });
     }
 
     // Video card click handlers
@@ -1097,14 +983,10 @@ const transcripts = {
       el.addEventListener('click', closeModal);
     });
 
-    // ESC key handler - closes drawer first if open, otherwise closes modal
+    // ESC key handler
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
-        if (isTranscriptOpen) {
-          closeTranscriptDrawer();
-        } else {
-          closeModal();
-        }
+        closeModal();
       }
     });
   });

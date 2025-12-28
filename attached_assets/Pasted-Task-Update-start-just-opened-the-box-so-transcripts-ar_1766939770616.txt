@@ -1,0 +1,37 @@
+Task: Update /start/just-opened-the-box so transcripts are NOT inside the video modal.
+
+Current behavior:
+- Each video opens in a modal.
+- Inside the modal, the transcript is available via a drawer (“Read transcript” opens a drawer panel).
+- This creates extra complexity and scrolling inside the modal.
+
+Requested change (recommended design):
+1) Video modal should be VIDEO ONLY (plus title/close button).
+   - Remove the transcript drawer UI from the modal entirely.
+   - Remove any transcript toggle/link inside the modal.
+2) Put the transcript on the PAGE (inline), inside the matching step section.
+   - Under the “Quick Notes” list for each step (Set up and yarn / First cast on), add a collapsed transcript accordion.
+   - Use a simple inline toggle link/button: “Read transcript” (collapsed by default).
+   - When opened, the transcript content appears directly below and the page scroll handles it (no nested scroll containers).
+   - Keep the transcript HTML/content exactly as-is (reuse existing transcriptHtml / markup and existing .kbm-transcript styles if present).
+3) Keep everything else unchanged:
+   - The video cards remain where they are.
+   - Clicking the video card still opens the modal player.
+   - Do NOT change copy/layout outside of adding the accordion.
+
+Behavior requirements:
+- Transcript accordion is collapsed by default.
+- Toggle text switches between “Read transcript” and “Hide transcript”.
+- Accessibility: use <details><summary> if possible (keyboard friendly), or otherwise ensure the toggle is a real button with aria-expanded.
+
+Implementation notes:
+- Identify the transcript content currently used in the modal and move/reuse it in the page section that matches the video.
+- Delete unused drawer CSS/JS and any state variables related to the transcript drawer in the modal (keep the spinner/load logic intact).
+- Apply this for BOTH videos/sections.
+
+Deliverables:
+- Show the exact files changed (likely src/pages/start/just-opened-the-box.astro and any related component/styles).
+- Provide the updated code (diff or full updated blocks).
+- Confirm on mobile + desktop:
+  - modal has no transcript
+  - transcript appears under Quick Notes on the page and expands/collapses properly
