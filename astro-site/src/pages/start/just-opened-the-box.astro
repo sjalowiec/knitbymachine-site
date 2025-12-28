@@ -1,5 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
 
 const pageTitle = 'Just Opened the Box | Knit by Machine';
 const pageDescription = 'Your first steps after unboxing your knitting machine. Thread the mast, choose a machine-friendly yarn, and try an e-wrap cast on — your first step toward fabric.';
@@ -7,6 +9,21 @@ const pageDescription = 'Your first steps after unboxing your knitting machine. 
 // Local video thumbnail images
 const setupThumbnail = '/images/video1.webp';
 const castonThumbnail = '/images/video2.webp';
+
+// Fetch video transcripts from collection
+const allVideos = await getCollection('videos');
+const tensionMastVideo = allVideos.find(v => v.id === 'tension-mast');
+const eWrapVideo = allVideos.find(v => v.id === 'e-wrap-cast-on');
+
+// Get transcript HTML from the markdown body
+const setupTranscript = tensionMastVideo?.body ? await marked.parse(tensionMastVideo.body) : '';
+const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) : '';
+
+// Create transcripts object for client-side use
+const transcripts = {
+  setup: setupTranscript,
+  caston: castonTranscript
+};
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -209,9 +226,17 @@ const castonThumbnail = '/images/video2.webp';
       </div>
       <div class="video-modal__body">
         <div class="video-frame" id="video-frame"></div>
+        <div class="video-modal__transcript-toggle">
+          <a href="#" id="transcript-toggle" class="transcript-link" data-testid="link-show-transcript">show transcription</a>
+        </div>
+        <div class="video-modal__transcript" id="transcript-content" aria-hidden="true">
+          <div class="transcript-text" id="transcript-text"></div>
+        </div>
       </div>
     </div>
   </div>
+
+  <script type="application/json" id="video-transcripts-data" set:html={JSON.stringify(transcripts)}></script>
 </BaseLayout>
 
 <style>
@@ -710,6 +735,48 @@ const castonThumbnail = '/images/video2.webp';
     overflow: hidden;
   }
 
+  /* Transcript styles */
+  .video-modal__transcript-toggle {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .transcript-link {
+    color: var(--kbm-green, #52682d);
+    font-size: 0.9rem;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .transcript-link:hover {
+    text-decoration: underline;
+  }
+
+  .video-modal__transcript {
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: 0 1.25rem 1.25rem;
+  }
+
+  .video-modal__transcript[aria-hidden="false"] {
+    display: block;
+  }
+
+  .transcript-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #4a5739;
+  }
+
+  .transcript-text p {
+    margin: 0 0 0.75rem 0;
+  }
+
+  .transcript-text strong {
+    color: #52682d;
+  }
+
   /* ============================================
      RESPONSIVE STYLES
      ============================================ */
@@ -782,8 +849,12 @@ const castonThumbnail = '/images/video2.webp';
     var videoFrame = document.getElementById('video-frame');
     var videoCards = document.querySelectorAll('.jotb-video-card');
     var closeButtons = modal ? modal.querySelectorAll('[data-close]') : [];
+    var transcriptToggle = document.getElementById('transcript-toggle');
+    var transcriptContent = document.getElementById('transcript-content');
+    var transcriptText = document.getElementById('transcript-text');
     
     var triggerButton = null;
+    var currentVideoKey = null;
 
     var videoSources = {
       setup: '<iframe src="https://player.vimeo.com/video/1149537564?badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" style="position:absolute;top:0;left:0;width:100%;height:100%;" title="thread-the-tension-mast"></iframe>',
@@ -794,12 +865,21 @@ const castonThumbnail = '/images/video2.webp';
       if (!modal || !videoFrame || !modalTitle) return;
       
       triggerButton = trigger;
+      currentVideoKey = videoKey;
       
       // Set dynamic title
       modalTitle.textContent = title;
       
       // Inject iframe
       videoFrame.innerHTML = videoSources[videoKey] || '';
+      
+      // Reset transcript state
+      if (transcriptContent) {
+        transcriptContent.setAttribute('aria-hidden', 'true');
+      }
+      if (transcriptToggle) {
+        transcriptToggle.textContent = 'show transcription';
+      }
       
       // Show modal
       modal.setAttribute('aria-hidden', 'false');
@@ -823,9 +903,55 @@ const castonThumbnail = '/images/video2.webp';
       // Reset title
       modalTitle.textContent = 'Video';
       
+      // Reset transcript
+      if (transcriptContent) {
+        transcriptContent.setAttribute('aria-hidden', 'true');
+      }
+      if (transcriptText) {
+        transcriptText.innerHTML = '';
+      }
+      if (transcriptToggle) {
+        transcriptToggle.textContent = 'show transcription';
+      }
+      currentVideoKey = null;
+      
       // Restore focus to trigger button
       if (triggerButton) triggerButton.focus();
       triggerButton = null;
+    }
+
+    // Load transcripts from JSON data
+    var transcriptsData = {};
+    var transcriptsScript = document.getElementById('video-transcripts-data');
+    if (transcriptsScript) {
+      try {
+        transcriptsData = JSON.parse(transcriptsScript.textContent || '{}');
+      } catch (e) {
+        console.error('Failed to parse transcripts data:', e);
+      }
+    }
+
+    // Transcript toggle handler
+    if (transcriptToggle) {
+      transcriptToggle.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        if (!transcriptContent || !transcriptText || !currentVideoKey) return;
+        
+        var isHidden = transcriptContent.getAttribute('aria-hidden') === 'true';
+        
+        if (isHidden) {
+          // Show transcript
+          var transcript = transcriptsData[currentVideoKey] || '';
+          transcriptText.innerHTML = transcript || '<p>No transcript available.</p>';
+          transcriptContent.setAttribute('aria-hidden', 'false');
+          transcriptToggle.textContent = 'hide transcription';
+        } else {
+          // Hide transcript
+          transcriptContent.setAttribute('aria-hidden', 'true');
+          transcriptToggle.textContent = 'show transcription';
+        }
+      });
     }
 
     // Video card click handlers
