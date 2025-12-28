@@ -115,7 +115,22 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           <span class="jotb-toggle-read">View transcript</span>
           <span class="jotb-toggle-hide">Hide transcript</span>
         </summary>
-        <div class="jotb-transcript-content" set:html={setupTranscript} />
+        <div class="jotb-transcript-panel">
+          <div class="jotb-transcript-header">
+            <button type="button" class="jotb-transcript-close" data-close-transcript data-testid="button-close-transcript-setup">
+              <span aria-hidden="true">&#x2715;</span> Hide transcript
+            </button>
+            <a href="#setup" class="jotb-transcript-back" data-testid="link-back-to-video-setup">
+              Back to video
+            </a>
+          </div>
+          <div class="jotb-transcript-content" set:html={setupTranscript} />
+          <div class="jotb-transcript-footer">
+            <a href="#caston" class="jotb-transcript-next" data-testid="link-next-caston">
+              Next: First cast on <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
       </details>
     </section>
 
@@ -186,7 +201,22 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           <span class="jotb-toggle-read">View transcript</span>
           <span class="jotb-toggle-hide">Hide transcript</span>
         </summary>
-        <div class="jotb-transcript-content" set:html={castonTranscript} />
+        <div class="jotb-transcript-panel">
+          <div class="jotb-transcript-header">
+            <button type="button" class="jotb-transcript-close" data-close-transcript data-testid="button-close-transcript-caston">
+              <span aria-hidden="true">&#x2715;</span> Hide transcript
+            </button>
+            <a href="#caston" class="jotb-transcript-back" data-testid="link-back-to-video-caston">
+              Back to video
+            </a>
+          </div>
+          <div class="jotb-transcript-content" set:html={castonTranscript} />
+          <div class="jotb-transcript-footer">
+            <a href="#challenge" class="jotb-transcript-next" data-testid="link-next-challenge">
+              Next: Challenge <span aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
+        </div>
       </details>
     </section>
 
@@ -800,14 +830,76 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
   }
 
   /* ============================================
+     TRANSCRIPT PANEL (scrollable container)
+     ============================================ */
+
+  .jotb-transcript-panel {
+    margin-top: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    position: relative;
+  }
+
+  /* Sticky header bar within transcript panel */
+  .jotb-transcript-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.6rem 1rem;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.85rem;
+  }
+
+  .jotb-transcript-close {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    color: var(--kbm-green, #52682d);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.15s ease;
+  }
+
+  .jotb-transcript-close:hover {
+    background: rgba(82, 104, 45, 0.08);
+  }
+
+  .jotb-transcript-close:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  .jotb-transcript-back {
+    color: #6b7280;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+
+  .jotb-transcript-back:hover {
+    color: var(--kbm-green, #52682d);
+    text-decoration: underline;
+  }
+
+  /* ============================================
      TRANSCRIPT CONTENT (centered, readable width)
      ============================================ */
 
   .jotb-transcript-content {
-    margin-top: 1rem;
     padding: 1.25rem 1.5rem;
     background: rgba(82, 104, 45, 0.04);
-    border-radius: 8px;
     font-size: 0.95rem;
     line-height: 1.75;
     color: #4a5739;
@@ -826,6 +918,41 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
 
   .jotb-transcript-content :global(strong) {
     color: #52682d;
+  }
+
+  /* ============================================
+     TRANSCRIPT FOOTER (next step CTA)
+     ============================================ */
+
+  .jotb-transcript-footer {
+    padding: 1rem 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .jotb-transcript-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--kbm-green, #52682d);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: rgba(82, 104, 45, 0.08);
+    transition: background 0.15s ease;
+  }
+
+  .jotb-transcript-next:hover {
+    background: rgba(82, 104, 45, 0.15);
+    text-decoration: none;
+  }
+
+  .jotb-transcript-next:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
   }
 
   /* ============================================
@@ -895,6 +1022,20 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // ============================================
+    // TRANSCRIPT CLOSE BUTTONS
+    // ============================================
+    var transcriptCloseButtons = document.querySelectorAll('[data-close-transcript]');
+    
+    transcriptCloseButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var details = btn.closest('details');
+        if (details) {
+          details.removeAttribute('open');
+        }
+      });
+    });
+
     // ============================================
     // VIDEO MODAL
     // ============================================
