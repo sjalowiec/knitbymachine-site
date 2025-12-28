@@ -1,0 +1,44 @@
+Task: Update transcript UX on /start/just-opened-the-box with TWO changes:
+
+CHANGE #1 — Remove transcripts from the video modal
+- The video modal should be VIDEO ONLY.
+- Remove the transcript drawer (and any transcript toggle/link) from inside the modal.
+- Keep the existing spinner/iframe-load behavior intact.
+
+CHANGE #2 — Move transcript to the page with clearer placement + full-width reading
+For EACH of the two step sections (Set up and yarn / First cast on):
+
+A) Place the transcript toggle near the video
+- Put the “View transcript / Hide transcript” control directly UNDER the video card (in the right column).
+- This must clearly relate to that specific video.
+
+B) Make the transcript content full width (not in a narrow column)
+- When the transcript is opened, render the transcript panel as FULL WIDTH below the entire section (spanning both columns), not confined to the left column.
+- The transcript panel should appear immediately below the section’s grid (so it feels connected to that step).
+
+Behavior requirements:
+- Default state: collapsed
+- Toggle labels:
+  - collapsed: “View transcript”
+  - open: “Hide transcript”
+- Accessibility:
+  - Use <details><summary> if possible for keyboard + ARIA support.
+  - Ensure summary is clearly clickable and styled like a link/button.
+- Readability:
+  - Transcript panel spans full width, but constrain the text block inside to a readable measure (e.g., max-width: 65ch; margin: 0 auto).
+  - Reuse existing transcript markup/styles (.kbm-transcript) and do NOT rewrite transcript content.
+
+Implementation guidance:
+- Keep the existing two-column layout for the step section.
+- Add the <details>/<summary> toggle under the video card.
+- Render the transcript content in a container that spans the full grid width:
+  - Either place it after the grid, or use grid-column: 1 / -1.
+- Remove any now-unused CSS/JS related to the transcript drawer inside the modal.
+
+Deliverables:
+- List the exact files changed (likely src/pages/start/just-opened-the-box.astro + any related CSS).
+- Provide the final updated code (diff or full blocks).
+- Confirm on desktop and mobile:
+  - modal is video-only
+  - transcript toggle is under the video card
+  - transcript opens full-width under the section

@@ -81,14 +81,6 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               Secure in the clip
             </li>
           </ul>
-          <!-- Inline Transcript Accordion -->
-          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
-            <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
-              <span class="jotb-toggle-read">Read transcript</span>
-              <span class="jotb-toggle-hide">Hide transcript</span>
-            </summary>
-            <div class="jotb-transcript-content" set:html={setupTranscript} />
-          </details>
         </div>
         <div class="jotb-section-action">
           <p class="jotb-first-step" data-testid="text-first-hands-on">
@@ -117,6 +109,14 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           </button>
         </div>
       </div>
+      <!-- Transcript accordion (full-width, after grid) -->
+      <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
+        <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
+          <span class="jotb-toggle-read">View transcript</span>
+          <span class="jotb-toggle-hide">Hide transcript</span>
+        </summary>
+        <div class="jotb-transcript-content" set:html={setupTranscript} />
+      </details>
     </section>
 
     <!-- SECTION 2: First Cast On (Bordered) -->
@@ -178,16 +178,16 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               You can knit 5+ rows without dropped stitches
             </li>
           </ul>
-          <!-- Inline Transcript Accordion -->
-          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
-            <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
-              <span class="jotb-toggle-read">Read transcript</span>
-              <span class="jotb-toggle-hide">Hide transcript</span>
-            </summary>
-            <div class="jotb-transcript-content" set:html={castonTranscript} />
-          </details>
         </div>
       </div>
+      <!-- Transcript accordion (full-width, after grid) -->
+      <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
+        <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
+          <span class="jotb-toggle-read">View transcript</span>
+          <span class="jotb-toggle-hide">Hide transcript</span>
+        </summary>
+        <div class="jotb-transcript-content" set:html={castonTranscript} />
+      </details>
     </section>
 
     <!-- SECTION 3: Optional Paid Practice Project (Card) -->
@@ -744,21 +744,21 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
   }
 
   /* ============================================
-     INLINE TRANSCRIPT ACCORDION
+     TRANSCRIPT ACCORDION (full-width, after grid)
      ============================================ */
   
   .jotb-transcript-accordion {
-    margin-top: 1.25rem;
-    border-top: 1px solid #e5e7eb;
+    margin-top: 1.5rem;
     padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
   }
 
   .jotb-transcript-toggle {
     color: var(--kbm-green, #52682d);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    padding: 0.5rem 0;
+    padding: 0.25rem 0;
     display: inline-block;
     list-style: none;
   }
@@ -799,18 +799,25 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     outline-offset: 2px;
   }
 
+  /* ============================================
+     TRANSCRIPT CONTENT (centered, readable width)
+     ============================================ */
+
   .jotb-transcript-content {
-    margin-top: 0.75rem;
-    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+    padding: 1.25rem 1.5rem;
     background: rgba(82, 104, 45, 0.04);
     border-radius: 8px;
-    font-size: 0.9rem;
-    line-height: 1.7;
+    font-size: 0.95rem;
+    line-height: 1.75;
     color: #4a5739;
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .jotb-transcript-content :global(p) {
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.85rem 0;
   }
 
   .jotb-transcript-content :global(p:last-child) {
@@ -888,6 +895,9 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // ============================================
+    // VIDEO MODAL
+    // ============================================
     var modal = document.getElementById('video-modal');
     var modalTitle = document.getElementById('video-modal-title');
     var videoFrame = document.getElementById('video-frame');
