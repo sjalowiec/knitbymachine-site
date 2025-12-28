@@ -12,8 +12,8 @@ const castonThumbnail = '/images/video2.webp';
 
 // Fetch video transcripts from collection
 const allVideos = await getCollection('videos');
-const tensionMastVideo = allVideos.find(v => v.id === 'tension-mast');
-const eWrapVideo = allVideos.find(v => v.id === 'e-wrap-cast-on');
+const tensionMastVideo = allVideos.find(v => v.slug === 'tension-mast');
+const eWrapVideo = allVideos.find(v => v.slug === 'e-wrap-cast-on');
 
 // Get transcript HTML from the markdown body
 const setupTranscript = tensionMastVideo?.body ? await marked.parse(tensionMastVideo.body) : '';
