@@ -1,0 +1,202 @@
+We already have a fully working implementation of:
+
+Video cards that open a modal video player
+
+“Show transcript / Hide transcript” buttons
+
+<details>-based transcript accordions
+
+Keyboard + backdrop modal close behavior
+
+Accessible ARIA wiring
+
+Clean, predictable UX
+
+The reference implementation is the “Just Opened the Box” page.
+Your task is to reuse that exact interaction pattern on this Skill Builder page:
+
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+
+This is a port, not a redesign.
+
+🎯 Goal
+
+On the Your First Cast On skill builder page:
+
+Each video card opens a modal video player
+
+Each video has a Show transcript / Hide transcript toggle
+
+Transcripts expand/collapse using <details>
+
+No hard-coded Vimeo maps in JS
+
+Video + transcript data come from the Videos content collection
+
+Behavior, labels, keyboard handling, and UX match the reference page
+
+🔒 Scope & Safety Rules
+
+Modify only:
+
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+Do not touch global JS bundles or unrelated pages
+
+If helper styles are needed, scope them locally
+
+Do not invent new UX patterns
+
+🧱 Step-by-Step Instructions
+1️⃣ Load video data from the Videos content collection (Astro side)
+
+At the top of index.astro:
+
+Import getCollection from astro:content
+
+Load only the videos used on this page (by slug)
+
+For each video, retrieve:
+
+title
+
+embedUrl (or equivalent Vimeo embed src)
+
+transcriptHtml
+
+Create a small lookup object keyed by slug so it can be used in markup.
+
+2️⃣ Video cards → modal triggers
+
+For each video card on the page:
+
+Keep the existing card layout
+
+Ensure the clickable element is a <button>
+
+Add data attributes populated by Astro:
+
+data-video-slug
+
+data-embed-src
+
+data-title
+
+These replace the hard-coded JS Vimeo map used on the reference page.
+
+3️⃣ Transcript toggle buttons (same UX as reference)
+
+Under each video card:
+
+Add a button with:
+
+class: jotb-transcript-trigger
+
+data-transcript-toggle="<slug>"
+
+icon: <i class="fa-regular fa-file-lines"></i>
+
+label span: .jotb-trigger-label
+
+Default label: Show transcript
+
+4️⃣ Transcript accordions
+
+For each video:
+
+Add a <details> block:
+
+id="transcript-<slug>"
+
+class: jotb-transcript-accordion
+
+Inside:
+
+hidden <summary> (same as reference)
+
+transcript container rendering transcriptHtml
+
+Do not hardcode transcript text
+
+5️⃣ Modal markup (reuse structure verbatim)
+
+At the bottom of the page, include the modal markup identical to the reference:
+
+.video-modal
+
+.video-modal__backdrop with data-close
+
+.video-modal__dialog
+
+header with title + close button
+
+.video-frame container for iframe injection
+
+IDs and structure must match so the JS ports cleanly.
+
+6️⃣ Client-side JS (ported, not reinvented)
+
+Inline <script> at the bottom of the page:
+
+Transcript logic
+
+Copy the transcript toggle logic exactly from the reference page
+
+Keep:
+
+aria-expanded syncing
+
+MutationObserver watching <details>
+
+label swap Show ↔ Hide
+
+Update selectors only if class names differ
+
+Modal logic
+
+Copy modal open/close logic exactly
+
+Remove the hard-coded m = {} Vimeo map
+
+Instead:
+
+Read data-embed-src and data-title from the clicked button
+
+Keep:
+
+ESC to close
+
+backdrop click
+
+focus return to triggering card
+
+body.modal-open scroll lock
+
+🧪 Acceptance Checklist
+
+After implementation:
+
+Clicking a video card opens the modal with the correct video
+
+ESC and backdrop close the modal
+
+Focus returns to the triggering card
+
+“Show transcript” expands the correct transcript
+
+Label updates to “Hide transcript”
+
+Closing transcript resets label correctly
+
+No Vimeo IDs or URLs are hard-coded in JS
+
+All video + transcript content comes from the Videos collection
+
+❗ Important Notes
+
+This is intentionally page-local, not a component refactor
+
+Do not generalize or abstract yet
+
+Match the reference behavior exactly — this page becomes the Skill Builder standard

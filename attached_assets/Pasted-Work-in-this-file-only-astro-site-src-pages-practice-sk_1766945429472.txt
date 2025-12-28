@@ -1,0 +1,144 @@
+Work in this file only:
+
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+
+Do not refactor other pages. Do not create new components unless you absolutely must. Keep changes local to this page.
+
+Task 1 — Update page header with image + smaller size
+
+In the page header area:
+
+Add a header image (use an existing site image if one is already used for skill builders; otherwise use a placeholder path and comment it clearly).
+
+Make the header visually smaller:
+
+reduce top/bottom padding
+
+keep the H1 but reduce spacing under it
+
+keep the page readable on mobile
+
+Task 2 — Load video information from content
+
+At the top of the file, load the video entries from the Videos content collection:
+
+import { getCollection } from "astro:content";
+
+Identify the two (or more) video slugs used on this page (use the slugs already referenced in the page content if present; otherwise infer from the existing video section names).
+
+Build a lookup object keyed by slug that exposes:
+
+title
+
+embedSrc (Vimeo embed URL field from the content; if the field is named differently, use the correct field)
+
+transcriptHtml (already-clean HTML)
+
+optional: duration if available
+
+Task 3 — Change videos to clickable cards
+
+Replace the current embedded players (if any) with clickable video cards:
+
+Each card should be a <button type="button">
+
+Keep the existing card styling patterns used elsewhere on KBM (card + thumbnail + play overlay if available)
+
+Add data attributes populated from the content lookup:
+
+data-embed-src="..."
+
+data-title="..."
+
+data-video-slug="..."
+
+The user should understand it opens a larger player (helper text is fine)
+
+Task 4 — Add text transcripts to videos
+
+Under each video card add a transcript toggle button:
+
+Text must be exactly:
+
+“Show transcript” (collapsed)
+
+“Hide transcript” (expanded)
+
+Include icon:
+
+<i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+
+Button must control a <details> block:
+
+<details id="transcript-<slug>">
+
+Inside, render the transcript HTML from content:
+
+If transcriptHtml is missing, do not show the toggle at all for that video.
+
+Task 5 — Add video player to page
+
+Add a modal video player to the bottom of the page (same structure and behavior as the working “Just Opened the Box” pattern):
+
+Modal container: #video-modal
+
+Title element: #video-modal-title
+
+Frame container: #video-frame
+
+Backdrop close and X close button
+
+aria-modal="true", role="dialog", aria-hidden toggling
+
+Task 6 — Make video player and text work
+
+Add inline client-side JS at the bottom of this page that wires everything:
+
+Transcript toggles:
+
+click trigger toggles the matching <details open>
+
+updates aria-expanded and swaps label Show/Hide
+
+use MutationObserver to keep label correct if details open changes
+
+Modal:
+
+clicking a video card opens modal
+
+inject an iframe into #video-frame with the embed src from data-embed-src
+
+close modal on:
+
+backdrop click
+
+close button click
+
+ESC key
+
+return focus to the clicked card when modal closes
+
+lock background scroll while open (add/remove body.modal-open)
+
+IMPORTANT: Do NOT use a hard-coded JS map of Vimeo URLs. All src values must come from the content collection and be passed into the DOM via data-embed-src.
+
+Task 7 — Check that all changes work
+
+Verify in preview:
+
+clicking each card opens the correct video in the modal
+
+transcripts toggle correctly and label updates correctly
+
+ESC closes modal
+
+backdrop closes modal
+
+focus returns to the clicked card
+
+if a transcript is missing, no transcript button shows for that video
+
+no console errors
+
+When complete, provide a short summary of what changed in this file and what to test.
