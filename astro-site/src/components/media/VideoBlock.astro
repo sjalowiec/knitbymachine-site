@@ -1,45 +1,59 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { getCollection } from 'astro:content';
 import VimeoEmbed from './VimeoEmbed.astro';
 import Transcript from './Transcript.astro';
 
 interface Props {
-  videoId: string;
+  videoSlug?: string;
+  videoId?: string;
+  vimeoId?: string;
+  title?: string;
+  transcript?: string;
   heading?: string;
   showMeta?: boolean;
 }
 
-const { videoId, heading, showMeta = false } = Astro.props;
+const { videoSlug, videoId, vimeoId, title, transcript, heading, showMeta = false } = Astro.props;
 
-const allVideos = await getCollection('videos');
-const videoEntry = allVideos.find(v => v.slug === videoId);
+const lookupSlug = videoSlug || videoId;
 
-if (!videoEntry) {
-  console.warn(`VideoBlock: Video with id "${videoId}" not found in videos collection.`);
+let video: {
+  title: string;
+  vimeoId: string;
+  transcriptHtml?: string;
+  keywords?: string[];
+  tags?: string[];
+  skillLevel?: string | null;
+  published?: boolean;
+} | null = null;
+
+let fromCollection = false;
+
+if (lookupSlug) {
+  const allVideos = await getCollection('videos');
+  const videoEntry = allVideos.find(v => v.id === lookupSlug || v.id === `${lookupSlug}.json`);
+  
+  if (videoEntry) {
+    video = videoEntry.data;
+    fromCollection = true;
+  }
 }
 
-const video = videoEntry?.data;
-
-let TranscriptContent: any = null;
-let hasTranscript = false;
-
-if (videoEntry && videoEntry.body && videoEntry.body.trim().length > 0) {
-  const rendered = await render(videoEntry);
-  TranscriptContent = rendered.Content;
-  hasTranscript = true;
+if (!fromCollection && vimeoId && title) {
+  video = {
+    title,
+    vimeoId,
+    transcriptHtml: transcript || "",
+    tags: [],
+    keywords: [],
+  };
 }
 
-const hasTranscriptSections = video?.transcriptSections && video.transcriptSections.length > 0;
-
-function formatDuration(seconds: number): string {
-  const mins = Math.floor(seconds / 60);
-  const secs = seconds % 60;
-  return mins > 0 ? `${mins}:${secs.toString().padStart(2, '0')}` : `${secs}s`;
-}
+const displaySlug = lookupSlug || vimeoId || 'unknown';
 ---
 
-{videoEntry && video && (
-  <div class="kbm-video-block" data-testid={`video-block-${videoId}`}>
+{video && (
+  <div class="kbm-video-block" data-testid={`video-block-${displaySlug}`}>
     {heading && (
       <h3 class="kbm-video-block-heading">{heading}</h3>
     )}
@@ -49,43 +63,36 @@ function formatDuration(seconds: number): string {
       title={video.title} 
     />
     
-    {showMeta && (video.durationSeconds || (video.tags && video.tags.length > 0)) && (
+    {showMeta && (video.tags && video.tags.length > 0) && (
       <div class="kbm-video-block-meta">
-        {video.durationSeconds && (
-          <span class="kbm-video-duration">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            {formatDuration(video.durationSeconds)}
+        {video.skillLevel && (
+          <span class="kbm-video-skill-level">
+            {video.skillLevel}
           </span>
         )}
-        {video.tags && video.tags.length > 0 && (
-          <span class="kbm-video-tags">
-            {video.tags.join(' · ')}
-          </span>
-        )}
+        <span class="kbm-video-tags">
+          {video.tags.join(' · ')}
+        </span>
       </div>
     )}
     
-    {hasTranscript && TranscriptContent && (
+    {video.transcriptHtml && video.transcriptHtml.trim().length > 0 && (
       <Transcript title="Read transcript">
-        <TranscriptContent />
+        <Fragment set:html={video.transcriptHtml} />
       </Transcript>
-    )}
-    
-    {!hasTranscript && hasTranscriptSections && (
-      <Transcript 
-        title="Read transcript" 
-        sections={video.transcriptSections} 
-      />
     )}
   </div>
 )}
 
-{!videoEntry && (
-  <div class="kbm-video-block-error" data-testid={`video-block-error-${videoId}`}>
-    <p>Video not found: <code>{videoId}</code></p>
+{!video && lookupSlug && (
+  <div class="kbm-video-block-error" data-testid={`video-block-error-${displaySlug}`}>
+    <p>Video not found: <code>{lookupSlug}</code></p>
+  </div>
+)}
+
+{!video && !lookupSlug && !vimeoId && (
+  <div class="kbm-video-block-error" data-testid="video-block-error-no-props">
+    <p>VideoBlock requires either a <code>videoSlug</code> or <code>vimeoId</code> + <code>title</code></p>
   </div>
 )}
 
@@ -110,14 +117,13 @@ function formatDuration(seconds: number): string {
     color: #666;
   }
 
-  .kbm-video-duration {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .kbm-video-duration svg {
-    opacity: 0.7;
+  .kbm-video-skill-level {
+    background: var(--kbm-green-light, #e8eee0);
+    color: var(--kbm-green, #52682d);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    text-transform: capitalize;
   }
 
   .kbm-video-tags {

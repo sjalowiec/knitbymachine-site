@@ -91,23 +91,15 @@ const wizards = defineCollection({
 });
 
 const videos = defineCollection({
-  type: 'content',
+  type: 'data',
   schema: z.object({
     title: z.string(),
     vimeoId: z.string(),
-    durationSeconds: z.number().optional(),
-    tags: z.array(z.string()).optional(),
-    searchRole: z.string().default("supporting"),
-    usedIn: z.array(z.object({
-      type: z.enum(["skillBuilder", "ana", "blog", "workshop"]),
-      id: z.string(),
-      label: z.string().optional(),
-      url: z.string().optional()
-    })).optional(),
-    transcriptSections: z.array(z.object({
-      heading: z.string().optional(),
-      text: z.string()
-    })).optional()
+    transcriptHtml: z.string().optional().default(""),
+    keywords: z.array(z.string()).default([]),
+    tags: z.array(z.string()).default([]),
+    skillLevel: z.string().optional().nullable(),
+    published: z.boolean().default(true),
   })
 });
 
