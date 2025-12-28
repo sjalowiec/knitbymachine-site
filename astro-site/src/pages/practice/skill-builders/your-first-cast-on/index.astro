@@ -89,6 +89,12 @@ const faqSchema = faqs.length > 0 ? JSON.stringify({
 
 const pageTitle = "Your Start & Finish | Skill Builder | Knit by Machine";
 const pageDescription = "A clear demonstration of one cast on and one bind off, showing how the edge forms at the start and finish of your knitting.";
+
+// =============================================
+// GATE CONSTANTS
+// =============================================
+const PROJECT_ID = "pp-caston";
+const UNLOCK_KEY = `kbm:pp-unlocked:${PROJECT_ID}`;
 ---
 
 <BaseLayout title={pageTitle} description={pageDescription}>
@@ -113,6 +119,50 @@ const pageDescription = "A clear demonstration of one cast on and one bind off, 
         <span class="sb-badge sb-level">Beginner</span>
       </div>
     </section>
+
+    <!-- GATE BLOCK - shown until email submitted -->
+    <section class="sb-gate" id="gate-block" data-testid="gate-block">
+      <div class="sb-gate-card">
+        <h2 class="sb-gate-title">Your First Cast-On</h2>
+        <p class="sb-gate-intro">This guided practice walks you through a simple cast on and bind off — the way every project starts and ends on a knitting machine. By the end, you'll have completed a small practice swatch and know what to expect when you begin a real project.</p>
+        
+        <div class="sb-gate-includes">
+          <h3>What's included:</h3>
+          <ul>
+            <li>Step-by-step video demonstration</li>
+            <li>Printable practice checklist</li>
+            <li>Troubleshooting tips for common issues</li>
+            <li>Terms and technique explanations</li>
+          </ul>
+        </div>
+        
+        <p class="sb-gate-price">Normally $19 — currently included at no cost while you're getting started.</p>
+        
+        <form id="gate-form" class="sb-gate-form" data-testid="form-gate">
+          <div class="sb-gate-input-row">
+            <label for="gate-email" class="sr-only">Email address</label>
+            <input 
+              type="email" 
+              id="gate-email" 
+              name="email" 
+              placeholder="you@example.com" 
+              required 
+              autocomplete="email"
+              class="sb-gate-input"
+              data-testid="input-email"
+            />
+            <button type="submit" class="sb-gate-button" id="gate-submit" data-testid="button-submit">
+              <span class="sb-btn-label">Start the practice</span>
+            </button>
+          </div>
+          <p class="sb-gate-helper">You'll also get updates when new practice projects are added.</p>
+          <p class="sb-gate-error" id="gate-error" role="status" aria-live="polite" data-testid="text-error"></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- OPEN CONTENT - hidden until unlocked -->
+    <div id="open-content" data-open-content hidden>
 
     <!-- B) QUICK SCAN SECTION -->
     <section class="sb-section">
@@ -414,6 +464,8 @@ const pageDescription = "A clear demonstration of one cast on and one bind off, 
         </a>
       </div>
     </section>
+
+    </div><!-- /data-open-content -->
 
   </div>
 
@@ -1164,10 +1216,295 @@ const pageDescription = "A clear demonstration of one cast on and one bind off, 
     height: 44px;
   }
 }
+
+/* ========================================
+   GATE BLOCK STYLES
+   ======================================== */
+.sb-gate {
+  margin-bottom: 2rem;
+}
+
+.sb-gate-card {
+  background: #fff;
+  border: 1px solid var(--ring, #e5e8e0);
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.sb-gate-title {
+  font-size: var(--text-xl, 1.5rem);
+  color: var(--kbm-green, #52682d);
+  margin: 0 0 1rem 0;
+  text-align: center;
+}
+
+.sb-gate-intro {
+  font-size: 1rem;
+  color: #555;
+  line-height: 1.6;
+  margin-bottom: 1.25rem;
+}
+
+.sb-gate-includes {
+  background: var(--page-bg, #f7f8f7);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.sb-gate-includes h3 {
+  font-size: 0.95rem;
+  color: var(--kbm-green, #52682d);
+  margin: 0 0 0.5rem 0;
+}
+
+.sb-gate-includes ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+.sb-gate-includes li {
+  margin-bottom: 0.25rem;
+}
+
+.sb-gate-price {
+  font-size: 0.95rem;
+  color: #666;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.sb-gate-form {
+  text-align: center;
+}
+
+.sb-gate-input-row {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.sb-gate-input {
+  flex: 1;
+  min-width: 200px;
+  max-width: 280px;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--ring, #e5e8e0);
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.2s ease;
+}
+
+.sb-gate-input:focus {
+  outline: none;
+  border-color: var(--kbm-green, #52682d);
+  box-shadow: 0 0 0 2px rgba(82, 104, 45, 0.15);
+}
+
+.sb-gate-button {
+  padding: 0.75rem 1.5rem;
+  background: var(--kbm-green, #52682d);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s ease;
+  white-space: nowrap;
+}
+
+.sb-gate-button:hover,
+.sb-gate-button:focus {
+  background: var(--kbm-green-hover, #445626);
+}
+
+.sb-gate-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.sb-gate-helper {
+  font-size: 0.85rem;
+  color: #888;
+  margin: 0.75rem 0 0 0;
+}
+
+.sb-gate-error {
+  font-size: 0.9rem;
+  color: #c53030;
+  margin: 0.75rem 0 0 0;
+  min-height: 1.25rem;
+}
+
+.sb-gate-error:empty {
+  display: none;
+}
+
+/* Hidden state */
+.sb-gate[hidden] {
+  display: none;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Reveal animation */
+[data-open-content] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+[data-open-content]:not([hidden]) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-open-content].kbm-revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .sb-gate-card {
+    padding: 1.5rem 1rem;
+  }
+  
+  .sb-gate-input-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .sb-gate-input {
+    max-width: none;
+  }
+}
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
+  // ============================================
+  // GATE UNLOCK SYSTEM
+  // ============================================
+  var PROJECT_ID = 'pp-caston';
+  var UNLOCK_KEY = 'kbm:pp-unlocked:' + PROJECT_ID;
+  
+  var gateBlock = document.getElementById('gate-block');
+  var openContent = document.getElementById('open-content');
+  var gateForm = document.getElementById('gate-form');
+  var gateSubmit = document.getElementById('gate-submit');
+  var gateEmail = document.getElementById('gate-email');
+  var gateError = document.getElementById('gate-error');
+  
+  function isUnlocked() {
+    try {
+      return localStorage.getItem(UNLOCK_KEY) === '1';
+    } catch (e) {
+      return false;
+    }
+  }
+  
+  function setUnlocked() {
+    try {
+      localStorage.setItem(UNLOCK_KEY, '1');
+    } catch (e) {
+      // localStorage not available, continue anyway
+    }
+  }
+  
+  function showOpenContent() {
+    if (gateBlock) gateBlock.setAttribute('hidden', '');
+    if (openContent) {
+      openContent.removeAttribute('hidden');
+      openContent.classList.add('kbm-revealed');
+      
+      // Scroll to first section
+      var firstSection = openContent.querySelector('.sb-section');
+      if (firstSection) {
+        setTimeout(function() {
+          firstSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    }
+  }
+  
+  function showGate() {
+    if (gateBlock) gateBlock.removeAttribute('hidden');
+    if (openContent) openContent.setAttribute('hidden', '');
+  }
+  
+  // Check initial state
+  if (isUnlocked()) {
+    showOpenContent();
+  } else {
+    showGate();
+  }
+  
+  // Form submission
+  if (gateForm) {
+    gateForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      var email = gateEmail ? gateEmail.value.trim() : '';
+      if (!email) return;
+      
+      var btnLabel = gateSubmit ? gateSubmit.querySelector('.sb-btn-label') : null;
+      var originalLabel = btnLabel ? btnLabel.textContent : 'Start the practice';
+      
+      // Disable and show loading
+      if (gateSubmit) {
+        gateSubmit.disabled = true;
+        gateSubmit.setAttribute('aria-busy', 'true');
+      }
+      if (btnLabel) btnLabel.textContent = 'Starting…';
+      if (gateError) gateError.textContent = '';
+      
+      fetch('/.netlify/functions/pp-unlock', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, projectId: PROJECT_ID })
+      })
+      .then(function(response) {
+        return response.json().then(function(data) {
+          return { ok: response.ok, data: data };
+        });
+      })
+      .then(function(result) {
+        if (result.ok && result.data.ok) {
+          setUnlocked();
+          showOpenContent();
+        } else {
+          throw new Error(result.data.message || 'Something went wrong. Please try again.');
+        }
+      })
+      .catch(function(err) {
+        if (gateError) gateError.textContent = err.message || 'Something went wrong. Please try again.';
+        if (gateSubmit) {
+          gateSubmit.disabled = false;
+          gateSubmit.removeAttribute('aria-busy');
+        }
+        if (btnLabel) btnLabel.textContent = originalLabel;
+      });
+    });
+  }
+
   // ============================================
   // TRANSCRIPT TOGGLE BUTTONS
   // ============================================

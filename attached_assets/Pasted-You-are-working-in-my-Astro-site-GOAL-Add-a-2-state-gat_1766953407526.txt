@@ -1,0 +1,125 @@
+You are working in my Astro site.
+
+GOAL
+Add a 2-state “gated → open” experience to this page:
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+State A (GATED):
+- Show a value-frame + email capture form.
+- Hide the existing practice content (videos, transcript, checklist, steps, etc.)
+
+State B (OPEN):
+- After successful email submit, reveal the full existing practice content on the SAME page (no redirect).
+- Persist “unlocked” state for this page so the user stays unlocked on return.
+
+ActiveCampaign requirement:
+- When the user submits their email, apply AC tag: PP-caston
+
+IMPORTANT UX:
+- Do NOT send them to “check your inbox”
+- Do NOT navigate away
+- After submit, fade in content and scroll to the first practice section.
+
+IMPLEMENTATION OVERVIEW
+1) Add a Gate UI block (top of page) + form (email).
+2) Wrap existing page content in an “OpenContent” container that is hidden until unlocked.
+3) Add a small JS controller to:
+   - Determine state on load
+   - Submit email to a server endpoint
+   - On success: store unlocked flag (localStorage) and swap state in-place
+4) Create a Netlify function endpoint to call ActiveCampaign API and add tag PP-caston.
+
+STEP-BY-STEP TASKS
+
+A) CREATE NETLIFY FUNCTION (server-side AC call)
+Create:
+astro-site/netlify/functions/pp-unlock.js
+
+This function should:
+- Accept POST JSON: { email, projectId }
+- Validate email server-side
+- Call ActiveCampaign API to upsert contact and apply tag PP-caston
+- Return JSON success or error
+
+Use env vars (do NOT hardcode secrets):
+- AC_API_URL  (ex: https://YOURACCOUNT.api-us1.com)
+- AC_API_KEY
+- AC_TAG_ID_PP_CASTON  (preferred) OR if you only have tag name, include a note and fallback mapping.
+
+If we have the tag ID, apply it via the AC contactTags endpoint.
+If we do NOT have the tag ID, add a TODO comment + return a clear error telling me to set AC_TAG_ID_PP_CASTON.
+
+Netlify function response:
+- 200: { ok: true }
+- 400/500: { ok: false, message: "..." }
+
+B) ADD CLIENT-SIDE GATE LOGIC
+On the practice page:
+astro-site/src/pages/practice/skill-builders/your-first-cast-on/index.astro
+
+1) Add a constant:
+const PROJECT_ID = "pp-caston";
+const UNLOCK_KEY = `kbm:pp-unlocked:${PROJECT_ID}`;
+
+2) Add a GateBlock UI above the practice content:
+- Title: “Your First Cast-On”
+- 2–3 lines of value framing copy (calm, not salesy)
+- A short bulleted list of what’s included
+- Price framing line: “Normally $19 — currently included at no cost while you’re getting started.”
+- Email input + button:
+  Button label: “Start the practice”
+- Small helper line: “You’ll also get updates when new practice projects are added.”
+
+3) Wrap ALL the existing practice content in a container:
+<div data-open-content hidden> ...existing content... </div>
+
+4) Add a small inline script (or import a tiny module) to:
+- On load:
+  - If localStorage has UNLOCK_KEY === "1", hide GateBlock and show open content.
+  - Else show GateBlock and keep open content hidden.
+- On form submit:
+  - Disable button, show “Starting…” label, clear previous errors
+  - POST to: /.netlify/functions/pp-unlock with JSON { email, projectId: PROJECT_ID }
+  - If ok:
+    - localStorage.setItem(UNLOCK_KEY, "1")
+    - Add a class for fade-in transition and reveal open content
+    - Hide the gate block
+    - Smooth scroll to the first main practice heading/section inside open content
+  - If error:
+    - Show an inline error message below the button (no alert())
+    - Re-enable button and restore label
+
+5) Add minimal CSS (either scoped in the page or using existing KBM classes):
+- Gate block should look like a calm “card” (matching KBM style)
+- Provide a gentle fade-in for open content reveal:
+  - .kbm-reveal { opacity transition, transform slight }
+- Error message styling should be clear but not alarming.
+
+C) ACCESSIBILITY & DETAILS
+- The email input must be type="email" and required
+- Error message should be in a <p role="status" aria-live="polite">
+- Button should use aria-busy while submitting
+
+D) DO NOT BREAK EXISTING CONTENT
+- Do not rewrite the practice content; only wrap it and gate it.
+- Keep the existing video modal / transcript logic intact.
+
+E) ENV VARS / DOC UPDATE
+Update:
+astro-site/replit.md (or the project’s setup notes) to list required env vars:
+- AC_API_URL
+- AC_API_KEY
+- AC_TAG_ID_PP_CASTON
+
+Add a short note:
+- This gate is “email unlock” (not membership). Later we can swap the unlock check to Outseta/Memberstack without changing the URL.
+
+DELIVERABLES
+- netlify/functions/pp-unlock.js
+- Updated practice page with 2-state gate
+- Any small CSS additions needed
+- No redirects; in-place reveal; persistent unlock
+
+After implementing:
+- Confirm the gate works in Replit preview and on Netlify deploy.
+- If AC_TAG_ID_PP_CASTON isn’t set, return a clear error message so I know what to add.
