@@ -226,12 +226,17 @@ const transcripts = {
       </div>
       <div class="video-modal__body">
         <div class="video-frame" id="video-frame"></div>
-        <div class="video-modal__transcript-toggle">
-          <a href="#" id="transcript-toggle" class="transcript-link" data-testid="link-show-transcript">show transcription</a>
+        <div class="video-modal__actions">
+          <button type="button" id="transcript-toggle" class="transcript-btn" data-testid="button-read-transcript">Read transcript</button>
         </div>
-        <div class="video-modal__transcript" id="transcript-content" aria-hidden="true">
-          <div class="transcript-text" id="transcript-text"></div>
+      </div>
+      <!-- Transcript Drawer -->
+      <div class="transcript-drawer" id="transcript-drawer" aria-hidden="true" data-testid="drawer-transcript">
+        <div class="transcript-drawer__header">
+          <h3 id="transcript-drawer-title" tabindex="-1">Transcript</h3>
+          <button type="button" class="transcript-drawer__close" id="transcript-drawer-close" aria-label="Close transcript" data-testid="button-close-transcript">&#10005;</button>
         </div>
+        <div class="transcript-drawer__content" id="transcript-text"></div>
       </div>
     </div>
   </div>
@@ -741,45 +746,105 @@ const transcripts = {
     overflow: hidden;
   }
 
-  /* Transcript styles */
-  .video-modal__transcript-toggle {
+  /* Actions bar below video */
+  .video-modal__actions {
     padding: 0.75rem 1.25rem;
     border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: center;
   }
 
-  .transcript-link {
+  .transcript-btn {
+    background: none;
+    border: none;
     color: var(--kbm-green, #52682d);
     font-size: 0.9rem;
-    text-decoration: none;
+    font-weight: 500;
     cursor: pointer;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    transition: background-color 0.15s ease;
   }
 
-  .transcript-link:hover {
-    text-decoration: underline;
+  .transcript-btn:hover {
+    background-color: rgba(82, 104, 45, 0.08);
   }
 
-  .video-modal__transcript {
-    display: none;
-    max-height: 200px;
+  .transcript-btn:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  /* Transcript Drawer */
+  .transcript-drawer {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    max-height: 60vh;
+    background: #ffffff;
+    border-top: 1px solid #e5e7eb;
+    border-radius: 0 0 12px 12px;
+    transform: translateY(100%);
+    transition: transform 200ms ease;
+    display: flex;
+    flex-direction: column;
+    z-index: 10;
+  }
+
+  .transcript-drawer[aria-hidden="false"] {
+    transform: translateY(0);
+  }
+
+  .transcript-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .transcript-drawer__header h3 {
+    margin: 0;
+    font-size: 1rem;
+    color: #333;
+  }
+
+  .transcript-drawer__close {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.15s ease;
+  }
+
+  .transcript-drawer__close:hover {
+    color: #333;
+  }
+
+  .transcript-drawer__close:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  .transcript-drawer__content {
+    flex: 1;
     overflow-y: auto;
-    padding: 0 1.25rem 1.25rem;
-  }
-
-  .video-modal__transcript[aria-hidden="false"] {
-    display: block;
-  }
-
-  .transcript-text {
+    padding: 1rem 1.25rem 1.5rem;
     font-size: 0.9rem;
     line-height: 1.6;
     color: #4a5739;
   }
 
-  .transcript-text p {
+  .transcript-drawer__content p {
     margin: 0 0 0.75rem 0;
   }
 
-  .transcript-text strong {
+  .transcript-drawer__content strong {
     color: #52682d;
   }
 
@@ -838,6 +903,10 @@ const transcripts = {
       width: 95%;
       max-height: 85vh;
     }
+
+    .transcript-drawer {
+      max-height: 70vh;
+    }
   }
 
   @media (max-width: 480px) {
@@ -856,11 +925,14 @@ const transcripts = {
     var videoCards = document.querySelectorAll('.jotb-video-card');
     var closeButtons = modal ? modal.querySelectorAll('[data-close]') : [];
     var transcriptToggle = document.getElementById('transcript-toggle');
-    var transcriptContent = document.getElementById('transcript-content');
+    var transcriptDrawer = document.getElementById('transcript-drawer');
+    var transcriptDrawerClose = document.getElementById('transcript-drawer-close');
+    var transcriptDrawerTitle = document.getElementById('transcript-drawer-title');
     var transcriptText = document.getElementById('transcript-text');
     
     var triggerButton = null;
     var currentVideoKey = null;
+    var isTranscriptOpen = false;
 
     var videoData = {
       setup: {
@@ -872,6 +944,47 @@ const transcripts = {
         title: 'E-Wrap Cast On'
       }
     };
+
+    // Load transcripts from JSON data
+    var transcriptsData = {};
+    var transcriptsScript = document.getElementById('video-transcripts-data');
+    if (transcriptsScript) {
+      try {
+        transcriptsData = JSON.parse(transcriptsScript.textContent || '{}');
+      } catch (e) {
+        console.error('Failed to parse transcripts data:', e);
+      }
+    }
+
+    function openTranscriptDrawer() {
+      if (!transcriptDrawer || !transcriptText || !currentVideoKey) return;
+      
+      // Load transcript content
+      var transcript = transcriptsData[currentVideoKey] || '';
+      transcriptText.innerHTML = transcript || '<p>No transcript available.</p>';
+      
+      // Open drawer
+      transcriptDrawer.setAttribute('aria-hidden', 'false');
+      isTranscriptOpen = true;
+      
+      // Focus the drawer heading for accessibility
+      if (transcriptDrawerTitle) {
+        transcriptDrawerTitle.focus();
+      }
+    }
+
+    function closeTranscriptDrawer() {
+      if (!transcriptDrawer) return;
+      
+      // Close drawer
+      transcriptDrawer.setAttribute('aria-hidden', 'true');
+      isTranscriptOpen = false;
+      
+      // Return focus to the transcript button
+      if (transcriptToggle) {
+        transcriptToggle.focus();
+      }
+    }
 
     function openModal(videoKey, title, trigger) {
       if (!modal || !videoFrame || !modalTitle) return;
@@ -908,13 +1021,11 @@ const transcripts = {
         iframe.src = data.src;
       }
       
-      // Reset transcript state
-      if (transcriptContent) {
-        transcriptContent.setAttribute('aria-hidden', 'true');
+      // Reset transcript drawer state
+      if (transcriptDrawer) {
+        transcriptDrawer.setAttribute('aria-hidden', 'true');
       }
-      if (transcriptToggle) {
-        transcriptToggle.textContent = 'show transcription';
-      }
+      isTranscriptOpen = false;
       
       // Show modal
       modal.setAttribute('aria-hidden', 'false');
@@ -928,6 +1039,12 @@ const transcripts = {
     function closeModal() {
       if (!modal || !videoFrame || !modalTitle) return;
       
+      // Close transcript drawer first
+      if (transcriptDrawer) {
+        transcriptDrawer.setAttribute('aria-hidden', 'true');
+      }
+      isTranscriptOpen = false;
+      
       // Hide modal
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
@@ -939,15 +1056,9 @@ const transcripts = {
       // Reset title
       modalTitle.textContent = 'Video';
       
-      // Reset transcript
-      if (transcriptContent) {
-        transcriptContent.setAttribute('aria-hidden', 'true');
-      }
+      // Reset transcript content
       if (transcriptText) {
         transcriptText.innerHTML = '';
-      }
-      if (transcriptToggle) {
-        transcriptToggle.textContent = 'show transcription';
       }
       currentVideoKey = null;
       
@@ -956,37 +1067,19 @@ const transcripts = {
       triggerButton = null;
     }
 
-    // Load transcripts from JSON data
-    var transcriptsData = {};
-    var transcriptsScript = document.getElementById('video-transcripts-data');
-    if (transcriptsScript) {
-      try {
-        transcriptsData = JSON.parse(transcriptsScript.textContent || '{}');
-      } catch (e) {
-        console.error('Failed to parse transcripts data:', e);
-      }
-    }
-
-    // Transcript toggle handler
+    // Transcript toggle button handler
     if (transcriptToggle) {
       transcriptToggle.addEventListener('click', function(e) {
         e.preventDefault();
-        
-        if (!transcriptContent || !transcriptText || !currentVideoKey) return;
-        
-        var isHidden = transcriptContent.getAttribute('aria-hidden') === 'true';
-        
-        if (isHidden) {
-          // Show transcript
-          var transcript = transcriptsData[currentVideoKey] || '';
-          transcriptText.innerHTML = transcript || '<p>No transcript available.</p>';
-          transcriptContent.setAttribute('aria-hidden', 'false');
-          transcriptToggle.textContent = 'hide transcription';
-        } else {
-          // Hide transcript
-          transcriptContent.setAttribute('aria-hidden', 'true');
-          transcriptToggle.textContent = 'show transcription';
-        }
+        openTranscriptDrawer();
+      });
+    }
+
+    // Transcript drawer close button handler
+    if (transcriptDrawerClose) {
+      transcriptDrawerClose.addEventListener('click', function(e) {
+        e.preventDefault();
+        closeTranscriptDrawer();
       });
     }
 
@@ -1004,10 +1097,14 @@ const transcripts = {
       el.addEventListener('click', closeModal);
     });
 
-    // ESC key handler
+    // ESC key handler - closes drawer first if open, otherwise closes modal
     document.addEventListener('keydown', function(e) {
       if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
-        closeModal();
+        if (isTranscriptOpen) {
+          closeTranscriptDrawer();
+        } else {
+          closeModal();
+        }
       }
     });
   });
