@@ -107,27 +107,27 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               <span class="jotb-card-helper">Opens in a large player. 2:15</span>
             </div>
           </button>
-          <!-- Transcript accordion (under video card) -->
-          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
-            <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
-              <span class="jotb-toggle-read">View transcript</span>
-              <span class="jotb-toggle-hide">Hide transcript</span>
-            </summary>
-            <div class="jotb-transcript-panel">
-              <div class="jotb-transcript-header">
-                <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-setup">
-                  Back to video
-                </button>
-              </div>
-              <div class="jotb-transcript-content" set:html={setupTranscript} />
-              <div class="jotb-transcript-footer">
-                <a href="#caston" class="jotb-transcript-next" data-testid="link-next-caston">
-                  Next: First cast on <span aria-hidden="true">&rarr;</span>
-                </a>
-              </div>
-            </div>
-          </details>
         </div>
+        <!-- Transcript accordion (spans full width) -->
+        <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
+          <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
+            <span class="jotb-toggle-read">View transcript</span>
+            <span class="jotb-toggle-hide">Hide transcript</span>
+          </summary>
+          <div class="jotb-transcript-panel">
+            <div class="jotb-transcript-header">
+              <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-setup">
+                Back to video
+              </button>
+            </div>
+            <div class="jotb-transcript-content" set:html={setupTranscript} />
+            <div class="jotb-transcript-footer">
+              <a href="#caston" class="jotb-transcript-next" data-testid="link-next-caston">
+                Next: First cast on <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -160,26 +160,6 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               <span class="jotb-card-helper">Opens in a large player. 1:21</span>
             </div>
           </button>
-          <!-- Transcript accordion (under video card) -->
-          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
-            <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
-              <span class="jotb-toggle-read">View transcript</span>
-              <span class="jotb-toggle-hide">Hide transcript</span>
-            </summary>
-            <div class="jotb-transcript-panel">
-              <div class="jotb-transcript-header">
-                <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-caston">
-                  Back to video
-                </button>
-              </div>
-              <div class="jotb-transcript-content" set:html={castonTranscript} />
-              <div class="jotb-transcript-footer">
-                <a href="#challenge" class="jotb-transcript-next" data-testid="link-next-challenge">
-                  Next: Challenge <span aria-hidden="true">&rarr;</span>
-                </a>
-              </div>
-            </div>
-          </details>
         </div>
         <div class="jotb-section-content">
           <p>
@@ -211,6 +191,26 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
             </li>
           </ul>
         </div>
+        <!-- Transcript accordion (spans full width) -->
+        <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
+          <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
+            <span class="jotb-toggle-read">View transcript</span>
+            <span class="jotb-toggle-hide">Hide transcript</span>
+          </summary>
+          <div class="jotb-transcript-panel">
+            <div class="jotb-transcript-header">
+              <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-caston">
+                Back to video
+              </button>
+            </div>
+            <div class="jotb-transcript-content" set:html={castonTranscript} />
+            <div class="jotb-transcript-footer">
+              <a href="#challenge" class="jotb-transcript-next" data-testid="link-next-challenge">
+                Next: Challenge <span aria-hidden="true">&rarr;</span>
+              </a>
+            </div>
+          </div>
+        </details>
       </div>
     </section>
 
@@ -384,12 +384,30 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
   .jotb-section-grid {
     display: grid;
     grid-template-columns: 1fr 320px;
+    grid-template-areas:
+      "content action"
+      "transcript transcript";
     gap: 2rem;
     align-items: flex-start;
   }
 
+  .jotb-section-grid > .jotb-section-content {
+    grid-area: content;
+  }
+
+  .jotb-section-grid > .jotb-section-action {
+    grid-area: action;
+  }
+
+  .jotb-section-grid > .jotb-transcript-accordion {
+    grid-area: transcript;
+  }
+
   .jotb-section-grid--mirrored {
     grid-template-columns: 320px 1fr;
+    grid-template-areas:
+      "action content"
+      "transcript transcript";
   }
 
   .jotb-section-content p {
@@ -775,7 +793,9 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
      ============================================ */
   
   .jotb-transcript-accordion {
-    margin-top: 0.75rem;
+    margin-top: 0;
+    /* Position toggle under video column (right side for standard layout) */
+    text-align: right;
   }
 
   .jotb-transcript-toggle {
@@ -786,6 +806,11 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     padding: 0.25rem 0;
     display: inline-block;
     list-style: none;
+  }
+
+  /* For mirrored layout, toggle should be on the left */
+  .jotb-section-grid--mirrored .jotb-transcript-accordion {
+    text-align: left;
   }
 
   .jotb-transcript-toggle::-webkit-details-marker {
@@ -836,6 +861,7 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     border-radius: 8px;
     background: #fff;
     position: relative;
+    text-align: left;
   }
 
   /* Sticky header bar within transcript panel */
