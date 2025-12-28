@@ -107,13 +107,15 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               <span class="jotb-card-helper">Opens in a large player. 2:15</span>
             </div>
           </button>
+          <!-- Transcript toggle button (centered under video) -->
+          <button type="button" class="jotb-transcript-trigger" data-transcript-toggle="setup" data-testid="button-transcript-setup">
+            <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+            <span class="jotb-trigger-label">Show transcript</span>
+          </button>
         </div>
         <!-- Transcript accordion (spans full width) -->
-        <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
-          <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
-            <span class="jotb-toggle-read">View transcript</span>
-            <span class="jotb-toggle-hide">Hide transcript</span>
-          </summary>
+        <details class="jotb-transcript-accordion" id="transcript-setup" data-testid="accordion-transcript-setup">
+          <summary class="jotb-transcript-summary-hidden" aria-hidden="true">Transcript</summary>
           <div class="jotb-transcript-panel">
             <div class="jotb-transcript-header">
               <button type="button" class="jotb-transcript-back" data-close-transcript data-scroll-to="setup" data-testid="link-back-to-video-setup">
@@ -160,6 +162,11 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               <span class="jotb-card-helper">Opens in a large player. 1:21</span>
             </div>
           </button>
+          <!-- Transcript toggle button (centered under video) -->
+          <button type="button" class="jotb-transcript-trigger" data-transcript-toggle="caston" data-testid="button-transcript-caston">
+            <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+            <span class="jotb-trigger-label">Show transcript</span>
+          </button>
         </div>
         <div class="jotb-section-content">
           <p>
@@ -192,11 +199,8 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           </ul>
         </div>
         <!-- Transcript accordion (spans full width) -->
-        <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
-          <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
-            <span class="jotb-toggle-read">View transcript</span>
-            <span class="jotb-toggle-hide">Hide transcript</span>
-          </summary>
+        <details class="jotb-transcript-accordion" id="transcript-caston" data-testid="accordion-transcript-caston">
+          <summary class="jotb-transcript-summary-hidden" aria-hidden="true">Transcript</summary>
           <div class="jotb-transcript-panel">
             <div class="jotb-transcript-header">
               <button type="button" class="jotb-transcript-back" data-close-transcript data-scroll-to="caston" data-testid="link-back-to-video-caston">
@@ -789,65 +793,58 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
   }
 
   /* ============================================
-     TRANSCRIPT ACCORDION (under video card)
+     TRANSCRIPT TRIGGER BUTTON (centered under video)
+     ============================================ */
+
+  .jotb-transcript-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: none;
+    border: none;
+    color: var(--kbm-green, #52682d);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+    width: 100%;
+  }
+
+  .jotb-transcript-trigger i {
+    font-size: 0.9rem;
+  }
+
+  .jotb-transcript-trigger:hover {
+    background: rgba(82, 104, 45, 0.08);
+    text-decoration: underline;
+  }
+
+  .jotb-transcript-trigger:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  .jotb-transcript-trigger[aria-expanded="true"] .jotb-trigger-label::before {
+    content: "";
+  }
+
+  /* ============================================
+     TRANSCRIPT ACCORDION (hidden summary, JS-controlled)
      ============================================ */
   
   .jotb-transcript-accordion {
     margin-top: 0;
-    /* Position toggle under video column (right side for standard layout) */
-    text-align: right;
   }
 
-  .jotb-transcript-toggle {
-    color: var(--kbm-green, #52682d);
-    font-size: 0.9rem;
-    font-weight: 500;
-    cursor: pointer;
-    padding: 0.25rem 0;
-    display: inline-block;
-    list-style: none;
-  }
-
-  /* For mirrored layout, toggle should be on the left */
-  .jotb-section-grid--mirrored .jotb-transcript-accordion {
-    text-align: left;
-  }
-
-  .jotb-transcript-toggle::-webkit-details-marker {
+  /* Hide the native summary element - we use external button */
+  .jotb-transcript-summary-hidden {
     display: none;
   }
 
-  .jotb-transcript-toggle::before {
-    content: "▸ ";
-    display: inline-block;
-    transition: transform 0.15s ease;
-  }
-
-  .jotb-transcript-accordion[open] .jotb-transcript-toggle::before {
-    transform: rotate(90deg);
-  }
-
-  .jotb-transcript-toggle:hover {
-    text-decoration: underline;
-  }
-
-  /* Toggle text visibility based on open state */
-  .jotb-toggle-hide {
-    display: none;
-  }
-
-  .jotb-transcript-accordion[open] .jotb-toggle-read {
-    display: none;
-  }
-
-  .jotb-transcript-accordion[open] .jotb-toggle-hide {
-    display: inline;
-  }
-
-  .jotb-transcript-toggle:focus {
-    outline: 2px solid #52682d;
-    outline-offset: 2px;
-  }
 
   /* ============================================
      TRANSCRIPT PANEL (scrollable container)
@@ -1040,7 +1037,51 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // ============================================
-    // TRANSCRIPT CLOSE BUTTONS
+    // TRANSCRIPT TOGGLE BUTTONS (external trigger buttons)
+    // ============================================
+    var transcriptTriggers = document.querySelectorAll('[data-transcript-toggle]');
+    
+    transcriptTriggers.forEach(function(trigger) {
+      var targetId = trigger.getAttribute('data-transcript-toggle');
+      var details = document.getElementById('transcript-' + targetId);
+      var label = trigger.querySelector('.jotb-trigger-label');
+      
+      if (!details || !label) return;
+      
+      // Set initial aria state
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.setAttribute('aria-controls', 'transcript-' + targetId);
+      
+      // Toggle on click
+      trigger.addEventListener('click', function() {
+        var isOpen = details.hasAttribute('open');
+        
+        if (isOpen) {
+          details.removeAttribute('open');
+          trigger.setAttribute('aria-expanded', 'false');
+          label.textContent = 'Show transcript';
+        } else {
+          details.setAttribute('open', '');
+          trigger.setAttribute('aria-expanded', 'true');
+          label.textContent = 'Hide transcript';
+        }
+      });
+      
+      // Sync state if details is toggled externally (e.g., via "Back to video" button)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'open') {
+            var isNowOpen = details.hasAttribute('open');
+            trigger.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false');
+            label.textContent = isNowOpen ? 'Hide transcript' : 'Show transcript';
+          }
+        });
+      });
+      observer.observe(details, { attributes: true });
+    });
+
+    // ============================================
+    // TRANSCRIPT CLOSE BUTTONS (inside panels)
     // ============================================
     var transcriptCloseButtons = document.querySelectorAll('[data-close-transcript]');
     
