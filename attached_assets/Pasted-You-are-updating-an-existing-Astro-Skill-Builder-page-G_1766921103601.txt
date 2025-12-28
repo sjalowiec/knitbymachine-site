@@ -1,0 +1,97 @@
+You are updating an existing Astro Skill Builder page.
+
+Goal: Add a NEW “Bind Off” video section (with its own modal) to the existing page, keeping the current cast-on video section intact. Also update the Steps + Terms + Practice copy so the page matches the title/subtitle “Your Start & Finish / Cast On & Bind Off”.
+
+IMPORTANT RULES
+- Do not change the SkillBuilderLayout component API.
+- Do not rewrite or reorganize existing sections unless explicitly instructed.
+- Keep the existing modal system and script structure (modals array, openModal/closeModal functions).
+- Make minimal edits: add new markup + extend the existing JS configuration.
+- Use the same CSS already on the page; only add CSS if absolutely necessary.
+- Preserve existing Vimeo IDs and behavior for the current cast-on and optional videos.
+
+FILE TO EDIT
+- The current Skill Builder page file shown in this conversation (it imports SkillBuilderLayout and defines `const faqs = [...]`).
+
+STEP 1 — Add a Bind Off video block inside the existing <div slot="video">
+Inside the existing slot="video" section, you currently have one .kbm-video-grid with:
+- left text (“Watch first”)
+- right thumbnail trigger (id="mainVideoTrigger")
+
+Directly BELOW that existing .kbm-video-grid, add a second .kbm-video-grid for the bind-off demo.
+Structure it the same way (left text column + right thumbnail button).
+
+Bind-off text content:
+- Heading: “Finish your swatch”
+- Bullets:
+  1) “This video demonstrates a stitch-through-stitch bind off worked by hand”
+  2) “Notice how stitch size affects the finished edge”
+  3) “Watch how the yarn is controlled as stitches are worked off the machine”
+
+Bind-off thumbnail button:
+- button id="bindOffVideoTrigger"
+- aria-label="Play Stitch-Through-Stitch Bind Off video"
+- img thumbnail placeholder: use https://vumbnail.com/000000000.jpg for now (I will replace the ID later)
+- alt="Stitch-through-stitch bind off video thumbnail"
+
+Keep the play icon SVG the same as the existing one (copy/paste the same <span class="kbm-play-icon">…</span> block).
+
+STEP 2 — Add a new Bind Off modal (copy existing modal pattern)
+Near the other modals (after OPTIONAL VIDEO MODAL is fine), add a third modal:
+
+- id="bindOffVideoModal"
+- iframe id="bindOffVideoFrame"
+- modal title text: “Stitch-Through-Stitch Bind Off”
+- iframe title: “Stitch-Through-Stitch Bind Off”
+
+Keep the same modal markup structure and classes:
+.kbm-modal, .kbm-modal-overlay, .kbm-modal-content, .kbm-modal-close, .kbm-modal-title, .kbm-video-wrapper
+
+STEP 3 — Extend the existing JS modals array
+In the existing <script> block, extend the `modals` array by adding a third object:
+
+{
+  triggerId: 'bindOffVideoTrigger',
+  modalId: 'bindOffVideoModal',
+  frameId: 'bindOffVideoFrame',
+  videoUrl: 'https://player.vimeo.com/video/000000000?badge=0&autopause=1&autoplay=1'
+}
+
+(Use the placeholder ID 000000000. I will replace it.)
+
+Do not change any existing JS logic besides adding this config object.
+
+STEP 4 — Update the Steps section (minimal edits)
+In the slot="steps" ordered list, replace ONLY the final step:
+Current final step (step 7) says: “Remove from machine using your preferred bind-off method.”
+
+Replace it with FOUR steps, appended after the “Knit 10–20 rows…” step, so the Steps list ends like this:
+
+- Knit 10–20 rows to create your practice swatch.
+- Prepare to bind off by pulling all needles forward and removing the yarn from the carriage.
+- Work the stitch-through-stitch bind off by hand, keeping the stitches even as you remove them from the needles.
+- Secure the final stitch and leave a short tail.
+
+Do not change the earlier steps.
+
+STEP 5 — Update Practice bullets (add one bullet only)
+In slot="practice", under <ul class="sb-practice-list">, add ONE new bullet at the end:
+- “As you bind off, adjust stitch size slightly and notice how it changes the feel of the edge”
+
+Leave the other bullets unchanged.
+
+STEP 6 — Add one term in Terms Used (minimal)
+In slot="terms-used" <dl class="sb-terms-list">, add a third term after Closed Cast-On:
+
+Term:
+dt: “Stitch-Through-Stitch Bind Off”
+dd: “A hand-worked bind off where each stitch is pulled through the next to form a chained edge with adjustable stretch.”
+
+Do not remove the existing Open/Closed cast-on terms.
+
+STEP 7 — Quick sanity check
+- Make sure all new ids are unique and match between triggers, modal ids, iframe ids, and the JS config.
+- Confirm the page still builds (no missing closing tags).
+- Do not add new dependencies.
+
+After making changes, output the updated file contents.

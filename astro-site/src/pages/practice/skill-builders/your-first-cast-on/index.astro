@@ -118,6 +118,32 @@ const faqs = [
         </button>
       </div>
     </div>
+    
+    <!-- BIND OFF VIDEO GRID -->
+    <div class="kbm-video-grid" style="margin-top: 2rem;">
+      <!-- LEFT COLUMN: Text/context -->
+      <div class="kbm-video-text">
+        <h3 class="kbm-video-heading">Finish your swatch</h3>
+        <ul class="kbm-video-tips">
+          <li>This video demonstrates a stitch-through-stitch bind off worked by hand</li>
+          <li>Notice how stitch size affects the finished edge</li>
+          <li>Watch how the yarn is controlled as stitches are worked off the machine</li>
+        </ul>
+      </div>
+      
+      <!-- RIGHT COLUMN: Bind off video thumbnail -->
+      <div class="kbm-video-embed">
+        <button type="button" class="kbm-video-thumbnail" id="bindOffVideoTrigger" aria-haspopup="dialog" aria-label="Play Stitch-Through-Stitch Bind Off video">
+          <img src="https://vumbnail.com/000000000.jpg" alt="Stitch-through-stitch bind off video thumbnail" loading="lazy" />
+          <span class="kbm-play-icon" aria-hidden="true">
+            <svg viewBox="0 0 68 48" width="68" height="48">
+              <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#212121" fill-opacity="0.8"/>
+              <path d="M45 24L27 14v20" fill="#fff"/>
+            </svg>
+          </span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ======================= -->
@@ -154,12 +180,16 @@ const faqs = [
         Set your tension dial to the recommended setting and slowly push the carriage across.
       </li>
       <li>
-        <!-- TODO: Replace step 6 -->
         Knit 10–20 rows to create your practice swatch.
       </li>
       <li>
-        <!-- TODO: Replace step 7 -->
-        Remove from machine using your preferred bind-off method.
+        Prepare to bind off by pulling all needles forward and removing the yarn from the carriage.
+      </li>
+      <li>
+        Work the stitch-through-stitch bind off by hand, keeping the stitches even as you remove them from the needles.
+      </li>
+      <li>
+        Secure the final stitch and leave a short tail.
       </li>
     </ol>
   </div>
@@ -174,6 +204,7 @@ const faqs = [
       <li>Experiment with different tension settings (note which feels best)</li>
       <li>Practice the E-wrap motion until it feels natural</li>
       <li>Time yourself: aim to cast on 40 stitches in under 2 minutes</li>
+      <li>As you bind off, adjust stitch size slightly and notice how it changes the feel of the edge</li>
     </ul>
     
     <!-- Practice Swatch Callout -->
@@ -201,6 +232,11 @@ const faqs = [
       <div class="sb-term">
         <dt>Closed Cast-On</dt>
         <dd>A cast-on method that creates a finished, sealed edge. The bottom is closed and neat—you won't be able to unravel from this end.</dd>
+      </div>
+      
+      <div class="sb-term">
+        <dt>Stitch-Through-Stitch Bind Off</dt>
+        <dd>A hand-worked bind off where each stitch is pulled through the next to form a chained edge with adjustable stretch.</dd>
       </div>
       
     </dl>
@@ -261,6 +297,27 @@ const faqs = [
           id="optionalVideoFrame"
           src="" 
           title="Open Cast-On vs Closed Cast-On"
+          frameborder="0" 
+          allow="autoplay; fullscreen; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================= -->
+  <!-- BIND OFF VIDEO MODAL    -->
+  <!-- ======================= -->
+  <div class="kbm-modal" id="bindOffVideoModal" role="dialog" aria-modal="true" aria-labelledby="bindOffModalTitle" hidden>
+    <div class="kbm-modal-overlay"></div>
+    <div class="kbm-modal-content">
+      <button type="button" class="kbm-modal-close" aria-label="Close modal">&times;</button>
+      <h3 id="bindOffModalTitle" class="kbm-modal-title">Stitch-Through-Stitch Bind Off</h3>
+      <div class="kbm-video-wrapper">
+        <iframe 
+          id="bindOffVideoFrame"
+          src="" 
+          title="Stitch-Through-Stitch Bind Off"
           frameborder="0" 
           allow="autoplay; fullscreen; picture-in-picture"
           allowfullscreen
@@ -562,6 +619,12 @@ document.addEventListener('DOMContentLoaded', () => {
       modalId: 'optionalVideoModal',
       frameId: 'optionalVideoFrame',
       videoUrl: 'https://player.vimeo.com/video/312574558?badge=0&autopause=1&autoplay=1'
+    },
+    {
+      triggerId: 'bindOffVideoTrigger',
+      modalId: 'bindOffVideoModal',
+      frameId: 'bindOffVideoFrame',
+      videoUrl: 'https://player.vimeo.com/video/000000000?badge=0&autopause=1&autoplay=1'
     }
   ];
   
