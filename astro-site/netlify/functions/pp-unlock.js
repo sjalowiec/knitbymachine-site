@@ -7,7 +7,7 @@
  * 
  * Required env vars:
  * - AC_API_URL: ActiveCampaign API base URL (e.g., https://yourname.api-us1.com)
- * - AC_API_KEY: ActiveCampaign API key
+ * - ACTIVECAMPAIGN_API_KEY: ActiveCampaign API key
  * - AC_TAG_ID_PP_CASTON: Tag ID for PP-caston tag
  */
 
@@ -83,11 +83,11 @@ export const handler = async (event) => {
   }
 
   const AC_API_URL = process.env.AC_API_URL;
-  const AC_API_KEY = process.env.AC_API_KEY;
+  const AC_API_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
   const AC_TAG_ID = process.env[tagEnvKey];
 
   if (!AC_API_URL || !AC_API_KEY) {
-    console.error('[PP-UNLOCK] Missing AC_API_URL or AC_API_KEY');
+    console.error('[PP-UNLOCK] Missing AC_API_URL or ACTIVECAMPAIGN_API_KEY');
     return {
       statusCode: 500,
       headers: corsHeaders,
