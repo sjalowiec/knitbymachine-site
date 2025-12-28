@@ -46,7 +46,7 @@ export const handler = async (event) => {
     };
   }
 
-  const { email, projectId } = data;
+  const { email, firstName, projectId } = data;
 
   if (!email || typeof email !== 'string') {
     return {
@@ -105,8 +105,14 @@ export const handler = async (event) => {
   }
 
   const trimmedEmail = email.trim().toLowerCase();
+  const trimmedFirstName = firstName ? firstName.trim() : '';
 
   try {
+    const contactPayload = { email: trimmedEmail };
+    if (trimmedFirstName) {
+      contactPayload.firstName = trimmedFirstName;
+    }
+
     const syncResponse = await fetch(`${AC_API_URL}/api/3/contact/sync`, {
       method: 'POST',
       headers: {
@@ -114,9 +120,7 @@ export const handler = async (event) => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        contact: {
-          email: trimmedEmail,
-        },
+        contact: contactPayload,
       }),
     });
 

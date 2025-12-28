@@ -123,6 +123,16 @@ const UNLOCK_KEY = `kbm:pp-unlocked:${PROJECT_ID}`;
     <!-- GATE BLOCK - shown until email submitted -->
     <section class="sb-gate" id="gate-block" data-testid="gate-block">
       <form id="pp-caston-form" class="kbm-gate-form">
+        <label for="pp-firstname" class="sr-only">First name (optional)</label>
+
+        <input
+          id="pp-firstname"
+          name="firstName"
+          type="text"
+          placeholder="First Name (Optional)"
+          class="kbm-input"
+        />
+
         <label for="pp-email" class="sr-only">Email address</label>
 
         <input
@@ -154,6 +164,7 @@ const UNLOCK_KEY = `kbm:pp-unlocked:${PROJECT_ID}`;
           errorEl.hidden = true;
 
           const email = form.email.value.trim();
+          const firstName = form.firstName.value.trim();
           if (!email) return;
 
           const button = form.querySelector('button');
@@ -164,7 +175,7 @@ const UNLOCK_KEY = `kbm:pp-unlocked:${PROJECT_ID}`;
             const res = await fetch('/.netlify/functions/pp-unlock', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, projectId: 'pp-caston' })
+              body: JSON.stringify({ email, firstName, projectId: 'pp-caston' })
             });
 
             const data = await res.json();
