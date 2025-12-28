@@ -107,28 +107,28 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               <span class="jotb-card-helper">Opens in a large player. 2:15</span>
             </div>
           </button>
+          <!-- Transcript accordion (under video card) -->
+          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
+            <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
+              <span class="jotb-toggle-read">View transcript</span>
+              <span class="jotb-toggle-hide">Hide transcript</span>
+            </summary>
+            <div class="jotb-transcript-panel">
+              <div class="jotb-transcript-header">
+                <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-setup">
+                  Back to video
+                </button>
+              </div>
+              <div class="jotb-transcript-content" set:html={setupTranscript} />
+              <div class="jotb-transcript-footer">
+                <a href="#caston" class="jotb-transcript-next" data-testid="link-next-caston">
+                  Next: First cast on <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
-      <!-- Transcript accordion (full-width, after grid) -->
-      <details class="jotb-transcript-accordion" data-testid="accordion-transcript-setup">
-        <summary class="jotb-transcript-toggle" data-testid="button-transcript-setup">
-          <span class="jotb-toggle-read">View transcript</span>
-          <span class="jotb-toggle-hide">Hide transcript</span>
-        </summary>
-        <div class="jotb-transcript-panel">
-          <div class="jotb-transcript-header">
-            <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-setup">
-              Back to video
-            </button>
-          </div>
-          <div class="jotb-transcript-content" set:html={setupTranscript} />
-          <div class="jotb-transcript-footer">
-            <a href="#caston" class="jotb-transcript-next" data-testid="link-next-caston">
-              Next: First cast on <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
-        </div>
-      </details>
     </section>
 
     <!-- SECTION 2: First Cast On (Bordered) -->
@@ -160,6 +160,26 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
               <span class="jotb-card-helper">Opens in a large player. 1:21</span>
             </div>
           </button>
+          <!-- Transcript accordion (under video card) -->
+          <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
+            <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
+              <span class="jotb-toggle-read">View transcript</span>
+              <span class="jotb-toggle-hide">Hide transcript</span>
+            </summary>
+            <div class="jotb-transcript-panel">
+              <div class="jotb-transcript-header">
+                <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-caston">
+                  Back to video
+                </button>
+              </div>
+              <div class="jotb-transcript-content" set:html={castonTranscript} />
+              <div class="jotb-transcript-footer">
+                <a href="#challenge" class="jotb-transcript-next" data-testid="link-next-challenge">
+                  Next: Challenge <span aria-hidden="true">&rarr;</span>
+                </a>
+              </div>
+            </div>
+          </details>
         </div>
         <div class="jotb-section-content">
           <p>
@@ -192,26 +212,6 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           </ul>
         </div>
       </div>
-      <!-- Transcript accordion (full-width, after grid) -->
-      <details class="jotb-transcript-accordion" data-testid="accordion-transcript-caston">
-        <summary class="jotb-transcript-toggle" data-testid="button-transcript-caston">
-          <span class="jotb-toggle-read">View transcript</span>
-          <span class="jotb-toggle-hide">Hide transcript</span>
-        </summary>
-        <div class="jotb-transcript-panel">
-          <div class="jotb-transcript-header">
-            <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-caston">
-              Back to video
-            </button>
-          </div>
-          <div class="jotb-transcript-content" set:html={castonTranscript} />
-          <div class="jotb-transcript-footer">
-            <a href="#challenge" class="jotb-transcript-next" data-testid="link-next-challenge">
-              Next: Challenge <span aria-hidden="true">&rarr;</span>
-            </a>
-          </div>
-        </div>
-      </details>
     </section>
 
     <!-- SECTION 3: Optional Paid Practice Project (Card) -->
@@ -378,6 +378,7 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 1.5rem;
+    scroll-margin-top: 5rem;
   }
 
   .jotb-section-grid {
@@ -553,6 +554,7 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     border-radius: 12px;
     padding: 2rem;
     margin-bottom: 2.5rem;
+    scroll-margin-top: 5rem;
   }
 
   .jotb-practice-heading {
@@ -621,6 +623,7 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
   /* Text Section (Section 4) */
   .jotb-text-section {
     margin-bottom: 2rem;
+    scroll-margin-top: 5rem;
   }
 
   .jotb-text-section h2 {
@@ -768,13 +771,11 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
   }
 
   /* ============================================
-     TRANSCRIPT ACCORDION (full-width, after grid)
+     TRANSCRIPT ACCORDION (under video card)
      ============================================ */
   
   .jotb-transcript-accordion {
-    margin-top: 1.5rem;
-    padding-top: 1rem;
-    border-top: 1px solid #e5e7eb;
+    margin-top: 0.75rem;
   }
 
   .jotb-transcript-toggle {
