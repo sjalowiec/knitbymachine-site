@@ -117,12 +117,9 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
         </summary>
         <div class="jotb-transcript-panel">
           <div class="jotb-transcript-header">
-            <button type="button" class="jotb-transcript-close" data-close-transcript data-testid="button-close-transcript-setup">
-              <span aria-hidden="true">&#x2715;</span> Hide transcript
-            </button>
-            <a href="#setup" class="jotb-transcript-back" data-testid="link-back-to-video-setup">
+            <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-setup">
               Back to video
-            </a>
+            </button>
           </div>
           <div class="jotb-transcript-content" set:html={setupTranscript} />
           <div class="jotb-transcript-footer">
@@ -203,12 +200,9 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
         </summary>
         <div class="jotb-transcript-panel">
           <div class="jotb-transcript-header">
-            <button type="button" class="jotb-transcript-close" data-close-transcript data-testid="button-close-transcript-caston">
-              <span aria-hidden="true">&#x2715;</span> Hide transcript
-            </button>
-            <a href="#caston" class="jotb-transcript-back" data-testid="link-back-to-video-caston">
+            <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-caston">
               Back to video
-            </a>
+            </button>
           </div>
           <div class="jotb-transcript-content" set:html={castonTranscript} />
           <div class="jotb-transcript-footer">
@@ -850,47 +844,35 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     z-index: 10;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 1rem;
+    justify-content: flex-end;
     padding: 0.6rem 1rem;
     background: #f9fafb;
     border-bottom: 1px solid #e5e7eb;
     font-size: 0.85rem;
   }
 
-  .jotb-transcript-close {
+  .jotb-transcript-back {
     display: inline-flex;
     align-items: center;
     gap: 0.35rem;
     background: none;
     border: none;
-    color: var(--kbm-green, #52682d);
+    color: #6b7280;
     font-size: 0.85rem;
-    font-weight: 500;
     cursor: pointer;
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
-    transition: background 0.15s ease;
-  }
-
-  .jotb-transcript-close:hover {
-    background: rgba(82, 104, 45, 0.08);
-  }
-
-  .jotb-transcript-close:focus {
-    outline: 2px solid #52682d;
-    outline-offset: 2px;
-  }
-
-  .jotb-transcript-back {
-    color: #6b7280;
-    font-size: 0.85rem;
-    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
   }
 
   .jotb-transcript-back:hover {
     color: var(--kbm-green, #52682d);
-    text-decoration: underline;
+    background: rgba(82, 104, 45, 0.08);
+  }
+
+  .jotb-transcript-back:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
   }
 
   /* ============================================
