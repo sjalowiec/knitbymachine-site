@@ -1,0 +1,114 @@
+You are working in my Astro site repo (astro-site). I want a reusable, lightweight “Video Library” system that supports:
+- Vimeo embeds (by vimeoId)
+- Clean, edited transcripts stored in KBM (not in Vimeo)
+- Reuse across Skill Builders / ANA / Blog
+- Manual “Used in” tracking so I can see where a video is used
+- Transcripts displayed as supporting content (collapsed), not competing with the main content
+
+IMPORTANT GUARDRAILS
+- Do NOT build site-wide search.
+- Do NOT migrate old KIN data.
+- Do NOT add heavy dependencies.
+- Do NOT create a complex database. Use Astro Content Collections (JSON/MD) or simple JSON files in src/content.
+- Keep UI clean and simple, consistent with my KBM style.
+
+STEP 0 — Safety
+- Before editing any existing file, create a copy with the same name + .bak in the same folder.
+
+STEP 1 — Create a Video content collection
+Create: astro-site/src/content/videos/
+Add a schema using Astro Content Collections:
+- id (slug)
+- title (string)
+- vimeoId (string)
+- durationSeconds (optional number)
+- tags (optional string array)
+- searchRole (string, default "supporting")  // future-proof intent
+- usedIn (optional array of objects)
+    Each usedIn item: { type: "skillBuilder"|"ana"|"blog"|"workshop", id: string, label?: string, url?: string }
+- transcript (string) OR transcriptSections (optional array of { heading?: string, text: string })
+
+Choose ONE storage style:
+- Prefer MD files per video (easier for me to edit):
+  Each file in src/content/videos/{id}.md includes frontmatter + transcript body in markdown.
+Implement the schema accordingly.
+
+STEP 2 — Create a reusable Vimeo embed component (lego block)
+Create: astro-site/src/components/media/VimeoEmbed.astro
+Props:
+- vimeoId (required)
+- title (optional)
+Output:
+- Responsive embed wrapper
+- Accessible title/aria-label
+- No inline embed code stored in content; always render from vimeoId
+
+STEP 3 — Create a reusable Transcript component (collapsed supporting content)
+Create: astro-site/src/components/media/Transcript.astro
+Props:
+- title (default: "Read transcript")
+- content (string or HTML) OR sections array
+Behavior:
+- Use <details> / <summary> so it’s accessible and works without JS
+- Collapsed by default
+- Clean typography (max width, comfortable line-height, paragraph spacing)
+- This transcript must remain supporting content visually (not huge, not dominant)
+
+Add minimal CSS to astro-site/src/styles/global.css (or an existing appropriate CSS file):
+- .kbm-transcript (container)
+- details/summary styling that matches KBM (simple, calm)
+- Keep it consistent with my existing design language
+
+STEP 4 — Create a VideoBlock component to place videos consistently inside Skill Builders
+Create: astro-site/src/components/media/VideoBlock.astro
+Props:
+- videoId (required)  // references content collection entry
+- heading (optional)  // if I want a page-specific label above it
+
+VideoBlock should:
+- Fetch the video record from the videos collection by id
+- Render:
+  - heading (if provided)
+  - VimeoEmbed with vimeoId
+  - Transcript below (collapsed), using transcript content from the video entry
+  - Optional small meta line (optional): tags or duration if present
+- If transcript is missing, do NOT render Transcript block (avoid empty UI)
+
+STEP 5 — Create a simple internal Admin page: Video Library (list + edit guidance)
+Create: astro-site/src/pages/admin/videos.astro
+This is for me (not public).
+Requirements:
+- Display a list table/cards of all videos from the collection:
+  - Title
+  - Vimeo ID
+  - “Used in” count
+  - Links to the content file (or show file path) so I can edit it
+- Add a small “How to add a video” section at top:
+  - “Create a new file in src/content/videos”
+  - “Fill in vimeoId”
+  - “Add transcript text”
+  - “Add usedIn references when you place it on a page”
+No authentication needed right now; assume I’ll keep /admin out of nav.
+
+STEP 6 — Demonstrate usage in my current Skill Builder page
+Find my current Skill Builder page for the cast on / bind off content (or the page I recently worked on).
+Update it to use the new <VideoBlock videoId="..."/> component for the two videos.
+Do not change my existing headings or layout except where needed to insert the blocks cleanly.
+
+STEP 7 — Seed two example video entries
+Create two sample video entries in src/content/videos/ for my two videos:
+- Use placeholder vimeoId values if you can’t find the real ones.
+- Put placeholder transcript sections that I can replace.
+- Include usedIn referencing the Skill Builder page id/slug.
+
+DELIVERABLE CHECKLIST (must be true at the end)
+- I can add a new video by creating one content file.
+- I can place that video anywhere by adding <VideoBlock videoId="..."/>.
+- Transcript displays collapsed and readable.
+- Admin list page shows videos + usedIn.
+- No heavy libs added, no search implemented, no migrations.
+
+After implementation, print:
+- The new file tree paths you created
+- Any existing files you modified (with .bak confirmation)
+- Brief instructions for adding the next video
