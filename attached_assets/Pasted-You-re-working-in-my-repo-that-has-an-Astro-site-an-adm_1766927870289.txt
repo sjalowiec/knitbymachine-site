@@ -1,0 +1,120 @@
+You’re working in my repo that has an Astro site + an admin app that already publishes other content types to GitHub for Netlify builds.
+
+Goal: Make “videos” behave like my other content types:
+Admin edits -> publish writes files into the repo -> GitHub commit -> Netlify rebuild -> Astro reads videos from a content collection.
+After this, pages should NOT hardcode Vimeo IDs; they should reference videos by slug.
+
+Implement the following end-to-end. Do not add extra features not listed. Keep existing pages working.
+
+====================
+1) Video data model (admin)
+====================
+Add/update the admin video model to include these fields:
+
+REQUIRED
+- slug: string (unique, stable, used for filename + URL; lowercase; hyphens; no spaces)
+- title: string
+- vimeoId: string (store as string even though it’s digits)
+
+OPTIONAL
+- transcriptHtml: string (HTML only; may be empty)
+- keywords: string[] (optional)
+- tags: string[] (optional)
+- skillLevel: string (optional; e.g., "beginner")
+- published: boolean (default true)
+
+Validation rules (must run before save/publish):
+- slug required, matches: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+- vimeoId required, digits only (^[0-9]+$)
+- title required, non-empty
+- keywords/tags can be entered as comma-separated in UI but must be saved/published as arrays (trim whitespace, remove empty items)
+
+====================
+2) Admin video editor UI
+====================
+Update the video editor form to include:
+- Slug field
+- Title field
+- Vimeo ID field (text input)
+- Transcript HTML field (large textarea; store as-is)
+- Keywords input (comma-separated -> array)
+- Tags input (comma-separated -> array)
+- Skill level input (text or select)
+- Published toggle
+
+====================
+3) Publish route: admin -> GitHub
+====================
+Add a publish action/route for videos that writes ONE JSON file per video into:
+src/content/videos/{slug}.json
+
+Exact JSON shape to publish:
+{
+  "title": "…",
+  "vimeoId": "123456789",
+  "transcriptHtml": "<h2>…</h2>…",
+  "keywords": ["…"],
+  "tags": ["…"],
+  "skillLevel": "beginner",
+  "published": true
+}
+
+Requirements:
+- Ensure transcriptHtml is not mangled/truncated and is properly JSON-escaped.
+- Commit and push to GitHub using the same mechanism as existing content types.
+- Commit message format: "Publish video: {slug}"
+
+====================
+4) Astro content collection
+====================
+Create/Update src/content/config.ts to add a `videos` collection that validates the above schema.
+- vimeoId must be string
+- published is boolean
+- transcriptHtml/keywords/tags/skillLevel optional
+- keywords/tags default to [] if omitted
+
+Repo structure should include:
+src/content/videos/   (new folder if missing)
+
+====================
+5) Update VideoBlock.astro to use slug
+====================
+Update VideoBlock.astro so it supports BOTH:
+
+Preferred new usage:
+<VideoBlock videoSlug="chain-edge-bind-off" />
+
+Backward compatible usage (do not break existing pages):
+<VideoBlock vimeoId="123" title="…" transcript="…" />
+
+Behavior:
+- If videoSlug is provided: load the entry from the videos content collection and render:
+  - VimeoEmbed using the entry’s vimeoId
+  - Title
+  - Transcript using HTML rendering (Astro set:html or equivalent)
+- If direct props are provided: behave exactly as it does now
+
+====================
+6) New site pages
+====================
+Add:
+A) /videos (src/pages/videos/index.astro)
+- Lists all videos where published === true
+- Shows title and links to /videos/{slug}
+
+B) /videos/[slug] (src/pages/videos/[slug].astro)
+- Loads the matching video entry from the videos collection
+- Renders it using VideoBlock (or directly but must show embed + transcript)
+- If slug not found, return 404
+
+====================
+7) Acceptance checks
+====================
+After implementing, verify:
+- Publishing a video from admin creates/updates src/content/videos/{slug}.json in GitHub
+- Netlify build succeeds
+- /videos lists the published video
+- /videos/{slug} renders Vimeo embed + transcript HTML correctly
+- Existing pages that pass vimeoId/title/transcript directly still work
+
+Deliver a short summary of what files were changed/added and where the publish code lives.
