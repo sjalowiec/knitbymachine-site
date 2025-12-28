@@ -2,16 +2,53 @@
 /**
  * Your First Cast-On (E-wrap) - Skill Builder Page
  * Slug: /practice/skill-builders/your-first-cast-on/
- * 
- * This is a starter template with placeholders. 
- * Replace content marked with TODO comments.
  */
-import SkillBuilderLayout from "../../../../components/skill-builders/SkillBuilderLayout.astro";
-import VideoBlock from "../../../../components/media/VideoBlock.astro";
+import BaseLayout from "../../../../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import { marked } from "marked";
+
+// =============================================
+// LOAD VIDEO DATA FROM CONTENT COLLECTION
+// =============================================
+const allVideos = await getCollection("videos");
+
+// Video slugs used on this page
+const videoSlugs = ["e-wrap-cast-on", "open-vs-closed-cast-on", "stitch-through-stitch-bind-off"];
+
+// Build lookup object keyed by slug
+const videoLookup: Record<string, {
+  title: string;
+  embedSrc: string;
+  transcriptHtml: string;
+  durationSeconds?: number;
+}> = {};
+
+for (const slug of videoSlugs) {
+  const video = allVideos.find(v => v.slug === slug);
+  if (video) {
+    const vimeoId = video.data.vimeoId;
+    const embedSrc = `https://player.vimeo.com/video/${vimeoId}?badge=0&autopause=0&player_id=0&app_id=58479`;
+    const transcriptHtml = video.body ? await marked.parse(video.body) : "";
+    
+    videoLookup[slug] = {
+      title: video.data.title,
+      embedSrc,
+      transcriptHtml,
+      durationSeconds: video.data.durationSeconds
+    };
+  }
+}
+
+// Helper to format duration
+function formatDuration(seconds?: number): string {
+  if (!seconds) return "";
+  const mins = Math.floor(seconds / 60);
+  const secs = seconds % 60;
+  return `${mins}:${secs.toString().padStart(2, "0")}`;
+}
 
 // =============================================
 // FAQ DATA - Single source of truth
-// Edit here to update both visible FAQ and JSON-LD schema
 // =============================================
 const faqs = [
   {
@@ -35,232 +72,517 @@ const faqs = [
     answer: "For E-wrap, wrap counter-clockwise around each needle when viewed from above. The yarn should form an \"e\" shape. Consistent direction matters more than which direction you choose."
   }
 ];
+
+// Generate FAQPage JSON-LD schema
+const faqSchema = faqs.length > 0 ? JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": faqs.map(faq => ({
+    "@type": "Question",
+    "name": faq.question,
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": faq.answer
+    }
+  }))
+}) : null;
+
+const pageTitle = "Your Start & Finish | Skill Builder | Knit by Machine";
+const pageDescription = "A clear demonstration of one cast on and one bind off, showing how the edge forms at the start and finish of your knitting.";
 ---
 
-<SkillBuilderLayout
-  title="Your Start & Finish"
-  subtitle="Cast On & Bind Off"
-  price="$19"
-  level="Beginner"
-   metaDescription="A clear demonstration of one cast on and one bind off, showing how the edge forms at the start and finish of your knitting."
-  faqs={faqs}
->
+<BaseLayout title={pageTitle} description={pageDescription}>
+  
+  {faqSchema && (
+    <script type="application/ld+json" set:html={faqSchema} slot="head" />
+  )}
 
-  <!-- ======================= -->
-  <!-- B) QUICK SCAN SECTION   -->
-  <!-- ======================= -->
-  <div slot="quick-scan">
+  <div class="skill-builder-page">
     
-    <!-- TODO: Replace placeholder content below -->
-    <div class="sb-scan-card">
-      <h3><i class="fa-solid fa-user-check"></i> Best For</h3>
-      <!-- TODO: Replace with actual "Best For" content -->
-      <p>New machine knitters seeing a cast on and bind off for the first time, and knitters who want a quick refresher.</p>
-    </div>
-    
-    <div class="sb-scan-card">
-      <h3><i class="fa-solid fa-list-check"></i> You'll Need</h3>
-      <!-- TODO: Replace with actual "You'll Need" content -->
-      <ul>
-        <li>Your knitting machine (any brand)</li>
-        <li>Yarn appropriate for your machine (light color, medium weight recommended)</li>
-        <li>Claw weight, Cast-on comb (optional)</li>
+    <!-- A) HERO SECTION - Compact with icon -->
+    <section class="sb-hero">
+      <div class="sb-hero-title-row">
+        <img src="/images/practice-icon.png" alt="" aria-hidden="true" class="sb-hero-icon" />
+        <div class="sb-hero-text">
+          <h1>Your Start & Finish</h1>
+          <p class="sb-subtitle">Cast On & Bind Off</p>
+        </div>
+      </div>
+      <div class="sb-meta">
+        <span class="sb-badge sb-price">$19</span>
+        <span class="sb-badge sb-level">Beginner</span>
+      </div>
+    </section>
+
+    <!-- B) QUICK SCAN SECTION -->
+    <section class="sb-section">
+      <h2>Quick Scan</h2>
+      <div class="sb-quick-scan">
+        <div class="sb-scan-card">
+          <h3><i class="fa-solid fa-user-check"></i> Best For</h3>
+          <p>New machine knitters seeing a cast on and bind off for the first time, and knitters who want a quick refresher.</p>
+        </div>
+        
+        <div class="sb-scan-card">
+          <h3><i class="fa-solid fa-list-check"></i> You'll Need</h3>
+          <ul>
+            <li>Your knitting machine (any brand)</li>
+            <li>Yarn appropriate for your machine (light color, medium weight recommended)</li>
+            <li>Claw weight, Cast-on comb (optional)</li>
+          </ul>
+        </div>
+        
+        <div class="sb-scan-card">
+          <h3><i class="fa-solid fa-triangle-exclamation"></i> Watch For</h3>
+          <ul>
+            <li>Tension too tight on first row</li>
+            <li>Missing needles during wrap</li>
+            <li>Yarn not seated in latches</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- C) WHAT YOU'LL DO SECTION -->
+    <section class="sb-section">
+      <h2>What You'll Do</h2>
+      <p>You'll cast on, knit a short practice piece, and bind off to see how the edge forms at the start and finish. By the end of this Skill Builder, you'll have completed a sample swatch and know what to expect from these techniques when you begin a project.</p>
+    </section>
+
+    <!-- D) VIDEO SECTION -->
+    <section class="sb-section">
+      <h2>Watch in Order</h2>
+      
+      <!-- Cast On Video -->
+      <div class="sb-video-block">
+        <div class="sb-video-tips-box">
+          <h3 class="sb-video-heading">Watch first</h3>
+          <ul class="sb-video-tips">
+            <li>This video demonstrates the complete E-wrap cast-on from start to finish</li>
+            <li>Pay attention to how the yarn wraps around each needle</li>
+            <li>Notice the tension and hand positioning</li>
+          </ul>
+        </div>
+        
+        {videoLookup["e-wrap-cast-on"] && (
+          <button
+            type="button"
+            class="sb-video-card"
+            data-video-slug="e-wrap-cast-on"
+            data-embed-src={videoLookup["e-wrap-cast-on"].embedSrc}
+            data-title={videoLookup["e-wrap-cast-on"].title}
+            aria-label={`Watch: ${videoLookup["e-wrap-cast-on"].title}`}
+            data-testid="button-watch-e-wrap"
+          >
+            <div class="sb-thumb-frame">
+              <div class="sb-play-overlay" aria-hidden="true">
+                <svg class="sb-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              </div>
+            </div>
+            <div class="sb-card-label">
+              <span class="sb-card-title">{videoLookup["e-wrap-cast-on"].title}</span>
+              <span class="sb-card-helper">Opens in a large player{videoLookup["e-wrap-cast-on"].durationSeconds ? `. ${formatDuration(videoLookup["e-wrap-cast-on"].durationSeconds)}` : ""}</span>
+            </div>
+          </button>
+        )}
+        
+        {videoLookup["e-wrap-cast-on"]?.transcriptHtml && (
+          <>
+            <button type="button" class="sb-transcript-trigger" data-transcript-toggle="e-wrap-cast-on" data-testid="button-transcript-e-wrap">
+              <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+              <span class="sb-trigger-label">Show transcript</span>
+            </button>
+            <details class="sb-transcript-accordion" id="transcript-e-wrap-cast-on" data-testid="accordion-transcript-e-wrap">
+              <summary class="sb-transcript-summary-hidden" aria-hidden="true">Transcript</summary>
+              <div class="sb-transcript-panel">
+                <div class="sb-transcript-header">
+                  <button type="button" class="sb-transcript-back" data-close-transcript data-testid="button-close-transcript-e-wrap">
+                    Back to video
+                  </button>
+                </div>
+                <div class="sb-transcript-content" set:html={videoLookup["e-wrap-cast-on"].transcriptHtml} />
+              </div>
+            </details>
+          </>
+        )}
+
+        <!-- Optional: Open vs Closed Cast-On -->
+        {videoLookup["open-vs-closed-cast-on"] && (
+          <details class="sb-optional-video">
+            <summary><i class="fa-solid fa-play"></i> Optional: Open vs Closed — what edge did you just make?</summary>
+            <div class="sb-optional-video-content">
+              <button
+                type="button"
+                class="sb-video-card"
+                data-video-slug="open-vs-closed-cast-on"
+                data-embed-src={videoLookup["open-vs-closed-cast-on"].embedSrc}
+                data-title={videoLookup["open-vs-closed-cast-on"].title}
+                aria-label={`Watch: ${videoLookup["open-vs-closed-cast-on"].title}`}
+                data-testid="button-watch-open-vs-closed"
+              >
+                <div class="sb-thumb-frame">
+                  <div class="sb-play-overlay" aria-hidden="true">
+                    <svg class="sb-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                  </div>
+                </div>
+                <div class="sb-card-label">
+                  <span class="sb-card-title">{videoLookup["open-vs-closed-cast-on"].title}</span>
+                  <span class="sb-card-helper">Opens in a large player{videoLookup["open-vs-closed-cast-on"].durationSeconds ? `. ${formatDuration(videoLookup["open-vs-closed-cast-on"].durationSeconds)}` : ""}</span>
+                </div>
+              </button>
+              
+              {videoLookup["open-vs-closed-cast-on"]?.transcriptHtml && (
+                <>
+                  <button type="button" class="sb-transcript-trigger" data-transcript-toggle="open-vs-closed-cast-on" data-testid="button-transcript-open-vs-closed">
+                    <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+                    <span class="sb-trigger-label">Show transcript</span>
+                  </button>
+                  <details class="sb-transcript-accordion" id="transcript-open-vs-closed-cast-on" data-testid="accordion-transcript-open-vs-closed">
+                    <summary class="sb-transcript-summary-hidden" aria-hidden="true">Transcript</summary>
+                    <div class="sb-transcript-panel">
+                      <div class="sb-transcript-header">
+                        <button type="button" class="sb-transcript-back" data-close-transcript data-testid="button-close-transcript-open-vs-closed">
+                          Back to video
+                        </button>
+                      </div>
+                      <div class="sb-transcript-content" set:html={videoLookup["open-vs-closed-cast-on"].transcriptHtml} />
+                    </div>
+                  </details>
+                </>
+              )}
+            </div>
+          </details>
+        )}
+      </div>
+      
+      <!-- Bind Off Video -->
+      <div class="sb-video-block" style="margin-top: 2.5rem;">
+        <div class="sb-video-tips-box">
+          <h3 class="sb-video-heading">Finish your swatch</h3>
+          <ul class="sb-video-tips">
+            <li>This video demonstrates a stitch-through-stitch bind off worked by hand</li>
+            <li>Notice how stitch size affects the finished edge</li>
+            <li>Watch how the yarn is controlled as stitches are worked off the machine</li>
+          </ul>
+        </div>
+        
+        {videoLookup["stitch-through-stitch-bind-off"] && (
+          <button
+            type="button"
+            class="sb-video-card"
+            data-video-slug="stitch-through-stitch-bind-off"
+            data-embed-src={videoLookup["stitch-through-stitch-bind-off"].embedSrc}
+            data-title={videoLookup["stitch-through-stitch-bind-off"].title}
+            aria-label={`Watch: ${videoLookup["stitch-through-stitch-bind-off"].title}`}
+            data-testid="button-watch-bind-off"
+          >
+            <div class="sb-thumb-frame">
+              <div class="sb-play-overlay" aria-hidden="true">
+                <svg class="sb-play-icon" viewBox="0 0 24 24" fill="currentColor">
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              </div>
+            </div>
+            <div class="sb-card-label">
+              <span class="sb-card-title">{videoLookup["stitch-through-stitch-bind-off"].title}</span>
+              <span class="sb-card-helper">Opens in a large player{videoLookup["stitch-through-stitch-bind-off"].durationSeconds ? `. ${formatDuration(videoLookup["stitch-through-stitch-bind-off"].durationSeconds)}` : ""}</span>
+            </div>
+          </button>
+        )}
+        
+        {videoLookup["stitch-through-stitch-bind-off"]?.transcriptHtml && (
+          <>
+            <button type="button" class="sb-transcript-trigger" data-transcript-toggle="stitch-through-stitch-bind-off" data-testid="button-transcript-bind-off">
+              <i class="fa-regular fa-file-lines" aria-hidden="true"></i>
+              <span class="sb-trigger-label">Show transcript</span>
+            </button>
+            <details class="sb-transcript-accordion" id="transcript-stitch-through-stitch-bind-off" data-testid="accordion-transcript-bind-off">
+              <summary class="sb-transcript-summary-hidden" aria-hidden="true">Transcript</summary>
+              <div class="sb-transcript-panel">
+                <div class="sb-transcript-header">
+                  <button type="button" class="sb-transcript-back" data-close-transcript data-testid="button-close-transcript-bind-off">
+                    Back to video
+                  </button>
+                </div>
+                <div class="sb-transcript-content" set:html={videoLookup["stitch-through-stitch-bind-off"].transcriptHtml} />
+              </div>
+            </details>
+          </>
+        )}
+      </div>
+    </section>
+
+    <!-- E) STEPS SECTION -->
+    <section class="sb-section">
+      <h2>Steps</h2>
+      
+      <div class="sb-print-link">
+        <a href="/downloads/skill-builders/your-first-cast-on-practice-checklist.pdf" target="_blank" rel="noopener">
+          Download the practice checklist (PDF)
+        </a>
+        <span class="sb-print-helper">Print this for your machine-side notes.</span>
+      </div>
+      
+      <ol class="sb-steps">
+        <li>Set up your machine on a stable surface and thread your yarn through the tension mast.</li>
+        <li>Bring out the needles you want to use to the working position (usually 20–40 needles for practice).</li>
+        <li>Starting from the left, wrap the yarn around each needle in an E-wrap pattern.</li>
+        <li>Hang your cast-on comb and weights on the wrapped stitches.</li>
+        <li>Set your tension dial to the recommended setting and slowly push the carriage across.</li>
+        <li>Knit 10–20 rows to create your practice swatch.</li>
+        <li>Prepare to bind off by pulling all needles forward and removing the yarn from the carriage.</li>
+        <li>Work the stitch-through-stitch bind off by hand, keeping the stitches even as you remove them from the needles.</li>
+        <li>Secure the final stitch and leave a short tail.</li>
+      </ol>
+    </section>
+
+    <!-- F) PRACTICE SECTION -->
+    <section class="sb-section">
+      <h2>Practice</h2>
+      <ul class="sb-practice-list">
+        <li>Try casting on 20 needles, then 40 needles to feel the difference</li>
+        <li>Experiment with different tension settings (note which feels best)</li>
+        <li>Practice the E-wrap motion until it feels natural</li>
+        <li>Time yourself: aim to cast on 40 stitches in under 2 minutes</li>
+        <li>As you bind off, adjust stitch size slightly and notice how it changes the feel of the edge</li>
       </ul>
-    </div>
-    
-    <div class="sb-scan-card">
-      <h3><i class="fa-solid fa-triangle-exclamation"></i> Watch For</h3>
-      <!-- TODO: Replace with actual "Watch For" content -->
-      <ul>
-        <li>Tension too tight on first row</li>
-        <li>Missing needles during wrap</li>
-        <li>Yarn not seated in latches</li>
-      </ul>
-    </div>
-    
-  </div>
-
-  <!-- ======================= -->
-  <!-- C) WHAT YOU'LL DO       -->
-  <!-- ======================= -->
-  <div slot="what-youll-do">
-    <!-- TODO: Replace placeholder paragraph -->
-    <p>You’ll cast on, knit a short practice piece, and bind off to see how the edge forms at the start and finish. By the end of this Skill Builder, you’ll have completed a sample swatch and know what to expect from these techniques when you begin a project.</p>
-  </div>
-
-  <!-- ======================= -->
-  <!-- D) VIDEO SECTION        -->
-  <!-- ======================= -->
-  <div slot="video">
-    <!-- Cast On Video -->
-    <div class="kbm-video-section">
-      <div class="kbm-video-tips-box">
-        <h3 class="kbm-video-heading">Watch first</h3>
-        <ul class="kbm-video-tips">
-          <li>This video demonstrates the complete E-wrap cast-on from start to finish</li>
-          <li>Pay attention to how the yarn wraps around each needle</li>
-          <li>Notice the tension and hand positioning</li>
-        </ul>
-        <details class="kbm-optional-video">
-          <summary><i class="fa-solid fa-play"></i> Optional: Open vs Closed — what edge did you just make?</summary>
-          <VideoBlock videoId="open-vs-closed-cast-on" />
-        </details>
-      </div>
-      <VideoBlock videoId="e-wrap-cast-on" heading="E-Wrap Cast On" />
-    </div>
-    
-    <!-- Bind Off Video -->
-    <div class="kbm-video-section" style="margin-top: 2.5rem;">
-      <div class="kbm-video-tips-box">
-        <h3 class="kbm-video-heading">Finish your swatch</h3>
-        <ul class="kbm-video-tips">
-          <li>This video demonstrates a stitch-through-stitch bind off worked by hand</li>
-          <li>Notice how stitch size affects the finished edge</li>
-          <li>Watch how the yarn is controlled as stitches are worked off the machine</li>
-        </ul>
-      </div>
-      <VideoBlock videoId="stitch-through-stitch-bind-off" heading="Stitch-Through-Stitch Bind Off" />
-    </div>
-  </div>
-
-  <!-- ======================= -->
-  <!-- E) STEPS SECTION        -->
-  <!-- ======================= -->
-  <div slot="steps">
-    <!-- Printable checklist link -->
-    <div class="kbm-print-link">
-      <a href="/downloads/skill-builders/your-first-cast-on-practice-checklist.pdf" target="_blank" rel="noopener">
-        Download the practice checklist (PDF)
-      </a>
-      <span class="kbm-print-helper">Print this for your machine-side notes.</span>
-    </div>
-    
-    <ol class="sb-steps">
-      <li>
-        <!-- TODO: Replace step 1 -->
-        Set up your machine on a stable surface and thread your yarn through the tension mast.
-      </li>
-      <li>
-        <!-- TODO: Replace step 2 -->
-        Bring out the needles you want to use to the working position (usually 20–40 needles for practice).
-      </li>
-      <li>
-        <!-- TODO: Replace step 3 -->
-        Starting from the left, wrap the yarn around each needle in an E-wrap pattern.
-      </li>
-      <li>
-        <!-- TODO: Replace step 4 -->
-        Hang your cast-on comb and weights on the wrapped stitches.
-      </li>
-      <li>
-        <!-- TODO: Replace step 5 -->
-        Set your tension dial to the recommended setting and slowly push the carriage across.
-      </li>
-      <li>
-        Knit 10–20 rows to create your practice swatch.
-      </li>
-      <li>
-        Prepare to bind off by pulling all needles forward and removing the yarn from the carriage.
-      </li>
-      <li>
-        Work the stitch-through-stitch bind off by hand, keeping the stitches even as you remove them from the needles.
-      </li>
-      <li>
-        Secure the final stitch and leave a short tail.
-      </li>
-    </ol>
-  </div>
-
-  <!-- ======================= -->
-  <!-- F) PRACTICE SECTION     -->
-  <!-- ======================= -->
-  <div slot="practice">
-    <!-- TODO: Replace placeholder practice bullets -->
-    <ul class="sb-practice-list">
-      <li>Try casting on 20 needles, then 40 needles to feel the difference</li>
-      <li>Experiment with different tension settings (note which feels best)</li>
-      <li>Practice the E-wrap motion until it feels natural</li>
-      <li>Time yourself: aim to cast on 40 stitches in under 2 minutes</li>
-      <li>As you bind off, adjust stitch size slightly and notice how it changes the feel of the edge</li>
-    </ul>
-    
-    <!-- Practice Swatch Callout -->
-    <div class="sb-practice-callout">
-      <!-- TODO: Replace placeholder practice swatch content -->
-      <strong>Practice Swatch:</strong> Aim to create a small swatch (about 4" x 4") using your new cast-on skills. Keep this swatch! It's proof of your progress and helpful for comparing tension later.
-    </div>
-  </div>
-
-  <!-- G) TROUBLESHOOTING - Now auto-generated from faqs prop above -->
-  <!-- No slot needed - edit the faqs array in the frontmatter -->
-
-  <!-- ======================= -->
-  <!-- H) TERMS USED           -->
-  <!-- ======================= -->
-  <div slot="terms-used">
-    <dl class="sb-terms-list">
       
-      <!-- TODO: Replace/update term definitions -->
-      <div class="sb-term">
-        <dt>Open Cast-On</dt>
-        <dd>A cast-on method that creates an open, loopy edge. The bottom of your knitting isn't closed, allowing you to pick up stitches later or unravel from the bottom.</dd>
+      <div class="sb-practice-callout">
+        <strong>Practice Swatch:</strong> Aim to create a small swatch (about 4" x 4") using your new cast-on skills. Keep this swatch! It's proof of your progress and helpful for comparing tension later.
       </div>
-      
-      <div class="sb-term">
-        <dt>Closed Cast-On</dt>
-        <dd>A cast-on method that creates a finished, sealed edge. The bottom is closed and neat—you won't be able to unravel from this end.</dd>
+    </section>
+
+    <!-- G) TROUBLESHOOTING SECTION -->
+    <section class="sb-section">
+      <h2>Troubleshooting</h2>
+      <div class="sb-faq">
+        {faqs.map((faq, index) => (
+          <div class="sb-faq-item">
+            <button 
+              class="sb-faq-question" 
+              type="button"
+              aria-controls={`sb-faq-answer-${index}`}
+              aria-expanded="false"
+            >
+              {faq.question}
+            </button>
+            <div class="sb-faq-answer" id={`sb-faq-answer-${index}`}>
+              <p>{faq.answer}</p>
+            </div>
+          </div>
+        ))}
       </div>
-      
-      <div class="sb-term">
-        <dt>Stitch-Through-Stitch Bind Off</dt>
-        <dd>A hand-worked bind off where each stitch is pulled through the next to form a chained edge with adjustable stretch.</dd>
+    </section>
+
+    <!-- H) TERMS USED SECTION -->
+    <section class="sb-section">
+      <h2>Terms Used</h2>
+      <dl class="sb-terms-list">
+        <div class="sb-term">
+          <dt>Open Cast-On</dt>
+          <dd>A cast-on method that creates an open, loopy edge. The bottom of your knitting isn't closed, allowing you to pick up stitches later or unravel from the bottom.</dd>
+        </div>
+        
+        <div class="sb-term">
+          <dt>Closed Cast-On</dt>
+          <dd>A cast-on method that creates a finished, sealed edge. The bottom is closed and neat—you won't be able to unravel from this end.</dd>
+        </div>
+        
+        <div class="sb-term">
+          <dt>Stitch-Through-Stitch Bind Off</dt>
+          <dd>A hand-worked bind off where each stitch is pulled through the next to form a chained edge with adjustable stretch.</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- I) WHAT'S NEXT SECTION -->
+    <section class="sb-section sb-whats-next">
+      <h2>What's Next</h2>
+      <div class="sb-next-buttons">
+        <a href="#" class="sb-next-btn">
+          Next: Basic Bind-Off
+        </a>
+        <a href="#" class="sb-next-btn secondary">
+          Explore More Skill Builders
+        </a>
+        <a href="/" class="sb-next-btn secondary">
+          Back to Home
+        </a>
       </div>
-      
-    </dl>
+    </section>
+
   </div>
 
-  <!-- ======================= -->
-  <!-- I) WHAT'S NEXT          -->
-  <!-- ======================= -->
-  <div slot="whats-next">
-    <!-- TODO: Replace placeholder links with actual URLs -->
-    <div class="sb-next-buttons">
-      <a href="#" class="sb-next-btn">
-        <!-- TODO: Replace with actual next skill builder link -->
-        Next: Basic Bind-Off
-      </a>
-      <a href="#" class="sb-next-btn secondary">
-        <!-- TODO: Replace with actual link -->
-        Explore More Skill Builders
-      </a>
-      <a href="/" class="sb-next-btn secondary">
-        <!-- TODO: Update if needed -->
-        Back to Home
-      </a>
+  <!-- VIDEO MODAL -->
+  <div class="video-modal" id="video-modal" aria-hidden="true" data-testid="modal-video">
+    <div class="video-modal__backdrop" data-close></div>
+    <div class="video-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
+      <div class="video-modal__header">
+        <h2 id="video-modal-title" data-testid="text-modal-title">Video</h2>
+        <button type="button" class="video-modal__close" data-close aria-label="Close video" data-testid="button-modal-close">&#10005;</button>
+      </div>
+      <div class="video-modal__body">
+        <div class="video-frame" id="video-frame"></div>
+      </div>
     </div>
   </div>
-
-</SkillBuilderLayout>
+</BaseLayout>
 
 <style>
-/* ========== VIDEO SECTION STYLES ========== */
+/* ========================================
+   SKILL BUILDER PAGE - SCOPED STYLES
+   ======================================== */
 
-.kbm-video-section {
+.skill-builder-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* A) Hero Section - Compact */
+.sb-hero {
+  text-align: center;
+  padding: 1rem 1rem 1.25rem;
+  margin-bottom: 2rem;
+  background: linear-gradient(135deg, #f0f4eb 0%, #e9ece7 100%);
+  border-radius: 12px;
+  border: 1px solid var(--ring, #e5e8e0);
+}
+
+.sb-hero-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.sb-hero-icon {
+  width: 56px;
+  height: 56px;
+  flex-shrink: 0;
+}
+
+.sb-hero-text {
+  text-align: left;
+}
+
+.sb-hero h1 {
+  font-size: var(--text-xl, 1.5rem);
+  color: var(--kbm-green, #52682d);
+  margin: 0;
+  line-height: 1.2;
+}
+
+.sb-subtitle {
+  font-size: 1rem;
+  color: #555;
+  margin: 0.25rem 0 0 0;
+}
+
+.sb-meta {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.sb-badge {
+  display: inline-block;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.sb-price {
+  background: var(--kbm-green, #52682d);
+  color: #fff;
+}
+
+.sb-level {
+  background: var(--kbm-green-2, #738c52);
+  color: #fff;
+}
+
+/* Section styling */
+.sb-section {
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: #fff;
+  border-radius: 8px;
+  border: 1px solid var(--ring, #e5e8e0);
+}
+
+.sb-section h2 {
+  font-size: var(--text-xl, 1.5rem);
+  color: var(--kbm-green, #52682d);
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--kbm-green-2, #738c52);
+}
+
+/* B) Quick Scan Cards */
+.sb-quick-scan {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.sb-scan-card {
+  background: var(--page-bg, #f7f8f7);
+  padding: 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--ring, #e5e8e0);
+}
+
+.sb-scan-card h3 {
+  font-size: 1rem;
+  color: var(--kbm-green, #52682d);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sb-scan-card p,
+.sb-scan-card ul {
+  font-size: 0.95rem;
+  color: #555;
+  margin: 0;
+}
+
+.sb-scan-card ul {
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.sb-scan-card li {
+  margin-bottom: 0.25rem;
+}
+
+/* D) Video Section */
+.sb-video-block {
   margin-bottom: 1rem;
 }
 
-.kbm-video-tips-box {
+.sb-video-tips-box {
   margin-bottom: 1rem;
 }
 
-.kbm-video-heading {
+.sb-video-heading {
   font-size: 1.1rem;
   color: var(--kbm-green, #52682d);
   margin: 0 0 0.5rem 0;
   font-weight: 600;
 }
 
-.kbm-video-tips {
+.sb-video-tips {
   margin: 0 0 0.75rem 0;
   padding-left: 1.25rem;
   color: #555;
@@ -268,23 +590,189 @@ const faqs = [
   line-height: 1.6;
 }
 
-.kbm-video-tips li {
+.sb-video-tips li {
   margin-bottom: 0.5rem;
 }
 
-.kbm-video-tips li:last-child {
+.sb-video-tips li:last-child {
   margin-bottom: 0;
 }
 
-/* Optional video expandable section */
-.kbm-optional-video {
+/* Video Card Button */
+.sb-video-card {
+  display: block;
+  width: 100%;
+  max-width: 400px;
+  background: #ffffff;
+  border: 1px solid #c7d8a4;
+  border-radius: 10px;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+  overflow: hidden;
+  transition: box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.sb-video-card:hover {
+  border-color: #6e8b3d;
+  box-shadow: 0 4px 12px rgba(82, 104, 45, 0.15);
+}
+
+.sb-video-card:focus {
+  outline: 2px solid #52682d;
+  outline-offset: 2px;
+}
+
+.sb-thumb-frame {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%;
+  overflow: hidden;
+  background: linear-gradient(135deg, #e9eee0 0%, #d5dcc8 100%);
+}
+
+.sb-play-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+  transition: background 0.15s ease;
+}
+
+.sb-video-card:hover .sb-play-overlay {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+.sb-play-icon {
+  width: 56px;
+  height: 56px;
+  color: rgba(255, 255, 255, 0.9);
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+  transition: transform 0.15s ease;
+}
+
+.sb-video-card:hover .sb-play-icon {
+  transform: scale(1.1);
+}
+
+.sb-card-label {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.sb-card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #52682d;
+}
+
+.sb-card-helper {
+  font-size: 0.8rem;
+  color: #6b7a58;
+  font-style: italic;
+}
+
+/* Transcript Toggle Button */
+.sb-transcript-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   margin-top: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--ring, #e5e8e0);
+  border-radius: 6px;
+  color: var(--kbm-green, #52682d);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+
+.sb-transcript-trigger:hover {
+  background: rgba(82, 104, 45, 0.06);
+  border-color: var(--kbm-green, #52682d);
+}
+
+.sb-transcript-trigger:focus {
+  outline: 2px solid var(--kbm-green-2, #738c52);
+  outline-offset: 2px;
+}
+
+/* Transcript Accordion */
+.sb-transcript-accordion {
+  margin-top: 0.75rem;
+  border: 1px solid var(--ring, #e5e8e0);
+  border-radius: 8px;
+  background: var(--page-bg, #f7f8f7);
+}
+
+.sb-transcript-summary-hidden {
+  display: none;
+}
+
+.sb-transcript-panel {
+  padding: 1rem;
+}
+
+.sb-transcript-header {
+  margin-bottom: 1rem;
+}
+
+.sb-transcript-back {
+  background: none;
+  border: none;
+  color: var(--kbm-green, #52682d);
+  font-size: 0.9rem;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.sb-transcript-back:hover {
+  color: var(--kbm-green-hover, #445626);
+}
+
+.sb-transcript-content {
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: #444;
+}
+
+.sb-transcript-content p {
+  margin: 0 0 1rem 0;
+}
+
+.sb-transcript-content p:last-child {
+  margin-bottom: 0;
+}
+
+.sb-transcript-content strong {
+  color: var(--kbm-green, #52682d);
+}
+
+.sb-transcript-content ul,
+.sb-transcript-content ol {
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+
+/* Optional video expandable section */
+.sb-optional-video {
+  margin-top: 1rem;
   border: 1px solid var(--ring, #e5e8e0);
   border-radius: 6px;
   background: var(--page-bg, #f7f8f7);
 }
 
-.kbm-optional-video summary {
+.sb-optional-video summary {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -296,21 +784,24 @@ const faqs = [
   list-style: none;
 }
 
-.kbm-optional-video summary::-webkit-details-marker {
+.sb-optional-video summary::-webkit-details-marker {
   display: none;
 }
 
-.kbm-optional-video summary:hover {
+.sb-optional-video summary:hover {
   background: rgba(82, 104, 45, 0.06);
 }
 
-.kbm-optional-video[open] summary {
+.sb-optional-video[open] summary {
   border-bottom: 1px solid var(--ring, #e5e8e0);
 }
 
-/* ========== PRINT LINK STYLES ========== */
+.sb-optional-video-content {
+  padding: 1rem;
+}
 
-.kbm-print-link {
+/* Print Link */
+.sb-print-link {
   margin-bottom: 1.5rem;
   padding: 0.75rem 1rem;
   background: var(--page-bg, #f7f8f7);
@@ -318,19 +809,19 @@ const faqs = [
   border: 1px solid var(--ring, #e5e8e0);
 }
 
-.kbm-print-link a {
+.sb-print-link a {
   color: var(--kbm-green, #52682d);
   font-weight: 600;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
-.kbm-print-link a:hover,
-.kbm-print-link a:focus {
+.sb-print-link a:hover,
+.sb-print-link a:focus {
   color: var(--kbm-green-hover, #445626);
 }
 
-.kbm-print-helper {
+.sb-print-helper {
   display: block;
   font-size: 0.85rem;
   color: #666;
@@ -338,9 +829,509 @@ const faqs = [
   font-style: italic;
 }
 
+/* E) Steps list */
+.sb-steps {
+  counter-reset: step-counter;
+  list-style: none;
+  padding: 0;
+}
+
+.sb-steps li {
+  counter-increment: step-counter;
+  position: relative;
+  padding-left: 3rem;
+  margin-bottom: 1.25rem;
+  min-height: 2rem;
+}
+
+.sb-steps li::before {
+  content: counter(step-counter);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 2rem;
+  height: 2rem;
+  background: var(--kbm-green, #52682d);
+  color: #fff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+/* F) Practice section */
+.sb-practice-list {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.sb-practice-list li {
+  margin-bottom: 0.5rem;
+}
+
+.sb-practice-callout {
+  background: linear-gradient(135deg, #f0f4eb 0%, #e9ece7 100%);
+  border-left: 4px solid var(--kbm-green, #52682d);
+  padding: 1rem 1.25rem;
+  border-radius: 0 8px 8px 0;
+  margin-top: 1rem;
+}
+
+.sb-practice-callout strong {
+  color: var(--kbm-green, #52682d);
+}
+
+/* G) Troubleshooting FAQ */
+.sb-faq {
+  border: 1px solid var(--ring, #e5e8e0);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.sb-faq-item {
+  border-bottom: 1px solid var(--ring, #e5e8e0);
+}
+
+.sb-faq-item:last-child {
+  border-bottom: none;
+}
+
+.sb-faq-question {
+  width: 100%;
+  background: var(--page-bg, #f7f8f7);
+  border: none;
+  padding: 1rem 1.25rem;
+  text-align: left;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--kbm-green, #52682d);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s ease;
+}
+
+.sb-faq-question:hover,
+.sb-faq-question:focus {
+  background: #e9ece7;
+  outline: 2px solid var(--kbm-green-2, #738c52);
+  outline-offset: -2px;
+}
+
+.sb-faq-question::after {
+  content: '+';
+  font-size: 1.25rem;
+  font-weight: 400;
+  transition: transform 0.2s ease;
+}
+
+.sb-faq-item.open .sb-faq-question::after {
+  content: '−';
+}
+
+.sb-faq-answer {
+  display: none;
+  padding: 1rem 1.25rem;
+  background: #fff;
+  color: #555;
+}
+
+.sb-faq-item.open .sb-faq-answer {
+  display: block;
+}
+
+/* H) Terms definitions */
+.sb-terms-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.sb-term {
+  background: var(--page-bg, #f7f8f7);
+  padding: 1rem 1.25rem;
+  border-radius: 8px;
+  border: 1px solid var(--ring, #e5e8e0);
+}
+
+.sb-term dt {
+  font-weight: 600;
+  color: var(--kbm-green, #52682d);
+  margin-bottom: 0.25rem;
+}
+
+.sb-term dd {
+  margin: 0;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* I) What's Next buttons */
+.sb-whats-next .sb-next-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.sb-next-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--kbm-green, #52682d);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.sb-next-btn:hover,
+.sb-next-btn:focus {
+  background: var(--kbm-green-hover, #445626);
+  transform: translateY(-1px);
+  outline: 2px solid var(--kbm-green-2, #738c52);
+  outline-offset: 2px;
+}
+
+.sb-next-btn.secondary {
+  background: #fff;
+  color: var(--kbm-green, #52682d);
+  border: 2px solid var(--kbm-green, #52682d);
+}
+
+.sb-next-btn.secondary:hover,
+.sb-next-btn.secondary:focus {
+  background: #f0f4eb;
+}
+
+/* ============================================
+   VIDEO MODAL STYLES
+   ============================================ */
+
+.video-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.video-modal[aria-hidden="false"] {
+  opacity: 1;
+  visibility: visible;
+}
+
+.video-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  cursor: pointer;
+}
+
+.video-modal__dialog {
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.video-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.video-modal__header h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.video-modal__close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  cursor: pointer;
+  color: #666;
+  padding: 0.25rem;
+  line-height: 1;
+  transition: color 0.15s ease;
+}
+
+.video-modal__close:hover {
+  color: #333;
+}
+
+.video-modal__close:focus {
+  outline: 2px solid #52682d;
+  outline-offset: 2px;
+}
+
+.video-modal__body {
+  padding: 0;
+}
+
+.video-frame {
+  position: relative;
+  padding-top: 56.25%;
+  background: #000;
+}
+
+.video-frame::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+.video-frame.loaded::before {
+  display: none;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Body scroll lock */
+:global(body.modal-open) {
+  overflow: hidden;
+}
+
+/* Responsive adjustments */
 @media (max-width: 600px) {
-  .kbm-print-link {
+  .sb-hero-title-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .sb-hero-text {
+    text-align: center;
+  }
+  
+  .sb-hero-icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .sb-quick-scan {
+    grid-template-columns: 1fr;
+  }
+  
+  .sb-next-buttons {
+    flex-direction: column;
+  }
+  
+  .sb-next-btn {
+    text-align: center;
+  }
+  
+  .sb-video-card {
+    max-width: 100%;
+  }
+  
+  .video-modal__dialog {
+    width: 95%;
+    max-height: 85vh;
+  }
+  
+  .sb-print-link {
     padding: 0.5rem 0.75rem;
   }
 }
+
+@media (max-width: 480px) {
+  .sb-play-icon {
+    width: 44px;
+    height: 44px;
+  }
+}
 </style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // ============================================
+  // TRANSCRIPT TOGGLE BUTTONS
+  // ============================================
+  var transcriptTriggers = document.querySelectorAll('[data-transcript-toggle]');
+  
+  transcriptTriggers.forEach(function(trigger) {
+    var targetId = trigger.getAttribute('data-transcript-toggle');
+    var details = document.getElementById('transcript-' + targetId);
+    var label = trigger.querySelector('.sb-trigger-label');
+    
+    if (!details || !label) return;
+    
+    trigger.setAttribute('aria-expanded', 'false');
+    trigger.setAttribute('aria-controls', 'transcript-' + targetId);
+    
+    trigger.addEventListener('click', function() {
+      var isOpen = details.hasAttribute('open');
+      
+      if (isOpen) {
+        details.removeAttribute('open');
+        trigger.setAttribute('aria-expanded', 'false');
+        label.textContent = 'Show transcript';
+      } else {
+        details.setAttribute('open', '');
+        trigger.setAttribute('aria-expanded', 'true');
+        label.textContent = 'Hide transcript';
+      }
+    });
+    
+    var observer = new MutationObserver(function(mutations) {
+      mutations.forEach(function(mutation) {
+        if (mutation.attributeName === 'open') {
+          var isNowOpen = details.hasAttribute('open');
+          trigger.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false');
+          label.textContent = isNowOpen ? 'Hide transcript' : 'Show transcript';
+        }
+      });
+    });
+    observer.observe(details, { attributes: true });
+  });
+
+  // ============================================
+  // TRANSCRIPT CLOSE BUTTONS
+  // ============================================
+  var transcriptCloseButtons = document.querySelectorAll('[data-close-transcript]');
+  
+  transcriptCloseButtons.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var details = btn.closest('details');
+      if (details) {
+        details.removeAttribute('open');
+      }
+    });
+  });
+
+  // ============================================
+  // FAQ ACCORDION
+  // ============================================
+  var faqItems = document.querySelectorAll('.sb-faq-item');
+  
+  faqItems.forEach(function(item, index) {
+    var question = item.querySelector('.sb-faq-question');
+    var answer = item.querySelector('.sb-faq-answer');
+    
+    if (question && answer) {
+      var answerId = 'sb-faq-answer-' + index;
+      answer.id = answerId;
+      question.setAttribute('aria-controls', answerId);
+      question.setAttribute('aria-expanded', 'false');
+      
+      question.addEventListener('click', function() {
+        var isOpen = item.classList.contains('open');
+        
+        faqItems.forEach(function(other) {
+          if (other !== item) {
+            other.classList.remove('open');
+            var otherQuestion = other.querySelector('.sb-faq-question');
+            if (otherQuestion) {
+              otherQuestion.setAttribute('aria-expanded', 'false');
+            }
+          }
+        });
+        
+        item.classList.toggle('open');
+        question.setAttribute('aria-expanded', String(!isOpen));
+      });
+    }
+  });
+
+  // ============================================
+  // VIDEO MODAL
+  // ============================================
+  var modal = document.getElementById('video-modal');
+  var modalTitle = document.getElementById('video-modal-title');
+  var videoFrame = document.getElementById('video-frame');
+  var videoCards = document.querySelectorAll('.sb-video-card');
+  var closeButtons = modal ? modal.querySelectorAll('[data-close]') : [];
+  
+  var triggerButton = null;
+
+  function openModal(embedSrc, title, trigger) {
+    if (!modal || !videoFrame || !modalTitle) return;
+    
+    triggerButton = trigger;
+    
+    modalTitle.textContent = title;
+    
+    videoFrame.classList.remove('loaded');
+    videoFrame.innerHTML = '';
+    
+    if (embedSrc) {
+      var iframe = document.createElement('iframe');
+      iframe.setAttribute('frameborder', '0');
+      iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share');
+      iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      iframe.setAttribute('title', title);
+      iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+      
+      iframe.onload = function() {
+        videoFrame.classList.add('loaded');
+      };
+      
+      videoFrame.appendChild(iframe);
+      iframe.src = embedSrc;
+    }
+    
+    modal.setAttribute('aria-hidden', 'false');
+    document.body.classList.add('modal-open');
+    
+    var closeBtn = modal.querySelector('.video-modal__close');
+    if (closeBtn) closeBtn.focus();
+  }
+
+  function closeModal() {
+    if (!modal || !videoFrame || !modalTitle) return;
+    
+    modal.setAttribute('aria-hidden', 'true');
+    document.body.classList.remove('modal-open');
+    
+    videoFrame.innerHTML = '';
+    videoFrame.classList.remove('loaded');
+    
+    modalTitle.textContent = 'Video';
+    
+    if (triggerButton) triggerButton.focus();
+    triggerButton = null;
+  }
+
+  videoCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      var embedSrc = card.getAttribute('data-embed-src') || '';
+      var title = card.getAttribute('data-title') || 'Video';
+      openModal(embedSrc, title, card);
+    });
+  });
+
+  closeButtons.forEach(function(el) {
+    el.addEventListener('click', closeModal);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
+      closeModal();
+    }
+  });
+});
+</script>
