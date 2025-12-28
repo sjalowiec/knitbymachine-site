@@ -116,7 +116,10 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           </summary>
           <div class="jotb-transcript-panel">
             <div class="jotb-transcript-header">
-              <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-setup">
+              <button type="button" class="jotb-transcript-hide" data-close-transcript data-testid="button-hide-transcript-setup">
+                Hide transcript
+              </button>
+              <button type="button" class="jotb-transcript-back" data-close-transcript data-scroll-to="setup" data-testid="link-back-to-video-setup">
                 Back to video
               </button>
             </div>
@@ -199,7 +202,10 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
           </summary>
           <div class="jotb-transcript-panel">
             <div class="jotb-transcript-header">
-              <button type="button" class="jotb-transcript-back" data-close-transcript data-testid="link-back-to-video-caston">
+              <button type="button" class="jotb-transcript-hide" data-close-transcript data-testid="button-hide-transcript-caston">
+                Hide transcript
+              </button>
+              <button type="button" class="jotb-transcript-back" data-close-transcript data-scroll-to="caston" data-testid="link-back-to-video-caston">
                 Back to video
               </button>
             </div>
@@ -878,6 +884,7 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     font-size: 0.85rem;
   }
 
+  .jotb-transcript-hide,
   .jotb-transcript-back {
     display: inline-flex;
     align-items: center;
@@ -892,14 +899,21 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     transition: background 0.15s ease, color 0.15s ease;
   }
 
+  .jotb-transcript-hide:hover,
   .jotb-transcript-back:hover {
     color: var(--kbm-green, #52682d);
     background: rgba(82, 104, 45, 0.08);
   }
 
+  .jotb-transcript-hide:focus,
   .jotb-transcript-back:focus {
     outline: 2px solid #52682d;
     outline-offset: 2px;
+  }
+
+  /* Visual separator between header buttons */
+  .jotb-transcript-header {
+    gap: 0.5rem;
   }
 
   /* ============================================
@@ -1041,6 +1055,15 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
         var details = btn.closest('details');
         if (details) {
           details.removeAttribute('open');
+        }
+        
+        // Only scroll if the button has a data-scroll-to attribute
+        var scrollTarget = btn.getAttribute('data-scroll-to');
+        if (scrollTarget) {
+          var targetSection = document.getElementById(scrollTarget);
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
         }
       });
     });
