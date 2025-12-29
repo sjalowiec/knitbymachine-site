@@ -17,6 +17,30 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </p>
       </div>
 
+      <!-- Feature cards (always visible) -->
+      <div class="features-grid">
+        <div class="feature-card">
+          <span class="feature-icon">?</span>
+          <h3>Ask for help</h3>
+          <p>Post your question and get practical replies.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">&#9733;</span>
+          <h3>Show & Tell</h3>
+          <p>Share a photo, a swatch, or a finished piece.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">&#128161;</span>
+          <h3>Learn from real situations</h3>
+          <p>See how others solved the same issues.</p>
+        </div>
+        <div class="feature-card">
+          <span class="feature-icon">&#10003;</span>
+          <h3>Small wins encouraged</h3>
+          <p>First cast-on counts. Really.</p>
+        </div>
+      </div>
+
       <!-- Step 1: Gate form (hidden after unlock) -->
       <section id="gate-block">
         <div class="gate-form-container">
@@ -318,6 +342,43 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     line-height: 1.6;
   }
 
+  /* Feature cards grid (always visible) */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .feature-card {
+    background: #f9f9f9;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+  }
+
+  .feature-card .feature-icon {
+    display: block;
+    font-size: 1.5rem;
+    color: var(--kbm-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .feature-card h3 {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.4rem;
+  }
+
+  .feature-card p {
+    font-size: var(--text-xs, 0.8rem);
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+  }
+
   /* Gate form container */
   .gate-form-container {
     background: #fff;
@@ -556,6 +617,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       margin-bottom: 2rem;
     }
 
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .feature-card {
+      padding: 1rem 0.75rem;
+    }
+
     .gate-form-container {
       padding: 1.5rem;
     }
@@ -569,6 +639,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       width: 100%;
       max-width: 280px;
       justify-content: center;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .features-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
