@@ -1,18 +1,21 @@
-/* Prevent Android/mobile browsers from auto-adjusting text sizes */
+/* 
+ * TYPOGRAPHY: Single source of truth - DO NOT define typography elsewhere!
+ * Mobile-first: Large base font (150% = 24px), reduced for desktop.
+ * All rem values scale from the html font-size.
+ */
+
+/* MOBILE DEFAULT: 150% = 24px base, so 1rem = 24px on mobile */
 html {
+  font-size: 150%;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
 }
 
-/* 
- * TYPOGRAPHY: Single source of truth - DO NOT define typography elsewhere!
- * Using direct rem values (not CSS variables) as primary to avoid bundling issues.
- * Mobile-first: Large text by default, reduced for desktop.
- */
-
-/* MOBILE DEFAULT: Large readable text */
-html {
-  font-size: 100%; /* Browser default 16px base */
+/* DESKTOP: 100% = 16px base, so 1rem = 16px on desktop */
+@media (min-width: 1025px) {
+  html {
+    font-size: 100%;
+  }
 }
 
 :root {
@@ -28,34 +31,24 @@ html {
   --header-height: 6rem;
   --max-content-width: 1100px;
 
-  /* Typography tokens for components that reference them */
-  --text-base: 1.5rem;
-  --text-lg: 1.75rem;
-  --text-xl: 2.25rem;
-  --text-xxl: 2.75rem;
+  /* Typography tokens - now relative to html font-size */
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.5rem;
+  --text-xxl: 2.25rem;
 }
 
-/* MOBILE DEFAULT: Large readable text - using direct rem values, NOT CSS variables */
 body {
   margin: 0;
   font-family: var(--font);
-  font-size: 1.5rem;  /* 24px - large readable text for mobile */
+  font-size: 1rem;  /* Uses html's font-size: 24px mobile, 16px desktop */
   line-height: 1.7;
   color: var(--kbm-green);
   background: var(--page-bg);
 }
 
-/* DESKTOP: Reduce font size for larger screens */
 @media (min-width: 1025px) {
-  :root {
-    --text-base: 1rem;
-    --text-lg: 1.125rem;
-    --text-xl: 1.5rem;
-    --text-xxl: 2.25rem;
-  }
-  
   body {
-    font-size: 1rem;  /* 16px for desktop */
     line-height: 1.6;
   }
 }
