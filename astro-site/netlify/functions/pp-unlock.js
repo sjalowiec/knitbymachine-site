@@ -6,7 +6,7 @@
  * Upserts contact in ActiveCampaign and applies the appropriate tag
  * 
  * Required env vars:
- * - AC_API_URL: ActiveCampaign API base URL (e.g., https://yourname.api-us1.com)
+ * - ACTIVECAMPAIGN_API_URL: ActiveCampaign API base URL (e.g., https://yourname.api-us1.com)
  * - ACTIVECAMPAIGN_API_KEY: ActiveCampaign API key
  * - AC_TAG_ID_PP_CASTON: Tag ID for PP-caston tag
  * - AC_TAG_ID_COMMUNITY: Tag ID for "Access – Community" tag
@@ -84,7 +84,7 @@ export const handler = async (event) => {
     };
   }
 
-  const AC_API_URL = process.env.AC_API_URL;
+  const AC_API_URL = process.env.ACTIVECAMPAIGN_API_URL || process.env.AC_API_URL;
   const AC_API_KEY = process.env.ACTIVECAMPAIGN_API_KEY;
   const AC_TAG_ID = process.env[tagEnvKey];
 
