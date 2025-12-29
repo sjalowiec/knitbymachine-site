@@ -1,0 +1,111 @@
+Goal
+Use the existing KBM gate pattern to require First Name (required) + Email (required) before showing the embedded Discourse community on /community.
+Reuse the existing Netlify function pattern and add the Access – Community ActiveCampaign tag.
+Persist access using localStorage.
+
+Instructions for Replit
+
+1. Update /community page structure
+
+On /community, wrap content like this:
+
+Gate section (visible until unlocked)
+
+id="gate-block"
+
+Contains a form with:
+
+First Name (required)
+
+Email (required)
+
+Submit button
+
+Community section (hidden until unlocked)
+
+id="open-content"
+
+Contains the Discourse embed iframe
+
+The Discourse embed must live only inside #open-content.
+
+2. Add gate toggle logic (front-end)
+
+Add this script near the gate block:
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const gate = document.getElementById("gate-block");
+  const open = document.getElementById("open-content");
+
+  let unlocked = false;
+  try {
+    unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
+  } catch {}
+
+  if (unlocked) {
+    gate?.setAttribute("hidden", "");
+    open?.removeAttribute("hidden");
+  } else {
+    gate?.removeAttribute("hidden");
+    open?.setAttribute("hidden", "");
+  }
+});
+</script>
+
+
+3. Wire the form submit
+
+Use the same submit pattern as the Practice Project gate, but with:
+
+projectId: "community"
+
+First Name required
+
+Email required
+
+On successful submit:
+
+Set:
+
+localStorage.setItem("kbm:community-unlocked", "1");
+
+
+Reload the page
+
+4. Update the Netlify function
+
+In the existing Netlify function that handles gate unlocks:
+
+Detect projectId === "community"
+
+Add the ActiveCampaign tag:
+
+Access – Community
+
+
+Do not remove or change existing behavior for practice projects
+
+Return { ok: true } on success.
+
+5. Validation rules
+
+Do not show the Discourse embed until unlocked
+
+Do not require passwords
+
+Do not link to Discourse signup
+
+Keep UX identical to existing KBM gates
+
+Acceptance checklist
+
+Fresh browser → /community shows only the form
+
+Submit first name + email → page reloads
+
+After reload → Discourse embed is visible
+
+ActiveCampaign contact has Access – Community tag
+
+Refreshing page keeps access
