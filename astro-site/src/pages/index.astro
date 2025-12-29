@@ -85,11 +85,12 @@ import "../styles/global.css";
   </p>
 
   <a
-    href="/about"
+    href="#where-are-you"
+    id="drawer-where-link"
     class="kbm-drawer-link"
-    data-testid="link-about-drawer"
+    data-testid="link-where-drawer"
   >
-    Visit the About page
+    See where to start →
   </a>
 </div>
 
@@ -122,6 +123,23 @@ import "../styles/global.css";
       drawer?.addEventListener('cancel', (e) => {
         e.preventDefault();
         closeDrawer();
+      });
+
+      // Handle "See where to start" link: close drawer, then scroll with offset
+      const whereLink = document.getElementById('drawer-where-link');
+      whereLink?.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeDrawer();
+        // Wait for drawer close animation (200ms) before scrolling
+        setTimeout(() => {
+          const headerEl = document.querySelector('header');
+          const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 160;
+          const target = document.getElementById('where-are-you');
+          if (target) {
+            const y = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16;
+            window.scrollTo({ top: y, behavior: 'smooth' });
+          }
+        }, 220);
       });
     </script>
 
