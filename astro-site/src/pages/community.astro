@@ -104,6 +104,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <!-- Topic thread (shown after topic selection) -->
       <section id="topic-thread" hidden>
         <p id="topic-label" class="topic-label" hidden></p>
+        <p id="topic-helper" class="topic-helper" hidden>New here? Start with Introductions — it's the easiest place to jump in.</p>
         
         <div class="hyvor-talk-container">
                    <div id="hyvor-talk-view" data-testid="hyvor-talk-view"></div>
@@ -333,9 +334,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       // Set label above thread
       var label = document.getElementById("topic-label");
+      var helper = document.getElementById("topic-helper");
       if (label && topic && titleMap[topic]) {
         label.textContent = "Now viewing: " + titleMap[topic];
         label.hidden = false;
+      }
+      if (helper) {
+        helper.hidden = false;
       }
     }
 
@@ -793,7 +798,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     font-weight: 600;
     font-size: var(--text-sm);
     color: var(--kbm-green);
-    margin: 0 0 0.75rem 0;
+    margin: 0 0 0.25rem 0;
+    text-align: center;
+  }
+
+  .topic-helper {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin: 0 0 1rem 0;
     text-align: center;
   }
 
