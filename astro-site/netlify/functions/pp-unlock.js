@@ -4,6 +4,7 @@
  * 
  * Accepts POST with { email, firstName, projectId }
  * Upserts contact in ActiveCampaign and applies the appropriate tag
+ * For community projectId, also subscribes contact to List 3
  * 
  * Required env vars:
  * - ACTIVECAMPAIGN_API_URL: ActiveCampaign API base URL (e.g., https://yourname.api-us1.com)
@@ -178,6 +179,38 @@ export const handler = async (event) => {
     }
 
     console.log(`[PP-UNLOCK] Success: ${trimmedEmail} tagged with ${projectId}`);
+
+    // Subscribe to List 3 (Community list) only for community projectId
+    if (projectId === 'community') {
+      const listResponse = await fetch(`${AC_API_URL}/api/3/contactLists`, {
+        method: 'POST',
+        headers: {
+          'Api-Token': AC_API_KEY,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          contactList: {
+            list: 3,
+            contact: contactId,
+            status: 1, // 1 = subscribed
+          },
+        }),
+      });
+
+      if (!listResponse.ok) {
+        const listStatus = listResponse.status;
+        if (listStatus === 422) {
+          console.log('[PP-UNLOCK] Contact already subscribed to List 3 (422), treating as success');
+        } else {
+          const errorText = await listResponse.text();
+          console.error('[PP-UNLOCK] AC list subscription failed:', listStatus, errorText);
+          // Don't fail the request - tag was already applied successfully
+          console.log('[PP-UNLOCK] Continuing despite list subscription failure');
+        }
+      } else {
+        console.log(`[PP-UNLOCK] Contact ${contactId} subscribed to List 3`);
+      }
+    }
 
     return {
       statusCode: 200,
