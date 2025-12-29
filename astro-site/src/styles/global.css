@@ -116,6 +116,8 @@ p {
   body {
     font-size: 18px !important;
     line-height: 1.65;
+    /* TEMP DEBUG: Red border to confirm 640px media query is firing */
+    border-top: 8px solid red !important;
   }
   
   p {
