@@ -9,7 +9,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   <section class="community-page">
     <!-- Test mode indicator (hidden by default, shown via JS when enabled) -->
     <div id="test-mode-badge" class="test-mode-badge" hidden>
-      Community TEST MODE (gate disabled)
+      Community TEST MODE (debug panel active)
     </div>
 
     <div class="community-content">
@@ -134,6 +134,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 <script>
   (function() {
     // 🔴 TEST MODE: set to false before launch
+    // When true, shows debug panel but respects localStorage state
     var COMMUNITY_TEST_MODE = true;
 
     function initCommunity() {
@@ -141,9 +142,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       var topic = null;
       
       try {
-        unlocked = COMMUNITY_TEST_MODE
-          ? true
-          : localStorage.getItem("kbm:community-unlocked") === "1";
+        unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
         topic = localStorage.getItem("kbm:community-topic");
       } catch (e) {}
 
@@ -158,6 +157,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       var gate = document.getElementById("gate-block");
       var thread = document.getElementById("topic-thread");
+
+      // Apply locked/unlocked state to cards
+      applyCardLockState(!unlocked);
 
       if (!unlocked) {
         if (gate) gate.hidden = false;
@@ -175,6 +177,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       }
 
       setupCardListeners(unlocked);
+    }
+
+    function applyCardLockState(locked) {
+      document.querySelectorAll(".feature-card.community-card").forEach(function(card) {
+        if (locked) {
+          card.classList.add("is-locked");
+        } else {
+          card.classList.remove("is-locked");
+        }
+      });
     }
 
     function setupGateForm() {
@@ -259,7 +271,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       var elements = document.querySelectorAll("[data-topic]");
       
       elements.forEach(function(el) {
-        el.style.cursor = "pointer";
+        // Only set pointer cursor when unlocked
+        if (unlocked) {
+          el.style.cursor = "pointer";
+        }
         
         el.addEventListener("click", function() {
           var topic = el.dataset.topic;
@@ -380,12 +395,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initCommunity();
-        var unlocked = COMMUNITY_TEST_MODE || localStorage.getItem("kbm:community-unlocked") === "1";
+        var unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
         setupStickyTopicSwitcher(unlocked);
       });
     } else {
       initCommunity();
-      var unlocked = COMMUNITY_TEST_MODE || localStorage.getItem("kbm:community-unlocked") === "1";
+      var unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
       setupStickyTopicSwitcher(unlocked);
     }
   })();
@@ -496,6 +511,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .feature-card.community-card:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  /* Locked state for cards when gate is active */
+  .feature-card.community-card.is-locked {
+    opacity: 0.6;
+    filter: grayscale(30%);
+    cursor: default;
+  }
+
+  .feature-card.community-card.is-locked:hover {
+    transform: none;
+    box-shadow: none;
   }
 
   /* Active state for cards and switcher buttons */
