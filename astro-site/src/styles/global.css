@@ -1,3 +1,9 @@
+/* Prevent Android/mobile browsers from auto-adjusting text sizes */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
 :root {
   --kbm-green: #52682d;
   --kbm-green-2: #738c52;
@@ -100,28 +106,22 @@ p {
   }
 }
 
-/* Mobile readability boost - increases root font for smaller screens */
+/* Mobile readability boost - use percentage to avoid px/rem conflicts on Android */
 @media (max-width: 640px) {
-  :root {
-    --text-base: 18px !important;
-    --text-lg: 20px !important;
-    --text-xl: 26px !important;
-    --text-xxl: 32px !important;
+  html {
+    font-size: 125%; /* Makes 1rem = 20px (16px * 1.25) */
   }
   
-  html {
-    font-size: 20px !important;
+  :root {
+    --text-base: 1rem;      /* Now equals 20px */
+    --text-lg: 1.125rem;    /* 22.5px */
+    --text-xl: 1.5rem;      /* 30px */
+    --text-xxl: 1.75rem;    /* 35px */
   }
   
   body {
-    font-size: 18px !important;
+    font-size: 1rem;
     line-height: 1.65;
-    /* TEMP DEBUG: Red border to confirm 640px media query is firing */
-    border-top: 8px solid red !important;
-  }
-  
-  p {
-    font-size: 18px !important;
   }
 }
 
