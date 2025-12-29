@@ -7,6 +7,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="Ask questions, share progress, and connect with other machine knitters in our MK Talk forum."
 >
   <section class="community-page">
+    <!-- Test mode indicator (hidden by default, shown via JS when enabled) -->
+    <div id="test-mode-badge" class="test-mode-badge" hidden>
+      Community TEST MODE (gate disabled)
+    </div>
+
     <div class="community-content">
       <!-- Hero section (always visible) -->
       <div class="hero-section">
@@ -114,14 +119,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <script>
   (function() {
+    // 🔴 TEST MODE: set to false before launch
+    var COMMUNITY_TEST_MODE = true;
+
     function initCommunity() {
       var unlocked = false;
       var topic = null;
       
       try {
-        unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
+        unlocked = COMMUNITY_TEST_MODE
+          ? true
+          : localStorage.getItem("kbm:community-unlocked") === "1";
         topic = localStorage.getItem("kbm:community-topic");
       } catch (e) {}
+
+      // Show test mode badge if enabled
+      var testBadge = document.getElementById("test-mode-badge");
+      if (testBadge && COMMUNITY_TEST_MODE) {
+        testBadge.hidden = false;
+      }
 
       var gate = document.getElementById("gate-block");
       var thread = document.getElementById("topic-thread");
@@ -317,20 +333,29 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initCommunity();
-        var unlocked = false;
-        try { unlocked = localStorage.getItem("kbm:community-unlocked") === "1"; } catch(e) {}
+        var unlocked = COMMUNITY_TEST_MODE || localStorage.getItem("kbm:community-unlocked") === "1";
         setupStickyTopicSwitcher(unlocked);
       });
     } else {
       initCommunity();
-      var unlocked = false;
-      try { unlocked = localStorage.getItem("kbm:community-unlocked") === "1"; } catch(e) {}
+      var unlocked = COMMUNITY_TEST_MODE || localStorage.getItem("kbm:community-unlocked") === "1";
       setupStickyTopicSwitcher(unlocked);
     }
   })();
 </script>
 
 <style>
+  /* Test mode badge */
+  .test-mode-badge {
+    background: #ffe8e8;
+    color: #b00;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    text-align: center;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+  }
+
   .community-page {
     padding: 3rem 1rem 4rem;
     max-width: 900px;
