@@ -130,7 +130,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   </div>
 </BaseLayout>
 
-<script async src="https://talk.hyvor.com/embed/embed.js"></script>
+<!-- Hyvor Talk script is dynamically loaded when a topic is selected -->
 
 <script>
   (function() {
@@ -360,13 +360,29 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         "wins": "community-wins"
       };
 
-      window.hyvor_talk_config = {
-        website_id: "14706",
-        id: topicMap[topic] || "community"
+      var pageId = topicMap[topic] || "community";
+
+      // Set global config before loading
+      window.HYVOR_TALK_WEBSITE = 14706;
+      window.HYVOR_TALK_CONFIG = {
+        url: false,
+        id: pageId
       };
 
-      if (window.HyvorTalk) {
-        window.HyvorTalk.load();
+      // If HyvorTalk already loaded, reload it
+      if (window.hyvorTalkReload) {
+        window.hyvorTalkReload();
+        return;
+      }
+
+      // Inject the script if not already present
+      var existingScript = document.querySelector('script[src*="talk.hyvor.com/web-api/embed"]');
+      if (!existingScript) {
+        var script = document.createElement("script");
+        script.src = "https://talk.hyvor.com/web-api/embed.js";
+        script.async = true;
+        script.type = "text/javascript";
+        document.body.appendChild(script);
       }
     }
 
