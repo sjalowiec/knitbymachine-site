@@ -1,0 +1,93 @@
+ROLE: You are Replit. Update my Knit by Machine Astro home page. A backup of the page has already been created, so DO NOT create another backup unless something goes wrong.
+
+GOAL
+Redesign the home page so it no longer promotes “Plan your project” or any “project inspiration” lead magnet. The home page should focus on orientation (“Where are you right now?”) and route visitors to the correct next step. Email capture should NOT happen on the home page anymore (it will happen on destination pages like Skill Builders or Practice Projects).
+
+PAGES / FILES
+- Update the existing home page component (the file that currently renders the headline “Stop guessing. Get knitting.”).
+- Reuse existing components and layout patterns where possible rather than creating new ones.
+
+CHANGESET (DO THESE IN ORDER)
+
+1) HERO: remove the “Plan your project” CTA and related copy
+- Keep the main hero headline: “Stop guessing. Get knitting.”
+- Replace the subhead text under the headline with:
+  “Clear next steps for machine knitters — whether you’re just starting or fixing something that went wrong.”
+- Remove the green hero button entirely (no primary CTA button in the hero).
+- Keep the hero image on the right unchanged.
+- Do not add a new CTA button in the hero. A subtle visual cue to scroll is acceptable only if it already exists in the design system.
+
+2) REMOVE the “Ready • Set • Knit: Project Inspiration” section completely
+- Remove the entire section that includes:
+  - The heading “Ready • Set • Knit: Project Inspiration”
+  - The descriptive paragraph
+  - The button “Get Your Free Project Inspiration”
+- This section should no longer appear anywhere on the home page.
+
+3) ADD / REWORK the ORIENTATION SECTION (primary section below the hero)
+- Add a new section directly below the hero with:
+  Heading: “Where are you right now?”
+  Subtext: “Pick the option that matches your situation. I’ll point you to something useful.”
+- Use a 4-card layout consistent with existing card styles already used on the site.
+- Reuse or adapt the current 4-card markup if possible rather than duplicating code.
+
+The four cards should be:
+
+CARD 1
+Title: “I’m just starting”
+Short text: “Start with the basics and knit your first confident rows.”
+Button text: “Start with the basics”
+Link: Use the existing route for Skill Builders (do not invent a new URL).
+
+CARD 2
+Title: “I’ve knitted a little”
+Short text: “Build skills with small, low-pressure practice projects.”
+Button text: “Explore practice projects”
+Link: Use the existing route for Practice Projects.
+
+CARD 3
+Title: “I’m ready to make something”
+Short text: “Choose a simple project with clear steps you can follow.”
+Button text: “See projects”
+Link: Use the best existing route for ready-to-knit projects. If no appropriate page exists yet, link to the current placeholder or “coming soon” page and note this in your summary.
+
+CARD 4
+Title: “Something went wrong”
+Short text: “Get a quick answer and keep moving.”
+Button text: “Troubleshoot”
+Link: Use the existing Support / Help / Answers page route.
+
+IMPORTANT:
+- Do NOT mention email, signup, or subscriptions anywhere in this section.
+- These cards are purely directional.
+
+4) REMOVE all email capture from the home page
+- Remove any email or name input fields currently present on the home page.
+- The home page should contain zero forms or email capture elements after this change.
+
+5) KEEP the “What you’ll find at Knit by Machine” section, with a small copy update
+- Replace the introductory sentence under that heading with:
+  “Knit by Machine helps you move forward with confidence — without guessing, overwhelm, or digging through forums.”
+- Leave the three supporting columns intact unless they reference removed concepts (e.g., “Plan your project” or “Project Inspiration”). If they do, update the wording to align with the new orientation-first approach.
+
+6) OPTIONAL SMALL COPY UPDATE (only if present)
+- If the Sue intro block includes the line “You’re not doing this alone.” replace it with:
+  “Clear guidance, from someone who understands machines.”
+- Do not rewrite the rest of the block.
+
+LAYOUT & RESPONSIVENESS
+- Preserve existing typography, spacing, and visual hierarchy.
+- Ensure the 4-card section displays cleanly on mobile and larger screens using the site’s existing layout system.
+- Maintain a clear vertical flow:
+  Hero → “Where are you right now?” → “What you’ll find…” → Sue block → footer.
+
+QA CHECKLIST (COMPLETE BEFORE MARKING DONE)
+- No references to “Plan your project” remain on the home page.
+- No “Project Inspiration” section remains on the home page.
+- No email or name input fields remain on the home page.
+- All four cards link to valid existing routes.
+- Page builds without errors and displays correctly on mobile and desktop.
+
+OUTPUT
+- List the file(s) updated.
+- Confirm the final URLs used for each of the four cards.
