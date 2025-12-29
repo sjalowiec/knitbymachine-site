@@ -3,14 +3,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
 <BaseLayout 
-  title="Community | Knit by Machine" 
-  description="Ask questions, share progress, and connect with other machine knitters in our community forum."
+  title="Machine Knitting Talk | Knit by Machine" 
+  description="Ask questions, share progress, and connect with other machine knitters in our MK Talk forum."
 >
   <section class="community-page">
     <div class="community-content">
       <!-- Hero section (always visible) -->
       <div class="hero-section">
-        <h1>Come knit with us</h1>
+        <h1>Come talk with us</h1>
         <p class="intro">
           A friendly space for machine knitters to ask questions, share progress, 
           and get unstuck — without digging through scattered resources.
@@ -20,7 +20,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <!-- Step 1: Gate form (hidden after unlock) -->
       <section id="gate-block">
         <div class="gate-form-container">
-          <h2>Enter your details to access the community</h2>
+          <h2>Enter your details to join the conversation</h2>
           <p class="gate-description">We just need your name and email to get you started.</p>
           
           <form id="community-gate-form" class="gate-form kbm-gate-form">
@@ -49,7 +49,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             </div>
             
             <button type="submit" class="submit-button kbm-button" data-testid="button-submit">
-              Access the Community
+              Join the conversation
             </button>
             
             <p id="form-error" class="form-error" hidden></p>
