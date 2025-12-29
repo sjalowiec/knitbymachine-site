@@ -113,6 +113,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </section>
     </div>
   </section>
+
+  <!-- Debug panel (only shown in test mode) -->
+  <div id="debug-panel" class="debug-panel" hidden>
+    <div class="debug-header">Test Scenarios</div>
+    <button id="debug-fresh" class="debug-btn" data-testid="debug-fresh">
+      Fresh visitor (no data)
+    </button>
+    <button id="debug-unlocked" class="debug-btn" data-testid="debug-unlocked">
+      Unlocked (no topic)
+    </button>
+    <button id="debug-active" class="debug-btn" data-testid="debug-active">
+      Active topic (help)
+    </button>
+  </div>
 </BaseLayout>
 
 <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
@@ -133,10 +147,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         topic = localStorage.getItem("kbm:community-topic");
       } catch (e) {}
 
-      // Show test mode badge if enabled
+      // Show test mode elements if enabled
       var testBadge = document.getElementById("test-mode-badge");
-      if (testBadge && COMMUNITY_TEST_MODE) {
-        testBadge.hidden = false;
+      var debugPanel = document.getElementById("debug-panel");
+      if (COMMUNITY_TEST_MODE) {
+        if (testBadge) testBadge.hidden = false;
+        if (debugPanel) debugPanel.hidden = false;
+        setupDebugPanel();
       }
 
       var gate = document.getElementById("gate-block");
@@ -330,6 +347,36 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       observer.observe(cards);
     }
 
+    function setupDebugPanel() {
+      var freshBtn = document.getElementById("debug-fresh");
+      var unlockedBtn = document.getElementById("debug-unlocked");
+      var activeBtn = document.getElementById("debug-active");
+
+      if (freshBtn) {
+        freshBtn.addEventListener("click", function() {
+          localStorage.removeItem("kbm:community-unlocked");
+          localStorage.removeItem("kbm:community-topic");
+          location.reload();
+        });
+      }
+
+      if (unlockedBtn) {
+        unlockedBtn.addEventListener("click", function() {
+          localStorage.setItem("kbm:community-unlocked", "1");
+          localStorage.removeItem("kbm:community-topic");
+          location.reload();
+        });
+      }
+
+      if (activeBtn) {
+        activeBtn.addEventListener("click", function() {
+          localStorage.setItem("kbm:community-unlocked", "1");
+          localStorage.setItem("kbm:community-topic", "help");
+          location.reload();
+        });
+      }
+    }
+
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', function() {
         initCommunity();
@@ -354,6 +401,50 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     text-align: center;
     border-radius: 4px;
     margin-bottom: 1rem;
+  }
+
+  /* Debug panel (test mode only) */
+  .debug-panel {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    background: #fff;
+    border: 2px solid #b00;
+    border-radius: 8px;
+    padding: 0.75rem;
+    z-index: 9999;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-width: 180px;
+  }
+
+  .debug-header {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #b00;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .debug-btn {
+    background: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s ease;
+  }
+
+  .debug-btn:hover {
+    background: #ffe8e8;
+    border-color: #b00;
   }
 
   .community-page {
