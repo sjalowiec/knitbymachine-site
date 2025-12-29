@@ -16,11 +16,7 @@ html {
   --header-height: 6rem; /* used to offset fixed header */
   --max-content-width: 1100px;
 
-  /* Typography scaling */
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
-  --text-xl: 1.5rem;
-  --text-xxl: 2.25rem;
+  /* Typography variables defined in header.astro (mobile-first approach) */
 }
 
 body {
@@ -85,43 +81,10 @@ p {
   letter-spacing: 0.5px;
 }
 
-/* Mobile typography scaling - balanced for readability */
+/* Mobile layout adjustments - typography handled by header.astro mobile-first approach */
 @media (max-width: 1024px) {
   :root {
     --header-height: 5rem;
-    --text-base: 1rem;       /* 16px - standard mobile base */
-    --text-lg: 1.125rem;     /* 18px - slightly larger */
-    --text-xl: 1.5rem;       /* 24px - headings */
-    --text-xxl: 1.75rem;     /* 28px - large headings */
-  }
-  
-  body {
-    font-size: var(--text-base);
-    line-height: 1.6;
-  }
-  
-  p {
-    margin-bottom: 1rem;
-    font-size: var(--text-base);
-  }
-}
-
-/* Mobile readability boost - use percentage to avoid px/rem conflicts on Android */
-@media (max-width: 640px) {
-  html {
-    font-size: 125%; /* Makes 1rem = 20px (16px * 1.25) */
-  }
-  
-  :root {
-    --text-base: 1rem;      /* Now equals 20px */
-    --text-lg: 1.125rem;    /* 22.5px */
-    --text-xl: 1.5rem;      /* 30px */
-    --text-xxl: 1.75rem;    /* 35px */
-  }
-  
-  body {
-    font-size: 1rem;
-    line-height: 1.65;
   }
 }
 
