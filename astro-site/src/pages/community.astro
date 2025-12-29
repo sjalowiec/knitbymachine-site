@@ -14,7 +14,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         and learn from a friendly community of makers just like you.
       </p>
       
-      <div id="gate-block" class="gate-visible">
+      <div id="gate-block" class="gate-visible" style="display: block;">
         <div class="gate-form-container">
           <h2>Enter your details to access the community</h2>
           <p class="gate-description">We just need your name and email to get you started.</p>
@@ -71,7 +71,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
       </div>
 
-      <div id="open-content" class="content-hidden">
+      <div id="open-content" class="content-hidden" style="display: none;">
         <div class="discourse-embed-container">
           <iframe 
             src="https://knitbymachine.discourse.group/" 
@@ -97,21 +97,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
     if (unlocked) {
       if (gate) {
-        gate.classList.remove("gate-visible");
-        gate.classList.add("gate-hidden");
+        gate.style.display = "none";
       }
       if (open) {
-        open.classList.remove("content-hidden");
-        open.classList.add("content-visible");
+        open.style.display = "block";
       }
     } else {
       if (gate) {
-        gate.classList.remove("gate-hidden");
-        gate.classList.add("gate-visible");
+        gate.style.display = "block";
       }
       if (open) {
-        open.classList.remove("content-visible");
-        open.classList.add("content-hidden");
+        open.style.display = "none";
       }
     }
 
