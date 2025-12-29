@@ -1,0 +1,79 @@
+Goal
+Create a new page at /community/introductions that:
+
+Uses your existing community gate (first name + email → Netlify → kbm:community-unlocked)
+
+Shows a clean page layout: header, short intro, and one Hyvor Talk thread
+
+Does not affect Discourse or any other pages
+
+Assumptions
+
+Hyvor embed script is already loaded globally (I see https://talk.hyvor.com/embed/embed.js on your site). If it isn’t, add it once in your site layout/footer, not per page. 
+
+pasted
+
+1) Create the page file
+
+Create: src/pages/community/introductions.astro (or whatever your Astro pages path is)
+
+Use your normal site layout/header/footer.
+
+2) Add gate + open-content wrappers
+
+Add:
+
+<section id="gate-block"> with the same gate form you already use on /community
+
+<section id="open-content" hidden> for the Hyvor content
+
+Add the same gate-toggle script:
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const gate = document.getElementById("gate-block");
+  const open = document.getElementById("open-content");
+
+  let unlocked = false;
+  try { unlocked = localStorage.getItem("kbm:community-unlocked") === "1"; } catch {}
+
+  if (unlocked) { gate?.setAttribute("hidden",""); open?.removeAttribute("hidden"); }
+  else { gate?.removeAttribute("hidden"); open?.setAttribute("hidden",""); }
+});
+</script>
+
+3) Add the Hyvor thread (inside open-content)
+
+Inside #open-content, add:
+
+<a href="/community" class="kbm-backlink">← Back to Community</a>
+
+<h1>Introductions</h1>
+<p>Say hi, tell us what machine you use, and what you’re knitting right now.</p>
+
+<script>
+  window.hyvor_talk_config = {
+    website_id: "REPLACE_WITH_YOUR_HYVOR_WEBSITE_ID",
+    id: "community-introductions"
+  };
+</script>
+
+<div id="hyvor-talk-view"></div>
+
+4) Styling (keep it calm)
+
+Add minimal CSS on this page (or shared) so it looks like KBM:
+
+constrain width with your container class
+
+add spacing above the thread
+
+style the backlink to look like your other links/buttons
+
+5) Acceptance test
+
+Visit /community/introductions in incognito → shows gate
+
+Submit gate → unlocks → shows the thread embed
+
+Thread appears with the “Introductions” prompt
