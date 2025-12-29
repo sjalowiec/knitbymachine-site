@@ -1,0 +1,152 @@
+Goal
+On /community, implement a 3-step interaction flow:
+
+Gated email form (no choice yet)
+
+After submit → show 4 topic “chips”
+
+When a chip is selected → load the Hyvor thread for that topic in place
+
+No page navigation.
+No Discourse.
+No multiple pages.
+One page. One decision at a time.
+
+STATE MODEL (important — do not change)
+
+Use localStorage only.
+
+kbm:community-unlocked = "1"
+kbm:community-topic = one of:
+  "introductions"
+  "help"
+  "show-and-tell"
+  "wins"
+
+1️⃣ /community page structure
+
+Create/update /community so it contains three sections:
+
+<section id="gate-block"></section>
+<section id="topic-chooser" hidden></section>
+<section id="topic-thread" hidden></section>
+
+
+Nothing else controls visibility.
+
+2️⃣ Gate block (email only)
+
+Inside #gate-block:
+
+Email input (required)
+
+First name (optional or required — do not debate)
+
+Submit button
+
+On submit success (existing Netlify function):
+
+localStorage.setItem("kbm:community-unlocked", "1");
+location.reload();
+
+
+No branching. Always reload.
+
+3️⃣ Topic chooser (chips)
+
+Inside #topic-chooser, render 4 chips (buttons):
+
+<button data-topic="introductions">Introductions</button>
+<button data-topic="help">Ask for Help</button>
+<button data-topic="show-and-tell">Show & Tell</button>
+<button data-topic="wins">Wins This Week</button>
+
+
+Style them like filter chips, not cards.
+
+4️⃣ Chip selection behavior
+
+Add ONE script that handles all state:
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
+  const topic = localStorage.getItem("kbm:community-topic");
+
+  const gate = document.getElementById("gate-block");
+  const chooser = document.getElementById("topic-chooser");
+  const thread = document.getElementById("topic-thread");
+
+  if (!unlocked) {
+    gate.hidden = false;
+    chooser.hidden = true;
+    thread.hidden = true;
+    return;
+  }
+
+  gate.hidden = true;
+
+  if (!topic) {
+    chooser.hidden = false;
+    thread.hidden = true;
+  } else {
+    chooser.hidden = false;   // keep visible
+    thread.hidden = false;
+    loadHyvor(topic);
+  }
+
+  document.querySelectorAll("[data-topic]").forEach(btn => {
+    btn.addEventListener("click", () => {
+      localStorage.setItem("kbm:community-topic", btn.dataset.topic);
+      location.reload();
+    });
+  });
+});
+
+function loadHyvor(topic) {
+  const map = {
+    "introductions": "community-introductions",
+    "help": "community-help",
+    "show-and-tell": "community-show-and-tell",
+    "wins": "community-wins"
+  };
+
+  window.hyvor_talk_config = {
+    website_id: "REPLACE_WITH_YOUR_HYVOR_ID",
+    id: map[topic]
+  };
+}
+</script>
+
+5️⃣ Hyvor container
+
+Inside #topic-thread:
+
+<div id="hyvor-talk-view"></div>
+
+
+Do not add multiple Hyvor scripts.
+Assume the embed loader already exists globally.
+
+6️⃣ Optional reset (for you only)
+
+Add a tiny dev-only reset link:
+
+<button onclick="localStorage.removeItem('kbm:community-topic'); location.reload();">
+  Choose a different topic
+</button>
+
+
+Remove later if you want.
+
+ACCEPTANCE CHECKLIST
+
+Fresh visit → email form only
+
+Submit email → reload → see 4 chips
+
+Click a chip → reload → Hyvor thread appears
+
+Refresh page → same thread stays open
+
+Clear localStorage → back to gate
