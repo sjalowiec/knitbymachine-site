@@ -24,7 +24,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <!-- Cards section (visible pre-unlock and post-unlock with no topic) -->
       <section id="community-cards">
+        <h2 id="choose-topic-heading" class="choose-topic-heading" hidden>Choose a topic</h2>
         <div class="features-grid">
+          <div class="feature-card community-card" data-topic="introductions" data-testid="card-introductions">
+            <img src="/images/community_talk.svg" alt="" class="feature-icon" />
+            <h3>Introductions</h3>
+            <p>Say hi and tell us what you're knitting.</p>
+          </div>
           <div class="feature-card community-card" data-topic="help" data-testid="card-help">
             <img src="/images/community_talk.svg" alt="" class="feature-icon" />
             <h3>Ask for help</h3>
@@ -34,11 +40,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
             <img src="/images/community_talk.svg" alt="" class="feature-icon" />
             <h3>Show & Tell</h3>
             <p>Share a photo, a swatch, or a finished piece.</p>
-          </div>
-          <div class="feature-card community-card" data-topic="introductions" data-testid="card-introductions">
-            <img src="/images/community_talk.svg" alt="" class="feature-icon" />
-            <h3>Introductions</h3>
-            <p>Say hi and tell us what you're knitting.</p>
           </div>
           <div class="feature-card community-card" data-topic="wins" data-testid="card-wins">
             <img src="/images/community_talk.svg" alt="" class="feature-icon" />
@@ -93,9 +94,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <div class="switcher-container">
           <div class="switcher-chips">
             <button data-topic="introductions" data-testid="switcher-introductions">Introductions</button>
-            <button data-topic="help" data-testid="switcher-help">Ask for Help</button>
+            <button data-topic="help" data-testid="switcher-help">Ask for help</button>
             <button data-topic="show-and-tell" data-testid="switcher-show-and-tell">Show & Tell</button>
-            <button data-topic="wins" data-testid="switcher-wins">Wins</button>
+            <button data-topic="wins" data-testid="switcher-wins">Small wins</button>
           </div>
           <button id="change-topic" class="change-topic-btn" data-testid="button-change-topic">
             Choose different topic
@@ -178,12 +179,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         applyCardLockState(true);
         setupGateForm();
       } else if (!topic) {
-        // State 2: Unlocked, no topic - show cards only
+        // State 2: Unlocked, no topic - show cards with "Choose a topic" heading
         if (cards) cards.hidden = false;
         if (gate) gate.hidden = true;
         if (switcher) switcher.hidden = true;
         if (thread) thread.hidden = true;
         applyCardLockState(false);
+        var chooseHeading = document.getElementById("choose-topic-heading");
+        if (chooseHeading) chooseHeading.hidden = false;
       } else {
         // State 3: Topic selected - hide cards, show switcher + thread
         if (cards) cards.hidden = true;
@@ -491,6 +494,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     line-height: 1.6;
   }
 
+  /* Choose a topic heading (shown after unlock, before topic selection) */
+  .choose-topic-heading {
+    font-size: var(--text-lg);
+    color: var(--kbm-green);
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+
   /* Feature cards grid (always visible) */
   .features-grid {
     display: grid;
@@ -712,9 +723,18 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     visibility: visible !important;
     filter: none !important;
     mix-blend-mode: normal !important;
-    background: var(--kbm-dark-green) !important;
+    background: var(--kbm-dark-green, #2a6b3a) !important;
     color: white !important;
     transform: translateY(-2px);
+    pointer-events: auto !important;
+  }
+
+  /* Ensure button never disappears */
+  button.submit-button,
+  button.kbm-button {
+    -webkit-appearance: none;
+    appearance: none;
+    pointer-events: auto !important;
   }
 
   .submit-button:active,
