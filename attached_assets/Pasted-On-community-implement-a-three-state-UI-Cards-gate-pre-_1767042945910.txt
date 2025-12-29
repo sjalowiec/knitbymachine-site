@@ -1,0 +1,108 @@
+On /community, implement a three-state UI:
+
+Cards + gate (pre-unlock)
+
+Cards only (post-unlock, no topic)
+
+Chips + Hyvor thread (topic selected)
+
+Cards disappear once a topic is chosen.
+
+1️⃣ Mark up the three UI sections
+
+Ensure these wrappers exist:
+
+<section id="community-cards"></section>
+<section id="topic-switcher" hidden></section>
+<section id="topic-thread" hidden></section>
+
+2️⃣ Chips (topic switcher)
+
+Inside #topic-switcher:
+
+<button data-topic="introductions">Introductions</button>
+<button data-topic="help">Ask for Help</button>
+<button data-topic="show-and-tell">Show & Tell</button>
+<button data-topic="wins">Wins</button>
+
+
+Style as pills (already discussed).
+
+3️⃣ Replace your existing visibility logic with this
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const unlocked =
+    localStorage.getItem("kbm:community-unlocked") === "1";
+
+  const topic =
+    localStorage.getItem("kbm:community-topic");
+
+  const cards = document.getElementById("community-cards");
+  const switcher = document.getElementById("topic-switcher");
+  const thread = document.getElementById("topic-thread");
+
+  if (!unlocked) {
+    cards.hidden = false;
+    switcher.hidden = true;
+    thread.hidden = true;
+    return;
+  }
+
+  // Unlocked
+  if (!topic) {
+    cards.hidden = false;
+    switcher.hidden = true;
+    thread.hidden = true;
+  } else {
+    cards.hidden = true;
+    switcher.hidden = false;
+    thread.hidden = false;
+    loadHyvor(topic);
+
+    setTimeout(() => {
+      thread.scrollIntoView({ behavior: "smooth" });
+    }, 150);
+  }
+
+  document.querySelectorAll("[data-topic]").forEach(el => {
+    el.addEventListener("click", () => {
+      localStorage.setItem("kbm:community-topic", el.dataset.topic);
+      location.reload();
+    });
+  });
+});
+
+function loadHyvor(topic) {
+  const map = {
+    introductions: "community-introductions",
+    help: "community-help",
+    "show-and-tell": "community-show-and-tell",
+    wins: "community-wins"
+  };
+
+  window.hyvor_talk_config = {
+    website_id: "REPLACE_WITH_YOUR_HYVOR_ID",
+    id: map[topic]
+  };
+}
+</script>
+
+4️⃣ Optional “change topic” affordance (recommended)
+
+Add this near the chips:
+
+<button id="change-topic">Change topic</button>
+
+document.getElementById("change-topic")?.addEventListener("click", () => {
+  localStorage.removeItem("kbm:community-topic");
+  location.reload();
+});
+
+
+This lets them:
+
+back out
+
+choose another topic
+
+without scrolling or confusion
