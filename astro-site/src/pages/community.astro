@@ -96,6 +96,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <p class="thread-hint">Click a different card above to switch topics</p>
         </div>
         
+        <p id="topic-label" class="topic-label" hidden></p>
+        
         <div class="hyvor-talk-container">
           <hyvor-talk-comments 
             id="hyvor-comments"
@@ -247,13 +249,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     function highlightSelectedCard(topic) {
+      var titleMap = {
+        "introductions": "Introductions",
+        "help": "Ask for Help",
+        "show-and-tell": "Show & Tell",
+        "wins": "Wins This Week"
+      };
+
       document.querySelectorAll("[data-topic]").forEach(function(el) {
-        if (el.dataset.topic === topic) {
-          el.classList.add("selected");
-        } else {
-          el.classList.remove("selected");
-        }
+        var isActive = el.dataset.topic === topic;
+        el.classList.toggle("is-active", isActive);
+        el.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
+
+      var label = document.getElementById("topic-label");
+      if (label && topic && titleMap[topic]) {
+        label.textContent = "Now viewing: " + titleMap[topic];
+        label.hidden = false;
+      }
     }
 
     function loadHyvor(topic) {
@@ -369,7 +382,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     box-shadow: 0 8px 20px rgba(0,0,0,0.06);
   }
 
-  .feature-card.community-card.selected {
+  /* Active state for cards and switcher buttons */
+  .is-active {
+    outline: 2px solid var(--kbm-green);
+    outline-offset: 2px;
+  }
+
+  .feature-card.community-card.is-active {
     border-color: var(--kbm-green);
     background: #f0f8f0;
   }
@@ -405,10 +424,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     color: var(--kbm-green);
   }
 
-  #topic-switcher button.selected {
+  #topic-switcher button.is-active {
     background: var(--kbm-green);
     border-color: var(--kbm-green);
     color: white;
+    outline-offset: 0;
   }
 
   .feature-card .feature-icon {
@@ -573,6 +593,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     font-size: var(--text-sm);
     color: #888;
     margin: 0;
+  }
+
+  .topic-label {
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--kbm-green);
+    margin: 0 0 0.75rem 0;
+    text-align: center;
   }
 
   /* Hyvor Talk container */
