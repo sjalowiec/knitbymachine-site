@@ -1,0 +1,99 @@
+Context
+The /community gate form already posts to:
+
+/.netlify/functions/pp-unlock
+
+with JSON like:
+
+{ "email": "...", "firstName": "...", "projectId": "community" }
+
+
+It already creates/updates the ActiveCampaign contact and applies the tag Access–Community. The front-end unlock behavior must remain unchanged.
+
+Goal
+When projectId === "community", also subscribe the contact to ActiveCampaign List ID 3.
+
+Requirements
+
+Do not break existing behavior for other projectId values.
+
+Only subscribe to list 3 when projectId === "community".
+
+Keep tagging logic intact.
+
+Use the ActiveCampaign contactLists endpoint to subscribe:
+
+list: 3
+
+status: 1 (subscribed)
+
+Implementation details
+
+In /.netlify/functions/pp-unlock:
+
+A) Capture the contactId from the contact upsert response
+
+Where you create/update the contact, ensure you parse the JSON response and extract:
+
+contactData.contact.id
+
+Example pattern:
+
+const contactRes = await fetch(`${AC_BASE}/contacts`, {...});
+const contactData = await contactRes.json();
+
+if (!contactRes.ok || !contactData?.contact?.id) {
+  throw new Error(contactData?.message || "ActiveCampaign contact upsert failed");
+}
+
+const contactId = contactData.contact.id;
+
+B) After the tag logic, subscribe to List 3 (community only)
+
+Add:
+
+if (projectId === "community") {
+  const listRes = await fetch(`${AC_BASE}/contactLists`, {
+    method: "POST",
+    headers: {
+      "Api-Token": AC_API_KEY,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      contactList: {
+        list: 3,
+        contact: contactId,
+        status: 1
+      }
+    })
+  });
+
+  const listData = await listRes.json().catch(() => ({}));
+  if (!listRes.ok) {
+    throw new Error(listData?.message || "ActiveCampaign list subscribe failed");
+  }
+}
+
+C) Return the same success payload you already return
+
+Do not change the client response format.
+
+Testing checklist (must pass)
+
+Submit /community with a fresh email:
+
+Contact is created/updated
+
+Tag Access–Community is applied
+
+Contact appears as Subscribed on List 3
+
+Page unlock still works (localStorage key unchanged)
+
+Submit a non-community gate (practice project):
+
+Existing behavior unchanged
+
+No forced subscription to List 3
+
+If you need to locate the right file: it’s the Netlify function handling pp-unlock under your functions directory (often netlify/functions/pp-unlock.js or similar).
