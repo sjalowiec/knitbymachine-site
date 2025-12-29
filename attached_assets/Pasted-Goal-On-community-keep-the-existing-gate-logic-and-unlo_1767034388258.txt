@@ -1,0 +1,126 @@
+Goal
+On /community, keep the existing gate logic and unlock flow exactly as-is (first name + email → Netlify function → localStorage kbm:community-unlocked), but improve the page layout:
+
+Add:
+
+A hero + 4 “what happens inside” cards above the gate form (always visible)
+
+A “Welcome — start here” panel above the unlocked content (only visible after unlock)
+
+Also fix:
+
+The submit button is disappearing on hover — fix the CSS so the button stays visible and readable on hover/focus across all browsers.
+
+Do not change backend/Netlify function behavior.
+
+A) Page content changes
+1) Add a simple hero at top of /community
+
+Add this near the top of the main content:
+
+Heading: Come knit with us
+
+Subhead: A friendly space for machine knitters to ask questions, share progress, and get unstuck — without digging through scattered resources.
+
+Keep it short and calm.
+
+2) Add 4 cards above the gate form (always visible)
+
+Directly below the hero, add a grid of cards:
+
+Ask for help
+“Post your question and get practical replies.”
+
+Show & Tell
+“Share a photo, a swatch, or a finished piece.”
+
+Learn from real situations
+“See how others solved the same issues.”
+
+Small wins encouraged
+“First cast-on counts. Really.”
+
+Use existing KBM design patterns (cards/sections) if you have them; otherwise create minimal CSS scoped to the community page.
+
+3) Add a “Welcome / Start here” panel shown only after unlock
+
+Inside #open-content, at the top, add a panel:
+
+Welcome! Start here →
+
+Say hello (link to /community/introductions if you have it, otherwise link to your main intro thread/anchor)
+
+Ask a question (link to your help thread/page)
+
+Browse Show & Tell (link to show & tell thread/page)
+
+Add a short note under it:
+
+“I’m in there too — answering questions and cheering wins.” — Sue
+
+If you don’t have separate pages, keep the links as anchor links to sections lower on the page (e.g. #introductions, #help, #showandtell).
+
+B) Fix the disappearing submit button on hover
+
+This is almost always caused by one of these:
+
+opacity: 0 or color: transparent on :hover
+
+z-index stacking with an overlay/pseudo-element
+
+mix-blend-mode or filter side effects
+
+background changing to match page background
+
+4) Add a defensive CSS fix (scoped)
+
+In your community page CSS (or global button CSS), add a safe hover/focus rule for .kbm-button:
+
+.kbm-button {
+  position: relative;
+  z-index: 1;
+  opacity: 1;
+  visibility: visible;
+}
+
+.kbm-button:hover,
+.kbm-button:focus,
+.kbm-button:focus-visible {
+  opacity: 1;
+  visibility: visible;
+  filter: none;
+  mix-blend-mode: normal;
+}
+
+5) If the button is being covered by something, fix stacking context
+
+Also ensure the form container doesn’t create a weird stacking context:
+
+.kbm-gate-form {
+  position: relative;
+  z-index: 1;
+}
+
+6) Ensure hover styles don’t “erase” text
+
+If you have hover styles that set background to transparent or text to the same color, correct them so the text stays readable:
+
+.kbm-button:hover {
+  color: inherit;          /* or a readable explicit value if you already have design tokens */
+  background-color: inherit; /* keep visible; if you use variables, keep them */
+}
+
+
+(Use your existing theme variables if present; the key is: don’t let hover match the background.)
+
+C) Acceptance tests
+
+/community shows hero + 4 cards before the gate
+
+Gate still works exactly the same
+
+After unlock, a Welcome panel appears above the community content
+
+Button no longer disappears on hover/focus
+
+Keyboard tab focus on the button is visible
