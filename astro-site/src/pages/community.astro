@@ -14,7 +14,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         and learn from a friendly community of makers just like you.
       </p>
       
-      <div id="gate-block">
+      <div id="gate-block" class="gate-visible">
         <div class="gate-form-container">
           <h2>Enter your details to access the community</h2>
           <p class="gate-description">We just need your name and email to get you started.</p>
@@ -71,7 +71,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         </div>
       </div>
 
-      <div id="open-content" hidden>
+      <div id="open-content" class="content-hidden">
         <div class="discourse-embed-container">
           <iframe 
             src="https://knitbymachine.discourse.group/" 
@@ -96,11 +96,23 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     } catch (e) {}
 
     if (unlocked) {
-      if (gate) gate.setAttribute("hidden", "");
-      if (open) open.removeAttribute("hidden");
+      if (gate) {
+        gate.classList.remove("gate-visible");
+        gate.classList.add("gate-hidden");
+      }
+      if (open) {
+        open.classList.remove("content-hidden");
+        open.classList.add("content-visible");
+      }
     } else {
-      if (gate) gate.removeAttribute("hidden");
-      if (open) open.setAttribute("hidden", "");
+      if (gate) {
+        gate.classList.remove("gate-hidden");
+        gate.classList.add("gate-visible");
+      }
+      if (open) {
+        open.classList.remove("content-visible");
+        open.classList.add("content-hidden");
+      }
     }
 
     var form = document.getElementById("community-gate-form");
@@ -182,6 +194,20 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </script>
 
 <style>
+  /* Gate visibility - CSS fallback ensures gate shows by default */
+  #gate-block.gate-visible {
+    display: block !important;
+  }
+  #gate-block.gate-hidden {
+    display: none !important;
+  }
+  #open-content.content-hidden {
+    display: none !important;
+  }
+  #open-content.content-visible {
+    display: block !important;
+  }
+
   .community-page {
     padding: 3rem 1rem 4rem;
     max-width: 800px;
