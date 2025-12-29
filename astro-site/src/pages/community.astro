@@ -86,33 +86,34 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </BaseLayout>
 
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
-    var gate = document.getElementById("gate-block");
-    var open = document.getElementById("open-content");
+  (function() {
+    function initGate() {
+      var gate = document.getElementById("gate-block");
+      var open = document.getElementById("open-content");
 
-    var unlocked = false;
-    try {
-      unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
-    } catch (e) {}
+      var unlocked = false;
+      try {
+        unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
+      } catch (e) {}
 
-    if (unlocked) {
-      if (gate) {
-        gate.style.display = "none";
+      if (unlocked) {
+        if (gate) {
+          gate.style.display = "none";
+        }
+        if (open) {
+          open.style.display = "block";
+        }
+      } else {
+        if (gate) {
+          gate.style.display = "block";
+        }
+        if (open) {
+          open.style.display = "none";
+        }
       }
-      if (open) {
-        open.style.display = "block";
-      }
-    } else {
-      if (gate) {
-        gate.style.display = "block";
-      }
-      if (open) {
-        open.style.display = "none";
-      }
-    }
 
-    var form = document.getElementById("community-gate-form");
-    var errorEl = document.getElementById("form-error");
+      var form = document.getElementById("community-gate-form");
+      var errorEl = document.getElementById("form-error");
 
     if (form) {
       form.addEventListener("submit", function(e) {
@@ -186,7 +187,15 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         });
       });
     }
-  });
+    }
+
+    // Run immediately if DOM is ready, otherwise wait
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGate);
+    } else {
+      initGate();
+    }
+  })();
 </script>
 
 <style>
