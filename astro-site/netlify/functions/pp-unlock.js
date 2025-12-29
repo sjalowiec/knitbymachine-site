@@ -1,18 +1,20 @@
 /**
  * pp-unlock.js
- * Netlify function to handle Practice Project email unlock
+ * Netlify function to handle Practice Project and Community email unlock
  * 
- * Accepts POST with { email, projectId }
+ * Accepts POST with { email, firstName, projectId }
  * Upserts contact in ActiveCampaign and applies the appropriate tag
  * 
  * Required env vars:
  * - AC_API_URL: ActiveCampaign API base URL (e.g., https://yourname.api-us1.com)
  * - ACTIVECAMPAIGN_API_KEY: ActiveCampaign API key
  * - AC_TAG_ID_PP_CASTON: Tag ID for PP-caston tag
+ * - AC_TAG_ID_COMMUNITY: Tag ID for "Access – Community" tag
  */
 
 const TAG_MAP = {
   'pp-caston': 'AC_TAG_ID_PP_CASTON',
+  'community': 'AC_TAG_ID_COMMUNITY',
 };
 
 export const handler = async (event) => {
