@@ -1,22 +1,8 @@
 /* 
- * TYPOGRAPHY: Single source of truth - DO NOT define typography elsewhere!
- * Mobile-first: Large base font (150% = 24px), reduced for desktop.
- * All rem values scale from the html font-size.
+ * TYPOGRAPHY: html font-size is set inline in BaseLayout.astro with !important
+ * to prevent Astro CSS bundler reordering issues on Samsung devices.
+ * DO NOT set html font-size here - it will be overridden incorrectly.
  */
-
-/* MOBILE DEFAULT: 150% = 24px base, so 1rem = 24px on mobile */
-html {
-  font-size: 150%;
-  -webkit-text-size-adjust: 100%;
-  text-size-adjust: 100%;
-}
-
-/* DESKTOP: 100% = 16px base, so 1rem = 16px on desktop */
-@media (min-width: 1025px) {
-  html {
-    font-size: 100%;
-  }
-}
 
 :root {
   --kbm-green: #52682d;

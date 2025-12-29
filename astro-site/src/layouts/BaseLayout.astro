@@ -18,6 +18,20 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- CRITICAL: Inline typography to prevent Astro CSS bundler reordering issues -->
+    <style data-kbm-typography>
+      html {
+        font-size: 150% !important;
+        -webkit-text-size-adjust: 100%;
+        text-size-adjust: 100%;
+      }
+      @media (min-width: 1025px) {
+        html {
+          font-size: 100% !important;
+        }
+      }
+    </style>
     <title>{title}</title>
     <meta name="description" content={description} />
 
