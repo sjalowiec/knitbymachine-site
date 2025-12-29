@@ -1,0 +1,49 @@
+ROLE: You are Replit. Update the “Welcome to Knit by Machine” right-side drawer so its CTA sends users to the “Where are you right now?” section on the same page.
+
+CONTEXT
+- The “Where are you” section already has: <section id="where-are-you" class="kbm-where-section"> …
+- The site header is fixed, so normal anchor jumps can land too high. Make sure the destination aligns correctly below the fixed header.
+
+GOAL
+- Replace the drawer CTA “Visit the About page” with a link that scrolls to the #where-are-you section.
+- When the user clicks the link, close the drawer and then scroll to the section with the correct offset for the fixed header.
+
+CHANGES
+
+1) Update the drawer CTA link in the drawer body
+- Find the existing link that points to /about with text “Visit the About page”.
+- Replace it with:
+  - href="#where-are-you"
+  - link text: “See where to start →”
+  - keep existing styling class (kbm-drawer-link) and test id can be updated to something like data-testid="link-where-drawer" (optional but preferred).
+
+2) Update the drawer script so clicking the new link closes the drawer and scrolls with correct offset
+- After your existing open/close drawer setup, add logic like:
+  - Select the new drawer link (by id, data-testid, or href="#where-are-you").
+  - On click:
+    a) preventDefault()
+    b) closeDrawer()
+    c) after the close animation completes (match your 200ms timeout), scroll to the target section with offset.
+
+OFFSET REQUIREMENT (fixed header)
+- Compute the offset dynamically:
+  - const headerEl = document.querySelector('header') (or the actual header container used by <Header />)
+  - const headerHeight = headerEl ? headerEl.getBoundingClientRect().height : 160;
+- Scroll logic:
+  - const target = document.getElementById('where-are-you');
+  - const y = target.getBoundingClientRect().top + window.scrollY - headerHeight - 16; // extra breathing room
+  - window.scrollTo({ top: y, behavior: 'smooth' });
+
+3) Confirm CSS alignment for anchor navigation
+- The .kbm-where-section currently uses scroll-margin-top: calc(var(--header-height, 160px) + 1rem);
+- If --header-height is not being set anywhere globally, leave scroll-margin-top as-is (it’s a good fallback).
+- Do NOT remove scroll-margin-top; it helps if someone lands via #where-are-you directly.
+
+QA
+- Clicking “see what’s here and what’s coming” opens drawer as before.
+- Clicking “See where to start →” closes drawer and smoothly scrolls to the Where section.
+- The “Where are you right now?” heading is fully visible below the fixed header (not hidden under it).
+- No console errors.
+
+OUTPUT
+- Tell me exactly which file you edited and summarize the changes in 3-5 bullets.
