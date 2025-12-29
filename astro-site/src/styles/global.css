@@ -4,8 +4,20 @@ html {
   text-size-adjust: 100%;
 }
 
+/* 
+ * TYPOGRAPHY: Single source of truth - DO NOT define typography elsewhere!
+ * Using direct rem values (not CSS variables) as primary to avoid bundling issues.
+ * Mobile-first: Large text by default, reduced for desktop.
+ */
+
+/* MOBILE DEFAULT: Large readable text */
+html {
+  font-size: 100%; /* Browser default 16px base */
+}
+
 :root {
   --kbm-green: #52682d;
+  --kbm-green-hover: #445626;
   --kbm-green-2: #738c52;
   --kbm-bg: #e9ece7;
   --page-bg: #f7f8f7;
@@ -13,18 +25,39 @@ html {
   --font: "Poppins", system-ui, Arial, sans-serif;
 
   /* Layout spacing */
-  --header-height: 6rem; /* used to offset fixed header */
+  --header-height: 6rem;
   --max-content-width: 1100px;
 
-  /* Typography variables defined in header.astro (mobile-first approach) */
+  /* Typography tokens for components that reference them */
+  --text-base: 1.5rem;
+  --text-lg: 1.75rem;
+  --text-xl: 2.25rem;
+  --text-xxl: 2.75rem;
 }
 
+/* MOBILE DEFAULT: Large readable text - using direct rem values, NOT CSS variables */
 body {
   margin: 0;
   font-family: var(--font);
+  font-size: 1.5rem;  /* 24px - large readable text for mobile */
+  line-height: 1.7;
   color: var(--kbm-green);
   background: var(--page-bg);
-  line-height: 1.5;
+}
+
+/* DESKTOP: Reduce font size for larger screens */
+@media (min-width: 1025px) {
+  :root {
+    --text-base: 1rem;
+    --text-lg: 1.125rem;
+    --text-xl: 1.5rem;
+    --text-xxl: 2.25rem;
+  }
+  
+  body {
+    font-size: 1rem;  /* 16px for desktop */
+    line-height: 1.6;
+  }
 }
 
 /* Hide global header search on catalog pages that have their own search */

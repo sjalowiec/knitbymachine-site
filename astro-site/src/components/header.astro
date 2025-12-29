@@ -4,42 +4,10 @@
 <style is:global>
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
 
-:root {
-  --kbm-green: #52682d;
-  --kbm-green-hover: #445626;
-  --kbm-green-2: #738c52;
-  --kbm-bg: #e9ece7;
-  --page-bg: #f7f8f7;
-  --ring: #e5e8e0;
-  --font: "Poppins", system-ui, Arial, sans-serif;
-  
-  /* Typography scaling - DEFAULT (MOBILE-FIRST - large for ALL devices) */
-  --text-base: 1.5rem;     /* 24px - readable on mobile */
-  --text-lg: 1.75rem;      /* 28px */
-  --text-xl: 2.25rem;      /* 36px */
-  --text-xxl: 2.75rem;     /* 44px */
-}
+/* Global variables and typography now defined in global.css to avoid Astro CSS bundling issues */
 
-html, body {
-  font-size: var(--text-base);  /* Apply to all devices by default */
-  line-height: 1.7;
-}
-
-/* Desktop typography - SMALLER fonts only for large screens */
+/* Desktop header-specific adjustments */
 @media (min-width: 1025px) {
-  :root {
-    --text-base: 1rem;       /* 16px for desktop */
-    --text-lg: 1.125rem;     /* 18px */
-    --text-xl: 1.5rem;       /* 24px */
-    --text-xxl: 2.25rem;     /* 36px */
-  }
-  
-  body {
-    font-size: var(--text-base);
-    line-height: 1.6;
-  }
-
-  /* Tighter spacing for desktop */
   .kbm-logo-section {
     padding: 4px 80px 0 80px;
   }
