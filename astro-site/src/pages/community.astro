@@ -109,6 +109,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <p id="topic-label" class="topic-label" hidden></p>
         
         <div class="hyvor-talk-container">
+          <p class="hyvor-note">Email is optional and only used for reply notifications.</p>
           <div id="hyvor-talk-view" data-testid="hyvor-talk-view"></div>
         </div>
       </section>
@@ -806,6 +807,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     max-width: 800px;
     margin: 0 auto;
     text-align: left;
+  }
+
+  .hyvor-note {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
   }
 
   /* Mobile responsive */
