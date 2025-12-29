@@ -12,13 +12,13 @@ import "../styles/global.css";
     <!-- CRITICAL: Inline typography to prevent Astro CSS bundler reordering issues -->
     <style data-kbm-typography>
       html {
-        font-size: 150% !important;
+        font-size: 112.5% !important; /* 18px - comfortable mobile reading */
         -webkit-text-size-adjust: 100%;
         text-size-adjust: 100%;
       }
       @media (min-width: 1025px) {
         html {
-          font-size: 100% !important;
+          font-size: 100% !important; /* 16px for desktop */
         }
       }
     </style>
