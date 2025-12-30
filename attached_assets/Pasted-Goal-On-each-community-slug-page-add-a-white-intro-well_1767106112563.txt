@@ -1,0 +1,180 @@
+Goal: On each /community/[slug] page, add a white “intro well” (our pinned content) above the Hyvor Talk embed. The intro content is different per slug and should render based on a config map. Hyvor embed should remain page-specific using the existing pageId (community-introductions, etc.).
+
+1) Backups
+
+Before editing anything, create .bak copies of every file you change.
+
+2) Locate the community slug page template
+
+Find the Astro route that renders these pages, likely one of:
+
+astro-site/src/pages/community/[slug].astro
+
+astro-site/src/pages/community/[...slug].astro
+
+or equivalent in src/pages/community/
+
+This template should currently render the Hyvor embed.
+
+3) Create a reusable intro component
+
+Create:
+
+astro-site/src/components/community/CommunityIntro.astro
+
+It should accept props:
+
+title: string
+
+lede: string
+
+bullets?: string[]
+
+note?: string
+
+Render a white well/card with:
+
+rounded corners
+
+light border (or subtle shadow)
+
+comfortable padding
+
+clear typography hierarchy
+
+Include the note line styled smaller and softer.
+
+4) Add the per-page intro content map (use these exact slugs)
+
+In the community slug page file (the [slug].astro template), create a map like this (values exactly as written, but you can HTML-escape apostrophes as needed):
+
+Common note for all 4:
+“Email is optional and only used for reply notifications.”
+
+Content map
+
+introductions
+
+Title: Introductions
+
+Lede: Say hello and share what you’re working on (or restarting).
+
+Bullets:
+
+What machine you’re using
+
+What you’re knitting right now (or planning next)
+
+One thing you’d love more confidence with
+
+help
+
+Title: Ask for help
+
+Lede: Stuck is allowed here. Ask in plain language — we’ll sort it out together.
+
+Bullets:
+
+What you’re trying to do
+
+What happened instead
+
+Your machine + yarn (if relevant)
+
+A photo is welcome (if it helps)
+
+show-and-tell
+
+Title: Show & Tell
+
+Lede: Share a photo, a progress update, or a “does this look right?” moment.
+
+Bullets:
+
+Finished projects
+
+In-progress knitting
+
+Before/after fixes
+
+Questions are welcome too
+
+wins
+
+Title: Small wins
+
+Lede: Tiny victories count. Post the moment something clicked.
+
+Bullets:
+
+A setting that finally made sense
+
+A smoother cast-on / bind-off
+
+A fix that saved your knitting
+
+A habit that made things easier
+
+5) Ensure Hyvor embed uses the right pageId per slug
+
+In the same map, also store the pageId:
+
+introductions → community-introductions
+
+help → community-help
+
+show-and-tell → community-show-and-tell
+
+wins → community-wins
+
+Then render Hyvor with the pageId from the map. Do not change how Hyvor is initialized except replacing hard-coded pageId (if any) with the mapped value.
+
+6) Insert Intro Well above Hyvor
+
+In the community slug page template:
+
+Import and render <CommunityIntro ... />
+
+Place it immediately above the Hyvor embed container/script.
+
+7) Layout + header offset
+
+Because the KBM header is fixed:
+
+Ensure the top of the main content has enough top padding/margin so the intro well is not hidden under the header.
+
+If you already have an offset utility/class, reuse it consistently.
+
+8) “White well” style requirement
+
+The intro well should appear as a distinct white panel even if the page background is off-white/gray.
+
+background: white
+
+border: light gray/green tint is fine
+
+radius: consistent with KBM cards
+
+spacing: comfortable on mobile (no cramped padding)
+
+9) Test routes
+
+Verify these render correctly and each has its own Hyvor thread:
+
+/community/introductions
+
+/community/help
+
+/community/show-and-tell
+
+/community/wins
+
+Confirm:
+
+Intro appears above embed
+
+Correct title/lede/bullets per slug
+
+Email note appears
+
+No overlap with fixed header
