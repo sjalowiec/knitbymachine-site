@@ -1,29 +1,18 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
-import CommunityIntro from "../../components/community/CommunityIntro.astro";
-
-const introContent = {
-  title: "Introductions",
-  lede: "Say hello and share what you're working on (or restarting).",
-  bullets: [
-    "What machine you're using",
-    "What you're knitting right now (or planning next)",
-    "One thing you'd love more confidence with"
-  ],
-  note: "Email is optional and only used for reply notifications."
-};
 ---
 
 <BaseLayout 
   title="Introductions | Community | Knit by Machine" 
   description="Say hello to fellow machine knitters. Introduce yourself, share what machine you use, and tell us what you're knitting right now."
 >
-  <section class="community-slug-page">
-    <div class="community-slug-content">
+  <section class="introductions-page">
+    <div class="introductions-content">
+      <!-- Gate form (hidden after unlock) -->
       <section id="gate-block" style="display: block;">
         <div class="gate-form-container">
           <h2>Join the conversation</h2>
-          <p class="gate-description">Enter your details to access the community.</p>
+          <p class="gate-description">Enter your details to access the community introductions.</p>
           
           <form id="community-gate-form" class="gate-form kbm-gate-form">
             <div class="form-group">
@@ -49,11 +38,9 @@ const introContent = {
                 data-testid="input-email"
               />
             </div>
-
-            <p class="email-disclosure" data-testid="text-email-disclosure">You'll also receive occasional emails from Knit by Machine related to the community. You can unsubscribe at any time.</p>
             
             <button type="submit" class="submit-button kbm-button" data-testid="button-submit">
-              Join the conversation
+              Access Introductions
             </button>
             
             <p id="form-error" class="form-error" hidden></p>
@@ -61,17 +48,14 @@ const introContent = {
         </div>
       </section>
 
+      <!-- Unlocked content (shown after unlock) -->
       <section id="open-content" hidden>
         <a href="/community" class="kbm-backlink" data-testid="link-back-community">
           &#8592; Back to Community
         </a>
 
-        <CommunityIntro 
-          title={introContent.title}
-          lede={introContent.lede}
-          bullets={introContent.bullets}
-          note={introContent.note}
-        />
+        <h1>Introductions</h1>
+        <p class="intro">Say hi, tell us what machine you use, and what you're knitting right now.</p>
 
         <div class="hyvor-talk-container">
           <hyvor-talk-comments 
@@ -163,7 +147,7 @@ const introContent = {
               }
               if (submitBtn) {
                 submitBtn.disabled = false;
-                submitBtn.textContent = "Join the conversation";
+                submitBtn.textContent = "Access Introductions";
               }
             }
           })
@@ -174,7 +158,7 @@ const introContent = {
             }
             if (submitBtn) {
               submitBtn.disabled = false;
-              submitBtn.textContent = "Join the conversation";
+              submitBtn.textContent = "Access Introductions";
             }
           });
         });
@@ -192,16 +176,17 @@ const introContent = {
 <script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
 
 <style>
-  .community-slug-page {
-    padding: 2rem 1rem 4rem;
+  .introductions-page {
+    padding: 3rem 1rem 4rem;
     max-width: 800px;
     margin: 0 auto;
   }
 
-  .community-slug-content {
+  .introductions-content {
     text-align: center;
   }
 
+  /* Back link */
   .kbm-backlink {
     display: inline-block;
     margin-bottom: 1.5rem;
@@ -219,6 +204,21 @@ const introContent = {
     color: white;
   }
 
+  h1 {
+    font-size: var(--text-xxl);
+    color: var(--kbm-green);
+    margin-bottom: 0.75rem;
+  }
+
+  .intro {
+    font-size: var(--text-lg);
+    color: #555;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+    line-height: 1.6;
+  }
+
+  /* Gate form container */
   .gate-form-container {
     background: #fff;
     border: 1px solid #e0e0e0;
@@ -242,6 +242,7 @@ const introContent = {
     margin: 0 0 1.5rem;
   }
 
+  /* Form styles */
   .gate-form {
     display: flex;
     flex-direction: column;
@@ -283,14 +284,7 @@ const introContent = {
     border-color: var(--kbm-green);
   }
 
-  .email-disclosure {
-    font-size: 0.8rem;
-    color: #888;
-    margin: 0.25rem 0 0.5rem;
-    text-align: left;
-    line-height: 1.4;
-  }
-
+  /* Submit button */
   .submit-button,
   .kbm-button {
     position: relative;
@@ -310,8 +304,17 @@ const introContent = {
   }
 
   .submit-button:hover,
-  .kbm-button:hover {
+  .submit-button:focus,
+  .submit-button:focus-visible,
+  .kbm-button:hover,
+  .kbm-button:focus,
+  .kbm-button:focus-visible {
+    opacity: 1;
+    visibility: visible;
+    filter: none;
+    mix-blend-mode: normal;
     background: var(--kbm-dark-green);
+    color: white;
     transform: translateY(-2px);
   }
 
@@ -323,6 +326,7 @@ const introContent = {
   .submit-button:disabled,
   .kbm-button:disabled {
     background: #999;
+    color: white;
     cursor: not-allowed;
     transform: none;
   }
@@ -333,16 +337,26 @@ const introContent = {
     margin: 0.5rem 0 0;
   }
 
+  /* Hyvor Talk container */
   .hyvor-talk-container {
     width: 100%;
     max-width: 800px;
-    margin: 0 auto;
+    margin: 2rem auto 0;
     text-align: left;
   }
 
+  /* Mobile responsive */
   @media (max-width: 768px) {
-    .community-slug-page {
-      padding: 1.5rem 1rem 3rem;
+    .introductions-page {
+      padding: 2rem 1rem 3rem;
+    }
+
+    h1 {
+      font-size: var(--text-xl);
+    }
+
+    .intro {
+      font-size: var(--text-base);
     }
 
     .gate-form-container {

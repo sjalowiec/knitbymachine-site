@@ -3,20 +3,21 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import CommunityIntro from "../../components/community/CommunityIntro.astro";
 
 const introContent = {
-  title: "Introductions",
-  lede: "Say hello and share what you're working on (or restarting).",
+  title: "Show & Tell",
+  lede: "Share a photo, a progress update, or a \"does this look right?\" moment.",
   bullets: [
-    "What machine you're using",
-    "What you're knitting right now (or planning next)",
-    "One thing you'd love more confidence with"
+    "Finished projects",
+    "In-progress knitting",
+    "Before/after fixes",
+    "Questions are welcome too"
   ],
   note: "Email is optional and only used for reply notifications."
 };
 ---
 
 <BaseLayout 
-  title="Introductions | Community | Knit by Machine" 
-  description="Say hello to fellow machine knitters. Introduce yourself, share what machine you use, and tell us what you're knitting right now."
+  title="Show & Tell | Community | Knit by Machine" 
+  description="Share your machine knitting projects, progress photos, and finished pieces with fellow knitters."
 >
   <section class="community-slug-page">
     <div class="community-slug-content">
@@ -76,7 +77,7 @@ const introContent = {
         <div class="hyvor-talk-container">
           <hyvor-talk-comments 
             website-id="14706" 
-            page-id="community-introductions"
+            page-id="community-show-and-tell"
             data-testid="hyvor-talk-comments"
           ></hyvor-talk-comments>
         </div>
