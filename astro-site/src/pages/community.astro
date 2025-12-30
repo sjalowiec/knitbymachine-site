@@ -7,11 +7,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   description="Ask questions, share progress, and connect with other machine knitters in our MK Talk forum."
 >
   <section class="community-page">
-    <!-- Test mode indicator (hidden by default, shown via JS when enabled) -->
-    <div id="test-mode-badge" class="test-mode-badge" hidden>
-      Community TEST MODE (debug panel active)
-    </div>
-
     <div class="community-content">
       <!-- Hero section (always visible) -->
       <div class="hero-section">
@@ -51,7 +46,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <!-- Gate form (shown when not unlocked) -->
         <div id="gate-block" hidden>
         <div class="gate-form-container">
-          <h2>Enter your details to join the conversation</h2>
+          <h2>Join the conversation</h2>
           <p class="gate-description">We just need your name and email to get you started.</p>
           
           <form id="community-gate-form" class="gate-form kbm-gate-form">
@@ -113,29 +108,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     </div>
   </section>
 
-  <!-- Debug panel (only shown in test mode) -->
-  <div id="debug-panel" class="debug-panel" hidden>
-    <div class="debug-header">Test Scenarios</div>
-    <button id="debug-fresh" class="debug-btn" data-testid="debug-fresh">
-      Fresh visitor (no data)
-    </button>
-    <button id="debug-unlocked" class="debug-btn" data-testid="debug-unlocked">
-      Unlocked (no topic)
-    </button>
-    <button id="debug-active" class="debug-btn" data-testid="debug-active">
-      Active topic (help)
-    </button>
-  </div>
 </BaseLayout>
 
 <!-- Hyvor Talk script is dynamically loaded when a topic is selected -->
 
 <script>
   (function() {
-    // 🔴 TEST MODE: set to false before launch
-    // When true, shows debug panel but respects localStorage state
-    var COMMUNITY_TEST_MODE = true;
-
     function initCommunity() {
       var unlocked = false;
       var topic = null;
@@ -144,15 +122,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
         topic = localStorage.getItem("kbm:community-topic");
       } catch (e) {}
-
-      // Show test mode elements if enabled
-      var testBadge = document.getElementById("test-mode-badge");
-      var debugPanel = document.getElementById("debug-panel");
-      if (COMMUNITY_TEST_MODE) {
-        if (testBadge) testBadge.hidden = false;
-        if (debugPanel) debugPanel.hidden = false;
-        setupDebugPanel();
-      }
 
       var cards = document.getElementById("community-cards");
       var gate = document.getElementById("gate-block");
@@ -388,36 +357,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       }
     }
 
-    function setupDebugPanel() {
-      var freshBtn = document.getElementById("debug-fresh");
-      var unlockedBtn = document.getElementById("debug-unlocked");
-      var activeBtn = document.getElementById("debug-active");
-
-      if (freshBtn) {
-        freshBtn.addEventListener("click", function() {
-          localStorage.removeItem("kbm:community-unlocked");
-          localStorage.removeItem("kbm:community-topic");
-          location.reload();
-        });
-      }
-
-      if (unlockedBtn) {
-        unlockedBtn.addEventListener("click", function() {
-          localStorage.setItem("kbm:community-unlocked", "1");
-          localStorage.removeItem("kbm:community-topic");
-          location.reload();
-        });
-      }
-
-      if (activeBtn) {
-        activeBtn.addEventListener("click", function() {
-          localStorage.setItem("kbm:community-unlocked", "1");
-          localStorage.setItem("kbm:community-topic", "help");
-          location.reload();
-        });
-      }
-    }
-
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', initCommunity);
     } else {
@@ -427,61 +366,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 </script>
 
 <style>
-  /* Test mode badge */
-  .test-mode-badge {
-    background: #ffe8e8;
-    color: #b00;
-    padding: 0.5rem 1rem;
-    font-size: 0.85rem;
-    text-align: center;
-    border-radius: 4px;
-    margin-bottom: 1rem;
-  }
-
-  /* Debug panel (test mode only) */
-  .debug-panel {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    background: #fff;
-    border: 2px solid #b00;
-    border-radius: 8px;
-    padding: 0.75rem;
-    z-index: 9999;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    max-width: 180px;
-  }
-
-  .debug-header {
-    font-weight: 600;
-    font-size: 0.75rem;
-    color: #b00;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.4rem;
-    margin-bottom: 0.25rem;
-  }
-
-  .debug-btn {
-    background: #f5f5f5;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    padding: 0.4rem 0.6rem;
-    font-size: 0.8rem;
-    cursor: pointer;
-    text-align: left;
-    transition: all 0.15s ease;
-  }
-
-  .debug-btn:hover {
-    background: #ffe8e8;
-    border-color: #b00;
-  }
-
   .community-page {
     padding: 3rem 1rem 4rem;
     max-width: 900px;
