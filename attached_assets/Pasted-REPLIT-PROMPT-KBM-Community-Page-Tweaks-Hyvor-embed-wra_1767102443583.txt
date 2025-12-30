@@ -1,0 +1,49 @@
+REPLIT PROMPT — KBM Community Page Tweaks (Hyvor embed wrapper)
+
+Goal
+1) Remove the large headline + subhead at the top of the community page:
+   - “Come talk with us”
+   - “A friendly space for machine knitters…”
+2) Add a “well_white” style container around the *guidance + composer* area (not the post list).
+
+Context
+This is the Knit by Machine community page that embeds Hyvor Talk and shows topic tabs (Introductions / Ask for help / Show & Tell / Small wins). After selecting a topic, the big hero headline is redundant and pushes the composer down.
+
+What to change
+
+A) Remove the hero header block
+- Find the markup that renders the hero section at the top of the page (the block that contains the “Come talk with us” H1/H2 and the paragraph “A friendly space…”).
+- Delete that entire block (or comment it out) so it no longer renders on this page.
+
+B) Add a white well around the “action zone”
+- Identify the section that contains:
+  - “Now viewing: …”
+  - “New here? Start with Introductions…”
+  - The short helper copy (“Use this space to introduce yourself…”, “Email is optional…”)
+  - The Hyvor composer/input box (“Share your progress, a photo, or a question…”)
+- Wrap ONLY that section in a container div using the existing well class:
+  <div class="well_white kbm-community-well">
+     ...existing guidance + composer markup...
+  </div>
+
+Important: Do NOT wrap the post stream, comments list, reply threads, sort controls, or pagination—only the guidance + composer area above the posts.
+
+C) Styling (minimal + safe)
+- If well_white already exists, reuse it as-is.
+- Add a small amount of spacing so it breathes (either via existing CSS utilities or a tiny new rule).
+- Add this CSS only if needed (scoped to this page so it won’t affect other pages):
+
+.kbm-community-well {
+  margin: 16px 0 18px;
+  padding: 18px 18px;
+  border-radius: 10px;
+}
+
+Acceptance criteria
+- The “Come talk with us” headline and the “A friendly space…” paragraph are gone.
+- The topic tabs remain at the top.
+- The “Now viewing…” + helper text + composer are inside a white well.
+- The post list remains full width / unboxed below the well.
+- Mobile and desktop layouts look clean with no extra empty space at the top.
+
+Please implement and publish when done.

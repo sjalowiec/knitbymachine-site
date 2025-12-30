@@ -8,15 +8,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 >
   <section class="community-page">
     <div class="community-content">
-      <!-- Hero section (always visible) -->
-      <div class="hero-section">
-        <h1>Come talk with us</h1>
-        <p class="intro">
-          A friendly space for machine knitters to ask questions, share progress, 
-          and get unstuck — without digging through scattered resources.
-        </p>
-      </div>
-
       <!-- Cards section (visible pre-unlock and post-unlock with no topic) -->
       <section id="community-cards">
         <h2 id="choose-topic-heading" class="choose-topic-heading" hidden>Choose a topic</h2>
@@ -74,7 +65,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               />
             </div>
             
-            <p class="email-disclosure" data-testid="text-email-disclosure">You'll also receive occasional emails from Knit by Machine. You can unsubscribe at any time.</p>
+            <p class="email-disclosure" data-testid="text-email-disclosure">You'll also receive occasional emails from Knit by Machine related to the community. You can unsubscribe at any time.</p>
             
             <button type="submit" class="submit-button kbm-button" data-testid="button-submit">
               Join the conversation
@@ -100,8 +91,10 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <!-- Topic thread (shown after topic selection) -->
       <section id="topic-thread" hidden>
-        <p id="topic-label" class="topic-label" hidden></p>
-        <p id="topic-helper" class="topic-helper" hidden>New here? Start with Introductions — it's the easiest place to jump in.</p>
+        <div class="well_white kbm-community-well">
+          <p id="topic-label" class="topic-label" hidden></p>
+          <p id="topic-helper" class="topic-helper" hidden>New here? Start with Introductions — it's the easiest place to jump in.</p>
+        </div>
         
         <div class="hyvor-talk-container">
                    <div id="hyvor-talk-view" data-testid="hyvor-talk-view"></div>
@@ -369,7 +362,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <style>
   .community-page {
-    padding: 3rem 1rem 4rem;
+    padding: 2rem 1rem 4rem;
     max-width: 900px;
     margin: 0 auto;
   }
@@ -378,23 +371,16 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     text-align: center;
   }
 
-  /* Hero section */
-  .hero-section {
-    margin-bottom: 2.5rem;
+  /* White well container for guidance area */
+  .well_white {
+    background: #fff;
+    border: 1px solid #e8e8e8;
   }
 
-  h1 {
-    font-size: var(--text-xxl);
-    color: var(--kbm-green);
-    margin-bottom: 1rem;
-  }
-
-  .intro {
-    font-size: var(--text-lg);
-    color: #555;
-    max-width: 600px;
-    margin: 0 auto;
-    line-height: 1.6;
+  .kbm-community-well {
+    margin: 16px 0 18px;
+    padding: 18px 18px;
+    border-radius: 10px;
   }
 
   /* Choose a topic heading (shown after unlock, before topic selection) */
@@ -699,7 +685,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   .topic-helper {
     font-size: 0.85rem;
     color: #6b7280;
-    margin: 0 0 1rem 0;
+    margin: 0;
     text-align: center;
   }
 
@@ -720,24 +706,17 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   /* Mobile responsive */
   @media (max-width: 768px) {
     .community-page {
-      padding: 2rem 1rem 3rem;
-    }
-
-    h1 {
-      font-size: var(--text-xl);
-    }
-
-    .intro {
-      font-size: var(--text-base);
-    }
-
-    .hero-section {
-      margin-bottom: 2rem;
+      padding: 1.5rem 1rem 3rem;
     }
 
     .features-grid {
       grid-template-columns: repeat(2, 1fr);
       gap: 1rem;
+    }
+
+    .kbm-community-well {
+      margin: 12px 0 14px;
+      padding: 14px;
     }
 
     .feature-card {
