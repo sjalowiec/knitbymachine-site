@@ -74,6 +74,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
               />
             </div>
             
+            <p class="email-disclosure" data-testid="text-email-disclosure">You'll also receive occasional emails from Knit by Machine related to the community. You can unsubscribe at any time.</p>
+            
             <button type="submit" class="submit-button kbm-button" data-testid="button-submit">
               Join the conversation
             </button>
@@ -649,6 +651,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     color: white;
     cursor: not-allowed;
     transform: none;
+  }
+
+  .email-disclosure {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.25rem 0 0.5rem;
+    text-align: left;
+    line-height: 1.4;
   }
 
   .form-error {
