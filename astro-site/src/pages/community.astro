@@ -91,9 +91,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
       <!-- Topic thread (shown after topic selection) -->
       <section id="topic-thread" hidden>
-        <div class="well_white kbm-community-well">
-          <p id="topic-label" class="topic-label" hidden></p>
-          <p id="topic-helper" class="topic-helper" hidden>New here? Start with Introductions — it's the easiest place to jump in.</p>
+        <div class="well_white kbm-community-well" id="intro-well">
+          <h2 id="intro-title" class="intro-title"></h2>
+          <p id="intro-lede" class="intro-lede"></p>
+          <ul id="intro-bullets" class="intro-bullets"></ul>
+          <p id="intro-note" class="intro-note"></p>
         </div>
         
         <div class="hyvor-talk-container">
@@ -282,11 +284,50 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     }
 
     function highlightSelectedChip(topic) {
-      var titleMap = {
-        "introductions": "Introductions",
-        "help": "Ask for Help",
-        "show-and-tell": "Show & Tell",
-        "wins": "Wins This Week"
+      var introContent = {
+        "introductions": {
+          title: "Introductions",
+          lede: "Say hello and share what you're working on (or restarting).",
+          bullets: [
+            "What machine you're using",
+            "What you're knitting right now (or planning next)",
+            "One thing you'd love more confidence with"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        },
+        "help": {
+          title: "Ask for help",
+          lede: "Stuck is allowed here. Ask in plain language — we'll sort it out together.",
+          bullets: [
+            "What you're trying to do",
+            "What happened instead",
+            "Your machine + yarn (if relevant)",
+            "A photo is welcome (if it helps)"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        },
+        "show-and-tell": {
+          title: "Show & Tell",
+          lede: "Share a photo, a progress update, or a \"does this look right?\" moment.",
+          bullets: [
+            "Finished projects",
+            "In-progress knitting",
+            "Before/after fixes",
+            "Questions are welcome too"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        },
+        "wins": {
+          title: "Small wins",
+          lede: "Tiny victories count. Post the moment something clicked.",
+          bullets: [
+            "A setting that finally made sense",
+            "A smoother cast-on / bind-off",
+            "A fix that saved your knitting",
+            "A habit that made things easier"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        }
       };
 
       // Highlight active chip in switcher
@@ -296,15 +337,25 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         el.setAttribute("aria-pressed", isActive ? "true" : "false");
       });
 
-      // Set label above thread
-      var label = document.getElementById("topic-label");
-      var helper = document.getElementById("topic-helper");
-      if (label && topic && titleMap[topic]) {
-        label.textContent = "Now viewing: " + titleMap[topic];
-        label.hidden = false;
-      }
-      if (helper) {
-        helper.hidden = false;
+      // Populate intro well content
+      var content = introContent[topic];
+      if (content) {
+        var titleEl = document.getElementById("intro-title");
+        var ledeEl = document.getElementById("intro-lede");
+        var bulletsEl = document.getElementById("intro-bullets");
+        var noteEl = document.getElementById("intro-note");
+
+        if (titleEl) titleEl.textContent = content.title;
+        if (ledeEl) ledeEl.textContent = content.lede;
+        if (bulletsEl) {
+          bulletsEl.innerHTML = "";
+          content.bullets.forEach(function(bullet) {
+            var li = document.createElement("li");
+            li.textContent = bullet;
+            bulletsEl.appendChild(li);
+          });
+        }
+        if (noteEl) noteEl.textContent = content.note;
       }
     }
 
@@ -379,8 +430,47 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
   .kbm-community-well {
     margin: 16px 0 18px;
-    padding: 18px 18px;
+    padding: 18px 20px;
     border-radius: 10px;
+    text-align: left;
+  }
+
+  .intro-title {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .intro-lede {
+    font-size: var(--text-base, 1rem);
+    color: #444;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.5;
+  }
+
+  .intro-bullets {
+    margin: 0 0 0.75rem 0;
+    padding-left: 1.25rem;
+    list-style-type: disc;
+  }
+
+  .intro-bullets li {
+    font-size: var(--text-sm, 0.875rem);
+    color: #555;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+
+  .intro-bullets li:last-child {
+    margin-bottom: 0;
+  }
+
+  .intro-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0;
+    font-style: italic;
   }
 
   /* Choose a topic heading (shown after unlock, before topic selection) */
