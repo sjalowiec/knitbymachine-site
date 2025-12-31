@@ -1,0 +1,94 @@
+You are working in the Knit by Machine (Astro) codebase.
+
+GOAL
+Update the /project-walkthroughs page so it functions as a clean definition page,
+matching the tone, structure, and completeness of the Project Wizards page.
+
+IMPORTANT
+1) Create a backup of the existing page file before editing (same folder) with a .bak date suffix.
+2) Do NOT change the route/slug or navigation.
+3) Preserve the existing layout wrapper and SEO component usage.
+4) Reader-facing copy only — no “coming soon,” no timelines, no internal language.
+5) Use consistent alignment and hierarchy (H1 → H2 → intro → cards).
+6) Do NOT display raw URLs anywhere on the page.
+
+STEP 1 — Locate the page file
+Find the file that renders:
+https://knitbymachine.com/project-walkthroughs
+
+Likely locations:
+- src/pages/project-walkthroughs.astro
+- src/pages/project-walkthroughs/index.astro
+
+Open it and confirm the route.
+
+STEP 2 — Back it up
+Create a backup in the same directory with today’s date, for example:
+- project-walkthroughs.2025-12-31.bak.astro
+or
+- index.2025-12-31.bak.astro
+
+Do not modify the backup.
+
+STEP 3 — Replace the page content (keep layout, replace main body)
+
+H1
+Project Walkthroughs
+
+H2 (directly under H1)
+Want to build skills by knitting real projects? Follow a clear path.
+
+INTRO PARAGRAPH
+Project Walkthroughs help you develop machine-knitting skills by working through complete projects with structured guidance. Each walkthrough focuses on how and why a project comes together — not just the finished result.
+
+CARDS (3 text-only cards)
+
+Card 1
+Title: What they are  
+Body:
+Project Walkthroughs are guided project experiences. They follow a real project from start to finish, showing the full process with context and explanation along the way.
+
+Card 2
+Title: How they work  
+Body:
+Each walkthrough focuses on technique, setup, and sequencing. Decisions are explained as they come up, so you can apply the same thinking to future projects.
+
+Card 3
+Title: What to use now  
+Body:
+Practice Projects and Patterns support the same techniques and decisions covered in Project Walkthroughs.
+
+LINKING REQUIREMENTS (important)
+- Link the words “Practice Projects” to /practice-projects
+- Link the word “Patterns” to /patterns
+- Do NOT display URLs
+- Keep links inline and understated (no buttons)
+
+OPTIONAL QUIET LINE (below cards)
+Project types and formats will vary by walkthrough.
+
+LAYOUT / STYLING
+- Left-align H1, H2, and intro paragraph (to match Project Wizards).
+- Use the site’s existing card styles or simple bordered cards.
+- Responsive grid: 1 column mobile, 3 columns desktop.
+- No images required.
+- No CTA buttons.
+
+SEO
+Set meta title to:
+Project Walkthroughs | Knit by Machine
+
+Set meta description to:
+Develop machine-knitting skills through guided projects that explain the how and why behind each step.
+
+STEP 4 — Verify
+- Page renders correctly at /project-walkthroughs
+- No broken imports
+- Links work but URLs are not visible
+- Build passes with no errors
+
+OUTPUT
+After completing, report:
+1) The exact file path edited
+2) The backup file name created
+3) Confirmation that links are inline text only
