@@ -2,87 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHero from '../../components/SectionHero.astro';
 
-let entries = [];
-let errorMessage = '';
-
-async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent') {
-  try {
-    const response = await fetch(`https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/${path}`);
-    
-    if (!response.ok) {
-      return [];
-    }
-    
-    const files = await response.json();
-    
-    const entryPromises = files
-      .filter((file: any) => file.name.endsWith('.json'))
-      .map(async (file: any) => {
-        const fileResponse = await fetch(file.download_url);
-        const data = await fileResponse.json();
-        
-        let derivedContentType = data.contentType;
-        if (!derivedContentType) {
-          const cat = (data.category || '').toLowerCase();
-          if (cat.includes('pattern')) {
-            derivedContentType = 'pattern';
-          } else if (cat.includes('skill builder') || cat.includes('practice')) {
-            derivedContentType = 'practice project';
-          } else if (cat.includes('smart guide') || cat.includes('project planner') || cat.includes('project wizard') || entryType === 'agent') {
-            derivedContentType = 'project wizard';
-          } else {
-            derivedContentType = 'tool';
-          }
-        }
-        
-        return {
-          title: data.title,
-          slug: data.slug,
-          hero: data.hero || '',
-          excerpt: data.excerpt || '',
-          description: data.description || '',
-          contentType: derivedContentType,
-          tags: data.tags || [],
-          accessLevel: data.accessLevel || 'free',
-          price: data.price || '',
-          isDraft: data.isDraft,
-          pendingPublish: data.pendingPublish,
-          publishedDate: data.publishedDate,
-          iconUrl: data.iconUrl || '',
-          entryType: entryType,
-        };
-      });
-    
-    const allEntries = await Promise.all(entryPromises);
-    return allEntries.filter((entry: any) => !entry.isDraft && !entry.pendingPublish);
-  } catch (error) {
-    console.error(`Error fetching ${entryType} entries:`, error);
-    return [];
-  }
-}
-
-function isProjectWizard(contentType: string): boolean {
-  const ct = (contentType || '').toLowerCase().trim();
-  return ct.includes('project wizard') || ct.includes('project-wizard');
-}
-
-try {
-  const [wizardEntries, agentEntries] = await Promise.all([
-    fetchEntriesFromPath('astro-site/src/content/wizards', 'wizard'),
-    fetchEntriesFromPath('astro-site/src/content/ai-agents', 'agent')
-  ]);
-  
-  const allEntries = [...wizardEntries, ...agentEntries];
-  entries = allEntries.filter(entry => isProjectWizard(entry.contentType));
-  
-  entries.sort((a, b) => a.title.localeCompare(b.title));
-} catch (error) {
-  console.error('Error fetching entries:', error);
-  errorMessage = error.message;
-}
-
-const title = "Project Wizards";
-const description = "AI-powered planning guides that ask questions, narrow choices, and give you a clear path forward for your next knitting project.";
+const title = "Project Wizards | Knit by Machine";
+const description = "Plan a machine-knitting project before you cast on. Clear, practical setup support for common project types.";
 ---
 
 <BaseLayout {title} {description}>
@@ -94,54 +15,31 @@ const description = "AI-powered planning guides that ask questions, narrow choic
     />
 
     <div class="intro-section">
-      <p class="intro-headline">Want better results? Think it through.</p>
       <p class="intro-text">
-        These interactive conversations do what a FAQ can't: they ask you questions, narrow the choices, and give you a clear path forward for your next knit.
+        Project Wizards help you plan a machine-knitting project before you cast on. Each wizard focuses on a specific type of project and helps you arrive at a clear, workable setup.
       </p>
     </div>
 
-    <div class="guides-grid" data-testid="project-wizards-grid">
-      {errorMessage && (
-        <div class="error">
-          <p><strong>Error loading Project Wizards</strong></p>
-          <p>Unable to fetch entries. Please try again later.</p>
-          <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
-        </div>
-      )}
-      
-      {entries.length === 0 && !errorMessage && (
-        <div class="no-results">
-          <p>Project Wizards are coming soon! Check back for AI-powered planning tools.</p>
-        </div>
-      )}
-      
-      {entries.map((entry, index) => {
-        const basePath = entry.entryType === 'agent' ? '/agents' : '/wizards';
-        const displayText = entry.excerpt || entry.hero || '';
-        const badgeClass = `badge-${entry.accessLevel}`;
-        const badgeText = entry.accessLevel === 'paid' && entry.price 
-          ? `$${entry.price}` 
-          : entry.accessLevel.charAt(0).toUpperCase() + entry.accessLevel.slice(1);
-        
-        return (
-          <a 
-            href={`${basePath}/${entry.slug}`} 
-            class="guide-card" 
-            data-testid={`card-project-wizard-${entry.slug}`}
-            style={`animation-delay: ${index * 0.1}s`}
-          >
-            {entry.iconUrl && (
-              <img src={entry.iconUrl} alt="" class="guide-card-icon" />
-            )}
-            <h2 class="guide-card-title">{entry.title}</h2>
-            {displayText && (
-              <p class="guide-card-description">{displayText}</p>
-            )}
-            <span class={`guide-card-badge ${badgeClass}`}>{badgeText}</span>
-          </a>
-        );
-      })}
+    <div class="cards-grid" data-testid="project-wizards-grid">
+      <div class="info-card" data-testid="card-what-it-is">
+        <h2 class="card-title">What it is</h2>
+        <p class="card-body">Plan a project before you start knitting. Each wizard helps you arrive at a clear, workable setup.</p>
+      </div>
+
+      <div class="info-card" data-testid="card-how-it-works">
+        <h2 class="card-title">How it works</h2>
+        <p class="card-body">Answer only what matters. Get a plan you can knit from — not general advice.</p>
+      </div>
+
+      <div class="info-card" data-testid="card-what-to-use-now">
+        <h2 class="card-title">What to use now</h2>
+        <p class="card-body">Gauge tools, setup references, and Ask 'n Answer entries support the same planning decisions.</p>
+      </div>
     </div>
+
+    <p class="project-types-note">
+      Project types will be handled separately (socks, hats, blankets, sweaters).
+    </p>
   </div>
 </BaseLayout>
 
@@ -158,14 +56,6 @@ const description = "AI-powered planning guides that ask questions, narrow choic
     text-align: center;
   }
 
-  .intro-headline {
-    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
-    font-weight: 700;
-    color: #52682D;
-    line-height: 1.4;
-    margin: 0 0 0.5rem 0;
-  }
-
   .intro-text {
     font-size: clamp(1rem, 1.8vw, 1.15rem);
     color: #5a6b47;
@@ -173,133 +63,44 @@ const description = "AI-powered planning guides that ask questions, narrow choic
     margin: 0;
   }
 
-  .guides-grid {
+  .cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 1.5rem;
+    margin-bottom: 2rem;
   }
 
-  .guide-card {
-    position: relative;
-    background-color: #ffffff;
-    color: #52682D;
-    border: 2px solid #c7d8a4;
-    padding: 2rem;
-    border-radius: 16px;
-    text-decoration: none;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-    cursor: pointer;
+  .info-card {
+    background-color: #f9fdf5;
+    border: 1px solid #c7d8a4;
+    border-radius: 12px;
+    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-    min-height: 260px;
-    animation: fadeInUp 0.6s ease-out forwards;
-    opacity: 0;
+    gap: 0.75rem;
   }
 
-  .guide-card:hover {
-    background-color: #f6f8f2;
-    transform: translateY(-6px);
-    box-shadow: 0 12px 24px rgba(82, 104, 45, 0.15);
-    border-color: #52682D;
-  }
-
-  .guide-card-icon {
-    position: absolute;
-    top: 1.75rem;
-    right: 1.75rem;
-    width: 56px;
-    height: 56px;
-    object-fit: contain;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-
-  .guide-card:hover .guide-card-icon {
-    opacity: 1;
-  }
-
-  .guide-card-title {
-    font-size: clamp(1.4rem, 3vw, 1.6rem);
+  .card-title {
+    font-size: 1.25rem;
     font-weight: 700;
     color: #52682D;
     margin: 0;
     line-height: 1.3;
-    padding-right: 70px;
   }
 
-  .guide-card-description {
-    font-size: 1.1rem;
-    color: #6b7280;
+  .card-body {
+    font-size: 1rem;
+    color: #5a6b47;
     line-height: 1.6;
     margin: 0;
-    flex: 1 0 auto;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 
-  .guide-card-badge {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border-radius: 12px;
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    font-weight: 600;
-    text-transform: uppercase;
-    align-self: flex-start;
-  }
-
-  .badge-free {
-    background-color: #C7D8A4;
-    color: #52682D;
-  }
-
-  .badge-paid {
-    background-color: #52682D;
-    color: white;
-  }
-
-  .badge-membership {
-    background-color: #8BA556;
-    color: white;
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .error {
+  .project-types-note {
+    font-size: 0.9rem;
+    color: #6b7280;
     text-align: center;
-    padding: 3rem;
-    color: #d64545;
-    background-color: #ffe5e5;
-    border-radius: 12px;
-    grid-column: 1 / -1;
-  }
-
-  .no-results {
-    text-align: center;
-    padding: 3rem;
-    color: #5a6b47;
-    background-color: #f9fdf5;
-    border-radius: 12px;
-    grid-column: 1 / -1;
-  }
-
-  .no-results p {
-    font-size: 1.1rem;
     margin: 0;
+    font-style: italic;
   }
 
   @media (max-width: 768px) {
@@ -307,12 +108,8 @@ const description = "AI-powered planning guides that ask questions, narrow choic
       padding: 1.5rem 1rem 3rem;
     }
 
-    .guides-grid {
+    .cards-grid {
       grid-template-columns: 1fr;
-    }
-
-    .guide-card {
-      min-height: 220px;
     }
 
     .intro-section {
