@@ -111,8 +111,7 @@ const priceByKey: Record<string, number> = {
       
       <p class="dak-starting-point">These aren't lifetime decisions — they're starting points based on how you knit today.</p>
       
-      <p class="dak-compatibility">DesignaKnit works with compatible electronic knitting machines.</p>
-      
+    
       <div class="dak-choice-grid">
         <!-- Standard Card -->
         <div class="dak-choice-card">
@@ -129,7 +128,7 @@ const priceByKey: Record<string, number> = {
             <li>You don't need garment shaping tools</li>
           </ul>
           <div id="dak-standard-btn" class="dak-buy-button"></div>
-          <p class="dak-shipping-note">U.S. addresses only.</p>
+          
         </div>
         
         <!-- Pro Card -->
@@ -140,22 +139,22 @@ const priceByKey: Record<string, number> = {
           <div class="dak-version-row">
             <span class="dak-version-label">Pro</span>
             <span class="dak-price">${priceByKey.professional}</span>
-            <span class="dak-badge">Sue's Recommendation</span>
+          
           </div>
           <ul>
             <li>You want stitch patterns + garment design</li>
             <li>You care about structure, shaping, and fit</li>
-            <li>You don't need hand-knitting outputs or advanced cable complexity</li>
+            <li>You don't need hand-knitting outputs or advanced cables</li>
           </ul>
           <div id="dak-professional-btn" class="dak-buy-button"></div>
-          <p class="dak-shipping-note">U.S. addresses only.</p>
+         
         </div>
         
         <!-- Complete Card -->
         <div class="dak-choice-card">
           <p class="dak-card-label">Complete Suite</p>
           <p class="dak-statement">"I want all of the functionality of DesignaKnit."</p>
-          <p class="dak-capability">Advanced garments + complex cables</p>
+          <p class="dak-capability">Advanced garments + advanced cables</p>
           <div class="dak-version-row">
             <span class="dak-version-label">Complete</span>
             <span class="dak-price">${priceByKey.complete}</span>
@@ -167,7 +166,7 @@ const priceByKey: Record<string, number> = {
             <li>You don't want to wonder if something is missing</li>
           </ul>
           <div id="dak-complete-btn" class="dak-buy-button"></div>
-          <p class="dak-shipping-note">U.S. addresses only.</p>
+         
         </div>
         
         <!-- Hand Knit Card -->
@@ -185,7 +184,7 @@ const priceByKey: Record<string, number> = {
             <li>You're not using a knitting machine</li>
           </ul>
           <div id="dak-hand-btn" class="dak-buy-button"></div>
-          <p class="dak-shipping-note">U.S. addresses only.</p>
+         
         </div>
       </div>
       
@@ -237,7 +236,7 @@ const priceByKey: Record<string, number> = {
   /* Desktop: text wider on the left, image narrower on the right */
   @media (min-width: 768px) {
     .hero-section {
-      grid-template-columns: 1.6fr 0.6fr; /* left text | right image */
+      grid-template-columns: 1.6fr 0.6fr;
       gap: 2.5rem;
     }
 
@@ -254,7 +253,7 @@ const priceByKey: Record<string, number> = {
   /* Image sizing: smaller than its column */
   .hero-image img {
     width: 100%;
-    max-width: 300px; /* adjust range: 260-340px if needed */
+    max-width: 300px;
     height: auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
