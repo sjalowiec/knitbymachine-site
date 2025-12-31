@@ -1,0 +1,83 @@
+TASK
+Add a new Help Hub landing page for Knit by Machine.
+
+IMPORTANT
+- Do NOT change the main navigation/menu in this task.
+- Keep existing pages (Answers, Glossary, Community, Contact Us) exactly as they are.
+- Use the site’s standard page layout and styling.
+
+Routes to use:
+- Community: /community
+- Contact: /contact
+
+--------------------------------------------------
+STEP 1: BACKUP
+--------------------------------------------------
+If a Help Hub page file already exists (any /help-hub, /help, /support, or similar),
+create a .bak copy before editing.
+
+--------------------------------------------------
+STEP 2: CREATE THE PAGE
+--------------------------------------------------
+Create a new page that resolves to:
+
+/help-hub
+
+Set meta:
+- Meta title: Help Hub | Knit by Machine
+- Meta description: Find answers, ask the community, look up terms, or contact us.
+
+--------------------------------------------------
+STEP 3: PAGE CONTENT (COPY)
+--------------------------------------------------
+H1:
+Help Hub
+
+Intro:
+Not sure where to start? This is the place.
+Choose the option that fits what you need right now:
+
+Add four option cards/sections using existing card styles:
+
+1) Find an Answer
+Body:
+Search clear, focused answers to common machine knitting questions — one question at a time.
+CTA:
+Browse Answers →
+Link to: /answers
+
+2) Ask the Community
+Body:
+See what other machine knitters are working on, or ask a question and get help from people who’ve been there.
+CTA:
+Visit the Community →
+Link to: /community
+
+3) Look up a Term
+Body:
+Quick definitions and explanations for machine knitting terms and concepts.
+CTA:
+View the Glossary →
+Link to: /glossary
+
+4) Still stuck?
+Body:
+If your question is about your account, access, or something on the site, you can reach us directly.
+CTA:
+Contact Us →
+Link to: /contact
+
+--------------------------------------------------
+STEP 4: CONSISTENCY & RESPONSIVE
+--------------------------------------------------
+- Keep the page intentionally short (no extra sections).
+- Ensure cards stack cleanly on mobile and align in a grid on desktop.
+- Use existing typography scale and spacing tokens/classes.
+
+--------------------------------------------------
+STEP 5: FINAL CHECK
+--------------------------------------------------
+Verify:
+- /help-hub loads correctly
+- All CTAs route correctly
+- No changes were made to navigation/menu
