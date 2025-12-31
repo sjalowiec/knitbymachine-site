@@ -1,0 +1,59 @@
+TASK
+Correctly position the workshop icons on the Workshops landing page.
+
+Page:
+- /workshops/index (or the existing workshops index file)
+
+Icons:
+- Self-Paced Workshops → /images/workshop.svg
+- Guided Workshops → /images/guided_workshops.svg
+
+--------------------------------------------------
+STEP 1: BACKUP
+--------------------------------------------------
+Before making changes, create a .bak copy of the workshops index file.
+
+--------------------------------------------------
+STEP 2: ICON PLACEMENT RULES
+--------------------------------------------------
+For each workshop card (Self-Paced and Guided):
+
+- Place the associated icon INSIDE the card container
+- Position the icon at the top-left of the card
+- Align the icon horizontally with the card title
+- The icon should visually read as part of the card header, not floating above the card
+
+Hierarchy rules:
+- Card icons must be smaller than the main page-level Workshops icon
+- Use the existing hex icon style (do not introduce new shapes or styles)
+- Maintain consistent spacing between icon and title text
+
+--------------------------------------------------
+STEP 3: IMPLEMENTATION DETAILS
+--------------------------------------------------
+Self-Paced Workshops card:
+- Insert /images/workshop.svg
+- Place it immediately before the "Self-Paced Workshops" heading
+
+Guided Workshops card:
+- Insert /images/guided_workshops.svg
+- Place it immediately before the "Guided Workshops" heading
+
+Wrap each icon + heading pair in a small header container (e.g. a flex row)
+so alignment is stable across breakpoints.
+
+--------------------------------------------------
+STEP 4: RESPONSIVE CHECK
+--------------------------------------------------
+Verify that:
+- Icons stay aligned with titles on mobile and desktop
+- Icons do not overlap text
+- Cards remain visually balanced
+
+--------------------------------------------------
+STEP 5: FINAL CHECK
+--------------------------------------------------
+Confirm:
+- Icons clearly belong to their respective cards
+- No icons are floating above or outside card boundaries
+- No other page styles are affected
