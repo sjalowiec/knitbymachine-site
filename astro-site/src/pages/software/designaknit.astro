@@ -149,6 +149,10 @@ const priceByKey: Record<string, number> = {
           <div id="dak-professional-btn" class="dak-buy-button"></div>
          
         </div>
+
+        <p class="dak-shipping-note-global">
+          Ships to U.S. addresses only.
+        </p>
         
         <!-- Complete Card -->
         <div class="dak-choice-card">
@@ -514,6 +518,24 @@ const priceByKey: Record<string, number> = {
     font-size: 0.9rem;
     color: #777;
     margin: 0 0 1rem 0;
+  }
+
+  /* Global shipping note between card rows */
+  .dak-shipping-note-global {
+    grid-column: 1 / -1;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #777;
+    margin: 0.75rem 0 1.25rem;
+  }
+
+  /* Mobile adjustment: move note below grid */
+  @media (max-width: 639px) {
+    .dak-shipping-note-global {
+      order: 99;
+      margin-top: 1rem;
+      margin-bottom: 0;
+    }
   }
 
   .dak-still-not-sure {
