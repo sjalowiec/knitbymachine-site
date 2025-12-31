@@ -1,0 +1,80 @@
+You are working in the Knit by Machine (Astro) codebase.
+
+GOAL
+Replace the current /project-wizards page content with a clean temporary “Project Wizards” page (cards + minimal intro). Keep the route exactly:
+https://knitbymachine.com/project-wizards
+
+IMPORTANT
+1) Before changing anything, create a backup copy of the existing page file (same folder) with a .bak timestamp suffix.
+   Example: project-wizards.2025-12-31.bak.astro (or .md/.mdx/.astro depending on what the current file is).
+2) Do not change navigation/menu or the page slug.
+3) Preserve the site’s existing layout wrapper and SEO component usage (whatever the project already uses).
+4) No “coming soon” language. No AI language. Reader-facing only.
+5) Keep it simple and on-brand: short sections, clear scanning, no fluff.
+6) After changes: run the build and fix any errors.
+
+STEP 1 — Locate the page file
+Find which file renders the /project-wizards route. It might be one of these patterns:
+- src/pages/project-wizards.astro
+- src/pages/project-wizards/index.astro
+- src/pages/project-wizards.md / mdx
+
+Open it and confirm it is the correct route.
+
+STEP 2 — Back it up
+Create a backup file in the same directory with today’s date:
+- If file is project-wizards.astro => copy to project-wizards.2025-12-31.bak.astro
+- If file is index.astro inside folder => copy to index.2025-12-31.bak.astro
+Do not modify the backup.
+
+STEP 3 — Replace the page content (keep layout, replace main body)
+Replace the page’s main content with the following TEMPORARY COPY.
+
+PAGE TITLE (H1)
+Project Wizards
+
+INTRO (one short paragraph under H1)
+Project Wizards help you plan a machine-knitting project before you cast on. Each wizard focuses on a specific type of project and helps you arrive at a clear, workable setup.
+
+CARDS (3 text-only cards)
+Card 1
+Title: What it is
+Body: Plan a project before you start knitting. Each wizard helps you arrive at a clear, workable setup.
+
+Card 2
+Title: How it works
+Body: Answer only what matters. Get a plan you can knit from — not general advice.
+
+Card 3
+Title: What to use now
+Body: Gauge tools, setup references, and Ask ’n Answer entries support the same planning decisions.
+
+OPTIONAL SMALL LINE (below cards, not a big section)
+Project types will be handled separately (socks, hats, blankets, sweaters).
+
+LAYOUT / STYLING REQUIREMENTS
+- Use the site’s existing container/wrapper classes.
+- Display cards in a responsive grid (1 column on mobile, 3 columns on desktop).
+- Use existing card styling components if the project has them; otherwise create simple div-based cards with:
+  - subtle border
+  - soft background
+  - comfortable padding
+  - consistent heading sizes
+- Keep spacing tight and readable.
+- No images required.
+- If icons are already used site-wide for cards, you may include a small icon, otherwise omit.
+
+SEO
+Set meta title to: Project Wizards | Knit by Machine
+Set meta description to: Plan a machine-knitting project before you cast on. Clear, practical setup support for common project types.
+
+STEP 4 — Verify
+- Confirm /project-wizards renders with the new content.
+- Confirm no broken imports.
+- Run the site/build and confirm no errors.
+
+OUTPUT
+After completing, tell me:
+1) The exact file path you edited
+2) The backup file name created
+3) A short summary of what changed
