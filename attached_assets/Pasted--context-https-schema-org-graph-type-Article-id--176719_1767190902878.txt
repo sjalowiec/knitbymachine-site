@@ -1,0 +1,83 @@
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Article",
+      "@id": "https://knitbymachine.com/ask-n-answer/why-do-i-keep-dropping-stitches#article",
+      "name": "Why do I keep dropping stitches?",
+      "headline": "Why do I keep dropping stitches?",
+      "description": "Dropped stitches in machine knitting usually come from tension, yarn feed, needle position, weighting, or carriage movement. This article helps you identify the type of drop you’re seeing and what to check next.",
+      "url": "https://knitbymachine.com/ask-n-answer/why-do-i-keep-dropping-stitches",
+      "datePublished": "2025-12-31",
+      "author": {
+        "@type": "Organization",
+        "name": "Knit by Machine",
+        "url": "https://knitbymachine.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Knit by Machine",
+        "url": "https://knitbymachine.com",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://knitbymachine.com/logo.png"
+        }
+      },
+      "keywords": [
+        "why do I keep dropping stitches",
+        "machine knitting dropped stitches",
+        "knitting machine troubleshooting",
+        "dropped stitch causes",
+        "machine knitting tension issues",
+        "needle problems knitting machine"
+      ]
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://knitbymachine.com/ask-n-answer/why-do-i-keep-dropping-stitches#faq",
+      "url": "https://knitbymachine.com/ask-n-answer/why-do-i-keep-dropping-stitches",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Why do I keep dropping stitches on a knitting machine?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Most dropped stitches happen when a stitch doesn’t fully form or doesn’t stay seated on the needle long enough to knit the next row. Common causes include tension mismatch, uneven weighting, yarn feeding issues, needle behavior, or an uneven carriage pass."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What does it mean if stitches keep dropping on the edge?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Edge drops often point to edge-specific issues such as uneven support, edge needle position, or how the carriage interacts at the sides of the needle bed."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do stitches drop while I’m transferring them?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "During transfers, stitches can briefly lose support or experience a local tension change, making them more likely to slip off before they are secured by the next row."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do dropped stitches keep happening on the same needle?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Repeated drops on the same needle usually suggest a needle-specific issue, such as a sticky motion, slight bend, incomplete return, or inconsistent positioning."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Why do dropped stitches feel random in the middle of the fabric?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Middle drops that feel random are often linked to small changes in yarn feed, tension, or fabric support as the knitted piece grows and becomes heavier."
+          }
+        }
+      ]
+    }
+  ]
+}
