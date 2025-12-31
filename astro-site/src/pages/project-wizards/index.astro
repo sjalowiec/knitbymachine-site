@@ -10,10 +10,11 @@ const description = "Plan a machine-knitting project before you cast on. Clear, 
   <div class="page-container">
     <SectionHero 
       title="Project Wizards" 
-      subtitle="Want better results? Think it through."
       iconPath="/images/guide_icon.png"
       iconAlt="Project Wizard icon"
     />
+
+    <h2 class="page-tagline">Want better results? Think it through.</h2>
 
     <div class="intro-section">
       <p class="intro-text">
@@ -23,12 +24,12 @@ const description = "Plan a machine-knitting project before you cast on. Clear, 
 
     <div class="cards-grid" data-testid="project-wizards-grid">
       <div class="info-card" data-testid="card-what-it-is">
-        <h2 class="card-title">What it is</h2>
+        <h2 class="card-title">What they are</h2>
         <p class="card-body">Plan a project before you start knitting. Each wizard helps you arrive at a clear, workable setup.</p>
       </div>
 
       <div class="info-card" data-testid="card-how-it-works">
-        <h2 class="card-title">How it works</h2>
+        <h2 class="card-title">How they work</h2>
         <p class="card-body">Answer only what matters. Get a plan you can knit from — not general advice.</p>
       </div>
 
@@ -49,6 +50,15 @@ const description = "Plan a machine-knitting project before you cast on. Clear, 
     max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1.5rem 4rem;
+  }
+
+  .page-tagline {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    font-weight: 500;
+    color: #5a6b47;
+    text-align: center;
+    margin: -1.5rem 0 2rem;
+    line-height: 1.4;
   }
 
   .intro-section {
