@@ -1,0 +1,104 @@
+TASK OVERVIEW
+We are restructuring workshops at Knit by Machine.
+
+Goal:
+- Create a new unified Workshops landing page at /workshops
+- Keep the existing /guided-workshops page intact (do NOT delete)
+- Reframe Guided Workshops as one option within Workshops
+- Ensure no broken links or regressions
+
+IMPORTANT RULES
+- Back up any file before editing
+- Do not remove existing content unless explicitly instructed
+- Keep tone clear, calm, instructional (not salesy)
+
+--------------------------------------------------
+STEP 1: BACKUP
+--------------------------------------------------
+If a file already exists for:
+- /guided-workshops
+- any existing workshops-related page
+
+Create a .bak copy before making changes.
+
+--------------------------------------------------
+STEP 2: CREATE NEW PAGE
+--------------------------------------------------
+Create a new page at:
+
+/workshops
+
+Use the site’s standard page layout and styles.
+
+--------------------------------------------------
+STEP 3: PAGE CONTENT (STRUCTURE + COPY)
+--------------------------------------------------
+
+H1:
+Workshops
+
+Intro paragraph:
+Workshops at Knit by Machine are structured knitting experiences.
+Each workshop has a clear outcome, an intentional sequence, and demonstrations built into the process.
+
+Section heading (H2):
+Two Ways to Take a Workshop
+
+Create two side-by-side cards or stacked sections (depending on existing layout components):
+
+CARD 1 — Self-Paced Workshops
+Title:
+Self-Paced Workshops
+
+Body copy:
+Follow the full workshop structure on your own schedule.
+Includes recorded lessons and demonstrations, with no live support.
+Start anytime and move at your own pace.
+
+CARD 2 — Guided Workshops
+Title:
+Guided Workshops
+
+Body copy:
+Includes the same structured content as the self-paced version,
+plus time-based guidance, feedback, and conversation.
+Guided workshops are offered periodically.
+
+Add a button or link on this card:
+View Guided Workshops
+Link to: /guided-workshops
+
+--------------------------------------------------
+STEP 4: OPTIONAL FUTURE-PROOFING (NON-FUNCTIONAL FOR NOW)
+--------------------------------------------------
+Below the cards, add a commented placeholder section for future workshop listings:
+
+<!--
+Future enhancement:
+- Workshop listing grid
+- Filters for Project / Foundations / Skill workshops
+- Badges for Self-Paced vs Guided
+-->
+
+Do NOT implement filters or listings yet.
+
+--------------------------------------------------
+STEP 5: NAVIGATION UPDATE
+--------------------------------------------------
+Update the main navigation menu:
+
+Under "Knit":
+- Add or replace the Workshops link to point to /workshops
+
+If a menu item currently points directly to /guided-workshops:
+- Change it to /workshops
+- Do NOT delete the guided workshops page itself
+
+--------------------------------------------------
+STEP 6: FINAL CHECK
+--------------------------------------------------
+Verify:
+- /workshops loads correctly
+- /guided-workshops still loads and is unchanged
+- No broken internal links
+- Navigation reflects the new structure
