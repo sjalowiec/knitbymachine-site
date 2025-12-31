@@ -220,50 +220,36 @@ const priceByKey: Record<string, number> = {
     grid-template-columns: 1fr;
     gap: 2rem;
     margin-bottom: 3rem;
-    align-items: center;
   }
 
-  /* Mobile: text first, image second */
   .hero-text {
     order: 1;
   }
 
   .hero-image {
     order: 2;
-    display: flex;
-    justify-content: center;
   }
 
-  /* Desktop: text wider on the left, image narrower on the right */
   @media (min-width: 768px) {
     .hero-section {
-      grid-template-columns: 1.6fr 0.6fr; /* left text | right image */
-      gap: 2.5rem;
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
     }
 
     .hero-text {
-      order: 1;
+      order: 2;
     }
 
     .hero-image {
-      order: 2;
-      justify-content: flex-end;
+      order: 1;
     }
   }
 
-  /* Image sizing: smaller than its column */
   .hero-image img {
     width: 100%;
-    max-width: 300px; /* adjust range: 260-340px if needed */
     height: auto;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  }
-
-  @media (max-width: 480px) {
-    .hero-image img {
-      max-width: 240px;
-    }
   }
 
   h1 {

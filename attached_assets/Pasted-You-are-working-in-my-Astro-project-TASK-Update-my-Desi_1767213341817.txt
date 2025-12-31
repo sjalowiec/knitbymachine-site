@@ -1,0 +1,89 @@
+You are working in my Astro project.
+
+TASK
+Update my DesignaKnit page so the hero image stays on the RIGHT on desktop, and the image is visually smaller than the text column.
+
+IMPORTANT
+1) Make a backup of the existing file before editing:
+   - Create a copy in the same folder with ".bak" appended to the filename (example: PageName.astro.bak)
+2) Do NOT change copy/content.
+3) Apply only the HTML/CSS changes described below.
+4) After edits, ensure the page still builds with no syntax errors.
+
+HOW TO FIND THE FILE
+Search the codebase for this exact string and open the matching .astro page:
+title="DesignaKnit (DAK) | Knit by Machine"
+(You can also confirm you found the right file if it contains: <article class="designaknit-page">)
+
+HTML CHANGES
+No HTML changes are required IF the hero markup is already:
+<section class="hero-section">
+  <div class="hero-text">...</div>
+  <div class="hero-image"><img ... /></div>
+</section>
+If it is different, adjust it to match the structure above (text first, image second).
+
+CSS CHANGES
+Inside the <style> block, find the Hero CSS section that starts with:
+  /* Hero: two-column on desktop, stacked on mobile (text first) */
+
+Replace the entire hero-related block (from that comment down through the closing of:
+  .hero-image img { ... }
+) with the following updated CSS:
+
+  /* Hero: two-column on desktop, stacked on mobile (text first) */
+  .hero-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    align-items: center;
+  }
+
+  /* Mobile: text first, image second */
+  .hero-text {
+    order: 1;
+  }
+
+  .hero-image {
+    order: 2;
+    display: flex;
+    justify-content: center;
+  }
+
+  /* Desktop: text wider on the left, image narrower on the right */
+  @media (min-width: 768px) {
+    .hero-section {
+      grid-template-columns: 1.6fr 0.6fr; /* left text | right image */
+      gap: 2.5rem;
+    }
+
+    .hero-text {
+      order: 1;
+    }
+
+    .hero-image {
+      order: 2;
+      justify-content: flex-end;
+    }
+  }
+
+  /* Image sizing: smaller than its column */
+  .hero-image img {
+    width: 100%;
+    max-width: 300px; /* adjust range: 260–340px if needed */
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  @media (max-width: 480px) {
+    .hero-image img {
+      max-width: 240px;
+    }
+  }
+
+NOTES / VALIDATION
+- Make sure you REMOVE any existing desktop reordering that puts .hero-image on the left (e.g., .hero-text { order: 2 } and .hero-image { order: 1 } inside the desktop media query).
+- Confirm the hero image appears on the right on desktop widths and stacks below the text on mobile.
+- Save the file and ensure formatting is clean.
