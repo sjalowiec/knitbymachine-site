@@ -1,0 +1,52 @@
+You are working in my Knit by Machine Astro site.
+
+Goal: Make ONLY text-level copy changes on the Help Hub page so the page makes sense as “Help Hub” while still functioning as an Answers index. Do NOT change layout, structure, components, classes, spacing, markup hierarchy, or styling. No new sections/components. No moving elements. Only replace existing text strings.
+
+BEFORE YOU EDIT:
+1) Create a backup copy of the current Help Hub page file (same folder) named:
+   <original-filename>.bak.<YYYY-MM-DD>
+   Use today’s date: 2026-01-01
+
+WHAT TO CHANGE (text-only replacements):
+
+A) Page H1
+- Find the page’s main H1 text and set it to exactly:
+  Help Hub
+
+B) Hero/supporting sentence under the H1 (or the primary intro line near the top)
+- Replace the existing supporting/intro sentence with exactly:
+  Clear answers, troubleshooting help, and next steps for machine knitters — one question at a time.
+
+Notes:
+- If there are multiple short intro lines, only replace the one that reads like the primary “what this is” sentence.
+- Do not add a new paragraph. Replace the existing one.
+
+C) “Ask Sue” link line (the “Didn’t find your question? Ask Sue →” text)
+- Replace the full line text with exactly:
+  Didn’t find what you need? Ask Sue →
+
+Important:
+- Keep the existing link URL/route exactly as-is.
+- Keep the arrow character as-is if it already exists; if not, add the arrow as shown.
+
+D) Browse section label above the topic filter/cards
+- Find the existing label text that currently says:
+  Browse by topic
+- Replace it with exactly:
+  Quick Answers
+
+E) Optional small helper text under “Browse by topic” (only if it already exists)
+- If there is already a small sub-line directly under that label (like a brief description), replace it with exactly:
+  Short, focused answers to common machine knitting questions.
+- If no such helper line exists currently, do NOT add one.
+
+NON-NEGOTIABLE CONSTRAINTS:
+- Do not change any HTML structure, wrapping elements, order, or add/remove elements.
+- Do not change any CSS files or classes.
+- Do not rename components or files (other than the backup).
+- Do not change the search, filter, sort, or cards in any way.
+- Only update literal text content.
+
+AFTER YOU EDIT:
+- Return the updated page file content (full file) so I can paste/compare if needed.
+- Also list each text replacement you made (old → new) in a short bullet list.
