@@ -45,6 +45,7 @@ async function getBlogPost(slug: string) {
       tags: post.tags || [],
       imageUrl: post.imageUrl || null,
       imageAlt: post.imageAlt || null,
+      showComments: post.showComments !== false,
     };
   } catch (error) {
     console.error('Error fetching blog post:', error);
@@ -166,24 +167,26 @@ const schemaData = {
           <a href="/blog" class="nav-button">← Back to Blog</a>
         </div>
 
-        <section class="kbm-comments">
-          <p class="kbm-comments-intro">
-            Questions about this post? Add them here.
-            For knitting help or troubleshooting, visit the
-            <a href="/ana-catalog/">Ask 'n Answer Help Hub</a>.
-          </p>
+        {post.showComments && (
+          <section class="kbm-comments">
+            <p class="kbm-comments-intro">
+              Questions about this post? Add them here.
+              For knitting help or troubleshooting, visit the
+              <a href="/ana-catalog/">Ask 'n Answer Help Hub</a>.
+            </p>
 
-          <div id="hyvor-talk"></div>
+            <div id="hyvor-talk"></div>
 
-          <script is:inline>
-            var HYVOR_TALK_WEBSITE = 14706;
-            var HYVOR_TALK_CONFIG = {
-              id: window.location.pathname,
-              url: window.location.href
-            };
-          </script>
-          <script async src="https://talk.hyvor.com/web-api/embed.js"></script>
-        </section>
+            <script is:inline>
+              var HYVOR_TALK_WEBSITE = 14706;
+              var HYVOR_TALK_CONFIG = {
+                id: window.location.pathname,
+                url: window.location.href
+              };
+            </script>
+            <script async src="https://talk.hyvor.com/web-api/embed.js"></script>
+          </section>
+        )}
       </article>
     </main>
 
