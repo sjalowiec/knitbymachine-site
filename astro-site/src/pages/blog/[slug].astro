@@ -142,7 +142,12 @@ const schemaData = {
           
           <h1 class="article-title">{post.title}</h1>
           
-          {post.author && (
+          {post.author === 'Sue Jalowiec' ? (
+            <>
+              <p class="article-author">By <a href="/about" class="author-link">{post.author}</a></p>
+              <p class="author-bio">Sue Jalowiec has spent decades working with machine knitters and is the founder of Knit by Machine.</p>
+            </>
+          ) : post.author && (
             <p class="article-author">By {post.author}</p>
           )}
         </header>
@@ -301,6 +306,26 @@ const schemaData = {
     font-size: var(--text-base, 1rem);
     color: #5a6b47;
     font-style: italic;
+    margin-bottom: 0.25rem;
+  }
+
+  .author-link {
+    color: #5a6b47;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .author-link:hover {
+    color: var(--kbm-green, #52682d);
+    text-decoration: underline;
+  }
+
+  .author-bio {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: var(--text-base, 1rem);
+    color: #5a6b47;
+    font-style: italic;
+    margin-top: 0;
   }
 
   .article-content {
