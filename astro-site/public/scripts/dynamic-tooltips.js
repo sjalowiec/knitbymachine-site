@@ -61,9 +61,13 @@
       tooltipText = termSlug; // Fallback to term slug
     }
 
-    // Create tooltip HTML
+    // Get the original text content to preserve
+    const termText = trigger.textContent || termSlug;
+
+    // Create tooltip HTML - keep the term text and add tooltip icon after it
     const tooltipHTML = `
       <span class="tooltip tooltip--${position}" tabindex="0">
+        <span class="tooltip-term">${termText}</span>
         <svg
           class="tooltip-icon"
           viewBox="0 0 100 100"
