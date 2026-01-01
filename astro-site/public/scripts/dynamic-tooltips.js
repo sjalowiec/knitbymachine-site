@@ -38,10 +38,6 @@
 
   // Process a single tooltip trigger element
   function processTooltipTrigger(trigger, data) {
-    // Skip if already processed
-    if (trigger.dataset.tooltipProcessed) return;
-    trigger.dataset.tooltipProcessed = 'true';
-
     const termSlug = trigger.getAttribute('data-tooltip-term');
     const position = trigger.getAttribute('data-tooltip-position') || 'top';
     
@@ -61,49 +57,16 @@
       tooltipText = termSlug; // Fallback to term slug
     }
 
-    // Get the original text content to preserve
-    const termText = trigger.textContent || termSlug;
-
-    // Create tooltip HTML - keep the term text and add tooltip icon after it
-    const tooltipHTML = `
-      <span class="tooltip tooltip--${position}" tabindex="0">
-        <span class="tooltip-term">${termText}</span>
-        <svg
-          class="tooltip-icon"
-          viewBox="0 0 100 100"
-          width="1em"
-          height="1em"
-          aria-hidden="true"
-        >
-          <polygon
-            points="50 2, 95 25, 95 75, 50 98, 5 75, 5 25"
-            fill="#52682D"
-            stroke="none"
-          />
-          <text
-            x="50"
-            y="63"
-            text-anchor="middle"
-            font-size="55"
-            font-family="Arial, sans-serif"
-            font-weight="bold"
-            fill="#ffffff"
-            pointer-events="none"
-          >
-            ?
-          </text>
-        </svg>
-        ${tooltipText ? `<span class="tooltip-text" role="tooltip">${tooltipText}</span>` : ''}
-      </span>
-    `;
-
-    // Replace the placeholder with the tooltip
-    trigger.outerHTML = tooltipHTML;
+    // Convert to pattern-term style - just add the class and data-tooltip attribute
+    // The CSS handles the tooltip display on hover
+    trigger.classList.add('pattern-term');
+    trigger.setAttribute('data-tooltip', tooltipText);
+    trigger.removeAttribute('data-tooltip-term');
   }
 
-  // Process all unprocessed tooltip triggers
+  // Process all tooltip triggers that haven't been converted yet
   async function processAllTooltips() {
-    const triggers = document.querySelectorAll('[data-tooltip-term]:not([data-tooltip-processed])');
+    const triggers = document.querySelectorAll('[data-tooltip-term]');
     if (triggers.length === 0) return;
 
     const data = await loadGlossaryData();
@@ -118,8 +81,8 @@
         if (mutation.type === 'childList') {
           for (const node of mutation.addedNodes) {
             if (node.nodeType === Node.ELEMENT_NODE) {
-              if (node.matches?.('[data-tooltip-term]:not([data-tooltip-processed])') ||
-                  node.querySelector?.('[data-tooltip-term]:not([data-tooltip-processed])')) {
+              if (node.matches?.('[data-tooltip-term]') ||
+                  node.querySelector?.('[data-tooltip-term]')) {
                 hasNewTooltips = true;
                 break;
               }
