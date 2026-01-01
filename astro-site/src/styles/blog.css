@@ -88,3 +88,65 @@
   color: #3b4b2f;
   line-height: 1.6;
 }
+
+/* ================================
+   STICKY BACK TO BLOG BUTTON
+   ================================ */
+
+.sticky-back-button {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #ffffff;
+  color: #52682d;
+  border: 1px solid #dee3d5;
+  border-radius: 9999px;
+  padding: 12px 20px;
+  font-family: "Poppins", system-ui, Arial, sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.sticky-back-button.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.sticky-back-button:hover {
+  background: #f7f8f7;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+  color: #445626;
+}
+
+.sticky-back-arrow {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.sticky-back-text {
+  display: inline;
+}
+
+/* Mobile: icon only */
+@media (max-width: 640px) {
+  .sticky-back-button {
+    padding: 12px 14px;
+    bottom: 16px;
+    left: 16px;
+  }
+  
+  .sticky-back-text {
+    display: none;
+  }
+}

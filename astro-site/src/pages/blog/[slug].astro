@@ -191,6 +191,40 @@ const schemaData = {
     </main>
 
     <Footer />
+
+    <!-- Floating Back to Blog Button -->
+    <a href="/blog" class="sticky-back-button" aria-label="Back to Blog">
+      <span class="sticky-back-arrow">←</span>
+      <span class="sticky-back-text">Back to Blog</span>
+    </a>
+
+    <script is:inline>
+      (function() {
+        const stickyBtn = document.querySelector('.sticky-back-button');
+        if (!stickyBtn) return;
+        
+        let ticking = false;
+        
+        function updateButtonVisibility() {
+          if (window.scrollY > 400) {
+            stickyBtn.classList.add('visible');
+          } else {
+            stickyBtn.classList.remove('visible');
+          }
+          ticking = false;
+        }
+        
+        window.addEventListener('scroll', function() {
+          if (!ticking) {
+            window.requestAnimationFrame(updateButtonVisibility);
+            ticking = true;
+          }
+        });
+        
+        // Initial check
+        updateButtonVisibility();
+      })();
+    </script>
   </body>
 </html>
 
