@@ -1,0 +1,69 @@
+Replit — Add 3 new ANA fields to the production ANA page rendering (template only)
+
+Context:
+The ANA admin/data model now includes these OPTIONAL string fields on each ANA entry:
+- introParagraph
+- keyInsight
+- quickCheckText
+
+Task:
+Update the production ANA page template (and any supporting code required to pass data into it) so these fields render on live ANA pages.
+
+Critical constraints:
+- Make the smallest possible change.
+- Do NOT rename or remove any existing fields.
+- Do NOT restructure the page layout or redesign CSS.
+- Reuse existing typography styles (no new boxes, borders, colors, or headings).
+- Existing ANA pages must render exactly the same when these fields are missing/empty.
+- Back up any file you edit (create a .bak copy in the same folder before changes).
+
+Where to implement:
+- Find the production ANA page template used for routes like:
+  /ask-n-answer/<slug>
+  (or the equivalent in this project)
+- If there is a shared ANA component (e.g., AnaTemplate/AnaPage), update that component rather than duplicating logic.
+
+Rendering rules (exact placement + behavior):
+
+1) introParagraph
+- If introParagraph exists and is not empty:
+  - Render it directly under the H1 question/title.
+  - Treat it as a short paragraph (2–4 sentences).
+- If missing/empty: render nothing and do not leave extra vertical space.
+
+2) keyInsight
+- If keyInsight exists and is not empty:
+  - Render it as a single sentence.
+  - Position it AFTER introParagraph (if present) and BEFORE the main answer content / step list / body.
+  - If introParagraph is missing, render keyInsight directly under the H1.
+- No label like “What matters most:” unless the site already uses a similar pattern; keep it subtle.
+- If missing/empty: render nothing.
+
+3) quickCheckText
+- If quickCheckText exists and is not empty:
+  - Render it AFTER the main answer content (steps/body) and BEFORE the wizard block / related tools section (if those exist).
+  - Display it as a small “Quick check” section:
+    - A simple heading/label “Quick check” (use existing heading styles; do not invent a new visual style).
+    - Convert the textarea text into bullets by splitting on new lines:
+      - Each non-empty line becomes one bullet.
+      - Ignore blank lines.
+  - If splitting into bullets is not already supported in this template, implement it in the simplest way possible.
+- If missing/empty: render nothing and do not leave extra vertical space.
+
+Data wiring:
+- Ensure the template is reading these fields from the ANA JSON entry the same way it reads existing fields.
+- Do not change how routing/slug lookup works.
+
+Testing checklist (do this before finishing):
+- Pick one existing ANA entry with none of these fields filled:
+  - Confirm the page output is unchanged.
+- Fill only introParagraph for one ANA:
+  - Confirm it appears under H1.
+- Fill only keyInsight for one ANA:
+  - Confirm it appears under H1 (or under introParagraph if present) and above the answer.
+- Fill quickCheckText with 3 lines for one ANA:
+  - Confirm it appears as a bullet list with label “Quick check” after the answer and before the wizard/tools.
+- Confirm build succeeds and no console errors.
+
+Deliverable:
+- Commit-ready template updates that render introParagraph, keyInsight, and quickCheckText exactly as described, with zero changes to pages that don’t use them.

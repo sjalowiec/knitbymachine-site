@@ -116,16 +116,6 @@ const relatedWizards = entry.data.relatedWizards?.length
       <h1 class="ana-page-title">{entry.data.title}</h1>
     </div>
 
-    {/* Intro Paragraph - directly under H1 */}
-    {entry.data.introParagraph && entry.data.introParagraph.trim() !== '' && (
-      <p class="ana-intro-paragraph" data-testid="text-intro-paragraph">{entry.data.introParagraph}</p>
-    )}
-
-    {/* Key Insight - after intro paragraph, before answer */}
-    {entry.data.keyInsight && entry.data.keyInsight.trim() !== '' && (
-      <p class="ana-key-insight" data-testid="text-key-insight">{entry.data.keyInsight}</p>
-    )}
-
     <!-- Encouragement Band -->
     <div class="ana-encouragement">
       <p class="ana-encouragement-text">
@@ -155,18 +145,6 @@ const relatedWizards = entry.data.relatedWizards?.length
             <div class="ana-bubble-content" set:html={entry.data.body}></div>
           </div>
         </div>
-
-        {/* Quick Check Section - after answer, before video/related content */}
-        {entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
-          <div class="quick-check-section" data-testid="section-quick-check">
-            <h3 class="quick-check-title">Quick check</h3>
-            <ul class="quick-check-list">
-              {entry.data.quickCheckText.split('\n').filter((line: string) => line.trim() !== '').map((line: string) => (
-                <li>{line.trim()}</li>
-              ))}
-            </ul>
-          </div>
-        )}
 
         <!-- Video Section (prioritized - if videoUrl is provided, show video instead of image) -->
         {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' ? (
@@ -331,24 +309,6 @@ const relatedWizards = entry.data.relatedWizards?.length
     font-weight: 600;
     color: #52682d;
     line-height: 1.3;
-  }
-
-  /* Intro Paragraph - short intro below H1 */
-  .ana-intro-paragraph {
-    margin: 0.5rem 0 0.75rem;
-    font-size: 1.05rem;
-    line-height: 1.6;
-    color: #2c3a57;
-  }
-
-  /* Key Insight - single sentence emphasis */
-  .ana-key-insight {
-    margin: 0 0 0.75rem;
-    font-size: 1rem;
-    font-weight: 500;
-    font-style: italic;
-    line-height: 1.5;
-    color: #52682d;
   }
 
   /* Encouragement Band - secondary/supportive */
@@ -597,35 +557,6 @@ const relatedWizards = entry.data.relatedWizards?.length
     z-index: 10000;
     border-radius: 8px;
     cursor: zoom-out;
-  }
-
-  /* Quick Check Section */
-  .quick-check-section {
-    margin-top: 0.5rem;
-  }
-
-  .quick-check-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    color: #52682d;
-    margin: 0 0 0.75rem 0;
-  }
-
-  .quick-check-list {
-    list-style: disc;
-    padding-left: 1.5rem;
-    margin: 0;
-  }
-
-  .quick-check-list li {
-    font-size: 1rem;
-    line-height: 1.6;
-    color: #2c3a57;
-    margin-bottom: 0.4rem;
-  }
-
-  .quick-check-list li:last-child {
-    margin-bottom: 0;
   }
 
   /* Related Content Section */
