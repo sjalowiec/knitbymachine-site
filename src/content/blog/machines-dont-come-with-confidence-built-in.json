@@ -14,5 +14,6 @@
   "customSchema": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"FAQPage\",\n  \"mainEntity\": [\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Why does machine knitting feel so mysterious at first?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Machine knitting involves unfamiliar levers, dials, and settings. Without guidance, it’s hard to know what’s normal and what’s not — which makes everything feel uncertain at the beginning.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"How do KBM tools help remove guesswork?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"KBM tools are designed to guide you step-by-step. Calculators handle the math, wizards walk you through shaping, and ANA entries answer the exact questions knitters ask every day.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Can my question really inspire a new wizard?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Absolutely. Many KBM tools begin as real questions from knitters. If something feels confusing on your machine, chances are you're not the only one — and that makes it a perfect candidate for a new wizard.\"\n      }\n    }\n  ]\n}\n",
   "isDraft": false,
   "publishedDate": "2025-11-17",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "displayOrder": 20
 }

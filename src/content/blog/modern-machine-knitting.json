@@ -14,5 +14,6 @@
   "customSchema": "",
   "isDraft": true,
   "publishedDate": "2025-11-26",
-  "pendingPublish": true
+  "pendingPublish": true,
+  "displayOrder": 60
 }

@@ -14,5 +14,6 @@
   "customSchema": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"FAQPage\",\n  \"mainEntity\": [\n    {\n      \"@type\": \"Question\",\n      \"name\": \"How do knitters shape the KBM platform?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Every question, suggestion, and bit of feedback becomes input for new tools, workshops, content, or ANA entries. The platform grows based on what real knitters ask for.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Why does community feedback matter so much?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Machine knitters have a wide range of machines, goals, and experiences. Your feedback helps KBM build tools that actually match the way people knit, not a one-size-fits-all model.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Can my idea really become a new KBM feature?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Yes. Many KBM tools begin as knitter suggestions. If you wish something existed, chances are others do too — making it a perfect candidate for development.\"\n      }\n    }\n  ]\n}\n",
   "isDraft": false,
   "publishedDate": "2025-11-17",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "displayOrder": 30
 }

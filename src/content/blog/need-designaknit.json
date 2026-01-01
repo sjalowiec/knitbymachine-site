@@ -16,5 +16,6 @@
   "customSchema": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BlogPosting\",\n  \"mainEntityOfPage\": {\n    \"@type\": \"WebPage\",\n    \"@id\": \"https://knitbymachine.com/blog/do-you-need-designaknit\"\n  },\n  \"headline\": \"Do You Need DesignaKnit? A Clear Guide for Machine Knitters\",\n  \"description\": \"Wondering if DesignaKnit is worth it? Explore what DAK does, how it fits manual, punchcard, and electronic machines, and whether it belongs in your knitting toolkit.\",\n  \"articleBody\": \"DesignaKnit is a powerful tool for planning garment shapes, creating stitch patterns, and knitting with on-screen guidance — but it’s not a must-have for every machine knitter. Here’s a clear look at what DAK does, where it shines, and how to decide if it belongs in your knitting workflow.\",\n \n  \"author\": {\n    \"@type\": \"Person\",\n    \"name\": \"Sue Jalowiec\"\n  },\n  \"publisher\": {\n    \"@type\": \"Organization\",\n    \"name\": \"Knit by Machine\",\n   \n  },\n  \"datePublished\": \"2025-11-29\",\n  \"dateModified\": \"2025-11-29\"\n}\n",
   "isDraft": true,
   "publishedDate": "2025-11-29",
-  "pendingPublish": true
+  "pendingPublish": true,
+  "displayOrder": 70
 }

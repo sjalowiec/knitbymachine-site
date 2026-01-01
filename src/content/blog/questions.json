@@ -14,5 +14,6 @@
   "customSchema": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"FAQPage\",\n  \"mainEntity\": [\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Why do my questions matter?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Your questions highlight exactly where knitters need more clarity. Each one guides new tools, workshops, or ANA entries that make the platform smarter for everyone.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Will my question really influence future tools?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Yes. If a question reveals a recurring challenge or a missing shortcut, it goes onto the wizard or workshop roadmap immediately.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"What happens after I submit a question?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"First, you get your answer. Then I review the question and decide whether it belongs in ANA, deserves a new tool, or should shape an upcoming workshop.\"\n      }\n    }\n  ]\n}\n",
   "isDraft": false,
   "publishedDate": "2025-11-17",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "displayOrder": 40
 }

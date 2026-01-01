@@ -14,5 +14,6 @@
   "customSchema": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"FAQPage\",\n  \"mainEntity\": [\n    {\n      \"@type\": \"Question\",\n      \"name\": \"Why do small wins matter in machine knitting?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Small wins help you build confidence through action. Each success reinforces your skills and makes larger projects feel more approachable.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"How does Knit by Machine support small wins?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"Every workshop, wizard, and ANA entry is designed to give you one clear, achievable step. You always know exactly what to do next.\"\n      }\n    },\n    {\n      \"@type\": \"Question\",\n      \"name\": \"What’s an example of a small win I can focus on?\",\n      \"acceptedAnswer\": {\n        \"@type\": \"Answer\",\n        \"text\": \"It might be a clean cast-on, finishing your first simple shape, or creating a small gift like a baby blanket. Any step that feels achievable counts as a win.\"\n      }\n    }\n  ]\n}\n",
   "isDraft": false,
   "publishedDate": "2025-11-17",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "displayOrder": 50
 }
