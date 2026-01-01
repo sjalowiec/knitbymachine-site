@@ -120,7 +120,7 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Help Hub";
+const title = "Answers";
 const description = "Machine knitting questions and answers, organized by topic. Find solutions to troubleshooting, techniques, machines, and more.";
 ---
 
@@ -130,11 +130,11 @@ const description = "Machine knitting questions and answers, organized by topic.
     <div class="header-panel fade-in">
       <img src="/images/ask-n-answer_logo.svg" alt="Answers" class="intro-icon">
       <div class="header-right">
-        <p class="intro-tagline">Clear answers, troubleshooting help, and next steps for machine knitters — one question at a time.</p>
+        <p class="intro-tagline">Troubleshoot, learn, and master your knitting machine — one question at a time.</p>
         <!-- Ask Sue Trigger Link -->
         <p class="ask-link-wrapper" style="margin-top: 0.5rem;">
           <a href="#" id="openAskModal" class="ask-link" style="color: var(--kbm-green); font-weight: 600;">
-            Didn't find what you need? Ask Sue →
+            Didn't find your question? Ask Sue →
           </a>
         </p>
         <div class="controls-wrapper">
@@ -168,7 +168,7 @@ const description = "Machine knitting questions and answers, organized by topic.
     <!-- ANA Topic Filter – Custom Dropdown Version -->
     <section class="ana-topic-filter">
       <div class="ana-topic-filter__inner">
-        <span class="ana-topic-filter__label">Quick Answers</span>
+        <span class="ana-topic-filter__label">Browse by topic</span>
 
         <div class="custom-dropdown custom-dropdown--wide" id="topicDropdown">
           <button type="button" class="custom-dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
