@@ -1,0 +1,63 @@
+{
+  "term": "Negative Ease",
+  "slug": "negative-ease",
+  "abbreviation": "",
+  "description": "<p>Negative ease means the finished knitted piece is <strong>smaller than the body measurement</strong> it’s meant to fit.<br>This creates a snug fit and relies on the fabric’s stretch to be comfortable when worn.</p><p>Negative ease is commonly used in items like socks, hats, mittens and fitted garments.</p>",
+  "tooltip": "when the finished knitting measures smaller than the body for a snug, stretchy fit.",
+  "example": "If your bust measurement is 40\" and you plan 2\" of negative ease, the finished sweater measurement would be 38\".\n\nThe garment stretches to fit the body rather than hanging loosely.",
+  "categories": [
+    "Measurements & Fit"
+  ],
+  "letter": "N",
+  "imageFilename": "1767267770340-ease-silhouette.jpg",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "url": "https://knitbymachine.com/glossary/negative-ease",
+    "name": "Negative Ease",
+    "@type": "DefinedTerm",
+    "author": {
+      "name": "Knit by Machine",
+      "@type": "Organization"
+    },
+    "@context": "https://schema.org",
+    "keywords": [
+      "negative ease",
+      "ease in knitting",
+      "machine knitting fit",
+      "knitting measurements",
+      "knitted garment fit"
+    ],
+    "publisher": {
+      "logo": {
+        "url": "https://knitbymachine.com/images/kbm-logo.png",
+        "@type": "ImageObject"
+      },
+      "name": "Knit by Machine",
+      "@type": "Organization"
+    },
+    "description": "Negative ease means the finished knitted piece is smaller than the body measurement, creating a snug fit that relies on fabric stretch. It is commonly used for socks, hats, and fitted garments.",
+    "datePublished": "2026-01-01",
+    "inDefinedTermSet": {
+      "url": "https://knitbymachine.com/glossary",
+      "name": "Machine Knitting Glossary",
+      "@type": "DefinedTermSet"
+    }
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "ease"
+  ],
+  "tags": [
+    "fit",
+    "gauge"
+  ],
+  "isDraft": false,
+  "publishedDate": "2026-01-01T00:00:00.000Z",
+  "pendingPublish": false
+}
