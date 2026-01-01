@@ -59,6 +59,25 @@ if (!post) {
   return Astro.redirect('/blog');
 }
 
+// Function to insert inline image after first paragraph
+function insertInlineImage(body: string, imageUrl: string | null, imageAlt: string | null): string {
+  if (!imageUrl || !body) return body;
+  
+  const inlineImageHtml = `<figure class="blog-inline-image"><img src="${imageUrl}" alt="${imageAlt || 'Blog post image'}"></figure>`;
+  
+  // Find the end of the first paragraph
+  const firstParagraphEnd = body.indexOf('</p>');
+  if (firstParagraphEnd === -1) {
+    // No paragraph found, prepend the image
+    return inlineImageHtml + body;
+  }
+  
+  // Insert after the first paragraph
+  return body.slice(0, firstParagraphEnd + 4) + inlineImageHtml + body.slice(firstParagraphEnd + 4);
+}
+
+const processedBody = insertInlineImage(post.body, post.imageUrl, post.imageAlt);
+
 // Schema.org structured data for SEO/AEO
 const schemaData = {
   "@context": "https://schema.org",
@@ -130,16 +149,6 @@ const schemaData = {
         <header class="article-header">
           <a href="/blog" class="back-link">← Back to Blog</a>
           
-          {post.imageUrl && (
-            <div class="featured-image">
-              <img 
-                src={post.imageUrl} 
-                alt={post.imageAlt || post.title} 
-                loading="eager"
-              />
-            </div>
-          )}
-          
           <h1 class="article-title">{post.title}</h1>
           
           {post.author === 'Sue Jalowiec' ? (
@@ -152,7 +161,7 @@ const schemaData = {
           )}
         </header>
 
-        <div class="article-content kbm-post" set:html={post.body} />
+        <div class="article-content kbm-post" set:html={processedBody} />
 
         {post.qaSection && (
           <QAAccordion qaHTML={post.qaSection} />
@@ -268,19 +277,6 @@ const schemaData = {
 
   .article-header {
     margin-bottom: 3rem;
-  }
-
-  .featured-image {
-    margin-bottom: 2rem;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  }
-
-  .featured-image img {
-    width: 100%;
-    height: auto;
-    display: block;
   }
 
   .article-date {
@@ -415,6 +411,35 @@ const schemaData = {
     height: auto;
     border-radius: 6px;
     margin: 1.5rem 0;
+  }
+
+  /* Inline blog image - floated right with text wrap */
+  .article-content :global(.blog-inline-image) {
+    float: right;
+    max-width: 40%;
+    margin: 0.25rem 0 1rem 1.5rem;
+  }
+
+  .article-content :global(.blog-inline-image img) {
+    width: 100%;
+    height: auto;
+    border-radius: 6px;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .article-content :global(.blog-inline-image) {
+      float: none;
+      max-width: 100%;
+      margin: 1rem 0;
+    }
+  }
+
+  /* Clearfix for floated images */
+  .article-content::after {
+    content: "";
+    display: table;
+    clear: both;
   }
 
   .article-footer {
