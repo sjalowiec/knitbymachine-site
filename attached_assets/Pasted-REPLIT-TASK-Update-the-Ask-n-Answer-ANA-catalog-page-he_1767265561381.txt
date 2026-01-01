@@ -1,0 +1,46 @@
+REPLIT TASK: Update the Ask ’n Answer (ANA) catalog page header to match KBM standard page headers (like the Patterns page). Use "Ask ’n Answer" as the H1.
+
+IMPORTANT
+- Make a backup copy of any file you edit (same folder) with a .bak extension before changes.
+- Do NOT change any existing ANA catalog functionality (search, filters, sort, cards, links). Only add the missing page header and adjust spacing so it looks like other KBM pages.
+
+1) FIND THE ANA CATALOG PAGE
+- Locate the page/route that renders the ANA catalog (the page shown with the big search panel, “Search answers…”, “Sort by: Newest”, and the answer cards).
+- This may be something like:
+  - src/pages/ask-n-answer/index.astro
+  - src/pages/help-hub/index.astro
+  - src/pages/answers/index.astro
+  - or a shared template used by that route
+- Identify the exact file used for this page.
+
+2) BACKUP
+- Create a backup: duplicate the file as <filename>.bak in the same directory.
+
+3) ADD THE KBM-STYLE PAGE HEADER (MATCH PATTERNS)
+- Add a page header section ABOVE the existing ANA search panel/card.
+- The header must use the same layout, spacing, and typography pattern as the Patterns page header:
+  - left hex icon
+  - large H1
+  - short intro text beneath
+- Reuse existing CSS classes/components already used on the Patterns page header (do not invent a new design).
+- If the Patterns page uses a shared component for the header (e.g., PageHeader, SectionHeader, PageHero), reuse that same component here.
+
+HEADER CONTENT
+- Icon: /images/help.svg (use the same hex/icon treatment as other section headers)
+- H1: Ask ’n Answer
+- Intro line: Clear answers, troubleshooting help, and next steps for machine knitters — one question at a time.
+
+4) SPACING / VISUAL CHECKS
+- Ensure there is consistent spacing between:
+  - site nav → page header
+  - page header → existing ANA search panel
+- The ANA search panel should remain exactly as-is; it should simply be pushed down under the new header.
+- The header must align to the same container width as other pages.
+
+5) OPTIONAL (ONLY IF NEEDED)
+- If the existing page already has a smaller title or label inside the search panel area, remove or demote it so there is only ONE primary H1 on the page ("Ask ’n Answer").
+- Keep all accessibility attributes intact.
+
+6) RETURN OUTPUT
+- Provide the final updated file contents for the ANA catalog page.
+- If you had to edit CSS, provide the exact CSS changes and which file(s) they were made in.

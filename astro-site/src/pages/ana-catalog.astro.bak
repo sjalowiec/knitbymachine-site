@@ -1,6 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import SectionHero from '../components/SectionHero.astro';
 import "../styles/wizard.css";
 
 // Define ANA categories (matching the admin categories)
@@ -121,53 +120,46 @@ try {
   errorMessage = error.message;
 }
 
-const title = "Ask 'n Answer";
+const title = "Help Hub";
 const description = "Machine knitting questions and answers, organized by topic. Find solutions to troubleshooting, techniques, machines, and more.";
 ---
 
 <BaseLayout {title} {description} bodyClass="has-catalog-search">
   <div class="page-container">
-    <SectionHero 
-      title="Ask 'n Answer" 
-      iconPath="/images/ask-n-answer_logo.svg"
-      iconAlt="Ask 'n Answer icon"
-    />
-
-    <div class="intro-section">
-      <p class="intro-text">
-        Clear answers, troubleshooting help, and next steps for machine knitters — one question at a time.
-      </p>
-      <p class="ask-link-wrapper">
-        <a href="#" id="openAskModal" class="ask-link">
-          Didn't find what you need? Ask Sue →
-        </a>
-      </p>
-    </div>
-
-    <!-- Search and Sort Controls Panel -->
-    <div class="search-panel fade-in">
-      <div class="controls-wrapper">
-        <div class="search-wrapper">
-          <input 
-            type="text" 
-            class="search-input" 
-            id="searchInput" 
-            placeholder="Search answers..."
-            aria-label="Search questions"
-          >
-        </div>
-        <div class="sort-wrapper">
-          <span class="sort-label">Sort by:</span>
-          <div class="custom-dropdown" id="sortDropdown">
-            <button type="button" class="custom-dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
-              <span class="custom-dropdown__value">Newest</span>
-              <svg class="custom-dropdown__arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
-            </button>
-            <ul class="custom-dropdown__menu" role="listbox">
-              <li class="custom-dropdown__option selected" data-value="newest" role="option">Newest</li>
-              <li class="custom-dropdown__option" data-value="oldest" role="option">Oldest</li>
-              <li class="custom-dropdown__option" data-value="alphabetical" role="option">Alphabetical</li>
-            </ul>
+    <!-- Compact Header: Icon + Text + Search/Sort -->
+    <div class="header-panel fade-in">
+      <img src="/images/ask-n-answer_logo.svg" alt="Answers" class="intro-icon">
+      <div class="header-right">
+        <p class="intro-tagline">Clear answers, troubleshooting help, and next steps for machine knitters — one question at a time.</p>
+        <!-- Ask Sue Trigger Link -->
+        <p class="ask-link-wrapper" style="margin-top: 0.5rem;">
+          <a href="#" id="openAskModal" class="ask-link" style="color: var(--kbm-green); font-weight: 600;">
+            Didn't find what you need? Ask Sue →
+          </a>
+        </p>
+        <div class="controls-wrapper">
+          <div class="search-wrapper">
+            <input 
+              type="text" 
+              class="search-input" 
+              id="searchInput" 
+              placeholder="Search answers..."
+              aria-label="Search questions"
+            >
+          </div>
+          <div class="sort-wrapper">
+            <span class="sort-label">Sort by:</span>
+            <div class="custom-dropdown" id="sortDropdown">
+              <button type="button" class="custom-dropdown__trigger" aria-haspopup="listbox" aria-expanded="false">
+                <span class="custom-dropdown__value">Newest</span>
+                <svg class="custom-dropdown__arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+              </button>
+              <ul class="custom-dropdown__menu" role="listbox">
+                <li class="custom-dropdown__option selected" data-value="newest" role="option">Newest</li>
+                <li class="custom-dropdown__option" data-value="oldest" role="option">Oldest</li>
+                <li class="custom-dropdown__option" data-value="alphabetical" role="option">Alphabetical</li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -359,46 +351,46 @@ const description = "Machine knitting questions and answers, organized by topic.
   .page-container {
     max-width: 1400px;
     margin: 0 auto;
-    padding: 2rem 1.5rem 3rem;
+    padding: 4.5rem 1.5rem 3rem;
   }
 
-  /* Intro Section (matches Patterns page) */
-  .intro-section {
-    max-width: 800px;
-    margin: 0 0 2rem;
-    text-align: left;
-  }
-
-  .intro-text {
-    font-size: clamp(1rem, 1.8vw, 1.15rem);
-    color: #5a6b47;
-    line-height: 1.7;
-    margin: 0 0 0.75rem 0;
-  }
-
-  .ask-link-wrapper {
-    margin: 0;
-  }
-
-  .ask-link {
-    color: var(--kbm-green, #52682D);
-    font-weight: 600;
-    text-decoration: none;
-    transition: color 0.2s ease;
-  }
-
-  .ask-link:hover {
-    color: #3e5023;
-    text-decoration: underline;
-  }
-
-  /* Search Panel */
-  .search-panel {
+  /* Compact Header Panel */
+  .header-panel {
     background-color: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
-    padding: 1rem 1.5rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+    padding: 0.625rem 1.5rem;
     margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .intro-icon {
+    width: 180px;
+    height: 180px;
+    flex-shrink: 0;
+  }
+
+  .header-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.875rem;
+    min-width: 0;
+  }
+
+  .intro-tagline {
+    color: #52682D;
+    font-size: var(--text-lg);
+    line-height: 1.5;
+    margin: 0;
+    opacity: 0.85;
+    width: 100%;
   }
 
   /* Search and Sort Controls */
