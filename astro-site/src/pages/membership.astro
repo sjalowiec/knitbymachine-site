@@ -40,9 +40,12 @@ import Footer from '../components/footer.astro';
     }
     
     .coming-soon-icon {
-      font-size: 72px;
-      color: #52682d;
       margin-bottom: 24px;
+    }
+    
+    .coming-soon-icon img {
+      width: 72px;
+      height: 72px;
     }
     
     .coming-soon-container h1 {
@@ -87,8 +90,9 @@ import Footer from '../components/footer.astro';
         font-size: 2rem;
       }
       
-      .coming-soon-icon {
-        font-size: 56px;
+      .coming-soon-icon img {
+        width: 56px;
+        height: 56px;
       }
     }
   </style>
@@ -99,7 +103,7 @@ import Footer from '../components/footer.astro';
   <main class="page-content">
     <div class="coming-soon-container">
       <div class="coming-soon-icon">
-        <i class="fas fa-clock"></i>
+        <img src="https://knitbymachine.com/images/kbm_logo.svg" alt="Knit by Machine" />
       </div>
       <h1>Membership</h1>
       <p>A membership experience is taking shape here at Knit by Machine — thoughtfully and at the right pace.</p>
