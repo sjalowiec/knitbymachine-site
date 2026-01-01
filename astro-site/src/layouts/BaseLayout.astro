@@ -43,6 +43,19 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#738C52" />
 
+    <!-- Google Analytics (gtag.js) -->
+    {import.meta.env.PUBLIC_GA4_ID && (
+      <>
+        <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA4_ID}`}></script>
+        <script is:inline define:vars={{ gaId: import.meta.env.PUBLIC_GA4_ID }}>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        </script>
+      </>
+    )}
+
     <!-- Fonts & icons -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Shadows+Into+Light+Two&display=swap"
