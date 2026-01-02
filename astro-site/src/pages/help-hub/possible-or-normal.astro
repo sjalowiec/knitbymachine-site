@@ -1,0 +1,135 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = "Is This Possible or Normal? | Help Hub | Knit by Machine";
+const description = "Get reassurance about what's normal, what your machine can do, and when an issue is worth fixing.";
+---
+
+<BaseLayout {title} {description}>
+  <div class="gateway-page">
+    <div class="page-container">
+      <h1 class="page-title" data-testid="gateway-title">I want to know if something is possible or normal</h1>
+      
+      <p class="intro-text">
+        You're in the right place.<br>
+        This Help Hub path is being built now so you can get to the next clear step without digging.
+      </p>
+
+      <div class="help-list">
+        <p class="list-label">This page will help with:</p>
+        <ul data-testid="help-list">
+          <li>"Is this normal?" reassurance questions</li>
+          <li>What your machine can/can't do</li>
+          <li>When an issue is harmless vs worth fixing</li>
+          <li>Quick checks to confirm what's happening</li>
+        </ul>
+      </div>
+
+      <p class="closing-text">
+        In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here.
+      </p>
+
+      <div class="nav-links">
+        <a href="/start-here" class="nav-link nav-link--back" data-testid="link-back-start-here">
+          &larr; Back to Start Here
+        </a>
+        <a href="/ana-catalog" class="nav-link nav-link--browse" data-testid="link-browse-ana">
+          Browse all Ask 'n Answer questions &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .gateway-page {
+    padding: 2rem 0 4rem;
+    min-height: 60vh;
+    background: var(--page-bg, #f8f9f5);
+  }
+
+  .page-container {
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kbm-green, #52682d);
+    margin: 0 0 1.5rem;
+    line-height: 1.3;
+  }
+
+  .intro-text {
+    font-size: 1.125rem;
+    color: #5a6b47;
+    line-height: 1.7;
+    margin: 0 0 2rem;
+  }
+
+  .help-list {
+    background: #ffffff;
+    border: 1px solid #d1d9c2;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .list-label {
+    font-weight: 600;
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+  }
+
+  .help-list ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: #5a6b47;
+  }
+
+  .help-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .help-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .closing-text {
+    font-size: 1rem;
+    color: #6b7a5d;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: #3e5023;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .nav-links {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+</style>

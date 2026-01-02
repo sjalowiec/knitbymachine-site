@@ -8,32 +8,32 @@ const startCards = [
   {
     title: "My machine is stuck or misbehaving",
     helper: "Something isn't moving or behaving the way it should.",
-    slug: "machine-stuck"
+    href: "/help-hub/while-knitting"
   },
   {
     title: "My knitting doesn't look right",
     helper: "Stitches, edges, or fabric don't match what you expected.",
-    slug: "knitting-doesnt-look-right"
+    href: "/help-hub/fabric-doesnt-look-right"
   },
   {
     title: "I made a mistake (and I don't want to rip it out)",
     helper: "Let's fix it and keep going.",
-    slug: "made-a-mistake"
+    href: "/help-hub/fix-without-starting-over"
   },
   {
     title: "I'm getting ready to start",
     helper: "Set up your machine and project with confidence.",
-    slug: "getting-ready"
+    href: "/help-hub/getting-ready-to-start"
   },
   {
     title: "My project doesn't fit or isn't turning out as expected",
     helper: "Size, shaping, or results feel off.",
-    slug: "project-not-fitting"
+    href: "/help-hub/fit-or-results-off"
   },
   {
     title: "Is this supposed to happen?",
     helper: "Quick reassurance and what to check next.",
-    slug: "is-this-supposed-to-happen"
+    href: "/help-hub/possible-or-normal"
   }
 ];
 ---
@@ -53,11 +53,11 @@ const startCards = [
       </header>
 
       <div class="cards-grid">
-        {startCards.map((card) => (
+        {startCards.map((card, index) => (
           <a 
-            href={`/ask-n-answer/gateway/${card.slug}`} 
+            href={card.href} 
             class="start-card"
-            data-testid={`card-${card.slug}`}
+            data-testid={`card-start-${index}`}
           >
             <div class="start-card__text">
               <div class="start-card__title">{card.title}</div>
