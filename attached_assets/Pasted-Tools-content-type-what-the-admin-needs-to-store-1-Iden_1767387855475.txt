@@ -1,0 +1,136 @@
+Tools content type: what the admin needs to store
+1) Identity + routing
+
+title (H1)
+
+slug (gauge-calculator)
+
+status (draft | active | archived)
+
+toolType (calculator) (future-proof if you add checklists/assessments later)
+
+componentId (points to the embedded Astro component)
+
+example: GaugeCalculator or gauge-calculator (whatever your site uses)
+
+2) Classification + findability
+
+category (for your site nav/cards)
+
+example: Tools
+
+tags (array)
+
+example: ["Gauge", "Swatching", "Fit"]
+
+searchKeywords (comma string or array—pick one)
+
+aliases (alternate names people might search)
+
+3) SEO + AEO
+
+metaTitle
+
+metaDescription
+
+canonicalPath (optional, if needed)
+
+schema (generated from fields, but you can store overrides)
+
+schemaType: HowTo or FAQPage or Article (Tools are usually HowTo + optional FAQPage)
+
+4) Page content (the stuff that makes the tool feel “KBM”)
+
+hero
+
+heroText (short, confident)
+
+heroSubtext (what they’ll get / outcome)
+
+heroCallout (optional)
+
+excerpt (card/listing)
+
+description (top-of-page intro)
+
+whyUseThisTool (bullets—fast scanning)
+
+whoIsThisFor
+
+whatThisCovers
+
+howItWorks (3–5 steps, plain language)
+
+5) Embedded tool wrapper + results framing (lego-block friendly)
+
+This is the key to consistency: the calculator UI is the component, but the admin controls the wrapper content around it.
+
+embed
+
+embedTitle (optional, if you show a title above the component)
+
+embedSubtitle (what to do right now)
+
+helperNotes (small tips / assumptions)
+
+results
+
+resultsIntro (what the result means)
+
+resultCards (optional; small “If you see X, do Y” guidance)
+
+6) Cross-links (this is where Tools turn into a “search engine”)
+
+related
+
+relatedANAs (slugs/IDs)
+
+relatedTools (slugs/IDs)
+
+relatedWorkshops (slugs/IDs)
+
+nextStepLinks (manual list for “Next Right Step”)
+
+Admin form order (matches what you listed earlier)
+
+Here’s the exact order you can use in your admin for Tools:
+
+title
+
+slug
+
+tags
+
+searchKeywords (comma separated)
+
+aliases / alternate names
+
+category (Tools)
+
+metaTitle
+
+metaDescription
+
+schemaMarkup (auto-generated preview + optional override field)
+
+heroText
+
+description
+
+excerpt
+
+whyUseThisTool
+
+interactPromptsSubtitle (your embed subtitle)
+
+results (resultsIntro + optional resultCards)
+
+whyThisMatters (optional; if you want it—can be short)
+
+whoIsThisFor
+
+whatDoesThisCover
+
+componentId (hidden/advanced, but required)
+
+related links (ANA/Tools/Workshops/Next steps)
