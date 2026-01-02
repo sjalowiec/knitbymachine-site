@@ -1,0 +1,44 @@
+{
+  "title": "Why do I keep dropping stitches?",
+  "slug": "why-do-i-keep-dropping-stitches",
+  "questionDisplay": "Why do I keep dropping stitches?",
+  "introParagraph": "Dropped stitches are one of the most common and frustrating machine knitting problems. When stitches fall off the needles, it’s usually a sign that something in your setup, tension, or knitting flow isn’t quite right.",
+  "keyInsight": "Most dropped stitches happen because the fabric isn’t being held down firmly enough for the needles to knit the next row.",
+  "quickCheckText": "If stitches drop near the edges, you may need more weight at the edges (claw weights)\nIf drops happen randomly, your tension may be too tight\nIf the same needle drops stitches repeatedly, that needle may be damaged\n",
+  "category": "Troubleshooting",
+  "tags": [
+    "troubleshooting"
+  ],
+  "isMemberOnly": true,
+  "videoUrl": "",
+  "imageUrl": "/images/ana/1767187461350-dropped-stitch.jpg",
+  "imageAlt": "machine knitting dropped stitch",
+  "wizardUrl": "https://example.com/wizard/fix-stitches",
+  "metaTitle": "Why You Keep Dropping Stitches on a Knitting Machine",
+  "metaDescription": "Dropped stitches on a knitting machine usually come from tension, yarn, needles, or weights. Learn the most common causes.",
+  "schemaMarkup": {
+    "@type": "FAQPage",
+    "@context": "https://schema.org",
+    "mainEntity": [
+      {
+        "name": "Why do I keep dropping stitches on my knitting machine?",
+        "@type": "Question",
+        "acceptedAnswer": {
+          "text": "Dropped stitches usually happen when fabric tension is too loose, stitches are not weighted evenly, needles are damaged, or yarn tension is incorrect.",
+          "@type": "Answer"
+        }
+      }
+    ]
+  },
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "body": "<p>Dropped stitches happen when a needle fails to fully knit a new loop and the old stitch slips off. On a knitting machine, this is almost always a <strong>tension or needle control issue</strong>, not something you’re doing “wrong.”</p><p>The most common causes are:</p><ul><li><p><strong>Tension set too tight</strong>, so the yarn can’t form a new stitch properly</p></li><li><p><strong>Not enough weight</strong> pulling the fabric down as it knits</p></li><li><p><strong>Needles that aren’t fully forward</strong> in working position</p></li><li><p><strong>Damaged or sticky needles</strong> that don’t open or close smoothly</p></li><li><p><strong>Yarn that’s too thin, splitty, or slippery</strong> for your machine gauge</p></li></ul><p>You can usually stop dropped stitches quickly by loosening the tension slightly, adding more weight, and checking that every working needle moves freely.<br><br>&lt;img class=\"max-w-full h-auto rounded-md my-4\" src=\"astro-site/public/images/troubleshooter-wizard-logo.svg\" alt=\"\"&gt;&lt;p&gt;&lt;/p&gt;</p>",
+  "memberDividerText": "Go deeper with member-only guidance",
+  "memberTitle": "Preventing Dropped Stitches: Needles, Weighting, and Setup",
+  "memberBody": "<p>Dropped stitches usually aren’t random — they’re a signal that something in your setup needs attention. In this member section, you’ll learn how to identify the most common <strong>preventable</strong> causes before stitches fall off the needles.</p>\n\n<p>Start with needle-related issues. If dropped stitches keep appearing in the same column or on the same needle, that needle is often bent, worn, or not opening fully. The needle replacement videos show you how to spot problem needles and swap them out safely.</p>\n\n<p>Next, look at how your fabric is being supported. Edge stitches are especially vulnerable when they aren’t weighted correctly. Understanding how claw weights work — and when to use them — can dramatically reduce edge drops and uneven tension.</p>\n\n<p>These checks take only a few minutes, but they prevent hours of frustration and unraveling later. Work through them any time dropped stitches start showing up, especially after changing yarn, tension, or stitch patterns.</p>\n\n\n\n<img class=\"max-w-full h-auto rounded-md my-4\" src=\"astro-site/public/images/troubleshooter-wizard-logo.svg\" alt=\"\"><p></p>",
+  "memberVideoUrl": "",
+  "embedWizard": "dropped-stitch-troubleshooter",
+  "isDraft": false,
+  "pendingPublish": false,
+  "publishedDate": "2026-01-02T00:00:00.000Z"
+}
