@@ -1,0 +1,97 @@
+Replit Prompt — Create 6 “Gateway Stub” Pages for Start Here (Option A)
+
+Goal
+Fix the broken Start Here card links by creating lightweight placeholder “Gateway” pages.
+These pages should feel intentional and on-brand, but contain NO wizard logic yet.
+They should simply confirm the user is in the right place and offer safe next actions.
+
+Important Constraints
+- Do NOT change global header, footer, nav, or site-wide layout.
+- Do NOT change the Start Here card text or design.
+- Do NOT add any new dependencies.
+- Do NOT add any wizard UI yet.
+- Create ONLY these 6 stub pages and ensure they render with the same site layout as other pages.
+- Each stub page must include: H1, short intro, a short “This page will help with…” list, and two links:
+  1) Back to Start Here
+  2) Browse all Ask ’n Answer questions (existing catalog page)
+
+Link Targets
+Use these paths for the Start Here cards (create these routes/pages):
+
+1) /help-hub/while-knitting
+2) /help-hub/fabric-doesnt-look-right
+3) /help-hub/fix-without-starting-over
+4) /help-hub/getting-ready-to-start
+5) /help-hub/fit-or-results-off
+6) /help-hub/possible-or-normal
+
+If your project uses a different routing convention (e.g., /pages/, Astro src/pages), create the matching files so these URLs work.
+
+Copy (Use exactly; keep it short)
+Each page should use this structure:
+
+Shared “intro” paragraph (use on all 6):
+You’re in the right place.
+This Help Hub path is being built now so you can get to the next clear step without digging.
+
+Shared closing line (use on all 6):
+In the meantime, you can browse all Ask ’n Answer questions, or head back to Start Here.
+
+Shared links (use on all 6):
+- “← Back to Start Here” linking to /help-hub/start-here (or your actual Start Here URL)
+- “Browse all Ask ’n Answer questions →” linking to your existing ANA catalog page URL
+
+Now customize ONLY the H1 and the “This page will help with…” bullets per page:
+
+Page 1: /help-hub/while-knitting
+H1: Something isn’t working while I’m knitting
+Bullets:
+- Dropped stitches or stitches misbehaving
+- The carriage feeling hard to move
+- Knitting not forming the way you expect
+- Sudden issues that start mid-row or mid-project
+
+Page 2: /help-hub/fabric-doesnt-look-right
+H1: My fabric doesn’t look right
+Bullets:
+- Loose, tight, or uneven stitches
+- Messy edges or edge loops
+- Fabric that looks different than expected
+- Pattern or texture that isn’t forming cleanly
+
+Page 3: /help-hub/fix-without-starting-over
+H1: I’m trying to fix something without starting over
+Bullets:
+- Fixing a dropped stitch
+- Repairing a mistake a few rows down
+- Saving a project without ripping out
+- Common “can I rescue this?” moments
+
+Page 4: /help-hub/getting-ready-to-start
+H1: I’m getting ready to start
+Bullets:
+- Quick setup checks before knitting
+- Choosing a yarn that behaves well
+- Getting a clean, stable cast-on
+- Avoiding common first-row problems
+
+Page 5: /help-hub/fit-or-results-off
+H1: My project doesn’t fit or isn’t turning out as expected
+Bullets:
+- Size coming out too big or too small
+- Fit problems in one area (length, sleeve, body)
+- Gauge and measurement mismatches
+- Shaping or pattern results that feel “off”
+
+Page 6: /help-hub/possible-or-normal
+H1: I want to know if something is possible or normal
+Bullets:
+- “Is this normal?” reassurance questions
+- What your machine can/can’t do
+- When an issue is harmless vs worth fixing
+- Quick checks to confirm what’s happening
+
+Final Step
+After creating these pages, verify each URL loads without 404s and uses the site’s standard layout.
+Return a list of the files you created/edited and their paths.
+
