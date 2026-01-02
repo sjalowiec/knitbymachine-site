@@ -1,0 +1,69 @@
+You are working inside my EXISTING KBM Astro repo.
+Do NOT scaffold a new site. Do NOT refactor other wizard types.
+
+GOAL
+Clean up the Pattern Wizard admin so it uses ONLY the fields Pattern Wizards need.
+Pattern Wizards are catalog entries shown on /patterns and they link to /wizards/[slug].
+Pattern Wizards are gated (Free / Paid / Membership).
+
+SAFETY
+- Back up every edited file as .bak in the same folder.
+- Minimal changes only.
+- Do not change Project Wizard (Decision Tree) fields/behavior.
+
+========================================================
+PATTERN WIZARD — allowed fields ONLY
+========================================================
+
+When contentType/category is "pattern wizard", the admin form and JSON output must include ONLY:
+
+REQUIRED:
+- title (string)
+- slug (string; kebab-case)
+- excerpt (string)  // used for the /patterns card description
+- accessLevel (enum: "free" | "paid" | "member")  // used for the badge
+- category (string; always "pattern wizard")
+- isDraft (boolean; default false)
+
+OPTIONAL (keep, but do not require):
+- hero (string)
+- description (string HTML)
+- tags (string[])
+- keywords (string[])
+- aliases (string[])
+- imageUrl (string)
+- imageAlt (string)
+- iconUrl (string)
+- metaTitle (string)
+- metaDescription (string)
+- schemaMarkup (object)
+- publishedDate (string YYYY-MM-DD)
+- price (string)  // optional; do not display unless the site already uses it
+
+REMOVE / HIDE for Pattern Wizards:
+- wizardFlow and any decision tree UI
+- onboardingMode, onboardingIntroTitle, onboardingIntroBody
+- toolSubheading
+- whoThisIsFor, whyItMatters, benefits
+- showSecondaryCta
+- relatedAnas, relatedWorkshops, relatedGuides
+- pendingPublish (unless used elsewhere)
+
+========================================================
+OUTPUT RULES
+========================================================
+
+1) JSON preview/export/publish for Pattern Wizards must output ONLY the allowed keys above.
+2) Do not include unused keys with empty strings/empty arrays/null.
+3) category must be normalized to exactly "pattern wizard".
+4) accessLevel must be exactly one of: free, paid, member.
+
+========================================================
+SITE COMPATIBILITY CHECK
+========================================================
+
+- /patterns currently links cards to /wizards/<slug> and shows a badge (Free/Paid/Membership).
+- Ensure Pattern Wizard entries (without wizardFlow) still render fine at /wizards/[slug]
+  (the wizard detail page should simply not show WizardFlowRenderer when wizardFlow is absent).
+
+STOP when Pattern Wizard admin shows only the allowed fields and outputs clean minimal JSON.
