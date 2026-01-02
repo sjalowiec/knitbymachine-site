@@ -1,0 +1,89 @@
+Replit Prompt — Improve “Start Here” Cards (layout + affordance only)
+
+Goal
+Update the Start Here page cards so they feel like clear “chooser tiles” (not empty content blocks).
+Make ONLY text-level + CSS/markup changes inside the Start Here page and its local styles.
+Do NOT change global header/nav/footer, routing, or any other pages.
+
+Scope Rules
+- Keep exactly 6 cards and the same link targets/URLs you already wired.
+- Do not add new pages, new routes, or new dependencies.
+- Do not add icons (beyond the existing arrow).
+- Do not add long descriptions (keep a short helper line only).
+- Ensure mobile remains clean (cards stack nicely).
+
+Changes to make
+
+1) Split each card into 2 lines (title + helper)
+For each card, keep the existing main text as the TITLE, and add a short HELPER line beneath it:
+
+Card 1
+Title: My machine is stuck or misbehaving
+Helper: Something isn’t moving or behaving the way it should.
+
+Card 2
+Title: My knitting doesn’t look right
+Helper: Stitches, edges, or fabric don’t match what you expected.
+
+Card 3
+Title: I made a mistake (and I don’t want to rip it out)
+Helper: Let’s fix it and keep going.
+
+Card 4
+Title: I’m getting ready to start
+Helper: Set up your machine and project with confidence.
+
+Card 5
+Title: My project doesn’t fit or isn’t turning out as expected
+Helper: Size, shaping, or results feel off.
+
+Card 6
+Title: Is this supposed to happen?
+Helper: Quick reassurance and what to check next.
+
+Implementation detail:
+- Use a structure like:
+  <a class="start-card" href="...">
+    <div class="start-card__text">
+      <div class="start-card__title">...</div>
+      <div class="start-card__helper">...</div>
+    </div>
+    <div class="start-card__icon" aria-hidden="true">→</div>
+  </a>
+(Use whatever tag/structure fits your current code, but keep the semantics: whole card clickable.)
+
+2) Move the arrow to the top-right and make it feel intentional
+- The arrow should sit in the top-right corner of the card.
+- Slightly larger than it is now and aligned consistently across all cards.
+- It should not sit low or float awkwardly.
+
+3) Improve spacing and proportions so cards don’t feel “too tall and empty”
+- Reduce vertical padding slightly.
+- Keep generous horizontal padding.
+- Aim for a balanced landscape feel: cards should read as “tiles,” not tall boxes.
+
+4) Add clear hover/focus states (affordance)
+On hover (and keyboard focus-visible):
+- Subtle background tint (very light)
+- Border darkens slightly
+- A tiny motion/shift on the arrow (e.g., translateX by a few px)
+- Cursor becomes pointer
+
+Also add an active state for click/tap (slight press-down feel).
+
+5) Accessibility
+- Ensure the card is focusable (anchor is best).
+- Add :focus-visible styling similar to hover.
+- Keep text contrast strong.
+
+CSS Guidance (use existing variables/colors if present)
+Add/adjust styles for:
+- .start-card (display, padding, border, radius, min-height)
+- .start-card__title (font-size/weight)
+- .start-card__helper (smaller size, muted color, max-width to keep nice line breaks)
+- .start-card__icon (position: absolute; top/right; larger; transition)
+- Hover/focus/active transitions
+
+Deliverable
+Return the updated Start Here page markup and the CSS changes needed (only for this page/component).
+Do not include unrelated refactors.

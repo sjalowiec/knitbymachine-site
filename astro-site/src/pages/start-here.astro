@@ -6,28 +6,34 @@ const description = "Not sure what's going wrong with your knitting? Start here 
 
 const startCards = [
   {
-    title: "Something isn't working while I'm knitting",
-    slug: "something-not-working"
+    title: "My machine is stuck or misbehaving",
+    helper: "Something isn't moving or behaving the way it should.",
+    slug: "machine-stuck"
   },
   {
-    title: "My fabric doesn't look right",
-    slug: "fabric-doesnt-look-right"
+    title: "My knitting doesn't look right",
+    helper: "Stitches, edges, or fabric don't match what you expected.",
+    slug: "knitting-doesnt-look-right"
   },
   {
-    title: "I'm trying to fix something without starting over",
-    slug: "fix-without-starting-over"
+    title: "I made a mistake (and I don't want to rip it out)",
+    helper: "Let's fix it and keep going.",
+    slug: "made-a-mistake"
   },
   {
-    title: "I'm setting something up",
-    slug: "setting-something-up"
+    title: "I'm getting ready to start",
+    helper: "Set up your machine and project with confidence.",
+    slug: "getting-ready"
   },
   {
     title: "My project doesn't fit or isn't turning out as expected",
+    helper: "Size, shaping, or results feel off.",
     slug: "project-not-fitting"
   },
   {
-    title: "I want to know if something is possible or normal",
-    slug: "is-this-possible-or-normal"
+    title: "Is this supposed to happen?",
+    helper: "Quick reassurance and what to check next.",
+    slug: "is-this-supposed-to-happen"
   }
 ];
 ---
@@ -53,8 +59,11 @@ const startCards = [
             class="start-card"
             data-testid={`card-${card.slug}`}
           >
-            <h2 class="card-title">{card.title}</h2>
-            <span class="card-arrow">
+            <div class="start-card__text">
+              <div class="start-card__title">{card.title}</div>
+              <div class="start-card__helper">{card.helper}</div>
+            </div>
+            <span class="start-card__icon" aria-hidden="true">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
@@ -126,7 +135,7 @@ const startCards = [
   .cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    gap: 1rem;
     margin-bottom: 3rem;
   }
 
@@ -142,54 +151,94 @@ const startCards = [
     }
   }
 
-  /* Start Card */
+  /* Start Card - Chooser Tile Style */
   .start-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+    position: relative;
+    display: block;
     background-color: #ffffff;
-    border-radius: 12px;
+    border-radius: 10px;
     border: 1px solid #d1d9c2;
-    padding: 1.5rem;
+    padding: 1rem 2.5rem 1rem 1.25rem;
     text-decoration: none;
     color: inherit;
-    box-shadow: 0 2px 6px rgba(82, 104, 45, 0.08);
-    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
-    min-height: 140px;
+    box-shadow: 0 1px 4px rgba(82, 104, 45, 0.06);
+    transition: 
+      transform 0.15s ease, 
+      box-shadow 0.15s ease, 
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+    cursor: pointer;
   }
 
+  /* Hover state */
   .start-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 6px 16px rgba(82, 104, 45, 0.14);
-    border-color: #52682d;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
   }
 
-  .start-card:hover .card-arrow {
-    transform: translateX(4px);
-    color: #52682d;
+  /* Focus-visible state (keyboard navigation) */
+  .start-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.25);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
   }
 
-  .card-title {
+  /* Active/pressed state */
+  .start-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(82, 104, 45, 0.1);
+    background-color: #f5f8f2;
+  }
+
+  /* Card text container */
+  .start-card__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  /* Card title */
+  .start-card__title {
     font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     color: #2c3a57;
-    margin: 0;
-    line-height: 1.45;
+    line-height: 1.4;
   }
 
-  .card-arrow {
+  /* Card helper text */
+  .start-card__helper {
+    font-size: 0.875rem;
+    color: #6b7a5d;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  /* Arrow icon - positioned top-right */
+  .start-card__icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    margin-top: 1rem;
-    color: #7a836f;
+    justify-content: center;
+    color: #9ca88f;
     transition: transform 0.2s ease, color 0.2s ease;
   }
 
-  .card-arrow svg {
-    width: 20px;
-    height: 20px;
+  .start-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Arrow animation on hover/focus */
+  .start-card:hover .start-card__icon,
+  .start-card:focus-visible .start-card__icon {
+    transform: translateX(3px);
+    color: var(--kbm-green, #52682d);
   }
 
   /* Secondary Link */
