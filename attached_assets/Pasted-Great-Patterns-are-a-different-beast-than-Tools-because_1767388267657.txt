@@ -1,0 +1,195 @@
+Great—Patterns are a different beast than Tools because the “wizard” isn’t just calculating a number… it’s generating a knit-able set of instructions (and often a printable/output artifact).
+
+So your admin needs two layers:
+
+Display + findability (same as Tools)
+
+Pattern builder spec (what inputs the builder collects + what output it produces)
+
+Below is a clean, repeatable Patterns data structure that will work for wizards/hat-builder.astro and future builders.
+
+Patterns content type: what the admin needs to store
+A) Identity + routing (same family as Tools)
+
+title
+
+slug
+
+status (draft | active | archived)
+
+category (Patterns or Pattern Builders)
+
+componentId (points to the Astro builder component)
+
+example: HatBuilder
+
+B) Findability
+
+tags
+
+searchKeywords
+
+aliases
+
+C) SEO + AEO
+
+metaTitle
+
+metaDescription
+
+schemaType (usually HowTo + optional FAQPage)
+
+(optional) faqItems if you want structured FAQs per pattern builder
+
+D) Page content (wrapper)
+
+heroText
+
+description
+
+excerpt
+
+whyUseThisBuilder (bullets)
+
+whoIsThisFor
+
+whatThisCovers
+
+skillsOrPrereqs (optional but helpful)
+
+materialsOverview (high level, not the full generated list)
+
+The Pattern Builder Spec (this is the “different data structure”)
+1) Inputs the builder asks for
+
+Store this as a structured list so your admin can power:
+
+the page preview (“What you’ll choose”)
+
+search filters later
+
+consistent UI labeling
+
+patternInputs (array of input definitions), each with:
+
+id (stable key)
+
+label
+
+helpText
+
+type (number | select | radio | boolean | text)
+
+units (in | cm | sts | rows etc.)
+
+required
+
+default
+
+options (for selects/radios)
+
+Typical Hat Builder inputs:
+
+size / head circumference
+
+gauge (sts/rows per inch or cm)
+
+brim style + brim depth
+
+body length
+
+crown shaping style
+
+stitch pattern choice (maybe “plain jersey” to start)
+
+2) Output definition (what the builder produces)
+
+This is what makes it a Pattern Builder (not a Tool).
+
+patternOutput
+
+outputFormat (one or more): ["onPage", "printable", "pdf", "downloadJson"] (pick what you actually support now)
+
+sections (ordered list of instruction blocks)
+
+ex: ["Overview", "Cast On", "Brim", "Body", "Crown Shaping", "Finishing"]
+
+generatedFields (what will be calculated/produced)
+
+stitch counts per section
+
+row counts
+
+decrease schedule
+
+finishing notes
+
+userEditableParts (optional)
+
+what they can tweak after generation (if you support that)
+
+3) Constraints + validation (prevents “impossible hats”)
+
+constraints
+
+min/max for key values
+
+rounding rules (e.g., cast-on must be multiple of 4/8 for certain rib)
+
+warnings (e.g., “Gauge seems unusually loose/tight”)
+
+4) Results framing (like Tools, but pattern-focused)
+
+results
+
+resultsIntro (“Here’s your hat plan…”)
+
+resultNotes (common gotchas)
+
+nextStepsLinks (related ANA/tool/workshop)
+
+Admin form order for Patterns (copy/paste friendly)
+
+title
+
+slug
+
+tags
+
+searchKeywords (comma separated)
+
+aliases / alternate names
+
+category (Patterns / Pattern Builders)
+
+metaTitle
+
+metaDescription
+
+schemaMarkup / schemaType
+
+heroText
+
+description
+
+excerpt
+
+whyUseThisBuilder
+
+whoIsThisFor
+
+whatDoesThisCover
+
+materialsOverview (optional)
+
+patternInputs (structured list)
+
+constraints / validation rules
+
+patternOutput (sections + generatedFields)
+
+results framing (resultsIntro + notes)
+
+componentId
+
+related links
