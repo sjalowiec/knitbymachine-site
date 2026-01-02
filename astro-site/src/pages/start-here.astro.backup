@@ -42,25 +42,14 @@ const startCards = [
   <div class="start-here-page">
     <div class="page-container">
       <header class="page-header">
-        <div class="intro-grid">
-          <div class="intro-content">
-            <div class="title-row">
-              <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="header-icon" />
-              <h1 class="page-title">Start Here</h1>
-            </div>
-            <p class="intro-text">
-              If something isn't working, you don't need to know where it fits or what it's called.
-              Start with the situation that sounds most like what you're seeing, and we'll help you narrow it down.
-            </p>
-          </div>
-          <div class="intro-image-wrapper">
-            <img 
-              src="/images/knit-by-machine1.webp" 
-              alt="Using Knit by Machine resources at a home knitting machine" 
-              class="intro-image"
-            />
-          </div>
+        <div class="title-row">
+          <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="header-icon" />
+          <h1 class="page-title">Start Here</h1>
         </div>
+        <p class="intro-text">
+          If something isn't working, you don't need to know where it fits or what it's called.
+          Start with the situation that sounds most like what you're seeing, and we'll help you narrow it down.
+        </p>
       </header>
 
       <div class="cards-grid">
@@ -107,65 +96,16 @@ const startCards = [
   }
 
   .page-header {
+    text-align: center;
     margin-bottom: 3rem;
-  }
-
-  .intro-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2.5rem;
-    align-items: center;
-  }
-
-  .intro-content {
-    text-align: left;
-  }
-
-  .intro-image-wrapper {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .intro-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
-    object-fit: cover;
-  }
-
-  @media (max-width: 768px) {
-    .intro-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .intro-content {
-      text-align: center;
-      order: 1;
-    }
-
-    .intro-image-wrapper {
-      order: 2;
-    }
-
-    .intro-image {
-      max-width: 320px;
-    }
   }
 
   .title-row {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
     gap: 1rem;
     margin-bottom: 1.25rem;
-  }
-
-  @media (max-width: 768px) {
-    .title-row {
-      justify-content: center;
-    }
   }
 
   .header-icon {
@@ -187,15 +127,8 @@ const startCards = [
     font-size: clamp(1rem, 1.8vw, 1.125rem);
     color: #5a6b47;
     line-height: 1.7;
-    max-width: 100%;
-    margin: 0;
-  }
-
-  @media (max-width: 768px) {
-    .intro-text {
-      max-width: 680px;
-      margin: 0 auto;
-    }
+    max-width: 680px;
+    margin: 0 auto;
   }
 
   /* Cards Grid */
