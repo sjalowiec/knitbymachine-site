@@ -1,0 +1,195 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Start Here | Knit by Machine";
+const description = "Not sure what's going wrong with your knitting? Start here to find answers based on what you're experiencing.";
+
+const startCards = [
+  {
+    title: "Something isn't working while I'm knitting",
+    slug: "something-not-working"
+  },
+  {
+    title: "My fabric doesn't look right",
+    slug: "fabric-doesnt-look-right"
+  },
+  {
+    title: "I'm trying to fix something without starting over",
+    slug: "fix-without-starting-over"
+  },
+  {
+    title: "I'm setting something up",
+    slug: "setting-something-up"
+  },
+  {
+    title: "My project doesn't fit or isn't turning out as expected",
+    slug: "project-not-fitting"
+  },
+  {
+    title: "I want to know if something is possible or normal",
+    slug: "is-this-possible-or-normal"
+  }
+];
+---
+
+<BaseLayout {title} {description}>
+  <div class="start-here-page">
+    <div class="page-container">
+      <header class="page-header">
+        <h1 class="page-title">Start Here</h1>
+        <p class="intro-text">
+          If something isn't working, you don't need to know where it fits or what it's called.
+          Start with the situation that sounds most like what you're seeing, and we'll help you narrow it down.
+        </p>
+      </header>
+
+      <div class="cards-grid">
+        {startCards.map((card) => (
+          <a 
+            href={`/ask-n-answer/gateway/${card.slug}`} 
+            class="start-card"
+            data-testid={`card-${card.slug}`}
+          >
+            <h2 class="card-title">{card.title}</h2>
+            <span class="card-arrow">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <div class="secondary-link-wrapper">
+        <a href="/ana-catalog" class="secondary-link" data-testid="link-browse-all">
+          Prefer to browse or search all questions? → Browse all Ask 'n Answer topics
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .start-here-page {
+    padding-top: 120px;
+    padding-bottom: 4rem;
+    min-height: 100vh;
+    background: var(--page-bg, #f8f9f5);
+  }
+
+  .page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .page-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--kbm-green, #52682d);
+    margin: 0 0 1.25rem 0;
+    line-height: 1.2;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.8vw, 1.125rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Start Card */
+  .start-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: #ffffff;
+    border-radius: 12px;
+    border: 1px solid #d1d9c2;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 2px 6px rgba(82, 104, 45, 0.08);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    min-height: 140px;
+  }
+
+  .start-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(82, 104, 45, 0.14);
+    border-color: #52682d;
+  }
+
+  .start-card:hover .card-arrow {
+    transform: translateX(4px);
+    color: #52682d;
+  }
+
+  .card-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: #2c3a57;
+    margin: 0;
+    line-height: 1.45;
+  }
+
+  .card-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    color: #7a836f;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .card-arrow svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Secondary Link */
+  .secondary-link-wrapper {
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  .secondary-link {
+    font-size: 0.95rem;
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .secondary-link:hover {
+    color: #3e5023;
+    text-decoration: underline;
+  }
+</style>
