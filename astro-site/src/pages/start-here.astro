@@ -36,7 +36,10 @@ const startCards = [
   <div class="start-here-page">
     <div class="page-container">
       <header class="page-header">
-        <h1 class="page-title">Start Here</h1>
+        <div class="title-row">
+          <img src="/images/ask-n-answer-logo.svg" alt="Ask 'n Answer" class="header-icon" />
+          <h1 class="page-title">Start Here</h1>
+        </div>
         <p class="intro-text">
           If something isn't working, you don't need to know where it fits or what it's called.
           Start with the situation that sounds most like what you're seeing, and we'll help you narrow it down.
@@ -71,7 +74,7 @@ const startCards = [
 
 <style>
   .start-here-page {
-    padding-top: 120px;
+    padding-top: 2rem;
     padding-bottom: 4rem;
     min-height: 100vh;
     background: var(--page-bg, #f8f9f5);
@@ -88,12 +91,26 @@ const startCards = [
     margin-bottom: 3rem;
   }
 
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .header-icon {
+    width: clamp(56px, 8vw, 72px);
+    height: clamp(56px, 8vw, 72px);
+    flex-shrink: 0;
+  }
+
   .page-title {
     font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
     font-size: clamp(2.25rem, 4vw, 3rem);
     font-weight: 700;
     color: var(--kbm-green, #52682d);
-    margin: 0 0 1.25rem 0;
+    margin: 0;
     line-height: 1.2;
   }
 
