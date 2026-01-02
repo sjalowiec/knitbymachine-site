@@ -1,0 +1,689 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="New Wizard - Admin" description="Create a new KBM wizard JSON file">
+  <div class="admin-wizard-builder">
+    <header class="admin-header">
+      <h1>New Wizard</h1>
+      <p class="admin-subtitle">Fill in the form to generate wizard JSON</p>
+    </header>
+
+    <div class="builder-layout">
+      <form id="wizard-form" class="wizard-form">
+        <fieldset>
+          <legend>Basic Info</legend>
+          
+          <div class="form-group">
+            <label for="title">Title <span class="required">*</span></label>
+            <input type="text" id="title" name="title" required data-testid="input-title" />
+          </div>
+
+          <div class="form-group">
+            <label for="slug">Slug <span class="required">*</span></label>
+            <input type="text" id="slug" name="slug" required pattern="[a-z0-9-]+" data-testid="input-slug" />
+            <small>URL-safe: lowercase letters, numbers, hyphens only</small>
+          </div>
+
+          <div class="form-group">
+            <label for="hero">Hero <span class="required">*</span></label>
+            <input type="text" id="hero" name="hero" required data-testid="input-hero" />
+          </div>
+
+          <div class="form-group">
+            <label for="excerpt">Excerpt</label>
+            <input type="text" id="excerpt" name="excerpt" data-testid="input-excerpt" />
+          </div>
+
+          <div class="form-group">
+            <label for="description">Description (HTML allowed)</label>
+            <textarea id="description" name="description" rows="4" data-testid="input-description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="whyUseThisTool">Why Use This Tool</label>
+            <textarea id="whyUseThisTool" name="whyUseThisTool" rows="3" data-testid="input-why-use"></textarea>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Classification</legend>
+
+          <div class="form-group">
+            <label for="category">Category</label>
+            <input type="text" id="category" name="category" data-testid="input-category" />
+          </div>
+
+          <div class="form-group">
+            <label for="tags">Tags (comma-separated)</label>
+            <input type="text" id="tags" name="tags" data-testid="input-tags" />
+          </div>
+
+          <div class="form-group">
+            <label for="keywords">Keywords (comma-separated)</label>
+            <input type="text" id="keywords" name="keywords" data-testid="input-keywords" />
+          </div>
+
+          <div class="form-group">
+            <label for="aliases">Aliases (comma-separated)</label>
+            <input type="text" id="aliases" name="aliases" data-testid="input-aliases" />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Access & Pricing</legend>
+
+          <div class="form-group">
+            <label for="accessLevel">Access Level</label>
+            <select id="accessLevel" name="accessLevel" data-testid="select-access-level">
+              <option value="free">Free</option>
+              <option value="member">Member</option>
+              <option value="paid">Paid</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Price</label>
+            <input type="text" id="price" name="price" data-testid="input-price" />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Media</legend>
+
+          <div class="form-group">
+            <label for="videoUrl">Video URL</label>
+            <input type="url" id="videoUrl" name="videoUrl" data-testid="input-video-url" />
+          </div>
+
+          <div class="form-group">
+            <label for="imageUrl">Image URL</label>
+            <input type="url" id="imageUrl" name="imageUrl" data-testid="input-image-url" />
+          </div>
+
+          <div class="form-group">
+            <label for="imageAlt">Image Alt Text</label>
+            <input type="text" id="imageAlt" name="imageAlt" data-testid="input-image-alt" />
+          </div>
+
+          <div class="form-group">
+            <label for="iconUrl">Icon URL</label>
+            <input type="url" id="iconUrl" name="iconUrl" data-testid="input-icon-url" />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Related Content</legend>
+
+          <div class="form-group">
+            <label for="relatedAnas">Related ANAs (comma-separated slugs)</label>
+            <input type="text" id="relatedAnas" name="relatedAnas" data-testid="input-related-anas" />
+          </div>
+
+          <div class="form-group">
+            <label for="relatedWorkshops">Related Workshops (comma-separated slugs)</label>
+            <input type="text" id="relatedWorkshops" name="relatedWorkshops" data-testid="input-related-workshops" />
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>SEO & Meta</legend>
+
+          <div class="form-group">
+            <label for="metaTitle">Meta Title</label>
+            <input type="text" id="metaTitle" name="metaTitle" data-testid="input-meta-title" />
+            <small>Auto-fills: "{'{title}'} - Knit by Machine" if blank</small>
+          </div>
+
+          <div class="form-group">
+            <label for="metaDescription">Meta Description</label>
+            <textarea id="metaDescription" name="metaDescription" rows="2" data-testid="input-meta-description"></textarea>
+            <small>Auto-fills from excerpt or hero if blank</small>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Publishing</legend>
+
+          <div class="form-group">
+            <label for="publishedDate">Published Date</label>
+            <input type="date" id="publishedDate" name="publishedDate" data-testid="input-published-date" />
+          </div>
+
+          <div class="form-row">
+            <div class="form-check">
+              <input type="checkbox" id="isDraft" name="isDraft" data-testid="checkbox-is-draft" />
+              <label for="isDraft">Is Draft</label>
+            </div>
+
+            <div class="form-check">
+              <input type="checkbox" id="pendingPublish" name="pendingPublish" data-testid="checkbox-pending-publish" />
+              <label for="pendingPublish">Pending Publish</label>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>Schema Markup</legend>
+
+          <div class="form-group">
+            <label for="schemaDescription">Schema Description</label>
+            <textarea id="schemaDescription" name="schemaDescription" rows="2" data-testid="input-schema-description"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="schemaTool">Schema Tools (comma-separated)</label>
+            <input type="text" id="schemaTool" name="schemaTool" data-testid="input-schema-tool" />
+          </div>
+
+          <div class="form-group">
+            <label>Schema Steps</label>
+            <div id="schema-steps-container" data-testid="schema-steps-container">
+              <!-- Steps added dynamically -->
+            </div>
+            <button type="button" id="add-step-btn" class="btn-secondary" data-testid="button-add-step">
+              + Add Step
+            </button>
+          </div>
+        </fieldset>
+      </form>
+
+      <aside class="json-preview-panel">
+        <div class="preview-header">
+          <h2>JSON Preview</h2>
+          <div class="preview-actions">
+            <button type="button" id="copy-json-btn" class="btn-icon" title="Copy JSON" data-testid="button-copy-json">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+              </svg>
+            </button>
+            <button type="button" id="download-json-btn" class="btn-icon" title="Download JSON" data-testid="button-download-json">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                <polyline points="7 10 12 15 17 10"/>
+                <line x1="12" x2="12" y1="15" y2="3"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <pre id="json-output" data-testid="json-output"></pre>
+      </aside>
+    </div>
+
+    <nav class="admin-breadcrumb">
+      <a href="/admin/wizards">Back to Wizards</a>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .admin-wizard-builder {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .admin-header {
+    margin-bottom: 2rem;
+  }
+
+  .admin-header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+  }
+
+  .admin-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .builder-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  @media (max-width: 1024px) {
+    .builder-layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .wizard-form fieldset {
+    border: 1px solid #d8e2cc;
+    border-radius: 8px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    background: #fafbf8;
+  }
+
+  .wizard-form legend {
+    font-weight: 600;
+    color: var(--kbm-green, #52682d);
+    padding: 0 0.5rem;
+  }
+
+  .form-group {
+    margin-bottom: 1rem;
+  }
+
+  .form-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .form-group label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.35rem;
+    font-size: 0.9rem;
+  }
+
+  .form-group .required {
+    color: #c00;
+  }
+
+  .form-group input[type="text"],
+  .form-group input[type="url"],
+  .form-group input[type="date"],
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: inherit;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--kbm-green, #52682d);
+    box-shadow: 0 0 0 2px rgba(82, 104, 45, 0.15);
+  }
+
+  .form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    color: #888;
+    font-size: 0.8rem;
+  }
+
+  .form-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .form-check input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--kbm-green, #52682d);
+  }
+
+  .form-check label {
+    margin: 0;
+    font-weight: 400;
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: #fff;
+    color: var(--kbm-green, #52682d);
+    border: 1px solid var(--kbm-green, #52682d);
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: #f0f4ec;
+  }
+
+  .step-item {
+    background: #fff;
+    border: 1px solid #e5e8e0;
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    position: relative;
+  }
+
+  .step-item .step-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .step-item .step-number {
+    font-weight: 600;
+    color: var(--kbm-green, #52682d);
+    font-size: 0.9rem;
+  }
+
+  .step-item .remove-step-btn {
+    background: none;
+    border: none;
+    color: #c00;
+    cursor: pointer;
+    font-size: 0.85rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .step-item .remove-step-btn:hover {
+    text-decoration: underline;
+  }
+
+  .step-item input,
+  .step-item textarea {
+    width: 100%;
+    padding: 0.4rem 0.6rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    font-family: inherit;
+  }
+
+  .step-item input:last-child,
+  .step-item textarea:last-child {
+    margin-bottom: 0;
+  }
+
+  .json-preview-panel {
+    position: sticky;
+    top: 1rem;
+    background: #1e1e1e;
+    border-radius: 8px;
+    overflow: hidden;
+    max-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #2d2d2d;
+    border-bottom: 1px solid #444;
+  }
+
+  .preview-header h2 {
+    margin: 0;
+    font-size: 1rem;
+    color: #fff;
+    font-weight: 500;
+  }
+
+  .preview-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .btn-icon {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: #fff;
+    width: 34px;
+    height: 34px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+  }
+
+  .btn-icon:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  #json-output {
+    margin: 0;
+    padding: 1rem;
+    color: #d4d4d4;
+    font-family: 'Consolas', 'Monaco', monospace;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    overflow: auto;
+    flex: 1;
+    white-space: pre-wrap;
+    word-break: break-word;
+  }
+
+  .admin-breadcrumb {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e8e0;
+  }
+
+  .admin-breadcrumb a {
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .admin-breadcrumb a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script is:inline>
+(function() {
+  const form = document.getElementById('wizard-form');
+  const jsonOutput = document.getElementById('json-output');
+  const copyBtn = document.getElementById('copy-json-btn');
+  const downloadBtn = document.getElementById('download-json-btn');
+  const addStepBtn = document.getElementById('add-step-btn');
+  const stepsContainer = document.getElementById('schema-steps-container');
+  const titleInput = document.getElementById('title');
+  const slugInput = document.getElementById('slug');
+
+  let stepCounter = 0;
+
+  function toSlug(str) {
+    return str
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+  }
+
+  titleInput.addEventListener('input', function() {
+    if (!slugInput.dataset.userEdited) {
+      slugInput.value = toSlug(this.value);
+      updatePreview();
+    }
+  });
+
+  slugInput.addEventListener('input', function() {
+    slugInput.dataset.userEdited = 'true';
+  });
+
+  slugInput.addEventListener('blur', function() {
+    this.value = toSlug(this.value);
+    updatePreview();
+  });
+
+  function parseCommaSeparated(value) {
+    if (!value || !value.trim()) return [];
+    return value.split(',').map(s => s.trim()).filter(s => s.length > 0);
+  }
+
+  function getSchemaSteps() {
+    const steps = [];
+    const stepItems = stepsContainer.querySelectorAll('.step-item');
+    stepItems.forEach((item, index) => {
+      const nameInput = item.querySelector('input[name="step-name"]');
+      const textInput = item.querySelector('textarea[name="step-text"]');
+      if (nameInput && textInput) {
+        steps.push({
+          name: nameInput.value || '',
+          text: textInput.value || ''
+        });
+      }
+    });
+    return steps;
+  }
+
+  function buildJSON() {
+    const title = document.getElementById('title').value;
+    const slug = document.getElementById('slug').value;
+    const hero = document.getElementById('hero').value;
+    const excerpt = document.getElementById('excerpt').value;
+    const description = document.getElementById('description').value;
+    const whyUseThisTool = document.getElementById('whyUseThisTool').value;
+    const category = document.getElementById('category').value;
+    const tags = parseCommaSeparated(document.getElementById('tags').value);
+    const keywords = parseCommaSeparated(document.getElementById('keywords').value);
+    const aliases = parseCommaSeparated(document.getElementById('aliases').value);
+    const videoUrl = document.getElementById('videoUrl').value;
+    const accessLevel = document.getElementById('accessLevel').value;
+    const price = document.getElementById('price').value;
+    const relatedAnas = parseCommaSeparated(document.getElementById('relatedAnas').value);
+    const relatedWorkshops = parseCommaSeparated(document.getElementById('relatedWorkshops').value);
+    const imageUrl = document.getElementById('imageUrl').value;
+    const imageAlt = document.getElementById('imageAlt').value;
+    const iconUrl = document.getElementById('iconUrl').value;
+    let metaTitle = document.getElementById('metaTitle').value;
+    let metaDescription = document.getElementById('metaDescription').value;
+    const publishedDate = document.getElementById('publishedDate').value;
+    const isDraft = document.getElementById('isDraft').checked;
+    const pendingPublish = document.getElementById('pendingPublish').checked;
+
+    const schemaDescription = document.getElementById('schemaDescription').value;
+    const schemaTool = parseCommaSeparated(document.getElementById('schemaTool').value);
+    const schemaSteps = getSchemaSteps();
+
+    if (!metaTitle && title) {
+      metaTitle = title + ' - Knit by Machine';
+    }
+    if (!metaDescription) {
+      metaDescription = excerpt || hero;
+    }
+
+    let schemaMarkup = null;
+    if (schemaDescription || schemaTool.length > 0 || schemaSteps.length > 0) {
+      schemaMarkup = {
+        description: schemaDescription,
+        tool: schemaTool,
+        step: schemaSteps
+      };
+    }
+
+    return {
+      title: title,
+      slug: slug,
+      hero: hero,
+      excerpt: excerpt,
+      description: description,
+      whyUseThisTool: whyUseThisTool,
+      category: category,
+      tags: tags,
+      keywords: keywords,
+      aliases: aliases,
+      videoUrl: videoUrl,
+      accessLevel: accessLevel,
+      price: price,
+      relatedAnas: relatedAnas,
+      relatedWorkshops: relatedWorkshops,
+      imageUrl: imageUrl,
+      imageAlt: imageAlt,
+      iconUrl: iconUrl,
+      metaTitle: metaTitle,
+      metaDescription: metaDescription,
+      schemaMarkup: schemaMarkup,
+      isDraft: isDraft,
+      publishedDate: publishedDate,
+      pendingPublish: pendingPublish
+    };
+  }
+
+  function updatePreview() {
+    const data = buildJSON();
+    jsonOutput.textContent = JSON.stringify(data, null, 2);
+  }
+
+  function addStep() {
+    stepCounter++;
+    const stepDiv = document.createElement('div');
+    stepDiv.className = 'step-item';
+    stepDiv.innerHTML = `
+      <div class="step-header">
+        <span class="step-number">Step ${stepCounter}</span>
+        <button type="button" class="remove-step-btn" data-testid="button-remove-step-${stepCounter}">Remove</button>
+      </div>
+      <input type="text" name="step-name" placeholder="Step name" data-testid="input-step-name-${stepCounter}" />
+      <textarea name="step-text" rows="2" placeholder="Step text" data-testid="input-step-text-${stepCounter}"></textarea>
+    `;
+    stepsContainer.appendChild(stepDiv);
+
+    stepDiv.querySelector('.remove-step-btn').addEventListener('click', function() {
+      stepDiv.remove();
+      renumberSteps();
+      updatePreview();
+    });
+
+    stepDiv.querySelector('input').addEventListener('input', updatePreview);
+    stepDiv.querySelector('textarea').addEventListener('input', updatePreview);
+    updatePreview();
+  }
+
+  function renumberSteps() {
+    const stepItems = stepsContainer.querySelectorAll('.step-item');
+    stepItems.forEach((item, index) => {
+      item.querySelector('.step-number').textContent = 'Step ' + (index + 1);
+    });
+    stepCounter = stepItems.length;
+  }
+
+  addStepBtn.addEventListener('click', addStep);
+
+  form.addEventListener('input', updatePreview);
+  form.addEventListener('change', updatePreview);
+
+  copyBtn.addEventListener('click', function() {
+    const text = jsonOutput.textContent;
+    navigator.clipboard.writeText(text).then(function() {
+      copyBtn.style.background = 'rgba(82, 200, 82, 0.3)';
+      setTimeout(function() {
+        copyBtn.style.background = '';
+      }, 1000);
+    });
+  });
+
+  downloadBtn.addEventListener('click', function() {
+    const slug = document.getElementById('slug').value || 'wizard';
+    const text = jsonOutput.textContent;
+    const blob = new Blob([text], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = slug + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  });
+
+  updatePreview();
+})();
+</script>

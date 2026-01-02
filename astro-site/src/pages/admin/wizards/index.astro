@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Wizards - Admin" description="Manage KBM wizard JSON files">
+  <div class="admin-wizards">
+    <header class="admin-header">
+      <h1>Wizards</h1>
+      <p class="admin-subtitle">Create and manage KBM wizard JSON files</p>
+    </header>
+
+    <section class="admin-actions">
+      <a href="/admin/wizards/new" class="btn-primary" data-testid="button-new-wizard">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14"/>
+          <path d="M12 5v14"/>
+        </svg>
+        New Wizard
+      </a>
+    </section>
+
+    <section class="admin-note">
+      <p>This builder generates JSON you can download and place in <code>/src/content/wizards/</code></p>
+    </section>
+
+    <nav class="admin-breadcrumb">
+      <a href="/admin">Back to Admin</a>
+    </nav>
+  </div>
+</BaseLayout>
+
+<style>
+  .admin-wizards {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .admin-header {
+    margin-bottom: 2rem;
+  }
+
+  .admin-header h1 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.75rem;
+  }
+
+  .admin-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 1rem;
+  }
+
+  .admin-actions {
+    margin-bottom: 1.5rem;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--kbm-green, #52682d);
+    color: #fff;
+    padding: 0.75rem 1.25rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1rem;
+    transition: background-color 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #3d4f22;
+  }
+
+  .admin-note {
+    background: #f8faf5;
+    border: 1px solid #d8e2cc;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .admin-note p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+  }
+
+  .admin-note code {
+    background: rgba(82, 104, 45, 0.1);
+    padding: 0.15rem 0.35rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+  }
+
+  .admin-breadcrumb {
+    margin-top: 2rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e8e0;
+  }
+
+  .admin-breadcrumb a {
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .admin-breadcrumb a:hover {
+    text-decoration: underline;
+  }
+</style>
