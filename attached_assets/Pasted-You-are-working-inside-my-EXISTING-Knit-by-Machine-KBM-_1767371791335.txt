@@ -1,0 +1,121 @@
+You are working inside my EXISTING Knit by Machine (KBM) Astro site repo.
+
+CRITICAL CONTEXT
+- I already have an Admin area/page on the live KBM site.
+- Your job is to ADD a new “Wizards” entry and a “New Wizard” builder INTO my existing Admin system.
+- Do NOT create a separate admin app, separate layout, separate route group, or a new navigation system.
+- This must be part of the same KBM site that deploys to knitbymachine.com.
+
+SAFETY RULES
+1) Before editing any existing file, create a .bak copy next to it.
+2) Make the smallest possible changes.
+3) If you cannot find my existing Admin page/layout/components, STOP and search the project for:
+   - "Admin"
+   - "/admin"
+   - "admin-index"
+   - "dashboard"
+   - "kbm-admin"
+   Then integrate into what you find. Do not invent a new admin design.
+
+GOAL
+Add a reusable Wizard JSON Builder (form + live JSON preview + copy + download) and surface it in my existing Admin UI.
+
+========================================
+STEP 1 — FIND MY EXISTING ADMIN
+========================================
+- Locate the current Admin landing page route (likely /src/pages/admin/index.astro or similar).
+- Locate any shared Admin layout component (e.g., /src/layouts/AdminLayout.astro or /src/components/admin/*).
+- Identify how the Admin currently adds new sections/cards/links.
+
+========================================
+STEP 2 — ADD “WIZARDS” TO THE EXISTING ADMIN LANDING PAGE
+========================================
+On the existing Admin landing page:
+- Add ONE new card/link labeled: "Wizards"
+- Supporting text: "Create and manage KBM wizard JSON."
+- Link target: /admin/wizards (do not change existing admin links)
+
+Create this page:
+- /src/pages/admin/wizards/index.astro
+This page should:
+- Use the SAME admin layout/styling as the existing Admin pages.
+- Show:
+  - H1: "Wizards"
+  - A button/link: “New Wizard” -> /admin/wizards/new
+  - Optional small note: “This builder generates JSON you can download and place in /src/content/wizards/”
+
+========================================
+STEP 3 — ADD THE NEW WIZARD BUILDER PAGE (INSIDE ADMIN)
+========================================
+Create:
+- /src/pages/admin/wizards/new.astro
+
+REQUIREMENT
+- This page MUST use the same Admin layout wrapper as existing admin pages.
+- This page MUST be reachable on the live site at /admin/wizards/new.
+
+On this page, render a form that generates EXACTLY this JSON structure (no added keys unless noted):
+[PASTE MY PROVIDED JSON STRUCTURE HERE — use the fields exactly]
+
+Form requirements:
+- Inputs for each key:
+  title (required)
+  slug (required; auto-generate from title but editable)
+  hero (required)
+  excerpt
+  description (multiline HTML allowed)
+  whyUseThisTool
+  category
+  tags (comma-separated)
+  keywords (comma-separated)
+  aliases (comma-separated)
+  videoUrl
+  accessLevel (select free/member/paid)
+  price
+  relatedAnas (comma-separated)
+  relatedWorkshops (comma-separated)
+  imageUrl + imageAlt
+  iconUrl
+  metaTitle + metaDescription
+  publishedDate (YYYY-MM-DD date picker)
+  isDraft (checkbox)
+  pendingPublish (checkbox)
+
+SchemaMarkup section:
+- schemaMarkup.description
+- schemaMarkup.tool (comma-separated)
+- schemaMarkup.step repeater:
+  each step: name + text
+  Include Add Step / Remove Step
+
+Behavior:
+- Live JSON preview (pretty printed)
+- Copy JSON button
+- Download .json button (filename = slug.json)
+- Auto-fill metaTitle if blank: "{title} - Knit by Machine"
+- Auto-fill metaDescription if blank: excerpt else hero
+- Enforce URL-safe slug (lowercase + hyphens) on blur
+
+TECH
+- Use vanilla JS only.
+- No database.
+- No server-side writing.
+- Do not add dependencies.
+
+========================================
+STEP 4 — OPTIONAL TEMPLATE FILE
+========================================
+If /src/content/wizards/ does not exist, create it.
+Add:
+/src/content/wizards/_template.json
+with empty defaults matching the same keys.
+
+========================================
+STEP 5 — VERIFY
+========================================
+- Confirm routes exist:
+  /admin (existing)
+  /admin/wizards
+  /admin/wizards/new
+- Confirm the builder generates valid JSON and downloads correctly.
+- Do not change anything else.
