@@ -1,0 +1,66 @@
+Use /wizards/dropped-stitch-troubleshooter as the ONLY example/template.
+
+GOAL
+Create a NEW wizard: /wizards/getting-started-readiness-check
+It must use the SAME wizard engine/components/data shape as dropped-stitch-troubleshooter.
+Do NOT use any old Ready-Set-Knit or Mindpal code. Do NOT resurrect any previous “getting-started” implementation.
+
+RULES
+- Back up any edited file to .bak.
+- Keep changes minimal.
+- Do not refactor the dropped-stitch wizard unless required to support adding a second wizard.
+
+TASK
+1) Identify how dropped-stitch-troubleshooter defines its questions/results:
+   A) If it loads from JSON, add a new JSON file alongside it using the same schema.
+   B) If it is hardcoded, extract the questions/results into a reusable data object and create a second data object for getting-started.
+   Do not build a new site or new framework.
+
+2) Create the new wizard using this content:
+
+Wizard title: "Getting Started: Readiness Check"
+Slug/route: "getting-started-readiness-check"
+Hero: "Answer a few quick questions and get one clear next step before you knit."
+
+Questions (yes/no):
+Q1 machine secured?
+Q2 bed level?
+Q3 clean/oiled?
+Q4 yarn threaded correctly?
+Q5 carriage moved smoothly without yarn?
+Q6 manual/tools nearby?
+
+Results:
+Result A (Pause / Safety Check):
+- headline: "Pause here — a quick setup check will protect your machine."
+- cause: "One or more setup basics aren’t confirmed yet."
+- fix: "Secure the machine, confirm it’s level, oil if needed, and re-check threading."
+- action label: "Run the Setup Safety Check"
+- action url: "/start-here/setup-safety-check"
+
+Result B (Quick Adjustment):
+- headline: "You’re close — one quick step will make everything smoother."
+- cause: "A quick dry run and tools within reach prevent early frustration."
+- fix: "Do a quick carriage glide check before adding yarn."
+- action label: "Do the 60-second Carriage Glide Check"
+- action url: "/ask-n-answer/carriage-glide-check"
+
+Result C (Ready to Knit):
+- headline: "You’re ready to knit your first rows."
+- cause: "Your setup and yarn path are ready."
+- fix: "Knit your first 10 rows slowly and watch the stitches form."
+- action label: "Start: Your First 10 Rows"
+- action url: "/start-here/first-10-rows"
+
+Rules:
+- If any of Q1-Q4 is "no" => Result A
+- Else if Q5 is "no" OR Q6 is "no" => Result B
+- Else => Result C
+
+3) Ensure both routes work:
+- /wizards/dropped-stitch-troubleshooter (unchanged)
+- /wizards/getting-started-readiness-check (new)
+
+Deliverables:
+- new wizard reachable on site
+- no dependence on old “getting-started” code

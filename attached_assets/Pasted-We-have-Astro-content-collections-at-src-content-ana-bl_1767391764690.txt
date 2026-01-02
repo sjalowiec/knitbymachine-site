@@ -1,0 +1,61 @@
+We have Astro content collections at src/content: ana, blog, videos, workshops.
+We need to add a NEW collection: wizards.
+
+RULES
+- Do NOT create a new Astro site.
+- Back up any edited file as .bak in the same folder.
+- Keep changes minimal and consistent with existing collections.
+
+TASKS
+1) Create folder: src/content/wizards/
+
+2) Find the content config file for Astro content collections (likely src/content/config.ts).
+   - Back it up.
+   - Add a new collection named "wizards".
+   - Define a schema that matches this wizard JSON shape (all fields optional except title/slug/hero):
+     title (string, required)
+     slug (string, required)
+     hero (string, required)
+     description (string)
+     excerpt (string)
+     whyUseThisTool (string)
+     category (string)
+     tags (array of strings)
+     keywords (array of strings)
+     aliases (array of strings)
+     videoUrl (string)
+     accessLevel (string enum: free|member|paid)
+     price (string)
+     relatedAnas (array of strings)
+     relatedWorkshops (array of strings)
+     imageUrl (string)
+     imageAlt (string)
+     iconUrl (string)
+     metaTitle (string)
+     metaDescription (string)
+     schemaMarkup (object passthrough/any)
+     isDraft (boolean)
+     publishedDate (string)
+     pendingPublish (boolean)
+
+   Use zod, consistent with other collections.
+
+3) Create a wizard index page:
+   src/pages/wizards/index.astro
+   - Lists wizard titles linking to /wizards/[slug]
+   - Only show non-draft wizards (isDraft !== true)
+
+4) Create a wizard detail page:
+   src/pages/wizards/[slug].astro
+   - Load wizard entry by slug from the "wizards" collection
+   - Render title, hero, description (HTML), excerpt, tags, and inject schemaMarkup JSON-LD if present
+   - Clean 404 if not found
+
+5) Move/copy the existing sample wizard JSON file from attached_assets into the new collection:
+   - Create: src/content/wizards/dropped-stitch-troubleshooter.json
+   - Content should come from ./attached_assets/.../dropped-stitch-troubleshooter.json (copy it in)
+   - Ensure it validates against the schema.
+
+6) Confirm routes work:
+   /wizards
+   /wizards/dropped-stitch-troubleshooter
