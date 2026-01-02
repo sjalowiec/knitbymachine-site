@@ -1,0 +1,136 @@
+Replit Prompt — Refactor ANA Admin for Gateway vs Leaf (Admin ONLY)
+
+Goal
+Update the ANA admin UI + underlying ANA JSON schema so entries can be either:
+- Leaf ANA (answers + steps + optional media + member extras)
+- Gateway ANA (wizard prompt + options that route to leaf ANAs)
+This work is ADMIN ONLY. Do NOT change public/production page layouts yet.
+
+Hard Constraints
+- BACK UP any files you edit (create a .bak copy first).
+- Do NOT change site navigation, routing, or public ANA page templates.
+- Keep using ONE ANA JSON collection (no second database/table).
+- Preserve existing ANA entries and fields (do not delete data).
+- Add conditional logic in admin so only relevant fields show based on ANA type.
+- Keep the form simple; move rarely-used fields into an “Advanced” collapsible section.
+
+Current ANA Fields (existing)
+Required: title, slug, category, body
+Optional: questionDisplay, introParagraph, keyInsight, quickCheckText, tags, isMemberOnly, videoUrl, imageUrl, imageAlt, wizardUrl, metaTitle, metaDescription, schemaMarkup, relatedAnas, relatedWorkshops, relatedWizards, embedWizard, memberDividerText, memberTitle, memberBody, memberVideoUrl, isDraft, pendingPublish, publishedDate
+
+Part A — Update the ANA Schema (JSON shape)
+1) Add a REQUIRED field:
+- type: "leaf" | "gateway"
+Default all existing entries to "leaf" during migration.
+
+2) Add optional fields (new):
+- shortAnswer: string (2–4 sentence public “direct answer” / gateway intro)
+- outcomeLine: string (1–2 sentence confidence-building close; leaf only)
+- steps: string[] (leaf only; short checklist/steps)
+- parentGatewaySlug: string (leaf only; optional but recommended)
+
+3) Add a wizard object (gateway only):
+wizard: {
+  prompt: string,
+  options: [
+    {
+      label: string,              // user choice text
+      resultTitle: string,        // short heading shown after selection
+      resultBullets: string[],    // 2–4 bullets max
+      primaryLeafSlug: string,    // REQUIRED: routes to a leaf ANA
+      secondaryLeafSlug: string   // optional
+    }
+  ]
+}
+
+4) Keep member extras fields (you already have them) and do NOT lock entire ANA pages.
+- We will NOT use isMemberOnly for whole-page locks.
+- Keep memberDividerText/memberTitle/memberBody/memberVideoUrl as “Member Extras” fields.
+- isMemberOnly can remain in data for compatibility, but hide it in admin (Advanced) or label as “Legacy (do not use).”
+
+Part B — Migrate Existing Data Safely (non-destructive)
+Write a small migration routine (or one-time script) that:
+- Adds type: "leaf" to every existing ANA object that lacks it.
+- If shortAnswer is missing:
+  - If introParagraph exists, copy introParagraph -> shortAnswer (do not remove introParagraph).
+  - Else leave shortAnswer empty.
+- Initialize steps as [] if missing.
+- Initialize wizard as null/undefined for leaf entries.
+- Do NOT remove or rename existing fields; we’re layering on top.
+
+Part C — Refactor the Admin Form UI (core work)
+In the ANA Admin editor:
+1) Add a “Type” selector at the top:
+- Leaf ANA
+- Gateway ANA
+
+2) Conditional field visibility based on type:
+
+Always show (all ANAs):
+- title
+- slug (auto-generate from title; editable)
+- category
+- tags
+- status controls (isDraft, pendingPublish, publishedDate)
+- shortAnswer (label it “Direct answer (public)”)
+
+Leaf-only section (show only when type="leaf"):
+- steps (repeater list UI: add/remove step)
+- body (label “Details (public)” — keep as long-form content if needed)
+- videoUrl
+- imageUrl, imageAlt
+- outcomeLine
+- relatedAnas (cap UI guidance: “Choose up to 3”)
+- parentGatewaySlug (dropdown of gateway ANAs by title/slug)
+
+Gateway-only section (show only when type="gateway"):
+- body (optional; label “Intro (optional)” and keep short; shortAnswer is the primary intro)
+- wizard.prompt (required)
+- wizard.options repeater (cap at 5 options; enforce UI max)
+  For each option show:
+  - label (required)
+  - resultTitle (required)
+  - resultBullets (repeater; cap at 4)
+  - primaryLeafSlug (required; dropdown of LEAF ANAs by title/slug)
+  - secondaryLeafSlug (optional; dropdown of LEAF ANAs)
+
+Member Extras section (show for both types, but collapsed by default):
+- memberDividerText (default suggestion: “Member notes”)
+- memberTitle
+- memberBody
+- memberVideoUrl
+
+Advanced section (collapsed):
+- questionDisplay, introParagraph, keyInsight, quickCheckText (legacy/support)
+- metaTitle, metaDescription, schemaMarkup
+- relatedWorkshops, relatedWizards, wizardUrl, embedWizard
+- isMemberOnly (rename label to “Legacy: do not use” and/or hide)
+
+3) Validation / guardrails in admin:
+- type is required
+- title/slug required
+- gateway requires wizard.prompt + at least 2 options
+- gateway requires each option.primaryLeafSlug
+- leaf steps are optional but recommended
+- show small inline warnings instead of blocking save when possible
+
+4) Quality-of-life improvements:
+- Provide “Create new leaf” quick button/link from within a gateway option (optional; if easy).
+- Auto-trim bullets to max 4 and options to max 5.
+- Make dropdowns searchable if the list is long.
+
+Part D — Save/Load Behavior
+- Ensure the admin saves the new fields into the same ANA JSON file/collection.
+- Ensure existing fields remain untouched.
+- Ensure the editor can load older entries and display them correctly (defaulting type to leaf).
+
+Deliverables
+- List exact files edited/created (with paths).
+- Confirm backup files were created.
+- Confirm the admin can:
+  - Create a new Leaf ANA with steps + outcomeLine + member extras
+  - Create a new Gateway ANA with wizard.prompt + options routing to leaf slugs
+  - Edit an existing ANA without losing any legacy fields
+
+Important: Stop after admin changes are complete.
+Do NOT update production templates yet. We will do that next, after we confirm the admin data is clean.
