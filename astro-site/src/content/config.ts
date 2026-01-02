@@ -86,7 +86,26 @@ const wizards = defineCollection({
     onboardingIntroBody: z.string().optional(),
     toolSubheading: z.string().optional(),
     relatedGuides: z.array(z.string()).optional(),
-    showSecondaryCta: z.boolean().optional()
+    showSecondaryCta: z.boolean().optional(),
+    
+    // Interactive wizard flow (for troubleshooters)
+    wizardFlow: z.object({
+      version: z.number(),
+      questionTitle: z.string().optional(),
+      questionSubtitle: z.string().optional(),
+      options: z.array(z.object({
+        id: z.string(),
+        label: z.string(),
+        resultId: z.string()
+      })).default([]),
+      results: z.array(z.object({
+        id: z.string(),
+        causeTitle: z.string(),
+        explanation: z.string(),
+        tryThisItems: z.array(z.string()).default([]),
+        encouragement: z.string().default("")
+      })).default([])
+    }).nullable().optional()
   })
 });
 
