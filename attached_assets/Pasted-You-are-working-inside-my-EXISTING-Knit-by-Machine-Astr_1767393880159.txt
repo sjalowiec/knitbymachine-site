@@ -1,0 +1,140 @@
+You are working inside my EXISTING Knit by Machine Astro repo.
+Do NOT scaffold a new Astro site. Do NOT invent new content models.
+
+GOAL A — Project Wizard: remove unused fields and use ONLY what my site needs
+GOAL B — Restore Publish: Admin must publish to GitHub again (no manual JSON)
+
+SAFETY
+- Before editing ANY file, create a .bak in the same folder.
+- Make the smallest possible changes.
+- Do NOT touch other wizard types unless required for separation.
+
+========================================================
+PART 1 — Define the ONLY Project Wizard fields we will support
+========================================================
+
+Project Wizard is the decision-tree wizard used by /wizards/[slug].astro and WizardFlowRenderer.
+
+The Project Wizard JSON output MUST include ONLY these keys (exact names):
+
+TOP LEVEL:
+- title (string, required)
+- slug (string, required)
+- hero (string, optional)
+- description (string HTML, optional)
+- excerpt (string, optional)
+- category (string, required; value "project wizard")
+- tags (string[], optional)
+- keywords (string[], optional)
+- aliases (string[], optional)
+- imageUrl (string, optional)
+- imageAlt (string, optional)
+- iconUrl (string, optional)
+- metaTitle (string, optional)
+- metaDescription (string, optional)
+- schemaMarkup (object, optional)
+- isDraft (boolean, optional; default false)
+- accessLevel (string optional; default "free")
+- publishedDate (string YYYY-MM-DD, optional)
+- pendingPublish (boolean, optional; default false)
+
+PROJECT WIZARD INTERACTIVE FLOW:
+- wizardFlow (object, required) with:
+  - version (number, required; default 1)
+  - questionTitle (string, required)
+  - questionSubtitle (string, optional)
+  - options (array, required) each:
+      - id (string)
+      - label (string)
+      - resultId (string)
+  - results (array, required) each:
+      - id (string)
+      - causeTitle (string)
+      - explanation (string)
+      - tryThisItems (string[])
+      - encouragement (string)
+
+Everything else must be removed for Project Wizard:
+REMOVE / DO NOT USE:
+- onboardingMode, onboardingIntroTitle, onboardingIntroBody
+- toolSubheading
+- whoThisIsFor, whyItMatters, benefits
+- showSecondaryCta
+- relatedGuides (keep only relatedAnas/relatedWorkshops if they are already used elsewhere; otherwise remove)
+- any legacy shared fields not listed above
+- any “one schema for all wizards” behavior for Project Wizard
+
+========================================================
+PART 2 — Update the content schema (Astro content collection)
+========================================================
+
+Find src/content/config.ts (or wherever collections are defined).
+- Back it up.
+- Ensure the "wizards" collection schema supports the Project Wizard keys above.
+- Make wizardFlow shape explicit (options/results), not "any".
+- If other wizard types exist in the same collection, DO NOT break them.
+  Instead:
+  - Add a discriminator field such as contentType OR category
+  - For Project Wizards (category === "project wizard"), enforce the wizardFlow schema above
+  - For other wizard categories, leave them permissive for now (but do not reintroduce unused fields into Project Wizard UI)
+
+========================================================
+PART 3 — Update the Project Wizard Admin form to only show these fields
+========================================================
+
+Locate the admin wizard editor (Project Wizard decision tree UI) and its schema/default state.
+- Back up the files.
+
+Make these changes:
+1) When contentType/category is "project wizard":
+   - Show ONLY the fields listed in PART 1.
+   - Remove/hide any other sections and inputs (landing-page settings, onboarding, benefits, etc).
+2) Ensure the JSON Preview/Export outputs ONLY the Project Wizard keys listed above.
+   - No extra keys set to empty strings, empty arrays, nulls, etc.
+   - The output should be clean, minimal.
+3) Ensure the decision tree editor writes to wizardFlow with exactly:
+   - questionTitle, questionSubtitle, options[{id,label,resultId}], results[{id,causeTitle,explanation,tryThisItems[],encouragement}]
+
+========================================================
+PART 4 — Restore Publish-to-GitHub (Netlify function + UI)
+========================================================
+
+Right now it does not seem to be saving to GitHub. Rebuild publishing.
+
+1) Create Netlify function:
+   netlify/functions/publishWizard.ts (or .js if TS not available)
+
+Function behavior:
+- POST body: { slug: string, content: object }
+- Validate slug: /^[a-z0-9-]+$/
+- Validate content is an object and has required fields for Project Wizard.
+- Write to path: src/content/wizards/{slug}.json
+- Commit create/update via GitHub Contents API
+- Use env vars only:
+  GITHUB_TOKEN, GITHUB_OWNER, GITHUB_REPO, GITHUB_BRANCH (default main)
+- Return: { ok:true, path, commitSha, liveUrl:`/wizards/${slug}` }
+
+2) Admin UI:
+- Add/restore a "Publish" button on the Project Wizard editor.
+- On click, POST to /.netlify/functions/publishWizard with { slug, content } using the minimal JSON output.
+- Show status: Publishing… / Published ✓ (with link) / Error (show message)
+- Keep Copy/Download if they exist, but Publish must work.
+
+3) Add docs file:
+  docs/wizard-publishing-setup.md
+Include:
+- required env vars
+- Netlify location to set them
+- token permission guidance (fine-grained PAT, Contents read/write)
+- how to test: publish a test wizard, confirm file exists in GitHub at src/content/wizards/{slug}.json, then confirm /wizards/{slug} loads after deploy
+
+========================================================
+DEFINITION OF DONE (stop here)
+========================================================
+
+A) In admin, Project Wizard editor only shows the Project Wizard fields listed above.
+B) JSON preview contains ONLY those keys; no extra legacy/shared fields.
+C) Clicking Publish commits/updates src/content/wizards/{slug}.json in GitHub.
+D) After deploy, /wizards/{slug} loads and WizardFlowRenderer renders the wizardFlow.
+
+Do not add new features or redesign anything. Stop when A–D are complete.
