@@ -207,6 +207,16 @@ import "../styles/global.css";
             <span class="btn primary" data-testid="button-rsk">Start a project</span>
           </a>
 
+          <!-- Card 4: Need help? -->
+          <a href="/start-here" class="kbm-hex-card kbm-hex-card--link" data-testid="card-need-help">
+            <div class="kbm-hex-icon">
+              <img src="/images/spotlight.svg" alt="Spotlight icon" />
+            </div>
+            <h3>Help Hub</h3>
+            <p>Start here and get your next right step.</p>
+            <span class="btn primary" data-testid="button-need-help">Start Here</span>
+          </a>
+
           
           </div>
         </div>
