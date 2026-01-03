@@ -1,0 +1,74 @@
+Yes — please create the Stepped Wizard system (renderer + admin step editor). 
+Important clarification: the “Dropped Stitches” wizard record exists, but there is currently NO front-end renderer component yet. We are building the first one now, and it should become the reusable template for all Stepped Wizards.
+
+Definitions (use these exact terms in the admin UI):
+- Wizard types (conceptual): Stepped Wizard, Tool, Pattern, Embed
+- In my current toolType dropdown:
+  - Troubleshooter / Checklist / Assessment = Stepped Wizard (needs steps + branching)
+  - Calculator = Tool (no steps)
+  - Iframe Embed = Embed (no steps)
+  - Pattern may be added later (no steps)
+
+What to build:
+
+A) Data model changes (DB)
+1) In the wizard_flows table (or equivalent), add these fields:
+   - steppedWizardSteps (JSONB) default []
+   - steppedWizardOutcomes (JSONB) default {}
+   - steppedWizardStartStepId (text) nullable
+2) Keep existing fields as-is (name, slug, description, draft, toolType, component_id, iframe_url, height, etc).
+3) Remove provider everywhere (I am not using MindPal).
+
+B) Admin UI (NO raw JSON editing)
+4) In the Wizard Flows admin form:
+   - If toolType is Troubleshooter OR Checklist OR Assessment:
+     show a “Wizard Steps” editor + “Wizard Outcomes” editor + Start Step selector + Preview button.
+   - If toolType is Calculator or Iframe Embed:
+     hide all step/outcome UI completely.
+5) Wizard Steps editor requirements:
+   - Step cards with:
+     - stepId (auto-generate slug-like, editable)
+     - thoughtBubbleText (required)
+     - helperText (optional)
+     - choices[] repeater
+   - Choice rows with:
+     - label (required)
+     - routeType dropdown: “Go to Step” or “Show Outcome”
+     - routeTarget dropdown populated from existing stepIds or outcome keys
+   - Buttons: Add Step, Duplicate Step, Delete Step, Move Up/Down. Add Choice, Delete Choice.
+6) Outcomes editor requirements:
+   - Outcome cards with:
+     - key (unique)
+     - title (required)
+     - body (optional)
+     - ctaLabel (optional)
+     - ctaHref (optional)
+   - Buttons: Add Outcome, Delete Outcome.
+7) Validation:
+   - unique stepIds
+   - unique outcome keys
+   - every choice must have a valid target
+   - startStepId must exist
+   - prevent Save when invalid and show friendly inline messages
+
+C) Front-end renderer (Astro/React)
+8) Create ONE reusable component renderer for Stepped Wizards that matches the “thought bubble” style we want.
+   - It loads the wizard record by slug (or id) and reads steppedWizardSteps/outcomes/startStepId.
+   - It renders the current step as a thought bubble and shows choices as buttons.
+   - When a choice is clicked, it routes to the next step OR shows the outcome screen with CTA.
+   - Include Back button (optional but preferred) and Restart.
+9) Create a stepped wizard page route if needed (ex: /wizards/[slug] or /stepped/[slug]) that renders the stepped wizard component when the wizard is of a stepped type.
+10) Set the component_id for the existing “Dropped Stitches” troubleshooter record to this new stepped wizard renderer component so it displays on the site.
+
+D) Keep scope tight
+- Do NOT change public site layout besides adding the stepped wizard renderer + route to display it.
+- Do NOT break calculator/tool embeds or iframe embeds.
+- Make .bak backups before large edits.
+- Ensure GitHub save/publish still works.
+
+Finally:
+After implementing, tell me:
+- which files you changed
+- DB migration steps/SQL you ran
+- what component_id value I should use for stepped wizards going forward
+- the URL where I can preview the Dropped Stitches stepped wizard on the site

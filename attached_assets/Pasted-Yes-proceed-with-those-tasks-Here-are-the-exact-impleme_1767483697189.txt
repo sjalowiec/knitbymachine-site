@@ -1,0 +1,95 @@
+Yes — proceed with those tasks. Here are the exact implementation requirements so we keep this simple, consistent, and easy to understand later.
+
+1) New fields (data storage)
+Please add these fields to the wizard record (DB JSON/JSONB is fine):
+- wizardSteps (JSON/JSONB) default []
+- wizardOutcomes (JSON/JSONB) default {}
+- wizardStartStepId (text) nullable
+
+Terminology (important):
+- Use the term “Stepped Wizard” everywhere in the admin UI.
+- Label the section “Stepped Wizard Setup”.
+- Within that section, use these labels exactly:
+  - “Wizard Steps”
+  - “Wizard Outcomes”
+  - “Start Step”
+  - “Preview Wizard”
+Avoid the word “flow” entirely.
+
+2) Provider field
+Remove “provider” everywhere (schema + UI + types). I am not using MindPal.
+
+3) Visual editor for Wizard Steps (NO JSON editing)
+Only show the “Stepped Wizard Setup” section when the wizard is a stepped wizard.
+For now, treat these toolTypes as stepped wizards:
+- Troubleshooter
+- Checklist
+- Assessment
+
+Hide the entire “Stepped Wizard Setup” section for:
+- Calculator
+- Iframe Embed
+(Patterns will also be non-stepped; ignore for now if not in the dropdown.)
+
+Wizard Steps UI requirements:
+- Steps list with cards and buttons:
+  Add Step, Duplicate Step, Delete Step, Move Up, Move Down
+- Each Step includes:
+  - stepId (auto-generate slug-like; editable; must be unique)
+  - thoughtText (required) — this is the thought bubble text
+  - helperText (optional)
+  - choices[] (repeater)
+
+Each Choice includes:
+- label (required)
+- routeType dropdown: “Go to Step” or “Show Outcome”
+- routeTarget dropdown:
+   - if “Go to Step”: choose from existing stepIds
+   - if “Show Outcome”: choose from existing outcome keys
+- Delete choice
+
+Branching:
+Each choice must be able to route to a different step or to an outcome.
+
+4) Editor for Wizard Outcomes
+- Outcomes list with cards and buttons:
+  Add Outcome, Delete Outcome
+- Each Outcome includes:
+  - key (unique, editable)
+  - title (required)
+  - body (optional)
+  - ctaLabel (optional)
+  - ctaHref (optional)
+
+5) Start Step selector + visibility
+- Start Step dropdown lists available stepIds
+- If no steps exist, show a friendly message explaining that a start step can’t be chosen yet
+- Only show Start Step (and all Stepped Wizard fields) when applicable
+
+6) Validation (must prevent saving)
+Prevent saving and show friendly inline errors if:
+- duplicate stepIds
+- duplicate outcome keys
+- missing thoughtText on any step
+- any choice missing label
+- any choice missing routeTarget
+- routeTarget points to a missing stepId or outcome key
+- startStepId missing or invalid when steps exist
+
+7) Component to show wizard (shared renderer)
+Create ONE reusable Stepped Wizard renderer component using the thought-bubble style.
+It should:
+- load wizardSteps, wizardOutcomes, and wizardStartStepId for the selected wizard
+- render the current step as a thought bubble with choice buttons
+- navigate to the next step or outcome based on user choice
+- include Back and Restart controls (preferred)
+
+8) Preview button + route
+Add a “Preview Wizard” button in the “Stepped Wizard Setup” section that opens a preview route rendering this wizard with the same component used on the live site.
+A route like /preview/wizard/[slug] is fine.
+
+After implementation, please tell me:
+- which files were changed
+- any DB migration steps performed
+- the component_id value to use for stepped wizards going forward
+- confirm the Dropped Stitches wizard record has a component_id set and can be previewed via the new route
