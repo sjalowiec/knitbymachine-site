@@ -1,0 +1,126 @@
+IMPORTANT CONTEXT
+
+You are working ONLY in my React-based admin system, not the public Astro site.
+Do not modify any frontend pages, Astro components, or site layouts.
+This task is admin schema + admin UI only.
+
+Goal
+
+Add a new Video Registry to the admin.
+This is a shared asset registry, not a page type and not a video player system.
+
+The registry will allow me to define videos once and reference them elsewhere later.
+
+What to create
+
+New Admin Collection / Data Type
+
+Name: videos
+
+Purpose: Central registry for reusable instructional videos
+
+Video Registry Schema
+
+Add the following fields exactly:
+
+Required fields
+
+videoId (string, required, unique)
+
+This is my internal, stable ID (NOT the Vimeo ID)
+
+Validation: lowercase letters/numbers/hyphens only
+
+Regex: ^[a-z0-9-]+$
+
+IMPORTANT: Once a video record is created, videoId must become read-only/locked in the edit form so it cannot be changed.
+
+title (string, required)
+
+summary (string, optional, short user-facing description)
+
+vimeoId (string, required)
+
+thumbnail (string, required)
+
+Stores a local .webp path (example: /images/videos/sponge-bar-replace.webp)
+
+Metadata / future-ready fields
+
+purpose (enum)
+
+options: identify, fix, maintain
+
+accessLevel (enum)
+
+options: free, member, workshop
+
+default: free
+
+machines (array of strings, optional)
+
+tags (array of strings, optional)
+
+Admin UI requirements
+
+Add a Videos section to the admin navigation
+
+Provide:
+
+list view: show title, videoId, accessLevel
+
+create view: includes editable videoId
+
+edit view: shows videoId as locked/read-only (or hidden) and clearly labeled as permanent
+
+Include helper text under Video ID:
+
+“Internal ID. Lowercase + hyphens only. Do not change after saving.”
+
+No preview player required
+
+No frontend rendering
+
+No relationships yet (videos will be referenced manually for now)
+
+Critical constraints
+
+Do NOT:
+
+auto-embed videos anywhere
+
+assume videos belong to a page
+
+modify existing wizard, ANA, or tool schemas
+
+add permissions/paywall logic yet
+
+This registry must be:
+
+independent
+
+reusable
+
+safe to expand later without breaking existing content
+
+Implementation notes
+
+Follow existing admin patterns for CRUD and validation
+
+If migrations are needed, make them backward-safe
+
+Before finishing
+
+Confirm the admin loads correctly
+
+Confirm I can add/edit/delete video entries
+
+Confirm videoId:
+
+is required + unique
+
+enforces the regex validation
+
+is editable on create
+
+is not editable after creation

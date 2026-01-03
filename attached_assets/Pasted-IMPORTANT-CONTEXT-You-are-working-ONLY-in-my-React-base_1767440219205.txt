@@ -1,0 +1,136 @@
+IMPORTANT CONTEXT
+
+You are working ONLY in my React-based admin system, not the public Astro site.
+Do not modify any frontend pages, Astro components, or site layouts.
+This task is admin schema + admin UI only.
+
+Goal
+
+Add a new Video Registry to the admin.
+This is a shared asset registry, not a page type and not a video player system.
+
+The registry will allow me to define videos once and reference them elsewhere later.
+
+What to create
+
+1) New Admin Collection / Data Type
+
+Name: videos
+
+Purpose: Central registry for reusable instructional videos
+
+2) Video Registry Schema
+
+Add the following fields:
+
+Primary ID (admin-assigned)
+
+videoId (number, required, unique)
+
+This is the permanent internal ID
+
+Assigned automatically by admin (auto-increment)
+
+Not editable in create or edit views
+
+This ID will be used for all internal references later
+
+Required fields
+
+title (string, required)
+
+summary (string, optional, short user-facing description)
+
+vimeoId (string, required)
+
+thumbnail (string, required)
+
+Path to local .webp image
+
+Example: /images/videos/sponge-bar-replace.webp
+
+Metadata / future-ready fields
+
+purpose (enum)
+
+options: identify, fix, maintain
+
+accessLevel (enum)
+
+options: free, member, workshop
+
+default: free
+
+machines (array of strings, optional)
+
+tags (array of strings, optional)
+
+Admin UI requirements
+
+Add a Videos section to the admin navigation
+
+List view should display:
+
+videoId
+
+title
+
+accessLevel
+
+Create view:
+
+videoId is auto-generated and read-only
+
+Edit view:
+
+videoId is visible but locked / read-only
+
+No preview player required
+
+No frontend rendering
+
+No relationships yet
+
+Critical constraints
+
+Do NOT:
+
+auto-embed videos anywhere
+
+connect videos to ANAs, tools, or pages yet
+
+add permissions or paywall logic
+
+modify any existing schemas
+
+This registry must be:
+
+independent
+
+reusable
+
+safe to expand later without breaking references
+
+Implementation notes
+
+Follow existing admin patterns for auto-increment IDs
+
+Ensure uniqueness and persistence of videoId
+
+If migrations are required, make them backward-safe
+
+Before finishing
+
+Confirm the admin loads correctly
+
+Confirm I can add/edit/delete video entries
+
+Confirm videoId:
+
+is numeric only
+
+is auto-assigned
+
+cannot be edited
+
+remains stable after save
