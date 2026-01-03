@@ -1,0 +1,160 @@
+REPLIT PROMPT — KBM ADMIN REFACTOR (CONTENT PAGES DE-BLOAT + SAFE MIGRATION)
+
+Context
+We now have two admin sections:
+1) Wizard Flows = interactive logic only (questions/inputs/branching/calculations/outcomes)
+2) Content Pages = published page wrapper only (title/summary/SEO/media/access + embeds by wizardId)
+
+Problem
+Current Content Pages schema is bloated and mixes:
+- page presentation modules (heroSection, embedSection, resultsSection)
+- onboarding-mode page builder fields
+- tool-specific fields (whyUseThisTool*)
+This recreates a “page builder” inside admin and makes maintenance difficult.
+
+Goal
+Refactor Content Pages into a lean, uniform schema that works across:
+- tools
+- patterns
+- practice projects (treated as pattern variant)
+- project wizards (decision walkthrough pages / gateway pages)
+And ensure the site renders consistently via templates, not via stored layout sections.
+
+Non-Negotiable Boundaries
+- Content Pages MUST NOT store wizard logic: no questions, no branching rules, no formulas, no result logic.
+- Wizard Flows MUST NOT store page styling/SEO/hero/sections.
+- Pages embed wizards by stable wizardId(s), not by title.
+
+Deliverables
+A) NEW LEAN CONTENT PAGES SCHEMA
+Create/replace Content Pages schema with ONLY these fields:
+
+Core
+- id (string, auto)
+- title (string, required)
+- slug (string, required, unique)
+- contentType (enum: "tool" | "pattern" | "project-wizard")  // keep "practice-project" as a variant field below
+- variant (optional enum: "default" | "practice-project")     // only used when contentType="pattern"
+- wizardFlowIds (string[], optional)                          // allows 0..n embedded wizards
+
+Copy
+- summary (string, required)                                  // 1–2 lines, replaces excerpt/hero/whyUseThisTool
+- body (string, optional)                                     // longer explanation; markdown/plain text
+
+Access
+- accessLevel (enum: "free" | "member" | "paid", default "free")
+- priceLabel (string, optional)                               // display text e.g. "$12" or "Included for members"
+
+Media
+- featuredImage (object, optional)
+  - url (string)
+  - alt (string)
+- videoUrl (string, optional)
+- iconKey (string, optional)                                  // NOT a URL; key that maps to local assets in code
+
+Taxonomy
+- categoryId (string, optional)
+- tags (string[], optional)
+- aliases (string[], optional)
+
+SEO
+- metaTitle (string, optional)                                // fallback = title
+- metaDescription (string, optional)                          // fallback = summary
+- keywords (string[], optional)
+
+Related
+- related (array, optional) of objects:
+  - type (enum: "ana" | "tool" | "pattern" | "workshop" | "guide" | "page")
+  - slug (string)
+
+Status
+- status (enum: "draft" | "published", default "draft")
+- publishedAt (datetime, optional)
+- updatedAt (datetime, auto)
+
+IMPORTANT: Do NOT include:
+- schemaMarkup (generate JSON-LD at render time instead)
+- pendingPublish (use status)
+- heroSection / embedSection / resultsSection / nextStepLinks / onboardingMode / whoThisIsFor / benefits / etc.
+- whyUseThisTool*, whatThisCovers, howItWorks arrays (these are template concerns)
+
+B) MIGRATION (SAFE, NON-DESTRUCTIVE)
+Write a migration script or one-time migration routine that:
+1) Creates a backup of the existing content pages data file(s) with timestamp suffix.
+2) Reads all existing Content Page records and writes them into the new schema.
+3) Does NOT delete the old records until migration is verified.
+
+Field mapping rules (old -> new):
+- title -> title
+- slug -> slug
+- contentType:
+  - "practice-project" -> contentType="pattern", variant="practice-project"
+  - keep "tool" and "pattern"
+  - keep "project-wizard" (or map any old gateway-type to "project-wizard")
+- wizardFlowId -> wizardFlowIds = [wizardFlowId] if present
+- description -> body (or summary if it’s short; see rule below)
+- excerpt -> summary (preferred)
+- hero / whyUseThisTool / whatThisCovers / onboardingIntroBody:
+  - If summary is empty, pick the BEST short text from these in this priority order:
+    1) excerpt
+    2) hero
+    3) description (truncate to ~160–200 chars cleanly)
+    4) whyUseThisTool (truncate)
+  - Put remaining longer text into body (append with blank lines; do not lose content)
+- accessLevel -> accessLevel
+- price -> priceLabel (string conversion; preserve display formatting)
+- imageUrl + imageAlt -> featuredImage {url, alt}
+- videoUrl -> videoUrl
+- iconUrl -> iconKey (attempt best-effort mapping by filename; if not possible, leave blank and log)
+- categoryId -> categoryId
+- tags -> tags
+- keywords -> keywords
+- aliases -> aliases
+- metaTitle -> metaTitle
+- metaDescription -> metaDescription
+- relatedAnas / relatedWorkshops / relatedGuides / relatedTools:
+  - Convert all into related[] objects with appropriate type + slug
+- isDraft:
+  - if true -> status="draft"
+  - else -> status="published" (if it was live previously)
+- publishedDate -> publishedAt
+- updatedAt -> updatedAt (preserve if available; otherwise set now)
+
+Migration output should include a log summary:
+- total records migrated
+- records missing summary (should be 0; fill with truncated content)
+- records with missing iconKey mapping
+- any slug conflicts detected (abort migration if conflicts)
+
+C) ADMIN UI CHANGES
+Update Content Pages editor UI to match the lean schema:
+- Hide/remove all old sections and onboarding fields.
+- Make summary a required textarea with helper text: “1–2 lines. Shows on cards + SEO fallback.”
+- Provide a multiselect for wizardFlowIds that searches by wizardId/title from Wizard Flows.
+- Provide related[] editor as repeatable rows (type dropdown + slug input).
+- Provide status dropdown draft/published and publishedAt auto-set when switching to published (optional).
+
+D) SITE TEMPLATE COMPATIBILITY
+Update the page rendering to rely on templates, not stored sections.
+- Each contentType routes to its template: tool, pattern, project-wizard.
+- Templates render:
+  - title
+  - summary
+  - featuredImage (if present)
+  - body (if present)
+  - embedded wizards by wizardFlowIds (if present)
+  - related links (if present)
+- Remove dependencies on:
+  - heroSection / embedSection / resultsSection / onboarding blocks
+If some pages previously relied on those fields for content, ensure the migration moved that text into body/summary so nothing important disappears.
+
+E) IMPORTANT IMPLEMENTATION NOTES
+- wizardFlowIds should reference Wizard Flows by stable wizardId (preferred). If the current system uses an internal ID, add a stable wizardId to Wizard Flows and migrate references.
+- Do NOT introduce a generic page builder or flexible layout section system.
+- Keep this minimal and consistent.
+
+After changes:
+- Verify: create 1 new Content Page and embed 1 Wizard Flow; confirm it renders correctly.
+- Verify: old pages still show their essential copy (now in summary/body) and the embedded wizard still loads.
+
+End.
