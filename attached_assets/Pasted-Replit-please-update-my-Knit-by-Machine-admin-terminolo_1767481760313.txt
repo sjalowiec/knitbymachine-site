@@ -1,0 +1,43 @@
+Replit — please update my Knit by Machine admin + terminology so “wizard” is defined clearly and used consistently.
+
+Goal (terminology + UX only):
+A “Wizard” is an interactive component that can be embedded on a page. There are 3 wizard categories:
+1) Stepped Wizard (uses steps + outcomes; thought-bubble style like the Dropping Stitches wizard)
+2) Tool (lego-block calculators/tools; no steps)
+3) Pattern (interactive pattern builders; no steps)
+
+Important:
+- I previously used “wizard” universally and it confused things. I want the admin UI and labels to reflect this new definition.
+- Do NOT change public site layout or functionality. This is primarily admin text/labels and light organization.
+- Do NOT add new systems or complicated refactors. Keep it simple.
+
+What to change:
+1) Replace any “Flow” terminology with “Stepped Wizard” terminology throughout the admin:
+   - “Flow wizard” -> “Stepped Wizard”
+   - “Flow steps” -> “Wizard Steps”
+   - “Flow outcomes” -> “Wizard Outcomes”
+   - “Preview Flow” -> “Preview Wizard”
+   (Only rename labels/UI text; do not break existing data.)
+
+2) Update the Wizard creation/edit UI to make the 3 categories obvious:
+   - Wherever toolType is selected, add helper text like:
+     “Choose what kind of wizard this is: Stepped Wizard (steps), Tool (calculator), Pattern (builder).”
+   - For toolType values that are stepped, show the Wizard Steps + Wizard Outcomes editor.
+   - For toolType values that are tool/pattern/embed-only, hide Wizard Steps/Outcomes.
+
+3) Map my current toolType options to these categories (do not change the stored values unless necessary):
+   - Stepped Wizard types: Troubleshooter, Checklist, Assessment
+   - Embed-only types: Calculator, Iframe Embed
+   (Tools and Patterns do not require steps.)
+
+4) Add a short definition block at the top of the Wizard Flows admin page:
+   “Wizards are interactive components you can embed on pages. They come in three types: Stepped Wizards, Tools, and Patterns.”
+
+Constraints:
+- Keep the database/schema stable unless a rename is truly required. Prefer UI-label changes over schema changes.
+- Make a .bak backup of any file you substantially edit.
+- Ensure GitHub save/publish still works.
+
+Deliverables:
+- List the exact files you changed.
+- Summarize what text/labels were updated and where.
