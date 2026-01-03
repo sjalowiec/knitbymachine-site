@@ -1,0 +1,54 @@
+You are working in my Astro site repo for knitbymachine.com.
+
+Goal:
+On the homepage (index page), I have 4 “cards” (the main navigation cards). I want them to display as:
+- Desktop (wide screens): 4 cards in ONE row (4 columns), equal height, consistent spacing
+- Tablet: 2 cards per row (2 columns)
+- Mobile: 1 card per row (1 column)
+- Small laptop / in-between widths: 2 columns or 3 columns is acceptable if needed, but prioritize 4-up on desktop.
+
+Rules:
+- Make a backup copy of any file you edit (same folder) with a .bak extension before changing it.
+- Do NOT change card copy, icons, links, or order.
+- Do NOT change the card component markup unless necessary. Prefer CSS/layout changes.
+- Keep existing colors/typography. This is layout only.
+
+Steps:
+1) Find the homepage file (likely src/pages/index.astro). If it’s different, locate the file that renders the homepage cards.
+2) Identify the wrapper element around the 4 cards. Add a single wrapper class if needed, e.g. class="home-card-grid".
+3) Implement a responsive grid layout using CSS:
+   - Use CSS Grid with gap
+   - Default (mobile): grid-template-columns: 1fr
+   - >= 640px: 2 columns
+   - >= 1024px (or 1100px if needed): 4 columns
+   - Ensure cards stretch to equal height (align-stretch) and the clickable area remains correct.
+4) If the cards currently use flex or another layout that fights the grid, refactor only the container to grid (leave card internals alone).
+5) Verify there are exactly 4 cards rendered and that they appear side-by-side on desktop.
+6) Return the exact files changed and the exact code diff.
+
+Implementation details:
+- Add CSS either in the existing <style> block in index.astro or the existing global/home stylesheet if one exists. Use whichever pattern the site already uses.
+- Suggested CSS (adapt to the site’s breakpoints if they already exist):
+
+.home-card-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+@media (min-width: 640px) {
+  .home-card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .home-card-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+
+.home-card-grid > * {
+  height: 100%;
+}
+
+- If the card is an <a> wrapping a container, ensure the <a> can stretch: display:block; height:100%;
+
+Do the smallest change that works.
