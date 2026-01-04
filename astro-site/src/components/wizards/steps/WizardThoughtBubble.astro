@@ -1,0 +1,57 @@
+---
+/**
+ * WizardThoughtBubble.astro
+ * 
+ * Reusable speech bubble component for stepped wizard choices.
+ * Displays as a button with a distinctive tail, matching the Dropped Stitches wizard style.
+ * 
+ * Props:
+ * - label: The text to display in the bubble
+ * - active: Whether the bubble is in selected/active state
+ * - optionId: Data attribute for JavaScript interaction
+ * - href: Optional link (renders as <a> instead of <button>)
+ */
+
+interface Props {
+  label: string;
+  active?: boolean;
+  optionId?: string;
+  href?: string;
+  class?: string;
+}
+
+const { 
+  label, 
+  active = false, 
+  optionId,
+  href,
+  class: className = ""
+} = Astro.props;
+
+const baseClasses = `option-bubble ${active ? 'selected' : ''} ${className}`.trim();
+---
+
+{href ? (
+  <a 
+    href={href}
+    class={baseClasses}
+    data-option-id={optionId}
+    data-testid={optionId ? `button-option-${optionId}` : undefined}
+  >
+    {label}
+  </a>
+) : (
+  <button
+    type="button"
+    class={baseClasses}
+    data-option-id={optionId}
+    data-testid={optionId ? `button-option-${optionId}` : undefined}
+  >
+    {label}
+  </button>
+)}
+
+<style>
+  /* Styles are inherited from wizard.css - .option-bubble class */
+  /* This component relies on the global wizard.css styles being loaded */
+</style>

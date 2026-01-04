@@ -1,0 +1,88 @@
+---
+/**
+ * WizardNav.astro
+ * 
+ * Reusable navigation buttons for stepped wizards.
+ * Provides Back and Start Over buttons with consistent styling.
+ * 
+ * Props:
+ * - showBack: Whether to show the Back button
+ * - showReset: Whether to show the Start Over button
+ * - backLabel: Label for back button (default: "Back")
+ * - resetLabel: Label for reset button (default: "Start over")
+ * - changeLabel: Label for change answer button (optional)
+ * - backId: ID for the back button (for JS event binding)
+ * - resetId: ID for the reset button (for JS event binding)
+ * - changeId: ID for the change answer button (for JS event binding)
+ */
+
+interface Props {
+  showBack?: boolean;
+  showReset?: boolean;
+  backLabel?: string;
+  resetLabel?: string;
+  changeLabel?: string;
+  backId?: string;
+  resetId?: string;
+  changeId?: string;
+}
+
+const { 
+  showBack = true,
+  showReset = true,
+  backLabel = "Back",
+  resetLabel = "Start over",
+  changeLabel,
+  backId = "btn-back",
+  resetId = "btn-start-over",
+  changeId = "btn-change-answer"
+} = Astro.props;
+---
+
+<div class="wizard-nav">
+  {showReset && (
+    <button
+      type="button"
+      class="kbm-button kbm-button--primary"
+      id={resetId}
+      data-testid="button-start-over"
+    >
+      {resetLabel}
+    </button>
+  )}
+  
+  {showBack && (
+    <button
+      type="button"
+      class="kbm-button kbm-button--secondary"
+      id={backId}
+      data-testid="button-back"
+    >
+      {backLabel}
+    </button>
+  )}
+  
+  {changeLabel && (
+    <button
+      type="button"
+      class="kbm-button kbm-button--secondary"
+      id={changeId}
+      data-testid="button-change-answer"
+      style="border-radius: 24px;"
+    >
+      {changeLabel}
+    </button>
+  )}
+  
+  <slot />
+</div>
+
+<style>
+  .wizard-nav {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Styles for buttons inherited from wizard.css - .kbm-button classes */
+</style>
