@@ -1,0 +1,47 @@
+Replit — I need stepped wizards (wizards-steps format ONLY) to provide meaningful behavior, not just ask questions.
+
+Rules
+- wizards-steps ONLY
+- Do NOT change DB schema or admin forms
+- Do NOT change routes/URLs
+- Keep existing UI styling (use our new components)
+- Limit changes to WizardFlowRenderer.astro (and any small helpers it already uses)
+
+Goal 1: Per-choice feedback (inline)
+- When the user selects a choice (Yes/No), immediately show a short feedback message BELOW the choices (before moving on).
+- Use the existing/new WizardThoughtBubble component to display this message.
+- The feedback depends on the selected answer for that step.
+
+Implementation details
+- In WizardFlowRenderer.astro, track selected choice per step (state).
+- After a choice is selected, render a feedback bubble if the step defines feedback text for that choice.
+
+How to define feedback (no admin changes)
+- For now, implement a simple in-code mapping keyed by stepId and choice value.
+  Example:
+  stepId: "question-1"
+    yes -> "Great — you’re on your way."
+    no  -> "Locate your machine clamps and follow your manual before continuing."
+- Do NOT add new admin fields in this task.
+
+Goal 2: Outcomes at the end (simple readiness logic)
+- After the final step, compute an outcome:
+  - 0 blockers => READY
+  - 1–2 blockers => ALMOST
+  - 3+ blockers => RESET
+- A blocker is added when the user answers "no" (or "not sure") for specific stepIds.
+- Render the appropriate outcome screen using WizardResultCard components.
+
+Renderer updates
+- Update WizardFlowRenderer.astro (steps format only) to:
+  1) show choices (WizardThoughtBubble choice buttons)
+  2) show inline feedback bubble after a selection
+  3) enable Next/Back navigation (WizardNav) without changing flow behavior
+  4) show results screen at the end using WizardResultCard
+
+Verification
+- Confirm Dropped Stitches stepped wizard/troubleshooter still renders correctly.
+- No console errors, no broken imports.
+
+Deliverable
+- Stepped wizard now provides immediate feedback after each answer AND shows an outcome at the end.
