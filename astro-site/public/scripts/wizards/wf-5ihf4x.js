@@ -149,8 +149,8 @@
     render();
   }
 
-  // Orientation text
-  const ORIENTATION_TEXT = "Answer a few quick questions to confirm your setup before you begin knitting.";
+  // Orientation text (only shown on first question)
+  const ORIENTATION_TEXT = "Answer 5 quick questions to confirm your setup before you begin knitting.";
 
   // CSS Styles (injected once)
   function injectStyles() {
@@ -476,10 +476,11 @@
       content = `<div style="padding: 2rem; text-align: center; color: #666;">No steps configured for this wizard.</div>`;
     }
 
-    // Wrap in well container with orientation text
+    // Wrap in well container, show orientation text only on first question
+    const showOrientation = history.length === 0 && !selectedChoice && !outcome;
     mount.innerHTML = `
       <div class="wizard-well">
-        <p class="wizard-orientation">${ORIENTATION_TEXT}</p>
+        ${showOrientation ? `<p class="wizard-orientation">${ORIENTATION_TEXT}</p>` : ""}
         ${content}
       </div>
     `;
