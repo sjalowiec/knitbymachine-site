@@ -1,0 +1,74 @@
+Goal:
+Create a reusable, vanilla-JS embed for the Getting Started Readiness wizard so it can be dropped onto an Astro page.
+
+Wizard to embed:
+- Wizard ID: wf-5ihf4x
+
+Constraints:
+- DO NOT use React islands.
+- DO NOT create a new framework or rewrite the wizard.
+- Follow the same container + JS mount pattern used by the existing dropped-stitches legacy wizard.
+- Use KBM colors only (greens + neutrals). No blue.
+- This embed is for the public site, not the admin preview.
+
+Deliverables:
+
+1) A reusable embed snippet I can paste into an Astro page:
+
+```html
+<section class="embedded-wizard jotb-embedded-wizard" aria-label="Getting Started Readiness">
+  <div id="wizard-wf-5ihf4x" class="wizard-content"></div>
+</section>
+<script type="module" src="/scripts/wizards/wf-5ihf4x.js"></script>
+Create the JS file:
+
+Path: /public/scripts/wizards/wf-5ihf4x.js
+
+Behavior:
+
+On load, locate #wizard-wf-5ihf4x
+
+Render the readiness wizard (Linear / Stepped)
+
+Use the same rendering logic as the legacy dropped-stitches wizard embed
+
+No routing, no grading, no redirects
+
+Final screen copy (no buttons or links yet):
+
+Title:
+You’re set to begin
+
+Body:
+You’ve checked the key setup details that affect how your machine behaves. That gives you a solid starting point.
+
+When you’re ready, the next step is simply to begin knitting — take it slowly, knit a few rows, and notice how everything feels.
+
+If something doesn’t look or feel right, that’s okay. Small adjustments are part of getting started, and help is available when you need it.
+
+Styling:
+
+Question blocks: background #F4F6F2, icons #52682D
+
+“You selected” state: background #E9EDE4
+
+Feedback cards: background #E5E8E0, border/icons #52682D
+
+Primary buttons: background #52682D, white text
+
+Keep styles scoped to the wizard embed only
+
+Do not change:
+
+Global site styles
+
+Header or footer
+
+Other wizards
+
+Admin UI
+
+Result:
+I should be able to paste the embed snippet onto
+/start/just-opened-the-box
+and see the wizard render correctly.
