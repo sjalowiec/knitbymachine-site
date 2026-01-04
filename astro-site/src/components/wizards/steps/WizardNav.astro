@@ -11,9 +11,12 @@
  * - backLabel: Label for back button (default: "Back")
  * - resetLabel: Label for reset button (default: "Start over")
  * - changeLabel: Label for change answer button (optional)
- * - backId: ID for the back button (for JS event binding)
- * - resetId: ID for the reset button (for JS event binding)
- * - changeId: ID for the change answer button (for JS event binding)
+ * - backId: Optional ID for the back button (for unique JS event binding)
+ * - resetId: Optional ID for the reset button (for unique JS event binding)
+ * - changeId: Optional ID for the change answer button (for unique JS event binding)
+ * 
+ * Note: IDs are optional to avoid duplicate IDs when multiple WizardNav instances exist.
+ * Use data-testid selectors for event binding when IDs are not provided.
  */
 
 interface Props {
@@ -33,9 +36,9 @@ const {
   backLabel = "Back",
   resetLabel = "Start over",
   changeLabel,
-  backId = "btn-back",
-  resetId = "btn-start-over",
-  changeId = "btn-change-answer"
+  backId,
+  resetId,
+  changeId
 } = Astro.props;
 ---
 

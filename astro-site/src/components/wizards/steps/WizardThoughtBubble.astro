@@ -9,6 +9,7 @@
  * - label: The text to display in the bubble
  * - active: Whether the bubble is in selected/active state
  * - optionId: Data attribute for JavaScript interaction
+ * - resultId: Optional result ID to map this option to (for wizard flows)
  * - href: Optional link (renders as <a> instead of <button>)
  */
 
@@ -16,6 +17,7 @@ interface Props {
   label: string;
   active?: boolean;
   optionId?: string;
+  resultId?: string;
   href?: string;
   class?: string;
 }
@@ -24,6 +26,7 @@ const {
   label, 
   active = false, 
   optionId,
+  resultId,
   href,
   class: className = ""
 } = Astro.props;
@@ -36,6 +39,7 @@ const baseClasses = `option-bubble ${active ? 'selected' : ''} ${className}`.tri
     href={href}
     class={baseClasses}
     data-option-id={optionId}
+    data-result-id={resultId}
     data-testid={optionId ? `button-option-${optionId}` : undefined}
   >
     {label}
@@ -45,6 +49,7 @@ const baseClasses = `option-bubble ${active ? 'selected' : ''} ${className}`.tri
     type="button"
     class={baseClasses}
     data-option-id={optionId}
+    data-result-id={resultId}
     data-testid={optionId ? `button-option-${optionId}` : undefined}
   >
     {label}
