@@ -1,0 +1,93 @@
+Replit — implement reusable components for the “wizards-steps” format ONLY (no Tools, no Patterns, no other wizard formats).
+
+Context
+- We already have a stepped wizard (example: Dropped Stitches) that includes:
+  - speech/thought bubbles (with a tail)
+  - result/outcome cards
+  - navigation buttons
+  - a consistent page/container layout
+- I want these extracted into reusable components and then used by the existing stepped wizard flow(s).
+
+Scope (hard rules)
+- ONLY apply to the “wizards-steps” format.
+- Do NOT change database schema.
+- Do NOT change admin forms.
+- Do NOT change routing/URLs.
+- Do NOT redesign styling; match existing look as closely as possible.
+- Limit changes to stepped wizard pages and new components only.
+
+Proposed tasks (do these in order)
+1) Add new speech bubble feature part
+2) Create outcome display feature component
+3) Add navigation buttons feature
+4) Create main steps layout container
+5) Update flow to use new features
+6) Check troubleshooting page shows correctly (no layout regressions)
+
+Components to create (Astro components + barrel export)
+Create these files in: `src/components/wizards/steps/`
+
+1) `WizardStepsLayout.astro`
+- Overall page layout wrapper for stepped wizards
+- Provides consistent spacing, max-width, vertical rhythm
+- Accepts slots:
+  - header slot (optional)
+  - main content slot
+  - footer slot (optional, for nav)
+
+2) `WizardThoughtBubble.astro`
+- Renders the speech/thought bubble UI with a tail
+- Used for the “choice buttons” in steps
+- Props:
+  - `label` (string)
+  - `active?` (boolean) (optional)
+  - `onClick?` / `href?` depending on current implementation style
+  - `variant?` (optional: "default" | "note" | "check" | "tip") — only if it already exists; if not, skip variants
+- Must preserve existing visual style from Dropped Stitches (shape, tail, spacing, hover/focus states)
+
+3) `WizardResultCard.astro`
+- The result/outcome card used on the results step
+- Supports:
+  - eyebrow (small label above title)
+  - title
+  - explanation text
+  - action items (list)
+  - optional primary action (button/link)
+- Props suggestion:
+  - `eyebrow?`, `title`, `explanation?`, `items?` (string[]), `actionLabel?`, `actionHref?`
+
+4) `WizardNav.astro`
+- Back and Start Over buttons (and Next if the stepped wizard currently uses it)
+- Accept props to wire existing handlers/links:
+  - `onBack?` / `backHref?`
+  - `onReset?` / `resetHref?`
+  - Optional: `stepIndex`, `stepCount` for a simple indicator if already present
+
+5) `index.ts`
+- Barrel export all components:
+  - export { default as WizardStepsLayout } from "./WizardStepsLayout.astro"
+  - export { default as WizardThoughtBubble } from "./WizardThoughtBubble.astro"
+  - export { default as WizardResultCard } from "./WizardResultCard.astro"
+  - export { default as WizardNav } from "./WizardNav.astro"
+
+Update existing stepped wizard flow(s)
+- Update the Dropped Stitches stepped wizard page first to use the new components.
+- Replace duplicated inline markup for:
+  - speech bubbles
+  - result cards
+  - nav buttons
+  - main layout container
+- Keep the UI output the same (or extremely close). This is a refactor for reuse, not a redesign.
+
+Regression check
+- Verify the troubleshooting page (and any page that embeds/links to this stepped wizard) still renders correctly.
+- No console errors, no missing imports, no broken styling.
+
+Acceptance criteria
+- Dropped Stitches stepped wizard renders correctly and matches current styling.
+- Speech bubbles now come from `WizardThoughtBubble.astro`.
+- Outcome cards now come from `WizardResultCard.astro`.
+- Navigation buttons now come from `WizardNav.astro`.
+- Layout is standardized via `WizardStepsLayout.astro`.
+- No changes to non-step wizard types.
+- No breaking changes to routes, admin, or data.

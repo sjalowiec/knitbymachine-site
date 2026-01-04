@@ -1,0 +1,50 @@
+Replit — please create a reusable UI component for our “wizard steps” format only (no other wizard formats yet).
+
+Goal
+- We have a “stepped wizard” (wizard-steps) format and we want a consistent, reusable set of components for it.
+- Use the existing Dropped Stitches stepped wizard as the visual/reference source.
+
+Scope (IMPORTANT: wizards-steps ONLY)
+- Do NOT change Tools, Patterns, or any other wizard types.
+- Do NOT change database schema or admin forms in this task.
+- Do NOT refactor unrelated code.
+- Do NOT rename existing routes/URLs.
+- Only extract + standardize the UI for stepped wizards.
+
+What to build
+1) Create a small component set for stepped wizards under something like:
+   - `src/components/wizards/steps/`
+   (use whatever folder matches the project conventions)
+
+2) Components (minimum set)
+- `WizardStepsLayout`
+  - Handles the overall layout for a stepped wizard page (header, body spacing, step container)
+- `WizardStep`
+  - Renders one step (question/prompt + controls area)
+- `WizardThoughtBubble` (name can vary, but keep “thought bubble” concept)
+  - This is the “thought bubble” UI used in the Dropped Stitches wizard (same look/feel)
+  - Props: `text` (string), optional `title` (string), optional `variant` (e.g. "note" | "tip" | "check")
+- `WizardResultCard`
+  - Used in the results screen for stepped wizards (title + short text + optional link/button)
+- `WizardNav`
+  - Next/Back buttons + step indicator
+
+3) Wiring
+- Update ONLY the stepped wizard page(s) to use these components.
+- Start with the Dropped Stitches wizard: replace any duplicated inline markup for thought bubbles and step layout with the new components.
+- The output UI should look the same (or extremely close). This is a refactor for reuse, not a redesign.
+
+4) Naming
+- Internally refer to this format as `wizards-steps` (or `wizardSteps`), but keep it consistent in code.
+- If there is a type constant or field already used for stepped wizards, reuse it—do not invent a new system.
+
+Acceptance criteria
+- Dropped Stitches wizard renders correctly and matches current styling.
+- Thought bubbles are now rendered via a reusable component.
+- No changes to Tools/Patterns/other wizard types.
+- No breaking changes to routes, data, or admin.
+
+Deliverables
+- New components added
+- Dropped Stitches stepped wizard updated to use them
+- Any necessary minimal CSS/Tailwind moved into the component(s) (but don’t re-style the site)

@@ -1,0 +1,52 @@
+Yes — proceed exactly as described, with these constraints:
+
+SCOPE / RULES (do not violate)
+- wizards-steps format ONLY.
+- Do NOT touch Tools, Patterns, or other wizard types.
+- Do NOT change database schema, tables, or admin forms.
+- Do NOT change routes/URLs.
+- Do NOT redesign styling — output must match current visuals.
+
+TASK ORDER (follow exactly)
+1) Create components in: astro-site/src/components/wizards/steps/
+   - WizardThoughtBubble.astro
+     - Speech bubble with tail for choice buttons
+     - Props: label (string), active? (boolean), and support either onClick OR href (match existing pattern)
+     - Must preserve existing styling/hover/focus states from the Dropped Stitches stepped wizard
+
+   - WizardResultCard.astro
+     - Outcome card with eyebrow, title, explanation, action items list, optional CTA
+     - Props: eyebrow?, title, explanation?, items? (string[]), ctaLabel?, ctaHref?
+
+   - WizardNav.astro
+     - Back + Start Over buttons (and only include Next if the current stepped wizard already uses it)
+     - Wire to existing handlers/links in WizardFlowRenderer without changing behavior
+
+   - WizardStepsLayout.astro
+     - Layout/container with consistent spacing + max-width
+     - Slots: header, default (content), footer (for nav)
+
+   - index.ts
+     - Barrel export all components from this folder
+
+2) Update WizardFlowRenderer.astro (steps format only)
+- Replace inline markup for:
+  - thought bubbles
+  - outcome/result cards
+  - navigation buttons
+  - outer layout container
+- Use the new components.
+- Keep the same visual output and same behavior. This is a refactor for reuse.
+
+3) Verification / regression check
+- Confirm the Dropped Stitches troubleshooter/stepped wizard page renders correctly.
+- Confirm any troubleshooting page that uses WizardFlowRenderer still displays correctly.
+- No console errors, no broken imports, no layout regressions.
+
+ACCEPTANCE CRITERIA (must pass)
+- Dropped Stitches wizard looks the same as before.
+- Thought bubbles rendered by WizardThoughtBubble.astro.
+- Outcome cards rendered by WizardResultCard.astro.
+- Nav buttons rendered by WizardNav.astro.
+- Overall page wrapped by WizardStepsLayout.astro.
+- No changes outside steps-format rendering.
