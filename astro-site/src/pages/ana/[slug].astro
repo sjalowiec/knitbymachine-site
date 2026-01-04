@@ -113,7 +113,10 @@ const relatedWizards = entry.data.relatedWizards?.length
 
     <!-- Page Header: Title Only -->
     <div class="ana-page-header">
-      <h1 class="ana-page-title">{entry.data.title}</h1>
+      <div class="ana-title-row">
+        <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="ana-logo-icon" />
+        <h1 class="ana-page-title">{entry.data.title}</h1>
+      </div>
     </div>
 
     {/* Intro Paragraph - directly under H1 */}
@@ -210,9 +213,10 @@ const relatedWizards = entry.data.relatedWizards?.length
             {relatedAnas.length > 0 && (
               <div class="related-group">
                 <h3 class="related-subtitle">Related Questions</h3>
-                <ul class="related-list">
+                <ul class="related-list related-ana-list">
                   {relatedAnas.map((ana) => (
-                    <li>
+                    <li class="related-ana-item">
+                      <img src="/images/ask-n-answer_logo.svg" alt="" class="ana-logo-icon-small" />
                       <a href={`/ana/${ana.slug}`} class="related-link" data-testid={`link-related-ana-${ana.slug}`}>
                         {ana.title}
                       </a>
@@ -323,6 +327,19 @@ const relatedWizards = entry.data.relatedWizards?.length
     padding-left: 1rem;
     border-left: 4px solid #52682d;
     margin-bottom: 0.75rem;
+  }
+
+  .ana-title-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .ana-logo-icon {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    margin-top: 0.125rem;
   }
 
   .ana-page-title {
@@ -688,6 +705,29 @@ const relatedWizards = entry.data.relatedWizards?.length
     content: '→ ';
     margin-right: 0.5rem;
     color: #52682d;
+  }
+
+  /* ANA-specific related items with logo icon */
+  .related-ana-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .related-ana-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .related-ana-item .related-link::before {
+    content: none;
+  }
+
+  .ana-logo-icon-small {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
   }
 
   /* Member Divider */
