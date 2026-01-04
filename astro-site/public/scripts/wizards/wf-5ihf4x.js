@@ -149,12 +149,27 @@
     render();
   }
 
+  // Orientation text
+  const ORIENTATION_TEXT = "Answer a few quick questions to confirm your setup before you begin knitting.";
+
   // CSS Styles (injected once)
   function injectStyles() {
     if (document.getElementById("wizard-embed-styles")) return;
     const style = document.createElement("style");
     style.id = "wizard-embed-styles";
     style.textContent = `
+      .wizard-well {
+        background: ${COLORS.questionBg};
+        border: 1px solid #E2E6DC;
+        border-radius: 0.75rem;
+        padding: 1.5rem;
+      }
+      .wizard-orientation {
+        font-size: 0.875rem;
+        color: ${COLORS.textMuted};
+        margin-bottom: 1.25rem;
+        line-height: 1.5;
+      }
       .wizard-embed {
         max-width: 42rem;
         margin: 0 auto;
@@ -168,7 +183,8 @@
         border-radius: 1rem;
         border-bottom-left-radius: 0.25rem;
         padding: 1.5rem;
-        background: ${COLORS.questionBg};
+        background: white;
+        border: 1px solid #E2E6DC;
       }
       .wizard-bubble-tail {
         position: absolute;
@@ -176,7 +192,9 @@
         left: 1rem;
         width: 1rem;
         height: 1rem;
-        background: ${COLORS.questionBg};
+        background: white;
+        border-right: 1px solid #E2E6DC;
+        border-bottom: 1px solid #E2E6DC;
         transform: rotate(45deg);
       }
       .wizard-bubble-content {
@@ -447,15 +465,24 @@
     const step = getCurrentStep();
     const outcome = getCurrentOutcome();
 
+    let content;
     if (step && !selectedChoice) {
-      mount.innerHTML = renderStepView(step);
+      content = renderStepView(step);
     } else if (step && selectedChoice) {
-      mount.innerHTML = renderFeedbackView(step, selectedChoice);
+      content = renderFeedbackView(step, selectedChoice);
     } else if (outcome) {
-      mount.innerHTML = renderOutcomeView(outcome);
+      content = renderOutcomeView(outcome);
     } else {
-      mount.innerHTML = `<div style="padding: 2rem; text-align: center; color: #666;">No steps configured for this wizard.</div>`;
+      content = `<div style="padding: 2rem; text-align: center; color: #666;">No steps configured for this wizard.</div>`;
     }
+
+    // Wrap in well container with orientation text
+    mount.innerHTML = `
+      <div class="wizard-well">
+        <p class="wizard-orientation">${ORIENTATION_TEXT}</p>
+        ${content}
+      </div>
+    `;
 
     attachEventListeners();
   }
