@@ -18,7 +18,7 @@
 
 interface WizardStepChoice {
   label: string;
-  feedback?: string; // Inline feedback message shown after selection
+  feedbackText?: string; // Inline feedback message shown after selection (assessments only)
   routeType: "step" | "outcome";
   routeTarget?: string;
 }
@@ -231,20 +231,20 @@ const stepsDataJson = JSON.stringify({
     }
 
     function getFeedback(choice) {
-      // Use feedback from choice data if provided
-      if (choice && choice.feedback && choice.feedback.trim()) {
-        // Determine feedback type based on choice label
-        var normalized = choice.label.toLowerCase().trim();
-        var feedbackType = "positive";
-        if (normalized === "no" || normalized.indexOf("no") === 0 || normalized === "not sure") {
-          feedbackType = "caution";
-        }
-        return { text: choice.feedback, type: feedbackType };
+      // Determine feedback type based on choice label
+      var normalized = (choice && choice.label) ? choice.label.toLowerCase().trim() : "";
+      var feedbackType = "positive";
+      if (normalized === "no" || normalized.indexOf("no") === 0 || normalized === "not sure") {
+        feedbackType = "caution";
+      }
+      
+      // Use feedbackText from choice data if provided (assessments)
+      if (choice && choice.feedbackText && choice.feedbackText.trim()) {
+        return { text: choice.feedbackText, type: feedbackType };
       }
       
       // Fallback to auto-generated feedback based on choice label
       if (choice && choice.label) {
-        var normalized = choice.label.toLowerCase().trim();
         if (normalized === "yes" || normalized.indexOf("yes") === 0) {
           return { text: "Great choice!", type: "positive" };
         } else if (normalized === "no" || normalized.indexOf("no") === 0 || normalized === "not sure") {
