@@ -263,6 +263,65 @@
             display: none;
         }
         
+        /* Copy HTML Snippet Box */
+        .snippet-box {
+            background: #f0f7ff;
+            border: 1px solid #b3d4fc;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .snippet-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .snippet-box-title {
+            font-weight: 600;
+            color: #1565c0;
+            font-size: 14px;
+        }
+        
+        .btn-copy {
+            background: #1976d2;
+            color: white;
+            padding: 6px 14px;
+            border-radius: 4px;
+            font-size: 12px;
+            cursor: pointer;
+            border: none;
+            transition: background 0.2s;
+        }
+        
+        .btn-copy:hover {
+            background: #1565c0;
+        }
+        
+        .btn-copy.copied {
+            background: #4CAF50;
+        }
+        
+        .snippet-preview {
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            padding: 10px 12px;
+            font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            color: #333;
+            word-break: break-all;
+            line-height: 1.5;
+        }
+        
+        .snippet-help {
+            font-size: 11px;
+            color: #666;
+            margin-top: 8px;
+        }
+        
         @media (max-width: 1024px) {
             .container {
                 grid-template-columns: 1fr;
@@ -321,6 +380,16 @@
         <!-- Form Panel -->
         <div class="panel">
             <h2 id="formTitle">Add New Entry</h2>
+            
+            <!-- Copy HTML Snippet Box -->
+            <div class="snippet-box">
+                <div class="snippet-box-header">
+                    <span class="snippet-box-title">Copy HTML for Tooltip</span>
+                    <button type="button" class="btn-copy" id="copySnippetBtn" onclick="copySnippet()">Copy HTML</button>
+                </div>
+                <div class="snippet-preview" id="snippetPreview"></div>
+                <div class="snippet-help">Fill in Term and Tooltip fields below. Click "Copy HTML" to use on other pages.</div>
+            </div>
             
             <form id="glossaryForm">
                 <input type="hidden" id="editIndex" value="">
@@ -454,6 +523,38 @@
         let entries = [];
         let editingIndex = -1;
         
+        // Update snippet preview as user types
+        function updateSnippetPreview() {
+            const term = document.getElementById('term').value || 'Enter term';
+            const tooltip = document.getElementById('tooltip').value || 'Enter tooltip text';
+            const html = `<span class="kbm-tooltip" data-tip="${tooltip}" tabindex="0">${term}</span>`;
+            document.getElementById('snippetPreview').textContent = html;
+        }
+        
+        // Copy HTML snippet to clipboard
+        function copySnippet() {
+            const term = document.getElementById('term').value || 'Enter term';
+            const tooltip = document.getElementById('tooltip').value || 'Enter tooltip text';
+            const html = `<span class="kbm-tooltip" data-tip="${tooltip}" tabindex="0">${term}</span>`;
+            
+            navigator.clipboard.writeText(html).then(() => {
+                const btn = document.getElementById('copySnippetBtn');
+                btn.textContent = 'Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = 'Copy HTML';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+        
+        // Add event listeners for live preview update
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('term').addEventListener('input', updateSnippetPreview);
+            document.getElementById('tooltip').addEventListener('input', updateSnippetPreview);
+            updateSnippetPreview(); // Initialize preview on page load
+        });
+        
         function generateSlug(text) {
             return text.toLowerCase()
                 .replace(/[^\w\s-]/g, '')
@@ -525,6 +626,9 @@
             Array.from(categoriesSelect.options).forEach(option => {
                 option.selected = (data.categories || []).includes(option.value);
             });
+            
+            // Update snippet preview when loading entry
+            updateSnippetPreview();
         }
         
         function toggleDraft(index) {
@@ -593,6 +697,7 @@
             setDefaultDate();
             document.getElementById('formTitle').textContent = 'Add New Entry';
             document.getElementById('submitBtn').textContent = '➕ Add Entry';
+            updateSnippetPreview(); // Reset snippet preview
         }
         
         document.getElementById('glossaryForm').addEventListener('submit', function(e) {
