@@ -2,83 +2,42 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHero from '../../components/SectionHero.astro';
 
-let entries = [];
+let entries: any[] = [];
 let errorMessage = '';
 
-async function fetchEntriesFromPath(path: string, entryType: 'wizard' | 'agent') {
-  try {
-    const response = await fetch(`https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/${path}`);
-    
-    if (!response.ok) {
-      return [];
-    }
-    
-    const files = await response.json();
-    
-    const entryPromises = files
-      .filter((file: any) => file.name.endsWith('.json'))
-      .map(async (file: any) => {
-        const fileResponse = await fetch(file.download_url);
-        const data = await fileResponse.json();
-        
-        let derivedContentType = data.contentType;
-        if (!derivedContentType) {
-          const cat = (data.category || '').toLowerCase();
-          if (cat.includes('pattern')) {
-            derivedContentType = 'pattern';
-          } else if (cat.includes('skill builder') || cat.includes('practice')) {
-            derivedContentType = 'practice project';
-          } else if (cat.includes('smart guide') || cat.includes('project planner') || entryType === 'agent') {
-            derivedContentType = 'project wizard';
-          } else {
-            derivedContentType = 'tool';
-          }
-        }
-        
-        return {
-          title: data.title,
-          slug: data.slug,
-          hero: data.hero || '',
-          excerpt: data.excerpt || '',
-          description: data.description || '',
-          contentType: derivedContentType,
-          tags: data.tags || [],
-          accessLevel: data.accessLevel || 'free',
-          price: data.price || '',
-          isDraft: data.isDraft,
-          pendingPublish: data.pendingPublish,
-          publishedDate: data.publishedDate,
-          iconUrl: data.iconUrl || '',
-          entryType: entryType,
-        };
-      });
-    
-    const allEntries = await Promise.all(entryPromises);
-    return allEntries.filter((entry: any) => !entry.isDraft && !entry.pendingPublish);
-  } catch (error) {
-    console.error(`Error fetching ${entryType} entries:`, error);
-    return [];
-  }
-}
-
-function isPracticeProject(contentType: string): boolean {
-  const ct = (contentType || '').toLowerCase().trim();
-  return ct.includes('practice project') || ct.includes('practice-project');
-}
+// Fetch practice projects from the CMS API
+const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knitbymachine-admin.replit.app';
 
 try {
-  const [wizardEntries, agentEntries] = await Promise.all([
-    fetchEntriesFromPath('astro-site/src/content/wizards', 'wizard'),
-    fetchEntriesFromPath('astro-site/src/content/ai-agents', 'agent')
-  ]);
+  const response = await fetch(`${adminApiUrl}/api/public/content-pages?contentType=practice-project`);
   
-  const allEntries = [...wizardEntries, ...agentEntries];
-  entries = allEntries.filter(entry => isPracticeProject(entry.contentType));
+  // Check content type to avoid parsing HTML error pages as JSON
+  const contentType = response.headers.get('content-type') || '';
   
-  entries.sort((a, b) => a.title.localeCompare(b.title));
-} catch (error) {
-  console.error('Error fetching entries:', error);
-  errorMessage = error.message;
+  if (response.ok && contentType.includes('application/json')) {
+    const data = await response.json();
+    entries = data.map((page: any) => ({
+      title: page.title,
+      slug: page.slug,
+      summary: page.summary || '',
+      accessLevel: page.accessLevel || 'free',
+      priceLabel: page.priceLabel || '',
+      imageUrl: page.imageUrl || '',
+      imageAlt: page.imageAlt || '',
+    }));
+    
+    // Sort alphabetically by title
+    entries.sort((a: any, b: any) => a.title.localeCompare(b.title));
+  } else if (!response.ok) {
+    console.error('Error fetching practice projects:', response.status, response.statusText);
+    errorMessage = `Failed to fetch practice projects (${response.status})`;
+  } else {
+    console.error('Invalid response content type:', contentType);
+    errorMessage = 'API endpoint not available';
+  }
+} catch (error: any) {
+  console.error('Error fetching practice projects:', error);
+  errorMessage = error.message || 'Failed to fetch practice projects';
 }
 
 const title = "Practice Projects";
@@ -118,26 +77,24 @@ These short, focused practice projects give you a clear start, a clear finish, a
       )}
       
       {entries.map((entry, index) => {
-        const basePath = entry.entryType === 'agent' ? '/agents' : '/wizards';
-        const displayText = entry.excerpt || entry.hero || '';
         const badgeClass = `badge-${entry.accessLevel}`;
-        const badgeText = entry.accessLevel === 'paid' && entry.price 
-          ? `$${entry.price}` 
+        const badgeText = entry.accessLevel === 'paid' && entry.priceLabel 
+          ? entry.priceLabel 
           : entry.accessLevel.charAt(0).toUpperCase() + entry.accessLevel.slice(1);
         
         return (
           <a 
-            href={`${basePath}/${entry.slug}`} 
+            href={`/${entry.slug}`} 
             class="guide-card" 
             data-testid={`card-practice-project-${entry.slug}`}
             style={`animation-delay: ${index * 0.1}s`}
           >
-            {entry.iconUrl && (
-              <img src={entry.iconUrl} alt="" class="guide-card-icon" />
+            {entry.imageUrl && (
+              <img src={entry.imageUrl} alt={entry.imageAlt || ''} class="guide-card-icon" />
             )}
             <h2 class="guide-card-title">{entry.title}</h2>
-            {displayText && (
-              <p class="guide-card-description">{displayText}</p>
+            {entry.summary && (
+              <p class="guide-card-description">{entry.summary}</p>
             )}
             <span class={`guide-card-badge ${badgeClass}`}>{badgeText}</span>
           </a>
