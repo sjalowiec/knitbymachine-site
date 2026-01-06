@@ -117,9 +117,14 @@ p {
   text-underline-offset: 3px;
 }
 
-/* Tooltip text box */
-.kbm-tooltip::after {
+/* Tooltip text box - supports both data-tooltip (dynamic) and data-tip (static) */
+.kbm-tooltip[data-tooltip]::after {
+  content: attr(data-tooltip);
+}
+.kbm-tooltip[data-tip]::after {
   content: attr(data-tip);
+}
+.kbm-tooltip::after {
   position: absolute;
   bottom: 140%;
   left: 50%;

@@ -57,9 +57,9 @@
       tooltipText = termSlug; // Fallback to term slug
     }
 
-    // Convert to pattern-term style - just add the class and data-tooltip attribute
-    // The CSS handles the tooltip display on hover
-    trigger.classList.add('pattern-term');
+    // Convert to kbm-tooltip style - add the class and data-tooltip attribute
+    // The CSS in global.css handles the tooltip display on hover
+    trigger.classList.add('kbm-tooltip');
     trigger.setAttribute('data-tooltip', tooltipText);
     trigger.removeAttribute('data-tooltip-term');
   }
