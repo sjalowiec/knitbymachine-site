@@ -9,7 +9,7 @@
     "Abbreviations"
   ],
   "letter": "C",
-  "imageFilename": "1763576201976-carraige-on-the-right.jpg",
+  "imageFilename": "/images/glossary/carraige-on-the-right.webp",
   "imageAlt": "Knitting machine carriage positioned on the right side of the needle bed",
   "gifFilename": "",
   "videoUrl": "",
@@ -36,6 +36,6 @@
     "beginner"
   ],
   "isDraft": false,
-  "pendingPublish": false,
-  "publishedDate": "2025-11-19T00:00:00.000Z"
+  "publishedDate": "2025-11-19T00:00:00.000Z",
+  "pendingPublish": false
 }

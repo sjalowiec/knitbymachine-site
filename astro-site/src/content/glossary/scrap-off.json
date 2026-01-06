@@ -9,9 +9,9 @@
     "Techniques"
   ],
   "letter": "S",
-  "imageFilename": "1762867998381-scrap-off.svg",
+  "imageFilename": "/images/glossary/waste-yarn-11.webp",
   "imageAlt": "Scrapping off knitting with waste yarn to hold live stitches safely",
-  "gifFilename": "",
+  "gifFilename": "/images/glossary/waste-yarn-11.webp",
   "videoUrl": "",
   "isMemberOnly": false,
   "schemaMarkup": null,
@@ -24,6 +24,6 @@
   ],
   "tags": [],
   "isDraft": false,
-  "publishedDate": "2025-11-10",
+  "publishedDate": "2025-11-10T00:00:00.000Z",
   "pendingPublish": false
 }

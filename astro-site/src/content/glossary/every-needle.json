@@ -2,7 +2,7 @@
   "term": "Every Needle",
   "slug": "every-needle",
   "abbreviation": "EN",
-  "description": "<p><p><strong>Every needle</strong> means knitting across all working needles with no spaces or skipped positions. Every needle is in use, creating a full, smooth fabric.</p></p><p><p>You’ll see this used when you want:</p></p><p><ul></p><p>  <li>Standard, all-needle stockinette</li></p><p>  <li>A stable section before or after shaping</li></p><p>  <li>A firm base for ribs, hems, or decorative details</li></p><p></ul></p><p><p>This is the opposite of working on <strong>every other needle</strong>, which creates a more open, lighter fabric. Patterns often switch between the two, so instructions will clearly tell you whether to set the machine for EN (every needle) or EON (every other needle).</p></p><p></p>",
+  "description": "<p></p><p><strong>Every needle</strong> means knitting across all working needles with no spaces or skipped positions. Every needle is in use, creating a full, smooth fabric.</p><p>You’ll see this used when you want:</p><ul><li><p>Standard, all-needle stockinette</p></li><li><p>A stable section before or after shaping</p></li><li><p>A firm base for ribs, hems, or decorative details</p></li><li><p></p></li></ul><p>This is the opposite of working on <strong>every other needle</strong>, which creates a more open, lighter fabric. Patterns often switch between the two, so instructions will clearly tell you whether to set the machine for EN (every needle) or EON (every other needle).</p><p></p><p></p>",
   "tooltip": "Knitting across all working needles with no skipped spaces for a full, smooth fabric.",
   "example": "With main yarn, cast on over EN (every needle)",
   "categories": [
@@ -37,6 +37,6 @@
     "beginner"
   ],
   "isDraft": false,
-  "pendingPublish": false,
-  "publishedDate": "2025-11-19T00:00:00.000Z"
+  "publishedDate": "2025-11-19T00:00:00.000Z",
+  "pendingPublish": false
 }

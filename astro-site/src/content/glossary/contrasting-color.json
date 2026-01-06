@@ -2,15 +2,15 @@
   "term": "Contrasting Color",
   "slug": "contrasting-color",
   "abbreviation": "CC",
-  "description": "<p><p><strong>Contrasting color</strong> is a yarn color that is intentionally different from the main or background color so it stands out clearly in the finished fabric.</p></p><p><p>In machine knitting, a contrasting color is often used to:</p></p><p><ul></p><p>  <li>Emphasize borders, cuffs, bands, or hems</li></p><p>  <li>Create stripes, motifs, or text that are easy to see</li></p><p>  <li>Highlight design details such as pockets, button bands, or decorative seams</li></p><p>  <li>Add a temporary marker, marker row, or separator to make shaping steps easy to spot while knitting</li></p><p></ul></p><p><p>A color can contrast by being lighter or darker, a different hue (for example, blue against orange), or much more or less saturated than the main color. For the strongest effect, choose a contrasting color that is clearly different in value (light vs dark) so the stitch pattern and shapes are easy to see from a distance.</p></p><p><p>Patterns may abbreviate contrasting color as <strong>CC</strong> and main color as <strong>MC</strong>.</p></p><p></p>",
+  "description": "<p></p><p><strong>Contrasting color</strong> is a yarn color that is intentionally different from the main or background color so it stands out clearly in the finished fabric.</p><p></p><p></p><p>In machine knitting, a contrasting color is often used to:</p><p></p><p></p><ul><li><p>Emphasize borders, cuffs, bands, or hems</p></li><li><p>Create stripes, motifs, or text that are easy to see</p></li><li><p>Highlight design details such as pockets, button bands, or decorative seams</p></li><li><p>Add a temporary marker, marker row, or separator to make shaping steps easy to spot while knitting</p></li><li><p></p></li></ul><p>A color can contrast by being lighter or darker, a different hue (for example, blue against orange), or much more or less saturated than the main color. For the strongest effect, choose a contrasting color that is clearly different in value (light vs dark) so the stitch pattern and shapes are easy to see from a distance.</p><p>Patterns may abbreviate contrasting color as <strong>CC</strong> and main color as <strong>MC</strong>.</p><p></p><p></p>",
   "tooltip": "A clearly different yarn color used for standout details or temporary marker rows in your knitting.",
-  "example": "Knit 2 rows in CC for stripe afd ",
+  "example": "<p>Knit 2 rows in CC for stripe</p>",
   "categories": [
     "Abbreviations",
     "Techniques"
   ],
   "letter": "C",
-  "imageFilename": "",
+  "imageFilename": "/images/glossary/contrasting-color-yarn.webp",
   "imageAlt": "",
   "gifFilename": "",
   "videoUrl": "",
@@ -38,6 +38,6 @@
     "beginner"
   ],
   "isDraft": false,
-  "pendingPublish": false,
-  "publishedDate": "2025-11-19T00:00:00.000Z"
+  "publishedDate": "2025-11-19T00:00:00.000Z",
+  "pendingPublish": false
 }

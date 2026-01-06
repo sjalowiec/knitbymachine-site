@@ -10,7 +10,7 @@
     "Machine Parts & Accessories"
   ],
   "letter": "C",
-  "imageFilename": "1763576015315-carraige-on-the-left.jpg",
+  "imageFilename": "/images/glossary/carraige-on-the-left.webp",
   "imageAlt": "Knitting machine carriage positioned on the left side of the needle bed",
   "gifFilename": "",
   "videoUrl": "",
@@ -37,6 +37,6 @@
     "beginner"
   ],
   "isDraft": false,
-  "pendingPublish": false,
-  "publishedDate": "2025-11-19T00:00:00.000Z"
+  "publishedDate": "2025-11-19T00:00:00.000Z",
+  "pendingPublish": false
 }

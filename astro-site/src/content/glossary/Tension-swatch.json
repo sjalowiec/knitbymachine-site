@@ -11,7 +11,7 @@
   "letter": "T",
   "imageFilename": "1762867820805-gauge-swatch.svg",
   "imageAlt": "",
-  "gifFilename": "",
+  "gifFilename": "/images/glossary/gauge-swatch.webp",
   "videoUrl": "",
   "isMemberOnly": false,
   "schemaMarkup": null,
@@ -22,6 +22,6 @@
   "relatedTerms": [],
   "tags": [],
   "isDraft": false,
-  "publishedDate": "2025-11-10",
+  "publishedDate": "2025-11-10T00:00:00.000Z",
   "pendingPublish": false
 }

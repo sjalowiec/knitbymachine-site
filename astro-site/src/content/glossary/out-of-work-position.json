@@ -1,0 +1,48 @@
+{
+  "term": "Out of Work Position",
+  "slug": "out-of-work-position",
+  "abbreviation": "OOP",
+  "description": "<p><strong>Out of work position</strong> refers to needles placed in the <strong>A position</strong>, where they will not knit - regardless of the carriage settings. Yarn is not laid into these needles, and no stitches are formed.</p>",
+  "tooltip": "Needles that are in \"A\" position and will not knit no matter what the carriage setting.",
+  "example": "<p>Create an eyelet by transferring a stitch to it's neighbor and putting the emptied needle into<strong> out of work position</strong>.</p>",
+  "categories": [
+    "Machine Parts & Accessories",
+    "General Terms"
+  ],
+  "letter": "O",
+  "imageFilename": "1767705174159-knitting-machine-needle-position.webp",
+  "imageAlt": "",
+  "gifFilename": "/images/glossary/knitting-machine-needle-position.webp",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "name": "Out of Work Position",
+    "@type": "DefinedTerm",
+    "@context": "https://schema.org",
+    "description": "A machine knitting needle position where needles are placed in the A position and will not knit, regardless of carriage settings. Also referred to as non-working position or needles out of work.",
+    "alternateName": [
+      "Non-working position",
+      "Needles out of work",
+      "NWP",
+      "NOW"
+    ],
+    "inDefinedTermSet": {
+      "url": "https://knitbymachine.com/glossary",
+      "name": "Machine Knitting Glossary",
+      "@type": "DefinedTermSet"
+    }
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "working-position"
+  ],
+  "tags": [
+    "needle-selection"
+  ],
+  "isDraft": false,
+  "publishedDate": "2026-01-06T00:00:00.000Z",
+  "pendingPublish": false
+}
