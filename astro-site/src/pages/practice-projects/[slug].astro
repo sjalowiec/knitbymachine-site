@@ -1,0 +1,372 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+let contentPage = null;
+let errorMessage = '';
+let isNotFound = false;
+
+const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knitbymachine-admin.replit.app';
+
+try {
+  const response = await fetch(`${adminApiUrl}/api/public/content-pages/${slug}`);
+  
+  const contentType = response.headers.get('content-type') || '';
+  
+  if (response.ok && contentType.includes('application/json')) {
+    contentPage = await response.json();
+  } else if (response.status === 404) {
+    isNotFound = true;
+  } else if (!response.ok) {
+    console.error('Error fetching practice project:', response.status, response.statusText);
+    errorMessage = `Failed to load this practice project. Please try again later. (Error ${response.status})`;
+  } else {
+    console.error('Invalid response content type:', contentType);
+    errorMessage = 'Unable to reach the content server. Please try again later.';
+  }
+} catch (error: any) {
+  console.error('Error fetching practice project:', error);
+  errorMessage = 'Unable to load this practice project. Please check your connection and try again.';
+}
+
+if (isNotFound) {
+  return Astro.redirect('/404');
+}
+
+const title = contentPage?.title || 'Practice Project';
+const summary = contentPage?.summary || '';
+const htmlContent = contentPage?.htmlContent || '';
+const accessLevel = contentPage?.accessLevel || '';
+const priceLabel = contentPage?.priceLabel || '';
+const imageUrl = contentPage?.imageUrl || '';
+const imageAlt = contentPage?.imageAlt || '';
+---
+
+<BaseLayout title={`${title} | Practice Projects`} description={summary || ''}>
+  <main class="practice-project-page">
+    <div class="breadcrumb">
+      <a href="/practice-projects" class="link-back" data-testid="link-back-catalog">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        Back to Practice Projects
+      </a>
+    </div>
+
+    {errorMessage ? (
+      <div class="error-panel" data-testid="error-panel">
+        <div class="error-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        </div>
+        <h2>Something went wrong</h2>
+        <p>{errorMessage}</p>
+        <a href="/practice-projects" class="error-back-link">
+          Return to Practice Projects
+        </a>
+      </div>
+    ) : (
+      <article class="project-content">
+        <header class="project-header">
+          <div class="project-header__text">
+            <h1 class="project-title" data-testid="text-title">{title}</h1>
+            {summary && (
+              <p class="project-summary" data-testid="text-summary">{summary}</p>
+            )}
+            {accessLevel && (
+              <span class={`access-badge badge-${accessLevel}`} data-testid="badge-access">
+                {accessLevel === 'paid' && priceLabel ? priceLabel : accessLevel.charAt(0).toUpperCase() + accessLevel.slice(1)}
+              </span>
+            )}
+          </div>
+          
+          {imageUrl && (
+            <div class="project-header__image">
+              <img src={imageUrl} alt={imageAlt || title} />
+            </div>
+          )}
+        </header>
+
+        {htmlContent ? (
+          <div class="project-body" data-testid="content-body" set:html={htmlContent} />
+        ) : (
+          <div class="project-body-empty">
+            <p>Content is being prepared. Check back soon!</p>
+          </div>
+        )}
+      </article>
+
+      <footer class="project-footer">
+        <a href="/practice-projects" class="back-link" data-testid="link-back-footer">
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m15 18-6-6 6-6"/>
+          </svg>
+          Explore more Practice Projects
+        </a>
+      </footer>
+    )}
+  </main>
+</BaseLayout>
+
+<style>
+  .practice-project-page {
+    min-height: 100vh;
+    background: var(--page-bg, #f7f8f7);
+    padding: calc(var(--header-height, 120px) + 1.5rem) 1.5rem 3rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  .link-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--kbm-green-2, #738C52);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .link-back:hover {
+    color: var(--kbm-green, #52682D);
+  }
+
+  .project-content {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--ring, #e5e8e0);
+    padding: 2rem;
+    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+  }
+
+  .project-header {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--ring, #e5e8e0);
+  }
+
+  @media (min-width: 640px) {
+    .project-header {
+      grid-template-columns: 1fr auto;
+    }
+  }
+
+  .project-title {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 0.75rem 0;
+    line-height: 1.2;
+  }
+
+  .project-summary {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #555;
+    margin: 0 0 1rem 0;
+  }
+
+  .access-badge {
+    display: inline-block;
+    padding: 0.35rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+
+  .badge-free {
+    background-color: #C7D8A4;
+    color: #52682D;
+  }
+
+  .badge-paid {
+    background-color: #52682D;
+    color: white;
+  }
+
+  .badge-membership {
+    background-color: #8BA556;
+    color: white;
+  }
+
+  .project-header__image {
+    width: 200px;
+    flex-shrink: 0;
+  }
+
+  .project-header__image img {
+    width: 100%;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+
+  .project-body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #444;
+  }
+
+  .project-body :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 2rem 0 1rem 0;
+  }
+
+  .project-body :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  .project-body :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .project-body :global(ul),
+  .project-body :global(ol) {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .project-body :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .project-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  .project-body :global(a) {
+    color: var(--kbm-green, #52682D);
+    text-decoration: underline;
+  }
+
+  .project-body :global(a:hover) {
+    color: var(--kbm-green-hover, #445626);
+  }
+
+  .project-body :global(blockquote) {
+    border-left: 4px solid var(--kbm-green, #52682D);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #666;
+  }
+
+  .project-body-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #888;
+    font-style: italic;
+  }
+
+  .project-footer {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--kbm-green, #52682D);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+    background: #f0f4e8;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .back-link:hover {
+    background: #e4ebd6;
+    transform: translateX(-4px);
+  }
+
+  .error-panel {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid var(--ring, #e5e8e0);
+    padding: 3rem 2rem;
+    text-align: center;
+    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+  }
+
+  .error-icon {
+    color: #d97706;
+    margin-bottom: 1rem;
+  }
+
+  .error-panel h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .error-panel p {
+    font-size: 1.05rem;
+    color: #666;
+    margin: 0 0 1.5rem 0;
+    line-height: 1.6;
+  }
+
+  .error-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: white;
+    background: var(--kbm-green, #52682D);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    transition: all 0.2s ease;
+  }
+
+  .error-back-link:hover {
+    background: var(--kbm-green-hover, #445626);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 640px) {
+    .practice-project-page {
+      padding: calc(var(--header-height, 100px) + 1rem) 1rem 2rem;
+    }
+
+    .project-content {
+      padding: 1.5rem;
+    }
+
+    .project-header__image {
+      width: 100%;
+      max-width: 200px;
+    }
+
+    .error-panel {
+      padding: 2rem 1.5rem;
+    }
+  }
+</style>
