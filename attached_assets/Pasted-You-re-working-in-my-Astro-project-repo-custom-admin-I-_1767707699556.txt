@@ -1,0 +1,76 @@
+You’re working in my Astro project repo (custom admin). I need you to modify my existing image upload handler so uploaded glossary images KEEP the user’s filename (normalized), instead of being renamed with timestamps or random strings.
+
+GOAL
+- Drag/drop upload from Admin → saved to: astro-site/public/images/glossary/
+- Output filename should be the original name, normalized (no timestamp prefix).
+- Return a public URL like: /images/glossary/<finalName>
+- Do NOT change the folder location.
+- Do NOT break existing uploads.
+
+BEHAVIOR RULES
+1) Filename normalization
+- Use the user’s original filename, but normalize it:
+  - lowercase
+  - trim
+  - spaces/underscores → hyphens
+  - remove characters except: a–z, 0–9, hyphen, dot
+  - collapse multiple hyphens
+- Preserve the original extension (.png, .jpg, .jpeg, .webp, .svg). If missing, infer from mimetype when possible; otherwise reject.
+
+2) Security
+- Prevent path traversal (no slashes, no ../)
+- Only allow these mimetypes/exts:
+  - image/png, image/jpeg, image/webp, image/svg+xml
+- Enforce max file size 5MB (or keep my existing limit if already present).
+
+3) Collision handling
+- If a file with the normalized name already exists in /public/images/glossary/:
+  - Default: auto-increment suffix: name.webp → name-2.webp → name-3.webp
+  - (Do NOT timestamp.)
+- Return both:
+  - finalFilename
+  - publicUrl
+
+4) Response shape
+- Return JSON:
+  {
+    "ok": true,
+    "filename": "<finalFilename>",
+    "url": "/images/glossary/<finalFilename>"
+  }
+- If error, return:
+  { "ok": false, "error": "<human-readable message>" }
+
+WHAT TO CHANGE (DO THIS NOW)
+A) Locate my upload endpoint/handler used by the Glossary Admin image upload.
+- Search the repo for likely matches:
+  - “multer”, “formidable”, “busboy”, “upload”, “glossary”, “/api/upload”
+  - the route the admin calls (fetch/axios) for image upload
+- Identify the exact file(s) and route path.
+
+B) Implement filename preservation
+- Remove timestamp/random naming logic.
+- Add a helper function `normalizeFilename(originalName: string): string` and a helper `getAvailableFilename(dir: string, desired: string): string` that applies the -2, -3 suffix rule.
+- Ensure the write target is:
+  astro-site/public/images/glossary/<finalFilename>
+
+C) Update the admin upload call ONLY if needed
+- If the frontend expects a different JSON response today, update it to use the new response shape.
+- Ensure the glossary record stores the returned `url` (not a filesystem path).
+
+D) Add a tiny test plan note in comments
+- Add a short comment block at the top of the handler:
+  - Upload “waste-yarn.webp” → saved as waste-yarn.webp
+  - Upload again → saved as waste-yarn-2.webp
+  - Upload “Waste Yarn (11).WEBP” → saved as waste-yarn-11.webp
+  - Upload invalid type → rejected with message
+
+OUTPUT REQUIRED
+1) Tell me the file path(s) you changed.
+2) Show the final code diff (or the updated handler code) so I can review.
+3) Confirm the returned URL works at https://knitbymachine.com/images/glossary/<finalFilename>
+
+IMPORTANT
+- Keep the implementation minimal and consistent with my existing stack.
+- Do not introduce new third-party services (S3/Cloudinary).
+- Do not refactor unrelated code.
