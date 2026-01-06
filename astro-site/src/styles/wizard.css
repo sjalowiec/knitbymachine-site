@@ -485,6 +485,12 @@
   background: rgba(82, 104, 45, 0.1);
 }
 
+/* Small button size modifier - adjusts only size (font-size and padding) */
+.kbm-button--sm {
+  font-size: 0.875rem;
+  padding: 0.45rem 0.85rem;
+}
+
 /* ========================================
    Speech Bubble Buttons (ANA Catalog Style)
    Shared across ANA catalog and wizards
