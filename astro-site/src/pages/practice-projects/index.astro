@@ -6,7 +6,7 @@ let entries: any[] = [];
 let errorMessage = '';
 
 // Fetch practice projects from the CMS API
-const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knitbymachine-admin.replit.app';
+const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-SUE23.replit.app';
 
 try {
   const response = await fetch(`${adminApiUrl}/api/public/content-pages?contentType=practice-project`);
