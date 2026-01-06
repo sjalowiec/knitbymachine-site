@@ -348,6 +348,18 @@
         </div>
     </div>
     
+    <!-- Tooltip Reminder Panel -->
+    <div style="max-width: 1400px; margin: 0 auto 20px; background: #e3f2fd; padding: 16px 24px; border-radius: 8px; border-left: 4px solid #2196F3;">
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1976d2" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <div>
+                <strong style="color: #1565c0;">Need tooltip HTML code?</strong>
+                <span style="color: #1976d2;"> Fill in the Term field in the form below, then use the blue "Copy HTML for Tooltip" box to copy the code for practice projects.</span>
+            </div>
+            <a href="#snippetPreview" style="background: #1976d2; color: white; padding: 8px 16px; border-radius: 6px; text-decoration: none; font-weight: 600; font-size: 14px; white-space: nowrap;">Jump to Snippet Box</a>
+        </div>
+    </div>
+
     <!-- Instructions Panel -->
     <div style="max-width: 1400px; margin: 0 auto 20px; background: #e8f5e9; padding: 20px 30px; border-radius: 8px; border-left: 4px solid #4CAF50;">
         <h3 style="margin: 0 0 12px 0; color: #2e7d32; font-size: 16px;">How to Publish Glossary Entries</h3>
@@ -388,7 +400,7 @@
                     <button type="button" class="btn-copy" id="copySnippetBtn" onclick="copySnippet()">Copy HTML</button>
                 </div>
                 <div class="snippet-preview" id="snippetPreview"></div>
-                <div class="snippet-help">Fill in Term and Tooltip fields below. Click "Copy HTML" to use on other pages.</div>
+                <div class="snippet-help">Fill in the Term field below. The tooltip text is pulled automatically from the glossary data. Copy this HTML to use in practice projects and other pages.</div>
             </div>
             
             <form id="glossaryForm">
@@ -526,16 +538,16 @@
         // Update snippet preview as user types
         function updateSnippetPreview() {
             const term = document.getElementById('term').value || 'Enter term';
-            const tooltip = document.getElementById('tooltip').value || 'Enter tooltip text';
-            const html = `<span class="kbm-tooltip" data-tip="${tooltip}" tabindex="0">${term}</span>`;
+            const slug = generateSlug(term);
+            const html = `<span data-tooltip-term="${slug}">${term}</span>`;
             document.getElementById('snippetPreview').textContent = html;
         }
         
         // Copy HTML snippet to clipboard
         function copySnippet() {
             const term = document.getElementById('term').value || 'Enter term';
-            const tooltip = document.getElementById('tooltip').value || 'Enter tooltip text';
-            const html = `<span class="kbm-tooltip" data-tip="${tooltip}" tabindex="0">${term}</span>`;
+            const slug = generateSlug(term);
+            const html = `<span data-tooltip-term="${slug}">${term}</span>`;
             
             navigator.clipboard.writeText(html).then(() => {
                 const btn = document.getElementById('copySnippetBtn');
@@ -548,10 +560,9 @@
             });
         }
         
-        // Add event listeners for live preview update
+        // Add event listener for live preview update (only term field needed now)
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('term').addEventListener('input', updateSnippetPreview);
-            document.getElementById('tooltip').addEventListener('input', updateSnippetPreview);
             updateSnippetPreview(); // Initialize preview on page load
         });
         
