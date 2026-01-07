@@ -119,17 +119,47 @@ const videoUrl = contentPage?.videoUrl || '';
         </header>
 
         {videoUrl && (
-          <section class="practice-video no-print" data-testid="section-video">
-            <div class="video-embed">
-              <iframe
-                src={videoUrl}
-                title="Practice project walkthrough video"
-                loading="lazy"
-                allowfullscreen
-              ></iframe>
-            </div>
+          <section class="practice-video-trigger no-print" data-testid="section-video">
+            <button
+              type="button"
+              class="video-trigger-btn"
+              data-video-url={videoUrl}
+              data-testid="button-open-video"
+              aria-label="Watch the walkthrough video"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+              <span>Watch the walkthrough <em>(optional)</em></span>
+            </button>
           </section>
         )}
+
+        <div
+          class="kbm-modal-overlay no-print"
+          id="video-modal"
+          aria-hidden="true"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Video walkthrough"
+        >
+          <div class="kbm-modal">
+            <button
+              type="button"
+              class="kbm-modal-close"
+              data-testid="button-close-video"
+              aria-label="Close video"
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+            <div class="kbm-video-frame">
+              <!-- iframe injected by JS when modal opens -->
+            </div>
+          </div>
+        </div>
 
         {htmlContent ? (
           <div class="project-body" data-testid="content-body" set:html={htmlContent} />
@@ -327,33 +357,134 @@ const videoUrl = contentPage?.videoUrl || '';
     font-style: italic;
   }
 
-  .practice-video {
-    margin-bottom: 2rem;
+  /* Video trigger button */
+  .practice-video-trigger {
+    max-width: 560px;
+    margin: 0 auto 2rem;
   }
 
-  .practice-video h2 {
-    font-size: 1.25rem;
-    font-weight: 600;
+  .video-trigger-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    background: #f8faf5;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 10px;
     color: var(--kbm-green, #52682D);
-    margin: 0 0 1rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease;
   }
 
-  .video-embed {
+  .video-trigger-btn:hover {
+    background: #f0f4e8;
+    border-color: var(--kbm-green-2, #738C52);
+  }
+
+  .video-trigger-btn:focus-visible {
+    outline: 2px solid var(--kbm-green, #52682D);
+    outline-offset: 2px;
+  }
+
+  .video-trigger-btn svg {
+    flex-shrink: 0;
+    color: var(--kbm-green, #52682D);
+  }
+
+  .video-trigger-btn em {
+    font-style: italic;
+    font-weight: 400;
+    color: #888;
+  }
+
+  /* Modal overlay */
+  .kbm-modal-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.75);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .kbm-modal-overlay[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Modal dialog */
+  .kbm-modal {
+    position: relative;
+    width: min(960px, 92vw);
+    max-width: 960px;
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
+    transform: scale(0.95);
+    transition: transform 0.2s ease;
+  }
+
+  .kbm-modal-overlay[aria-hidden="false"] .kbm-modal {
+    transform: scale(1);
+  }
+
+  /* Close button */
+  .kbm-modal-close {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    background: rgba(0, 0, 0, 0.6);
+    border: none;
+    border-radius: 50%;
+    color: white;
+    cursor: pointer;
+    transition: background 0.15s ease;
+  }
+
+  .kbm-modal-close:hover {
+    background: rgba(0, 0, 0, 0.8);
+  }
+
+  .kbm-modal-close:focus-visible {
+    outline: 2px solid white;
+    outline-offset: 2px;
+  }
+
+  /* 16:9 video frame */
+  .kbm-video-frame {
     position: relative;
     width: 100%;
     padding-bottom: 56.25%; /* 16:9 aspect ratio */
     background: #000;
-    border-radius: 12px;
-    overflow: hidden;
   }
 
-  .video-embed iframe {
+  .kbm-video-frame iframe {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     border: 0;
+  }
+
+  /* Scroll lock */
+  :global(body.modal-open) {
+    overflow: hidden;
   }
 
   .project-footer {
@@ -495,16 +626,141 @@ const videoUrl = contentPage?.videoUrl || '';
 
 <script is:inline>
   (() => {
+    // Sticky print button
     const bar = document.querySelector('.project-sticky-actions');
-    if (!bar) return;
+    if (bar) {
+      const SHOW_AFTER_PX = 220;
+      const onScroll = () => {
+        bar.classList.toggle('is-visible', window.scrollY > SHOW_AFTER_PX);
+      };
+      onScroll();
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
 
-    const SHOW_AFTER_PX = 220;
+    // Video modal
+    const triggerBtn = document.querySelector('.video-trigger-btn');
+    const modal = document.getElementById('video-modal');
+    const closeBtn = modal?.querySelector('.kbm-modal-close');
+    const videoFrame = modal?.querySelector('.kbm-video-frame');
 
-    const onScroll = () => {
-      bar.classList.toggle('is-visible', window.scrollY > SHOW_AFTER_PX);
-    };
+    if (!triggerBtn || !modal || !closeBtn || !videoFrame) return;
 
-    onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    let previousActiveElement = null;
+
+    // Transform and validate Vimeo URL to player embed format
+    function getEmbedUrl(url) {
+      if (!url || typeof url !== 'string') return null;
+      
+      // Sanitize: only allow specific URL patterns
+      const trimmedUrl = url.trim();
+      
+      // Already player.vimeo.com - validate format
+      const playerMatch = trimmedUrl.match(/^https:\/\/player\.vimeo\.com\/video\/(\d+)(\?.*)?$/);
+      if (playerMatch) {
+        return `https://player.vimeo.com/video/${playerMatch[1]}`;
+      }
+      
+      // Standard Vimeo URL - extract ID and build safe embed URL
+      const vimeoMatch = trimmedUrl.match(/^https?:\/\/(?:www\.)?vimeo\.com\/(?:video\/)?(\d+)(?:\?.*)?$/);
+      if (vimeoMatch) {
+        return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
+      }
+      
+      // YouTube support - extract ID and build safe embed URL
+      const youtubeMatch = trimmedUrl.match(/^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?].*)?$/);
+      if (youtubeMatch) {
+        return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
+      }
+      
+      // Reject any URL that doesn't match known patterns
+      return null;
+    }
+
+    function openModal() {
+      const rawUrl = triggerBtn.dataset.videoUrl;
+      const embedUrl = getEmbedUrl(rawUrl);
+      
+      // Reject invalid URLs
+      if (!embedUrl) {
+        console.warn('Invalid video URL:', rawUrl);
+        return;
+      }
+      
+      // Create iframe safely using DOM API (no innerHTML)
+      const iframe = document.createElement('iframe');
+      iframe.src = embedUrl;
+      iframe.title = 'Practice project walkthrough video';
+      iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
+      iframe.setAttribute('allowfullscreen', '');
+      
+      // Clear and append safely
+      videoFrame.textContent = '';
+      videoFrame.appendChild(iframe);
+
+      previousActiveElement = document.activeElement;
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      
+      // Focus close button
+      setTimeout(() => closeBtn.focus(), 50);
+
+      // Add event listeners
+      document.addEventListener('keydown', handleKeydown);
+      modal.addEventListener('click', handleBackdropClick);
+    }
+
+    function closeModal() {
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      
+      // Remove iframe to stop video (safe DOM removal)
+      videoFrame.textContent = '';
+
+      // Restore focus
+      if (previousActiveElement) {
+        previousActiveElement.focus();
+        previousActiveElement = null;
+      }
+
+      // Remove event listeners
+      document.removeEventListener('keydown', handleKeydown);
+      modal.removeEventListener('click', handleBackdropClick);
+    }
+
+    function handleKeydown(e) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+
+      // Basic focus trap (Tab and Shift+Tab)
+      if (e.key === 'Tab') {
+        const focusableEls = modal.querySelectorAll(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstEl = focusableEls[0];
+        const lastEl = focusableEls[focusableEls.length - 1];
+
+        if (e.shiftKey && document.activeElement === firstEl) {
+          e.preventDefault();
+          lastEl.focus();
+        } else if (!e.shiftKey && document.activeElement === lastEl) {
+          e.preventDefault();
+          firstEl.focus();
+        }
+      }
+    }
+
+    function handleBackdropClick(e) {
+      // Close if clicking the overlay (not the modal content)
+      if (e.target === modal) {
+        closeModal();
+      }
+    }
+
+    // Attach event listeners
+    triggerBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
   })();
 </script>
