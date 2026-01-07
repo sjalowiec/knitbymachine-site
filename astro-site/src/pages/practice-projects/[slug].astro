@@ -87,12 +87,7 @@ const imageAlt = contentPage?.imageAlt || '';
               </button>
             </div>
             {summary && (
-              <p class="project-summary" data-testid="text-summary">{summary}</p>
-            )}
-            {accessLevel && (
-              <span class={`access-badge badge-${accessLevel}`} data-testid="badge-access">
-                {accessLevel === 'paid' && priceLabel ? priceLabel : accessLevel.charAt(0).toUpperCase() + accessLevel.slice(1)}
-              </span>
+              <p class="project-summary" data-testid="text-summary" set:html={summary} />
             )}
           </div>
           
@@ -128,7 +123,7 @@ const imageAlt = contentPage?.imageAlt || '';
   .practice-project-page {
     min-height: 100vh;
     background: var(--page-bg, #f7f8f7);
-    padding: calc(var(--header-height, 120px) + 1.5rem) 1.5rem 3rem;
+    padding: var(--header-height, 120px) 1.5rem 3rem;
     max-width: 900px;
     margin: 0 auto;
   }
@@ -221,30 +216,6 @@ const imageAlt = contentPage?.imageAlt || '';
     line-height: 1.6;
     color: #555;
     margin: 0 0 1rem 0;
-  }
-
-  .access-badge {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border-radius: 12px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .badge-free {
-    background-color: #C7D8A4;
-    color: #52682D;
-  }
-
-  .badge-paid {
-    background-color: #52682D;
-    color: white;
-  }
-
-  .badge-membership {
-    background-color: #8BA556;
-    color: white;
   }
 
   .project-header__image {

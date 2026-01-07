@@ -15,6 +15,20 @@
       "when": 1763829865494,
       "tag": "0001_cultured_justin_hammer",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1764500000000,
+      "tag": "0002_add_tag_group_description",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1767813800000,
+      "tag": "0003_add_short_description_to_content_pages",
+      "breakpoints": true
     }
   ]
 }
