@@ -20,8 +20,6 @@ try {
       title: page.title,
       slug: page.slug,
       shortDescription: page.shortDescription || '',
-      accessLevel: page.accessLevel || 'free',
-      priceLabel: page.priceLabel || '',
     }));
     
     // Sort alphabetically by title
@@ -74,13 +72,7 @@ These <strong>short, focused practice projects</strong> give you a clear start, 
         </div>
       )}
       
-      {entries.map((entry, index) => {
-        const badgeClass = `badge-${entry.accessLevel}`;
-        const badgeText = entry.accessLevel === 'paid' && entry.priceLabel 
-          ? entry.priceLabel 
-          : entry.accessLevel.charAt(0).toUpperCase() + entry.accessLevel.slice(1);
-        
-        return (
+      {entries.map((entry, index) => (
           <a 
             href={`/practice-projects/${entry.slug}`} 
             class="guide-card" 
@@ -91,10 +83,8 @@ These <strong>short, focused practice projects</strong> give you a clear start, 
             {entry.shortDescription && (
               <p class="guide-card-description">{entry.shortDescription}</p>
             )}
-            <span class={`guide-card-badge ${badgeClass}`}>{badgeText}</span>
           </a>
-        );
-      })}
+        ))}
     </div>
   </div>
 </BaseLayout>
@@ -178,31 +168,6 @@ These <strong>short, focused practice projects</strong> give you a clear start, 
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
-  }
-
-  .guide-card-badge {
-    display: inline-block;
-    padding: 0.35rem 0.75rem;
-    border-radius: 12px;
-    font-size: clamp(0.9rem, 2vw, 1rem);
-    font-weight: 600;
-    text-transform: uppercase;
-    align-self: flex-start;
-  }
-
-  .badge-free {
-    background-color: #C7D8A4;
-    color: #52682D;
-  }
-
-  .badge-paid {
-    background-color: #52682D;
-    color: white;
-  }
-
-  .badge-membership {
-    background-color: #8BA556;
-    color: white;
   }
 
   @keyframes fadeInUp {
