@@ -1,0 +1,62 @@
+Update the Practice Project page to display the Vimeo video as a compact modal instead of an inline iframe.
+
+You will modify ONLY the video section shown below and add minimal supporting CSS. Do not change other page layout.
+
+CURRENT SECTION:
+
+{videoUrl && (
+  <section class="practice-video no-print" data-testid="section-video">
+    <div class="video-embed">
+      <iframe
+        src={videoUrl}
+        title="Practice project walkthrough video"
+        loading="lazy"
+        allowfullscreen
+      ></iframe>
+    </div>
+  </section>
+)}
+
+GOAL:
+1) Replace the inline iframe with a small “Watch video” trigger (button + optional thumbnail).
+2) On click, open a modal overlay containing the iframe.
+3) Modal must work on desktop and mobile.
+4) Modal must be accessible:
+   - close button
+   - close on Escape
+   - close when clicking overlay backdrop
+   - trap focus inside modal while open (basic trap is fine)
+   - prevent background scroll while open
+5) Preserve 16:9 aspect ratio for the iframe.
+6) Keep `.no-print` on the trigger AND modal.
+7) Do not autoplay.
+
+IMPLEMENTATION DETAILS:
+- Use a small, visually quiet trigger area:
+  - section max-width ~ 520-640px, centered
+  - show a button label like “Watch the walkthrough (optional)”
+  - you can optionally keep a lightweight poster image if available; if not, just use a button.
+- Modal overlay should be fixed full-screen, with centered dialog.
+- Modal dialog max-width: 960px, width: min(960px, 92vw), with responsive padding.
+- Use a close button in the top-right inside the modal dialog.
+- Only render the iframe when modal is open (so it doesn’t load when closed).
+
+URL SAFETY:
+- Ensure the iframe src uses the Vimeo player URL format.
+  If videoUrl includes "vimeo.com/" but not "player.vimeo.com", transform it to:
+  https://player.vimeo.com/video/{id}
+  (extract the numeric id from the URL).
+  Otherwise use videoUrl as-is.
+
+ADD CSS:
+- Add styles for:
+  .practice-video-trigger
+  .kbm-modal-overlay
+  .kbm-modal
+  .kbm-modal-close
+  .kbm-video-frame (16:9 wrapper)
+- Keep styles minimal and consistent with existing KBM design (subtle border, rounded corners).
+
+Return:
+- The updated component/template code
+- The CSS additions (in the appropriate global css file or module already used by this page)
