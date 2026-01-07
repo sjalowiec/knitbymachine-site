@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { toVimeoPlayerUrl, getVimeoThumbnailUrl } from '../../lib/vimeo';
 
 export const prerender = false;
 
@@ -44,6 +45,17 @@ const priceLabel = contentPage?.priceLabel || '';
 const imageUrl = contentPage?.imageUrl || '';
 const imageAlt = contentPage?.imageAlt || '';
 const videoUrl = contentPage?.videoUrl || '';
+
+// Derive video data if videoUrl exists (only valid Vimeo URLs)
+let playerUrl: string | null = null;
+let thumbnailUrl: string | null = null;
+
+if (videoUrl) {
+  playerUrl = toVimeoPlayerUrl(videoUrl);
+  if (playerUrl) {
+    thumbnailUrl = await getVimeoThumbnailUrl(videoUrl);
+  }
+}
 ---
 
 <BaseLayout title={`${title} | Practice Projects`} description={summary || ''}>
@@ -93,8 +105,8 @@ const videoUrl = contentPage?.videoUrl || '';
       </div>
 
       <article class="project-content">
-        <header class="project-header">
-          <div class="project-header__text">
+        <header class="pp-hero">
+          <div class="pp-hero__text">
             <div class="title-row">
               <h1 class="project-title" data-testid="text-title">{title}</h1>
               <button type="button" class="print-btn no-print" onclick="window.print()" data-testid="button-print" title="Print this project">
@@ -111,29 +123,36 @@ const videoUrl = contentPage?.videoUrl || '';
             )}
           </div>
           
-          {imageUrl && (
-            <div class="project-header__image">
-              <img src={imageUrl} alt={imageAlt || title} />
+          {playerUrl && (
+            <div class="pp-hero__media no-print">
+              <button
+                type="button"
+                class="pp-video-thumb"
+                data-player-url={playerUrl}
+                data-testid="button-open-video"
+                aria-label="Watch the walkthrough video"
+              >
+                <div class="pp-video-thumb__ratio">
+                  {thumbnailUrl ? (
+                    <img
+                      src={thumbnailUrl}
+                      alt=""
+                      class="pp-video-thumb__img"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div class="pp-video-thumb__placeholder"></div>
+                  )}
+                  <div class="pp-video-thumb__play">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="white" stroke="none">
+                      <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                  </div>
+                </div>
+              </button>
             </div>
           )}
         </header>
-
-        {videoUrl && (
-          <section class="practice-video-trigger no-print" data-testid="section-video">
-            <button
-              type="button"
-              class="video-trigger-btn"
-              data-video-url={videoUrl}
-              data-testid="button-open-video"
-              aria-label="Watch the walkthrough video"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none">
-                <polygon points="5 3 19 12 5 21 5 3"/>
-              </svg>
-              <span>Watch the walkthrough <em>(optional)</em></span>
-            </button>
-          </section>
-        )}
 
         <div
           class="kbm-modal-overlay no-print"
@@ -218,18 +237,41 @@ const videoUrl = contentPage?.videoUrl || '';
     box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
   }
 
-  .project-header {
+  /* Two-column hero layout */
+  .pp-hero {
     display: grid;
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    align-items: start;
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
     border-bottom: 1px solid var(--ring, #e5e8e0);
   }
 
   @media (min-width: 640px) {
-    .project-header {
+    .pp-hero {
       grid-template-columns: 1fr auto;
+    }
+  }
+
+  .pp-hero__text {
+    min-width: 0;
+  }
+
+  .pp-hero__media {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  @media (min-width: 640px) {
+    .pp-hero__media {
+      width: 280px;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .pp-hero__media {
+      width: 320px;
     }
   }
 
@@ -281,123 +323,78 @@ const videoUrl = contentPage?.videoUrl || '';
     margin: 0 0 1rem 0;
   }
 
-  .project-header__image {
-    width: 200px;
-    flex-shrink: 0;
-  }
-
-  .project-header__image img {
+  /* Video thumbnail tile */
+  .pp-video-thumb {
+    display: block;
     width: 100%;
-    border-radius: 12px;
-    object-fit: cover;
-  }
-
-  .project-body {
-    font-size: 1.05rem;
-    line-height: 1.7;
-    color: #444;
-  }
-
-  .project-body :global(h2) {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--kbm-green, #52682D);
-    margin: 2rem 0 1rem 0;
-  }
-
-  .project-body :global(h3) {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--kbm-green, #52682D);
-    margin: 1.5rem 0 0.75rem 0;
-  }
-
-  .project-body :global(p) {
-    margin: 0 0 1rem 0;
-  }
-
-  .project-body :global(ul),
-  .project-body :global(ol) {
-    margin: 0 0 1rem 0;
-    padding-left: 1.5rem;
-  }
-
-  .project-body :global(li) {
-    margin-bottom: 0.25rem;
-  }
-
-  .project-body :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: 12px;
-    margin: 1.5rem 0;
-  }
-
-  .project-body :global(a) {
-    color: var(--kbm-green, #52682D);
-    text-decoration: underline;
-  }
-
-  .project-body :global(a:hover) {
-    color: var(--kbm-green-hover, #445626);
-  }
-
-  .project-body :global(blockquote) {
-    border-left: 4px solid var(--kbm-green, #52682D);
-    padding-left: 1rem;
-    margin: 1.5rem 0;
-    font-style: italic;
-    color: #666;
-  }
-
-  .project-body-empty {
-    text-align: center;
-    padding: 3rem;
-    color: #888;
-    font-style: italic;
-  }
-
-  /* Video trigger button */
-  .practice-video-trigger {
-    max-width: 560px;
-    margin: 0 auto 2rem;
-  }
-
-  .video-trigger-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 0.875rem 1.25rem;
-    background: #f8faf5;
-    border: 1px solid var(--ring, #e5e8e0);
-    border-radius: 10px;
-    color: var(--kbm-green, #52682D);
-    font-size: 1rem;
-    font-weight: 500;
+    padding: 0;
+    border: none;
+    background: none;
     cursor: pointer;
-    transition: background 0.2s ease, border-color 0.2s ease;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .video-trigger-btn:hover {
-    background: #f0f4e8;
-    border-color: var(--kbm-green-2, #738C52);
+  .pp-video-thumb:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 16px rgba(82, 104, 45, 0.15);
   }
 
-  .video-trigger-btn:focus-visible {
-    outline: 2px solid var(--kbm-green, #52682D);
+  .pp-video-thumb:focus-visible {
+    outline: 3px solid var(--kbm-green, #52682D);
     outline-offset: 2px;
   }
 
-  .video-trigger-btn svg {
-    flex-shrink: 0;
-    color: var(--kbm-green, #52682D);
+  .pp-video-thumb__ratio {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: #1a1a1a;
+    border-radius: 12px;
+    overflow: hidden;
   }
 
-  .video-trigger-btn em {
-    font-style: italic;
-    font-weight: 400;
-    color: #888;
+  .pp-video-thumb__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .pp-video-thumb__placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  }
+
+  .pp-video-thumb__play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    background: rgba(82, 104, 45, 0.9);
+    border-radius: 50%;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .pp-video-thumb:hover .pp-video-thumb__play {
+    background: rgba(82, 104, 45, 1);
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .pp-video-thumb__play svg {
+    margin-left: 4px; /* optical centering for play icon */
   }
 
   /* Modal overlay */
@@ -485,6 +482,71 @@ const videoUrl = contentPage?.videoUrl || '';
   /* Scroll lock */
   :global(body.modal-open) {
     overflow: hidden;
+  }
+
+  .project-body {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #444;
+  }
+
+  .project-body :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 2rem 0 1rem 0;
+  }
+
+  .project-body :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 1.5rem 0 0.75rem 0;
+  }
+
+  .project-body :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .project-body :global(ul),
+  .project-body :global(ol) {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .project-body :global(li) {
+    margin-bottom: 0.25rem;
+  }
+
+  .project-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 1.5rem 0;
+  }
+
+  .project-body :global(a) {
+    color: var(--kbm-green, #52682D);
+    text-decoration: underline;
+  }
+
+  .project-body :global(a:hover) {
+    color: var(--kbm-green-hover, #445626);
+  }
+
+  .project-body :global(blockquote) {
+    border-left: 4px solid var(--kbm-green, #52682D);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    color: #666;
+  }
+
+  .project-body-empty {
+    text-align: center;
+    padding: 3rem;
+    color: #888;
+    font-style: italic;
   }
 
   .project-footer {
@@ -604,9 +666,8 @@ const videoUrl = contentPage?.videoUrl || '';
       padding: 1.5rem;
     }
 
-    .project-header__image {
-      width: 100%;
-      max-width: 200px;
+    .pp-hero__media {
+      max-width: 100%;
     }
 
     .error-panel {
@@ -620,6 +681,12 @@ const videoUrl = contentPage?.videoUrl || '';
 
     .print-btn.print-btn--compact {
       padding: 8px 10px;
+    }
+  }
+
+  @media print {
+    .no-print {
+      display: none !important;
     }
   }
 </style>
@@ -638,60 +705,37 @@ const videoUrl = contentPage?.videoUrl || '';
     }
 
     // Video modal
-    const triggerBtn = document.querySelector('.video-trigger-btn');
+    const thumbBtn = document.querySelector('.pp-video-thumb');
     const modal = document.getElementById('video-modal');
     const closeBtn = modal?.querySelector('.kbm-modal-close');
     const videoFrame = modal?.querySelector('.kbm-video-frame');
 
-    if (!triggerBtn || !modal || !closeBtn || !videoFrame) return;
+    if (!thumbBtn || !modal || !closeBtn || !videoFrame) return;
 
     let previousActiveElement = null;
 
-    // Transform and validate Vimeo URL to player embed format
-    function getEmbedUrl(url) {
-      if (!url || typeof url !== 'string') return null;
-      
-      // Sanitize: only allow specific URL patterns
-      const trimmedUrl = url.trim();
-      
-      // Already player.vimeo.com - validate format
-      const playerMatch = trimmedUrl.match(/^https:\/\/player\.vimeo\.com\/video\/(\d+)(\?.*)?$/);
-      if (playerMatch) {
-        return `https://player.vimeo.com/video/${playerMatch[1]}`;
-      }
-      
-      // Standard Vimeo URL - extract ID and build safe embed URL
-      const vimeoMatch = trimmedUrl.match(/^https?:\/\/(?:www\.)?vimeo\.com\/(?:video\/)?(\d+)(?:\?.*)?$/);
-      if (vimeoMatch) {
-        return `https://player.vimeo.com/video/${vimeoMatch[1]}`;
-      }
-      
-      // YouTube support - extract ID and build safe embed URL
-      const youtubeMatch = trimmedUrl.match(/^https?:\/\/(?:www\.)?(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})(?:[&?].*)?$/);
-      if (youtubeMatch) {
-        return `https://www.youtube.com/embed/${youtubeMatch[1]}`;
-      }
-      
-      // Reject any URL that doesn't match known patterns
-      return null;
+    // Validate Vimeo player URL format (client-side security check)
+    function isValidVimeoPlayerUrl(url) {
+      if (!url || typeof url !== 'string') return false;
+      return /^https:\/\/player\.vimeo\.com\/video\/\d+$/.test(url.trim());
     }
 
     function openModal() {
-      const rawUrl = triggerBtn.dataset.videoUrl;
-      const embedUrl = getEmbedUrl(rawUrl);
+      const playerUrl = thumbBtn.dataset.playerUrl;
       
-      // Reject invalid URLs
-      if (!embedUrl) {
-        console.warn('Invalid video URL:', rawUrl);
+      // Strict validation: only allow vetted Vimeo embed URLs
+      if (!playerUrl || !isValidVimeoPlayerUrl(playerUrl)) {
+        console.warn('Invalid or missing video URL');
         return;
       }
       
-      // Create iframe safely using DOM API (no innerHTML)
+      // Create iframe safely using DOM API
       const iframe = document.createElement('iframe');
-      iframe.src = embedUrl;
+      iframe.src = playerUrl;
       iframe.title = 'Practice project walkthrough video';
       iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture');
       iframe.setAttribute('allowfullscreen', '');
+      iframe.setAttribute('loading', 'lazy');
       
       // Clear and append safely
       videoFrame.textContent = '';
@@ -713,7 +757,7 @@ const videoUrl = contentPage?.videoUrl || '';
       modal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove('modal-open');
       
-      // Remove iframe to stop video (safe DOM removal)
+      // Remove iframe to stop video
       videoFrame.textContent = '';
 
       // Restore focus
@@ -734,7 +778,7 @@ const videoUrl = contentPage?.videoUrl || '';
         return;
       }
 
-      // Basic focus trap (Tab and Shift+Tab)
+      // Basic focus trap
       if (e.key === 'Tab') {
         const focusableEls = modal.querySelectorAll(
           'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
@@ -753,14 +797,13 @@ const videoUrl = contentPage?.videoUrl || '';
     }
 
     function handleBackdropClick(e) {
-      // Close if clicking the overlay (not the modal content)
       if (e.target === modal) {
         closeModal();
       }
     }
 
     // Attach event listeners
-    triggerBtn.addEventListener('click', openModal);
+    thumbBtn.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
   })();
 </script>

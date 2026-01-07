@@ -1,0 +1,200 @@
+We are implementing video support for Practice Projects.
+This prompt replaces ALL previous video-related instructions.
+Do not invent UI or alternative patterns. Follow the steps exactly and in order.
+
+------------------------------------------------------------
+PLAN (DO NOT DEVIATE)
+------------------------------------------------------------
+
+1) Add video helper utilities with Vimeo thumbnail fetching and caching
+2) Create an empty video thumbnail cache file
+3) Remove the old video button section entirely
+4) Restructure the header into two columns
+5) Add a video thumbnail on the right that opens a modal
+6) Update the modal to be triggered by the thumbnail
+7) Add minimal styles for layout, thumbnails, and modal
+
+------------------------------------------------------------
+DATA MODEL
+------------------------------------------------------------
+
+Practice Project JSON includes:
+- videoUrl: string (example: "https://vimeo.com/123456789")
+
+There is NO separate thumbnail field.
+The thumbnail MUST be derived from Vimeo.
+
+------------------------------------------------------------
+1) ADD VIMEO VIDEO HELPERS (SERVER SIDE)
+------------------------------------------------------------
+
+Create a new helper module:
+
+src/lib/vimeo.ts
+
+Export the following functions:
+
+- extractVimeoId(url: string): string | null
+  Supports:
+    - https://vimeo.com/123456789
+    - https://player.vimeo.com/video/123456789
+    - URLs with query params
+  Returns the numeric ID as a string or null.
+
+- toVimeoPlayerUrl(url: string): string
+  Converts:
+    vimeo.com/{id} → https://player.vimeo.com/video/{id}
+  Returns original url if conversion fails.
+
+- async getVimeoThumbnailUrl(videoUrl: string): Promise<string | null>
+  Logic:
+    - Extract Vimeo ID
+    - Check cache first
+    - If cache miss or stale:
+        Fetch oEmbed JSON from:
+        https://vimeo.com/api/oembed.json?url=https://vimeo.com/{id}
+    - Read `thumbnail_url`
+    - Write to cache
+    - Return thumbnail_url or null on failure
+
+------------------------------------------------------------
+2) CREATE EMPTY THUMBNAIL CACHE
+------------------------------------------------------------
+
+Create file:
+
+src/data/vimeoThumbCache.json
+
+Initial contents:
+{}
+
+Cache format:
+{
+  "123456789": {
+    "thumbnail_url": "https://i.vimeocdn.com/video/xxxxxx_640.jpg",
+    "fetched_at": 1730000000000
+  }
+}
+
+Cache rules:
+- TTL: 30 days
+- Use Node fs/promises
+- Server-side only
+- Fail gracefully if read/write fails
+- Simple concurrency is acceptable (last write wins)
+
+------------------------------------------------------------
+3) REMOVE OLD VIDEO BUTTON SECTION
+------------------------------------------------------------
+
+Completely DELETE the existing block that renders a centered button, e.g.:
+
+<section class="practice-video-trigger">
+  <button class="video-trigger-btn">Watch the walkthrough</button>
+</section>
+
+No watch button should remain anywhere on the page.
+
+------------------------------------------------------------
+4) RESTRUCTURE HEADER INTO TWO COLUMNS
+------------------------------------------------------------
+
+Locate the Practice Project header section containing:
+- h1 title
+- description / summary text
+- print button (if present)
+
+Wrap it in a new container:
+
+<div class="pp-hero">
+  <div class="pp-hero__text">existing header content</div>
+  <div class="pp-hero__media">video thumbnail (conditional)</div>
+</div>
+
+Left column:
+- Keep ALL existing content unchanged.
+
+------------------------------------------------------------
+5) ADD VIDEO THUMBNAIL ON THE RIGHT
+------------------------------------------------------------
+
+In .pp-hero__media:
+
+- Render ONLY if videoUrl exists
+- Fetch:
+    const playerUrl = toVimeoPlayerUrl(videoUrl)
+    const thumbnailUrl = await getVimeoThumbnailUrl(videoUrl)
+
+Thumbnail tile requirements:
+- Use <button type="button"> wrapper
+- aria-label="Watch the walkthrough video"
+- Display thumbnail image if available
+- If thumbnailUrl is null, show a neutral placeholder
+- Add centered play icon overlay
+- Clicking opens the modal
+- No autoplay
+
+------------------------------------------------------------
+6) UPDATE MODAL TO USE THUMBNAIL TRIGGER
+------------------------------------------------------------
+
+Modal behavior:
+- Opens when thumbnail tile is clicked
+- Closes on:
+    - X button
+    - Escape key
+    - Backdrop click
+- Locks background scroll
+- Basic focus trapping is acceptable
+- .no-print hides thumbnail and modal
+
+Modal iframe:
+- src = playerUrl
+- allowfullscreen
+- loading="lazy"
+- 16:9 aspect ratio
+- Do NOT autoplay
+
+------------------------------------------------------------
+7) ADD MINIMAL CSS
+------------------------------------------------------------
+
+Add only what is required for layout and clarity.
+
+Classes to implement:
+- .pp-hero (grid, gap, align-items: start)
+- .pp-hero__text
+- .pp-hero__media
+- .pp-video-thumb
+- .pp-video-thumb__ratio (aspect-ratio: 16 / 9)
+- .pp-video-thumb__img (object-fit: cover)
+- .pp-video-thumb__play (centered overlay)
+- .kbm-modal-overlay
+- .kbm-modal
+- .kbm-modal-close
+
+Responsive rules:
+- Desktop: right column max-width ~360px
+- Tablet/mobile: stack columns; thumbnail full width
+
+------------------------------------------------------------
+IMPORTANT CONSTRAINTS
+------------------------------------------------------------
+
+- Do NOT add any buttons labeled “Watch”
+- Do NOT create a separate video section below the header
+- Do NOT change the Steps content
+- All video entry points must live ONLY in the header-right thumbnail
+- Do NOT redesign the page
+
+------------------------------------------------------------
+DELIVERABLES
+------------------------------------------------------------
+
+Return:
+- src/lib/vimeo.ts
+- src/data/vimeoThumbCache.json
+- Updated Practice Project page template
+- CSS additions only
+
+Return code changes only. No explanations.
