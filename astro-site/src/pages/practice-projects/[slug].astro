@@ -43,6 +43,7 @@ const accessLevel = contentPage?.accessLevel || '';
 const priceLabel = contentPage?.priceLabel || '';
 const imageUrl = contentPage?.imageUrl || '';
 const imageAlt = contentPage?.imageAlt || '';
+const videoUrl = contentPage?.videoUrl || '';
 ---
 
 <BaseLayout title={`${title} | Practice Projects`} description={summary || ''}>
@@ -116,6 +117,20 @@ const imageAlt = contentPage?.imageAlt || '';
             </div>
           )}
         </header>
+
+        {videoUrl && (
+          <section class="practice-video no-print" data-testid="section-video">
+            <h2>Practice Walkthrough</h2>
+            <div class="video-embed">
+              <iframe
+                src={videoUrl}
+                title="Practice project walkthrough video"
+                loading="lazy"
+                allowfullscreen
+              ></iframe>
+            </div>
+          </section>
+        )}
 
         {htmlContent ? (
           <div class="project-body" data-testid="content-body" set:html={htmlContent} />
@@ -311,6 +326,35 @@ const imageAlt = contentPage?.imageAlt || '';
     padding: 3rem;
     color: #888;
     font-style: italic;
+  }
+
+  .practice-video {
+    margin-bottom: 2rem;
+  }
+
+  .practice-video h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 1rem 0;
+  }
+
+  .video-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+    background: #000;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
 
   .project-footer {
