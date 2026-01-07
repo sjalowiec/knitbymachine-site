@@ -1,0 +1,215 @@
+(Header-right Vimeo thumbnail + modal + cached oEmbed thumbnails)
+
+We need to fix the Practice Project video implementation and finish it properly.
+This prompt replaces ALL previous video-related work.
+
+------------------------------------------------------------
+GOAL (HIGH LEVEL)
+------------------------------------------------------------
+
+For Practice Projects that have a `videoUrl` field:
+
+- Show a clickable VIDEO THUMBNAIL to the RIGHT of the page header (title + description).
+- Clicking the thumbnail opens a modal with the Vimeo video.
+- The thumbnail image must come from Vimeo automatically (oEmbed).
+- Vimeo thumbnails must be cached so we do not fetch them repeatedly.
+- Remove the existing centered “Watch the walkthrough” button entirely.
+
+------------------------------------------------------------
+DATA MODEL
+------------------------------------------------------------
+
+Practice Project JSON includes:
+- videoUrl: string (example: "https://vimeo.com/123456789")
+
+There is NO separate thumbnail field.
+The thumbnail must be derived from Vimeo.
+
+------------------------------------------------------------
+A) REMOVE EXISTING BUTTON UI
+------------------------------------------------------------
+
+1) Completely DELETE the existing section that renders this:
+
+<section class="practice-video-trigger">
+  <button class="video-trigger-btn">Watch the walkthrough</button>
+</section>
+
+No watch button should remain anywhere on the page.
+
+------------------------------------------------------------
+B) HEADER LAYOUT (VIDEO ON THE RIGHT)
+------------------------------------------------------------
+
+2) Locate the header section of the Practice Project page containing:
+   - h1 title
+   - description/summary
+   - print button (if present)
+
+3) Wrap the header in a two-column layout:
+
+   <div class="pp-hero">
+     <div class="pp-hero__text">...</div>
+     <div class="pp-hero__media">...</div>
+   </div>
+
+4) Left column (.pp-hero__text):
+   - Keep ALL existing header content unchanged.
+
+5) Right column (.pp-hero__media):
+   - Render ONLY if videoUrl exists.
+   - Display a clickable VIDEO THUMBNAIL TILE.
+   - Clicking the tile opens the video modal.
+
+------------------------------------------------------------
+C) VIMEO THUMBNAIL FETCH + CACHE (SERVER SIDE)
+------------------------------------------------------------
+
+6) Create a new helper module:
+
+   src/lib/vimeo.ts
+
+Export the following functions:
+
+------------------------------------------------------------
+extractVimeoId(url: string): string | null
+------------------------------------------------------------
+- Supports:
+  - https://vimeo.com/123456789
+  - https://player.vimeo.com/video/123456789
+  - URLs with query params
+- Returns numeric ID as string or null.
+
+------------------------------------------------------------
+toVimeoPlayerUrl(url: string): string
+------------------------------------------------------------
+- Converts vimeo.com/{id} → https://player.vimeo.com/video/{id}
+- Returns original url if conversion fails.
+
+------------------------------------------------------------
+getVimeoThumbnailUrl(videoUrl: string): Promise<string | null>
+------------------------------------------------------------
+Logic:
+- Extract Vimeo ID.
+- Check cache first.
+- If cache miss or stale:
+  - Fetch oEmbed JSON from:
+    https://vimeo.com/api/oembed.json?url=https://vimeo.com/{id}
+  - Read `thumbnail_url`.
+  - Save to cache.
+- Return thumbnail_url or null on failure.
+
+------------------------------------------------------------
+7) CACHING
+------------------------------------------------------------
+
+Create cache file:
+- src/data/vimeoThumbCache.json
+- Initial contents: {}
+
+Cache format:
+{
+  "123456789": {
+    "thumbnail_url": "https://i.vimeocdn.com/video/xxxxxx_640.jpg",
+    "fetched_at": 1730000000000
+  }
+}
+
+Rules:
+- Cache TTL: 30 days
+- Use Node fs/promises
+- Fail gracefully if file read/write fails
+- Server-side only (never fetch oEmbed in browser)
+- Simple concurrency is fine (last write wins)
+
+------------------------------------------------------------
+D) USE THUMBNAIL IN HEADER TILE
+------------------------------------------------------------
+
+8) In the Practice Project page:
+
+- Compute:
+  const playerUrl = toVimeoPlayerUrl(videoUrl)
+  const thumbnailUrl = await getVimeoThumbnailUrl(videoUrl)
+
+- Thumbnail tile:
+  - Wrap in <button type="button">
+  - aria-label="Watch the walkthrough video"
+  - Show thumbnail image if available
+  - Fallback to neutral placeholder if thumbnailUrl is null
+  - Overlay centered play icon
+
+------------------------------------------------------------
+E) MODAL VIDEO PLAYER
+------------------------------------------------------------
+
+9) Modal behavior:
+- Opens when thumbnail clicked
+- Closes on:
+  - X button
+  - Escape key
+  - Backdrop click
+- Locks background scroll
+- Traps focus (basic implementation acceptable)
+- .no-print hides modal and thumbnail
+
+10) Modal iframe:
+- src = playerUrl
+- allowfullscreen
+- loading="lazy"
+- 16:9 aspect ratio
+- No autoplay
+
+------------------------------------------------------------
+F) RESPONSIVE & STYLING
+------------------------------------------------------------
+
+11) Styling rules:
+- Desktop:
+  - Right column max-width: 360px
+  - 16:9 thumbnail
+- Tablet/mobile:
+  - Stack layout (video below text)
+  - Thumbnail full width
+
+Add minimal CSS classes:
+- .pp-hero
+- .pp-hero__text
+- .pp-hero__media
+- .pp-video-thumb
+- .pp-video-thumb__ratio
+- .pp-video-thumb__img
+- .pp-video-thumb__play
+- .kbm-modal-overlay
+- .kbm-modal
+- .kbm-modal-close
+
+No visual redesign beyond what is required.
+
+------------------------------------------------------------
+G) LOGGING (DEV ONLY)
+------------------------------------------------------------
+
+12) On oEmbed fetch (cache miss only), log:
+console.log("[vimeo] fetched thumbnail for", id)
+
+------------------------------------------------------------
+IMPORTANT CONSTRAINTS
+------------------------------------------------------------
+
+- Do NOT add a separate Practice Walkthrough section.
+- Do NOT alter Steps content.
+- Do NOT reintroduce the watch button.
+- All video entry points live ONLY in the header-right thumbnail.
+
+------------------------------------------------------------
+DELIVER
+------------------------------------------------------------
+
+Return:
+- src/lib/vimeo.ts
+- src/data/vimeoThumbCache.json
+- Updated Practice Project page template
+- CSS additions
+
+No explanations — just the code changes.

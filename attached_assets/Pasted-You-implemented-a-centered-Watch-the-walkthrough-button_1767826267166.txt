@@ -1,0 +1,51 @@
+You implemented a centered “Watch the walkthrough” button BELOW the header. That is NOT what I want.
+
+I want the video thumbnail to appear to the RIGHT of the title + description in the header area, like a two-column header layout. The button should be removed entirely.
+
+Please do the following changes:
+
+1) Locate the “header section” at the top of the practice project page that contains:
+   - the Practice Project title (h1)
+   - the short description/summary text
+   - the Print button (if present)
+
+2) Wrap that header content in a new container with a two-column layout:
+   - Left column: title + description + print button (existing content)
+   - Right column: a compact video thumbnail tile IF videoUrl exists
+
+3) The right column should render ONLY when videoUrl exists.
+   - Display a thumbnail (poster) area with a play icon overlay.
+   - Clicking anywhere on the thumbnail opens the existing modal with the iframe.
+   - Do NOT render the large centered “Watch the walkthrough” button anywhere on the page.
+   - Remove that button code completely.
+
+4) Thumbnail sizing rules:
+   - Desktop: right column max width 320–380px, keep 16:9 ratio
+   - Tablet: allow it to shrink
+   - Mobile: stack below the title/description (thumbnail full width but still 16:9)
+
+5) Accessibility:
+   - The thumbnail must be a <button> or <a> with role="button" (not a plain div)
+   - Add aria-label="Watch the walkthrough video"
+   - Modal must still close on Escape and by clicking the backdrop
+
+6) Data:
+   - Continue using videoUrl to embed the iframe in the modal.
+   - If videoUrl is a regular vimeo.com link, transform it to player.vimeo.com/video/{id} before using it in the iframe.
+
+7) Styling:
+   Add minimal CSS classes (reuse existing design tokens if present):
+   - .pp-hero (grid container)
+   - .pp-hero__text (left)
+   - .pp-hero__media (right)
+   - .pp-video-thumb (the clickable thumbnail tile)
+   - .pp-video-thumb__ratio (16:9 wrapper)
+   - .pp-video-thumb__play (play icon overlay)
+   Ensure .no-print hides the thumbnail and modal in print.
+
+8) IMPORTANT:
+   - Do not change the Steps content.
+   - Do not introduce a new standalone “Practice Walkthrough” section below the header.
+   - The video entry point must live ONLY in the header area as a right-side thumbnail.
+
+Return the updated template code AND the CSS additions.
