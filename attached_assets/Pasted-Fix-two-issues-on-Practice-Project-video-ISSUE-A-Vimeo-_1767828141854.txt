@@ -1,0 +1,115 @@
+Fix two issues on Practice Project video:
+
+ISSUE A: Vimeo thumbnail is not rendering (we’re getting null or never using it).
+ISSUE B: Modal overlay is behind the fixed site header and the modal content is not centered.
+
+Do NOT change the chosen header-right placement. Keep the thumbnail trigger in the right column of the header.
+Do NOT reintroduce a “Watch” button section anywhere.
+
+-----------------------------------------
+A) FIX VIMEO THUMBNAIL FETCH + USE
+-----------------------------------------
+
+1) In src/lib/vimeo.ts (or wherever the helper lives), update getVimeoThumbnailUrl(videoUrl) to be robust:
+
+- Extract the numeric Vimeo id.
+- Build the oEmbed URL exactly like:
+  const oembed = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(`https://vimeo.com/${id}`)}`;
+
+- Use fetch(oembed) server-side.
+- If response is not ok, return null (no throw).
+- Parse JSON and return json.thumbnail_url if present.
+
+2) Ensure the Practice Project page actually awaits the thumbnail on the server/build side and uses it:
+
+- Compute:
+  const playerUrl = toVimeoPlayerUrl(videoUrl)
+  const thumbnailUrl = await getVimeoThumbnailUrl(videoUrl)
+
+- In the header-right tile:
+  - If thumbnailUrl exists, render:
+    <img src={thumbnailUrl} ... />
+  - If thumbnailUrl is null, render a neutral placeholder div (still clickable).
+
+3) IMPORTANT: Ensure the thumbnail tile is NOT using the Vimeo *player* URL as an image.
+It must use thumbnailUrl from oEmbed.
+
+4) Add a tiny debug log ONLY on cache miss fetch:
+  console.log("[vimeo] oembed thumbnail fetched for", id)
+
+(Do not log on every request.)
+
+-----------------------------------------
+B) FIX MODAL OVERLAY LAYERING + CENTERING
+-----------------------------------------
+
+5) Update modal overlay CSS to ALWAYS sit above the fixed site header:
+
+- .kbm-modal-overlay must be:
+  position: fixed;
+  inset: 0;
+  z-index: 99999;   // higher than any header
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;     // prevent edge-to-edge on mobile
+  background: rgba(0,0,0,0.7);
+
+6) Update modal dialog CSS so it is centered and sized correctly:
+
+- .kbm-modal must be:
+  position: relative;
+  width: min(960px, 92vw);
+  max-height: 90vh;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #fff; (or your existing surface color)
+
+7) Ensure the iframe is centered and keeps 16:9:
+
+- Wrap iframe in a 16:9 container:
+  .kbm-video-frame { aspect-ratio: 16 / 9; width: 100%; }
+  .kbm-video-frame iframe { width:100%; height:100%; border:0; display:block; }
+
+8) Ensure the close button is visible and clickable:
+
+- .kbm-modal-close:
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+
+9) Ensure background scroll is locked while modal is open:
+- When opening: document.body.style.overflow = "hidden"
+- When closing: restore overflow to ""
+
+10) Ensure clicking the backdrop closes, but clicking inside modal does not:
+- Backdrop has onClick close
+- Modal container stops propagation
+
+-----------------------------------------
+C) THUMBNAIL TILE STYLING (MINIMAL)
+-----------------------------------------
+
+11) Ensure the header-right thumbnail tile is a clean 16:9 card:
+
+- .pp-video-thumb__ratio:
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: 12px;
+  border: 1px solid var(--kbm-border);
+  background: var(--kbm-soft-bg);
+
+- img uses object-fit: cover.
+
+- Play icon overlay centered with slight translucent circle.
+
+-----------------------------------------
+DELIVERABLES
+-----------------------------------------
+
+Return code changes only:
+- Updated src/lib/vimeo.ts (oEmbed + safe fetch)
+- Practice Project page updates to use thumbnailUrl correctly
+- CSS fixes for modal overlay z-index and centering
+- Ensure no “watch button section” remains

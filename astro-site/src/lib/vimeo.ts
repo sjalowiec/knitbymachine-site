@@ -85,7 +85,7 @@ export async function getVimeoThumbnailUrl(videoUrl: string): Promise<string | n
       return null;
     }
     
-    console.log('[vimeo] fetched thumbnail for', id);
+    console.log('[vimeo] oembed thumbnail fetched for', id);
     
     // Update cache
     cache[id] = {

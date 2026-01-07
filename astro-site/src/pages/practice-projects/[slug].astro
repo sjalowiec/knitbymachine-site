@@ -350,9 +350,10 @@ if (videoUrl) {
     position: relative;
     width: 100%;
     aspect-ratio: 16 / 9;
-    background: #1a1a1a;
-    border-radius: 12px;
     overflow: hidden;
+    border-radius: 12px;
+    border: 1px solid var(--kbm-border, #e5e8e0);
+    background: var(--kbm-soft-bg, #f0f4e8);
   }
 
   .pp-video-thumb__img {
@@ -370,7 +371,7 @@ if (videoUrl) {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+    background: linear-gradient(135deg, #3a3a3a 0%, #2a2a2a 100%);
   }
 
   .pp-video-thumb__play {
@@ -397,16 +398,16 @@ if (videoUrl) {
     margin-left: 4px; /* optical centering for play icon */
   }
 
-  /* Modal overlay */
+  /* Modal overlay - MUST sit above fixed site header */
   .kbm-modal-overlay {
     position: fixed;
     inset: 0;
-    z-index: 1000;
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 1rem;
-    background: rgba(0, 0, 0, 0.75);
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.7);
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s ease;
@@ -417,14 +418,14 @@ if (videoUrl) {
     visibility: visible;
   }
 
-  /* Modal dialog */
+  /* Modal dialog - centered, sized correctly */
   .kbm-modal {
     position: relative;
     width: min(960px, 92vw);
-    max-width: 960px;
-    background: #1a1a1a;
-    border-radius: 12px;
+    max-height: 90vh;
     overflow: hidden;
+    background: #fff;
+    border-radius: 12px;
     transform: scale(0.95);
     transition: transform 0.2s ease;
   }
@@ -433,12 +434,12 @@ if (videoUrl) {
     transform: scale(1);
   }
 
-  /* Close button */
+  /* Close button - visible and clickable */
   .kbm-modal-close {
     position: absolute;
-    top: 0.75rem;
-    right: 0.75rem;
-    z-index: 10;
+    top: 10px;
+    right: 10px;
+    z-index: 2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -464,22 +465,19 @@ if (videoUrl) {
 
   /* 16:9 video frame */
   .kbm-video-frame {
-    position: relative;
+    aspect-ratio: 16 / 9;
     width: 100%;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
     background: #000;
   }
 
   .kbm-video-frame iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
     width: 100%;
     height: 100%;
     border: 0;
+    display: block;
   }
 
-  /* Scroll lock */
+  /* Scroll lock when modal open */
   :global(body.modal-open) {
     overflow: hidden;
   }
@@ -797,13 +795,25 @@ if (videoUrl) {
     }
 
     function handleBackdropClick(e) {
+      // Only close when clicking the overlay itself, not modal content
       if (e.target === modal) {
         closeModal();
       }
     }
 
+    function handleModalContentClick(e) {
+      // Prevent clicks inside modal from bubbling to backdrop
+      e.stopPropagation();
+    }
+
     // Attach event listeners
     thumbBtn.addEventListener('click', openModal);
     closeBtn.addEventListener('click', closeModal);
+    
+    // Stop propagation on modal content clicks
+    const modalContent = modal.querySelector('.kbm-modal');
+    if (modalContent) {
+      modalContent.addEventListener('click', handleModalContentClick);
+    }
   })();
 </script>
