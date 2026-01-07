@@ -1,8 +1,5 @@
-
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
-import Header from "../../components/header.astro";
-import Footer from "../../components/footer.astro";
+import WizardLayout from "../../layouts/WizardLayout.astro";
 import Tooltip from "../../components/Tooltip.astro";
 import PrintFooter from "../../components/common/PrintFooter.astro";
 import ActionBar from "../../components/wizards/ActionBar.astro";
@@ -12,11 +9,9 @@ import "../../styles/global.css";
 const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
 ---
 
-<BaseLayout 
+<WizardLayout 
   title="Boat Neck Sweater Pattern | Knit by Machine" 
   description="Create your own boat neck sweater — sleeveless or with sleeves of any length. Enter your gauge, adjust sizing, and knit it in any yarn or stitch pattern.">
-
-<Header />
 
 <style>
 .wizard-page {
@@ -196,5 +191,4 @@ const pageUrl = "https://knitbymachine.com/wizards/boat-neck-sweater";
   }
 </script>
 
-<Footer />
-</BaseLayout>
+</WizardLayout>
