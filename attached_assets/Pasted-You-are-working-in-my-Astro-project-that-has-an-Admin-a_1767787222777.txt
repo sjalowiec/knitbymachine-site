@@ -1,0 +1,63 @@
+You are working in my Astro project that has an Admin area with a left sidebar menu (the screenshot shows sections: Learn, Content, Content Sections, and items like Wizards, Content Pages, Legacy Wizards).
+
+Goal: Rename and reorder the Admin sidebar so it matches this structure:
+
+SECTION: Plan
+- Project Wizards
+- Tools
+
+SECTION: Knit
+- Practice Projects
+- Patterns
+- Workshops
+
+SECTION: Learn
+- Project Walkthroughs
+- Guided Workshops
+- Ask ’n Answer
+- Glossary
+
+SECTION: Content (Building Blocks)
+- Dashboard
+- Blog Posts
+- Videos
+- Machines
+- Tags
+- Categories
+- Reference Registry
+
+SECTION: System
+- Flow Engine
+- Pages
+- Legacy Content
+
+Important renames:
+- "Wizards" -> "Flow Engine"
+- "Content Pages" -> "Pages"
+- "Legacy Wizards" -> "Legacy Content"
+- If you currently have "Project Walkthroughs" and "Guided Workshops" under Learn already, keep their routes unchanged.
+
+Requirements:
+1) Do NOT change routes/URLs, only the labels, grouping headings, and ordering.
+2) Keep the existing icons, unless an item has no icon—then reuse the closest existing icon.
+3) Use a single source-of-truth nav config if it exists (an array/object that defines sections + links). Do not hardcode in multiple places.
+4) If the menu is currently built from multiple arrays, refactor into one exported constant like `adminNav` with this shape:
+   [
+     { heading: "Plan", items: [{ label, href, icon }] },
+     ...
+   ]
+5) Update the sidebar component to render from this single config.
+6) Verify there are no duplicate menu entries after the change.
+
+How to find the right files:
+- Search for: "Legacy Wizards", "Content Sections", "Wizards", "Ask 'n Answer", or the exact sidebar headings "Learn" / "Content".
+- Likely files include: src/components/admin/*, src/pages/admin/*, src/layouts/*, or a nav config like src/lib/adminNav.ts.
+
+Deliverables:
+- The updated nav config file (or newly created file) with the new structure and labels.
+- The updated sidebar component using the config.
+- Briefly list the files you changed and what was changed in each.
+
+Finally:
+- Do not touch any database logic or content models in this step.
+- Only rename and reorder the sidebar menu.
