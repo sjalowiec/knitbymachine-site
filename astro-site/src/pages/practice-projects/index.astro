@@ -20,10 +20,20 @@ try {
       title: page.title,
       slug: page.slug,
       shortDescription: page.shortDescription || '',
+      displayOrder: page.displayOrder,
+      createdAt: page.createdAt,
     }));
     
-    // Sort alphabetically by title
-    entries.sort((a: any, b: any) => a.title.localeCompare(b.title));
+    // Sort by displayOrder ascending (nulls last), then by title ascending
+    entries.sort((a: any, b: any) => {
+      const aOrder = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      const bOrder = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+      // Tie-breaker: title ascending
+      return a.title.localeCompare(b.title);
+    });
   } else if (!response.ok) {
     console.error('Error fetching practice projects:', response.status, response.statusText);
     errorMessage = `Failed to fetch practice projects (${response.status})`;
