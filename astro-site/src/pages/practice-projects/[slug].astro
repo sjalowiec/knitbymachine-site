@@ -72,6 +72,25 @@ const imageAlt = contentPage?.imageAlt || '';
         </a>
       </div>
     ) : (
+      <div class="project-sticky-actions no-print" data-testid="sticky-actions">
+        <button
+          type="button"
+          class="print-btn print-btn--compact"
+          onclick="window.print()"
+          data-testid="button-print-sticky"
+          aria-label="Print instructions"
+          title="Print this project"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+            <rect x="6" y="14" width="12" height="8"></rect>
+          </svg>
+          Print
+        </button>
+      </div>
+
       <article class="project-content">
         <header class="project-header">
           <div class="project-header__text">
@@ -365,9 +384,43 @@ const imageAlt = contentPage?.imageAlt || '';
     transform: translateY(-2px);
   }
 
+  /* Sticky Print (appears after scroll) */
+  .project-sticky-actions {
+    position: sticky;
+    top: calc(var(--header-height, 0px) + 12px);
+    z-index: 30;
+
+    display: flex;
+    justify-content: flex-end;
+
+    padding: 8px 0;
+
+    /* Match page background so it doesn't look like a floating ad */
+    background: var(--page-bg, #f7f8f7);
+
+    /* hidden by default; becomes visible after scroll */
+    opacity: 0;
+    transform: translateY(-6px);
+    pointer-events: none;
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .project-sticky-actions.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  /* Compact print button so sticky doesn't feel heavy */
+  .print-btn.print-btn--compact {
+    padding: 8px 12px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+  }
+
   @media (max-width: 640px) {
     .practice-project-page {
-      padding: calc(var(--header-height, 100px) + 1rem) 1rem 2rem;
+      padding: 1.5rem 1rem 2rem;
     }
 
     .project-content {
@@ -382,5 +435,30 @@ const imageAlt = contentPage?.imageAlt || '';
     .error-panel {
       padding: 2rem 1.5rem;
     }
+
+    .project-sticky-actions {
+      top: calc(var(--header-height, 0px) + 8px);
+      padding: 6px 0;
+    }
+
+    .print-btn.print-btn--compact {
+      padding: 8px 10px;
+    }
   }
 </style>
+
+<script is:inline>
+  (() => {
+    const bar = document.querySelector('.project-sticky-actions');
+    if (!bar) return;
+
+    const SHOW_AFTER_PX = 220;
+
+    const onScroll = () => {
+      bar.classList.toggle('is-visible', window.scrollY > SHOW_AFTER_PX);
+    };
+
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+  })();
+</script>
