@@ -44,7 +44,6 @@ const {
 } = Astro.props;
 
 const loaderId = `loader-${id}`;
-const msgId = `msg-${id}`;
 ---
 
 <div class="kbm-loadgate" data-loadgate-id={id}>
@@ -59,7 +58,7 @@ const msgId = `msg-${id}`;
   </div>
 </div>
 
-<script define:vars={{ id, loaderId, msgId, timeoutMs, slowMessage }}>
+<script define:vars={{ id, loaderId, timeoutMs, slowMessage }}>
 (function() {
   const wrapper = document.querySelector(`[data-loadgate-id="${id}"]`);
   if (!wrapper) return;

@@ -1,3 +1,8 @@
+/* ============================================
+   Lego Components - Import reusable styles
+   ============================================ */
+@import './lego/floating-input.css';
+
 /* 
  * TYPOGRAPHY: html font-size is set inline in BaseLayout.astro with !important
  * to prevent Astro CSS bundler reordering issues on Samsung devices.
@@ -1069,8 +1074,3 @@ p {
 @media (prefers-reduced-motion: reduce) {
   .kbm-loading__spinner { animation: none; }
 }
-
-/* ============================================
-   Lego Components - Import reusable styles
-   ============================================ */
-@import './lego/floating-input.css';
