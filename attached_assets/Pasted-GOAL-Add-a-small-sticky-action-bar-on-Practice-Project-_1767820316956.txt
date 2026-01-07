@@ -1,0 +1,123 @@
+GOAL
+Add a small sticky action bar on Practice Project pages that appears after the user scrolls a bit and provides a Print button. Keep the existing “Back to Practice Projects” breadcrumb at the top AND “Explore more Practice Projects” at the bottom. The sticky bar must be hidden when printing.
+
+SCOPE
+Only modify the Practice Project page layout/component (the file that renders the markup shown: <main class="practice-project-page"> ... <main class="practice-project-page" data-astro-cid-zpr5nffn>).
+
+WHAT TO DO (STEP BY STEP)
+
+1) In the Practice Project page file:
+   - Find this section near the top of the page:
+     <div class="breadcrumb no-print"> ... Back to Practice Projects ... </div>
+     <article class="project-content"> ...
+
+   - Insert a NEW sticky action bar immediately AFTER the breadcrumb div and BEFORE the <article> tag.
+
+   Add this markup exactly:
+
+   <div class="project-sticky-actions no-print" data-testid="sticky-actions">
+     <button
+       type="button"
+       class="print-btn print-btn--compact"
+       onclick="window.print()"
+       data-testid="button-print-sticky"
+       aria-label="Print instructions"
+       title="Print this project"
+     >
+       <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+         <polyline points="6 9 6 2 18 2 18 9"></polyline>
+         <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+         <rect x="6" y="14" width="12" height="8"></rect>
+       </svg>
+       Print
+     </button>
+   </div>
+
+   NOTES:
+   - We are NOT making the breadcrumb sticky.
+   - We are NOT removing the existing Print button in the title row. Keep it for now.
+
+2) Add the following CSS in the stylesheet that controls this Practice Project page (or the nearest global/site CSS if that’s where these styles live).
+   - Search for existing practice project styles (classes like .practice-project-page, .project-content, .breadcrumb, .print-btn).
+   - Paste this CSS at the end of that section:
+
+   /* Sticky Print (appears after scroll) */
+   .project-sticky-actions {
+     position: sticky;
+     top: calc(var(--header-height, 0px) + 12px);
+     z-index: 30;
+
+     display: flex;
+     justify-content: flex-end;
+
+     padding: 8px 0;
+
+     /* Match page background so it doesn’t look like a floating ad */
+     background: var(--page-bg, #fff);
+
+     /* hidden by default; becomes visible after scroll */
+     opacity: 0;
+     transform: translateY(-6px);
+     pointer-events: none;
+     transition: opacity 160ms ease, transform 160ms ease;
+   }
+
+   .project-sticky-actions.is-visible {
+     opacity: 1;
+     transform: translateY(0);
+     pointer-events: auto;
+   }
+
+   /* Compact print button so sticky doesn’t feel heavy */
+   .print-btn.print-btn--compact {
+     padding: 8px 12px;
+     font-size: 0.95rem;
+     border-radius: 10px;
+   }
+
+   @media (max-width: 640px) {
+     .project-sticky-actions {
+       top: calc(var(--header-height, 0px) + 8px);
+       padding: 6px 0;
+     }
+     .print-btn.print-btn--compact {
+       padding: 8px 10px;
+     }
+   }
+
+   IMPORTANT:
+   - Do NOT remove .no-print behavior. The sticky bar must not show in print.
+
+3) Add a tiny script to toggle visibility after scroll.
+   - In the SAME Practice Project page file, add this <script> near the bottom of the page template (right before the closing </main> for the practice-project-page, or right before </body> if that’s where you keep page scripts).
+
+   <script is:inline>
+     (() => {
+       const bar = document.querySelector('.project-sticky-actions');
+       if (!bar) return;
+
+       const SHOW_AFTER_PX = 220;
+
+       const onScroll = () => {
+         bar.classList.toggle('is-visible', window.scrollY > SHOW_AFTER_PX);
+       };
+
+       onScroll();
+       window.addEventListener('scroll', onScroll, { passive: true });
+     })();
+   </script>
+
+4) QA checklist (do these manually after changes):
+   - Load a practice project page.
+   - Confirm the sticky Print does NOT show at page load.
+   - Scroll down ~1–2 sections: sticky Print appears top-right below the site header.
+   - Click sticky Print: browser print dialog opens.
+   - Print preview: sticky Print is NOT visible (because it is inside .no-print).
+   - Resize to mobile width: sticky Print still appears, doesn’t overlap the header.
+
+5) OPTIONAL cleanup (do NOT do this unless I ask):
+   - If we decide the sticky Print is enough, we can remove the title-row Print button later.
+
+DELIVERABLE
+Commit the changes and report back which file(
