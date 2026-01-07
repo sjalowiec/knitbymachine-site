@@ -395,20 +395,23 @@ const imageAlt = contentPage?.imageAlt || '';
 
     padding: 8px 0;
 
-    /* Match page background so it doesn't look like a floating ad */
-    background: var(--page-bg, #f7f8f7);
+    /* Transparent background - button only floats */
+    background: transparent;
+    pointer-events: none;
 
     /* hidden by default; becomes visible after scroll */
     opacity: 0;
     transform: translateY(-6px);
-    pointer-events: none;
     transition: opacity 160ms ease, transform 160ms ease;
+  }
+
+  .project-sticky-actions .print-btn {
+    pointer-events: auto;
   }
 
   .project-sticky-actions.is-visible {
     opacity: 1;
     transform: translateY(0);
-    pointer-events: auto;
   }
 
   /* Compact print button so sticky doesn't feel heavy */
