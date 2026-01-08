@@ -68,40 +68,38 @@ export async function getVimeoThumbnailUrl(videoUrl: string): Promise<string | n
   }
   
   // Cache miss or stale - fetch from oEmbed using sanitized URL
+  // For domain-restricted videos, we need to send the Referer header
   let thumbnailUrl: string | null = null;
   
-  try {
-    const oembedUrl = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(sanitizedVimeoUrl)}`;
-    const response = await fetch(oembedUrl);
-    
-    if (response.ok) {
-      const data = await response.json();
-      thumbnailUrl = data.thumbnail_url || null;
-      
-      if (thumbnailUrl) {
-        console.log('[vimeo] oembed thumbnail fetched for', id);
-      }
-    } else {
-      console.warn('[vimeo] oEmbed request failed:', response.status);
-    }
-  } catch (err) {
-    console.warn('[vimeo] oEmbed fetch error:', err);
-  }
+  // List of referer domains to try (whitelisted domains for Vimeo embeds)
+  const refererDomains = [
+    'https://knitbymachine.com',
+    'https://www.knitbymachine.com',
+  ];
   
-  // Fallback: Use direct Vimeo CDN URL if oEmbed didn't return a thumbnail
-  // This works for videos with domain restrictions where oEmbed fails
-  if (!thumbnailUrl) {
-    const cdnUrl = `https://i.vimeocdn.com/video/${id}_640x360.jpg`;
+  for (const referer of refererDomains) {
+    if (thumbnailUrl) break;
     
     try {
-      // Verify the CDN URL actually works
-      const cdnResponse = await fetch(cdnUrl, { method: 'HEAD' });
-      if (cdnResponse.ok && cdnResponse.headers.get('content-type')?.includes('image/jpeg')) {
-        thumbnailUrl = cdnUrl;
-        console.log('[vimeo] CDN thumbnail found for', id);
+      const oembedUrl = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(sanitizedVimeoUrl)}`;
+      const response = await fetch(oembedUrl, {
+        headers: {
+          'Referer': referer,
+        },
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        thumbnailUrl = data.thumbnail_url || null;
+        
+        if (thumbnailUrl) {
+          console.log('[vimeo] oembed thumbnail fetched for', id, 'using referer', referer);
+        }
+      } else {
+        console.warn('[vimeo] oEmbed request failed:', response.status, 'for referer', referer);
       }
     } catch (err) {
-      console.warn('[vimeo] CDN thumbnail check failed:', err);
+      console.warn('[vimeo] oEmbed fetch error:', err);
     }
   }
   
