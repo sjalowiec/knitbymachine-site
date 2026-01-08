@@ -7,9 +7,11 @@ let errorMessage = '';
 
 // Fetch practice projects from the CMS API
 const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-sue23.replit.app';
+// Cache-buster for dev preview - ensures fresh data on every refresh
+const cacheBuster = `_cb=${Date.now()}`;
 
 try {
-  const response = await fetch(`${adminApiUrl}/api/public/content-pages?contentType=practice-project`);
+  const response = await fetch(`${adminApiUrl}/api/public/content-pages?contentType=practice-project&${cacheBuster}`);
   
   // Check content type to avoid parsing HTML error pages as JSON
   const contentType = response.headers.get('content-type') || '';

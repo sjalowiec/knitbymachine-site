@@ -21,11 +21,13 @@ if (!token) {
 
 // Validate token via admin API
 const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-sue23.replit.app';
+// Cache-buster for dev preview - ensures fresh data on every refresh
+const cacheBuster = `_cb=${Date.now()}`;
 let tokenValid = false;
 let tokenReason = 'unknown';
 
 try {
-  const validateUrl = `${adminApiUrl}/api/public/validate-workshop-token?slug=${encodeURIComponent(workshopSlug as string)}&t=${encodeURIComponent(token)}`;
+  const validateUrl = `${adminApiUrl}/api/public/validate-workshop-token?slug=${encodeURIComponent(workshopSlug as string)}&t=${encodeURIComponent(token)}&${cacheBuster}`;
   const response = await fetch(validateUrl);
   const result = await response.json();
   

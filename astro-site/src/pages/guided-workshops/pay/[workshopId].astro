@@ -6,6 +6,8 @@ export const prerender = false;
 const { workshopId } = Astro.params;
 
 const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-sue23.replit.app';
+// Cache-buster for dev preview - ensures fresh data on every refresh
+const cacheBuster = `_cb=${Date.now()}`;
 
 interface WorkshopStatusResponse {
   ok: boolean;
@@ -22,7 +24,7 @@ let workshop: WorkshopStatusResponse | null = null;
 let fetchError = false;
 
 try {
-  const statusUrl = `${adminApiUrl}/api/public/guided-workshops/status/${encodeURIComponent(workshopId as string)}`;
+  const statusUrl = `${adminApiUrl}/api/public/guided-workshops/status/${encodeURIComponent(workshopId as string)}?${cacheBuster}`;
   const response = await fetch(statusUrl);
   
   if (response.ok) {
