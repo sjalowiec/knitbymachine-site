@@ -1,0 +1,98 @@
+This project does not use Replit as a deployment, preview, or production environment.
+
+Replit’s role in this codebase is local development only.
+
+What Replit is responsible for
+
+Replit should be used as a coding workspace, not a hosting environment.
+
+Specifically:
+
+Editing Astro site code
+
+Editing Admin UI code
+
+Running the Admin locally for basic functional checks
+
+Running scripts (GitHub push scripts, DB utilities, etc.)
+
+Catching syntax errors, build failures, and runtime crashes
+
+If something runs in Replit, that only confirms:
+
+“The code does not crash.”
+
+It does not mean:
+
+the change is approved
+
+the UI is correct
+
+the behavior matches production
+
+the change is ready to ship
+
+What Replit is not responsible for
+
+Replit should not be treated as:
+
+A preview site
+
+A staging environment
+
+A production environment
+
+A source of truth for what is live
+
+Replit URLs are never used to judge layout, UX, content accuracy, or readiness.
+
+Where preview and production happen instead
+
+All previewing and production hosting happens via Netlify, not Replit.
+
+Preview: Netlify Deploy Previews generated from GitHub pull requests
+
+Production: Netlify Production deploys from the main branch
+
+Replit’s job ends once code is pushed to GitHub.
+
+Admin application handling
+
+The Admin application must be deployable independently of Replit.
+
+The Admin UI should be built as a static application (Vite build)
+
+All database access must happen through server-side endpoints (Netlify Functions or equivalent)
+
+The Admin must have Netlify Deploy Previews enabled, just like the Astro site
+
+Replit may run the Admin locally, but Replit is not the Admin host.
+
+Database usage
+
+Both Preview and Production environments may point to the same Neon Postgres database.
+
+However:
+
+Preview environments should be treated as read-only or guarded against mutation
+
+Production is the only environment intended for unrestricted writes
+
+Replit should never be assumed to reflect the safety or state of production data.
+
+Deployment discipline
+
+Replit does not control what is live
+
+GitHub branches and pull requests do
+
+Netlify deployments are the source of truth for preview and production
+
+Any script that pushes data or content to GitHub must be intentional and branch-aware.
+
+Final rule
+
+Replit is the workbench.
+Netlify is the showroom.
+
+If a change has not been tested in a Netlify Deploy Preview, it is not considered reviewed — regardless of how it behaves in Replit.
