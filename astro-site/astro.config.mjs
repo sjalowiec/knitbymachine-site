@@ -12,7 +12,14 @@ export default defineConfig({
   },
   vite: {
     server: {
-      allowedHosts: true
+      allowedHosts: [
+        'localhost',
+        '0.0.0.0',
+        '.repl.co',
+        '.replit.dev',
+        '.worf.repl.co',
+        '.worf.replit.dev'
+      ]
     }
   }
 });
