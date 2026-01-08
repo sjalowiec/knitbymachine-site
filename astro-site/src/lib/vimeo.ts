@@ -68,35 +68,54 @@ export async function getVimeoThumbnailUrl(videoUrl: string): Promise<string | n
   }
   
   // Cache miss or stale - fetch from oEmbed using sanitized URL
+  let thumbnailUrl: string | null = null;
+  
   try {
     const oembedUrl = `https://vimeo.com/api/oembed.json?url=${encodeURIComponent(sanitizedVimeoUrl)}`;
     const response = await fetch(oembedUrl);
     
-    if (!response.ok) {
-      console.error('[vimeo] oEmbed request failed:', response.status);
-      return null;
+    if (response.ok) {
+      const data = await response.json();
+      thumbnailUrl = data.thumbnail_url || null;
+      
+      if (thumbnailUrl) {
+        console.log('[vimeo] oembed thumbnail fetched for', id);
+      }
+    } else {
+      console.warn('[vimeo] oEmbed request failed:', response.status);
     }
-    
-    const data = await response.json();
-    const thumbnailUrl = data.thumbnail_url;
-    
-    if (!thumbnailUrl) {
-      console.error('[vimeo] no thumbnail_url in oEmbed response');
-      return null;
-    }
-    
-    console.log('[vimeo] oembed thumbnail fetched for', id);
-    
-    // Update cache
-    cache[id] = {
-      thumbnail_url: thumbnailUrl,
-      fetched_at: Date.now()
-    };
-    await writeCache(cache);
-    
-    return thumbnailUrl;
   } catch (err) {
-    console.error('[vimeo] failed to fetch oEmbed:', err);
+    console.warn('[vimeo] oEmbed fetch error:', err);
+  }
+  
+  // Fallback: Use direct Vimeo CDN URL if oEmbed didn't return a thumbnail
+  // This works for videos with domain restrictions where oEmbed fails
+  if (!thumbnailUrl) {
+    const cdnUrl = `https://i.vimeocdn.com/video/${id}_640x360.jpg`;
+    
+    try {
+      // Verify the CDN URL actually works
+      const cdnResponse = await fetch(cdnUrl, { method: 'HEAD' });
+      if (cdnResponse.ok && cdnResponse.headers.get('content-type')?.includes('image/jpeg')) {
+        thumbnailUrl = cdnUrl;
+        console.log('[vimeo] CDN thumbnail found for', id);
+      }
+    } catch (err) {
+      console.warn('[vimeo] CDN thumbnail check failed:', err);
+    }
+  }
+  
+  if (!thumbnailUrl) {
+    console.error('[vimeo] no thumbnail available for', id);
     return null;
   }
+  
+  // Update cache
+  cache[id] = {
+    thumbnail_url: thumbnailUrl,
+    fetched_at: Date.now()
+  };
+  await writeCache(cache);
+  
+  return thumbnailUrl;
 }
