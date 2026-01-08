@@ -1,0 +1,46 @@
+Goal: Make Replit/dev truly READ-ONLY against the SAME Neon Postgres database by creating a read-only DB role and using it via DATABASE_URL_READONLY. Do NOT refactor. Do NOT change astro-site or Netlify. Only: (1) generate the correct Neon SQL, (2) help me run it safely, (3) verify it works.
+
+What you already changed (do not redo):
+- server/db.ts supports DATABASE_URL_READONLY and READ_ONLY_MODE
+- server/routes.ts blocks POST/PUT/PATCH/DELETE when isReadOnlyMode is true
+
+Next steps I need from you:
+
+1) Inspect the database connection code to determine:
+   - Which Postgres schema my tables use (public vs other)
+   - Which database name is being used (if detectable)
+
+2) Generate the EXACT SQL I should run in Neon’s SQL Editor to create a read-only role:
+   - Role name: kbm_readonly
+   - Grants: CONNECT to the database, USAGE on the schema, SELECT on ALL existing tables and sequences
+   - Default privileges so future tables/sequences also grant SELECT automatically
+   - If my schema is not public, tailor the SQL to the correct schema.
+   - If multiple schemas are used, include grants for each relevant schema.
+
+3) Provide step-by-step instructions for me to do in Neon (no jargon):
+   - Where to paste the SQL
+   - What to replace for the password (tell me to use a strong password)
+   - What success looks like (no errors)
+
+4) After I run the SQL, tell me exactly how to construct DATABASE_URL_READONLY:
+   - Take my existing DATABASE_URL and change only the username/password to kbm_readonly + my new password
+   - Tell me exactly where to set DATABASE_URL_READONLY in Replit Secrets
+
+5) Add a simple verification endpoint or script (your choice) that confirms read-only is real:
+   - It should run in Replit/dev and print:
+     a) “READ OK” (can SELECT)
+     b) “WRITE BLOCKED BY DB” (attempted INSERT/UPDATE fails with permission error)
+   - IMPORTANT: This verification must not modify real data permanently. If it creates a temp table or uses a transaction that rolls back, that’s fine.
+   - Also confirm the middleware is returning 403 for write routes.
+
+Deliverables:
+- The exact Neon SQL (tailored to my schema)
+- Exact instructions for Neon + Replit Secrets
+- The verification script or endpoint + where to run it + expected output
+- List of any files you changed (should be minimal)
+
+Constraints:
+- Do not touch astro-site/
+- Do not touch Netlify config
+- Do not change existing production behavior
+- Keep changes minimal and reversible
