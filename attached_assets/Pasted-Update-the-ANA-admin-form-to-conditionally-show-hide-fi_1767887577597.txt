@@ -1,0 +1,119 @@
+Update the ANA admin form to conditionally show/hide fields and apply validation rules based on type.
+
+Rule
+
+If type === "leaf":
+
+1) SHOW these fields (leaf essentials)
+
+type
+
+title
+
+slug
+
+body (main leaf content)
+
+questionDisplay (short card description / preview text)
+
+shortAnswer (optional short “quick answer” block)
+
+keyInsight (optional)
+
+quickCheckText (optional)
+
+outcomeLine (optional)
+
+steps (optional array)
+
+tags
+
+categoryId
+
+parentGatewaySlug (optional, but show it)
+
+relatedAnas (optional; used for “related” links)
+
+relatedWorkshops (optional)
+
+2) SHOW media fields (optional)
+
+videoUrl
+
+imageUrl
+
+imageAlt
+
+3) SHOW member-only fields (optional, conditional)
+
+Always show:
+
+isMemberOnly
+
+If isMemberOnly === true, then show:
+
+memberDividerText
+
+memberTitle
+
+memberBody
+
+memberVideoUrl
+
+If isMemberOnly === false, hide those member fields and ensure they do not trigger validation.
+
+4) SHOW SEO fields (optional)
+
+metaTitle
+
+metaDescription
+
+schemaMarkup
+
+5) HIDE these fields for leaf type (do not render)
+
+Wizard-related (leaf pages don’t host decision trees)
+
+wizard
+
+wizardUrl
+
+embedWizard
+
+6) Validation changes (critical)
+
+When type === "leaf", the only required fields should be:
+
+type
+
+title
+
+slug
+
+body
+
+All other fields must be optional.
+
+Ensure any hidden fields are not validated (no “required but hidden” errors).
+
+7) Behavior requirements
+
+When switching type to "leaf", dynamically update the form without a page reload:
+
+show/hide the correct sections
+
+clear validation errors for hidden fields
+
+Do not change behavior for other types except as explicitly defined (gateway rules already implemented separately).
+
+Implementation notes
+
+Use the existing admin form’s conditional rendering patterns.
+
+If validation is schema-based (e.g., Zod/Yup or server validation), make the “required” rules conditional on type.
+
+If server validation cannot be made conditional quickly, then:
+
+keep server rules permissive for optional fields, and enforce only the leaf required fields.
+
+never block saving due to hidden fields.
