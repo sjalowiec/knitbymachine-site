@@ -474,7 +474,8 @@ if (videoUrl) {
     overflow: hidden;
   }
 
-  .kbm-video-frame iframe {
+  /* Use :global for dynamically injected iframe */
+  .kbm-video-frame :global(iframe) {
     position: absolute;
     top: 0;
     left: 0;
