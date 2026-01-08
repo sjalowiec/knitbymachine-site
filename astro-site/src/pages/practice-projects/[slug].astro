@@ -10,7 +10,7 @@ let contentPage = null;
 let errorMessage = '';
 let isNotFound = false;
 
-const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-SUE23.replit.app';
+const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-sue23.replit.app';
 
 try {
   const response = await fetch(`${adminApiUrl}/api/public/content-pages/${slug}`);
