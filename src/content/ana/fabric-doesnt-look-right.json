@@ -2,7 +2,7 @@
   "type": "gateway",
   "title": "My knitting doesn't look right",
   "slug": "fabric-doesnt-look-right",
-  "questionDisplay": "",
+  "questionDisplay": "Stitches, edges, or fabric don't match what you expected",
   "introParagraph": "",
   "keyInsight": "",
   "quickCheckText": "",
