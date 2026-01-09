@@ -1,4 +1,5 @@
 {
+  "type": "leaf",
   "title": "Why do I keep dropping stitches?",
   "slug": "why-do-i-keep-dropping-stitches",
   "questionDisplay": "Why do I keep dropping stitches?",
@@ -38,6 +39,11 @@
   "memberBody": "<p>Dropped stitches usually aren’t random — they’re a signal that something in your setup needs attention. In this member section, you’ll learn how to identify the most common <strong>preventable</strong> causes before stitches fall off the needles.</p>\n\n<p>Start with needle-related issues. If dropped stitches keep appearing in the same column or on the same needle, that needle is often bent, worn, or not opening fully. The needle replacement videos show you how to spot problem needles and swap them out safely.</p>\n\n<p>Next, look at how your fabric is being supported. Edge stitches are especially vulnerable when they aren’t weighted correctly. Understanding how claw weights work — and when to use them — can dramatically reduce edge drops and uneven tension.</p>\n\n<p>These checks take only a few minutes, but they prevent hours of frustration and unraveling later. Work through them any time dropped stitches start showing up, especially after changing yarn, tension, or stitch patterns.</p>\n\n\n\n<img class=\"max-w-full h-auto rounded-md my-4\" src=\"astro-site/public/images/troubleshooter-wizard-logo.svg\" alt=\"\"><p></p>",
   "memberVideoUrl": "",
   "embedWizard": "dropped-stitch-troubleshooter",
+  "shortAnswer": "",
+  "outcomeLine": "",
+  "steps": [],
+  "parentGatewaySlug": "",
+  "wizard": null,
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2026-01-02T00:00:00.000Z"
