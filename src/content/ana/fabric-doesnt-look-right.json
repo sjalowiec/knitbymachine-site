@@ -29,8 +29,8 @@
   "steps": [],
   "parentGatewaySlug": "",
   "wizard": null,
-  "showOnStartHere": false,
-  "startHereOrder": 0,
+  "showOnStartHere": true,
+  "startHereOrder": 30,
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2026-01-09T00:00:00.000Z"
