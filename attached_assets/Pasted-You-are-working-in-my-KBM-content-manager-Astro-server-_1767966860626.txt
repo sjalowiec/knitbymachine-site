@@ -1,0 +1,48 @@
+You are working in my KBM content manager (Astro + server API + admin UI) that manages ANAs with `type` = "leaf" or "gateway".
+
+Goal
+Add a controlled single-select Category field for Leaf ANAs in the ANA admin form, with these exact options:
+- Getting Started
+- Set-Up & Yarn
+- Stitches & Fabric
+- Tension & Gauge
+- Edges & Finishing
+- Troubleshooting
+- Planning & Math
+- Confidence & Process
+
+Requirements
+1) Data model
+- Add a new field to the ANA record: `category` (string).
+- This field applies to Leaf ANAs only.
+- For existing records: allow null/empty (do not break existing content).
+
+2) Admin UI behavior
+- In the ANA admin edit/create form:
+  - If `type === "leaf"`: show a dropdown/select labeled "Category" with the options above.
+  - If `type === "gateway"`: hide the Category field entirely (do not show it).
+- Add helper text under the field: "Choose the one place a knitter would look for this answer."
+
+3) Validation rules (important)
+- For now (launch-friendly): category is OPTIONAL even for leaf ANAs (so I can publish without filling it in).
+- But: if a category value is provided, it must be one of the allowed options (no free text).
+- Enforce the same allow-list validation on the API/server side as well (not only front-end).
+
+4) API + persistence
+- Ensure category is returned in ANA fetch responses.
+- Ensure create/update endpoints can accept `category` for leaf ANAs.
+- If someone sends `category` for gateway ANAs, ignore it (or strip it) rather than erroring.
+
+5) Display (optional but nice)
+- If the admin list/table view for ANAs exists, add a column "Category" (show value for leaf, blank for gateway). If there’s no list/table, skip this.
+
+6) Safety / quality
+- Keep changes minimal and localized.
+- Do not change any existing required fields or their requiredness.
+- Add/update any relevant TypeScript types/interfaces so the app compiles cleanly.
+- If you need a constants file, create something like `src/lib/anaCategories.ts` exporting the allow-list.
+- After implementing, run/build to confirm no TypeScript errors.
+
+Output
+- Tell me which files you changed and what you changed in each.
+- Include any code snippets only where helpful; otherwise keep summary concise.
