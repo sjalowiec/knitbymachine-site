@@ -101,15 +101,19 @@ interface AnaEntry {
 // Fetch a single ANA entry from GitHub
 async function getANAEntry(anaSlug: string): Promise<AnaEntry | null> {
   try {
+    // Build headers - only include Authorization if token is present
+    const headers: Record<string, string> = {
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'knitbymachine-astro'
+    };
+    
+    if (GITHUB_TOKEN) {
+      headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+    }
+
     const response = await fetch(
       `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ANA_CONTENT_PATH}/${anaSlug}.json`,
-      {
-        headers: {
-          'Authorization': `token ${GITHUB_TOKEN}`,
-          'Accept': 'application/vnd.github.v3+json',
-          'User-Agent': 'knitbymachine-astro'
-        }
-      }
+      { headers }
     );
 
     if (!response.ok) {
