@@ -1,10 +1,96 @@
 ---
+export const prerender = false;
+
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const title = "Start Here | Knit by Machine";
 const description = "Not sure what's going wrong with your knitting? Start here to find answers based on what you're experiencing.";
 
-const startCards = [
+const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
+const REPO_OWNER = 'sjalowiec';
+const REPO_NAME = 'knitbymachine-site';
+const ANA_CONTENT_PATH = 'src/content/ana';
+
+interface GatewayEntry {
+  type?: string;
+  title: string;
+  slug: string;
+  questionDisplay?: string;
+  shortAnswer?: string;
+  introParagraph?: string;
+  showOnStartHere?: boolean;
+  startHereOrder?: number;
+  isDraft?: boolean;
+  pendingPublish?: boolean;
+}
+
+// Fetch all ANA entries from GitHub and filter for Start Here gateways
+async function getStartHereGateways(): Promise<GatewayEntry[]> {
+  try {
+    // First, get the list of all files in the ANA content directory
+    const response = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ANA_CONTENT_PATH}`,
+      {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'knitbymachine-astro'
+        }
+      }
+    );
+
+    if (!response.ok) {
+      console.error('Failed to fetch ANA directory:', response.status);
+      return [];
+    }
+
+    const files = await response.json();
+    const jsonFiles = files.filter((f: any) => f.name.endsWith('.json'));
+
+    // Fetch each file and filter for Start Here gateways
+    const gateways: GatewayEntry[] = [];
+
+    for (const file of jsonFiles) {
+      try {
+        const fileResponse = await fetch(file.download_url, {
+          headers: {
+            'User-Agent': 'knitbymachine-astro'
+          }
+        });
+
+        if (!fileResponse.ok) continue;
+
+        const entry = await fileResponse.json() as GatewayEntry;
+
+        // Filter: must be gateway, showOnStartHere=true, not draft, not pending
+        if (
+          entry.type === 'gateway' &&
+          entry.showOnStartHere === true &&
+          !entry.isDraft &&
+          !entry.pendingPublish
+        ) {
+          entry.slug = file.name.replace('.json', '');
+          gateways.push(entry);
+        }
+      } catch (err) {
+        console.error('Error fetching ANA file:', file.name, err);
+      }
+    }
+
+    // Sort by startHereOrder (lower numbers first)
+    gateways.sort((a, b) => (a.startHereOrder ?? 0) - (b.startHereOrder ?? 0));
+
+    return gateways;
+  } catch (error) {
+    console.error('Error fetching Start Here gateways:', error);
+    return [];
+  }
+}
+
+const dynamicCards = await getStartHereGateways();
+
+// Fallback cards if no dynamic content is available
+const fallbackCards = [
   {
     title: "My machine is stuck or misbehaving",
     helper: "Something isn't moving or behaving the way it should.",
@@ -36,6 +122,15 @@ const startCards = [
     href: "/help-hub/possible-or-normal"
   }
 ];
+
+// Use dynamic cards if available, otherwise fall back to hardcoded ones
+const startCards = dynamicCards.length > 0 
+  ? dynamicCards.map(g => ({
+      title: g.title,
+      helper: g.questionDisplay || g.shortAnswer || g.introParagraph || '',
+      href: `/help-hub/${g.slug}`
+    }))
+  : fallbackCards;
 ---
 
 <BaseLayout {title} {description}>
@@ -63,7 +158,7 @@ const startCards = [
         </div>
       </header>
 
-      <div class="cards-grid">
+      <div class="cards-grid" data-testid="start-here-cards">
         {startCards.map((card, index) => (
           <a 
             href={card.href} 
