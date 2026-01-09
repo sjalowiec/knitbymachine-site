@@ -1,0 +1,56 @@
+You are working in my KBM repo (Astro site + separate React admin under /client). I have a Start Here page linking to static gateway pages under /help-hub/* (e.g. /help-hub/while-knitting). Those static pages already exist and should remain as the fallback for now.
+
+In my ANA editor (/client/src/pages/ana-editor.tsx) I already have a gateway field:
+- name="relatedAnas"
+- it stores an array of slugs (selectedSlugs) for the leaf ANAs that a gateway routes to.
+
+GOAL
+When a user visits a gateway URL like /help-hub/[slug]:
+- If there is a matching Gateway ANA record in the database for that slug AND it has at least one related leaf ANA (relatedAnas length > 0, and the referenced leaf records exist), then render a dynamic gateway page that shows cards linking to those leaf ANAs.
+- If there is no matching Gateway ANA record OR it has zero related leaf ANAs (or none resolve), then do NOT change anything: keep serving the existing static /help-hub/[slug] page exactly as it works today.
+
+IMPORTANT CONSTRAINTS
+- Do NOT remove or rewrite the existing static /help-hub/*.astro pages.
+- Do NOT introduce a placeholder URL field.
+- Keep URLs stable.
+- This must be implemented as a conditional route layer that only “takes over” when related leaf ANAs exist.
+
+IMPLEMENTATION STEPS
+1) Add a dynamic route for /help-hub/[slug] (Astro) that can decide whether to render dynamic content or fall back to the static page.
+   - Create: src/pages/help-hub/[slug].astro (if it doesn’t exist).
+2) In that dynamic route:
+   - Fetch the ANA record for this slug from the API/data source you already use for anas (the same place the site uses for ana-catalog, etc.).
+   - Verify the record is type="gateway".
+   - Read gateway.relatedAnas (array of leaf slugs).
+   - Resolve those slugs into leaf ANA records (type="leaf"; if there is a published flag, only include published).
+   - Preserve the order from gateway.relatedAnas.
+3) Decision logic:
+   - If resolvedLeafs.length >= 1:
+        Render a gateway page:
+          - H1 = gateway.title
+          - Optional intro = gateway.body if present (safe render)
+          - Card grid showing each resolved leaf:
+              - card title = leaf.title
+              - card helper = leaf.cardDescription (or whatever brief field exists)
+              - link = the existing public URL pattern for leaf ANAs (use whatever the site currently uses; do not invent a new route)
+   - Else (no gateway record OR no resolved leafs):
+        Fall back to the existing static page content for /help-hub/[slug]
+4) Fallback mechanism requirement:
+   - Implement the fallback by rendering the static file for that slug if it exists.
+   - Do this without changing the URL.
+   - If the static file does not exist for a slug, render a simple 404-like “Not found” message with links back to /start-here and /ana-catalog.
+5) Styling:
+   - Reuse the same card styling used on /start-here so the gateway pages feel consistent.
+   - Keep the page simple: title, short intro, cards, and the same two nav links used on the existing static pages (“Back to Start Here” and “Browse all Ask ’n Answer”).
+6) Output:
+   - List files changed.
+   - Explain how the fallback works and how to test it:
+        - With a gateway that has relatedAnas populated => dynamic card page shows.
+        - With a gateway that has relatedAnas empty (or no gateway record) => existing static page shows.
+
+NOTE
+- If Astro routing prevents having both a dynamic route and static routes under /help-hub/* simultaneously, implement the fallback by:
+   - Keeping the dynamic [slug].astro as the only route,
+   - And internally loading the existing static page module/content for that slug when fallback is needed,
+   - Or by moving the static gateway pages into a non-route location (e.g. src/pages_static/help-hub/*.astro) and importing them for fallback.
+But only do this if absolutely necessary; prefer a solution that keeps my existing pages intact.
