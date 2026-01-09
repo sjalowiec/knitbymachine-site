@@ -188,7 +188,8 @@ const pageDescription = shouldRenderDynamic
   <div class="gateway-page">
     <div class="page-container">
       {showNotFound ? (
-        <!-- 404-like Not Found -->
+        <Fragment>
+        {/* 404-like Not Found */}
         <h1 class="page-title" data-testid="gateway-title">Page Not Found</h1>
         <p class="intro-text">
           We couldn't find a help hub page at this location.
@@ -201,8 +202,10 @@ const pageDescription = shouldRenderDynamic
             Browse all Ask 'n Answer questions &rarr;
           </a>
         </div>
+        </Fragment>
       ) : shouldRenderDynamic ? (
-        <!-- DYNAMIC GATEWAY: Cards linking to resolved leaf ANAs -->
+        <Fragment>
+        {/* DYNAMIC GATEWAY: Cards linking to resolved leaf ANAs */}
         <h1 class="page-title" data-testid="gateway-title">{gatewayEntry?.title}</h1>
         
         {gatewayEntry?.body && (
@@ -241,8 +244,10 @@ const pageDescription = shouldRenderDynamic
             Browse all Ask 'n Answer questions &rarr;
           </a>
         </div>
+        </Fragment>
       ) : (
-        <!-- STATIC FALLBACK: Original static page content -->
+        <Fragment>
+        {/* STATIC FALLBACK: Original static page content */}
         <h1 class="page-title" data-testid="gateway-title">{staticPage?.title?.split(' | ')[0]}</h1>
         
         <p class="intro-text" set:html={staticPage?.introText}></p>
@@ -266,6 +271,7 @@ const pageDescription = shouldRenderDynamic
             Browse all Ask 'n Answer questions &rarr;
           </a>
         </div>
+        </Fragment>
       )}
     </div>
   </div>
