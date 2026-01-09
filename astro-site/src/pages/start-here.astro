@@ -162,6 +162,8 @@ const startCards = dynamicCards.length > 0
         </div>
       </header>
 
+      <p class="bridge-text">Start with a situation below. We'll guide you to the right Ask 'n Answer pages.</p>
+
       <div class="cards-grid" data-testid="start-here-cards">
         {startCards.map((card, index) => (
           <a 
@@ -295,6 +297,15 @@ const startCards = dynamicCards.length > 0
       max-width: 680px;
       margin: 0 auto;
     }
+  }
+
+  /* Bridge Text */
+  .bridge-text {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #5a6b47;
+    text-align: center;
+    margin: 0 0 2rem 0;
   }
 
   /* Cards Grid */
