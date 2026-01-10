@@ -86,12 +86,75 @@ async function fetchRelatedContent(slugs: string[], contentPath: string) {
   return items;
 }
 
+// Fetch child ANAs for hub/gateway pages (find all ANAs where parentGatewaySlug matches this hub's slug)
+async function fetchChildAnas(hubSlug: string) {
+  const children = [];
+  try {
+    // Get all ANA files from GitHub
+    const response = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}`,
+      {
+        headers: {
+          'Authorization': `token ${GITHUB_TOKEN}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'User-Agent': 'knitbymachine-astro'
+        }
+      }
+    );
+    
+    if (!response.ok) return children;
+    
+    const files = await response.json();
+    const jsonFiles = files.filter((f: any) => f.name.endsWith('.json'));
+    
+    // Fetch each file using GitHub API with proper auth (not download_url which lacks auth)
+    for (const file of jsonFiles) {
+      try {
+        const fileResponse = await fetch(
+          `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${CONTENT_PATH}/${file.name}`,
+          {
+            headers: {
+              'Authorization': `token ${GITHUB_TOKEN}`,
+              'Accept': 'application/vnd.github.v3+json',
+              'User-Agent': 'knitbymachine-astro'
+            }
+          }
+        );
+        if (!fileResponse.ok) continue;
+        
+        const fileData = await fileResponse.json();
+        // Properly decode UTF-8 from base64
+        const binaryString = atob(fileData.content);
+        const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+        const content = new TextDecoder('utf-8').decode(bytes);
+        const data = JSON.parse(content);
+        
+        // Skip drafts and check if this ANA is a child of the hub
+        if (data.isDraft || data.pendingPublish) continue;
+        if (data.parentGatewaySlug === hubSlug) {
+          children.push({ ...data, slug: file.name.replace('.json', '') });
+        }
+      } catch (err) {
+        console.error(`Error fetching child ANA ${file.name}:`, err);
+      }
+    }
+  } catch (error) {
+    console.error('Error fetching child ANAs:', error);
+  }
+  return children;
+}
+
 const entry = await getANAEntry(slug);
 
 if (!entry) {
   return Astro.redirect('/404');
 }
 
+// Check if this is a hub/gateway ANA (defensive: check both type AND children array)
+const isHub = entry.data.type === 'gateway' || (Array.isArray(entry.data.children) && entry.data.children.length > 0);
+
+// Fetch child ANAs if this is a hub page
+const childAnas = isHub ? await fetchChildAnas(slug) : [];
 
 const relatedAnas = entry.data.relatedAnas?.length 
   ? await fetchRelatedContent(entry.data.relatedAnas, 'src/content/ana')
@@ -203,6 +266,24 @@ const relatedWizards = entry.data.relatedWizards?.length
               <img id="zoom-image" src="" alt="" class="zoom-image" />
             </div>
           </>
+        )}
+
+        <!-- Child ANAs Section (for Hub pages) -->
+        {isHub && childAnas.length > 0 && (
+          <div class="child-anas-section" data-testid="section-child-anas">
+            <h2 class="child-anas-title">Explore these related questions</h2>
+            <p class="child-anas-intro">Each of these addresses a specific part of this topic:</p>
+            <ul class="child-anas-list">
+              {childAnas.map((child) => (
+                <li class="child-ana-item">
+                  <a href={`/ana/${child.slug}`} class="child-ana-link" data-testid={`link-child-ana-${child.slug}`}>
+                    <img src="/images/ask-n-answer_logo.svg" alt="" class="ana-logo-icon-small" />
+                    <span class="child-ana-title">{child.questionDisplay || child.title}</span>
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
         )}
 
         <!-- Related Content Section -->
@@ -728,6 +809,69 @@ const relatedWizards = entry.data.relatedWizards?.length
     width: 24px;
     height: 24px;
     flex-shrink: 0;
+  }
+
+  /* Child ANAs Section (for Hub pages) */
+  .child-anas-section {
+    background-color: #f5f8f0;
+    border: 2px solid #52682d;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  .child-anas-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #52682d;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .child-anas-intro {
+    font-size: 1rem;
+    color: #5a6c7d;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .child-anas-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .child-ana-item {
+    background: white;
+    border: 1px solid #DDE4D1;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+  }
+
+  .child-ana-item:hover {
+    border-color: #52682d;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.15);
+    transform: translateX(4px);
+  }
+
+  .child-ana-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+    text-decoration: none;
+    color: #2c3a57;
+  }
+
+  .child-ana-title {
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .child-ana-item:hover .child-ana-title {
+    color: #52682d;
   }
 
   /* Member Divider */
