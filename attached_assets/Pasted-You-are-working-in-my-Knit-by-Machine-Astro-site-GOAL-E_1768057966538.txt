@@ -1,0 +1,100 @@
+You are working in my Knit by Machine Astro site.
+
+GOAL
+Extract and “park” the existing Ask ’n Answer speech-bubble / conversation UI (the Q/A bubble formatting) into a reusable component so I can use it later, BUT stop using it on ANA leaf pages going forward.
+
+IMPORTANT
+- Do NOT delete the existing bubble styles/markup. Preserve it by extracting it into a component.
+- Keep it isolated so it doesn’t leak styles into normal cards/pages.
+- After extraction, update ONLY the ANA leaf pages to NOT use the conversation UI (we’re switching ANA leaf pages to a calmer, non-chat layout). The component should remain available for future use elsewhere.
+
+DELIVERABLES
+1) A new Astro component:
+   src/components/ana/ConversationBlock.astro
+   (or similar path under src/components/ana/)
+2) Styles for the component that are scoped to the component (preferred: inside the .astro file with <style> so it’s isolated).
+3) Refactor the old ANA leaf page(s) to remove the bubble UI and use standard sections instead, WITHOUT breaking layout or links.
+4) Leave a short comment in the component explaining when to use it.
+
+STEPS
+
+A) FIND THE EXISTING “SPEECH BUBBLE” IMPLEMENTATION
+- Search the repo for the bubble markup/styles. Keywords to search:
+  - "You asked"
+  - "Sue’s answer"
+  - "speech"
+  - "bubble"
+  - "qa"
+  - "ask"
+  - "answer"
+  - "border-radius" (large pill/bubble style)
+  - any class names you see in the ANA leaf page HTML
+- Identify:
+  1) The HTML structure used for the bubbles (question + answer)
+  2) The CSS rules that create the bubble look (rounded corners, tails, background, etc.)
+  3) Where this is rendered (likely an ANA leaf template page or component)
+
+B) CREATE A REUSABLE COMPONENT
+Create:
+  src/components/ana/ConversationBlock.astro
+
+Component requirements:
+- Accept props:
+  - items: Array<{ role: "ask" | "answer", label?: string, contentHtml: string }>
+  - variant?: "ana" | "neutral" (optional; default "ana")
+- Render each item as a bubble block.
+- Keep the bubble styling inside the component file using <style> so it doesn’t affect other pages.
+- Use safe HTML rendering consistent with the site (if we already sanitize elsewhere, follow existing pattern).
+- No new design work: replicate the current bubble look exactly.
+
+Example shape (adjust to match current markup):
+<ConversationBlock
+  items={[
+    { role: "ask", label: "You asked", contentHtml: questionHtml },
+    { role: "answer", label: "Sue’s answer", contentHtml: answerHtml }
+  ]}
+/>
+
+C) MOVE/REPLICATE THE CSS INTO THE COMPONENT (SCOPED)
+- Copy the exact CSS currently used for bubbles into ConversationBlock.astro <style>
+- Prefix styles to the component root class only (e.g., .convBlock …) so nothing leaks.
+- Preserve existing spacing, mobile behavior, and typography.
+
+D) REPLACE OLD USAGE WITH THE NEW COMPONENT (ONLY WHERE IT STILL MAKES SENSE)
+- Find where the bubble markup is currently used.
+- Replace that markup with <ConversationBlock …> usage.
+- Confirm it renders identically.
+
+E) STOP USING CONVERSATION UI ON ANA LEAF PAGES
+- Identify the template or page(s) that render ANA leaf pages (e.g., src/pages/ana/[slug].astro or similar).
+- Remove the ConversationBlock usage from ANA leaf pages and replace with the new standard ANA leaf structure:
+
+Sections (H2 headings):
+1) What’s really going on here
+2) Why this may not matter yet
+3) What to focus on right now
+4) When this does matter
+5) If you want to go further (2–4 links)
+
+- Keep the same content, just reorganize it.
+- Preserve existing “Back to …” navigation.
+
+NOTE: If the ANA leaf content is stored in fields like question/body/purpose/etc, map them into the new sections. If some sections don’t exist yet, keep them empty or omit section if there’s no content.
+
+F) PARK THE COMPONENT WITH DOCUMENTATION
+At the top of ConversationBlock.astro, add a short comment:
+
+/**
+ * ConversationBlock: speech-bubble “dialogue” UI.
+ * Use for true response-style content (e.g., community highlights, case studies, “Sue replies”),
+ * NOT for ANA hub/leaf pages (those use the standard ANA template).
+ */
+
+G) VERIFY
+- Ensure Start Here page and ANA lists are unaffected.
+- Ensure ANA leaf pages no longer show bubbles.
+- Ensure the ConversationBlock component is available and works (no unused import errors).
+- Confirm CSS does not affect other cards/pages.
+
+COMMIT
+- Commit with message like: "Extract ConversationBlock component and remove bubble UI from ANA leaf pages"
