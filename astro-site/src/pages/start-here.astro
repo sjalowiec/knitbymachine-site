@@ -132,9 +132,10 @@ const startCards = dynamicCards.length > 0
   ? dynamicCards.map(g => ({
       title: g.title,
       helper: g.questionDisplay || g.shortAnswer || g.introParagraph || '',
-      href: `/help-hub/${g.slug}`
+      href: `/help-hub/${g.slug}`,
+      startHereOrder: g.startHereOrder ?? 0
     }))
-  : fallbackCards;
+  : fallbackCards.map((card, i) => ({ ...card, startHereOrder: i + 1 }));
 ---
 
 <BaseLayout {title} {description}>
@@ -168,7 +169,7 @@ const startCards = dynamicCards.length > 0
         {startCards.map((card, index) => (
           <a 
             href={card.href} 
-            class="start-card"
+            class={`start-card ${card.startHereOrder === 1 ? 'start-card--primary' : ''}`}
             data-testid={`card-start-${index}`}
           >
             <div class="start-card__text">
@@ -345,6 +346,7 @@ const startCards = dynamicCards.length > 0
       border-color 0.15s ease,
       background-color 0.15s ease;
     cursor: pointer;
+    overflow: hidden; /* Keeps dog-ear tidy inside rounded corners */
   }
 
   /* Hover state */
@@ -368,6 +370,34 @@ const startCards = dynamicCards.length > 0
     transform: translateY(0);
     box-shadow: 0 1px 3px rgba(82, 104, 45, 0.1);
     background-color: #f5f8f2;
+  }
+
+  /* Primary card dog-ear (top-left folded corner) - only for order #1 */
+  .start-card--primary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 26px solid rgba(82, 104, 45, 0.18);
+    border-right: 26px solid transparent;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Subtle shadow/edge for realism */
+  .start-card--primary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.10), rgba(0,0,0,0.00) 60%);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    pointer-events: none;
+    z-index: 2;
   }
 
   /* Card text container */

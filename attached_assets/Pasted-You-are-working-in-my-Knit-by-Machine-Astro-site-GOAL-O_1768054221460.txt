@@ -1,0 +1,91 @@
+You are working in my Knit by Machine Astro site.
+
+GOAL
+On the Start Here page, add a subtle “turned-back / folded page corner” (dog-ear) on the TOP-LEFT of the ONE hub ANA card whose display order is #1. No other cards should get this accent.
+
+CONSTRAINTS
+- Only apply to the card where displayOrder === 1 (or equivalent field used to sort).
+- The dog-ear should be subtle and on-brand (no bright colors, no animation required).
+- It must not change layout/spacing of the grid.
+- Must work on mobile and desktop.
+- Should not break hover/focus states.
+- Accessibility: do not rely on color alone; the shape itself is the cue.
+
+STEPS
+
+1) FIND THE START HERE PAGE + CARD RENDERING
+- Locate the Astro file that renders the Start Here page (likely something like:
+  src/pages/start-here.astro
+  or src/pages/start/index.astro
+  or similar).
+- Find where the “situation” cards are rendered (map/loop over items).
+
+2) IDENTIFY THE FIELD USED FOR SORTING
+- Confirm the data field used for the card display order. It might be:
+  displayOrder, order, sortOrder, or similar.
+- The page is already sorting by it. Keep that sort as-is.
+
+3) ADD A CLASS ONLY TO THE #1 CARD
+- In the card rendering loop, add a conditional class when the card has displayOrder === 1.
+  Example (adapt to actual variable names):
+    const isPrimary = item.displayOrder === 1
+    class={`start-card ${isPrimary ? 'start-card--primary' : ''}`}
+
+- IMPORTANT: Do NOT add a second visual element in markup. Use CSS pseudo-elements.
+
+4) ADD THE DOG-EAR CORNER CSS
+- Add CSS where the Start Here page styles live (page-level <style> in the Astro file or the relevant CSS module/global stylesheet used by this page).
+- Implement the top-left folded corner using ::before and ::after on .start-card--primary.
+- Use the card’s background and border colors so it looks integrated.
+
+Use this CSS (adjust CSS variables/classes to match the project):
+
+/* Base card class (whatever you already use) should be position: relative */
+.start-card {
+  position: relative;
+  overflow: hidden; /* keeps fold tidy inside the rounded corners */
+}
+
+/* Primary dog-ear */
+.start-card--primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+
+  /* Fold size */
+  border-top: 26px solid rgba(82, 104, 45, 0.18);  /* subtle green tint */
+  border-right: 26px solid transparent;
+
+  /* Keep it inside rounded corner nicely */
+  pointer-events: none;
+}
+
+/* Tiny shadow/edge line for realism */
+.start-card--primary::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  background: linear-gradient(135deg, rgba(0,0,0,0.10), rgba(0,0,0,0.00) 60%);
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+  pointer-events: none;
+}
+
+NOTES
+- If the card has a strong border already, reduce the fold tint to ~0.12–0.16 alpha.
+- If the card background is not white, match the fold tint to your theme variables instead of hardcoded RGBA.
+- Keep the fold small (22–28px). Do NOT make the card bigger or different background.
+
+5) VERIFY
+- Confirm only the first card (displayOrder #1) shows the top-left dog-ear.
+- Confirm hover/focus styles still work (keyboard tab to the card).
+- Confirm on mobile grid the fold is still visible but not dominant.
+
+DELIVERABLE
+- Commit the changes to the Start Here page component + its CSS.
+- If you had to create a new class name or adjust existing ones, keep naming consistent (e.g. start-card--primary).
