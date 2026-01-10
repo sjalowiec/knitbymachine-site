@@ -2,7 +2,7 @@
   "type": "leaf",
   "title": "My machine is not knitting some stitches. What should I check first?",
   "slug": "needles-not-knitting",
-  "questionDisplay": "xMy machine is not knitting some stitches. What should I check first?",
+  "questionDisplay": "My machine is not knitting some stitches. What should I check first?",
   "introParagraph": "",
   "keyInsight": "",
   "quickCheckText": "",
@@ -31,6 +31,8 @@
   "steps": [],
   "parentGatewaySlug": "",
   "wizard": null,
+  "showOnStartHere": false,
+  "startHereOrder": 0,
   "isDraft": false,
   "pendingPublish": false,
   "publishedDate": "2026-01-03T00:00:00.000Z"
