@@ -16,7 +16,13 @@
   "metaTitle": "I don’t yet know what’s important | Knit by Machine",
   "metaDescription": "Feeling stuck doesn’t mean you’re doing something wrong. This page helps you understand why nothing feels connected yet — and where to start next.",
   "schemaMarkup": null,
-  "relatedAnas": [],
+  "relatedAnas": [
+    "i-dont-know-if-this-problem-actually-matters-yet",
+    "i-dont-know-when-im-ready-to-move-on",
+    "i-dont-know-what-i-should-focus-on-first",
+    "im-doing-things-but-i-dont-know-how-they-connect",
+    "im-getting-advice-but-i-dont-know-what-applies-to-me-purpose"
+  ],
   "relatedWorkshops": [],
   "body": "I wasn’t stuck because I was doing something wrong.\nI was stuck because I didn’t yet know what was important - or where to start.\n\nWhen everything feels equally important, it’s impossible to know where to focus. \nThat doesn’t mean you’re behind - it means you don’t have a map yet.",
   "memberDividerText": "",
