@@ -1,0 +1,111 @@
+TASK: Redesign the ANA detail page at route ana/{slug} for scannability and a clean hierarchy, with the member-only section at the bottom.
+
+ABSOLUTE FIRST STEP (BACKUP):
+1) Identify the file(s) responsible for rendering the ANA detail page at ana/{slug}.
+2) Create backups BEFORE editing:
+   - For each file you will change, create a sibling copy with the same name plus ".bak".
+   - Example: ana/[slug].astro -> ana/[slug].astro.bak (or equivalent file names in this repo)
+3) Do not modify the .bak files after creating them.
+
+SCOPE / GUARDRAILS (DO NOT TOUCH):
+- Do NOT change database schemas, table structure, or data types.
+- Do NOT change admin pages or forms.
+- Do NOT rename or remove any existing fields.
+- Do NOT change routing behavior, slug logic, or navigation behavior.
+- Do NOT refactor fetch/query logic beyond what is required to render the new layout.
+- Do NOT add new dependencies/packages.
+- Do NOT change membership/auth logic; only reposition and restyle the member section visually.
+- This task is PRESENTATION ONLY for the ANA detail page.
+
+FIELDS AVAILABLE (use as-is; only display if present):
+Core:
+- title
+- questionDisplay (fallback to title)
+- introParagraph
+- keyInsight
+- quickCheckText
+- body
+
+Situational:
+- whyNotMatterYet
+- whatToFocus
+- whenThisMatters
+
+Exploration:
+- goFurtherLinks (array)
+- embedWizard (embedded component/code)
+
+Media:
+- imageUrl
+- imageAlt
+- videoUrl
+
+Member-only (MUST BE AT BOTTOM):
+- memberDividerText
+- memberTitle
+- memberBody
+- memberVideoUrl
+
+Related:
+- relatedAnas
+- relatedWorkshops
+- relatedWizards
+
+REQUIRED PAGE STRUCTURE (TOP → BOTTOM):
+1) HERO / ORIENTATION
+- Render H1 using questionDisplay; fallback to title.
+- Show introParagraph below the H1 if present.
+- If imageUrl exists, display a featured image with imageAlt (fallback alt to title if missing).
+- Optional: If videoUrl exists (non-member), display it near the top but AFTER the Quick Answer section (not in the hero).
+
+2) QUICK ANSWER (SCANNABLE WIN)
+- If keyInsight exists, render it as a highlighted “Key Insight” callout.
+- If quickCheckText exists, render it as a smaller “Quick Check” block.
+- If both are empty, do not render this section at all.
+
+3) WHAT’S REALLY GOING ON HERE (MAIN EXPLANATION)
+- Section heading: “What’s really going on here”
+- Render body with comfortable spacing and readable typography.
+- Preserve lists/paragraph formatting.
+
+4) SITUATIONAL CLARITY (PROGRESSIVE DISCLOSURE)
+- Render the following as accordion sections OR stacked cards with clear headings:
+  a) “Why this may not matter yet” → whyNotMatterYet
+  b) “What to focus on right now” → whatToFocus
+  c) “When this does matter” → whenThisMatters
+- Only render each item if it has content.
+
+5) OPTIONAL EXPLORATION (FREE)
+- Heading: “If you want to go further”
+- If goFurtherLinks has items, render as a clean list of links.
+- If embedWizard exists, render it below the links (or as its own block) and ensure spacing is consistent.
+
+6) MEMBER-ONLY SECTION (ALWAYS LAST CONTENT BLOCK)
+- Insert a strong visual divider before this section using memberDividerText (fallback text like “Member-only” if divider text is missing).
+- Render memberTitle as the section heading (fallback to “Member-only” if missing).
+- Render memberBody below the heading.
+- If memberVideoUrl exists, embed it below memberBody.
+- Never render memberTitle/memberBody/memberVideoUrl anywhere above this section.
+
+7) RELATED CONTENT (EXIT RAMPS)
+- Final section: “Related”
+- Render relatedAnas, relatedWorkshops, relatedWizards as separate groups/cards/grids.
+- Only render groups that contain items.
+
+UI / DESIGN REQUIREMENTS:
+- Make the page “easy to scan”: strong headings, generous whitespace, clear section boundaries.
+- Prefer a two-column layout only if it remains clean on mobile; otherwise single-column is fine.
+- Use consistent component-like blocks (cards/callouts) for Key Insight, Quick Check, and situational sections.
+- Keep the member-only section visually isolated and unmistakably at the bottom.
+- Ensure the page still works if many fields are empty (no awkward blank headers).
+
+ACCEPTANCE CHECKLIST:
+- The ANA route ana/{slug} renders with the new section order.
+- No schema/admin changes were made.
+- Member-only content only appears in the final section at the bottom.
+- Sections only appear when their field has content.
+- Backups (.bak) exist for every modified file.
+
+OUTPUT:
+- Tell me which files you changed and which backups you created.
+- Provide a quick before/after summary of the new section order.
