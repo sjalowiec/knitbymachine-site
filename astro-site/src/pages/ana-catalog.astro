@@ -109,12 +109,28 @@ try {
           pendingPublish: data.pendingPublish,
           publishedDate: data.publishedDate,
           body: data.body || '',
+          // Include type and children for gateway filtering
+          type: data.type || '',
+          children: data.children || [],
         };
       });
     
     const allEntries = await Promise.all(entryPromises);
+    
     // Filter out drafts and pending publish entries
-    entries = allEntries.filter(entry => !entry.isDraft && !entry.pendingPublish);
+    const publishedEntries = allEntries.filter(entry => !entry.isDraft && !entry.pendingPublish);
+    
+    // DEFENSIVE FILTER: Exclude gateway ANAs from catalog
+    // Gateway ANAs are navigational hubs, not leaf content
+    // A gateway is defined as: type === "gateway" OR has children
+    const isLeafAna = (ana) => {
+      const isGatewayType = ana.type === 'gateway';
+      const hasChildren = ana.children && ana.children.length > 0;
+      return !isGatewayType && !hasChildren;
+    };
+    
+    // Filter to leaf ANAs only, then remove internal fields not needed for display
+    entries = publishedEntries.filter(isLeafAna).map(({ type, children, ...entry }) => entry);
   }
 } catch (error) {
   console.error('Error fetching ANA entries:', error);
