@@ -27,7 +27,7 @@
   "shortAnswer": "",
   "outcomeLine": "",
   "steps": [],
-  "parentGatewaySlug": "",
+  "parentGatewaySlug": "getting-ready-to-start",
   "wizard": null,
   "showOnStartHere": false,
   "startHereOrder": 0,

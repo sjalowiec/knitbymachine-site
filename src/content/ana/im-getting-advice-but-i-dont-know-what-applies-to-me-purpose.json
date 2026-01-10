@@ -1,6 +1,6 @@
 {
   "type": "leaf",
-  "title": "I’m getting advice, but I don’t know what applies to me”  Purpose",
+  "title": "I’m getting advice, but I don’t know what applies to me",
   "slug": "im-getting-advice-but-i-dont-know-what-applies-to-me-purpose",
   "questionDisplay": "I’m getting advice, but I don’t know what applies to me”  Purpose",
   "introParagraph": "",
@@ -27,7 +27,7 @@
   "shortAnswer": "",
   "outcomeLine": "",
   "steps": [],
-  "parentGatewaySlug": "",
+  "parentGatewaySlug": "getting-ready-to-start",
   "wizard": null,
   "showOnStartHere": false,
   "startHereOrder": 0,
