@@ -1,0 +1,55 @@
+Update the Gateway ANA admin form so the dropdown (the field used to select/link leaf ANAs under a gateway) ONLY lists leaf ANAs, never gateway ANAs.
+
+Context:
+- In the Gateway ANA edit/create screen, there is a field that lets me choose leaf ANAs to connect to the gateway.
+- Right now the dropdown includes gateway ANAs too. That must stop.
+
+Rules:
+Treat an ANA as a GATEWAY if:
+- ana.type === "gateway"
+OR
+- ana.children exists AND ana.children.length > 0
+
+Treat an ANA as a LEAF if:
+- ana.type !== "gateway"
+AND
+- ana.children is missing OR ana.children.length === 0
+
+Requirements:
+1) The dropdown data source/query must filter to leaf-only.
+2) Add a defensive guard in the UI so even if gateways leak into the list, they are removed/disabled.
+3) Do not change the database schema.
+4) Do not break any other admin pages or the ANA catalog.
+
+Steps:
+1. Find the Gateway ANA admin form component where the “linked leaf ANAs” dropdown options are loaded.
+   - Search for the field name used for that relationship (examples: linkedAnas, leafAnas, children, relatedLeafAnas, nextAnas, etc.)
+   - Also search for where dropdown options are fetched (examples: getAllAnas(), fetch("/api/anas"), loadAnaOptions()).
+
+2. Update the options query so it only returns leaf ANAs:
+   - If options come from an API endpoint: filter there.
+   - If options come from a shared helper: create a leaf-only helper and use it here.
+
+Leaf-only filter (use exactly this logic, adapted to your variable names):
+
+const leafOnly = allAnas.filter(a =>
+  a.type !== "gateway" &&
+  (!a.children || a.children.length === 0)
+);
+
+3. Sort the dropdown nicely (optional but recommended):
+- sort by title ascending
+
+leafOnly.sort((a,b) => (a.title || "").localeCompare(b.title || ""));
+
+4. Defensive UI guard:
+- If the dropdown already receives an options array, apply the same leafOnly filter right before rendering the options.
+- If the dropdown supports disabling options, ensure gateways would be disabled (but ideally removed).
+
+5. Validate:
+- Open Gateway ANA admin form.
+- Dropdown ONLY shows leaf ANAs.
+- Selecting leaf ANAs saves as before.
+- Gateway ANAs cannot be selected.
+
+Implement, run the admin locally, and confirm behavior.
