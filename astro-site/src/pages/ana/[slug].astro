@@ -201,26 +201,59 @@ const relatedWizards = entry.data.relatedWizards?.length
 
     <div class="unified-content-card">
       <article class="ana-item">
-        <!-- Modern Conversation Layout -->
-        <div class="ana-conversation-wrap">
-          <div class="ana-bubble ana-question">
-            <div class="ana-bubble-header">
-              <img src="/images/ask-n-answer_logo.svg" alt="" class="ana-bubble-icon" />
-              <span class="ana-label">You asked</span>
-            </div>
-            <div class="ana-bubble-content">
-              <p>{entry.data.questionDisplay ?? entry.data.title}</p>
-            </div>
-          </div>
+        <!-- Standard ANA Leaf Layout (non-chat style) -->
+        
+        <!-- Question Display Section -->
+        <section class="ana-question-section" data-testid="section-question">
+          <h2 class="ana-question-label">You asked:</h2>
+          <p class="ana-question-text">{entry.data.questionDisplay ?? entry.data.title}</p>
+        </section>
+        
+        <!-- Section: What's really going on here -->
+        {entry.data.body && (
+          <section class="ana-section" data-testid="section-whats-going-on">
+            <h2 class="ana-section-title">What's really going on here</h2>
+            <div class="ana-section-content" set:html={entry.data.body}></div>
+          </section>
+        )}
 
-          <div class="ana-bubble ana-answer">
-            <div class="ana-bubble-header">
-              <span class="ana-label">Sue's Answer</span>
-              <img src="/images/hex_checkmark.svg" alt="" class="ana-answer-icon" />
-            </div>
-            <div class="ana-bubble-content" set:html={entry.data.body}></div>
-          </div>
-        </div>
+        <!-- Section: Why this may not matter yet -->
+        {entry.data.whyNotMatterYet && entry.data.whyNotMatterYet.trim() !== '' && (
+          <section class="ana-section" data-testid="section-why-not-matter">
+            <h2 class="ana-section-title">Why this may not matter yet</h2>
+            <div class="ana-section-content" set:html={entry.data.whyNotMatterYet}></div>
+          </section>
+        )}
+
+        <!-- Section: What to focus on right now -->
+        {entry.data.whatToFocus && entry.data.whatToFocus.trim() !== '' && (
+          <section class="ana-section" data-testid="section-what-to-focus">
+            <h2 class="ana-section-title">What to focus on right now</h2>
+            <div class="ana-section-content" set:html={entry.data.whatToFocus}></div>
+          </section>
+        )}
+
+        <!-- Section: When this does matter -->
+        {entry.data.whenThisMatters && entry.data.whenThisMatters.trim() !== '' && (
+          <section class="ana-section" data-testid="section-when-matters">
+            <h2 class="ana-section-title">When this does matter</h2>
+            <div class="ana-section-content" set:html={entry.data.whenThisMatters}></div>
+          </section>
+        )}
+
+        <!-- Section: If you want to go further (links) -->
+        {entry.data.goFurtherLinks && entry.data.goFurtherLinks.length > 0 && (
+          <section class="ana-section" data-testid="section-go-further">
+            <h2 class="ana-section-title">If you want to go further</h2>
+            <ul class="ana-go-further-list">
+              {entry.data.goFurtherLinks.map((link: { url: string; label: string }) => (
+                <li>
+                  <a href={link.url} class="ana-go-further-link">{link.label}</a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Quick Check Section - after answer, before video/related content */}
         {entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
@@ -483,117 +516,112 @@ const relatedWizards = entry.data.relatedWizards?.length
   }
 
   /* =========================================
-     Modern Conversation Layout
+     Standard ANA Section Layout
      ========================================= */
-  .ana-conversation-wrap {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    max-width: 900px;
-    margin: 1rem auto 3rem;
-    font-family: var(--font, "Poppins", sans-serif);
+  
+  /* Question Display Section */
+  .ana-question-section {
+    background-color: #f5f8f0;
+    border-left: 4px solid #52682d;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 0 8px 8px 0;
   }
 
-  /* Shared Bubble Base Styles */
-  .ana-bubble {
-    position: relative;
-    padding: 1.5rem 2rem;
-    max-width: 85%;
-    box-shadow: 0 4px 14px rgba(82, 104, 45, 0.1);
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .ana-bubble:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(82, 104, 45, 0.15);
-  }
-
-  .ana-bubble-content p {
-    margin: 0;
-    line-height: 1.6;
-    font-size: 1.05rem;
-    color: #2c3a57;
-  }
-
-  .ana-bubble-content :global(p) {
-    margin-bottom: 1rem;
-  }
-
-  .ana-bubble-content :global(p:last-child) {
-    margin-bottom: 0;
-  }
-
-  .ana-bubble-content :global(ul),
-  .ana-bubble-content :global(ol) {
-    margin-left: 1.5rem;
-    margin-bottom: 1rem;
-  }
-
-  .ana-bubble-content :global(strong) {
-    font-weight: 600;
-    color: #52682d;
-  }
-
-  /* Header (Label + Icon) Styling */
-  .ana-bubble-header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    margin-bottom: 0.75rem;
+  .ana-question-label {
     font-size: 0.85rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    opacity: 0.9;
+    color: #52682d;
+    margin: 0 0 0.5rem 0;
   }
 
-  .ana-icon {
+  .ana-question-text {
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: #2c3a57;
+    margin: 0;
+  }
+
+  .ana-section {
+    margin-bottom: 2rem;
+  }
+
+  .ana-section:last-child {
+    margin-bottom: 0;
+  }
+
+  .ana-section-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #52682d;
+    margin: 0 0 1rem 0;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #d8e2cc;
+  }
+
+  .ana-section-content {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: #2c3a57;
+  }
+
+  .ana-section-content :global(p) {
+    margin-bottom: 1rem;
+  }
+
+  .ana-section-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .ana-section-content :global(ul),
+  .ana-section-content :global(ol) {
+    margin-left: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ana-section-content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .ana-section-content :global(strong) {
+    font-weight: 600;
+    color: #52682d;
+  }
+
+  /* Go Further Links */
+  .ana-go-further-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .ana-go-further-link {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    font-size: 14px;
-    font-weight: bold;
-    line-height: 1;
+    color: #52682d;
+    text-decoration: none;
+    font-size: 1rem;
+    font-weight: 500;
+    padding: 0.5rem 0;
+    transition: all 0.2s ease;
   }
 
-  .ana-bubble-icon {
-    height: 22px;
-    width: auto;
-    transform: scale(1.5);
-    transform-origin: center;
+  .ana-go-further-link::before {
+    content: '→ ';
+    margin-right: 0.5rem;
   }
 
-  .ana-answer-icon {
-    height: 22px;
-    width: auto;
-    transform: scale(1.5);
-    transform-origin: center;
+  .ana-go-further-link:hover {
+    color: #3E5524;
+    text-decoration: underline;
+    transform: translateX(3px);
   }
-
-  /* STYLE 1: The Question (Left) - White Background */
-  .ana-question {
-    align-self: flex-start;
-    background-color: #ffffff;
-    border: 2px solid #52682d;
-    border-radius: 24px 24px 24px 0;
-  }
-
-  .ana-question .ana-bubble-header { color: #52682d; }
-  .ana-question .ana-icon { background-color: #52682d; color: #ffffff; }
-
-  /* STYLE 2: The Answer (Right) - Light Green Background */
-  .ana-answer {
-    align-self: flex-end;
-    background-color: #eef3e4;
-    border: 2px solid #52682d;
-    border-radius: 24px 24px 0 24px;
-  }
-
-  .ana-answer .ana-bubble-header { justify-content: flex-end; color: #52682d; }
-  .ana-answer .ana-icon { background-color: #52682d; color: #ffffff; }
 
   /* Image Section */
   .ana-image-section {
@@ -967,14 +995,6 @@ const relatedWizards = entry.data.relatedWizards?.length
       font-size: 1.2rem;
     }
 
-    .ana-bubble-icon {
-      height: 18px;
-    }
-
-    .ana-answer-icon {
-      height: 18px;
-    }
-
     .ana-encouragement {
       padding: 0.3rem 0.75rem;
       margin-bottom: 0.75rem;
@@ -984,15 +1004,24 @@ const relatedWizards = entry.data.relatedWizards?.length
       font-size: 0.8rem;
     }
 
-    .ana-bubble { 
-      max-width: 100%; 
-      margin-bottom: 0.5rem; 
+    .ana-question-section {
+      padding: 1rem 1.25rem;
     }
-    .ana-question { 
-      border-radius: 16px 16px 16px 0; 
+
+    .ana-question-text {
+      font-size: 1.05rem;
     }
-    .ana-answer { 
-      border-radius: 16px 16px 0 16px; 
+
+    .ana-section {
+      margin-bottom: 1.5rem;
+    }
+
+    .ana-section-title {
+      font-size: 1.1rem;
+    }
+
+    .ana-section-content {
+      font-size: 1rem;
     }
 
     .ana-image-section {
