@@ -1,0 +1,121 @@
+REPLIT TASK: Create the PUBLIC Foundations pages (list + detail) using the scannable layout we’ve been designing, powered by the new Foundations tables. Also resolve the route conflict by moving admin Foundations under /admin/foundations (or /admin/learn/foundations) so public can own /foundations.
+
+CRITICAL RULES
+- Make a backup first: create a git branch `feature/public-foundations` and .bak copies of any edited files.
+- Do NOT change the database schema.
+- Do NOT break the existing Foundations admin editor UI—only relocate its routes + nav links.
+- Foundations are NOT courses; keep UI labels neutral (no course language).
+
+========================
+1) RESOLVE ROUTE CONFLICT
+========================
+CURRENT (admin):
+- /foundations
+- /foundations/edit/:id
+- /foundations/:foundationId/sections/:sectionId
+
+CHANGE admin routes to:
+- /admin/foundations
+- /admin/foundations/edit/:id
+- /admin/foundations/:foundationId/sections/:sectionId
+
+Tasks:
+- Move/rename the admin pages/components/routes accordingly (depending on framework: React router, TanStack router, Next, Astro, etc.).
+- Update sidebar navigation “Learn” category links to point to the new /admin/foundations path.
+- Ensure deep links from list → editor → section editor still work.
+
+========================
+2) CREATE PUBLIC ROUTES
+========================
+Public list page:
+- /foundations
+
+Public detail page:
+- /foundations/:slug
+
+These are PUBLIC reader pages, not editable.
+
+========================
+3) PUBLIC FOUNDATIONS LIST PAGE (/foundations)
+========================
+Layout goals:
+- Scannable grid/list
+- Title + short intro (1 sentence)
+- Show only published foundations (or equivalent field if you have status/draft)
+- Each card includes:
+  - title
+  - short preview (use the first available: foundation.description/intro/summary OR first “Result” block content)
+  - optional image if you have one (if not in schema, omit)
+
+Data:
+- Query the `foundations` table.
+- Sort by updatedAt desc (or createdAt desc).
+
+========================
+4) PUBLIC FOUNDATION DETAIL PAGE (/foundations/:slug)
+========================
+The page should match the scannable structure we liked:
+
+A) HERO
+- Title
+- Optional subtitle/intro if available
+- “Last updated” line
+
+B) QUICK SCAN (generate from blocks)
+Since Replit created block types instead of the original “Quick Scan” fields, derive quick-scan content from blocks:
+
+- Show a “Quick scan” panel composed from:
+  - Technical Reference blocks (as short bullets)
+  - Pro Tip blocks (1–3 key bullets)
+  - Quick Self-Check (as checklist)
+  - Support Cards (render as a small grid)
+
+If a foundation has no such blocks, hide the panel.
+
+C) SECTIONS
+- Fetch `foundation_sections` for this foundation (ordered)
+- For each section:
+  - section title/heading
+  - render content blocks in order, using clear visual styling:
+    - Mechanic: “How it works” callout block
+    - Result: “What you’ll see” or “Result” callout block
+    - Technical Reference: compact reference list / mini-table style
+    - Support Cards: grid (label → content)
+    - Pro Tip: highlighted tip callout
+    - Quick Self-Check: checklist UI
+
+D) VIDEOS (multi-link)
+- For each section, render a “Watch” row if it has linked videos via `foundation_section_videos`.
+- Use the existing “video registry” lookup you already have.
+- Each linked video card should show:
+  - custom label (from link table)
+  - title (from registry)
+  - runtime if available
+  - sort order respected
+
+Access gating:
+- If the video registry provides access info (free/member), respect it.
+- If not available yet, show all videos as playable for now BUT add a TODO comment where gating will be applied later.
+
+Embedding:
+- Vimeo embed via iframe using https://player.vimeo.com/video/{vimeoId}
+
+========================
+5) IMPLEMENTATION NOTES
+========================
+- Reuse existing design system components (cards, callouts, headings).
+- Keep typography consistent with KBM.
+- Do not add image upload features. If there are any image src fields, treat them as plain strings referencing /public paths.
+
+Add a developer comment near any image usage:
+“IMAGE NOTE: Put images in /public/images/foundations/<slug>/... and store src like /images/foundations/<slug>/file.jpg”
+
+========================
+6) DELIVERABLES
+========================
+- Admin routes moved under /admin/foundations and nav updated.
+- Public pages live at /foundations and /foundations/:slug.
+- Works end-to-end using seed data (or real data).
+- Print a short summary of files changed/added.
+
+Proceed now.
