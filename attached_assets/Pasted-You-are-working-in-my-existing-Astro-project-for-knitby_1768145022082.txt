@@ -1,0 +1,110 @@
+You are working in my existing Astro project for knitbymachine.com.
+
+GOAL
+Create a brand-new TEST page so I can preview a “Foundation section” layout with my real header/footer and modern spacing. Use placeholder images (no real images yet).
+
+SAFETY
+1) Before making changes, create a backup of any file you edit by copying it to the same folder with `.bak` appended (e.g., `Layout.astro.bak`).
+2) Prefer creating NEW files over editing existing ones.
+3) Do not delete or refactor existing components.
+
+STEP 1 — Create a new page
+Create a new file:
+- `src/pages/foundation-test/lk150-patterning-tuck.astro`
+
+Route should be:
+- `/foundation-test/lk150-patterning-tuck`
+
+STEP 2 — Use my existing site layout (header/footer)
+Wrap the page in whatever layout component the site uses for normal pages so I can see the real header/footer.
+
+Do this:
+- Search the repo for a layout used by other pages, e.g. look for imports like:
+  - `import Layout from ...`
+  - `BaseLayout`
+  - `PageLayout`
+  - `MainLayout`
+- Pick the same one used by a standard content page (not admin).
+- If multiple exist, choose the one that clearly includes the global header + footer.
+
+If you cannot find a layout component, fall back to creating a very small local layout inside this page with a note at the top saying “TODO: swap into site Layout”, but try hard to use the real one first.
+
+STEP 3 — Page content (include this EXACT section)
+Inside the layout, build a clean, text-first section with modern spacing. Use Tailwind classes (no custom CSS unless absolutely needed).
+
+Include:
+- Page title: “LK-150 Stitch Patterning (Test)”
+- Subtitle: “Tuck stitches: the mechanics”
+- A small “This is a test page” notice box at the top.
+
+Then include this section content:
+
+SECTION: “Tuck stitches: the mechanics”
+
+1) “In one sentence” intro paragraph:
+“A tuck stitch is a stitch that doesn’t knit—yarn is laid over the needle and builds up for several rows, creating raised bundles and texture when those bundles are finally knitted.”
+
+2) Card/box: “What tuck changes in your fabric”
+- One short paragraph:
+“When you tuck on the same needles for multiple rows, loops gather on those needles instead of forming stitches row-by-row. That buildup distorts plain stockinette in a controlled way.”
+- Bullets:
+  - raised texture (bundles)
+  - thicker fabric
+  - more structure than plain knitting
+  - the look changes dramatically based on needle arrangement and row counts
+- Callout box titled “Why tuck feels ‘magical’”:
+“The fun comes from alternating needle arrangements with plain knitting—plus options like color changes and tucking with needles out of work.”
+
+3) Two-image grid (placeholders)
+Create a 2-column grid on desktop, stacked on mobile.
+Each “image” should be a placeholder box (NOT a real image), with:
+- fixed aspect ratio (like 16:10 or 4:3)
+- a label inside such as:
+  - “IMAGE PLACEHOLDER: tuck_drawing.jpg”
+  - “IMAGE PLACEHOLDER: intro_tuck.jpg”
+Under each placeholder, include a caption in smaller text.
+
+4) Card/box: “LK-150 setup note: selecting needles”
+- Paragraph:
+“On the LK-150, you create tuck by pulling needles to Hold position (D) for the needles you want to tuck.”
+- Bullets:
+  - Needle pushers
+  - A small mark on the needle bed (short repeats)
+  - A cheat sheet/grid (best when you don’t want to count)
+- Callout “Keep it simple at first”:
+“Start with a repeat you can see without counting. Once the mechanics make sense, complexity becomes optional.”
+
+5) Card/box: “Reading tuck charts (and punchcards)”
+- One paragraph intro
+- Two placeholder boxes side-by-side:
+  - “IMAGE PLACEHOLDER: tuck_symbol.jpg”
+  - “IMAGE PLACEHOLDER: tucked_blocks_pattern.jpg”
+- Callout box titled “Using punchcard designs (LK-150 friendly)”:
+“You can borrow punchcard designs as pattern inspiration. A tuck punchcard is typically mostly holes. When hand-selecting needles, pull needles to correspond with the non-hole (white) spaces.”
+- One more placeholder box:
+  - “IMAGE PLACEHOLDER: good_punchcard.bmp”
+
+6) Final card/box: “Quick self-check”
+Bullets:
+- Which needles are tucking (held) vs knitting?
+- What happens when you tuck over the same needle for multiple rows?
+- Why do needle arrangements matter more than the chart “look”?
+
+STEP 4 — Visual style (Tailwind)
+- Use a max-width container (like `max-w-3xl` or `max-w-4xl`) and generous vertical spacing.
+- Cards should have rounded corners and a light border, like `rounded-2xl border`.
+- Callouts should have a subtle background like `bg-neutral-50` (or site equivalent).
+- Headings should be clear and modern.
+
+STEP 5 — Add a simple “Back” link
+At top and bottom, add a link back to `/` labeled “← Back to home”.
+
+STEP 6 — Verify
+After creating the page, run whatever dev command this repo uses (or at least ensure the page builds).
+Then tell me:
+- the new file path created
+- the URL route to preview
+- which layout component you used
+
+IMPORTANT
+Do not add any course sidebar, progress, “mark complete”, or lesson navigation. This is a single clean content page.
