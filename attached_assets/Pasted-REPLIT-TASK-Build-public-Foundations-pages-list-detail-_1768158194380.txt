@@ -1,0 +1,192 @@
+REPLIT TASK: Build public “Foundations” pages (list + detail) using the scannable layout we’ve been reviewing, powered by the Foundations admin fields (including multiple videos). Keep images as simple string src references (no upload implementation). Add clear comments showing where Sue uploads images.
+
+IMPORTANT RULES
+- Make a backup first (git branch or copy files with .bak).
+- Don’t break existing ANA pages.
+- Keep the structure scannable: hero → quick scan → sections/accordions → videos.
+- Foundations are NOT “courses”; avoid course language in UI labels.
+
+STEP 0 — BACKUP
+1) Create a new git branch: `feature/foundations-pages`
+2) Also create .bak copies of any files you modify.
+
+ASSUMPTIONS (adjust to match project)
+- Astro site with src/pages and src/components
+- Data comes from the existing admin DB/API pattern you’re using for ANAs (e.g., server routes in `src/pages/api/...` or `src/lib/...`).
+- Member gating might exist (Memberstack). If not available, implement a simple placeholder gate with a boolean `isMember` = false and a TODO comment to connect later.
+
+========================================
+FOUNDATIONS DATA SHAPE (from admin)
+========================================
+You (Replit) already added these fields to the Foundations admin. Use these names exactly; if they differ, map them in one place.
+
+Foundation record (minimum needed for pages):
+- id: string
+- slug: string (unique)
+- title: string
+- status: "draft" | "published"
+- updatedAt: string/date
+
+Hero / identity:
+- subtitle?: string
+- intro?: string (short paragraph)
+- heroImageSrc?: string  // e.g. "/images/foundations/tuck/hero.jpg"
+- heroImageAlt?: string
+
+Quick Scan:
+- whatYoullBeAbleToDo?: string[]  // bullets
+- youNeed?: string[]              // bullets (materials / prerequisites)
+- commonSnags?: string[]          // bullets (optional)
+
+Body / sections (scannable blocks):
+- sections?: Array<{
+    heading: string
+    body?: string               // plain text or markdown-lite
+    bullets?: string[]
+    callout?: { title?: string, text: string }
+  }>
+
+Optional “Try this next” / links:
+- nextSteps?: Array<{ label: string, href: string, note?: string }>
+
+MEDIA: MULTIPLE VIDEOS
+- videos?: Array<{
+    title: string
+    vimeoId: string
+    access: "free" | "member"
+    description?: string
+    posterSrc?: string          // optional image for the card
+    runtime?: string            // e.g. "6:12"
+  }>
+
+Optional gallery / images:
+- images?: Array<{ src: string, alt: string, caption?: string }>
+
+========================================
+STEP 1 — ADD A FOUNDATIONS PUBLIC LIST PAGE
+========================================
+Create: `src/pages/foundations/index.astro`
+
+Behavior:
+- Shows a grid/list of published Foundations (status=published)
+- Each card: title, subtitle/preview, and optional small image
+- Click goes to `/foundations/[slug]`
+
+Add a short intro at top:
+- Heading: “Foundations”
+- One sentence: “Short, focused building blocks you can reference anytime.”
+
+========================================
+STEP 2 — ADD A FOUNDATIONS DETAIL PAGE (SCANNABLE LAYOUT)
+========================================
+Create: `src/pages/foundations/[slug].astro`
+
+Layout (match the scannable structure we liked):
+A) HERO
+- Title
+- Subtitle (optional)
+- Intro paragraph (optional)
+- Hero image (optional)
+- Include “Last updated” line (small)
+
+B) QUICK SCAN PANEL (above the fold)
+- 2–3 columns/cards:
+  1) “You’ll be able to…” (bullets)
+  2) “You’ll need…” (bullets)
+  3) “Common snags” (bullets, optional)
+
+C) CONTENT SECTIONS
+- Render `sections[]` as stacked blocks
+- Each section:
+  - Heading
+  - Body
+  - Bullets (if present)
+  - Optional callout box (visually distinct)
+
+D) VIDEOS (Multiple)
+- Section heading: “Watch”
+- Render `videos[]` as cards
+- Each card:
+  - title, description, runtime
+  - If access="free": embed Vimeo inline
+  - If access="member": show a locked state with a button (“Log in to watch”)
+- NOTE: Don’t implement login; just link to `/login` (or your existing login route). Add TODO if route differs.
+
+E) OPTIONAL IMAGE GALLERY
+- If `images[]` exists, show a simple gallery grid of images with captions
+
+F) NEXT STEPS
+- If nextSteps exists, render as a simple list of links.
+
+========================================
+STEP 3 — CREATE REUSABLE COMPONENTS
+========================================
+Add these components (Astro components):
+
+1) `src/components/foundations/QuickScan.astro`
+Props:
+- whatYoullBeAbleToDo, youNeed, commonSnags
+
+2) `src/components/video/GatedVimeo.astro`
+Props:
+- vimeoId: string
+- access: "free" | "member"
+- title?: string
+- description?: string
+- posterSrc?: string
+- runtime?: string
+Behavior:
+- If free: embed iframe using `https://player.vimeo.com/video/{vimeoId}`
+- If member: show locked card UI instead of iframe
+- Add a TODO to connect real membership state later.
+- Use a small helper `const isMember = false;` for now (or hook into existing Memberstack helper if present).
+
+3) `src/components/foundations/SectionBlock.astro`
+Props: heading, body, bullets, callout
+
+Keep styling consistent with existing site (reuse existing card classes / container widths). No major design overhaul.
+
+========================================
+STEP 4 — DATA FETCHING / API INTEGRATION
+========================================
+Implement a single source of truth function:
+
+Create: `src/lib/foundations.ts`
+Exports:
+- `getPublishedFoundations(): Promise<FoundationSummary[]>`
+- `getFoundationBySlug(slug: string): Promise<Foundation | null>`
+
+Where to pull data:
+- Follow the same pattern you use for ANAs/admin content.
+- If ANAs read from DB directly in Astro server code, do the same for Foundations.
+- If ANAs call an internal API route, do the same style.
+
+Return only published items in list.
+If a slug is not found or not published:
+- return 404 in `[slug].astro`
+
+========================================
+STEP 5 — IMAGE UPLOAD INSTRUCTIONS (IMPORTANT FOR SUE)
+========================================
+In BOTH pages, add a short developer comment near image usage:
+
+“IMAGE UPLOAD NOTE:
+Put foundation images in `public/images/foundations/<slug>/...`
+and store the path in the admin field as `/images/foundations/<slug>/<file>`.”
+
+No upload UI needed.
+
+========================================
+STEP 6 — QUALITY CHECKS
+========================================
+- Run type/lint if present
+- Ensure `astro dev` page renders:
+  - /foundations
+  - /foundations/tuck-stitch (or a sample slug)
+- If no sample record exists, create a temporary mock in code ONLY for local dev, behind a clearly marked comment, and remove it if real data exists.
+
+DELIVERABLE
+- Commit changes on the feature branch
+- Summarize what files were added/changed and where Sue should add image files.
+
+GO AHEAD AND IMPLEMENT NOW.
