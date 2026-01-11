@@ -1,0 +1,273 @@
+You are working in my existing KBM repo (Astro site + custom admin). Create a NEW Admin section called “Foundations” with a block-based editor and the ability to link MULTIPLE videos per section. Images are NOT uploaded in Admin—Admin stores simple public paths (src strings).
+
+NON-NEGOTIABLE SAFETY
+1) Before editing any file, create a `.bak` copy next to it (same folder), e.g. `file.ts.bak`.
+2) Prefer adding NEW files over refactoring existing ones.
+3) Follow the repo’s established admin patterns (routing, auth, DB helpers, validation, UI components).
+4) Do not delete anything. Do not change unrelated admin sections.
+
+========================================================
+STEP 0 — DISCOVER THE EXISTING ADMIN PATTERN
+A) Find where the admin app lives (routes/pages) and how existing editors are built (e.g., ANA editor, glossary editor, practice projects).
+B) Identify:
+   - DB layer (Prisma? direct SQL? API routes? server actions?)
+   - Validation (zod? custom validators?)
+   - Existing “videos” table/library (if any)
+   - Existing slug handling + status handling
+C) In your final response, list the key files you based this on.
+
+========================================================
+STEP 1 — DATABASE / DATA MODEL
+Create DB entities for:
+1) Foundations (top-level)
+2) Foundation Sections (page-like entries under a foundation)
+3) Section ↔ Video linking (multi-video per section)
+
+Use the DB tech already present (Prisma migrations or existing SQL migration approach). If Prisma exists, update schema and create a migration. If direct SQL exists, add a migration file consistent with existing migrations.
+
+1) TABLE/ENTITY: `foundations`
+- id (use repo’s standard id type)
+- slug (unique)
+- title (required)
+- subtitle (nullable)
+- summary (nullable)
+- status (enum/text: draft|published|archived) default draft
+- machineTags (json or text; nullable)  // e.g. ["LK150"]
+- createdAt, updatedAt
+
+2) TABLE/ENTITY: `foundation_sections`
+- id
+- foundationId (FK -> foundations.id)
+- slug (unique per foundation OR globally unique; pick what matches existing patterns)
+- title (required)
+- subtitle (nullable)
+- status (draft|published|archived) default draft
+- sortOrder (int) default 0
+- contentBlocks (JSON) required default []  // validated server-side
+- createdAt, updatedAt
+
+3) VIDEO SUPPORT (multi-video linking)
+FIRST: search the repo/DB for an existing `videos` or “video library” table.
+- If it exists, reuse it.
+- If it does NOT exist, create a minimal `videos` table:
+
+TABLE/ENTITY: `videos`
+- id
+- provider (default "vimeo")
+- providerVideoId (string)  // store ONLY numeric id as a string, e.g. "290802964"
+- title (nullable)
+- isMemberOnly (nullable boolean)
+- createdAt, updatedAt
+
+THEN create join table:
+
+TABLE/ENTITY: `foundation_section_videos`
+- id
+- sectionId (FK -> foundation_sections.id)
+- videoId (FK -> videos.id)
+- label (nullable)  // optional label like “Optional demo”
+- sortOrder (int) default 0
+- createdAt, updatedAt
+
+========================================================
+STEP 2 — CONTENT BLOCK JSON SCHEMA + SERVER VALIDATION
+Implement server-side validation for `contentBlocks` (use zod if repo uses it).
+
+Supported blockTypes (MVP):
+- "mechanic"
+- "result"
+- "supportCards"
+- "technicalReference"
+- "proTip"
+- "quickSelfCheck"
+
+JSON shapes:
+
+A) mechanic / result / technicalReference
+{
+  blockType: "mechanic" | "result" | "technicalReference",
+  heading?: string,
+  body?: string,                  // require body for mechanic/result; optional for technicalReference
+  images?: [
+    { src: string, alt?: string, caption?: string }
+  ]
+}
+
+B) supportCards
+{
+  blockType: "supportCards",
+  items: [
+    { label: string, content: string }
+  ]
+}
+
+C) proTip
+{
+  blockType: "proTip",
+  body: string
+}
+
+D) quickSelfCheck
+{
+  blockType: "quickSelfCheck",
+  items: string[]
+}
+
+IMPORTANT IMAGE RULE
+Images are path references only. No upload implementation.
+Image `src` must be a public path like:
+  /images/foundations/lk150-patterning/tuck/tuck_drawing.jpg
+Add helper text in the UI stating:
+“Upload images manually to /public/images/foundations/ and paste the public path here.”
+
+========================================================
+STEP 3 — ADMIN NAV: ADD “FOUNDATIONS”
+Add a new item in the admin navigation (same place as other content types):
+- Label: “Foundations”
+- Route: `/admin/foundations`
+
+========================================================
+STEP 4 — ADMIN PAGES (LIST + EDITORS)
+Create these routes/pages using the repo’s existing admin router approach.
+
+A) Foundations list page: `/admin/foundations`
+- Table columns: Title, Slug, Status, Updated
+- Actions: Edit, Duplicate (optional), New Foundation button
+- New button goes to `/admin/foundations/new` (or repo’s convention)
+
+B) Foundation editor page: `/admin/foundations/[id]` and `/admin/foundations/new`
+Fields:
+- title (required)
+- slug (required, unique)
+- subtitle (optional)
+- summary (optional)
+- status (draft/published/archived)
+- machineTags (optional): simple comma-separated input that saves as JSON array of strings
+Include a “Save” button.
+
+Inside this editor, include a “Sections” panel:
+- List existing sections: sortOrder, title, slug, status, updatedAt
+- Buttons: “Add Section”, “Edit”
+
+C) Foundation Section editor page:
+Route: `/admin/foundations/[foundationId]/sections/[sectionId]`
+(and `/admin/foundations/[foundationId]/sections/new`)
+
+Fields:
+- title (required)
+- slug (required)
+- subtitle (optional)
+- status
+- sortOrder (number)
+
+Panels:
+1) Content Blocks Editor (required)
+2) Videos (optional helpers) multi-linker (required capability)
+3) Preview URL (computed, read-only)
+4) Image upload guidance (text only)
+
+========================================================
+STEP 5 — CONTENT BLOCKS EDITOR UI (MVP BUT USABLE)
+Implement a “block editor” UI that:
+- Shows blocks in order
+- Allows: Add block, Remove block
+- Allows Reorder blocks: Up/Down buttons
+- Renders fields by blockType
+
+Block UI requirements:
+
+1) mechanic/result
+- heading (optional input)
+- body (textarea)
+- images list editor:
+  - “Add image” button
+  - each image row: src, alt, caption, remove
+  - show helper text:
+    “Upload images manually to /public/images/foundations/ then paste the public path:
+     /images/foundations/...”
+
+2) technicalReference
+- heading (required input)
+- body (optional textarea)
+- images list editor (same as above)
+
+3) supportCards
+- default 3 items when created
+- each item: label (input), content (textarea)
+- allow add/remove items if easy, otherwise keep exactly 3
+
+4) proTip
+- body (textarea)
+
+5) quickSelfCheck
+- list of strings with add/remove
+- each item is a single-line input
+
+Store the final validated JSON into `contentBlocks` on save.
+
+========================================================
+STEP 6 — MULTI-VIDEO LINKING UI (REQUIRED)
+On the Section editor page, add a “Videos (optional helpers)” panel that supports multiple videos.
+
+Behavior:
+- Show currently linked videos (in sortOrder)
+- Each linked row shows:
+  - provider (read-only)
+  - providerVideoId (read-only)
+  - title (read-only if available)
+  - label (editable)
+  - Up/Down buttons to change sortOrder
+  - Remove button
+
+Adding videos:
+- If there is an existing videos library, provide:
+  - a search box (by title or providerVideoId)
+  - results list with “Add” button
+- If there is NO existing library, provide an inline “Add Vimeo video” form:
+  - providerVideoId input (numeric string)
+  - optional title input
+  - optional isMemberOnly checkbox
+  - create video + link it to section
+
+Validation:
+- providerVideoId must be digits only
+- prevent duplicate linking of the same video to the same section
+
+========================================================
+STEP 7 — SERVER ROUTES / ACTIONS
+Implement CRUD and linking endpoints/actions consistent with repo:
+
+- foundations: list, create, update
+- sections: list for foundation, create, update
+- contentBlocks: validate + save
+- section videos: link, unlink, reorder, update label
+- ensure auth/permissions consistent with existing admin patterns
+
+========================================================
+STEP 8 — PREVIEW URL (DISPLAY ONLY)
+Compute and display a preview URL string on the Section editor:
+`/foundations/{foundationSlug}/{sectionSlug}`
+
+Do NOT implement the public renderer in this task. Just show the computed URL.
+
+========================================================
+STEP 9 — SEED / SAMPLE (HELPFUL)
+If the repo supports seeding, add a sample:
+Foundation: “LK-150 Patterning”
+Section: “Tuck Stitch: Technical Foundations”
+contentBlocks: include a mechanic + result + supportCards + technicalReference + proTip + quickSelfCheck with placeholder image paths like:
+- /images/foundations/lk150-patterning/tuck/tuck_drawing.jpg
+- /images/foundations/lk150-patterning/tuck/intro_tuck.jpg
+- /images/foundations/lk150-patterning/tuck/tuck_symbol.jpg
+- /images/foundations/lk150-patterning/tuck/tucked_blocks_pattern.jpg
+- /images/foundations/lk150-patterning/tuck/good_punchcard.bmp
+No videos linked by default.
+
+========================================================
+FINAL RESPONSE REQUIREMENTS
+When finished, tell me:
+1) All new/edited file paths
+2) The admin routes to use (URLs)
+3) How to run migrations (and seed if applicable)
+4) Whether you found an existing videos table or created a new one
+5) Any assumptions you made that I should confirm
