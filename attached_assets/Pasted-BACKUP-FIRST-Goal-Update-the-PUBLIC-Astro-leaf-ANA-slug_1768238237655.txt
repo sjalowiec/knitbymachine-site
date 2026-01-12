@@ -1,0 +1,68 @@
+BACKUP FIRST.
+
+Goal: Update the PUBLIC Astro leaf ANA slug page (/ana/{slug}) so it is scannable (not a wall of words) and includes the Outcome Line. Sue will not edit code manually — implement everything end-to-end.
+
+Context:
+- ANA records include fields like: title, outcomeLine, shortAnswer, keyInsight, quickCheckText, body (HTML), imageUrl, imageAlt, videoUrl, relatedAnas, isMemberOnly, memberBody, memberVideoUrl.
+- Gateways (type="gateway") already render fine. THIS TASK IS ONLY for LEAF pages (type="leaf"). Do not change gateway rendering.
+
+Requirements (Leaf layout):
+1) Keep the existing header area (logo + H1 title).
+2) Directly under the H1, render Outcome Line if present:
+   - Field: outcomeLine
+   - Render only if non-empty after trimming whitespace.
+   - Style it as a short “confidence line” (slightly emphasized, not a big paragraph).
+
+3) Replace the current single long “main explanation” section with a scannable block layout:
+   - Use a max-width container consistent with the site.
+   - Use cards/panels and a responsive grid:
+     - On desktop: 2 columns
+     - On mobile: 1 column stacked
+
+4) Block structure (use these blocks, but only render a block if the field has content):
+   A) “Direct Answer” card (top, full width):
+      - Use shortAnswer if present; otherwise fall back to first paragraph of body (strip HTML tags for the fallback).
+   B) Two-column grid row:
+      Left card: “Key Insight” (keyInsight)
+      Right card: “Quick Check” (quickCheckText)
+   C) “What’s really going on here” card:
+      - Render body as HTML (set:html) inside a card, but apply typography so it doesn’t become a wall of words:
+        - Limit line length (max-width)
+        - Add spacing between paragraphs, lists, and headings
+        - Ensure headings inside body look like headings
+   D) Optional media card:
+      - If videoUrl exists, render a “Watch” card with embedded video (match existing embed logic if you already have one)
+      - If imageUrl exists, render the featured image with alt text in a card; keep existing zoom behavior if present.
+   E) Member-only section (if isMemberOnly OR memberBody/memberVideoUrl exists):
+      - Keep your current “member divider” behavior, but present member content in its own card so it is visually separate.
+   F) Related links section at bottom:
+      - If relatedAnas exists, render a “Related Ask ’n Answer” grid of up to 3 cards (title + questionDisplay if available, link to /ana/{slug})
+      - If relatedWorkshops exists, render a simple list or cards linking to those.
+
+5) Styling:
+- Add new CSS for these blocks that matches KBM’s clean modern style (no Tailwind requirement; use your existing CSS pattern).
+- Use the existing KBM green for accents.
+- Cards should have subtle borders, rounded corners, and spacing (similar to your gateway cards).
+- Ensure readability:
+  - Comfortable padding
+  - Clear section headings
+  - Good whitespace between blocks
+  - No giant uninterrupted text columns
+
+6) Safety/robustness:
+- Do not break existing leaves that have only body filled.
+- Use defensive rendering: only show blocks when content exists.
+- Ensure outcomeLine displays even if body is empty.
+- Keep the existing debug JSON block if it helps verification, but ideally remove it after confirming.
+
+Deliverable:
+- Implement the updated leaf layout in the correct Astro source file(s) (likely src/pages/ana/[slug].astro and/or imported components).
+- Confirm by running locally and testing these two pages:
+  - /ana/hung-hems (leaf) shows Outcome Line and the new scannable blocks
+  - /ana/<one other existing leaf> still renders correctly
+- Report which files were changed.
+
+IMPORTANT:
+- Do NOT ask Sue to edit HTML or code manually.
+- Do NOT redesign gateway pages.
+- Do NOT change the data schema.
