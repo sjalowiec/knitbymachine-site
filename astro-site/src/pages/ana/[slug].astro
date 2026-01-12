@@ -291,7 +291,8 @@ const relatedWizards = entry.data.relatedWizards?.length
 
       <!-- Next Step Card (auto-generated from existing fields) -->
       {(() => {
-        const actions: Array<{ label: string; url: string }> = [];
+        type ActionItem = { label: string; url: string };
+        const actions: ActionItem[] = [];
         
         // Primary action priority: wizardUrl > parentGatewaySlug > relatedAnas
         if (entry.data.wizardUrl?.trim()) {
