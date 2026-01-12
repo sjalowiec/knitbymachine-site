@@ -463,9 +463,15 @@
             </ul>
           </li>
           
-          <!-- SHOP link -->
-          <li>
-            <a href="/shop" data-testid="nav-shop">Shop</a>
+          <!-- SHOP dropdown -->
+          <li class="dd">
+            <button class="dd-trigger" aria-expanded="false" data-testid="nav-shop">Shop <span class="caret">▾</span></button>
+            <ul class="dd-panel">
+              <li><a href="https://knitbymachine.com/machines" data-testid="nav-shop-machines">Machines</a></li>
+              <li><a href="#" data-testid="nav-shop-accessories">Accessories</a></li>
+              <li><a href="https://knitbymachine.com/software/designaknit" data-testid="nav-shop-software">Software</a></li>
+              <li><a href="#" data-testid="nav-shop-downloads">Downloads</a></li>
+            </ul>
           </li>
         </ul>
 
