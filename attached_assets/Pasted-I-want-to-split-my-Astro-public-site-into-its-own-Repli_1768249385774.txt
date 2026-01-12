@@ -1,0 +1,58 @@
+I want to split my Astro public site into its own Replit project, using a Safety-First approach. I have 6 months of work in this repo. Follow these steps EXACTLY, in order, and stop after each step with a short checklist of what you completed + what I need to click/do next.
+
+NON-NEGOTIABLE RULES:
+- Do NOT delete or move astro-site/ in this current project.
+- Do NOT rewrite or refactor the architecture.
+- Make backups before ANY change: create a git commit OR a zip export (or both).
+- Any configuration must use environment variables (no hardcoding URLs).
+- Use minimal changes and document every file you touch.
+
+STEP 0 — SAFETY BACKUP (must be first)
+1) Confirm whether this Repl is connected to Git. If it is, create a new branch named: safety/split-astro and commit all current changes.
+2) Also create an exportable backup of astro-site/ as a zip file in the project root (e.g. astro-site-backup.zip) so I can download it.
+Do not proceed until you confirm both backups exist.
+
+STEP 1 — INVENTORY (no changes yet)
+Inspect astro-site/ and produce a concrete inventory:
+A) List every environment variable Astro currently reads (search for import.meta.env and process.env usage).
+B) List every dependency Astro needs (read astro-site/package.json).
+C) List every API endpoint Astro calls to talk to the admin (search for fetch/axios calls and the base URLs).
+D) Identify whether Astro reads local JSON content from this repo OR whether it fetches content from the admin API at runtime/build time.
+Output this inventory in a clear bullet list.
+
+STEP 2 — PREPARE ASTRO FOR ITS OWN REPL (minimal change inside astro-site only)
+In astro-site/:
+1) Add a single environment variable CONTENT_API_BASE_URL to be used as the base for any API calls.
+2) If API calls are hardcoded, replace ONLY the base URL with CONTENT_API_BASE_URL (do not change paths).
+3) Ensure Astro dev runs correctly in Replit: configure scripts so that dev uses --host 0.0.0.0 and --port $PORT (not a fixed port). Add a script named dev:replit for this.
+4) Print the exact commands I should run to test astro-site locally inside this Repl BEFORE copying anywhere.
+
+STEP 3 — CREATE NEW REPL (instructions + artifact)
+You cannot create the new Repl for me, but you must give me exact click-by-click instructions to do it:
+- New Repl type (Node.js)
+- What files/folders to copy (astro-site plus any required shared folders, if discovered in Step 1)
+- If copying is easier via zip, tell me to download astro-site-backup.zip and upload it into the new Repl, then unzip.
+Also provide a “New Astro Repl Run Command” that uses npm run dev:replit inside astro-site.
+
+STEP 4 — CONNECTION + .env IN NEW ASTRO REPL
+In the new Astro Repl, create an .env with:
+CONTENT_API_BASE_URL=https://knit-content-manager-sue23.replit.app
+Also explain where to set the same env var in Replit’s Secrets UI.
+Then confirm the Astro site is using the env var (show where it’s referenced).
+
+STEP 5 — CORS SAFETY UPDATE IN CURRENT (ADMIN) REPL
+Now update the admin/API server in THIS current Repl to allow CORS safely:
+- Allow only the new Astro Repl preview URL origin(s) AND my production domain knitbymachine.com (if CORS is used in browser).
+- Do NOT set Access-Control-Allow-Origin: *
+- Ensure credentials behavior is correct (only enable credentials if required).
+- Tell me exactly which file(s) you changed.
+If the admin server is Express, implement cors middleware with an allowlist. If it’s Netlify functions or something else, apply the appropriate solution.
+
+STEP 6 — VERIFICATION
+Provide a short verification checklist:
+- In new Astro Repl, load a page that requires API data.
+- Confirm in logs that calls go to CONTENT_API_BASE_URL.
+- Confirm in browser network tab that requests succeed (200) and CORS headers are present.
+- If something fails, provide the top 3 likely causes and the exact fix.
+
+STOP after completing STEP 1 and wait for me to confirm before proceeding to STEP 2.
