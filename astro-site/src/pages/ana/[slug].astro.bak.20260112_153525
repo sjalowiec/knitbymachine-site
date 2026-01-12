@@ -437,12 +437,6 @@ const relatedWizards = entry.data.relatedWizards?.length
         <img id="zoom-image" src="" alt="" class="zoom-image" />
       </div>
     )}
-
-    <!-- Debug ANA JSON (temporary) -->
-    <details style="margin-top:2rem; background:#f5f5f5; padding:1rem; border-radius:8px;">
-      <summary style="cursor:pointer; font-weight:bold;">Debug ANA JSON</summary>
-      <pre style="white-space:pre-wrap; word-break:break-all; font-size:0.75rem; max-height:600px; overflow:auto;">{JSON.stringify(entry.data, null, 2)}</pre>
-    </details>
   </div>
 </Layout>
 
