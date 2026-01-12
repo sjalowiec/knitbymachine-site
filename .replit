@@ -46,12 +46,3 @@ author = "agent"
 task = "shell.exec"
 args = "npm run dev"
 waitForPort = 5000
-
-[[workflows.workflow]]
-name = "ASTRO DEV"
-mode = "sequential"
-author = 46936186
-
-[[workflows.workflow.tasks]]
-task = "shell.exec"
-args = "cd astro-site && npm run dev:replit"
