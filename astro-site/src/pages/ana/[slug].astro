@@ -233,12 +233,35 @@ const relatedWizards = entry.data.relatedWizards?.length
     <header class="ana-hero">
       <div class="ana-title-row">
         <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="ana-logo-icon" />
-        <h1 class="ana-page-title" data-testid="text-page-title">{entry.data.questionDisplay ?? entry.data.title}</h1>
+        {/* H1: Use pageTitle > title (if not slug-like) > questionDisplay with line clamp */}
+        <h1 class="ana-page-title" data-testid="text-page-title">
+          {entry.data.pageTitle?.trim() 
+            ? entry.data.pageTitle 
+            : (entry.data.title && !entry.data.title.includes('-') && entry.data.title !== entry.data.slug)
+              ? entry.data.title
+              : entry.data.questionDisplay ?? entry.data.title
+          }
+        </h1>
       </div>
       
-      {/* Outcome Line - directly under title */}
+      {/* Subtitle: Show questionDisplay (or shortAnswer fallback) if different from H1 */}
+      {(() => {
+        const h1Text = entry.data.pageTitle?.trim() 
+          ? entry.data.pageTitle 
+          : (entry.data.title && !entry.data.title.includes('-') && entry.data.title !== entry.data.slug)
+            ? entry.data.title
+            : null;
+        const subtitleText = entry.data.questionDisplay?.trim() || entry.data.shortAnswer?.trim();
+        return h1Text && subtitleText && subtitleText !== h1Text ? (
+          <p class="ana-subtitle" data-testid="text-subtitle">{subtitleText}</p>
+        ) : null;
+      })()}
+      
+      {/* Outcome Line - styled as callout */}
       {entry.data.outcomeLine && entry.data.outcomeLine.trim() !== '' && (
-        <p class="outcome-line" data-testid="text-outcome-line">{entry.data.outcomeLine}</p>
+        <div class="outcome-callout" data-testid="callout-outcome">
+          <p class="outcome-callout-text">{entry.data.outcomeLine}</p>
+        </div>
       )}
       
       {/* Intro Paragraph */}
@@ -266,9 +289,55 @@ const relatedWizards = entry.data.relatedWizards?.length
         </div>
       )}
 
-      <!-- B) Two-column grid: Key Insight + Quick Check -->
-      {(entry.data.keyInsight?.trim() || entry.data.quickCheckText?.trim()) && (
+      <!-- Next Step Card (auto-generated from existing fields) -->
+      {(() => {
+        const actions: Array<{ label: string; url: string }> = [];
+        
+        // Primary action priority: wizardUrl > parentGatewaySlug > relatedAnas
+        if (entry.data.wizardUrl?.trim()) {
+          // wizardUrl is a slug, construct full path
+          const wizardSlug = entry.data.wizardUrl.trim();
+          const wizardPath = wizardSlug.startsWith('/') || wizardSlug.startsWith('http') 
+            ? wizardSlug 
+            : `/wizards/${wizardSlug}`;
+          actions.push({ label: "Use the helper", url: wizardPath });
+        } else if (entry.data.parentGatewaySlug?.trim()) {
+          actions.push({ label: "Start at the gateway", url: `/ana/${entry.data.parentGatewaySlug.trim()}` });
+        } else if (entry.data.relatedAnas?.length > 0) {
+          actions.push({ label: "Related answer", url: `/ana/${entry.data.relatedAnas[0]}` });
+        }
+        
+        // Secondary action: videoUrl > relatedWorkshops (only if different from primary)
+        if (actions.length < 2) {
+          if (entry.data.videoUrl?.trim()) {
+            actions.push({ label: "Watch the demo", url: `#video-section` });
+          } else if (entry.data.relatedWorkshops?.length > 0) {
+            const workshopSlug = entry.data.relatedWorkshops[0];
+            actions.push({ label: "Go deeper", url: `/guided-workshops/${workshopSlug}` });
+          }
+        }
+        
+        return actions.length > 0 ? (
+          <div class="leaf-card leaf-card-next-step" data-testid="card-next-step">
+            <h3 class="leaf-card-heading leaf-card-heading-small">Next step</h3>
+            <ul class="next-step-list">
+              {actions.slice(0, 2).map((action) => (
+                <li class="next-step-item">
+                  <a href={action.url} class="next-step-link" data-testid={`link-next-step-${action.label.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <span class="next-step-arrow">→</span>
+                    {action.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null;
+      })()}
+
+      <!-- B) Two-column grid: Key Insight + Image (or Quick Check fallback) -->
+      {(entry.data.keyInsight?.trim() || entry.data.imageUrl || (!entry.data.imageUrl && entry.data.quickCheckText?.trim())) && (
         <div class="leaf-cards-row" data-testid="row-insights">
+          {/* Key Insight - always on left when present */}
           {entry.data.keyInsight && entry.data.keyInsight.trim() !== '' && (
             <div class="leaf-card leaf-card-insight" data-testid="card-key-insight">
               <div class="leaf-card-icon">
@@ -283,21 +352,39 @@ const relatedWizards = entry.data.relatedWizards?.length
             </div>
           )}
 
-          {entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
-            <div class="leaf-card leaf-card-quickcheck" data-testid="card-quick-check">
-              <div class="leaf-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
-                </svg>
+          {/* Right column: Image if exists, otherwise Quick Check fallback */}
+          {entry.data.imageUrl ? (
+            <div class="leaf-card leaf-card-media leaf-card-media-compact" data-testid="card-media">
+              <div class="ana-hero-image media-image-wrapper">
+                <img 
+                  src={entry.data.imageUrl} 
+                  alt={entry.data.imageAlt || entry.data.title}
+                  class="ana-image zoomable-image"
+                  data-testid="img-ana-visual"
+                  role="button"
+                  tabindex="0"
+                  aria-label="Click to zoom image"
+                />
+                <p class="zoom-hint">Click image to zoom</p>
               </div>
-              <h3 class="leaf-card-heading">Quick Check</h3>
-              <ul class="quick-check-list">
-                {entry.data.quickCheckText.split('\n').filter((line: string) => line.trim() !== '').map((line: string) => (
-                  <li>{line.trim()}</li>
-                ))}
-              </ul>
             </div>
+          ) : (
+            entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
+              <div class="leaf-card leaf-card-quickcheck" data-testid="card-quick-check">
+                <div class="leaf-card-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                    <polyline points="22 4 12 14.01 9 11.01" />
+                  </svg>
+                </div>
+                <h3 class="leaf-card-heading">Quick Check</h3>
+                <ul class="quick-check-list">
+                  {entry.data.quickCheckText.split('\n').filter((line: string) => line.trim() !== '').map((line: string) => (
+                    <li>{line.trim()}</li>
+                  ))}
+                </ul>
+              </div>
+            )
           )}
         </div>
       )}
@@ -310,34 +397,35 @@ const relatedWizards = entry.data.relatedWizards?.length
         </div>
       )}
 
-      <!-- D) Optional Media Card -->
-      {(entry.data.videoUrl?.trim() || entry.data.imageUrl) && (
-        <div class="leaf-card leaf-card-media" data-testid="card-media">
-          {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' && (
-            <div class="media-video-wrapper">
-              <h3 class="leaf-card-heading">Watch</h3>
-              <VimeoEmbed 
-                videoId={entry.data.videoUrl.trim()}
-                title={entry.data.title}
-                aspectRatio="16:9"
-              />
-            </div>
-          )}
-          
-          {entry.data.imageUrl && (
-            <div class="ana-hero-image media-image-wrapper">
-              <img 
-                src={entry.data.imageUrl} 
-                alt={entry.data.imageAlt || entry.data.title}
-                class="ana-image zoomable-image"
-                data-testid="img-ana-visual"
-                role="button"
-                tabindex="0"
-                aria-label="Click to zoom image"
-              />
-              <p class="zoom-hint">Click image to zoom</p>
-            </div>
-          )}
+      <!-- D) Quick Check Card (full width, only when image exists) -->
+      {entry.data.imageUrl && entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
+        <div class="leaf-card leaf-card-quickcheck leaf-card-quickcheck-full" data-testid="card-quick-check">
+          <div class="leaf-card-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+          </div>
+          <h3 class="leaf-card-heading">Quick Check</h3>
+          <ul class="quick-check-list">
+            {entry.data.quickCheckText.split('\n').filter((line: string) => line.trim() !== '').map((line: string) => (
+              <li>{line.trim()}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      <!-- E) Video Section (separate from image, only if video exists) -->
+      {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' && (
+        <div class="leaf-card leaf-card-media" id="video-section" data-testid="card-video">
+          <div class="media-video-wrapper">
+            <h3 class="leaf-card-heading">Watch</h3>
+            <VimeoEmbed 
+              videoId={entry.data.videoUrl.trim()}
+              title={entry.data.title}
+              aspectRatio="16:9"
+            />
+          </div>
         </div>
       )}
 
@@ -674,14 +762,106 @@ const relatedWizards = entry.data.relatedWizards?.length
      LEAF PAGE CARD-BASED LAYOUT
      ========================================= */
   
-  /* Outcome Line - confidence line under title */
-  .outcome-line {
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #52682d;
+  /* Subtitle - appears below H1, smaller deck line */
+  .ana-subtitle {
+    font-size: 1.15rem;
+    font-weight: 400;
+    color: #5a6c7d;
     margin: 0.5rem 0 0 0;
     line-height: 1.5;
+    max-width: 65ch;
+  }
+
+  /* Outcome Callout - distinct takeaway box */
+  .outcome-callout {
+    background: linear-gradient(135deg, #f8faf5 0%, #f5f7f2 100%);
+    border-left: 4px solid #52682d;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+  }
+
+  .outcome-callout-text {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #3a4a2a;
+    margin: 0;
+    line-height: 1.6;
     font-style: italic;
+  }
+
+  /* Next Step Card - compact action card */
+  .leaf-card-next-step {
+    background: #fafbfc;
+    border: 1px dashed #d4e0c4;
+    padding: 1rem 1.25rem;
+  }
+
+  .leaf-card-heading-small {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: #52682d;
+    margin-bottom: 0.5rem;
+  }
+
+  .next-step-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .next-step-item {
+    margin-bottom: 0.4rem;
+  }
+
+  .next-step-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .next-step-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #52682d;
+    font-weight: 500;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .next-step-link:hover {
+    color: #3e5524;
+    text-decoration: underline;
+  }
+
+  .next-step-arrow {
+    font-weight: 700;
+    font-size: 1.1em;
+  }
+
+  /* Media Card - compact version for 2-column layout */
+  .leaf-card-media-compact {
+    padding: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .leaf-card-media-compact .media-image-wrapper {
+    margin: 0;
+  }
+
+  .leaf-card-media-compact .ana-image {
+    max-height: 280px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  /* Quick Check - full width variant */
+  .leaf-card-quickcheck-full {
+    border-left: 4px solid #6b8e23;
   }
 
   /* Card Container */
