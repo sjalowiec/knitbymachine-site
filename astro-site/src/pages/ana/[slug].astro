@@ -223,7 +223,7 @@ const relatedWizards = entry.data.relatedWizards?.length
     )}
 
     {/* ========================================
-        LEAF RENDERING (existing layout)
+        LEAF RENDERING (scannable card-based layout)
         ======================================== */}
     {!isHub && (
       <>
@@ -236,232 +236,249 @@ const relatedWizards = entry.data.relatedWizards?.length
         <h1 class="ana-page-title" data-testid="text-page-title">{entry.data.questionDisplay ?? entry.data.title}</h1>
       </div>
       
+      {/* Outcome Line - directly under title */}
+      {entry.data.outcomeLine && entry.data.outcomeLine.trim() !== '' && (
+        <p class="outcome-line" data-testid="text-outcome-line">{entry.data.outcomeLine}</p>
+      )}
+      
+      {/* Intro Paragraph */}
       {entry.data.introParagraph && entry.data.introParagraph.trim() !== '' && (
         <p class="ana-intro-paragraph" data-testid="text-intro-paragraph">{entry.data.introParagraph}</p>
       )}
-
-      {/* Featured Image in Hero (displayed whenever imageUrl exists) */}
-      {entry.data.imageUrl && (
-        <div class="ana-hero-image">
-          <img 
-            src={entry.data.imageUrl} 
-            alt={entry.data.imageAlt || entry.data.title}
-            class="ana-image zoomable-image"
-            data-testid="img-ana-visual"
-            role="button"
-            tabindex="0"
-            aria-label="Click to zoom image"
-          />
-          <p class="zoom-hint">Click image to zoom</p>
-        </div>
-      )}
     </header>
 
-    <div class="unified-content-card">
-      <article class="ana-item">
-        
-        <!-- ========================================
-             SECTION 2: QUICK ANSWER (SCANNABLE WIN)
-             ======================================== -->
-        {(entry.data.keyInsight?.trim() || entry.data.quickCheckText?.trim()) && (
-          <section class="quick-answer-section" data-testid="section-quick-answer">
-            {entry.data.keyInsight && entry.data.keyInsight.trim() !== '' && (
-              <div class="key-insight-callout" data-testid="callout-key-insight">
-                <div class="callout-icon-wrapper">
-                  <svg class="callout-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M9 18h6" />
-                    <path d="M10 22h4" />
-                    <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
-                  </svg>
-                </div>
-                <div class="callout-content">
-                  <h2 class="callout-label">Key Insight</h2>
-                  <p class="callout-text">{entry.data.keyInsight}</p>
-                </div>
+    <!-- Scannable Card Layout -->
+    <div class="leaf-cards-container">
+      
+      <!-- A) Direct Answer Card (full width, top) -->
+      {(entry.data.shortAnswer?.trim() || entry.data.body?.trim()) && (
+        <div class="leaf-card leaf-card-direct-answer" data-testid="card-direct-answer">
+          <h2 class="leaf-card-heading">Direct Answer</h2>
+          <p class="direct-answer-text">
+            {entry.data.shortAnswer?.trim() 
+              ? entry.data.shortAnswer 
+              : (() => {
+                  const firstSentence = entry.data.body?.replace(/<[^>]*>/g, '').split(/(?<=[.!?])\s+/)[0] || '';
+                  return /[.!?]$/.test(firstSentence) ? firstSentence : firstSentence + '.';
+                })()
+            }
+          </p>
+        </div>
+      )}
+
+      <!-- B) Two-column grid: Key Insight + Quick Check -->
+      {(entry.data.keyInsight?.trim() || entry.data.quickCheckText?.trim()) && (
+        <div class="leaf-cards-row" data-testid="row-insights">
+          {entry.data.keyInsight && entry.data.keyInsight.trim() !== '' && (
+            <div class="leaf-card leaf-card-insight" data-testid="card-key-insight">
+              <div class="leaf-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 18h6" />
+                  <path d="M10 22h4" />
+                  <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
+                </svg>
               </div>
+              <h3 class="leaf-card-heading">Key Insight</h3>
+              <p class="leaf-card-text">{entry.data.keyInsight}</p>
+            </div>
+          )}
+
+          {entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
+            <div class="leaf-card leaf-card-quickcheck" data-testid="card-quick-check">
+              <div class="leaf-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
+                </svg>
+              </div>
+              <h3 class="leaf-card-heading">Quick Check</h3>
+              <ul class="quick-check-list">
+                {entry.data.quickCheckText.split('\n').filter((line: string) => line.trim() !== '').map((line: string) => (
+                  <li>{line.trim()}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- C) What's really going on here Card -->
+      {entry.data.body && entry.data.body.trim() !== '' && (
+        <div class="leaf-card leaf-card-explanation" data-testid="card-explanation">
+          <h2 class="leaf-card-heading">What's really going on here</h2>
+          <div class="leaf-card-prose" set:html={entry.data.body}></div>
+        </div>
+      )}
+
+      <!-- D) Optional Media Card -->
+      {(entry.data.videoUrl?.trim() || entry.data.imageUrl) && (
+        <div class="leaf-card leaf-card-media" data-testid="card-media">
+          {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' && (
+            <div class="media-video-wrapper">
+              <h3 class="leaf-card-heading">Watch</h3>
+              <VimeoEmbed 
+                videoId={entry.data.videoUrl.trim()}
+                title={entry.data.title}
+                aspectRatio="16:9"
+              />
+            </div>
+          )}
+          
+          {entry.data.imageUrl && (
+            <div class="ana-hero-image media-image-wrapper">
+              <img 
+                src={entry.data.imageUrl} 
+                alt={entry.data.imageAlt || entry.data.title}
+                class="ana-image zoomable-image"
+                data-testid="img-ana-visual"
+                role="button"
+                tabindex="0"
+                aria-label="Click to zoom image"
+              />
+              <p class="zoom-hint">Click image to zoom</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Situational Clarity Cards (if present) -->
+      {(entry.data.whyNotMatterYet?.trim() || entry.data.whatToFocus?.trim() || entry.data.whenThisMatters?.trim()) && (
+        <div class="leaf-cards-row leaf-cards-situational" data-testid="row-situational">
+          {entry.data.whyNotMatterYet && entry.data.whyNotMatterYet.trim() !== '' && (
+            <div class="leaf-card leaf-card-situational" data-testid="card-why-not-matter">
+              <h3 class="leaf-card-heading">Why this may not matter yet</h3>
+              <div class="leaf-card-prose" set:html={entry.data.whyNotMatterYet}></div>
+            </div>
+          )}
+
+          {entry.data.whatToFocus && entry.data.whatToFocus.trim() !== '' && (
+            <div class="leaf-card leaf-card-situational" data-testid="card-what-to-focus">
+              <h3 class="leaf-card-heading">What to focus on right now</h3>
+              <div class="leaf-card-prose" set:html={entry.data.whatToFocus}></div>
+            </div>
+          )}
+
+          {entry.data.whenThisMatters && entry.data.whenThisMatters.trim() !== '' && (
+            <div class="leaf-card leaf-card-situational" data-testid="card-when-matters">
+              <h3 class="leaf-card-heading">When this does matter</h3>
+              <div class="leaf-card-prose" set:html={entry.data.whenThisMatters}></div>
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- Exploration Section -->
+      {(entry.data.goFurtherLinks?.length > 0 || entry.data.embedWizard) && (
+        <div class="leaf-card leaf-card-exploration" data-testid="card-exploration">
+          <h2 class="leaf-card-heading">If you want to go further</h2>
+          
+          {entry.data.goFurtherLinks && entry.data.goFurtherLinks.length > 0 && (
+            <ul class="go-further-list">
+              {entry.data.goFurtherLinks.map((link: { url: string; label: string }) => (
+                <li>
+                  <a href={link.url} class="go-further-link" data-testid={`link-go-further-${link.label?.toLowerCase().replace(/\s+/g, '-')}`}>
+                    <span class="link-arrow">→</span>
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+
+          {entry.data.embedWizard === 'dropped-stitch-troubleshooter' && (
+            <div class="embedded-wizard" data-testid="embed-wizard">
+              <DroppedStitchWizard />
+            </div>
+          )}
+        </div>
+      )}
+
+      <!-- E) Member-only Section Card -->
+      {(entry.data.memberTitle || entry.data.memberBody || entry.data.memberVideoUrl) && (
+        <div class="leaf-card leaf-card-member" data-testid="card-member">
+          <div class="member-divider">
+            <div class="divider-line"></div>
+            <span class="divider-text">{entry.data.memberDividerText || "Member-only"}</span>
+            <div class="divider-line"></div>
+          </div>
+
+          <div class="member-content" data-testid="content-member">
+            {entry.data.memberTitle && (
+              <h2 class="member-title">{entry.data.memberTitle}</h2>
             )}
 
-            {entry.data.quickCheckText && entry.data.quickCheckText.trim() !== '' && (
-              <div class="quick-check-callout" data-testid="callout-quick-check">
-                <h3 class="quick-check-title">Quick Check</h3>
-                <ul class="quick-check-list">
-                  {entry.data.quickCheckText.split('\n').filter((line: string) => line.trim() !== '').map((line: string) => (
-                    <li>{line.trim()}</li>
+            {entry.data.memberBody && (
+              <div class="leaf-card-prose" set:html={entry.data.memberBody} data-testid="text-member-body"></div>
+            )}
+
+            {entry.data.memberVideoUrl && (
+              <div class="member-video">
+                <VimeoEmbed 
+                  videoId={entry.data.memberVideoUrl}
+                  title={entry.data.memberTitle || "Member video"}
+                  aspectRatio="16:9"
+                />
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      <!-- F) Related Content Section -->
+      {(relatedAnas.length > 0 || relatedWorkshops.length > 0 || relatedWizards.length > 0) && (
+        <div class="leaf-card leaf-card-related" data-testid="card-related">
+          <h2 class="leaf-card-heading">Related</h2>
+          
+          <div class="related-grid">
+            {relatedAnas.length > 0 && (
+              <div class="related-group" data-testid="group-related-anas">
+                <h3 class="related-subtitle">Related Questions</h3>
+                <ul class="related-list">
+                  {relatedAnas.slice(0, 3).map((ana) => (
+                    <li class="related-item related-ana-item">
+                      <img src="/images/ask-n-answer_logo.svg" alt="" class="ana-logo-icon-small" />
+                      <a href={`/ana/${ana.slug}`} class="related-link" data-testid={`link-related-ana-${ana.slug}`}>
+                        {ana.questionDisplay || ana.title}
+                      </a>
+                    </li>
                   ))}
                 </ul>
               </div>
             )}
-          </section>
-        )}
 
-        <!-- Video Section (after Quick Answer, before main explanation) -->
-        {entry.data.videoUrl && entry.data.videoUrl.trim() !== '' && (
-          <div class="ana-video-section" data-testid="section-video">
-            <VimeoEmbed 
-              videoId={entry.data.videoUrl.trim()}
-              title={entry.data.title}
-              aspectRatio="16:9"
-            />
+            {relatedWorkshops.length > 0 && (
+              <div class="related-group" data-testid="group-related-workshops">
+                <h3 class="related-subtitle">Workshops</h3>
+                <ul class="related-list">
+                  {relatedWorkshops.map((workshop) => (
+                    <li class="related-item">
+                      <a href={`/workshops/${workshop.slug}`} class="related-link" data-testid={`link-related-workshop-${workshop.slug}`}>
+                        {workshop.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {relatedWizards.length > 0 && (
+              <div class="related-group" data-testid="group-related-wizards">
+                <h3 class="related-subtitle">Interactive Tools</h3>
+                <ul class="related-list">
+                  {relatedWizards.map((wizard) => (
+                    <li class="related-item">
+                      <a href={`/wizards/${wizard.slug}`} class="related-link" data-testid={`link-related-wizard-${wizard.slug}`}>
+                        {wizard.title}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
-        )}
+        </div>
+      )}
 
-        <!-- ========================================
-             SECTION 3: WHAT'S REALLY GOING ON HERE
-             ======================================== -->
-        {entry.data.body && (
-          <section class="main-explanation-section" data-testid="section-main-explanation">
-            <h2 class="section-heading">What's really going on here</h2>
-            <div class="section-body" set:html={entry.data.body}></div>
-          </section>
-        )}
-
-        <!-- ========================================
-             SECTION 4: SITUATIONAL CLARITY
-             ======================================== -->
-        {(entry.data.whyNotMatterYet?.trim() || entry.data.whatToFocus?.trim() || entry.data.whenThisMatters?.trim()) && (
-          <section class="situational-section" data-testid="section-situational">
-            {entry.data.whyNotMatterYet && entry.data.whyNotMatterYet.trim() !== '' && (
-              <div class="situational-card" data-testid="card-why-not-matter">
-                <h3 class="situational-heading">Why this may not matter yet</h3>
-                <div class="situational-content" set:html={entry.data.whyNotMatterYet}></div>
-              </div>
-            )}
-
-            {entry.data.whatToFocus && entry.data.whatToFocus.trim() !== '' && (
-              <div class="situational-card" data-testid="card-what-to-focus">
-                <h3 class="situational-heading">What to focus on right now</h3>
-                <div class="situational-content" set:html={entry.data.whatToFocus}></div>
-              </div>
-            )}
-
-            {entry.data.whenThisMatters && entry.data.whenThisMatters.trim() !== '' && (
-              <div class="situational-card" data-testid="card-when-matters">
-                <h3 class="situational-heading">When this does matter</h3>
-                <div class="situational-content" set:html={entry.data.whenThisMatters}></div>
-              </div>
-            )}
-          </section>
-        )}
-
-        <!-- ========================================
-             SECTION 5: OPTIONAL EXPLORATION
-             ======================================== -->
-        {(entry.data.goFurtherLinks?.length > 0 || entry.data.embedWizard) && (
-          <section class="exploration-section" data-testid="section-exploration">
-            <h2 class="section-heading">If you want to go further</h2>
-            
-            {entry.data.goFurtherLinks && entry.data.goFurtherLinks.length > 0 && (
-              <ul class="go-further-list">
-                {entry.data.goFurtherLinks.map((link: { url: string; label: string }) => (
-                  <li>
-                    <a href={link.url} class="go-further-link" data-testid={`link-go-further-${link.label?.toLowerCase().replace(/\s+/g, '-')}`}>
-                      <span class="link-arrow">→</span>
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {entry.data.embedWizard === 'dropped-stitch-troubleshooter' && (
-              <div class="embedded-wizard" data-testid="embed-wizard">
-                <DroppedStitchWizard />
-              </div>
-            )}
-          </section>
-        )}
-
-        <!-- ========================================
-             SECTION 6: MEMBER-ONLY (ALWAYS LAST CONTENT)
-             ======================================== -->
-        {(entry.data.memberTitle || entry.data.memberBody || entry.data.memberVideoUrl) && (
-          <section class="member-section" data-testid="section-member">
-            <div class="member-divider">
-              <div class="divider-line"></div>
-              <span class="divider-text">{entry.data.memberDividerText || "Member-only"}</span>
-              <div class="divider-line"></div>
-            </div>
-
-            <div class="member-content" data-testid="content-member">
-              {entry.data.memberTitle && (
-                <h2 class="member-title">{entry.data.memberTitle}</h2>
-              )}
-
-              {entry.data.memberBody && (
-                <div class="member-body" set:html={entry.data.memberBody} data-testid="text-member-body"></div>
-              )}
-
-              {entry.data.memberVideoUrl && (
-                <div class="member-video">
-                  <VimeoEmbed 
-                    videoId={entry.data.memberVideoUrl}
-                    title={entry.data.memberTitle || "Member video"}
-                    aspectRatio="16:9"
-                  />
-                </div>
-              )}
-            </div>
-          </section>
-        )}
-
-        <!-- ========================================
-             SECTION 7: RELATED CONTENT (EXIT RAMPS)
-             ======================================== -->
-        {(relatedAnas.length > 0 || relatedWorkshops.length > 0 || relatedWizards.length > 0) && (
-          <section class="related-section" data-testid="section-related">
-            <h2 class="section-heading">Related</h2>
-            
-            <div class="related-grid">
-              {relatedAnas.length > 0 && (
-                <div class="related-group" data-testid="group-related-anas">
-                  <h3 class="related-subtitle">Related Questions</h3>
-                  <ul class="related-list">
-                    {relatedAnas.map((ana) => (
-                      <li class="related-item related-ana-item">
-                        <img src="/images/ask-n-answer_logo.svg" alt="" class="ana-logo-icon-small" />
-                        <a href={`/ana/${ana.slug}`} class="related-link" data-testid={`link-related-ana-${ana.slug}`}>
-                          {ana.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {relatedWorkshops.length > 0 && (
-                <div class="related-group" data-testid="group-related-workshops">
-                  <h3 class="related-subtitle">Workshops</h3>
-                  <ul class="related-list">
-                    {relatedWorkshops.map((workshop) => (
-                      <li class="related-item">
-                        <a href={`/workshops/${workshop.slug}`} class="related-link" data-testid={`link-related-workshop-${workshop.slug}`}>
-                          {workshop.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-
-              {relatedWizards.length > 0 && (
-                <div class="related-group" data-testid="group-related-wizards">
-                  <h3 class="related-subtitle">Interactive Tools</h3>
-                  <ul class="related-list">
-                    {relatedWizards.map((wizard) => (
-                      <li class="related-item">
-                        <a href={`/wizards/${wizard.slug}`} class="related-link" data-testid={`link-related-wizard-${wizard.slug}`}>
-                          {wizard.title}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-            </div>
-          </section>
-        )}
-
-      </article>
     </div>
     </>
     )}
@@ -651,6 +668,391 @@ const relatedWizards = entry.data.relatedWizards?.length
       align-self: flex-end;
       margin-top: auto;
     }
+  }
+
+  /* =========================================
+     LEAF PAGE CARD-BASED LAYOUT
+     ========================================= */
+  
+  /* Outcome Line - confidence line under title */
+  .outcome-line {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #52682d;
+    margin: 0.5rem 0 0 0;
+    line-height: 1.5;
+    font-style: italic;
+  }
+
+  /* Card Container */
+  .leaf-cards-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Base Card Styles */
+  .leaf-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  }
+
+  .leaf-card-heading {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #2c3a57;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.3;
+  }
+
+  .leaf-card-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #4a5568;
+    margin: 0;
+  }
+
+  .leaf-card-icon {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.75rem;
+    color: #52682d;
+  }
+
+  .leaf-card-icon svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Two-column row for cards */
+  .leaf-cards-row {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .leaf-cards-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* Direct Answer Card - emphasized */
+  .leaf-card-direct-answer {
+    background: linear-gradient(135deg, #f8faf5 0%, #f0f4eb 100%);
+    border-color: #d4e0c4;
+    border-width: 2px;
+  }
+
+  .leaf-card-direct-answer .leaf-card-heading {
+    color: #52682d;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .direct-answer-text {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #2c3a57;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  /* Insight Card */
+  .leaf-card-insight {
+    border-left: 4px solid #52682d;
+  }
+
+  /* Quick Check Card */
+  .leaf-card-quickcheck {
+    border-left: 4px solid #6b8e23;
+  }
+
+  .leaf-card-quickcheck .quick-check-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .leaf-card-quickcheck .quick-check-list li {
+    position: relative;
+    padding-left: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+  }
+
+  .leaf-card-quickcheck .quick-check-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #52682d;
+    font-weight: 600;
+  }
+
+  .leaf-card-quickcheck .quick-check-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Explanation Card - prose typography */
+  .leaf-card-explanation {
+    max-width: 100%;
+  }
+
+  .leaf-card-prose {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: #4a5568;
+    max-width: 65ch;
+  }
+
+  .leaf-card-prose p {
+    margin: 0 0 1rem 0;
+  }
+
+  .leaf-card-prose p:last-child {
+    margin-bottom: 0;
+  }
+
+  .leaf-card-prose h2,
+  .leaf-card-prose h3,
+  .leaf-card-prose h4 {
+    font-weight: 700;
+    color: #2c3a57;
+    margin: 1.5rem 0 0.75rem 0;
+    line-height: 1.3;
+  }
+
+  .leaf-card-prose h2 {
+    font-size: 1.25rem;
+  }
+
+  .leaf-card-prose h3 {
+    font-size: 1.1rem;
+  }
+
+  .leaf-card-prose h4 {
+    font-size: 1rem;
+  }
+
+  .leaf-card-prose ul,
+  .leaf-card-prose ol {
+    margin: 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .leaf-card-prose li {
+    margin-bottom: 0.5rem;
+    line-height: 1.7;
+  }
+
+  .leaf-card-prose a {
+    color: #52682d;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .leaf-card-prose a:hover {
+    color: #3e5524;
+  }
+
+  .leaf-card-prose strong {
+    font-weight: 600;
+    color: #2c3a57;
+  }
+
+  .leaf-card-prose em {
+    font-style: italic;
+  }
+
+  .leaf-card-prose blockquote {
+    border-left: 3px solid #52682d;
+    margin: 1rem 0;
+    padding-left: 1rem;
+    color: #5a6c7d;
+    font-style: italic;
+  }
+
+  /* Media Card */
+  .leaf-card-media {
+    padding: 1rem;
+  }
+
+  .media-video-wrapper {
+    margin-bottom: 1rem;
+  }
+
+  .media-video-wrapper:last-child {
+    margin-bottom: 0;
+  }
+
+  .media-image-wrapper {
+    text-align: center;
+  }
+
+  .leaf-card-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.1);
+  }
+
+  /* Situational Cards */
+  .leaf-card-situational {
+    background: #fafbfc;
+  }
+
+  .leaf-cards-situational {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 768px) {
+    .leaf-cards-situational {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+  }
+
+  /* Exploration Card */
+  .leaf-card-exploration {
+    background: #f8faf5;
+    border-color: #d4e0c4;
+  }
+
+  .go-further-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .go-further-list li {
+    margin-bottom: 0.5rem;
+  }
+
+  .go-further-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #52682d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .go-further-link:hover {
+    color: #3e5524;
+    text-decoration: underline;
+  }
+
+  .link-arrow {
+    font-weight: bold;
+  }
+
+  /* Member Card */
+  .leaf-card-member {
+    background: linear-gradient(135deg, #f5f0eb 0%, #ebe5de 100%);
+    border-color: #d4c9bc;
+  }
+
+  .member-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .divider-line {
+    flex: 1;
+    height: 1px;
+    background: #c4b8a9;
+  }
+
+  .divider-text {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #8b7355;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .member-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #5a4a3a;
+    margin: 0 0 1rem 0;
+  }
+
+  .member-video {
+    margin-top: 1rem;
+  }
+
+  /* Related Card */
+  .leaf-card-related {
+    background: #fafbfc;
+  }
+
+  .related-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .related-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+  }
+
+  .related-group {
+    margin: 0;
+  }
+
+  .related-subtitle {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #5a6c7d;
+    margin: 0 0 0.75rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+  }
+
+  .related-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .related-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .related-item:last-child {
+    margin-bottom: 0;
+  }
+
+  .ana-logo-icon-small {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .related-link {
+    color: #52682d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .related-link:hover {
+    color: #3e5524;
+    text-decoration: underline;
   }
 
   /* =========================================
