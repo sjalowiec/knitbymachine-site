@@ -276,7 +276,7 @@ const relatedWizards = entry.data.relatedWizards?.length
       <!-- A) Direct Answer Card (full width, top) -->
       {(entry.data.shortAnswer?.trim() || entry.data.body?.trim()) && (
         <div class="leaf-card leaf-card-direct-answer" data-testid="card-direct-answer">
-          <h2 class="leaf-card-heading">Direct Answer</h2>
+          
           <p class="direct-answer-text">
             {entry.data.shortAnswer?.trim() 
               ? entry.data.shortAnswer 
@@ -348,7 +348,7 @@ const relatedWizards = entry.data.relatedWizards?.length
                   <path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14" />
                 </svg>
               </div>
-              <h3 class="leaf-card-heading">Key Insight</h3>
+            
               <p class="leaf-card-text">{entry.data.keyInsight}</p>
             </div>
           )}
@@ -366,7 +366,7 @@ const relatedWizards = entry.data.relatedWizards?.length
                   tabindex="0"
                   aria-label="Click to zoom image"
                 />
-                <p class="zoom-hint">Click image to zoom</p>
+               
               </div>
             </div>
           ) : (
@@ -393,7 +393,7 @@ const relatedWizards = entry.data.relatedWizards?.length
       <!-- C) What's really going on here Card -->
       {entry.data.body && entry.data.body.trim() !== '' && (
         <div class="leaf-card leaf-card-explanation" data-testid="card-explanation">
-          <h2 class="leaf-card-heading">What's really going on here</h2>
+          <h2 class="leaf-card-heading">How it works</h2>
           <div class="leaf-card-prose" set:html={entry.data.body}></div>
         </div>
       )}
@@ -516,7 +516,7 @@ const relatedWizards = entry.data.relatedWizards?.length
       <!-- F) Related Content Section -->
       {(relatedAnas.length > 0 || relatedWorkshops.length > 0 || relatedWizards.length > 0) && (
         <div class="leaf-card leaf-card-related" data-testid="card-related">
-          <h2 class="leaf-card-heading">Related</h2>
+     
           
           <div class="related-grid">
             {relatedAnas.length > 0 && (
@@ -581,12 +581,12 @@ const relatedWizards = entry.data.relatedWizards?.length
       </div>
     )}
 
-    <!-- Debug ANA JSON (temporary) -->
+    <!-- Debug ANA JSON (temporary) 
     <details style="margin-top:2rem; background:#f5f5f5; padding:1rem; border-radius:8px;">
       <summary style="cursor:pointer; font-weight:bold;">Debug ANA JSON</summary>
       <pre style="white-space:pre-wrap; word-break:break-all; font-size:0.75rem; max-height:600px; overflow:auto;">{JSON.stringify(entry.data, null, 2)}</pre>
     </details>
-  </div>
+  </div>-->
 </Layout>
 
 <style>
