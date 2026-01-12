@@ -6,7 +6,7 @@ let entries: any[] = [];
 let errorMessage = '';
 
 // Fetch practice projects from the CMS API
-const adminApiUrl = import.meta.env.ADMIN_API_URL || 'https://knit-content-manager-sue23.replit.app';
+const adminApiUrl = import.meta.env.CONTENT_API_BASE_URL || 'https://knit-content-manager-sue23.replit.app';
 // Cache-buster for dev preview - ensures fresh data on every refresh
 const cacheBuster = `_cb=${Date.now()}`;
 

@@ -63,10 +63,10 @@ export interface FoundationSummary {
   updatedAt: string;
 }
 
-// API base URL - uses environment variable or falls back to relative path for same-origin requests
-// In production, PUBLIC_API_URL should be set to the admin API endpoint
+// API base URL - uses environment variable or falls back to hardcoded default
+// Set CONTENT_API_BASE_URL to point to the admin API endpoint
 // @ts-ignore - import.meta.env is provided by Astro
-const API_BASE = (import.meta as any).env?.PUBLIC_API_URL || process.env.PUBLIC_API_URL || '';
+const API_BASE = (import.meta as any).env?.CONTENT_API_BASE_URL || process.env.CONTENT_API_BASE_URL || 'https://knit-content-manager-sue23.replit.app';
 
 /**
  * Get all published foundations

@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
+    "dev:replit": "astro dev --host 0.0.0.0 --port ${PORT:-5000}",
     "prebuild": "rm -rf .netlify .astro dist node_modules/.astro node_modules/.vite",
     "build": "astro build",
     "preview": "astro preview"
