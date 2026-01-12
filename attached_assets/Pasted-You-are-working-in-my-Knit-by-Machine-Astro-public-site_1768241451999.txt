@@ -1,0 +1,141 @@
+You are working in my Knit by Machine Astro public site (not the admin). Please make a backup / git commit before any changes.
+
+Target:
+Leaf ANA detail page: ana/{slug} (the leaf layout you used for the “hung-hems” page).
+Do NOT add new database fields or change schemas. This is template + CSS only.
+
+We are implementing FOUR changes:
+
+────────────────────────────────────────────────────────────
+CHANGE 1) Hero hierarchy: H1 = ANA title, next line = subtitle
+────────────────────────────────────────────────────────────
+Current:
+- H1 is using ana.questionDisplay (long sentence)
+
+Desired:
+- H1 should be a short “title/question” line.
+- The current long questionDisplay line should become a subtitle/deck line directly under H1.
+
+Implementation rules (no new fields):
+- Use these fallbacks for H1:
+  1) If ana.pageTitle exists, use it (only if already in your current data model; do not add it)
+  2) Else if ana.title exists and it is not just a slug-looking value, use it
+  3) Else use ana.questionDisplay (but shorten visually via CSS line clamp rather than editing data)
+- Subtitle line:
+  - Prefer ana.questionDisplay as the subtitle (since it’s already human-facing)
+  - If ana.questionDisplay is empty, use ana.shortAnswer as subtitle
+
+Important:
+- Keep the Ask ’n Answer icon row as-is, just swap the text hierarchy.
+
+────────────────────────────────────────────────────────────
+CHANGE 2) Outcome line becomes a callout
+────────────────────────────────────────────────────────────
+Current:
+- <p class="outcome-line"> appears like normal body text
+
+Desired:
+- Render outcomeLine as a clearly distinct callout (subtle background, left border, icon optional).
+- Must remain scannable and compact.
+
+Implementation:
+- Keep existing field ana.outcomeLine (already present in JSON) and render it only if it has content.
+- Add a new wrapper class, e.g. .outcome-callout, around the outcome line paragraph OR change .outcome-line styling to be callout-like.
+
+Accessibility:
+- Keep it as text (no images), ensure contrast is good.
+
+────────────────────────────────────────────────────────────
+CHANGE 3) Add “Next step” card (auto-generated, no schema changes)
+────────────────────────────────────────────────────────────
+Add a small “Next step” card that appears near the top of the page (after the Direct Answer, before the long explanation section).
+
+Data sources (existing fields):
+- ana.wizardUrl (string)
+- ana.parentGatewaySlug (string)
+- ana.relatedAnas (array of slugs)
+- ana.videoUrl (string)
+- ana.relatedWorkshops (array)
+- ana.isMemberOnly (boolean)
+
+Goal:
+Show 1–2 highly relevant next actions. Keep it calm and scannable.
+
+Priority logic (choose up to 2):
+1) If ana.wizardUrl exists:
+   - Primary action: label “Use the helper” (or “Answer a few questions”) → link to wizardUrl
+2) Else if ana.parentGatewaySlug exists:
+   - Primary action: label “Start at the gateway” → link to /ana/{parentGatewaySlug}
+3) Else if ana.relatedAnas has at least 1:
+   - Primary action: label “Related answer” → link to /ana/{firstRelatedSlug}
+
+Secondary action (optional, only if exists and not duplicate):
+- If ana.videoUrl exists: label “Watch the demo” → link to videoUrl (open in same tab unless you already standardize otherwise)
+- Else if ana.relatedWorkshops has at least 1 and you can build a valid URL: label “Go deeper” → link to the first workshop
+
+Behavior:
+- If none of these fields exist, do not render the Next step card.
+- Avoid showing more than 2 links. If only 1 exists, show 1.
+
+UI:
+- Heading: “Next step”
+- 1–2 links in a short list with clear labels (not raw URLs)
+- Keep it smaller than major content cards.
+
+Testing:
+- Confirm it renders on “hung-hems” using relatedAnas (and/or any other available field).
+
+────────────────────────────────────────────────────────────
+CHANGE 4) Reorder cards: image moves up, Quick Check moves down
+────────────────────────────────────────────────────────────
+Current order:
+- Direct Answer (full width)
+- Row: Key Insight + Quick Check (2-column)
+- Explanation (full width)
+- Media image card (below)
+- Related
+
+Desired order:
+1) Direct Answer (full width)
+2) Two-column row:
+   - Left: Key Insight card
+   - Right: Media Image card (if imageUrl exists)
+   - If imageUrl does NOT exist, use Quick Check card on the right (fallback)
+3) “What’s really going on here” / explanation (full width)
+4) Quick Check card (full width) AFTER the explanation (only if quickCheckText exists)
+5) Related (as-is)
+
+Important:
+- Do not duplicate Quick Check (it should appear either as fallback in the 2-col row when no image, OR as full-width below explanation when image exists).
+- Keep zoom modal behavior working (existing zoomable-image and modal script must still work).
+
+Responsive requirements:
+- On mobile, the 2-col row stacks:
+  - Key Insight first
+  - Image second (or Quick Check fallback)
+- The full-width Quick Check below explanation should remain full-width and readable.
+
+────────────────────────────────────────────────────────────
+CSS / Styling notes (keep minimal, no redesign)
+────────────────────────────────────────────────────────────
+- Add a .ana-subtitle style for the hero subtitle line (smaller than H1).
+- Outcome callout:
+  - subtle background
+  - left border accent
+  - padding + border radius to match existing card language
+- Next step card:
+  - match existing leaf-card styling
+  - small heading + list
+  - keep it compact (not a wall of text)
+- Ensure spacing between hero and first card still feels balanced.
+
+Verification checklist:
+- Desktop: image appears where Quick Check used to be (above the fold sooner).
+- Quick Check appears below explanation (full width).
+- Outcome line reads like a takeaway callout.
+- H1/subtitle hierarchy is clear.
+- Next step card appears only when there’s something to show and never shows more than 2 links.
+- All existing data-testid attributes remain or are added consistently:
+  - card-key-insight, card-media, card-quick-check, and add card-next-step.
+
+Please implement these changes cleanly and keep the code readable.
