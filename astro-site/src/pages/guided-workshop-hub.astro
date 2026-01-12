@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import VideoReplySection from '../components/workshops/VideoReplySection.astro';
+
+// === EDIT THESE FOR EACH PARTICIPANT (this is your "drip control center") ===
+const participantFirstName = "Friend"; // ex: "Ruth"
+const participantCode = "ruth-2026-01"; // unique slug/code for this participant
+const workshopTitle = `Guided Workshop — ${participantFirstName}`;
+
+// Status line at top (update anytime)
+const statusLine = "Today: post a photo of your current setup + tell me what you want to tackle next.";
+
+// Today's focus block (this is what you drip)
+const todaysGoal = "Get oriented and choose a single, realistic next step.";
+const todaysAction = "Post 1 photo of your work + 1 sentence describing what's happening (or what feels stuck).";
+const todaysQuestion = "What would feel like a small win by tomorrow?";
+
+const title = workshopTitle;
+const description = "Your private workshop space for updates and questions.";
+
+// Hyvor thread id (unique per participant)
+const hyvorPageId = `guided-workshop-${participantCode}`;
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--guided-workshop-hub">
+
+    <div class="hub-notice">
+      <strong>Note:</strong> This is the original hub page. New workshops now use dynamic pages.
+      <a href="/guided-workshops/betty-scarf/hub">View example: Betty's Scarf Workshop →</a>
+    </div>
+
+    <header class="hub-hero">
+      <h1>Guided Workshop</h1>
+      <p class="hub-subtitle">
+        Hi {participantFirstName} — this is your workshop space. Everything stays together right here.
+      </p>
+      <div class="hub-status">
+        <strong>Current focus:</strong> {statusLine}
+      </div>
+    </header>
+
+    <section class="hub-card">
+      <h2>How this works</h2>
+      <ul class="hub-list">
+        <li><strong>Post updates here:</strong> scroll down and add your note under "Workshop Conversation."</li>
+        <li><strong>What to include:</strong> a photo + 1–2 sentences (what you did, or what feels stuck).</li>
+        <li><strong>My reply rhythm:</strong> I'll respond in writing with the next step and what to check.</li>
+        <li><strong>Done for today:</strong> once you've posted, you're done — no extra homework.</li>
+      </ul>
+      <p class="hub-note">
+        Photos work best. If a short video helps, share a Loom link in your comment.
+      </p>
+    </section>
+
+    <section class="hub-card">
+      <h2>Today's Focus</h2>
+      <div class="hub-focus">
+        <p><strong>Goal:</strong> {todaysGoal}</p>
+        <p><strong>Action:</strong> {todaysAction}</p>
+        <p><strong>Question:</strong> {todaysQuestion}</p>
+      </div>
+    </section>
+
+    <VideoReplySection />
+
+    <section class="hub-card">
+      <h2>Workshop Conversation</h2>
+      <p class="hub-note">
+        Post your update below. If you're stuck, describe what you expected vs. what happened.
+      </p>
+
+      <div class="hub-comments">
+        <hyvor-talk-comments
+          website-id="14706"
+          page-id={hyvorPageId}
+        ></hyvor-talk-comments>
+      </div>
+    </section>
+
+  </main>
+
+  <style>
+    .page--guided-workshop-hub { max-width: 880px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    .hub-hero { margin-bottom: 1.25rem; }
+    .hub-subtitle { margin-top: 0.5rem; }
+    .hub-status { margin-top: 0.75rem; padding: 0.85rem 1rem; border-radius: 16px; border: 1px solid rgba(44,58,87,0.12); background: rgba(255,255,255,0.65); }
+    .hub-card { margin-top: 1rem; padding: 1rem; border-radius: 18px; border: 1px solid rgba(44,58,87,0.12); background: rgba(255,255,255,0.65); }
+    .hub-list { margin: 0.75rem 0 0; padding-left: 1.2rem; }
+    .hub-list li { margin: 0.4rem 0; }
+    .hub-note { margin-top: 0.75rem; opacity: 0.9; }
+    .hub-focus p { margin: 0.5rem 0; }
+    .hub-comments { margin-top: 0.75rem; }
+    .hub-notice { padding: 0.75rem 1rem; border-radius: 12px; background: rgba(82, 104, 45, 0.1); border: 1px solid rgba(82, 104, 45, 0.2); margin-bottom: 1rem; font-size: 0.9rem; }
+    .hub-notice a { color: #52682D; font-weight: 600; margin-left: 0.5rem; }
+  </style>
+</BaseLayout>

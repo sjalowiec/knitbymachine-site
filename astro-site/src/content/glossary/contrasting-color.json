@@ -1,0 +1,43 @@
+{
+  "term": "Contrasting Color",
+  "slug": "contrasting-color",
+  "abbreviation": "CC",
+  "description": "<p></p><p><strong>Contrasting color</strong> is a yarn color that is intentionally different from the main or background color so it stands out clearly in the finished fabric.</p><p></p><p></p><p>In machine knitting, a contrasting color is often used to:</p><p></p><p></p><ul><li><p>Emphasize borders, cuffs, bands, or hems</p></li><li><p>Create stripes, motifs, or text that are easy to see</p></li><li><p>Highlight design details such as pockets, button bands, or decorative seams</p></li><li><p>Add a temporary marker, marker row, or separator to make shaping steps easy to spot while knitting</p></li><li><p></p></li></ul><p>A color can contrast by being lighter or darker, a different hue (for example, blue against orange), or much more or less saturated than the main color. For the strongest effect, choose a contrasting color that is clearly different in value (light vs dark) so the stitch pattern and shapes are easy to see from a distance.</p><p>Patterns may abbreviate contrasting color as <strong>CC</strong> and main color as <strong>MC</strong>.</p><p></p><p></p>",
+  "tooltip": "A clearly different yarn color used for standout details or temporary marker rows in your knitting.",
+  "example": "<p>Knit 2 rows in CC for stripe</p>",
+  "categories": [
+    "Abbreviations",
+    "Techniques"
+  ],
+  "letter": "C",
+  "imageFilename": "/images/glossary/contrasting-color-yarn.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "url": "https://knitbymachine.com/glossary/contrasting-color",
+    "name": "Contrasting color",
+    "@type": "DefinedTerm",
+    "@context": "https://schema.org",
+    "description": "A yarn color that is clearly different from the main color and used to make edges, stripes, or design details stand out in knitting.",
+    "alternateName": [
+      "contrast color",
+      "CC"
+    ],
+    "inDefinedTermSet": "https://knitbymachine.com/glossary"
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "main-color"
+  ],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": false,
+  "publishedDate": "2025-11-19T00:00:00.000Z",
+  "pendingPublish": false
+}

@@ -1,0 +1,26 @@
+{
+  "title": "Ready ● Set ● Knit: Projects",
+  "slug": "ready-set-knit-projects",
+  "description": "<p>Ready ● Set ● Knit: Projects is your guided helper for choosing what to knit next. <br><br>With a few simple questions, this Project Planner learns your confidence, your time, your machine, and your yarn situation - then suggests a project that fits you right now. <br><br>You'll get gentle guidance, clear next steps</p>",
+  "excerpt": "The shortest path to your next project",
+  "category": "Project Planners",
+  "tags": [
+    "beginner"
+  ],
+  "iframeUrl": "https://chatbot.getmindpal.com/ready-set-knit-projects-zx1",
+  "iframeHeight": "700",
+  "provider": "mindpal",
+  "accessLevel": "free",
+  "iconUrl": "https://www.knitbymachine.com/images/wizard.svg",
+  "htmlContent": "Want to follow along with a printable?<br><br>\n<a href=\"https://knitbymachine.com/project-checklist\" download>Download the Project Readiness Checklist (PDF)</a><br><br>and keep it handy while you use this Project Planner.",
+  "imageUrl": "",
+  "imageAlt": "",
+  "metaTitle": "Ready, Set, Knit: Project Planner | Knit by Machine",
+  "metaDescription": "Not sure what to knit next? Use the Ready, Set, Knit Project Planner to choose a project that matches your time, yarn, machine, and confidence—then get guided to the perfect Knit by Machine resource.",
+  "schemaMarkup": null,
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "isDraft": false,
+  "publishedDate": "2025-11-25",
+  "pendingPublish": false
+}

@@ -1,0 +1,118 @@
+---
+import Header from '../components/header.astro';
+import Footer from '../components/footer.astro';
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Membership - Knit by Machine</title>
+  <meta name="description" content="A membership experience is taking shape at Knit by Machine." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=Shadows+Into+Light+Two&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+  <link rel="stylesheet" href="/styles/temphome.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background-color: #f7f8f7;
+    }
+    
+    .page-content {
+      margin-top: 140px;
+      min-height: 60vh;
+      padding: 60px 20px;
+      text-align: center;
+    }
+    
+    .coming-soon-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: white;
+      padding: 60px 40px;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+    
+    .coming-soon-icon {
+      margin-bottom: 24px;
+    }
+    
+    .coming-soon-icon img {
+      width: 72px;
+      height: 72px;
+    }
+    
+    .coming-soon-container h1 {
+      font-size: 2.5rem;
+      color: #52682d;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    
+    .coming-soon-container p {
+      font-size: 1.1rem;
+      color: #5a5a5a;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+    
+    .coming-soon-container p:last-of-type {
+      margin-bottom: 32px;
+    }
+    
+    .back-link {
+      display: inline-block;
+      padding: 12px 32px;
+      background: #52682d;
+      color: white;
+      text-decoration: none;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+    
+    .back-link:hover {
+      background: #738c52;
+    }
+    
+    @media (max-width: 1024px) {
+      .coming-soon-container {
+        padding: 40px 24px;
+      }
+      
+      .coming-soon-container h1 {
+        font-size: 2rem;
+      }
+      
+      .coming-soon-icon img {
+        width: 56px;
+        height: 56px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <Header />
+  
+  <main class="page-content">
+    <div class="coming-soon-container">
+      <div class="coming-soon-icon">
+        <img src="https://knitbymachine.com/images/kbm_logo.svg" alt="Knit by Machine" />
+      </div>
+      <h1>Membership</h1>
+      <p>A membership experience is taking shape here at Knit by Machine — thoughtfully and at the right pace.</p>
+      <p>Right now, the focus is on building clear answers, practical tools, and a helpful foundation you can use immediately.</p>
+      <p>You don't need a membership to get value here.<br />Explore the Ask 'n Answer Help Hub and resources available now.</p>
+      <a href="/ana-catalog" class="back-link" data-testid="link-explore-help-hub">Explore the Help Hub</a>
+    </div>
+  </main>
+  
+  <Footer />
+</body>
+</html>

@@ -1,0 +1,187 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import VideoBlock from '../../components/media/VideoBlock.astro';
+
+export async function getStaticPaths() {
+  const allVideos = await getCollection('videos');
+  
+  return allVideos
+    .filter(v => v.data.published !== false)
+    .map((video) => ({
+      params: { slug: video.id.replace('.json', '') },
+      props: { video },
+    }));
+}
+
+const { video } = Astro.props;
+const { slug } = Astro.params;
+
+if (!video) {
+  return Astro.redirect('/404');
+}
+
+const pageTitle = `${video.data.title} | Video Library | Knit by Machine`;
+const pageDescription = video.data.tags?.length 
+  ? `Learn ${video.data.title} - ${video.data.tags.join(', ')}`
+  : `Watch the ${video.data.title} tutorial video`;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main class="video-detail-page">
+    <div class="container">
+      <nav class="breadcrumb">
+        <a href="/videos">Video Library</a>
+        <span class="separator">/</span>
+        <span class="current">{video.data.title}</span>
+      </nav>
+
+      <article class="video-article" data-testid={`video-detail-${slug}`}>
+        <header class="video-header">
+          <h1>{video.data.title}</h1>
+          <div class="video-meta">
+            {video.data.skillLevel && (
+              <span class="skill-badge">{video.data.skillLevel}</span>
+            )}
+            {video.data.tags && video.data.tags.length > 0 && (
+              <span class="video-tags">{video.data.tags.join(' · ')}</span>
+            )}
+          </div>
+        </header>
+
+        <VideoBlock videoSlug={slug} />
+
+        {video.data.keywords && video.data.keywords.length > 0 && (
+          <footer class="video-keywords">
+            <h3>Related Keywords</h3>
+            <div class="keyword-list">
+              {video.data.keywords.map((keyword: string) => (
+                <span class="keyword">{keyword}</span>
+              ))}
+            </div>
+          </footer>
+        )}
+      </article>
+
+      <div class="back-link">
+        <a href="/videos">Back to Video Library</a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .video-detail-page {
+    padding: 2rem 0 4rem;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .breadcrumb {
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+
+  .breadcrumb a {
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .separator {
+    margin: 0 0.5rem;
+    color: #ccc;
+  }
+
+  .current {
+    color: #333;
+  }
+
+  .video-article {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    border-radius: 8px;
+    padding: 1.5rem;
+  }
+
+  .video-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .video-header h1 {
+    font-size: 1.75rem;
+    color: var(--kbm-green, #52682d);
+    margin: 0 0 0.75rem;
+  }
+
+  .video-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .skill-badge {
+    background: var(--kbm-green-light, #e8eee0);
+    color: var(--kbm-green, #52682d);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    text-transform: capitalize;
+  }
+
+  .video-tags {
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+  }
+
+  .video-keywords {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e5e5;
+  }
+
+  .video-keywords h3 {
+    font-size: 1rem;
+    color: #333;
+    margin: 0 0 0.75rem;
+  }
+
+  .keyword-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .keyword {
+    background: #f5f5f5;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #666;
+  }
+
+  .back-link {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .back-link a {
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    font-size: 0.95rem;
+  }
+
+  .back-link a:hover {
+    text-decoration: underline;
+  }
+</style>

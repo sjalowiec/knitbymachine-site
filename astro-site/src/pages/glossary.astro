@@ -1,0 +1,612 @@
+---
+import Layout from "../layouts/layout.astro";
+import SectionHero from "../components/SectionHero.astro";
+
+// Helper to normalize image paths - handles full URLs, paths, and bare filenames
+function normalizeGlossaryImagePath(imageValue: string | null | undefined): string | null {
+  if (!imageValue) return null;
+  
+  // If it's already a full URL or absolute path, return as-is
+  if (imageValue.startsWith('http://') || imageValue.startsWith('https://') || imageValue.startsWith('/')) {
+    return imageValue;
+  }
+  
+  // Otherwise, it's just a filename - prepend the glossary images directory
+  return `/images/glossary/${imageValue}`;
+}
+
+// Fetch glossary terms from individual JSON files in GitHub at build time
+let allTerms = [];
+let errorMessage = '';
+
+try {
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/astro-site/src/content/glossary');
+  
+  if (response.ok) {
+    const files = await response.json();
+    
+    // Fetch each JSON file's content
+    const termPromises = files
+      .filter(file => file.name.endsWith('.json'))
+      .map(async (file) => {
+        try {
+          const fileResponse = await fetch(file.download_url);
+          const data = await fileResponse.json();
+          
+          // Handle both old format (title) and new format (term)
+          const termName = data.term || data.title;
+          const definition = data.description || data.definition;
+          
+          // Validate required fields
+          if (!termName || !data.slug || !definition) {
+            console.warn(`Skipping invalid glossary entry in ${file.name}: missing required fields`);
+            return null;
+          }
+          
+          return {
+            _id: data.slug,
+            title: termName,
+            slug: data.slug,
+            excerpt: data.tooltip || data.excerpt || '',
+            definition: definition,
+            example: data.example || '',
+            image: normalizeGlossaryImagePath(data.imageFilename || data.image),
+            imageAlt: data.imageAlt || '',
+            aliases: [],
+            isDraft: data.isDraft || false,
+            pendingPublish: data.pendingPublish || false,
+          };
+        } catch (error) {
+          console.error(`Error fetching glossary file ${file.name}:`, error);
+          return null;
+        }
+      });
+    
+    const fetchedTerms = await Promise.all(termPromises);
+    
+    // Filter out null entries, drafts, and pending publish entries, then sort alphabetically
+    allTerms = fetchedTerms
+      .filter(term => term !== null && !term.isDraft && !term.pendingPublish)
+      .sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+  }
+} catch (error) {
+  console.error('Error fetching glossary terms:', error);
+  errorMessage = error.message;
+}
+
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split("");
+
+const lettersWithTerms = new Set(
+  allTerms.map(term => term.title.charAt(0).toUpperCase())
+);
+
+const title = "Machine Knitting Terms Glossary";
+const description = "Your key to understanding abbreviations and terms used in machine knitting patterns and vintage publications.";
+---
+
+<Layout bodyClass="has-catalog-search">
+  <style>
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    .glossary-search {
+      flex: 1;
+      max-width: 400px;
+      min-width: 250px;
+    }
+
+    .glossary-search form {
+      display: flex;
+      gap: 0.5rem;
+    }
+
+    .kbm-search-input {
+      flex: 1;
+      padding: 0.5rem 0.875rem;
+      border: 2px solid #c7d8a4;
+      border-radius: 50px;
+      font-size: var(--text-sm);
+      background: #fff;
+    }
+
+    .kbm-search-input:focus {
+      outline: none;
+      border-color: var(--kbm-green);
+      box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.1);
+    }
+
+    .kbm-search-btn {
+      padding: 0.5rem 0.875rem;
+      background: var(--kbm-green);
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      font-size: var(--text-sm);
+      transition: background 0.2s ease;
+    }
+
+    .kbm-search-btn:hover {
+      background: var(--kbm-green-2);
+    }
+
+    .tap-hint {
+      font-size: var(--text-base);
+      color: #6b7280;
+      margin: 0.5rem 0 0 0;
+      font-style: italic;
+    }
+
+
+    .alphabet-filter {
+      position: sticky;
+      top: var(--header-height);
+      background: #fff;
+      z-index: 1100;
+      padding: 1.25rem;
+      margin: 0 auto 2rem auto;
+      max-width: 1200px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }
+
+    .alphabet {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .alphabet a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: var(--text-base);
+      color: #1f2937;
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      transition: all 0.2s ease;
+    }
+
+    .alphabet a:hover:not(.disabled) {
+      background: #f0f4ea;
+      color: var(--kbm-green);
+      border-color: var(--kbm-green);
+    }
+
+    .alphabet a.active {
+      background: var(--kbm-green);
+      color: #fff;
+      border-color: var(--kbm-green);
+    }
+
+    .alphabet a.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .term-card {
+      border: 1px solid rgba(82,104,45,.18);
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 10px 25px rgba(0,0,0,.06);
+      overflow: hidden;
+    }
+
+    .term-head {
+      width: 100%;
+      text-align: left;
+      background: transparent;
+      border: 0;
+      padding: 1rem 1rem .95rem;
+      display: flex;
+      justify-content: space-between;
+      gap: 1rem;
+      cursor: pointer;
+    }
+
+    .term-head-text {
+      flex: 1;
+    }
+
+    .term-title {
+      margin: 0 0 .35rem;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--kbm-green, #52682d);
+    }
+
+    .term-tooltip {
+      margin: 0;
+      color: #5a6b47;
+      line-height: 1.55;
+      font-size: .95rem;
+    }
+
+    .term-chevron {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(82,104,45,.22);
+      color: var(--kbm-green, #52682d);
+      font-size: 2.1rem;
+      transition: transform .2s ease;
+      transform: translateY(2px);
+    }
+
+    .term-panel {
+      padding: 0 1rem 1rem;
+    }
+
+    .term-image-link {
+      display: block;
+      text-decoration: none;
+      color: inherit;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(82,104,45,.14);
+      background: #f7f7f4;
+    }
+
+    .term-image {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .term-open-link {
+      display: block;
+      padding: .7rem .85rem;
+      font-weight: 800;
+      color: var(--kbm-green, #52682d);
+      border-top: 1px solid rgba(82,104,45,.12);
+      background: #fff;
+    }
+
+    .term-fallback-link {
+      display: inline-block;
+      padding: .75rem .85rem;
+      border-radius: 12px;
+      border: 1px solid rgba(82,104,45,.18);
+      color: var(--kbm-green, #52682d);
+      font-weight: 800;
+      text-decoration: none;
+      background: #fff;
+    }
+
+    .term-card.is-open .term-chevron {
+      transform: translateY(2px) rotate(180deg);
+    }
+
+    .term-head:focus-visible {
+      outline: 3px solid rgba(199,216,164,.85);
+      outline-offset: 2px;
+      border-radius: 14px;
+    }
+
+    /* Remove grayscale from glossary catalog images */
+    .term-image,
+    .term-image img,
+    .kbm-unified-image {
+      filter: none;
+      opacity: 1;
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 3rem 1.5rem;
+      background: #f9fafb;
+      border-radius: 16px;
+      margin: 2rem 0;
+    }
+
+    .no-results h2 {
+      color: #1f2937;
+      margin: 0 0 0.5rem 0;
+    }
+
+    .no-results p {
+      color: #6b7280;
+      margin: 0;
+    }
+
+    .error {
+      padding: 2rem;
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      color: #991b1b;
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .card-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (min-width: 1025px) {
+      .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .alphabet-filter {
+        top: var(--header-height);
+      }
+
+      .glossary-search {
+        max-width: none;
+      }
+
+      .alphabet {
+        gap: 0.35rem;
+      }
+
+      .alphabet a {
+        width: 36px;
+        height: 36px;
+        font-size: 0.9rem;
+      }
+
+      .card-grid {
+        grid-template-columns: 1fr;
+      }
+
+    }
+
+    /* =========================================
+       Glossary A–Z Index
+       Sticky on desktop, normal flow on mobile
+       ========================================= */
+    @media (max-width: 768px) {
+      .alphabet-filter {
+        position: relative;
+        top: auto;
+        z-index: auto;
+        margin-bottom: 1rem;
+      }
+    }
+  </style>
+
+  <SectionHero 
+    title={title} 
+    subtitle={description}
+    iconPath="/images/glossary/glossary_logo.svg"
+    iconAlt="Glossary"
+  >
+    <p class="tap-hint">↓ Tap a term for a plain-English explanation.</p>
+    <div slot="toolbar" class="glossary-search">
+      <form method="get" action="/glossary" id="searchForm">
+        <input
+          type="text"
+          name="q"
+          placeholder="Search glossary terms..."
+          class="kbm-search-input"
+          id="searchInput"
+        />
+        <button type="submit" class="kbm-search-btn" aria-label="Search">
+          <i class="fa fa-search"></i>
+        </button>
+      </form>
+    </div>
+  </SectionHero>
+  
+  <div class="alphabet-filter">
+    <div class="alphabet">
+      <a href="/glossary" class="active" id="filterAll">All</a>
+      {alphabet.map((letter) => {
+        const hasTerms = lettersWithTerms.has(letter);
+        return (
+          <a
+            href={`#${letter}`}
+            class={!hasTerms ? "disabled" : ""}
+            data-letter={letter}
+          >
+            {letter}
+          </a>
+        );
+      })}
+    </div>
+  </div>
+  
+  <div class="container">
+    {errorMessage ? (
+      <div class="error">
+        <p><strong>Error loading glossary terms</strong></p>
+        <p>Unable to fetch terms from GitHub. Please try again later.</p>
+        <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
+      </div>
+    ) : (
+      <div class="card-grid" id="termGrid" data-terms={JSON.stringify(allTerms)}>
+        {allTerms.length > 0 ? (
+          allTerms.map((term) => {
+            const tooltipText = term.excerpt || '';
+            const altText = term.imageAlt || term.title;
+
+            return (
+              <article class="term-card" data-title={term.title.toLowerCase()}>
+                <button class="term-head" type="button" aria-expanded="false">
+                  <div class="term-head-text">
+                    <h2 class="term-title">{term.title}</h2>
+                    {tooltipText && <p class="term-tooltip">{tooltipText}</p>}
+                  </div>
+                  <span class="term-chevron" aria-hidden="true">▾</span>
+                </button>
+
+                <div class="term-panel" hidden>
+                  {term.image ? (
+                    <a class="term-image-link" href={`/glossary/${term.slug}`} aria-label={`Open full entry for ${term.title}`}>
+                      <img
+                        src={term.image}
+                        alt={altText}
+                        loading="lazy"
+                        class="term-image kbm-unified-image"
+                      />
+                      <span class="term-open-link">Open full entry →</span>
+                    </a>
+                  ) : (
+                    <a class="term-fallback-link" href={`/glossary/${term.slug}`}>
+                      Open full entry →
+                    </a>
+                  )}
+                </div>
+              </article>
+            );
+          })
+        ) : (
+          <div class="no-results">
+            <h2>No terms found</h2>
+            <p>Check back soon as we add more glossary terms.</p>
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.term-card');
+      const searchInput = document.getElementById('searchInput');
+      const letterLinks = document.querySelectorAll('.alphabet a[data-letter]');
+      const allLink = document.getElementById('filterAll');
+      const termGrid = document.getElementById('termGrid');
+      
+      let currentlyOpenCard = null;
+      let currentFilter = { search: '', letter: '' };
+
+      // Accordion toggle functionality
+      cards.forEach(card => {
+        const head = card.querySelector('.term-head');
+        const panel = card.querySelector('.term-panel');
+        
+        head.addEventListener('click', () => {
+          // Close any other open card
+          if (currentlyOpenCard && currentlyOpenCard !== card) {
+            currentlyOpenCard.classList.remove('is-open');
+            const otherHead = currentlyOpenCard.querySelector('.term-head');
+            const otherPanel = currentlyOpenCard.querySelector('.term-panel');
+            otherHead?.setAttribute('aria-expanded', 'false');
+            otherPanel?.setAttribute('hidden', '');
+          }
+          
+          // Toggle this card
+          const isOpen = card.classList.contains('is-open');
+          if (isOpen) {
+            card.classList.remove('is-open');
+            head.setAttribute('aria-expanded', 'false');
+            panel.setAttribute('hidden', '');
+            currentlyOpenCard = null;
+          } else {
+            card.classList.add('is-open');
+            head.setAttribute('aria-expanded', 'true');
+            panel.removeAttribute('hidden');
+            currentlyOpenCard = card;
+          }
+        });
+      });
+
+      // Escape closes currently open card
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && currentlyOpenCard) {
+          currentlyOpenCard.classList.remove('is-open');
+          const head = currentlyOpenCard.querySelector('.term-head');
+          const panel = currentlyOpenCard.querySelector('.term-panel');
+          head?.setAttribute('aria-expanded', 'false');
+          panel?.setAttribute('hidden', '');
+          currentlyOpenCard = null;
+        }
+      });
+
+      // Filter functionality
+      function filterTerms() {
+        cards.forEach(card => {
+          const title = card.dataset.title || '';
+          const firstLetter = title.charAt(0).toUpperCase();
+          
+          let show = true;
+          
+          // Search filter
+          if (currentFilter.search) {
+            const searchLower = currentFilter.search.toLowerCase();
+            show = title.includes(searchLower);
+          }
+          
+          // Letter filter
+          if (show && currentFilter.letter) {
+            show = firstLetter === currentFilter.letter;
+          }
+          
+          card.style.display = show ? '' : 'none';
+        });
+
+        // Check if any cards are visible
+        const visibleCards = Array.from(cards).filter(card => card.style.display !== 'none');
+        const noResults = document.querySelector('.no-results');
+        
+        if (visibleCards.length === 0 && !noResults) {
+          const noResultsDiv = document.createElement('div');
+          noResultsDiv.className = 'no-results';
+          noResultsDiv.innerHTML = '<h2>No terms found</h2><p>Try adjusting your search or filters.</p>';
+          termGrid.appendChild(noResultsDiv);
+        } else if (visibleCards.length > 0 && noResults) {
+          noResults.remove();
+        }
+      }
+
+      // Search functionality
+      searchInput?.addEventListener('input', (e) => {
+        currentFilter.search = e.target.value;
+        filterTerms();
+      });
+
+      // Letter filter
+      letterLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+          e.preventDefault();
+          const letter = link.dataset.letter;
+          
+          currentFilter.letter = letter;
+          
+          letterLinks.forEach(l => l.classList.remove('active'));
+          allLink?.classList.remove('active');
+          link.classList.add('active');
+          
+          filterTerms();
+        });
+      });
+
+      // All filter
+      allLink?.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        currentFilter.letter = '';
+        
+        letterLinks.forEach(l => l.classList.remove('active'));
+        allLink.classList.add('active');
+        
+        filterTerms();
+      });
+    });
+  </script>
+</Layout>

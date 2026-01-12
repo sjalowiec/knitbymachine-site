@@ -1,0 +1,236 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHero from '../../components/SectionHero.astro';
+
+let entries: any[] = [];
+let errorMessage = '';
+
+// Fetch practice projects from the CMS API
+const adminApiUrl = import.meta.env.CONTENT_API_BASE_URL || 'https://knit-content-manager-sue23.replit.app';
+// Cache-buster for dev preview - ensures fresh data on every refresh
+const cacheBuster = `_cb=${Date.now()}`;
+
+try {
+  const response = await fetch(`${adminApiUrl}/api/public/content-pages?contentType=practice-project&${cacheBuster}`);
+  
+  // Check content type to avoid parsing HTML error pages as JSON
+  const contentType = response.headers.get('content-type') || '';
+  
+  if (response.ok && contentType.includes('application/json')) {
+    const data = await response.json();
+    entries = data.map((page: any) => ({
+      title: page.title,
+      slug: page.slug,
+      shortDescription: page.shortDescription || '',
+      displayOrder: page.displayOrder,
+      createdAt: page.createdAt,
+    }));
+    
+    // Sort by displayOrder ascending (nulls last), then by title ascending
+    entries.sort((a: any, b: any) => {
+      const aOrder = a.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      const bOrder = b.displayOrder ?? Number.MAX_SAFE_INTEGER;
+      if (aOrder !== bOrder) {
+        return aOrder - bOrder;
+      }
+      // Tie-breaker: title ascending
+      return a.title.localeCompare(b.title);
+    });
+  } else if (!response.ok) {
+    console.error('Error fetching practice projects:', response.status, response.statusText);
+    errorMessage = `Failed to fetch practice projects (${response.status})`;
+  } else {
+    console.error('Invalid response content type:', contentType);
+    errorMessage = 'API endpoint not available';
+  }
+} catch (error: any) {
+  console.error('Error fetching practice projects:', error);
+  errorMessage = error.message || 'Failed to fetch practice projects';
+}
+
+const title = "Practice Projects";
+const description = "Hands-on learning projects to build your machine knitting skills. Start small, learn the techniques, then apply them to bigger projects.";
+---
+
+<BaseLayout {title} {description}>
+  <div class="page-container">
+    <SectionHero 
+      title="Practice Projects" 
+      iconPath="/images/practice-icon.png"
+      iconAlt="Practice Projects icon"
+    />
+
+    <div class="intro-section">
+      <p class="intro-headline">Build skills through practice.</p>
+      <p class="intro-text">
+        You’ve cast on before and you’re ready to knit — but you don’t want to guess or commit to a big project.<br>
+
+These <strong>short, focused practice projects</strong> give you a clear start, a clear finish, and a specific skill to work on.
+      </p>
+    </div>
+
+    <div class="guides-grid" data-testid="practice-projects-grid">
+      {errorMessage && (
+        <div class="error">
+          <p><strong>Error loading Practice Projects</strong></p>
+          <p>Unable to fetch entries. Please try again later.</p>
+          <p style="font-size: 0.9rem; margin-top: 1rem;">{errorMessage}</p>
+        </div>
+      )}
+      
+      {entries.length === 0 && !errorMessage && (
+        <div class="no-results">
+          <p>Practice Projects are coming soon! Check back for hands-on learning exercises.</p>
+        </div>
+      )}
+      
+      {entries.map((entry, index) => (
+          <a 
+            href={`/practice-projects/${entry.slug}`} 
+            class="guide-card" 
+            data-testid={`card-practice-project-${entry.slug}`}
+            style={`animation-delay: ${index * 0.1}s`}
+          >
+            <h2 class="guide-card-title">{entry.title}</h2>
+            {entry.shortDescription && (
+              <p class="guide-card-description">{entry.shortDescription}</p>
+            )}
+          </a>
+        ))}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .intro-section {
+    max-width: 800px;
+    margin: 0 auto 3rem;
+    text-align: center;
+  }
+
+  .intro-headline {
+    font-size: clamp(1.3rem, 2.5vw, 1.5rem);
+    font-weight: 700;
+    color: #52682D;
+    line-height: 1.4;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    color: #5a6b47;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    position: relative;
+    background-color: #ffffff;
+    color: #52682D;
+    border: 2px solid #c7d8a4;
+    padding: 2rem;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    min-height: 260px;
+    animation: fadeInUp 0.6s ease-out forwards;
+    opacity: 0;
+  }
+
+  .guide-card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-6px);
+    box-shadow: 0 12px 24px rgba(82, 104, 45, 0.15);
+    border-color: #52682D;
+  }
+
+  .guide-card-title {
+    font-size: clamp(1.4rem, 3vw, 1.6rem);
+    font-weight: 700;
+    color: #52682D;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .guide-card-description {
+    font-size: 1.1rem;
+    color: #6b7280;
+    line-height: 1.6;
+    margin: 0;
+    flex: 1 0 auto;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .error {
+    text-align: center;
+    padding: 3rem;
+    color: #d64545;
+    background-color: #ffe5e5;
+    border-radius: 12px;
+    grid-column: 1 / -1;
+  }
+
+  .no-results {
+    text-align: center;
+    padding: 3rem;
+    color: #5a6b47;
+    background-color: #f9fdf5;
+    border-radius: 12px;
+    grid-column: 1 / -1;
+  }
+
+  .no-results p {
+    font-size: 1.1rem;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .page-container {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .guides-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .guide-card {
+      min-height: 220px;
+    }
+
+    .intro-section {
+      margin-bottom: 2rem;
+    }
+  }
+</style>

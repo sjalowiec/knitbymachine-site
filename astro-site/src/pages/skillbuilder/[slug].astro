@@ -1,0 +1,1171 @@
+---
+import { Octokit } from '@octokit/rest';
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export const prerender = false;
+
+const { slug } = Astro.params;
+
+const octokit = new Octokit({
+  auth: import.meta.env.GITHUB_TOKEN
+});
+
+let skillBuilder = null;
+let error = null;
+
+try {
+  const { data } = await octokit.repos.getContent({
+    owner: 'sjalowiec',
+    repo: 'knitbymachine-site',
+    path: `skillbuilders/${slug}/data.json`,
+  });
+
+  if ('content' in data) {
+    const content = Buffer.from(data.content, 'base64').toString('utf-8');
+    skillBuilder = JSON.parse(content);
+  }
+} catch (e) {
+  error = 'Skill Builder not found';
+  console.error('Error fetching skill builder:', e);
+}
+
+if (!skillBuilder || skillBuilder.isDraft === true || skillBuilder.pendingPublish === true) {
+  return Astro.redirect('/404');
+}
+
+const { title, description, tagline, prepChecklist = [], modules = [], reflection, level, featuredImage } = skillBuilder;
+
+const levelInfo: Record<number, { label: string; shortLabel: string }> = {
+  1: { label: 'Level 1 · Basics', shortLabel: 'Basics' },
+  2: { label: 'Level 2 · Hand Manipulation', shortLabel: 'Hand Manipulation' },
+  3: { label: 'Level 3 · Stitch Patterns', shortLabel: 'Stitch Patterns' },
+  4: { label: 'Level 4 · Ribber', shortLabel: 'Ribber' },
+};
+const currentLevel = levelInfo[level] || null;
+---
+
+<BaseLayout title={`${title} | Skill Builder`} description={description}>
+  <main class="kbm-skill-builder-page">
+    <div class="kbm-breadcrumb">
+      <a href="/practice-projects" class="kbm-link-back" data-testid="link-back-catalog">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        Back to Practice Projects
+      </a>
+    </div>
+
+    <section class="kbm-skill-hero">
+      <div class="kbm-skill-hero__text">
+        <h1 class="kbm-skill-hero__title" data-testid="text-title">{title}</h1>
+        {tagline && (
+          <p class="kbm-skill-hero__tagline" data-testid="text-tagline">{tagline}</p>
+        )}
+        <p class="kbm-skill-hero__summary" data-testid="text-description">{description}</p>
+
+        <div class="kbm-skill-hero__meta">
+          {currentLevel && (
+            <span class={`kbm-level-pill kbm-level-pill--${level}`} data-testid="badge-level">
+              <span class="kbm-level-pill__number">{level}</span>
+              <span class="kbm-level-pill__label">{currentLevel.label}</span>
+            </span>
+          )}
+
+          <a
+            href={`/skillbuilder/${slug}/print`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="kbm-button kbm-button--outline kbm-button--sm kbm-skill-hero__print"
+            data-testid="link-print"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"/>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/>
+              <rect x="6" y="14" width="12" height="8"/>
+            </svg>
+            Print practice sheet
+          </a>
+        </div>
+      </div>
+
+      <div class="kbm-skill-hero__visual">
+        {featuredImage ? (
+          <img src={featuredImage} alt={title} class="kbm-skill-hero__image" />
+        ) : (
+          <div class="kbm-skill-hero__image-placeholder">
+            <span class="kbm-skill-hero__image-label">{title}</span>
+          </div>
+        )}
+      </div>
+    </section>
+
+    {modules.length > 0 && (
+      <section class="kbm-skill-ataglance">
+        <h2 class="kbm-section-title">What you'll practice</h2>
+        <div class="kbm-skill-ataglance__grid">
+          {modules.slice(0, 4).map((module: any) => (
+            <article class="kbm-pill-card">
+              <h3>{module.title}</h3>
+              {module.summary && <p>{module.summary}</p>}
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {prepChecklist.length > 0 && (
+      <section class="kbm-skill-prep">
+        <h2 class="kbm-section-title">Before you begin</h2>
+        <div class="kbm-skill-prep__card">
+          <h3>Prep Checklist</h3>
+          <ul class="kbm-checklist">
+            {prepChecklist.map((item: string) => (
+              <li>
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                  <polyline points="22 4 12 14.01 9 11.01"/>
+                </svg>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+          <p class="kbm-skill-prep__hint">
+            You don't need to know everything yet. This skill builder is for curiosity and confidence.
+          </p>
+        </div>
+      </section>
+    )}
+
+    {modules.length > 0 && (
+      <section class="kbm-skill-steps">
+        <div class="kbm-skill-steps__header">
+          <h2 class="kbm-section-title">Your practice steps</h2>
+          <p class="kbm-skill-steps__intro">
+            Move through the steps in order, or jump to the part you're ready for.
+          </p>
+        </div>
+
+        <header class="kbm-stepper-header">
+          <button
+            type="button"
+            class="kbm-stepper-nav kbm-stepper-nav--prev"
+            data-direction="prev"
+            disabled
+            data-testid="button-step-prev"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m15 18-6-6 6-6"/>
+            </svg>
+            Previous
+          </button>
+
+          <div class="kbm-stepper-current">
+            <p class="kbm-stepper-current__label">
+              Step <span id="kbm-current-step">1</span> of <span id="kbm-total-steps">{modules.length}</span>
+            </p>
+            <h3 class="kbm-stepper-current__title" id="kbm-current-step-title">
+              {modules[0]?.title || ''}
+            </h3>
+          </div>
+
+          <button
+            type="button"
+            class="kbm-stepper-nav kbm-stepper-nav--next"
+            data-direction="next"
+            data-testid="button-step-next"
+          >
+            Next
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="m9 18 6-6-6-6"/>
+            </svg>
+          </button>
+        </header>
+
+        <ol class="kbm-stepper-progress" aria-label="Step progress">
+          {modules.map((_module: any, index: number) => (
+            <li 
+              class={`kbm-stepper-progress__item ${index === 0 ? 'kbm-stepper-progress__item--active' : ''}`}
+              data-step={index + 1}
+              data-testid={`progress-step-${index + 1}`}
+            >
+              {index + 1}
+            </li>
+          ))}
+        </ol>
+
+        <div class="kbm-step-panels">
+          {modules.map((module: any, index: number) => (
+            <article 
+              id={`step-${index + 1}`} 
+              class={`kbm-step-card ${index === 0 ? 'kbm-step-card--active' : ''}`}
+              data-step={index + 1}
+              data-step-title={module.title}
+              data-testid={`panel-step-${index + 1}`}
+            >
+              <header class="kbm-step-card__header">
+                <span class="kbm-step-card__step-number">Step {index + 1}</span>
+                <h3 class="kbm-step-card__title">{module.title}</h3>
+              </header>
+              
+              {module.summary && (
+                <p class="kbm-step-card__why">{module.summary}</p>
+              )}
+              
+              <div class="kbm-step-card__content" set:html={module.htmlDescription} />
+
+              {module.media && (
+                <div class="kbm-step-card__media">
+                  {module.media.includes('youtube.com') || module.media.includes('vimeo.com') ? (
+                    <iframe
+                      src={module.media}
+                      width="560"
+                      height="315"
+                      frameborder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowfullscreen
+                    ></iframe>
+                  ) : module.media.endsWith('.mp4') || module.media.endsWith('.webm') ? (
+                    <video controls>
+                      <source src={module.media} type={module.media.endsWith('.mp4') ? 'video/mp4' : 'video/webm'}>
+                      Your browser does not support the video tag.
+                    </video>
+                  ) : (
+                    <img src={module.media} alt={module.title} />
+                  )}
+                </div>
+              )}
+
+              {module.microQuestion && (
+                <div class="kbm-micro-section">
+                  <div class="kbm-micro-question">{module.microQuestion}</div>
+                  <div class="kbm-micro-buttons" data-module={index}>
+                    <button class="kbm-micro-btn" data-response="yes" data-testid={`button-micro-yes-${index}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="20 6 9 17 4 12"/>
+                      </svg>
+                      Yes
+                    </button>
+                    <button class="kbm-micro-btn" data-response="no" data-testid={`button-micro-no-${index}`}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"/>
+                        <line x1="6" y1="6" x2="18" y2="18"/>
+                      </svg>
+                      No
+                    </button>
+                  </div>
+                  <div class="kbm-response" id={`resp${index}`}></div>
+                </div>
+              )}
+            </article>
+          ))}
+        </div>
+      </section>
+    )}
+
+    {reflection && reflection.question && (
+      <section class="kbm-skill-reflection">
+        <h2 class="kbm-section-title">Reflection</h2>
+        <div class="kbm-skill-reflection__card">
+          <p class="kbm-reflection-question">{reflection.question}</p>
+          
+          <div class="kbm-micro-buttons" data-reflection="true">
+            <button class="kbm-micro-btn" data-response="yes" data-testid="button-reflection-yes">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"/>
+              </svg>
+              Yes
+            </button>
+            <button class="kbm-micro-btn" data-response="no" data-testid="button-reflection-no">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"/>
+                <line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+              No
+            </button>
+          </div>
+          <div class="kbm-response" id="respReflection"></div>
+        </div>
+      </section>
+    )}
+
+    <section class="kbm-skill-complete">
+      <div class="kbm-skill-complete__card">
+        <h2 class="kbm-section-title">You did it!</h2>
+        <p>
+          You've completed this skill builder. Take a moment to appreciate your progress and the new skills you've practiced.
+        </p>
+        <div class="kbm-skill-complete__actions">
+          <button id="kbm-celebrate-btn" class="kbm-button kbm-button--primary" data-testid="button-celebrate">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M6 9l6 6 6-6"/>
+            </svg>
+            I finished this – celebrate!
+          </button>
+          <a href="/practice-projects" class="kbm-button kbm-button--ghost" data-testid="link-next-skillbuilder">
+            Choose your next Practice Project
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .kbm-skill-builder-page {
+    min-height: 100vh;
+    background: var(--page-bg, #f7f8f7);
+    padding: calc(var(--header-height, 120px) + 1.5rem) 1.5rem 3rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .kbm-breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  .kbm-link-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--kbm-green-2, #738C52);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .kbm-link-back:hover {
+    color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-skill-hero {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    align-items: start;
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-hero__title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .kbm-skill-hero__tagline {
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--kbm-green-2, #738C52);
+    margin: 0 0 0.75rem 0;
+  }
+
+  .kbm-skill-hero__summary {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #555;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .kbm-skill-hero__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-level-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: #f0f4e8;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-level-pill__number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: var(--kbm-green, #52682D);
+    color: white;
+    border-radius: 50%;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .kbm-skill-hero__visual {
+    position: sticky;
+    top: calc(var(--header-height, 120px) + 1rem);
+  }
+
+  .kbm-skill-hero__image-placeholder {
+    aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #e6eddc 0%, #d4e0c4 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .kbm-skill-hero__image-label {
+    color: var(--kbm-green, #52682D);
+    font-weight: 600;
+    font-size: 1rem;
+    opacity: 0.7;
+  }
+
+  .kbm-skill-hero__image {
+    width: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+  }
+
+  .kbm-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    font-family: inherit;
+  }
+
+  .kbm-button--primary {
+    background: var(--kbm-green, #52682D);
+    color: white;
+    border-color: var(--kbm-green, #52682D);
+  }
+
+  .kbm-button--primary:hover {
+    background: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+    transform: translateY(-1px);
+  }
+
+  .kbm-button--outline {
+    background: white;
+    color: var(--kbm-green, #52682D);
+    border-color: var(--kbm-green-2, #738C52);
+  }
+
+  .kbm-button--outline:hover {
+    background: #f0f4e8;
+    transform: translateY(-1px);
+  }
+
+  .kbm-button--ghost {
+    background: transparent;
+    color: var(--kbm-green, #52682D);
+    border-color: transparent;
+  }
+
+  .kbm-button--ghost:hover {
+    background: #f0f4e8;
+  }
+
+  .kbm-button--sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+
+  .kbm-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 1.25rem 0;
+  }
+
+  .kbm-skill-ataglance {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-ataglance__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .kbm-pill-card {
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 12px;
+    padding: 1.25rem;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .kbm-pill-card:hover {
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .kbm-pill-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .kbm-pill-card p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .kbm-skill-prep {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-prep__card {
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-left: 4px solid var(--kbm-green, #52682D);
+    border-radius: 0 12px 12px 0;
+    padding: 1.5rem;
+  }
+
+  .kbm-skill-prep__card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    margin: 0 0 1rem 0;
+  }
+
+  .kbm-checklist {
+    list-style: none;
+    margin: 0 0 1rem 0;
+    padding: 0;
+  }
+
+  .kbm-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin: 0.6rem 0;
+    color: #444;
+    line-height: 1.5;
+  }
+
+  .kbm-checklist li svg {
+    flex-shrink: 0;
+    color: var(--kbm-green-2, #738C52);
+    margin-top: 2px;
+  }
+
+  .kbm-skill-prep__hint {
+    font-size: 0.9rem;
+    color: #777;
+    font-style: italic;
+    margin: 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--ring, #e5e8e0);
+  }
+
+  .kbm-skill-steps {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-steps__header {
+    margin-bottom: 1.25rem;
+  }
+
+  .kbm-skill-steps__intro {
+    color: #666;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  /* Stepper Header - Flipbook Navigation */
+  .kbm-stepper-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 8px rgba(82, 104, 45, 0.06);
+  }
+
+  .kbm-stepper-nav {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--kbm-green, #52682D);
+    color: white;
+    border: 2px solid var(--kbm-green, #52682D);
+    border-radius: 10px;
+    padding: 0.65rem 1.25rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+
+  .kbm-stepper-nav:hover:not(:disabled) {
+    background: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+    transform: translateY(-1px);
+  }
+
+  .kbm-stepper-nav:disabled {
+    background: #ccc;
+    border-color: #ccc;
+    color: #888;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .kbm-stepper-nav svg {
+    flex-shrink: 0;
+  }
+
+  .kbm-stepper-current {
+    text-align: center;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .kbm-stepper-current__label {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0 0 0.25rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 500;
+  }
+
+  .kbm-stepper-current__title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Progress Indicators */
+  .kbm-stepper-progress {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+    list-style: none;
+    margin: 0 0 1.25rem 0;
+    padding: 0;
+  }
+
+  .kbm-stepper-progress__item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: white;
+    border: 2px solid var(--ring, #e5e8e0);
+    border-radius: 50%;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .kbm-stepper-progress__item:hover {
+    border-color: var(--kbm-green-2, #738C52);
+    color: var(--kbm-green, #52682D);
+    transform: scale(1.05);
+  }
+
+  .kbm-stepper-progress__item--active {
+    background: var(--kbm-green, #52682D);
+    border-color: var(--kbm-green, #52682D);
+    color: white;
+  }
+
+  .kbm-stepper-progress__item--active:hover {
+    background: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+    color: white;
+  }
+
+  .kbm-step-panels {
+    position: relative;
+  }
+
+  .kbm-step-card {
+    display: none;
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 16px;
+    padding: 1.75rem;
+    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .kbm-step-card--active {
+    display: block;
+  }
+
+  .kbm-step-card__header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-step-card__step-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--kbm-green, #52682D);
+    color: white;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .kbm-step-card__title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+    margin: 0;
+  }
+
+  .kbm-step-card__why {
+    font-size: 1rem;
+    color: #666;
+    font-style: italic;
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--ring, #e5e8e0);
+  }
+
+  .kbm-step-card__content {
+    color: #333;
+    line-height: 1.7;
+  }
+
+  .kbm-step-card__content :global(p) {
+    margin: 0 0 1rem 0;
+  }
+
+  .kbm-step-card__content :global(ul),
+  .kbm-step-card__content :global(ol) {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+  }
+
+  .kbm-step-card__content :global(li) {
+    margin: 0.5rem 0;
+  }
+
+  .kbm-step-card__media {
+    margin: 1.5rem 0;
+  }
+
+  .kbm-step-card__media video,
+  .kbm-step-card__media iframe,
+  .kbm-step-card__media img {
+    max-width: 100%;
+    border-radius: 12px;
+  }
+
+  .kbm-step-card__media iframe {
+    aspect-ratio: 16/9;
+    width: 100%;
+    height: auto;
+  }
+
+  .kbm-micro-section {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e6eddc;
+  }
+
+  .kbm-micro-question {
+    font-weight: 600;
+    color: var(--kbm-green, #52682D);
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+  }
+
+  .kbm-micro-buttons {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-micro-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    border: 2px solid #c7d8a4;
+    background: #f8faf6;
+    color: var(--kbm-green, #52682D);
+    border-radius: 10px;
+    padding: 0.6rem 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .kbm-micro-btn:hover {
+    background: #e6eddc;
+    border-color: var(--kbm-green-2, #738C52);
+    transform: translateY(-1px);
+  }
+
+  .kbm-response {
+    margin-top: 1rem;
+    min-height: 20px;
+  }
+
+  .kbm-response :global(.kbm-tip) {
+    border-left: 4px solid var(--kbm-green, #52682D);
+    background: #f6f8f3;
+    padding: 1rem 1.25rem;
+    border-radius: 0 10px 10px 0;
+    animation: fadeIn 0.4s ease;
+    color: #333;
+    line-height: 1.6;
+  }
+
+  .kbm-skill-reflection {
+    margin-bottom: 2.5rem;
+  }
+
+  .kbm-skill-reflection__card {
+    background: white;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 16px;
+    padding: 1.75rem;
+  }
+
+  .kbm-reflection-question {
+    font-size: 1.1rem;
+    color: #333;
+    line-height: 1.6;
+    margin: 0 0 1.25rem 0;
+  }
+
+  .kbm-skill-complete {
+    margin-bottom: 2rem;
+  }
+
+  .kbm-skill-complete__card {
+    background: linear-gradient(135deg, #e6eddc 0%, #d4e0c4 100%);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .kbm-skill-complete__card .kbm-section-title {
+    margin-bottom: 0.75rem;
+  }
+
+  .kbm-skill-complete__card p {
+    color: #555;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem 0;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .kbm-skill-complete__actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .kbm-confetti-burst {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 4rem;
+    animation: confettiBurst 1.2s ease-out forwards;
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes confettiBurst {
+    0% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1.5);
+    }
+    100% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(2);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .kbm-skill-builder-page {
+      padding: calc(var(--header-height, 100px) + 1rem) 1rem 2rem;
+    }
+
+    .kbm-skill-hero {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .kbm-skill-hero__visual {
+      position: static;
+      order: -1;
+    }
+
+    .kbm-skill-hero__title {
+      font-size: 1.75rem;
+    }
+
+    .kbm-stepper-header {
+      flex-wrap: wrap;
+      padding: 0.75rem 1rem;
+      gap: 0.75rem;
+    }
+
+    .kbm-stepper-nav {
+      padding: 0.5rem 0.85rem;
+      font-size: 0.85rem;
+    }
+
+    .kbm-stepper-nav svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    .kbm-stepper-current {
+      order: -1;
+      width: 100%;
+      margin-bottom: 0.25rem;
+    }
+
+    .kbm-stepper-current__title {
+      font-size: 0.95rem;
+      white-space: normal;
+    }
+
+    .kbm-stepper-progress__item {
+      width: 32px;
+      height: 32px;
+      font-size: 0.85rem;
+    }
+
+    .kbm-step-card {
+      padding: 1.25rem;
+    }
+
+    .kbm-step-card__header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .kbm-skill-complete__card {
+      padding: 1.5rem;
+    }
+  }
+
+  @media print {
+    .kbm-skill-builder-page {
+      padding-top: 1rem;
+    }
+
+    .kbm-breadcrumb,
+    .kbm-step-chips,
+    .kbm-stepper-header,
+    .kbm-stepper-progress,
+    .kbm-skill-complete,
+    .kbm-micro-buttons,
+    .kbm-skill-hero__print {
+      display: none !important;
+    }
+
+    .kbm-step-card {
+      display: block !important;
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      box-shadow: none;
+      border: 1px solid #ccc;
+    }
+  }
+</style>
+
+<script define:vars={{ modules, reflection }}>
+  (function () {
+    // Flipbook/Stepper Navigation
+    const stepCards = Array.from(document.querySelectorAll('.kbm-step-card'));
+    if (!stepCards.length) return;
+
+    const prevBtn = document.querySelector('.kbm-stepper-nav--prev');
+    const nextBtn = document.querySelector('.kbm-stepper-nav--next');
+    const currentStepEl = document.getElementById('kbm-current-step');
+    const totalStepsEl = document.getElementById('kbm-total-steps');
+    const currentTitleEl = document.getElementById('kbm-current-step-title');
+    const progressItems = Array.from(document.querySelectorAll('.kbm-stepper-progress__item'));
+
+    const totalSteps = stepCards.length;
+    let currentStep = 1;
+
+    if (totalStepsEl) totalStepsEl.textContent = String(totalSteps);
+
+    function showStep(step) {
+      currentStep = step;
+
+      stepCards.forEach(card => {
+        const cardStep = Number(card.getAttribute('data-step'));
+        card.classList.toggle('kbm-step-card--active', cardStep === currentStep);
+      });
+
+      progressItems.forEach(item => {
+        const itemStep = Number(item.getAttribute('data-step'));
+        item.classList.toggle('kbm-stepper-progress__item--active', itemStep === currentStep);
+      });
+
+      if (currentStepEl) currentStepEl.textContent = String(currentStep);
+
+      const activeCard = stepCards.find(card => Number(card.getAttribute('data-step')) === currentStep);
+      if (activeCard && currentTitleEl) {
+        currentTitleEl.textContent = activeCard.getAttribute('data-step-title') || '';
+      }
+
+      if (prevBtn) prevBtn.disabled = currentStep === 1;
+      if (nextBtn) nextBtn.disabled = currentStep === totalSteps;
+    }
+
+    function handleNavClick(evt) {
+      const direction = evt.currentTarget.getAttribute('data-direction');
+      if (direction === 'prev' && currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+      if (direction === 'next' && currentStep < totalSteps) {
+        showStep(currentStep + 1);
+      }
+    }
+
+    if (prevBtn) prevBtn.addEventListener('click', handleNavClick);
+    if (nextBtn) nextBtn.addEventListener('click', handleNavClick);
+
+    // Click on progress items
+    progressItems.forEach(item => {
+      item.addEventListener('click', () => {
+        const step = Number(item.getAttribute('data-step'));
+        if (step >= 1 && step <= totalSteps) {
+          showStep(step);
+        }
+      });
+    });
+
+    // Keyboard arrow navigation
+    document.addEventListener('keydown', (evt) => {
+      if (evt.key === 'ArrowRight' && currentStep < totalSteps) {
+        showStep(currentStep + 1);
+      } else if (evt.key === 'ArrowLeft' && currentStep > 1) {
+        showStep(currentStep - 1);
+      }
+    });
+
+    // Initialize
+    showStep(1);
+
+    const celebrateBtn = document.getElementById('kbm-celebrate-btn');
+    if (celebrateBtn) {
+      celebrateBtn.addEventListener('click', () => {
+        const burst = document.createElement('div');
+        burst.textContent = 'Congratulations!';
+        burst.className = 'kbm-confetti-burst';
+        burst.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          font-size: 2rem;
+          font-weight: 700;
+          color: var(--kbm-green, #52682D);
+          background: white;
+          padding: 1.5rem 2.5rem;
+          border-radius: 16px;
+          box-shadow: 0 8px 32px rgba(82, 104, 45, 0.25);
+          z-index: 9999;
+          animation: confettiBurst 2s ease-out forwards;
+        `;
+        document.body.appendChild(burst);
+        setTimeout(() => burst.remove(), 2000);
+      });
+    }
+
+    modules.forEach((module, index) => {
+      const buttons = document.querySelectorAll(`[data-module="${index}"] .kbm-micro-btn`);
+      const responseDiv = document.getElementById(`resp${index}`);
+      
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const responseType = btn.dataset.response;
+          const responseText = module.microResponses?.[responseType];
+          
+          if (responseText) {
+            responseDiv.innerHTML = `<div class='kbm-tip'>${responseText}</div>`;
+          }
+        });
+      });
+    });
+
+    if (reflection && reflection.question) {
+      const reflectionButtons = document.querySelectorAll('[data-reflection="true"] .kbm-micro-btn');
+      const reflectionResponseDiv = document.getElementById('respReflection');
+      
+      reflectionButtons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const responseType = btn.dataset.response;
+          const responseText = reflection.responses?.[responseType];
+          
+          if (responseText) {
+            reflectionResponseDiv.innerHTML = `<div class='kbm-tip'>${responseText}</div>`;
+          }
+        });
+      });
+    }
+  })();
+</script>

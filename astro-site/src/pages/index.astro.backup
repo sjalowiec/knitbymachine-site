@@ -1,0 +1,1125 @@
+---
+import Header from "../components/header.astro";
+import Footer from "../components/footer.astro";
+import "../styles/global.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Start Here | Knit by Machine</title>
+    <meta
+      name="description"
+      content="New to machine knitting? Start here. Find your next step, build skills, and get guidance one small win at a time."
+    />
+  </head>
+
+  <body>
+    <Header />
+
+    <!-- Immediate localStorage check to prevent flash of content -->
+    <script is:inline>
+      (function() {
+        if (window.localStorage.getItem('kbmIntroDismissed') === 'true') {
+          document.write('<style>.kbm-intro-wrapper { display: none !important; }</style>');
+        }
+      })();
+    </script>
+
+    <!-- Welcome Intro Banner + Drawer -->
+    <div class="kbm-intro-wrapper" data-kbm-intro-wrapper data-testid="welcome-intro-wrapper">
+      <div class="kbm-intro-banner" data-kbm-intro-banner data-testid="welcome-intro-banner">
+        <div class="kbm-intro-banner-inner">
+          <span class="kbm-intro-banner-text">
+            Welcome! Knit by Machine is brand new —
+            <button
+              type="button"
+              class="kbm-intro-banner-inline-link"
+              data-kbm-intro-open
+              data-testid="button-see-intro"
+            >
+              see what's here and what's coming.
+            </button>
+          </span>
+          <button
+            type="button"
+            class="kbm-intro-banner-close"
+            data-kbm-intro-dismiss
+            aria-label="Hide this message"
+            data-testid="button-dismiss-banner"
+          >
+            ×
+          </button>
+        </div>
+      </div>
+
+      <section
+        class="kbm-intro-drawer"
+        data-kbm-intro-drawer
+        aria-hidden="true"
+        data-testid="welcome-intro-drawer"
+      >
+        <div class="kbm-intro-drawer-header">
+          <h2 class="kbm-intro-drawer-title">
+            Hi, I'm Sue — welcome to the new Knit by Machine.
+          </h2>
+          <button
+            type="button"
+            class="kbm-intro-drawer-close"
+            aria-label="Close intro"
+            data-kbm-intro-close
+            data-testid="button-close-drawer"
+          >
+            ×
+          </button>
+        </div>
+
+        <p class="kbm-intro-drawer-body">
+          Knit by Machine is a fresh, modern home for machine knitters. I'm rebuilding everything to be clearer, calmer, and more confidence-boosting.
+        </p>
+        <p class="kbm-intro-drawer-body">
+          You'll find smart tools, Skill Builders, Ask 'n Answer Answers (ANA), and simple next steps to help you feel successful with your machine.
+        </p>
+
+        <div class="kbm-intro-drawer-actions">
+          <a href="/about" class="kbm-intro-secondary" data-testid="link-about-kbm">
+            About Knit by Machine
+          </a>
+        </div>
+
+        <p class="kbm-intro-subtext">
+          Just browsing? You can close this and explore on your own.
+        </p>
+      </section>
+    </div>
+
+    <main class="kbm-start-here">
+      <!-- HERO SECTION -->
+      <section class="kbm-hero">
+        <div class="kbm-hero__grid">
+          <div class="kbm-hero__content">
+            <h1>Machine knitting doesn’t have to be overwhelming - I’ll guide your next step.</h1>
+            <p class="kbm-hero__text">
+              You don’t need to figure it out alone — I’ll help you move forward, one clear step at a time.
+            </p>
+            <div class="kbm-hero__actions">
+              <a href="#where-are-you" class="btn primary" data-testid="button-find-next-step">Find your next step</a>
+            </div>
+          </div>
+          <div class="kbm-hero__image">
+            <picture>
+              <source srcset="/images/machine-knitting-cast-on.webp" type="image/webp" />
+              <img 
+                src="/images/machine-knitting-cast-on.webp" 
+                alt="A knitting machine set up and ready to knit." 
+                loading="eager"
+                data-testid="img-hero"
+              />
+            </picture>
+          </div>
+        </div>
+      </section>
+
+      <!-- PROJECT PICKER CTA - Rounded section with background image -->
+      <section class="kbm-guided-cta" data-testid="section-project-picker-cta">
+        <div class="kbm-guided-cta__overlay"></div>
+        <div class="kbm-guided-cta__inner">
+          <div class="kbm-guided-cta__box">
+            <h2 class="kbm-guided-cta__title">Ready ● Set ● Knit: Project Inspiration</h2>
+            <p class="kbm-guided-cta__text">Not sure what to make next? Answer a few simple questions and get project ideas that fit your machine, yarn, and experience.</p>
+            <a
+              href="/project-inspiration"
+              class="btn primary"
+              data-testid="button-project-picker"
+            >
+              Get Your Free Project Inspiration
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHERE ARE YOU RIGHT NOW? SECTION -->
+      <section id="where-are-you" class="kbm-where-section">
+        <div class="kbm-where-inner">
+          <div class="kbm-section-header">
+            <h2>Where are you right now?</h2>
+            <p class="kbm-section-subtitle">Pick the path that fits you best.</p>
+          </div>
+
+          <div class="kbm-hex-grid">
+          <!-- Card 1: Start Phase -->
+          <div class="pulse-once">
+            <a href="/getting-started" class="kbm-hex-card kbm-hex-card--link" data-testid="card-start-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/knit.svg" alt="Start phase icon" />
+            </div>
+            <h3>I just opened the box… where do I start?</h3>
+            <p>You're in the <strong>Start</strong> phase. All you need right now is one simple win.</p>
+            <p class="kbm-highlight">Next step: Make your first swatch.</p>
+            <span class="btn primary" data-testid="button-getting-started">Get Started</span>
+            </a>
+          </div>
+
+          <!-- Card 2: Build Skills Phase -->
+          <a href="/skillbuilder-catalog" class="kbm-hex-card kbm-hex-card--link" data-testid="card-skills-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/practice-icon.svg" alt="Build skills icon" />
+            </div>
+            <h3>I know the basics. I want to build skills.</h3>
+            <p>You're in the <strong>Build Skills</strong> phase.</p>
+            <p class="kbm-highlight">Next step: Visit Skill Builders.</p>
+            <span class="btn primary" data-testid="button-skill-builders">Explore Skill Builders</span>
+          </a>
+
+          <!-- Card 3: Make Projects Phase -->
+          <a href="/agents/ready-set-knit-projects/" class="kbm-hex-card kbm-hex-card--link" data-testid="card-projects-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/guide-icon.svg" alt="Make projects icon" />
+            </div>
+            <h3>I want to knit an actual project.</h3>
+            <p>You're in the <strong>Make Projects</strong> phase.</p>
+            <p class="kbm-highlight">Next step: choose one easy win.</p>
+            <span class="btn primary" data-testid="button-rsk">Ready Set Knit</span>
+          </a>
+
+          <!-- Card 4: Troubleshoot Phase -->
+          <a href="/agents/ready-set-knit-troubleshooting/" class="kbm-hex-card kbm-hex-card--link" data-testid="card-troubleshoot-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/troubleshoot.svg" alt="Troubleshoot icon" />
+            </div>
+            <h3>Something went wrong.</h3>
+            <p>You're in the <strong>Troubleshoot</strong> phase.</p>
+            <p class="kbm-highlight">Next step: get a quick answer.</p>
+            <span class="btn primary" data-testid="button-troubleshoot">Troubleshoot</span>
+          </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT YOU'LL FIND SECTION -->
+      <section class="kbm-reassurance-section">
+        <div class="kbm-section-header">
+          <h2>What you'll find at Knit by Machine</h2>
+        </div>
+
+        <div class="kbm-reassurance-grid">
+          <div class="kbm-reassurance-item" data-testid="reassurance-next-steps">
+            <h4>Clear next steps</h4>
+            <p>You don't have to figure it out alone. I'll point you to the one thing to do next so you can keep moving without overwhelm.</p>
+          </div>
+
+          <div class="kbm-reassurance-item" data-testid="reassurance-tools">
+            <h4>Tools that do the hard parts</h4>
+            <p>Let the site handle the math, shaping, and planning. You focus on knitting, not calculations.</p>
+          </div>
+
+          <div class="kbm-reassurance-item" data-testid="reassurance-support">
+            <h4>Support when you get stuck</h4>
+            <p>Troubleshooters, Smart Guides, and Ask 'n Answer are here to help you fix problems and finish more projects.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ABOUT-LITE STRIP -->
+      <section class="kbm-about-strip">
+        <div class="kbm-about-strip__inner">
+          <div class="kbm-about-strip__image">
+            <img src="/images/sue_icon9.png" alt="Sue at a knitting machine." data-testid="img-sue-headshot" />
+          </div>
+          <div class="kbm-about-strip__content">
+            <h3>You're not doing this alone.</h3>
+            <p>
+              I'm Sue, your guide here at Knit by Machine. I've helped thousands of knitters 
+              get comfortable at their machines. I'll walk with you one small win at a time.
+            </p>
+            <a href="/about" class="kbm-about-link" data-testid="link-about">Learn more about Knit by Machine</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Lead Magnet Modal -->
+    <div
+      id="lead-magnet-modal"
+      class="fixed inset-0 z-50 hidden items-center justify-center bg-black/50 px-4"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="lead-magnet-title"
+      data-lead-magnet-backdrop
+      data-testid="modal-lead-magnet"
+    >
+      <div class="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl">
+        <button
+          type="button"
+          class="absolute right-3 top-3 text-slate-500 hover:text-slate-700 focus:outline-none z-10"
+          aria-label="Close"
+          data-lead-magnet-close
+          data-testid="button-lead-magnet-close"
+        >
+          &#10005;
+        </button>
+
+        <!-- ActiveCampaign Form -->
+        <div id="lead-magnet-form" data-testid="container-lead-magnet-form">
+          <style>
+            #_form_1_{font-size:14px;line-height:1.6;font-family:arial, helvetica, sans-serif;margin:0}
+            ._form_hide{display:none;visibility:hidden}
+            ._form_show{display:block;visibility:visible}
+            #_form_1_ input[type="text"],#_form_1_ input[type="tel"],#_form_1_ input[type="date"],#_form_1_ textarea{padding:10px;height:auto;border:#979797 1px solid;border-radius:6px;color:#000 !important;font-size:14px;box-sizing:border-box;width:100%}
+            #_form_1_ textarea{resize:none}
+            #_form_1_ ._submit{-webkit-appearance:none;cursor:pointer;font-family:arial, sans-serif;font-size:14px;text-align:center;background:#6E8B3D !important;border:0 !important;border-radius:8px !important;color:#FFFFFF !important;padding:12px 24px !important;width:100%;font-weight:600;margin-top:0.5rem}
+            #_form_1_ ._submit:hover{background:#5a7232 !important}
+            #_form_1_ ._submit:disabled{cursor:not-allowed;opacity:0.4}
+            #_form_1_ ._submit.processing{position:relative}
+            #_form_1_ ._submit.processing::before{content:"";width:1em;height:1em;position:absolute;z-index:1;top:50%;left:50%;border:double 3px transparent;border-radius:50%;background-image:linear-gradient(#6E8B3D, #6E8B3D), conic-gradient(#6E8B3D, #FFFFFF);background-origin:border-box;background-clip:content-box, border-box;animation:1200ms ease 0s infinite normal none running _spin}
+            #_form_1_ ._submit.processing::after{content:"";position:absolute;top:0;bottom:0;left:0;right:0}
+            @keyframes _spin{0%{transform:translate(-50%, -50%) rotate(90deg)}100%{transform:translate(-50%, -50%) rotate(450deg)}}
+            #_form_1_ ._form-label{display:block;margin-bottom:4px;font-weight:500;color:#333}
+            #_form_1_ ._form_element{margin-bottom:1rem}
+            #_form_1_ ._form-title{font-size:1.25rem;font-weight:600;color:#1e293b;margin-bottom:0.5rem;text-align:center}
+            #_form_1_ ._field-wrapper{margin-top:4px}
+            #_form_1_ .field-required{color:#dc2626;margin-left:2px}
+            #_form_1_ ._form-thank-you{text-align:center;padding:2rem 1rem;color:#1e293b}
+            #_form_1_ ._form-branding{display:none}
+            #_form_1_ ._error{color:#dc2626;font-size:12px;margin-top:4px}
+            #_form_1_ ._error-inner{background:#fef2f2;border:1px solid #fecaca;border-radius:4px;padding:8px 12px;color:#dc2626;font-size:13px}
+            #_form_1_ input._has_error{border-color:#dc2626}
+          </style>
+          <form method="POST" action="https://knitbymachine.activehosted.com/proc.php" id="_form_1_" class="_form _form_1 _inline-form _dark" novalidate data-styles-version="5">
+            <input type="hidden" name="u" value="1" />
+            <input type="hidden" name="f" value="1" />
+            <input type="hidden" name="s" />
+            <input type="hidden" name="c" value="0" />
+            <input type="hidden" name="m" value="0" />
+            <input type="hidden" name="act" value="sub" />
+            <input type="hidden" name="v" value="2" />
+            <input type="hidden" name="or" value="dc606db2-daa8-4067-8615-c5a1021874f8" />
+            <div class="_form-content">
+              <div class="_form_element _full_width _clear">
+                <h2 class="_form-title" id="lead-magnet-title">
+                  Get Your Free Project Starter
+                </h2>
+              </div>
+              <div class="_form_element _full_width">
+                <label for="fullname" class="_form-label">
+                  Full Name
+                </label>
+                <div class="_field-wrapper">
+                  <input type="text" id="fullname" name="fullname" placeholder="Type your name" data-testid="input-fullname" />
+                </div>
+              </div>
+              <div class="_form_element _full_width">
+                <label for="email" class="_form-label">
+                  Email<span class="field-required">*</span>
+                </label>
+                <div class="_field-wrapper">
+                  <input type="text" id="email" name="email" placeholder="Type your email" required data-testid="input-email" />
+                </div>
+              </div>
+              <div class="_button-wrapper _full_width">
+                <button id="_form_1_submit" class="_submit" type="submit" data-testid="button-form-submit">
+                  Get Your Free Project Starter
+                </button>
+              </div>
+              <div class="_clear-element"></div>
+            </div>
+            <div class="_form-thank-you" style="display:none;"></div>
+            <div class="_form-branding">
+              <span class="_marketing-by">Marketing by </span>
+              <a href="https://www.activecampaign.com/?utm_medium=referral&utm_campaign=acforms" class="_logo" target="_blank" rel="noopener">ActiveCampaign</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Lead Magnet Modal Script -->
+    <script is:inline>
+      if (typeof window !== 'undefined') {
+        window.addEventListener('DOMContentLoaded', () => {
+          const trigger = document.getElementById('lead-magnet-trigger');
+          const modal = document.getElementById('lead-magnet-modal');
+          if (!trigger || !modal) return;
+
+          const closeButtons = modal.querySelectorAll('[data-lead-magnet-close]');
+          const backdrop = modal;
+
+          const openLeadMagnetModal = () => {
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+          };
+
+          const closeLeadMagnetModal = () => {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+          };
+
+          trigger.addEventListener('click', openLeadMagnetModal);
+
+          closeButtons.forEach((btn) => {
+            btn.addEventListener('click', closeLeadMagnetModal);
+          });
+
+          backdrop.addEventListener('click', (event) => {
+            if (event.target === backdrop) {
+              closeLeadMagnetModal();
+            }
+          });
+
+          window.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+              closeLeadMagnetModal();
+            }
+          });
+        });
+      }
+    </script>
+
+    <!-- ActiveCampaign Form Script -->
+    <script is:inline>
+      window.cfields = [];
+      window._show_thank_you = function(id, message, trackcmp_url, email) {
+        var form = document.getElementById('_form_' + id + '_'), thank_you = form.querySelector('._form-thank-you');
+        form.querySelector('._form-content').style.display = 'none';
+        thank_you.innerHTML = message || '<h3 style="margin-bottom:0.5rem">Thanks for signing up!</h3><p>Check your inbox for your free project starter.</p>';
+        thank_you.style.display = 'block';
+        if (typeof window._form_callback !== 'undefined') window._form_callback(id);
+        thank_you.setAttribute('tabindex', '-1');
+        thank_you.focus();
+      };
+      window._show_error = function(id, message, html) {
+        var form = document.getElementById('_form_' + id + '_'),
+            err = document.createElement('div'),
+            button = form.querySelector('button[type="submit"]'),
+            old_error = form.querySelector('._form_error');
+        if (old_error) old_error.parentNode.removeChild(old_error);
+        err.innerHTML = message;
+        err.className = '_error-inner _form_error';
+        var wrapper = document.createElement('div');
+        wrapper.className = '_form-inner _show_be_error';
+        wrapper.appendChild(err);
+        button.parentNode.insertBefore(wrapper, button);
+        var submitButton = form.querySelector('[id^="_form"][id$="_submit"]');
+        submitButton.disabled = false;
+        submitButton.classList.remove('processing');
+      };
+      window._load_script = function(url, callback, isSubmit) {
+        var head = document.querySelector('head'), script = document.createElement('script'), r = false;
+        var submitButton = document.querySelector('#_form_1_submit');
+        script.charset = 'utf-8';
+        script.src = url;
+        if (callback) {
+          script.onload = script.onreadystatechange = function() {
+            if (!r && (!this.readyState || this.readyState == 'complete')) {
+              r = true;
+              callback();
+            }
+          };
+        }
+        script.onerror = function() {
+          if (isSubmit) {
+            _show_error("1", "Sorry, your submission failed. Please try again.");
+            submitButton.disabled = false;
+            submitButton.classList.remove('processing');
+          }
+        }
+        head.appendChild(script);
+      };
+      (function() {
+        if (window.location.search.search("excludeform") !== -1) return false;
+        var form_to_submit = document.getElementById('_form_1_');
+        if (!form_to_submit) return;
+        var allInputs = form_to_submit.querySelectorAll('input, select, textarea'), tooltips = [], submitted = false;
+
+        var remove_tooltips = function() {
+          for (var i = 0; i < tooltips.length; i++) {
+            tooltips[i].tip.parentNode.removeChild(tooltips[i].tip);
+          }
+          tooltips = [];
+        };
+        var create_tooltip = function(elem, text) {
+          var tooltip = document.createElement('div'), inner = document.createElement('div'), new_tooltip = {};
+          tooltip.className = '_error';
+          inner.className = '_error-inner';
+          inner.innerHTML = text;
+          tooltip.appendChild(inner);
+          elem.parentNode.appendChild(tooltip);
+          new_tooltip.tip = tooltip;
+          new_tooltip.elem = elem;
+          tooltips.push(new_tooltip);
+          return new_tooltip;
+        };
+        var validate_field = function(elem, remove) {
+          var value = elem.value, no_error = true;
+          if (remove) {
+            var old_tooltip = elem.parentNode.querySelector('._error');
+            if (old_tooltip) old_tooltip.parentNode.removeChild(old_tooltip);
+          }
+          elem.className = elem.className.replace(/ ?_has_error ?/g, '');
+          if (elem.getAttribute('required') !== null) {
+            if (value === undefined || value === null || value === '') {
+              elem.className = elem.className + ' _has_error';
+              no_error = false;
+              create_tooltip(elem, "This field is required.");
+            }
+          }
+          if (no_error && elem.name == 'email') {
+            if (!value.match(/^[\+_a-z0-9-'&=]+(\.[\+_a-z0-9-']+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i)) {
+              elem.className = elem.className + ' _has_error';
+              no_error = false;
+              create_tooltip(elem, "Enter a valid email address.");
+            }
+          }
+          return no_error;
+        };
+        var validate_form = function(e) {
+          var err = form_to_submit.querySelector('._form_error'), no_error = true;
+          if (!submitted) {
+            submitted = true;
+            for (var i = 0, len = allInputs.length; i < len; i++) {
+              var input = allInputs[i];
+              if (input.getAttribute('required') !== null || input.name === 'email') {
+                if (input.type == 'text') {
+                  input.addEventListener('blur', function() {
+                    this.value = this.value.trim();
+                    validate_field(this, true);
+                  });
+                  input.addEventListener('input', function() {
+                    validate_field(this, true);
+                  });
+                }
+              }
+            }
+          }
+          remove_tooltips();
+          for (var i = 0, len = allInputs.length; i < len; i++) {
+            var elem = allInputs[i];
+            if (elem.getAttribute('required') !== null || elem.name === 'email') {
+              if (!validate_field(elem)) {
+                no_error = false;
+              }
+            }
+          }
+          if (!no_error && e) {
+            e.preventDefault();
+          }
+          return no_error;
+        };
+        var form_submit = function(e) {
+          e.preventDefault();
+          if (validate_form()) {
+            var serialized = '';
+            for (var i = 0; i < allInputs.length; i++) {
+              var input = allInputs[i];
+              if (input.type === 'hidden' || input.type === 'text' || input.type === 'email') {
+                serialized += (serialized ? '&' : '') + encodeURIComponent(input.name) + '=' + encodeURIComponent(input.value);
+              }
+            }
+            var submitButton = form_to_submit.querySelector('#_form_1_submit');
+            submitButton.disabled = true;
+            submitButton.classList.add('processing');
+            var url = form_to_submit.getAttribute('action') + '?' + serialized;
+            _load_script(url, function() {
+              // Success handled by _show_thank_you callback
+            }, true);
+          }
+          return false;
+        };
+        form_to_submit.addEventListener('submit', form_submit);
+      })();
+    </script>
+
+    <Footer />
+
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', () => {
+        const wrapper = document.querySelector('[data-kbm-intro-wrapper]');
+        const banner = document.querySelector('[data-kbm-intro-banner]');
+        const drawer = document.querySelector('[data-kbm-intro-drawer]');
+        const openButtons = document.querySelectorAll('[data-kbm-intro-open]');
+        const drawerCloseButtons = document.querySelectorAll('[data-kbm-intro-close]');
+        const bannerDismissButtons = document.querySelectorAll('[data-kbm-intro-dismiss]');
+
+        if (!wrapper || !banner || !drawer) return;
+
+        const introDismissed = window.localStorage.getItem('kbmIntroDismissed') === 'true';
+
+        if (introDismissed) {
+          wrapper.classList.add('hidden');
+          return;
+        }
+
+        const openDrawer = () => {
+          drawer.classList.add('kbm-intro-drawer--open');
+          drawer.setAttribute('aria-hidden', 'false');
+        };
+
+        const closeDrawer = () => {
+          drawer.classList.remove('kbm-intro-drawer--open');
+          drawer.setAttribute('aria-hidden', 'true');
+        };
+
+        openButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            openDrawer();
+          });
+        });
+
+        drawerCloseButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            closeDrawer();
+          });
+        });
+
+        bannerDismissButtons.forEach((btn) => {
+          btn.addEventListener('click', () => {
+            window.localStorage.setItem('kbmIntroDismissed', 'true');
+            wrapper.classList.add('hidden');
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
+
+<style>
+  html {
+    scroll-behavior: smooth;
+  }
+
+  :root {
+    --kbm-green: #52682d;
+    --kbm-green-hover: #445626;
+    --kbm-green-2: #738c52;
+    --font: "Poppins", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  body {
+    margin: 0;
+    background: #f7f8f7;
+    font-family: var(--font);
+    color: #222;
+  }
+
+  /* ========== MAIN WRAPPER ========== */
+  .kbm-start-here {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+  }
+
+  /* ========== SHARED BUTTON STYLES ========== */
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn.primary {
+    background-color: var(--kbm-green);
+    color: #fff;
+  }
+
+  .btn.primary:hover {
+    background-color: var(--kbm-green-hover);
+  }
+
+  /* ========== SECTION HEADERS ========== */
+  .kbm-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .kbm-section-header h2 {
+    font-size: clamp(1.4rem, 2.5vw, 1.8rem);
+    color: #2c3a57;
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-section-subtitle {
+    color: #4d5a48;
+    font-size: 1rem;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ========== HERO SECTION ========== */
+  .kbm-hero {
+    margin-bottom: 1.5rem;
+    padding-top: 0.5rem;
+  }
+
+  @media (max-width: 640px) {
+    .kbm-hero {
+      padding-top: 0.5rem;
+    }
+  }
+
+  .kbm-hero__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .kbm-hero__content {
+    text-align: center;
+  }
+
+  .kbm-hero__eyebrow {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: var(--kbm-green-2);
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 1rem;
+    background: rgba(115, 140, 82, 0.12);
+    border-radius: 999px;
+  }
+
+  .kbm-hero h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    margin: 0 0 1rem;
+    color: #2c3a57;
+    line-height: 1.3;
+  }
+
+  .kbm-hero__text {
+    max-width: 42rem;
+    margin: 0 auto 1.5rem;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #4d5a48;
+  }
+
+  .kbm-hero__actions {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .kbm-hero__image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .kbm-hero__image img {
+    width: 100%;
+    max-width: 420px;
+    height: auto;
+    border-radius: 1rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    background: #e0e5d8;
+    min-height: 200px;
+    object-fit: cover;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-hero__grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.5rem;
+    }
+
+    .kbm-hero__content {
+      text-align: left;
+    }
+
+    .kbm-hero__text {
+      margin-left: 0;
+    }
+
+    .kbm-hero__actions {
+      justify-content: flex-start;
+    }
+
+    .kbm-hero__image img {
+      max-width: 100%;
+    }
+
+    .kbm-start-here {
+      padding-top: 0;
+    }
+  }
+
+  /* ========== WHERE ARE YOU SECTION ========== */
+  .kbm-where-section {
+    background-color: #ffffff;
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+    margin-top: 3rem;
+    margin-left: -1.5rem;
+    margin-right: -1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+    scroll-margin-top: calc(var(--header-height, 160px) + 1rem);
+  }
+
+  .kbm-where-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .kbm-where-section .kbm-section-header {
+    margin-bottom: 2rem;
+  }
+
+  .kbm-where-section .kbm-section-header h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .kbm-hex-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .kbm-hex-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .kbm-hex-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .kbm-hex-card {
+    background-color: #ffffff;
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.25rem;
+    border: 2px solid #c7d8a4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kbm-hex-card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green);
+  }
+
+  .kbm-hex-card--link {
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .kbm-hex-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kbm-hex-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .kbm-hex-card h3 {
+    font-size: 1rem;
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    line-height: 1.35;
+  }
+
+  .kbm-hex-card p {
+    font-size: 0.9rem;
+    color: #4f5a4b;
+    line-height: 1.5;
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-highlight {
+    font-weight: 600;
+    color: var(--kbm-green);
+    font-style: italic;
+  }
+
+  .kbm-hex-card .btn {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+  }
+
+  .kbm-link-list {
+    padding-left: 1.1rem;
+    margin: 0.5rem 0 0;
+    font-size: 0.85rem;
+    color: #4f5a4b;
+  }
+
+  .kbm-link-list li {
+    margin-bottom: 0.4rem;
+    line-height: 1.45;
+  }
+
+  .kbm-link-list a {
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .kbm-link-list a:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ========== GUIDED START CTA (ROUNDED SECTION WITH BG IMAGE) ========== */
+  .kbm-guided-cta {
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background: url('/images/knitting-machine-needlebed.webp') center/cover no-repeat;
+    padding: 3rem 1.5rem;
+    margin: 2.5rem 0 0;
+  }
+
+  .kbm-guided-cta__overlay {
+    position: absolute;
+    inset: 0;
+    background-color: rgba(241, 246, 236, 0.75);
+    pointer-events: none;
+  }
+
+  .kbm-guided-cta__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kbm-guided-cta__box {
+    max-width: 720px;
+    width: 100%;
+    margin: 1rem auto;
+    padding: 2rem 1.5rem;
+    border-radius: 24px;
+    background-color: #F1F6EC;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
+    text-align: center;
+  }
+
+  .kbm-guided-cta__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0 0 0.75rem;
+    color: #2c3a57;
+  }
+
+  .kbm-guided-cta__text {
+    font-size: 1rem;
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+    color: #4f5a4b;
+  }
+
+  .kbm-guided-cta__microcopy {
+    font-size: 0.8rem;
+    color: #6b7565;
+    margin: 0.75rem 0 0;
+    font-style: italic;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-guided-cta {
+      padding: 4rem 2rem;
+    }
+
+    .kbm-guided-cta__box {
+      padding: 3rem 3.5rem;
+      border-radius: 32px;
+    }
+
+    .kbm-guided-cta__title {
+      font-size: 1.9rem;
+    }
+
+    .kbm-guided-cta__text {
+      font-size: 1.05rem;
+    }
+  }
+
+  /* ========== REASSURANCE SECTION ========== */
+  .kbm-reassurance-section {
+    margin-bottom: 1.5rem;
+    padding: 2rem 0;
+  }
+
+  .kbm-reassurance-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-reassurance-grid {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+  }
+
+  .kbm-reassurance-item {
+    text-align: center;
+    padding: 1.25rem;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-reassurance-item {
+      text-align: left;
+    }
+  }
+
+  .kbm-reassurance-item h4 {
+    font-size: 1.05rem;
+    color: #2c3a57;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .kbm-reassurance-item p {
+    font-size: 0.9rem;
+    color: #4d5a48;
+    line-height: 1.55;
+    margin: 0;
+  }
+
+  /* ========== ABOUT-LITE STRIP ========== */
+  .kbm-about-strip {
+    margin-bottom: 2rem;
+  }
+
+  .kbm-about-strip__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.5rem;
+    background: #ffffff;
+    border-radius: 1.25rem;
+    padding: 2rem 1.5rem;
+    border: 1px solid #e0e5d8;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+  }
+
+  @media (min-width: 600px) {
+    .kbm-about-strip__inner {
+      flex-direction: row;
+      text-align: left;
+      padding: 2rem;
+    }
+  }
+
+  .kbm-about-strip__image {
+    flex-shrink: 0;
+  }
+
+  .kbm-about-strip__image img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #c7d8a4;
+    background: #e0e5d8;
+  }
+
+  .kbm-about-strip__content h3 {
+    font-size: 1.15rem;
+    color: #2c3a57;
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-about-strip__content p {
+    font-size: 0.95rem;
+    color: #4d5a48;
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+  }
+
+  .kbm-about-link {
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.95rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .kbm-about-link::after {
+    content: "→";
+    font-size: 0.85em;
+  }
+
+  .kbm-about-link:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ========== MOBILE ADJUSTMENTS ========== */
+  @media (max-width: 480px) {
+    .kbm-start-here {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .kbm-hex-card {
+      padding: 1.25rem 1rem;
+    }
+
+    .kbm-guided-cta {
+      padding: 2rem 1rem;
+      margin: 2rem 0 0;
+      border-radius: 16px;
+    }
+
+    .kbm-guided-cta__box {
+      padding: 1.5rem 1rem;
+      border-radius: 16px;
+    }
+
+    .kbm-reassurance-item {
+      padding: 1rem 0.5rem;
+    }
+
+    .kbm-where-section {
+      margin-left: -1rem;
+      margin-right: -1rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      padding-top: 3rem;
+      padding-bottom: 3rem;
+    }
+  }
+
+  /* ========== FIRST CARD PULSE ANIMATION ========== */
+  .pulse-once {
+    animation: pulseOnce 1.2s ease-out 0.8s 1;
+  }
+
+  @keyframes pulseOnce {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.03); }
+    100% { transform: scale(1); }
+  }
+</style>

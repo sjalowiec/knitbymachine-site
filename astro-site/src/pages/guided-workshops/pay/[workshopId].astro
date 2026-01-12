@@ -1,0 +1,293 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const { workshopId } = Astro.params;
+
+const adminApiUrl = import.meta.env.CONTENT_API_BASE_URL || 'https://knit-content-manager-sue23.replit.app';
+// Cache-buster for dev preview - ensures fresh data on every refresh
+const cacheBuster = `_cb=${Date.now()}`;
+
+interface WorkshopStatusResponse {
+  ok: boolean;
+  reason?: string;
+  workshopId?: string;
+  status?: string;
+  price?: string;
+  applicantName?: string;
+  title?: string;
+  approvedPlanUid?: string;
+}
+
+let workshop: WorkshopStatusResponse | null = null;
+let fetchError = false;
+
+try {
+  const statusUrl = `${adminApiUrl}/api/public/guided-workshops/status/${encodeURIComponent(workshopId as string)}?${cacheBuster}`;
+  const response = await fetch(statusUrl);
+  
+  if (response.ok) {
+    workshop = await response.json();
+  } else if (response.status === 404) {
+    workshop = { ok: false, reason: 'not_found' };
+  } else {
+    fetchError = true;
+  }
+} catch (error) {
+  console.error('Error fetching workshop status:', error);
+  fetchError = true;
+}
+
+const isPending = workshop?.ok && workshop.status === 'pending';
+const isApproved = workshop?.ok && workshop.status === 'approved';
+const isPaid = workshop?.ok && (workshop.status === 'active' || workshop.status === 'completed' || workshop.status === 'paid');
+const isNotFound = !workshop?.ok && workshop?.reason === 'not_found';
+const isMissingPlanUid = isApproved && !workshop?.approvedPlanUid;
+
+// Outseta checkout URL with the approved planUid
+const outsetaCheckoutUrl = workshop?.workshopId && workshop?.approvedPlanUid
+  ? `https://knitbymachinecom.outseta.com/auth?widgetMode=register&planUid=${workshop.approvedPlanUid}&planPaymentTerm=oneTime&skipPlanOptions=true&meta_workshopId=${encodeURIComponent(workshop.workshopId)}#o-anonymous`
+  : null;
+
+const pageTitle = isPending ? 'Application Under Review' 
+  : isApproved ? "You're Almost In" 
+  : isPaid ? "You're Already In" 
+  : 'Workshop Payment';
+---
+
+<BaseLayout title={pageTitle} description="Complete your guided workshop payment">
+  <div class="pay-container">
+    <div class="pay-card">
+      
+      {fetchError && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--error">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">Something Went Wrong</h1>
+          <p class="pay-message">We couldn't load your workshop information. Please try again in a moment.</p>
+          <div class="pay-help">
+            <p>Need help?</p>
+            <a href="mailto:sue@knitbymachine.com" class="pay-email">sue@knitbymachine.com</a>
+          </div>
+        </div>
+      )}
+
+      {isNotFound && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--error">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/>
+              <line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">Link Not Found</h1>
+          <p class="pay-message">This link doesn't look right. Please check your email for the correct payment link, or contact Sue if you need help.</p>
+          <div class="pay-help">
+            <a href="mailto:sue@knitbymachine.com" class="pay-email">sue@knitbymachine.com</a>
+          </div>
+        </div>
+      )}
+
+      {isPending && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--pending">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">Application Under Review</h1>
+          <p class="pay-message">I'm reviewing your application—check your email soon for next steps.</p>
+          <p class="pay-submessage">This usually takes 1-2 business days.</p>
+        </div>
+      )}
+
+      {isApproved && !isMissingPlanUid && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--approved">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">You're Almost In</h1>
+          <p class="pay-message">Complete payment to receive your hub link and next steps.</p>
+          {workshop?.price && (
+            <p class="pay-price">{workshop.price}</p>
+          )}
+          {outsetaCheckoutUrl && (
+            <a href={outsetaCheckoutUrl} class="pay-button" data-testid="button-complete-payment">
+              Complete Payment
+            </a>
+          )}
+        </div>
+      )}
+
+      {isMissingPlanUid && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--pending">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"/>
+              <polyline points="12 6 12 12 16 14"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">Almost Ready</h1>
+          <p class="pay-message">This payment link isn't ready yet—please email Sue.</p>
+          <div class="pay-help">
+            <a href="mailto:sue@knitbymachine.com" class="pay-email">sue@knitbymachine.com</a>
+          </div>
+        </div>
+      )}
+
+      {isPaid && (
+        <div class="pay-content">
+          <div class="pay-icon pay-icon--success">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+              <polyline points="22 4 12 14.01 9 11.01"/>
+            </svg>
+          </div>
+          <h1 class="pay-title">You're Already In</h1>
+          <p class="pay-message">Your workshop is ready and waiting for you. Check your email for your private hub link.</p>
+          <div class="pay-help">
+            <p>Can't find the email?</p>
+            <a href="mailto:sue@knitbymachine.com" class="pay-email">Contact Sue</a>
+          </div>
+        </div>
+      )}
+
+    </div>
+  </div>
+  
+  <style>
+    .pay-container {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    
+    .pay-card {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(82, 104, 45, 0.15);
+      border-radius: 16px;
+      background: rgba(248, 250, 245, 0.5);
+    }
+    
+    .pay-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .pay-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.5rem;
+      padding: 1rem;
+      border-radius: 50%;
+    }
+    
+    .pay-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .pay-icon--pending {
+      background: rgba(234, 179, 8, 0.15);
+      color: #b45309;
+    }
+    
+    .pay-icon--approved {
+      background: rgba(82, 104, 45, 0.1);
+      color: #52682d;
+    }
+    
+    .pay-icon--success {
+      background: rgba(34, 197, 94, 0.15);
+      color: #16a34a;
+    }
+    
+    .pay-icon--error {
+      background: rgba(239, 68, 68, 0.1);
+      color: #dc2626;
+    }
+    
+    .pay-title {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    
+    .pay-message {
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .pay-submessage {
+      margin: 0;
+      font-size: 0.875rem;
+      color: #888;
+    }
+    
+    .pay-price {
+      margin: 1rem 0;
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #52682d;
+    }
+    
+    .pay-button {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.875rem 2rem;
+      background: #52682d;
+      color: white;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background 0.2s ease;
+    }
+    
+    .pay-button:hover {
+      background: #3d4e22;
+    }
+    
+    .pay-help {
+      margin-top: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(82, 104, 45, 0.1);
+    }
+    
+    .pay-help p {
+      margin: 0 0 0.5rem;
+      font-size: 0.875rem;
+      color: #888;
+    }
+    
+    .pay-email {
+      color: #52682d;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .pay-email:hover {
+      text-decoration: underline;
+    }
+  </style>
+</BaseLayout>

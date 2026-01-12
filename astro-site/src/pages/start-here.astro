@@ -1,0 +1,468 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Start Here | Knit by Machine";
+const description = "Not sure what's going wrong with your knitting? Start here to find answers based on what you're experiencing.";
+
+const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
+const REPO_OWNER = 'sjalowiec';
+const REPO_NAME = 'knitbymachine-site';
+const ANA_CONTENT_PATH = 'src/content/ana';
+
+interface GatewayEntry {
+  type?: string;
+  title: string;
+  slug: string;
+  questionDisplay?: string;
+  shortAnswer?: string;
+  introParagraph?: string;
+  showOnStartHere?: boolean;
+  startHereOrder?: number;
+  isDraft?: boolean;
+  pendingPublish?: boolean;
+}
+
+// Fetch all ANA entries from GitHub and filter for Start Here gateways
+async function getStartHereGateways(): Promise<GatewayEntry[]> {
+  try {
+    // Build headers - only include Authorization if token is present
+    const headers: Record<string, string> = {
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'knitbymachine-astro'
+    };
+    
+    if (GITHUB_TOKEN) {
+      headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+    }
+
+    // First, get the list of all files in the ANA content directory
+    const response = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ANA_CONTENT_PATH}`,
+      { headers }
+    );
+
+    if (!response.ok) {
+      console.error('Failed to fetch ANA directory:', response.status);
+      return [];
+    }
+
+    const files = await response.json();
+    const jsonFiles = files.filter((f: any) => f.name.endsWith('.json'));
+
+    // Fetch each file and filter for Start Here gateways
+    const gateways: GatewayEntry[] = [];
+
+    for (const file of jsonFiles) {
+      try {
+        const fileResponse = await fetch(file.download_url, {
+          headers: {
+            'User-Agent': 'knitbymachine-astro'
+          }
+        });
+
+        if (!fileResponse.ok) continue;
+
+        const entry = await fileResponse.json() as GatewayEntry;
+
+        // Filter: must be gateway, showOnStartHere=true, not draft, not pending
+        if (
+          entry.type === 'gateway' &&
+          entry.showOnStartHere === true &&
+          !entry.isDraft &&
+          !entry.pendingPublish
+        ) {
+          entry.slug = file.name.replace('.json', '');
+          gateways.push(entry);
+        }
+      } catch (err) {
+        console.error('Error fetching ANA file:', file.name, err);
+      }
+    }
+
+    // Sort by startHereOrder (lower numbers first)
+    gateways.sort((a, b) => (a.startHereOrder ?? 0) - (b.startHereOrder ?? 0));
+
+    return gateways;
+  } catch (error) {
+    console.error('Error fetching Start Here gateways:', error);
+    return [];
+  }
+}
+
+const dynamicCards = await getStartHereGateways();
+
+// Fallback cards if no dynamic content is available
+const fallbackCards = [
+  {
+    title: "My machine is stuck or misbehaving",
+    helper: "Something isn't moving or behaving the way it should.",
+    href: "/help-hub/while-knitting"
+  },
+  {
+    title: "My knitting doesn't look right",
+    helper: "Stitches, edges, or fabric don't match what you expected.",
+    href: "/help-hub/fabric-doesnt-look-right"
+  },
+  {
+    title: "I made a mistake (and I don't want to rip it out)",
+    helper: "Let's fix it and keep going.",
+    href: "/help-hub/fix-without-starting-over"
+  },
+  {
+    title: "I'm getting ready to start",
+    helper: "Set up your machine and project with confidence.",
+    href: "/help-hub/getting-ready-to-start"
+  },
+  {
+    title: "My project doesn't fit or isn't turning out as expected",
+    helper: "Size, shaping, or results feel off.",
+    href: "/help-hub/fit-or-results-off"
+  },
+  {
+    title: "Is this supposed to happen?",
+    helper: "Quick reassurance and what to check next.",
+    href: "/help-hub/possible-or-normal"
+  }
+];
+
+// Use dynamic cards if available, otherwise fall back to hardcoded ones
+const startCards = dynamicCards.length > 0 
+  ? dynamicCards.map(g => ({
+      title: g.title,
+      helper: g.questionDisplay || g.shortAnswer || g.introParagraph || '',
+      href: `/help-hub/${g.slug}`,
+      startHereOrder: g.startHereOrder ?? 0
+    }))
+  : fallbackCards.map((card, i) => ({ ...card, startHereOrder: i + 1 }));
+---
+
+<BaseLayout {title} {description}>
+  <div class="start-here-page">
+    <div class="page-container">
+      <header class="page-header">
+        <div class="intro-grid">
+          <div class="intro-content">
+            <div class="title-row">
+              <img src="/images/spotlight.svg" alt="Ask 'n Answer" class="header-icon" />
+              <h1 class="page-title">Start Here</h1>
+            </div>
+            <p class="intro-text">
+              If something isn't working, you don't need to know where it fits or what it's called.
+              Start with the situation that sounds most like what you're seeing, and we'll help you narrow it down.
+            </p>
+          </div>
+          <div class="intro-image-wrapper">
+            <img 
+              src="/images/knit-by-machine1.webp" 
+              alt="Using Knit by Machine resources at a home knitting machine" 
+              class="intro-image"
+            />
+          </div>
+        </div>
+      </header>
+
+      <p class="bridge-text">Start with a situation below. We'll guide you to the right Ask 'n Answer pages.</p>
+
+      <div class="cards-grid" data-testid="start-here-cards">
+        {startCards.map((card, index) => (
+          <a 
+            href={card.href} 
+            class={`start-card ${card.startHereOrder === 1 ? 'start-card--primary' : ''}`}
+            data-testid={`card-start-${index}`}
+          >
+            <div class="start-card__text">
+              <div class="start-card__title">{card.title}</div>
+              <div class="start-card__helper">{card.helper}</div>
+            </div>
+            <span class="start-card__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <div class="secondary-link-wrapper">
+        <a href="/ana-catalog" class="secondary-link" data-testid="link-browse-all">
+          Prefer to browse or search all questions? → Browse all Ask 'n Answer topics
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .start-here-page {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    min-height: 100vh;
+    background: var(--page-bg, #f8f9f5);
+  }
+
+  .page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .page-header {
+    margin-bottom: 3rem;
+  }
+
+  .intro-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+  }
+
+  .intro-content {
+    text-align: left;
+  }
+
+  .intro-image-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .intro-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  @media (max-width: 768px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    .intro-content {
+      text-align: center;
+      order: 1;
+    }
+
+    .intro-image-wrapper {
+      order: 2;
+    }
+
+    .intro-image {
+      max-width: 320px;
+    }
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  @media (max-width: 768px) {
+    .title-row {
+      justify-content: center;
+    }
+  }
+
+  .header-icon {
+    width: clamp(56px, 8vw, 72px);
+    height: clamp(56px, 8vw, 72px);
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--kbm-green, #52682d);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.8vw, 1.125rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    max-width: 100%;
+    margin: 0;
+  }
+
+  @media (max-width: 768px) {
+    .intro-text {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+  }
+
+  /* Bridge Text */
+  .bridge-text {
+    font-size: 0.875rem;
+    font-weight: 400;
+    color: #5a6b47;
+    text-align: center;
+    margin: 0 0 2rem 0;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Start Card - Chooser Tile Style */
+  .start-card {
+    position: relative;
+    display: block;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #d1d9c2;
+    padding: 1rem 2.5rem 1rem 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 1px 4px rgba(82, 104, 45, 0.06);
+    transition: 
+      transform 0.15s ease, 
+      box-shadow 0.15s ease, 
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+    cursor: pointer;
+    overflow: hidden; /* Keeps dog-ear tidy inside rounded corners */
+  }
+
+  /* Hover state */
+  .start-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
+  }
+
+  /* Focus-visible state (keyboard navigation) */
+  .start-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.25);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
+  }
+
+  /* Active/pressed state */
+  .start-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(82, 104, 45, 0.1);
+    background-color: #f5f8f2;
+  }
+
+  /* Primary card dog-ear (top-left folded corner) - only for order #1 */
+  .start-card--primary::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    border-top: 26px solid rgba(82, 104, 45, 0.18);
+    border-right: 26px solid transparent;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Subtle shadow/edge for realism */
+  .start-card--primary::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 26px;
+    height: 26px;
+    background: linear-gradient(135deg, rgba(0,0,0,0.10), rgba(0,0,0,0.00) 60%);
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  /* Card text container */
+  .start-card__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  /* Card title */
+  .start-card__title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3a57;
+    line-height: 1.4;
+  }
+
+  /* Card helper text */
+  .start-card__helper {
+    font-size: 0.875rem;
+    color: #6b7a5d;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  /* Arrow icon - positioned top-right */
+  .start-card__icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca88f;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .start-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Arrow animation on hover/focus */
+  .start-card:hover .start-card__icon,
+  .start-card:focus-visible .start-card__icon {
+    transform: translateX(3px);
+    color: var(--kbm-green, #52682d);
+  }
+
+  /* Secondary Link */
+  .secondary-link-wrapper {
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  .secondary-link {
+    font-size: 0.95rem;
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .secondary-link:hover {
+    color: #3e5023;
+    text-decoration: underline;
+  }
+</style>

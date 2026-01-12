@@ -1,0 +1,209 @@
+{
+  "workshopId": "gw-g6jg7k",
+  "title": "Scarf Workshop for Betty",
+  "slug": "scarf-for-betty",
+  "shortDescription": "A guided 10-day workshop to knit your first scarf",
+  "description": "This guided workshop takes you through the complete process of knitting a beautiful scarf, from choosing yarn to blocking the finished piece.",
+  "tags": [
+    "beginner",
+    "scarf",
+    "accessories"
+  ],
+  "durationDays": 10,
+  "level": "beginner",
+  "imageUrl": "",
+  "imageAlt": "",
+  "welcomeTitle": "",
+  "welcomeBody": "",
+  "metaTitle": "",
+  "metaDescription": "",
+  "curriculum": {
+    "days": [
+      {
+        "day": 1,
+        "title": "Define the scarf",
+        "blocks": [
+          {
+            "type": "richText",
+            "content": "Welcome to Day 1! Today you're deciding what this scarf will be. Keep it simple — clarity now makes everything else easier."
+          },
+          {
+            "type": "callout",
+            "style": "tip",
+            "title": "Pro tip",
+            "content": "Don't overthink it. A simple garter stitch scarf can be beautiful and relaxing to knit."
+          },
+          {
+            "type": "checklist",
+            "items": [
+              {
+                "text": "Choose your stitch pattern",
+                "isOptional": false
+              },
+              {
+                "text": "Decide on scarf width and length",
+                "isOptional": false
+              },
+              {
+                "text": "Post your decisions in the hub comments",
+                "isOptional": true
+              }
+            ],
+            "title": "Today's tasks"
+          }
+        ],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 0
+        },
+        "estimatedTime": "15 min",
+        "shortDescription": "Choose stitch, width, and finish line."
+      },
+      {
+        "day": 2,
+        "title": "Swatch + set tension",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 1
+        },
+        "estimatedTime": "30 min",
+        "shortDescription": "Create a small swatch and confirm your numbers."
+      },
+      {
+        "day": 3,
+        "title": "Cast on + start knitting",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 2
+        },
+        "estimatedTime": "30–45 min",
+        "shortDescription": "Get a clean start and knit the first section."
+      },
+      {
+        "day": 4,
+        "title": "Rhythm check",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 3
+        },
+        "estimatedTime": "15–20 min",
+        "shortDescription": "Confirm edges, weight, and consistency."
+      },
+      {
+        "day": 5,
+        "title": "Midpoint reset",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 4
+        },
+        "estimatedTime": "15–20 min",
+        "shortDescription": "Measure, adjust, and keep going with confidence."
+      },
+      {
+        "day": 6,
+        "title": "Finish planning",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 5
+        },
+        "estimatedTime": "20 min",
+        "shortDescription": "Choose your ending and finishing method."
+      },
+      {
+        "day": 7,
+        "title": "Knit to length",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 6
+        },
+        "estimatedTime": "30–60 min",
+        "shortDescription": "Reach your finish line with clean edges."
+      },
+      {
+        "day": 8,
+        "title": "Bind off",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 7
+        },
+        "estimatedTime": "20–30 min",
+        "shortDescription": "Use a bind-off that matches the scarf's stretch and look."
+      },
+      {
+        "day": 9,
+        "title": "Finishing",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 8
+        },
+        "estimatedTime": "30–45 min",
+        "shortDescription": "Weave ends, tidy edges, optional fringe."
+      },
+      {
+        "day": 10,
+        "title": "Block + photo",
+        "blocks": [],
+        "release": {
+          "mode": "relative",
+          "dayOffset": 9
+        },
+        "estimatedTime": "30–45 min",
+        "shortDescription": "Final polish and a simple 'done' share."
+      },
+      {
+        "day": 99,
+        "title": "Bonus: Variations + what to knit next",
+        "blocks": [
+          {
+            "type": "richText",
+            "content": "You're done! 🎉\n\nThis bonus section is completely optional. Use it if you're curious about variations or already thinking about your next project."
+          },
+          {
+            "type": "checklist",
+            "items": [
+              {
+                "text": "Try the same scarf with a different stitch",
+                "isOptional": true
+              },
+              {
+                "text": "Change the width or length",
+                "isOptional": true
+              },
+              {
+                "text": "Make a second scarf using what you learned",
+                "isOptional": true
+              }
+            ],
+            "title": "Optional ideas"
+          },
+          {
+            "type": "callout",
+            "style": "note",
+            "title": "No pressure",
+            "content": "If you're done and happy, that's success. This bonus is here only if you want it."
+          }
+        ],
+        "isBonus": true,
+        "release": {
+          "mode": "relative",
+          "dayOffset": 10
+        },
+        "estimatedTime": "10–15 min",
+        "shortDescription": "Optional ideas to extend this scarf or confidently knit the next one."
+      }
+    ],
+    "version": 1
+  },
+  "status": "active",
+  "isDraft": false,
+  "pendingPublish": false,
+  "publishedDate": "2025-12-15"
+}

@@ -1,0 +1,520 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getWorkshopSlugs, getWorkshopBySlug, type CurriculumDay, type CurriculumBlock } from '../../../../lib/workshops';
+import { marked } from 'marked';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const slugs = getWorkshopSlugs();
+  const paths: { params: { workshopSlug: string; day: string } }[] = [];
+  
+  for (const slug of slugs) {
+    const workshop = getWorkshopBySlug(slug);
+    if (workshop) {
+      // Build union of all day numbers from outline and curriculum
+      const dayNumbers = new Set<number>();
+      for (const day of workshop.outline.days) {
+        dayNumbers.add(day.day);
+      }
+      if (workshop.curriculum?.days) {
+        for (const day of workshop.curriculum.days) {
+          dayNumbers.add(day.day);
+        }
+      }
+      for (const dayNum of dayNumbers) {
+        paths.push({
+          params: { workshopSlug: slug, day: String(dayNum) }
+        });
+      }
+    }
+  }
+  
+  return paths;
+}
+
+const { workshopSlug, day: dayParam } = Astro.params;
+const dayNumber = parseInt(dayParam as string, 10);
+const workshop = getWorkshopBySlug(workshopSlug as string);
+
+if (!workshop) {
+  return Astro.redirect('/404');
+}
+
+// Get curriculum day if available, otherwise use outline
+const curriculumDay = workshop.curriculum?.days.find(d => d.day === dayNumber);
+const outlineDay = workshop.outline.days.find(d => d.day === dayNumber);
+
+if (!curriculumDay && !outlineDay) {
+  return Astro.redirect('/404');
+}
+
+// Use curriculum for content, outline for release control
+const dayTitle = curriculumDay?.title || outlineDay?.title || '';
+const dayDescription = curriculumDay?.shortDescription || outlineDay?.goal || '';
+const isReleased = outlineDay?.released ?? true;
+// Total days should always come from outline (the authoritative schedule)
+const totalDays = workshop.outline.days.length;
+// estimatedTime disabled per user request
+const blocks = curriculumDay?.blocks || [];
+
+const title = `Day ${dayNumber}: ${dayTitle} | ${workshop.workshop.title}`;
+const description = dayDescription;
+const hubUrl = `/guided-workshops/${workshopSlug}/hub`;
+
+// Unique page ID for Hyvor comments on each day
+const dayPageId = `workshop-${workshopSlug}-day-${dayNumber}`;
+const hyvorEnabled = workshop.hyvor?.enabled && isReleased;
+const hyvorWebsiteId = workshop.hyvor?.websiteId || '14706';
+
+// Helper to render markdown content
+function renderMarkdown(content: string): string {
+  return marked.parse(content, { async: false }) as string;
+}
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--workshop-day">
+
+    <header class="day-hero">
+      <a href={hubUrl} class="day-back-link">← Back to Hub</a>
+      <div class="day-meta-row">
+        <span class="day-meta">Day {dayNumber} of {totalDays}</span>
+      </div>
+      <h1>{dayTitle}</h1>
+      {dayDescription && <p class="day-subtitle">{dayDescription}</p>}
+    </header>
+
+    {isReleased ? (
+      <article class="day-content">
+        {blocks.length > 0 ? (
+          blocks.map((block: CurriculumBlock) => {
+            if (block.type === 'richText') {
+              return (
+                <div class="block block--rich-text" set:html={renderMarkdown(block.content)} />
+              );
+            }
+            
+            if (block.type === 'image') {
+              return (
+                <figure class="block block--image">
+                  <img src={block.src} alt={block.alt} loading="lazy" />
+                  {block.caption && <figcaption>{block.caption}</figcaption>}
+                </figure>
+              );
+            }
+            
+            if (block.type === 'video') {
+              return (
+                <div class="block block--video">
+                  {block.provider === 'youtube' && (
+                    <div class="video-embed">
+                      <iframe 
+                        src={block.url.replace('watch?v=', 'embed/')} 
+                        frameborder="0" 
+                        allowfullscreen
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      />
+                    </div>
+                  )}
+                  {block.provider === 'vimeo' && (
+                    <div class="video-embed">
+                      <iframe 
+                        src={block.url.replace('vimeo.com/', 'player.vimeo.com/video/')} 
+                        frameborder="0" 
+                        allowfullscreen
+                      />
+                    </div>
+                  )}
+                  {block.provider === 'loom' && (
+                    <div class="video-embed">
+                      <iframe 
+                        src={block.url.replace('loom.com/share/', 'loom.com/embed/')} 
+                        frameborder="0" 
+                        allowfullscreen
+                      />
+                    </div>
+                  )}
+                  {block.provider === 'direct' && (
+                    <video controls class="video-direct">
+                      <source src={block.url} />
+                    </video>
+                  )}
+                  {block.caption && <p class="video-caption">{block.caption}</p>}
+                </div>
+              );
+            }
+            
+            if (block.type === 'download') {
+              return (
+                <div class="block block--download">
+                  <a href={block.url} class="download-link" download>
+                    <svg class="download-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <polyline points="7 10 12 15 17 10" />
+                      <line x1="12" y1="15" x2="12" y2="3" />
+                    </svg>
+                    {block.label}
+                  </a>
+                </div>
+              );
+            }
+            
+            if (block.type === 'checklist') {
+              return (
+                <div class="block block--checklist">
+                  {block.title && <h3 class="checklist-title">{block.title}</h3>}
+                  <ul class="checklist-items">
+                    {block.items.map((item) => (
+                      <li class={`checklist-item ${item.isOptional ? 'checklist-item--optional' : ''}`}>
+                        <label class="checklist-label">
+                          <input type="checkbox" class="checklist-checkbox" />
+                          <span class="checklist-text">{item.text}</span>
+                          {item.isOptional && <span class="checklist-optional">(optional)</span>}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              );
+            }
+            
+            if (block.type === 'callout') {
+              return (
+                <aside class={`block block--callout callout--${block.style}`}>
+                  {block.title && <strong class="callout-title">{block.title}</strong>}
+                  <div class="callout-content" set:html={renderMarkdown(block.content)} />
+                </aside>
+              );
+            }
+            
+            return null;
+          })
+        ) : (
+          <div class="day-fallback">
+            <p class="day-goal">{dayDescription}</p>
+          </div>
+        )}
+        
+        <div class="day-action">
+          <a href={hubUrl} class="day-button">
+            Post your update on the hub →
+          </a>
+        </div>
+      </article>
+    ) : (
+      <section class="day-card day-card--locked">
+        <div class="day-locked-badge">Coming next</div>
+        <h2>{dayTitle}</h2>
+        <p class="day-goal">{dayDescription}</p>
+        <p class="day-locked-note">
+          This day hasn't been released yet. Check back soon, or continue working on the current step.
+        </p>
+        <div class="day-action">
+          <a href={hubUrl} class="day-button day-button--secondary">
+            ← Return to Hub
+          </a>
+        </div>
+      </section>
+    )}
+
+    {hyvorEnabled && (
+      <section class="day-comments">
+        <h2>Questions & Discussion</h2>
+        <hyvor-talk-comments 
+          website-id={hyvorWebsiteId}
+          page-id={dayPageId}
+        />
+      </section>
+    )}
+
+  </main>
+
+  <style>
+    .page--workshop-day { max-width: 720px; margin: 0 auto; padding: 1.25rem 1rem 3rem; }
+    
+    /* Hero */
+    .day-hero { margin-bottom: 2rem; }
+    .day-back-link {
+      display: inline-block;
+      font-size: 0.9rem;
+      color: #52682D;
+      text-decoration: none;
+      margin-bottom: 0.75rem;
+    }
+    .day-back-link:hover { text-decoration: underline; }
+    .day-meta-row {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+    .day-meta {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(44, 58, 87, 0.6);
+    }
+    .day-time {
+      font-size: 0.8rem;
+      color: rgba(44, 58, 87, 0.5);
+    }
+    .day-hero h1 {
+      margin: 0 0 0.5rem;
+      font-size: 1.75rem;
+      color: #2C3A57;
+    }
+    .day-subtitle {
+      margin: 0;
+      font-size: 1.1rem;
+      color: rgba(44, 58, 87, 0.7);
+    }
+
+    /* Content blocks */
+    .day-content { }
+    
+    .block { margin-bottom: 1.5rem; }
+    
+    /* Rich text */
+    .block--rich-text {
+      line-height: 1.7;
+      color: #2C3A57;
+    }
+    .block--rich-text h2 {
+      margin: 1.5rem 0 0.75rem;
+      font-size: 1.3rem;
+      color: #52682D;
+    }
+    .block--rich-text h3 {
+      margin: 1.25rem 0 0.5rem;
+      font-size: 1.1rem;
+      color: #52682D;
+    }
+    .block--rich-text p { margin: 0 0 1rem; }
+    .block--rich-text ul, .block--rich-text ol {
+      margin: 0 0 1rem;
+      padding-left: 1.5rem;
+    }
+    .block--rich-text li { margin-bottom: 0.25rem; }
+    .block--rich-text strong { color: #2C3A57; }
+    
+    /* Image */
+    .block--image { margin: 1.5rem 0; }
+    .block--image img {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid rgba(44, 58, 87, 0.1);
+    }
+    .block--image figcaption {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: rgba(44, 58, 87, 0.6);
+      text-align: center;
+    }
+    
+    /* Video */
+    .video-embed {
+      position: relative;
+      padding-bottom: 56.25%;
+      height: 0;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .video-embed iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    .video-direct {
+      width: 100%;
+      border-radius: 12px;
+    }
+    .video-caption {
+      margin-top: 0.5rem;
+      font-size: 0.85rem;
+      color: rgba(44, 58, 87, 0.6);
+      text-align: center;
+    }
+    
+    /* Download */
+    .block--download { margin: 1rem 0; }
+    .download-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: rgba(82, 104, 45, 0.08);
+      border: 1px solid rgba(82, 104, 45, 0.2);
+      border-radius: 10px;
+      color: #52682D;
+      text-decoration: none;
+      font-weight: 500;
+      transition: background 0.15s ease;
+    }
+    .download-link:hover {
+      background: rgba(82, 104, 45, 0.15);
+    }
+    .download-icon { flex-shrink: 0; }
+    
+    /* Checklist */
+    .block--checklist {
+      padding: 1.25rem;
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(44, 58, 87, 0.1);
+      border-radius: 14px;
+    }
+    .checklist-title {
+      margin: 0 0 0.75rem;
+      font-size: 1rem;
+      color: #52682D;
+    }
+    .checklist-items {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .checklist-item {
+      margin-bottom: 0.5rem;
+    }
+    .checklist-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      cursor: pointer;
+    }
+    .checklist-checkbox {
+      margin-top: 0.25rem;
+      width: 18px;
+      height: 18px;
+      accent-color: #52682D;
+    }
+    .checklist-text { flex: 1; }
+    .checklist-optional {
+      font-size: 0.8rem;
+      color: rgba(44, 58, 87, 0.5);
+      font-style: italic;
+    }
+    .checklist-item--optional .checklist-text {
+      color: rgba(44, 58, 87, 0.7);
+    }
+    
+    /* Callout */
+    .block--callout {
+      padding: 1rem 1.25rem;
+      border-radius: 12px;
+      border-left: 4px solid;
+    }
+    .callout--note {
+      background: rgba(44, 58, 87, 0.06);
+      border-color: rgba(44, 58, 87, 0.3);
+    }
+    .callout--tip {
+      background: rgba(82, 104, 45, 0.08);
+      border-color: #52682D;
+    }
+    .callout--important {
+      background: rgba(180, 83, 9, 0.08);
+      border-color: #b45309;
+    }
+    .callout-title {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .callout--note .callout-title { color: #2C3A57; }
+    .callout--tip .callout-title { color: #52682D; }
+    .callout--important .callout-title { color: #b45309; }
+    .callout-content { line-height: 1.6; }
+    .callout-content p { margin: 0; }
+    
+    /* Fallback */
+    .day-fallback {
+      padding: 1.5rem;
+      border-radius: 18px;
+      border: 1px solid rgba(44,58,87,0.12);
+      background: rgba(255,255,255,0.65);
+    }
+    .day-goal {
+      font-size: 1.1rem;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* Locked state */
+    .day-card {
+      padding: 1.5rem;
+      border-radius: 18px;
+      border: 1px solid rgba(44,58,87,0.12);
+      background: rgba(255,255,255,0.65);
+    }
+    .day-card h2 {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      color: #52682D;
+    }
+    .day-card--locked {
+      background: rgba(44, 58, 87, 0.04);
+      border-color: rgba(44, 58, 87, 0.1);
+    }
+    .day-locked-badge {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: rgba(44, 58, 87, 0.6);
+      background: rgba(44, 58, 87, 0.1);
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      margin-bottom: 0.75rem;
+    }
+    .day-locked-note {
+      color: rgba(44, 58, 87, 0.7);
+      font-style: italic;
+      margin-bottom: 1.5rem;
+    }
+
+    /* Action */
+    .day-action { margin-top: 2rem; }
+    .day-button {
+      display: inline-block;
+      padding: 0.75rem 1.25rem;
+      border-radius: 12px;
+      font-weight: 600;
+      text-decoration: none;
+      background: #52682D;
+      color: #fff;
+      transition: background 0.15s ease;
+    }
+    .day-button:hover { background: #3f5023; }
+    .day-button--secondary {
+      background: transparent;
+      color: #52682D;
+      border: 1px solid rgba(82, 104, 45, 0.3);
+    }
+    .day-button--secondary:hover {
+      background: rgba(82, 104, 45, 0.08);
+    }
+    
+    /* Comments */
+    .day-comments {
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(44, 58, 87, 0.1);
+    }
+    .day-comments h2 {
+      margin: 0 0 1rem;
+      font-size: 1.1rem;
+      color: #52682D;
+    }
+  </style>
+
+  {hyvorEnabled && (
+    <script type="module" src="https://talk.hyvor.com/embed/embed.js"></script>
+  )}
+</BaseLayout>

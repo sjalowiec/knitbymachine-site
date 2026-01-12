@@ -1,0 +1,874 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = "Guided Workshop with Sue | Knit by Machine";
+const description = "A hands-on, personal workshop designed to help you make real progress on a project you’re excited about—at a pace that feels focused and doable.";
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--guided-workshop">
+    <!-- Hero Section -->
+    <section class="section section--hero">
+      <div class="section-inner">
+        <div class="grid grid--two hero-grid">
+          <div class="hero-left">
+            <div class="hero-header">
+              <div class="hero-title-row">
+                <img src="/images/guided_workshops.svg" alt="Guided Workshops logo" class="hero-logo" />
+                <h1 data-testid="text-page-title">Guided Workshop with Sue</h1>
+              </div>
+              <p class="hero-subtitle">
+                A 10-day, call-free workshop where you finish one real project on your machine — with focused, written guidance at each step.
+              </p>
+            </div>
+            <!-- Hero CTA moved to left column -->
+            <div class="hero-cta hero-cta--left">
+              <a
+                class="button button--primary button--large"
+                href="/guided-workshops/apply?utm_source=kbm&utm_medium=guided-workshop-page&utm_campaign=guided-workshop-application&utm_content=hero-cta"
+                data-testid="button-cta-hero"
+              >
+                Apply for Your Guided Workshop
+              </a>
+              <p class="cta-note"><em>You won't pay yet — Sue reviews your project first and sends a custom quote.</em></p>
+              <p class="how-it-works-link">
+                <a href="#how-it-works">See how it works →</a>
+              </p>
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <div class="hero-media">
+              <img src="/images/knit-by-machine-sue.png" alt="Sue at her knitting machine, ready to guide you" class="hero-image" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Full-width intro text -->
+        <div class="hero-intro-text">
+          <p>
+            You bring the project, and I help you move it forward with clear written guidance, short video replies, and support that fits your pace. No calls, no time zones — just steady, practical help as you knit.
+          </p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- What a Guided Workshop really is -->
+    <section class="section section--overview">
+      <div class="section-inner">
+        <h2>What a Guided Workshop really is</h2>
+        <p>
+        A Guided Workshop includes <strong>10 business days of support (about two weeks on the calendar)</strong> focused on one project.
+        
+        </p>
+        <p>
+          You bring the project, your machine, and your questions.
+          I bring experience, clear next steps, and steady support
+          so you don't have to figure it all out alone.
+        </p>
+      <p>
+  We'll stay in touch in a private project thread (simple and easy to follow) with a mix of 
+  written messages, voice notes, and short videos.
+</p>
+      </div>
+    </section>
+
+
+    <!-- Two-column: What we can work on together + What you get -->
+       <section class="section gw-two-col">
+<div class="gw-col">
+    <h2>What we can work on</h2>
+         <p><strong>Your project can be simple, messy, or somewhere in between — here are some common ways I can support you:</strong></p>
+      <ul>
+        <li>Getting started on a project you've been thinking about for too long</li>
+        <li>Moving again on something that's been sitting half-finished</li>
+        <li>Sorting out shaping, fit, or construction details</li>
+        <li>Translating a pattern to your machine</li>
+        <li>Making confident yarn and gauge decisions</li>
+        <li>Working through "this part doesn't look right and I don't know why"</li>
+        <li>Finishing details that help your project look and feel the way you hoped</li>
+        <li>Using any remaining time to plan your next project or answer general machine questions</li>
+      </ul>
+</div>
+
+     <div class="gw-col" data-astro-cid-ht3ynwrm>
+    <h2 data-astro-cid-ht3ynwrm>How I support you</h2>
+    <p data-astro-cid-ht3ynwrm>Here's what your workshop support includes:</p>
+
+    <ul data-astro-cid-ht3ynwrm>
+     <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>10 business days (about two weeks) of focused support</strong> at your pace, on one project</li>
+        <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>Written, voice, and short video replies</strong> from me</li>
+        <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>Clear, "doable" next steps</strong> instead of long lectures</li>
+        <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>Feedback for your specific machine, yarn, and pattern</strong></li>
+        <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>Gentle accountability</strong> so you don't drift away from your project</li>
+        <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>A simple plan for what to do next</strong> once the workshop is done</li>
+        
+        <li data-astro-cid-ht3ynwrm><strong data-astro-cid-ht3ynwrm>Lifetime access to our thread</strong> so you can re-watch videos and re-read advice anytime.</li>
+        <li data-astro-cid-ht3ynwrm><em data-astro-cid-ht3ynwrm>I usually respond within one business day (Monday–Friday, Pacific time).</em></li>
+    </ul>
+    <p data-astro-cid-ht3ynwrm>You keep knitting at your pace. I'm in the background when you need support.</p>
+</div>
+    
+    </section>
+
+    <!-- Centered CTA -->
+    <div class="hero-cta hero-cta--centered">
+      <a
+        class="button button--primary button--large"
+        href="/guided-workshops/apply"
+        data-testid="button-cta-mid"
+      >
+        Apply for Your Guided Workshop
+      </a>
+     <p class="cta-note"><em>You won’t pay yet — I’ll review your project and only send a quote if it’s a good fit.</em></p>
+
+    </div>
+
+    <!-- How it works -->
+    <section class="section section--how-it-works" id="how-it-works">
+      <div class="section-inner">
+        <h2>How it works</h2>
+        <ol class="steps-list">
+          <li>
+            <h3>Tell me about your project</h3>
+            <p>
+              Tell me what you want to work on, which machine you're using, and where you'd like support. 
+This helps me understand your project before I confirm it's a good fit.
+            </p>
+          </li>
+          <li>
+            <h3>I review your project</h3>
+            <p>
+              I'll look at what you've shared and confirm whether it’s the right scope for a 10 business day workshop.
+            </p>
+          </li>
+          <li>
+            <h3>You receive a custom quote</h3>
+            <p>
+               Your quote reflects the scope of your project and what you want to accomplish during the workshop.
+                After I review your application, I’ll send a simple proposal with your exact price.
+            </p>
+
+          </li>
+          <li>
+            <h3>You choose your start date</h3>
+           <p>
+            Once you accept the quote and complete payment, we'll <strong>agree on a start date</strong> that fits your schedule.
+            </p>
+          </li>
+          <li class="kbm-note">
+            <strong class="kbm-note-title">You don't need to check in every day</strong>
+            <p>
+              You choose your pace during your workshop window. Check in when it makes sense for you, and Sue will be there with your next step.
+            </p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- Is a Guided Workshop right for you?
+    <section class="section section--fit">
+      <div class="section-inner">
+        <h2>Is a Guided Workshop right for you?</h2>
+
+        <div class="grid grid--two">
+          <div>
+            <h3>This is likely a good fit if you:</h3>
+            <ul>
+              <li>Have one project you'd really like to move forward</li>
+              <li>Prefer messaging, voice, and short videos over scheduling live calls</li>
+              <li>Want specific guidance, not a big course or library</li>
+              <li>Are willing to take small actions during the workshop</li>
+              <li>Appreciate honest, kind feedback grounded in real machine-knitting practice</li>
+            </ul>
+          </div>
+          <div>
+            <h3>It's probably not a fit if you:</h3>
+            <ul>
+              <li>Want a full pattern designed from scratch</li>
+              <li>Have a very large, open-ended, or long-term project</li>
+              <li>Prefer live, real-time coaching calls</li>
+            </ul>
+          </div>
+        </div>
+        <p>
+          If your project isn't a good match, I'll let you know before you're asked to pay.
+        </p>
+      </div>
+    </section>
+-->
+   
+
+    <!-- personalized pricing -->
+    <section class="section section--pricing" id="pricing" data-astro-cid-ht3ynwrm>
+    <div class="section-inner" data-astro-cid-ht3ynwrm>
+        <h2 data-astro-cid-ht3ynwrm>Personalized Workshop Pricing</h2>
+        
+        <p data-astro-cid-ht3ynwrm>Guided Workshops typically range from <strong data-astro-cid-ht3ynwrm>$297 to $397</strong>.</p>
+        
+        <p data-astro-cid-ht3ynwrm>Your exact price depends on the complexity of the project you describe in your application—things like:</p>
+        
+       <ul data-astro-cid-ht3ynwrm>
+    <li data-astro-cid-ht3ynwrm>The scope and complexity of the project</li>
+    
+    <li data-astro-cid-ht3ynwrm>The amount of adapting or translating required (for example, from hand knitting to machine knitting)</li>
+    
+    <li data-astro-cid-ht3ynwrm>What can be realistically and comfortably completed during the workshop window.</li>
+</ul>
+
+        <p data-astro-cid-ht3ynwrm>I’ll review your project details first, then send a <strong data-astro-cid-ht3ynwrm>custom proposal with your exact price</strong> so you can decide if it's a fit.</p>
+    </div>
+</section>
+
+
+    <!-- Final CTA -->
+    <section class="section section--cta gw-cta" id="guided-workshop-application">
+      <div class="section-inner section-inner--center">
+        <h2>Ready to get started?</h2>
+        <p>
+        If you're feeling a tug toward a particular project and you'd like a structured 2-week window of support along the way, fill out the short application and we'll see if it's a fit.
+</p>
+       <p><em>The application <strong>takes about 5 minutes</strong> and simply helps me understand your project so I can support you well.</em></p>
+        <a 
+          class="button button--primary button--large" 
+          href="/guided-workshops/apply"
+          data-testid="button-cta-apply"
+        >
+          Apply for Your Guided Workshop
+        </a>
+        <p class="cta-note"><em>You won’t pay yet - I’ll review your project and only send a quote if it’s a good fit.</em></p>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>
+
+<style>
+  .page--guided-workshop {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .section {
+    padding: 1.5rem 0;
+  }
+
+  .section-inner {
+    max-width: 100%;
+  }
+
+  .section-inner--center {
+    text-align: center;
+  }
+
+  /* Hero Section */
+  .section--hero {
+    text-align: center;
+  }
+
+  /* Overview Section */
+  .section--overview {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    margin: 2rem 0;
+  }
+
+  .section--overview + h2 {
+    margin-top: 1.5rem;
+  }
+
+  .hero-header {
+    margin-bottom: 2rem;
+  }
+
+  .hero-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .hero-logo {
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 640px) {
+    .hero-logo {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .section--hero h1 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.1rem, 2vw, 1.35rem);
+    color: var(--kbm-green-2);
+    font-weight: 500;
+    margin: 0 0 1.5rem;
+    line-height: 1.5;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .hero-media {
+    margin: 2rem 0;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  }
+
+  .hero-cta {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .hero-note {
+    text-align: center;
+    max-width: 44rem;
+    margin: 1.5rem auto 0;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #5a6b47;
+    font-style: italic;
+  }
+
+  /* Full-width intro text below hero grid */
+  .hero-intro-text {
+    width: 100%;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+    text-align: left;
+  }
+
+  .hero-intro-text p {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  /* Centered CTA */
+  .hero-cta--centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-top: 2.5rem;
+  }
+
+  .hero-note--full-width {
+    max-width: 100%;
+    width: 100%;
+  }
+
+  /* Section CTA */
+  .section-cta {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1rem;
+  }
+
+  /* Placeholder Images */
+  .placeholder-image {
+    background: linear-gradient(135deg, #e9ece7 0%, #d4dbc8 100%);
+    border: 2px dashed var(--kbm-green-2);
+    border-radius: 12px;
+    padding: 3rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+  }
+
+  .placeholder-image span {
+    color: var(--kbm-green);
+    font-weight: 500;
+    font-size: 1rem;
+  }
+
+  .placeholder-image--portrait {
+    min-height: 300px;
+  }
+
+  /* Buttons */
+  .button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button--primary {
+    background-color: var(--kbm-green);
+    color: #ffffff;
+    border-color: var(--kbm-green);
+  }
+
+  .button--primary:hover {
+    background-color: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+  }
+
+  .button--secondary {
+    background-color: transparent;
+    color: var(--kbm-green);
+    border-color: var(--kbm-green);
+  }
+
+  .button--secondary:hover {
+    background-color: var(--kbm-green);
+    color: #ffffff;
+  }
+
+  .button--large {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  /* Section Headings */
+  .section h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+  }
+
+  .section h3 {
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.75rem;
+  }
+
+  .section p {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  /* Lists */
+  .section ul,
+  .section ol {
+    padding-left: 1.5rem;
+    margin: 0.75rem 0;
+  }
+
+  .section li {
+    font-size: clamp(1rem, 1.5vw, 1.05rem);
+    color: #5a6b47;
+    line-height: 1.6;
+    margin-bottom: 0.4rem;
+  }
+
+  /* Grid Layout */
+  .grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .grid--two {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  /* Callout Box */
+  .callout {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .callout--contrast {
+    border-left: 4px solid var(--kbm-green-2);
+  }
+
+  .callout p:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Steps List */
+  .steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+  }
+
+  .steps-list li {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid var(--kbm-green-2);
+  }
+
+  .steps-list h3 {
+    margin-bottom: 0.5rem;
+  }
+
+  .steps-list p {
+    margin: 0;
+  }
+
+  .steps-list li.kbm-note {
+    background: #f2f5ec;
+    border-left-color: var(--kbm-green);
+  }
+
+  .steps-list li.kbm-note .kbm-note-title {
+    display: block;
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin-bottom: 0.5rem;
+  }
+
+  /* Hero CTA in left column */
+  .hero-cta--left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-cta--left .cta-note {
+    text-align: left;
+  }
+
+  /* How It Works Link - enhanced visibility */
+  .how-it-works-link {
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  .hero-cta--left .how-it-works-link {
+    text-align: left;
+  }
+
+  .how-it-works-link a {
+    font-size: 0.95rem;
+    color: #3d4a2e;
+    font-weight: 500;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.2s ease;
+  }
+
+  .how-it-works-link a:hover {
+    color: var(--kbm-green);
+    text-decoration-thickness: 2px;
+  }
+
+  /* Included List */
+  .included-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .included-list li {
+    padding: 1rem 0;
+    border-bottom: 1px solid #e5e8e0;
+  }
+
+  .included-list li:last-child {
+    border-bottom: none;
+  }
+
+  /* Pricing Cards */
+  .pricing-grid {
+    margin-top: 1.5rem;
+  }
+
+  .card--pricing {
+    background: #ffffff;
+    border: 1px solid #e5e8e0;
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+  }
+
+  .card--featured {
+    border: 2px solid var(--kbm-green);
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.15);
+  }
+
+  .featured-badge {
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--kbm-green);
+    color: #ffffff;
+    padding: 0.35rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .card--pricing h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .card--pricing .button {
+    display: block;
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+    box-sizing: border-box;
+  }
+
+  /* Guarantee Section */
+  .section--guarantee {
+    text-align: center;
+  }
+
+  .section--guarantee .section-inner {
+    max-width: 650px;
+    margin: 0 auto;
+  }
+
+  .guarantee-note {
+    font-weight: 600;
+    color: var(--kbm-green);
+    font-style: italic;
+  }
+
+  /* About Section */
+  .about-grid {
+    align-items: center;
+  }
+
+  .about-content {
+    text-align: left;
+  }
+
+  /* Media Elements */
+  .media {
+    margin: 2rem 0;
+  }
+
+  /* Divider */
+  .kbm-divider {
+    border: none;
+    border-top: 1px solid #e5e8e0;
+    margin: 2rem auto 1.25rem;
+  }
+
+  /* Problem Section Styling */
+  .section--problem {
+    background-color: #F7F9F3;
+    padding: 2.5rem 1.5rem;
+    border-radius: 12px;
+  }
+
+  .fit-icon {
+    margin-right: 6px;
+    color: #C2614E;
+  }
+
+  .section--problem h3 .fa-check {
+    color: #6E8B3D;
+  }
+
+  /* Overview Cards */
+  .workshop-overview-grid {
+    display: grid;
+    gap: 2rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .workshop-overview-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  .workshop-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1.75rem 1.5rem;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+  }
+
+  .workshop-card h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .workshop-card ul {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .workshop-card li + li {
+    margin-top: 0.4rem;
+  }
+
+  /* Final CTA */
+  .section--cta {
+    background: linear-gradient(135deg, #f9fdf5 0%, #e9ece7 100%);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-top: 2.5rem;
+  }
+
+  .section--cta h2 {
+    margin-bottom: 1rem;
+  }
+
+  .section--cta p {
+    max-width: 550px;
+    margin: 0 auto 1.5rem;
+  }
+
+  .cta-note {
+    font-size: 0.95rem;
+    color: #5a6b47;
+    margin-top: 0.75rem;
+    text-align: center;
+  }
+
+  /* Two-column layout */
+  .gw-two-col {
+    display: flex;
+    gap: 3rem;
+    align-items: flex-start;
+  }
+
+  .gw-col {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .gw-col h2 {
+    margin-top: 0;
+  }
+
+  @media (max-width: 768px) {
+    .gw-two-col {
+      flex-direction: column;
+      gap: 2rem;
+    }
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .page--guided-workshop {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .hero-logo {
+      width: 60px;
+      height: 60px;
+    }
+
+    .card--pricing {
+      padding: 1.5rem;
+    }
+
+    .section--cta {
+      padding: 2rem 1.5rem;
+    }
+
+    .section--overview {
+      padding: 1.75rem 1.25rem;
+    }
+  }
+
+  .pricing-helper {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    text-align: center;
+  }
+
+  .pricing-helper a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+    color: #52682d;
+  }
+
+  .card--pricing {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card--pricing ul {
+    flex-grow: 1;
+  }
+
+  .card--pricing .button {
+    align-self: center;
+  }
+
+  .modal-fit-grid {
+    display: grid;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .modal-fit-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll('[data-modal-open="is-this-for-you"]').forEach(el => {
+    el.addEventListener("click", (event) => {
+      event.preventDefault();
+      const modal = document.getElementById("is-this-for-you-modal");
+      if (modal) {
+        modal.classList.remove("hidden");
+      }
+    });
+  });
+
+  document.querySelectorAll('[data-modal-close="is-this-for-you"]').forEach(el => {
+    el.addEventListener("click", () => {
+      const modal = document.getElementById("is-this-for-you-modal");
+      if (modal) {
+        modal.classList.add("hidden");
+      }
+    });
+  });
+</script>

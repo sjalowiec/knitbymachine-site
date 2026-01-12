@@ -1,0 +1,981 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
+
+const pageTitle = 'Just Opened the Box | Knit by Machine';
+const pageDescription = 'Your first steps after unboxing your knitting machine. Thread the mast, choose a machine-friendly yarn, and try an e-wrap cast on — your first step toward fabric.';
+
+// Local video thumbnail images
+const setupThumbnail = '/images/video1.webp';
+const castonThumbnail = '/images/video2.webp';
+
+// Fetch video transcripts from collection
+const allVideos = await getCollection('videos');
+const tensionMastVideo = allVideos.find(v => v.slug === 'tension-mast');
+const eWrapVideo = allVideos.find(v => v.slug === 'e-wrap-cast-on');
+
+// Get transcript HTML from the markdown body
+const setupTranscript = tensionMastVideo?.body ? await marked.parse(tensionMastVideo.body) : '';
+const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) : '';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="jotb-page">
+    <!-- Breadcrumb -->
+    <nav class="jotb-breadcrumb" aria-label="Breadcrumb" data-testid="nav-breadcrumb">
+      <a href="/" data-testid="link-back-home">&larr; Back to Home</a>
+    </nav>
+
+    <!-- Page Header -->
+    <header class="jotb-header">
+      <h1 data-testid="text-page-title">Just Opened the Box…</h1>
+      <p class="jotb-promise" data-testid="text-promise">
+        You're about to take your first real step with your knitting machine — no overwhelm, just clear next moves.
+      </p>
+      <p class="jotb-start-here" data-testid="text-start-here">
+        <strong>Start here:</strong> Set up and yarn
+      </p>
+    </header>
+<div id="wizard-wf-5ihf4x"></div>
+<script type="module" src="/scripts/wizards/wf-5ihf4x.js"></script>
+<style>
+  /* ============================================
+     Just Opened the Box - Scoped Page Styles
+     ============================================ */
+
+  .jotb-page {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  /* Breadcrumb */
+  .jotb-breadcrumb {
+    margin-bottom: 1.5rem;
+  }
+
+  .jotb-breadcrumb a {
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+  }
+
+  .jotb-breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  /* Page Header */
+  .jotb-header {
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .jotb-header h1 {
+    margin-bottom: 0.75rem;
+  }
+
+  .jotb-promise {
+    font-size: 1.1rem;
+    color: #5a6b40;
+    margin: 0 auto;
+    line-height: 1.6;
+    max-width: 700px;
+  }
+
+  .jotb-start-here {
+    margin-top: 0.5rem;
+    font-size: 0.98rem;
+    line-height: 1.35;
+    opacity: 0.95;
+    color: #5a6b40;
+  }
+
+  .jotb-start-here strong {
+    font-weight: 700;
+  }
+
+  .jotb-first-step {
+    margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    opacity: 0.9;
+  }
+
+  .jotb-first-step strong {
+    font-weight: 600;
+  }
+
+  .jotb-optional-note {
+    margin: 0.35rem 0 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    opacity: 0.9;
+  }
+
+  /* Path SVG Container */
+  .jotb-path-container {
+    margin-bottom: 0;
+  }
+
+  .jotb-path-svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* Heading Row with Inline Arrow */
+  .jotb-heading-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    margin-bottom: 1rem;
+  }
+
+  .jotb-heading-arrow {
+    width: 33px;
+    height: auto;
+    opacity: 0.8;
+    flex: 0 0 auto;
+    transform: translateY(-0.5em);
+  }
+
+  .jotb-heading-row h2 {
+    margin: 0;
+    color: var(--kbm-green, #52682d);
+  }
+
+  /* Bordered Sections (1 & 2) */
+  .jotb-bordered-section {
+    background: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .jotb-section-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    grid-template-areas:
+      "content action"
+      "transcript transcript";
+    gap: 2rem;
+    align-items: flex-start;
+  }
+
+  .jotb-section-grid > .jotb-section-content {
+    grid-area: content;
+  }
+
+  .jotb-section-grid > .jotb-section-action {
+    grid-area: action;
+  }
+
+  .jotb-section-grid > .jotb-transcript-accordion {
+    grid-area: transcript;
+  }
+
+  .jotb-section-grid--mirrored {
+    grid-template-columns: 320px 1fr;
+    grid-template-areas:
+      "action content"
+      "transcript transcript";
+  }
+
+  .jotb-section-content p {
+    margin: 0 0 1.25rem 0;
+    line-height: 1.6;
+    color: #4a5739;
+  }
+
+  .jotb-notes-title,
+  .jotb-steps-title,
+  .jotb-done-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #52682d;
+    margin: 1.25rem 0 0.5rem 0;
+  }
+
+  .jotb-notes-list {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 0;
+    color: #4a5739;
+  }
+
+  .jotb-notes-list li {
+    margin: 0.4rem 0;
+    line-height: 1.5;
+  }
+
+  .jotb-steps-list {
+    padding-left: 1.5rem;
+    margin: 0;
+    color: #4a5739;
+  }
+
+  .jotb-steps-list li {
+    margin: 0.5rem 0;
+    line-height: 1.5;
+  }
+
+  .jotb-checklist {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .jotb-checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+    margin: 0.4rem 0;
+    line-height: 1.5;
+    color: #4a5739;
+  }
+
+  .jotb-check {
+    color: #6e8b3d;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Action Column */
+  .jotb-section-action {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* Video Thumbnail Card */
+  .jotb-video-card {
+    display: block;
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid #c7d8a4;
+    border-radius: 10px;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    overflow: hidden;
+    transition: box-shadow 0.15s ease, border-color 0.15s ease;
+  }
+
+  .jotb-video-card:hover {
+    border-color: #6e8b3d;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.15);
+  }
+
+  .jotb-video-card:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  .jotb-thumb-frame {
+    position: relative;
+    width: 100%;
+    padding-top: 56.25%; /* 16:9 */
+    overflow: hidden;
+    background: #e9eee0;
+  }
+
+  .jotb-thumb-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .jotb-play-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.25);
+    transition: background 0.15s ease;
+  }
+
+  .jotb-video-card:hover .jotb-play-overlay {
+    background: rgba(0, 0, 0, 0.35);
+  }
+
+  .jotb-play-icon {
+    width: 56px;
+    height: 56px;
+    color: rgba(255, 255, 255, 0.9);
+    filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3));
+    transition: transform 0.15s ease;
+  }
+
+  .jotb-video-card:hover .jotb-play-icon {
+    transform: scale(1.1);
+  }
+
+  .jotb-card-label {
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .jotb-card-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #52682d;
+  }
+
+  .jotb-card-helper {
+    font-size: 0.8rem;
+    color: #6b7a58;
+    font-style: italic;
+  }
+
+  /* Practice Project Card (Section 3) */
+  .jotb-practice-card {
+    background: #f9faf7;
+    border: 1px solid #d8e2cc;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .jotb-practice-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .jotb-practice-leadin {
+    font-size: 0.95rem;
+    color: #6b7a58;
+    margin: 0;
+    font-weight: 500;
+  }
+
+  .jotb-practice-card .jotb-heading-row h2 {
+    font-size: 1.4rem;
+  }
+
+  .jotb-cta-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .jotb-cta-wrap .jotb-helper-text {
+    margin-bottom: 0;
+  }
+
+  .jotb-practice-card p {
+    margin: 0 0 1.25rem 0;
+    line-height: 1.6;
+    color: #4a5739;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .jotb-btn-primary {
+    display: inline-block;
+    background: #6e8b3d;
+    color: #ffffff;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.25);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  .jotb-btn-primary:hover {
+    background-color: #52682d;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(82, 104, 45, 0.3);
+  }
+
+  .jotb-helper-text {
+    font-size: 0.9rem;
+    color: #6b7a58;
+    margin-top: 0.75rem;
+    font-style: italic;
+  }
+
+  /* Text Section (Section 4) */
+  .jotb-text-section {
+    margin-bottom: 2rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .jotb-text-section h2 {
+    margin: 0 0 0.75rem 0;
+    color: var(--kbm-green, #52682d);
+  }
+
+  .jotb-text-section p {
+    margin: 0 0 1rem 0;
+    line-height: 1.6;
+    color: #4a5739;
+  }
+
+  .jotb-community-link {
+    color: var(--kbm-green, #52682d);
+    font-weight: 500;
+    word-break: break-all;
+  }
+
+  .jotb-community-link:hover {
+    text-decoration: underline;
+  }
+
+  /* ============================================
+     VIDEO MODAL STYLES
+     ============================================ */
+
+  .video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+
+  .video-modal[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .video-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+  }
+
+  .video-modal__dialog {
+    position: relative;
+    background: #ffffff;
+    border-radius: 12px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  }
+
+  .video-modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .video-modal__header h2 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: #333;
+  }
+
+  .video-modal__close {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.25rem;
+    line-height: 1;
+    transition: color 0.15s ease;
+  }
+
+  .video-modal__close:hover {
+    color: #333;
+  }
+
+  .video-modal__close:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  .video-modal__body {
+    padding: 0;
+  }
+
+  .video-frame {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 aspect ratio */
+    background: #000;
+  }
+
+  .video-frame::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid rgba(255, 255, 255, 0.2);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spinner-spin 0.8s linear infinite;
+    z-index: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  .video-frame.loaded::before {
+    opacity: 0;
+    animation: none;
+  }
+
+  @keyframes spinner-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .video-frame iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    z-index: 2;
+  }
+
+  /* Body scroll lock */
+  :global(body.modal-open) {
+    overflow: hidden;
+  }
+
+  /* ============================================
+     TRANSCRIPT TRIGGER BUTTON (centered under video)
+     ============================================ */
+
+  .jotb-transcript-trigger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 0.5rem;
+    padding: 0.35rem 0.75rem;
+    background: none;
+    border: none;
+    color: var(--kbm-green, #52682d);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+    width: 100%;
+  }
+
+  .jotb-transcript-trigger i {
+    font-size: 0.9rem;
+  }
+
+  .jotb-transcript-trigger:hover {
+    background: rgba(82, 104, 45, 0.08);
+    text-decoration: underline;
+  }
+
+  .jotb-transcript-trigger:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  .jotb-transcript-trigger[aria-expanded="true"] .jotb-trigger-label::before {
+    content: "";
+  }
+
+  /* ============================================
+     TRANSCRIPT ACCORDION (hidden summary, JS-controlled)
+     ============================================ */
+  
+  .jotb-transcript-accordion {
+    margin-top: 0;
+  }
+
+  /* Hide the native summary element - we use external button */
+  .jotb-transcript-summary-hidden {
+    display: none;
+  }
+
+
+  /* ============================================
+     TRANSCRIPT PANEL (scrollable container)
+     ============================================ */
+
+  .jotb-transcript-panel {
+    margin-top: 1rem;
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    position: relative;
+    text-align: left;
+  }
+
+  /* Sticky header bar within transcript panel */
+  .jotb-transcript-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0.6rem 1rem;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.85rem;
+  }
+
+  .jotb-transcript-hide,
+  .jotb-transcript-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: none;
+    color: #6b7280;
+    font-size: 0.85rem;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    transition: background 0.15s ease, color 0.15s ease;
+  }
+
+  .jotb-transcript-hide:hover,
+  .jotb-transcript-back:hover {
+    color: var(--kbm-green, #52682d);
+    background: rgba(82, 104, 45, 0.08);
+  }
+
+  .jotb-transcript-hide:focus,
+  .jotb-transcript-back:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  /* Visual separator between header buttons */
+  .jotb-transcript-header {
+    gap: 0.5rem;
+  }
+
+  /* ============================================
+     TRANSCRIPT CONTENT (centered, readable width)
+     ============================================ */
+
+  .jotb-transcript-content {
+    padding: 1.25rem 1.5rem;
+    background: rgba(82, 104, 45, 0.04);
+    font-size: 0.95rem;
+    line-height: 1.75;
+    color: #4a5739;
+    max-width: 65ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .jotb-transcript-content :global(p) {
+    margin: 0 0 0.85rem 0;
+  }
+
+  .jotb-transcript-content :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  .jotb-transcript-content :global(strong) {
+    color: #52682d;
+  }
+
+  /* ============================================
+     TRANSCRIPT FOOTER (next step CTA)
+     ============================================ */
+
+  .jotb-transcript-footer {
+    padding: 1rem 1.5rem;
+    background: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    text-align: center;
+  }
+
+  .jotb-transcript-next {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--kbm-green, #52682d);
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    background: rgba(82, 104, 45, 0.08);
+    transition: background 0.15s ease;
+  }
+
+  .jotb-transcript-next:hover {
+    background: rgba(82, 104, 45, 0.15);
+    text-decoration: none;
+  }
+
+  .jotb-transcript-next:focus {
+    outline: 2px solid #52682d;
+    outline-offset: 2px;
+  }
+
+  /* ============================================
+     RESPONSIVE STYLES
+     ============================================ */
+
+  @media (max-width: 768px) {
+    .jotb-page {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .jotb-section-grid,
+    .jotb-section-grid--mirrored {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+
+    /* On mobile, always show content first, then video card */
+    .jotb-section-grid--mirrored .jotb-section-action {
+      order: 2;
+    }
+
+    .jotb-section-grid--mirrored .jotb-section-content {
+      order: 1;
+    }
+
+    .jotb-bordered-section {
+      padding: 1.5rem;
+    }
+
+    .jotb-header h1 {
+      font-size: 1.75rem;
+    }
+
+    .jotb-start-here {
+      margin-top: 0.4rem;
+      font-size: 0.95rem;
+    }
+
+    .jotb-first-step {
+      margin-bottom: 0.4rem;
+      font-size: 0.92rem;
+    }
+
+    .jotb-optional-note {
+      margin: 0.3rem 0 0.75rem;
+      font-size: 0.92rem;
+    }
+
+    .jotb-practice-card .jotb-heading-row h2 {
+      font-size: 1.25rem;
+    }
+
+    .video-modal__dialog {
+      width: 95%;
+      max-height: 85vh;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .jotb-play-icon {
+      width: 44px;
+      height: 44px;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // ============================================
+    // TRANSCRIPT TOGGLE BUTTONS (external trigger buttons)
+    // ============================================
+    var transcriptTriggers = document.querySelectorAll('[data-transcript-toggle]');
+    
+    transcriptTriggers.forEach(function(trigger) {
+      var targetId = trigger.getAttribute('data-transcript-toggle');
+      var details = document.getElementById('transcript-' + targetId);
+      var label = trigger.querySelector('.jotb-trigger-label');
+      
+      if (!details || !label) return;
+      
+      // Set initial aria state
+      trigger.setAttribute('aria-expanded', 'false');
+      trigger.setAttribute('aria-controls', 'transcript-' + targetId);
+      
+      // Toggle on click
+      trigger.addEventListener('click', function() {
+        var isOpen = details.hasAttribute('open');
+        
+        if (isOpen) {
+          details.removeAttribute('open');
+          trigger.setAttribute('aria-expanded', 'false');
+          label.textContent = 'Show transcript';
+        } else {
+          details.setAttribute('open', '');
+          trigger.setAttribute('aria-expanded', 'true');
+          label.textContent = 'Hide transcript';
+        }
+      });
+      
+      // Sync state if details is toggled externally (e.g., via "Back to video" button)
+      var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+          if (mutation.attributeName === 'open') {
+            var isNowOpen = details.hasAttribute('open');
+            trigger.setAttribute('aria-expanded', isNowOpen ? 'true' : 'false');
+            label.textContent = isNowOpen ? 'Hide transcript' : 'Show transcript';
+          }
+        });
+      });
+      observer.observe(details, { attributes: true });
+    });
+
+    // ============================================
+    // TRANSCRIPT CLOSE BUTTONS (inside panels)
+    // ============================================
+    var transcriptCloseButtons = document.querySelectorAll('[data-close-transcript]');
+    
+    transcriptCloseButtons.forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var details = btn.closest('details');
+        if (details) {
+          details.removeAttribute('open');
+        }
+        
+        // Only scroll if the button has a data-scroll-to attribute
+        var scrollTarget = btn.getAttribute('data-scroll-to');
+        if (scrollTarget) {
+          var targetSection = document.getElementById(scrollTarget);
+          if (targetSection) {
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+
+    // ============================================
+    // VIDEO MODAL
+    // ============================================
+    var modal = document.getElementById('video-modal');
+    var modalTitle = document.getElementById('video-modal-title');
+    var videoFrame = document.getElementById('video-frame');
+    var videoCards = document.querySelectorAll('.jotb-video-card');
+    var closeButtons = modal ? modal.querySelectorAll('[data-close]') : [];
+    
+    var triggerButton = null;
+
+    var videoData = {
+      setup: {
+        src: 'https://player.vimeo.com/video/1149537564?badge=0&autopause=0&player_id=0&app_id=58479',
+        title: 'Setting Up Your Machine'
+      },
+      caston: {
+        src: 'https://player.vimeo.com/video/151860058?badge=0&autopause=0&player_id=0&app_id=58479',
+        title: 'E-Wrap Cast On'
+      }
+    };
+
+    function openModal(videoKey, title, trigger) {
+      if (!modal || !videoFrame || !modalTitle) return;
+      
+      triggerButton = trigger;
+      
+      // Set dynamic title
+      modalTitle.textContent = title;
+      
+      // Reset loading state - remove loaded class to show spinner
+      videoFrame.classList.remove('loaded');
+      
+      // Clear any existing iframe
+      videoFrame.innerHTML = '';
+      
+      // Create iframe element with onload handler
+      var data = videoData[videoKey];
+      if (data) {
+        var iframe = document.createElement('iframe');
+        iframe.setAttribute('frameborder', '0');
+        iframe.setAttribute('allow', 'autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share');
+        iframe.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+        iframe.setAttribute('title', data.title);
+        iframe.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;';
+        
+        // Attach onload handler to hide spinner when iframe loads
+        iframe.onload = function() {
+          videoFrame.classList.add('loaded');
+        };
+        
+        // Append iframe first, then set src to ensure onload fires
+        videoFrame.appendChild(iframe);
+        iframe.src = data.src;
+      }
+      
+      // Show modal
+      modal.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('modal-open');
+      
+      // Focus the close button
+      var closeBtn = modal.querySelector('.video-modal__close');
+      if (closeBtn) closeBtn.focus();
+    }
+
+    function closeModal() {
+      if (!modal || !videoFrame || !modalTitle) return;
+      
+      // Hide modal
+      modal.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('modal-open');
+      
+      // Clear iframe to stop playback and reset loading state
+      videoFrame.innerHTML = '';
+      videoFrame.classList.remove('loaded');
+      
+      // Reset title
+      modalTitle.textContent = 'Video';
+      
+      // Restore focus to trigger button
+      if (triggerButton) triggerButton.focus();
+      triggerButton = null;
+    }
+
+    // Video card click handlers
+    videoCards.forEach(function(card) {
+      card.addEventListener('click', function() {
+        var videoKey = card.getAttribute('data-video') || '';
+        var title = card.getAttribute('data-title') || 'Video';
+        openModal(videoKey, title, card);
+      });
+    });
+
+    // Close button and backdrop click handlers
+    closeButtons.forEach(function(el) {
+      el.addEventListener('click', closeModal);
+    });
+
+    // ESC key handler
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && modal && modal.getAttribute('aria-hidden') === 'false') {
+        closeModal();
+      }
+    });
+  });
+</script>

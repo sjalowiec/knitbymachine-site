@@ -1,0 +1,42 @@
+{
+  "term": "Transfer Tool",
+  "slug": "transfer-tool",
+  "abbreviation": "",
+  "description": "<p>A <strong>transfer tool</strong> is a hand tool with two or more prongs used to move stitches from one needle to another. Each prong holds a stitch securely so you can shift stitches sideways on the needle bed.</p>\n\n<p>You’ll use a transfer tool for:</p>\n\n<ul>\n  <li>Increases and decreases</li>\n  <li>Moving stitches during shaping</li>\n  <li>Creating eyelets, decorative movement, or hand-worked lace</li>\n  <li>Spacing needles for every-other-needle work</li>\n  <li>Correcting mispositioned stitches without removing the fabric</li>\n</ul>\n\n<p>Transfer tools come in different sizes—1-prong, 2-prong, 3-prong, or larger—but they all do the same job: help you reposition stitches cleanly and accurately.</p>\n",
+  "tooltip": "tool used to move stitches sideways on the needle bed for shaping or decorative work.",
+  "example": "Using a single prong transfer too, transfer every other needle to the left to forma row of eyelets",
+  "categories": [
+    "Machine Parts & Accessories"
+  ],
+  "letter": "T",
+  "imageFilename": "/images/glossary/knitting-machine-transfer-tools.webp",
+  "imageAlt": "Transfer tool used to move stitches from one needle to another",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "url": "https://knitbymachine.com/glossary/transfer-tool",
+    "name": "Transfer tool",
+    "@type": "DefinedTerm",
+    "@context": "https://schema.org",
+    "description": "A multi-prong hand tool used to move stitches from one needle to another for shaping or decorative work in machine knitting.",
+    "alternateName": [
+      "stitch transfer tool",
+      "knitting machine transfer tool"
+    ],
+    "inDefinedTermSet": "https://knitbymachine.com/glossary"
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "latch-tool"
+  ],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": false,
+  "publishedDate": "2025-11-21T00:00:00.000Z",
+  "pendingPublish": false
+}

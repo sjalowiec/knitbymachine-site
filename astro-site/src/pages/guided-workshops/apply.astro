@@ -1,0 +1,1158 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = "Apply | Guided Workshop with Sue | Knit by Machine";
+const description = "Apply for a Guided Workshop. This application helps Sue confirm fit and follow up with next steps.";
+
+const submitted = Astro.url.searchParams.get('submitted') === '1';
+const error = Astro.url.searchParams.get('error');
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--apply">
+    <h1 data-testid="text-page-title">Apply for a Guided Workshop</h1>
+    <p class="intro-text">
+    This application helps me confirm that the Guided Workshop is the right fit for your project. You don’t need final decisions yet — a clear sense of what you’d like to work on is enough. It takes about 3–5 minutes to complete, and Guided Workshops typically fall between $297–$397.
+    </p>
+
+    {submitted && (
+      <div class="success-message" data-testid="text-success-message">
+        <p><strong>Thanks — I've received your application.</strong></p>
+        <p>I review these personally and will follow up by email with next steps.</p>
+      </div>
+    )}
+
+    {error === 'not-fresh' && (
+      <div class="error-message" data-testid="text-error-message">
+        <p><strong>Guided Workshops require a fresh start.</strong></p>
+        <p>Applications for projects already in progress cannot be accepted.</p>
+      </div>
+    )}
+
+    {error === 'server' && (
+      <div class="error-message" data-testid="text-error-server">
+        <p><strong>Something went wrong.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'database_not_configured' && (
+      <div class="error-message" data-testid="text-error-database-config">
+        <p><strong>Something went wrong on our end.</strong></p>
+        <p>Please try again later, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'database_error' && (
+      <div class="error-message" data-testid="text-error-database">
+        <p><strong>Something went wrong saving your application.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'id_generation_failed' && (
+      <div class="error-message" data-testid="text-error-id-generation">
+        <p><strong>Something went wrong processing your application.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    {error === 'unknown_error' && (
+      <div class="error-message" data-testid="text-error-unknown">
+        <p><strong>Something unexpected went wrong.</strong></p>
+        <p>Please try again, or contact me directly if the problem continues.</p>
+      </div>
+    )}
+
+    <section class="section section--fit">
+      <details class="fit-accordion" open data-testid="accordion-fit-check">
+        <summary class="fit-accordion__summary" data-testid="button-accordion-toggle">
+          <span class="fit-accordion__title">Is a Guided Workshop right for you?</span>
+          <span class="fit-accordion__helper">Quick check to make sure this format fits your project</span>
+        </summary>
+        <div class="fit-accordion__content">
+          <div class="grid grid--two">
+            <div>
+              <h3><i class="fa-solid fa-check fa-xl"></i> This is likely a good fit if you:</h3>
+              <ul class="check-list">
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Want to start one project</strong> from the beginning and move it forward with clarity</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Prefer written guidance,</strong> voice notes, and short videos over scheduling live calls</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Want specific, project-focused support</strong> — not a big course or content library</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Are willing to take small, steady actions</strong> over a 10-day window</span></li>
+                <li><i class="fa-solid fa-check"></i><span class="bullet-text"><strong>Appreciate honest, kind feedback</strong> grounded in real machine-knitting practice</span></li>
+              </ul>
+            </div>
+
+            <div>
+              <h3><i class="fa-solid fa-xmark fa-xl"></i> It's probably not a fit if you:</h3>
+              <ul class="not-fit-list">
+               <li><span class="bullet-text"><strong>Are looking to fix or rescue</strong> a project that's already well underway</span></li>
+                <li><span class="bullet-text"><strong>Have a very large, open-ended,</strong> or long-term project</span></li>
+                <li><span class="bullet-text"><strong>Prefer live, real-time coaching</strong> calls</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <p class="fit-note">
+            If your project isn't the right match for this format, I'll let you know before you're asked to pay.
+          </p>
+        </div>
+      </details>
+    </section>
+
+    <section class="section section--form">
+      <div class="section-inner">
+        <form id="workshop-form" class="application-form" data-testid="form-application" method="POST" action="/.netlify/functions/guided-workshop-submit">
+          <input
+            type="text"
+            name="company"
+            tabindex="-1"
+            autocomplete="off"
+            class="honeypot"
+            aria-hidden="true"
+          />
+          
+          <div class="form-field-row">
+            <div class="form-field form-field--half">
+              <label for="firstName">First name <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="firstName" 
+                name="firstName" 
+                required 
+                autocomplete="given-name"
+                data-testid="input-first-name"
+              />
+            </div>
+            <div class="form-field form-field--half">
+              <label for="lastName">Last name <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="lastName" 
+                name="lastName" 
+                required 
+                autocomplete="family-name"
+                data-testid="input-last-name"
+              />
+            </div>
+          </div>
+
+          <div class="form-field" id="emailField">
+            <label for="email">Email address <span class="required">*</span></label>
+            <input 
+              type="email" 
+              id="email" 
+              name="email" 
+              required 
+              data-testid="input-email"
+            />
+            <p id="emailFeedback" class="email-feedback" hidden aria-live="polite" data-testid="text-email-feedback"></p>
+          </div>
+
+          <hr class="kbm-divider" />
+
+          <div class="form-field">
+            <label for="projectDirection">What are you hoping to make in this workshop? <span class="required">*</span></label>
+            <p class="helper-text--below">A clear direction is enough — this doesn't need to be final. We'll talk about patterns next.</p>
+            <textarea 
+              id="projectDirection" 
+              name="projectDirection" 
+              rows="4" 
+              required
+              placeholder="Example: A cardigan using a mid-weight yarn, likely with set-in sleeves. I'm comfortable with basic shaping but want help planning the construction and finishing."
+              data-testid="textarea-project-direction"
+            ></textarea>
+          </div>
+
+          <fieldset class="form-field">
+            <legend>Do you already have a pattern in mind? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="haveOne" required data-testid="radio-pattern-have-one" />
+                <span>Yes, I have one</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="fewOptions" data-testid="radio-pattern-few-options" />
+                <span>I have a few options</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="needGuidance" data-testid="radio-pattern-need-guidance" />
+                <span>I'll need guidance choosing one</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="patternStatus" value="openToKBM" data-testid="radio-pattern-open-kbm" />
+                <span>I'm open to using a KBM pattern</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <!-- GW_APPLICATION: patternReference conditional field -->
+          <div id="pattern-name-field" class="form-field form-field--supplemental" hidden aria-hidden="true">
+            <label for="patternReference">If you have a pattern, what is it?</label>
+            <p class="helper-text">Sharing this is optional — a title or link is enough.<br>To share an image, reply to your confirmation email and attach a screenshot or photo.</p>
+            <input 
+              type="text" 
+              id="patternReference" 
+              name="patternReference" 
+              placeholder="Pattern name or link"
+              data-testid="input-pattern-reference"
+            />
+          </div>
+
+          <hr class="kbm-divider" />
+
+          <!-- GW_APPLICATION: startFromBeginning gate UI -->
+          <fieldset class="form-field">
+            <legend>Are you ready to start this project from the beginning? <span class="required">*</span></legend>
+            <p class="helper-text">Guided Workshops are designed for new projects started from the beginning. They’re not a good fit for rescuing or reworking projects already in progress.</p>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="startFromBeginning" value="yes" required data-testid="radio-start-from-beginning-yes" />
+                <span>Yes — I'm starting from the beginning</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="startFromBeginning" value="no_in_progress" data-testid="radio-start-from-beginning-no" />
+                <span>No — my project is already in progress</span>
+              </label>
+            </div>
+            <div id="startGateMessage" class="gate-message" hidden aria-live="polite" data-testid="container-gate-message">
+              <p class="gate-headline">This application is for new projects</p>
+              <p class="gate-body">Guided Workshops are designed for start-to-finish progress so I can support you step by step. If your project is already underway, this format won't be a good fit.</p>
+              <p class="gate-cta">Your best next step is the <a href="https://knitbymachine.com/ana-catalog" data-testid="link-ana-catalog">Ask 'n Answer Catalog</a> — quick, practical answers you can use right away.</p>
+            </div>
+          </fieldset>
+
+          <hr class="kbm-divider" />
+
+          <div class="form-field">
+            <label for="machineModel">What machine will you be using? <span class="required">*</span></label>
+            <input 
+              type="text"
+              id="machineModel" 
+              name="machineModel" 
+              required
+              placeholder="Brother KH-___, Silver Reed SK___, LK150, etc."
+              autocomplete="off"
+              data-testid="input-machine-model"
+            />
+            <p class="helper-text">If you're not sure of the exact model, just describe what you have.</p>
+          </div>
+
+          <fieldset class="form-field">
+            <legend>How comfortable do you feel using your machine? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="new" required data-testid="radio-comfort-new" />
+                <span>I'm brand new / just getting started</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="some" data-testid="radio-comfort-some" />
+                <span>I can do basics, but I get stuck</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="ok" data-testid="radio-comfort-ok" />
+                <span>I'm fairly comfortable</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="machineComfortLevel" value="confident" data-testid="radio-comfort-confident" />
+                <span>I'm confident</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <hr class="kbm-divider" />
+
+          <fieldset class="form-field">
+            <legend>How would you describe your machine-knitting experience? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="beginner" required data-testid="radio-experience-beginner" />
+                <span>I'm brand new or just getting started</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="some" data-testid="radio-experience-some" />
+                <span>I've completed a few projects</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="comfortable" data-testid="radio-experience-comfortable" />
+                <span>I'm comfortable but still learning</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="experienceLevel" value="experienced" data-testid="radio-experience-experienced" />
+                <span>I'm experienced and fairly confident</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <hr class="kbm-divider" />
+
+          <fieldset class="form-field">
+            <legend>About yarn — which best describes you right now? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="haveYarn" required data-testid="radio-yarn-have" />
+                <span>I already have yarn I'd like to use</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="haveUnsure" data-testid="radio-yarn-unsure" />
+                <span>I have yarn but I'm not sure it's right</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="buyAfterApproval" data-testid="radio-yarn-buy-after" />
+                <span>I'll buy yarn after the project is approved</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="yarnStatus" value="needRecs" data-testid="radio-yarn-need-recs" />
+                <span>I want guidance on what to buy</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <hr class="kbm-divider" />
+
+          <fieldset class="form-field">
+            <legend>When would you realistically be ready to start your 10-day workshop? <span class="required">*</span></legend>
+            <div class="radio-group">
+              <label class="radio-label">
+                <input type="radio" name="startWindow" value="within2weeks" required data-testid="radio-start-within-2-weeks" />
+                <span>Within the next 2 weeks</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="startWindow" value="2to4weeks" data-testid="radio-start-2-to-4-weeks" />
+                <span>In about 2–4 weeks</span>
+              </label>
+              <label class="radio-label">
+                <input type="radio" name="startWindow" value="notSure" data-testid="radio-start-not-sure" />
+                <span>I'm not sure yet</span>
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="final-check">
+            <div class="form-field form-field--checkbox">
+              <label class="checkbox-label">
+                <input type="checkbox" name="confirm" value="yes" required data-testid="checkbox-confirm" />
+              <span>I understand this is a 10-day, start-to-finish workshop priced between $297–$397, and the workshop begins only after my materials are ready and I confirm that I’m ready to start.</span>
+            </label>
+          </div>
+
+          <div class="form-actions">
+              <button type="submit" id="applySubmitBtn" class="button button--primary button--large" data-testid="button-submit">
+                Submit Application
+              </button>
+              <div id="submitDisabledHelper" class="submit-disabled-helper" hidden role="status" aria-live="polite" data-testid="text-submit-disabled-helper">
+                <p class="helper-headline">Submit is disabled because guided workshops are for new projects.</p>
+                <p class="helper-body">Guided Workshops are designed for start-to-finish progress so I can support you step by step. If your project is already underway, this format won't be a good fit.</p>
+                <p class="helper-cta">Your best next step is the <a href="/ana-catalog" data-testid="link-submit-helper-ana-catalog">Ask 'n Answer Catalog</a>.</p>
+              </div>
+            </div>
+
+            <p class="next-steps-note">After you submit, I’ll personally review your application and follow up. You’ll only be asked for payment if you decide to move forward.</p>
+          </div>
+
+        </form>
+      </div>
+    </section>
+
+  
+  </main>
+</BaseLayout>
+
+<style>
+  .page--apply {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .page--apply h1 {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+    line-height: 1.2;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+  }
+
+  .success-message {
+    background: #e6f4e6;
+    border: 2px solid var(--kbm-green-2);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .success-message p {
+    margin: 0;
+    color: var(--kbm-green);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .success-message p + p {
+    margin-top: 0.5rem;
+  }
+
+  .error-message {
+    background: #fff4ee;
+    border: 2px solid #c2614e;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .error-message p {
+    margin: 0;
+    color: #5a3b2e;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .error-message p + p {
+    margin-top: 0.5rem;
+  }
+
+  .section {
+    padding: 1.5rem 0;
+  }
+
+  .section-inner {
+    max-width: 100%;
+  }
+
+  .section--fit {
+    background: #f9fdf5;
+    border-radius: 12px;
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .section--fit h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 1.5rem;
+  }
+
+  .section--fit h3 {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.75rem;
+  }
+
+  .section--fit h3 .fa-check {
+    color: #52682d;
+    margin-right: 0.4rem;
+  }
+
+  .section--fit h3 .fa-xmark {
+    color: red;
+    margin-right: 0.4rem;
+  }
+
+  .grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .grid--two {
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .grid--two {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .section--fit ul {
+    padding-left: 1.25rem;
+    margin: 0;
+  }
+
+  .section--fit ul.check-list,
+  .section--fit ul.not-fit-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .section--fit ul.check-list li {
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section--fit ul.check-list li .fa-check {
+    color: #52682d;
+    flex-shrink: 0;
+    font-size: 0.85em;
+    position: relative;
+    top: 0.1em;
+  }
+
+  .section--fit ul.not-fit-list li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .section--fit ul.not-fit-list li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #5a6b47;
+  }
+
+  .section--fit li {
+    font-size: clamp(0.95rem, 1.5vw, 1rem);
+    color: #5a6b47;
+    line-height: 1.6;
+  }
+
+  .section--fit .bullet-text {
+    display: inline;
+  }
+
+  .section--fit .bullet-text strong {
+    font-weight: 600;
+  }
+
+  .fit-note {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    color: var(--kbm-green);
+    font-style: italic;
+    text-align: center;
+    padding: 0.75rem;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 8px;
+  }
+
+  /* Fit Accordion Styles */
+  .fit-accordion {
+    border: none;
+  }
+
+  .fit-accordion__summary {
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    list-style: none;
+    position: relative;
+    padding-right: 2rem;
+  }
+
+  .fit-accordion__summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .fit-accordion__summary::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 0.5rem;
+    width: 0.6rem;
+    height: 0.6rem;
+    border-right: 2px solid var(--kbm-green);
+    border-bottom: 2px solid var(--kbm-green);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+  }
+
+  .fit-accordion[open] > .fit-accordion__summary::after {
+    transform: rotate(-135deg);
+    top: 0.75rem;
+  }
+
+  .fit-accordion__title {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .fit-accordion__helper {
+    font-size: 0.9rem;
+    color: #6b7a5a;
+    margin-top: 0.35rem;
+    font-style: italic;
+  }
+
+  .fit-accordion__content {
+    padding-top: 1.5rem;
+  }
+
+  .fit-accordion:not([open]) + .section--form {
+    margin-top: -0.5rem;
+  }
+
+  .section--fit:has(.fit-accordion:not([open])) {
+    padding-bottom: 1.25rem;
+  }
+
+  .application-form {
+    max-width: 720px;
+  }
+
+  .kbm-divider {
+    border: none;
+    border-top: 1px solid #e5e8e0;
+    margin: 2rem auto 1.25rem;
+  }
+
+  .form-field {
+    margin-bottom: 1.75rem;
+  }
+
+  .form-field label,
+  .form-field legend {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin-bottom: 0.5rem;
+  }
+
+  .form-field legend {
+    padding: 0;
+    border: none;
+  }
+
+  fieldset.form-field {
+    border: none;
+    padding: 0;
+    margin: 0 0 1.75rem 0;
+  }
+
+  .form-field--supplemental {
+    margin-top: 1rem;
+    margin-bottom: 1.25rem;
+    margin-left: 1rem;
+  }
+
+  .form-field--supplemental label {
+    font-size: 1rem;
+    font-weight: 400;
+    color: #5a6b47;
+  }
+
+  .form-field--supplemental input[type="text"] {
+    width: calc(100% - 1rem);
+  }
+
+  .form-field-row {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.75rem;
+  }
+
+  .form-field--half {
+    flex: 1;
+    margin-bottom: 0;
+  }
+
+  .form-field-row .form-field--half input[type="text"] {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .form-field-row .form-field--half label {
+    margin-left: 0;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  @media (max-width: 480px) {
+    .form-field-row {
+      flex-direction: column;
+      gap: 0;
+    }
+    
+    .form-field--half {
+      margin-bottom: 1.75rem;
+    }
+    
+    .form-field--half:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  .required {
+    color: #c2614e;
+  }
+
+  .helper-text {
+    font-size: 0.9rem;
+    color: #6b7a5a;
+    margin: 0 0 0.5rem 0;
+    margin-left: 1rem;
+    line-height: 1.5;
+  }
+
+  .helper-text--below {
+    margin: 0.5rem 0 0 1rem;
+    font-style: italic;
+    opacity: 0.85;
+  }
+
+  .form-field input[type="text"],
+  .form-field input[type="email"],
+  .form-field textarea {
+    width: calc(100% - 1rem);
+    margin-left: 1rem;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    font-family: inherit;
+    border: 2px solid #d4dbc8;
+    border-radius: 8px;
+    background: #ffffff;
+    color: var(--kbm-green);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+  }
+
+  .form-field input[type="text"]:focus,
+  .form-field input[type="email"]:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: var(--kbm-green-2);
+    box-shadow: 0 0 0 3px rgba(115, 140, 82, 0.15);
+  }
+
+  .form-field textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-left: 1rem;
+  }
+
+  .form-field .radio-label,
+  .radio-group .radio-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    color: #5a6b47;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0;
+    transition: background-color 0.15s ease;
+  }
+
+  .form-field .radio-label:hover,
+  .radio-group .radio-label:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+
+  .radio-label input[type="radio"] {
+    margin-top: 0.2rem;
+    accent-color: var(--kbm-green);
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .radio-label input[type="radio"]:checked + span {
+    font-weight: 600;
+  }
+
+  .form-field--checkbox {
+    background: #f5f7f2;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-left: 1rem;
+  }
+
+  .form-field .checkbox-label,
+  .form-field--checkbox .checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #5a6b47;
+    font-weight: 400;
+    line-height: 1.5;
+    margin-bottom: 0;
+  }
+
+  .checkbox-label input[type="checkbox"] {
+    margin-top: 0.2rem;
+    accent-color: var(--kbm-green);
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .final-check {
+    background: #f9faf7;
+    border: 1px solid #e5e8e0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .final-check .form-field--checkbox {
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+
+  .final-check .form-actions {
+    margin-top: 1.25rem;
+  }
+
+  .next-steps-note {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: #6b7a5a;
+    text-align: center;
+    margin: 1rem 0 0 0;
+    line-height: 1.5;
+  }
+
+  .form-actions {
+    margin-top: 2rem;
+    text-align: center;
+  }
+
+  .button {
+    display: inline-block;
+    padding: 0.875rem 2rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    text-align: center;
+  }
+
+  .button--primary {
+    background-color: var(--kbm-green);
+    color: #ffffff;
+    border-color: var(--kbm-green);
+  }
+
+  .button--primary:hover {
+    background-color: var(--kbm-green-hover, #445626);
+    border-color: var(--kbm-green-hover, #445626);
+  }
+
+  .button--large {
+    padding: 1rem 2.5rem;
+    font-size: 1.1rem;
+  }
+
+  .button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .button--loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -9999px;
+    height: 0;
+    width: 0;
+    overflow: hidden;
+  }
+
+  .button--primary:disabled:hover {
+    background-color: var(--kbm-green);
+    border-color: var(--kbm-green);
+  }
+
+  .form-warning {
+    margin-left: 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #5a3b2e;
+    background: #fff4ee;
+    border-left: 3px solid #c2614e;
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+  }
+
+  .gate-message {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    background: #fff8f5;
+    border: 1px solid #e8c8b8;
+    border-left: 4px solid #c2614e;
+    border-radius: 8px;
+    padding: 1.25rem 1.5rem;
+  }
+
+  .gate-headline {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #8b4c3a;
+    margin: 0 0 0.75rem;
+  }
+
+  .gate-body {
+    font-size: 0.95rem;
+    color: #5a3b2e;
+    line-height: 1.6;
+    margin: 0 0 0.75rem;
+  }
+
+  .gate-cta {
+    font-size: 0.95rem;
+    color: #5a3b2e;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .gate-cta a {
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .gate-cta a:hover {
+    color: var(--kbm-green-hover, #445626);
+  }
+
+  .submit-disabled-helper {
+    margin-top: 1rem;
+    background: #fff8f5;
+    border: 1px solid #e8c8b8;
+    border-left: 4px solid #c2614e;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    text-align: left;
+  }
+
+  .submit-disabled-helper .helper-headline {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #8b4c3a;
+    margin: 0 0 0.5rem;
+  }
+
+  .submit-disabled-helper .helper-body {
+    font-size: 0.9rem;
+    color: #5a3b2e;
+    line-height: 1.5;
+    margin: 0 0 0.5rem;
+  }
+
+  .submit-disabled-helper .helper-cta {
+    font-size: 0.9rem;
+    color: #5a3b2e;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  .submit-disabled-helper .helper-cta a {
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .submit-disabled-helper .helper-cta a:hover {
+    color: var(--kbm-green-hover, #445626);
+  }
+
+  .email-feedback {
+    margin: 0.5rem 0 0 1rem;
+    font-size: 0.875rem;
+    line-height: 1.4;
+  }
+
+  .email-feedback.email-feedback--valid {
+    color: #52682d;
+  }
+
+  .email-feedback.email-feedback--invalid {
+    color: #c2614e;
+  }
+
+  .form-field input.input--valid {
+    border-color: #52682d;
+  }
+
+  .form-field input.input--invalid {
+    border-color: #c2614e;
+  }
+
+  @media (max-width: 768px) {
+    .page--apply {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .section--fit {
+      padding: 1.5rem 1.25rem;
+    }
+
+    .form-field input[type="email"],
+    .form-field textarea {
+      padding: 0.65rem 0.85rem;
+    }
+  }
+</style>
+
+<script>
+  // GW_APPLICATION: startFromBeginning gate
+  document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('workshop-form');
+    const gateMessage = document.getElementById('startGateMessage');
+    const submitBtn = document.getElementById('applySubmitBtn');
+    const submitDisabledHelper = document.getElementById('submitDisabledHelper');
+    const radios = document.querySelectorAll('input[name="startFromBeginning"]');
+
+    function updateGateState() {
+      const selected = document.querySelector('input[name="startFromBeginning"]:checked');
+      
+      if (selected && selected.value === 'no_in_progress') {
+        gateMessage.hidden = false;
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-disabled', 'true');
+        if (submitDisabledHelper) {
+          submitDisabledHelper.hidden = false;
+        }
+      } else {
+        gateMessage.hidden = true;
+        submitBtn.disabled = false;
+        submitBtn.removeAttribute('aria-disabled');
+        if (submitDisabledHelper) {
+          submitDisabledHelper.hidden = true;
+        }
+      }
+    }
+
+    radios.forEach(radio => {
+      radio.addEventListener('change', updateGateState);
+    });
+
+    if (form) {
+      form.addEventListener('submit', (e) => {
+        const selected = document.querySelector('input[name="startFromBeginning"]:checked');
+        if (selected && selected.value === 'no_in_progress') {
+          e.preventDefault();
+          return false;
+        }
+        
+        // Show loading state on submit button
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = `
+          <span class="spinner"></span>
+          Submitting...
+        `;
+        submitBtn.classList.add('button--loading');
+      });
+    }
+
+    updateGateState();
+
+    // Real-time email validation
+    const emailInput = document.getElementById('email');
+    const emailFeedback = document.getElementById('emailFeedback');
+
+    function isValidEmail(email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    }
+
+    function validateEmail() {
+      const value = emailInput.value.trim();
+      
+      if (value === '') {
+        emailInput.classList.remove('input--valid', 'input--invalid');
+        emailFeedback.hidden = true;
+        emailFeedback.textContent = '';
+        emailFeedback.classList.remove('email-feedback--valid', 'email-feedback--invalid');
+        return;
+      }
+
+      if (isValidEmail(value)) {
+        emailInput.classList.remove('input--invalid');
+        emailInput.classList.add('input--valid');
+        emailFeedback.hidden = false;
+        emailFeedback.textContent = 'Looks good!';
+        emailFeedback.classList.remove('email-feedback--invalid');
+        emailFeedback.classList.add('email-feedback--valid');
+      } else {
+        emailInput.classList.remove('input--valid');
+        emailInput.classList.add('input--invalid');
+        emailFeedback.hidden = false;
+        emailFeedback.textContent = 'Please enter a valid email address';
+        emailFeedback.classList.remove('email-feedback--valid');
+        emailFeedback.classList.add('email-feedback--invalid');
+      }
+    }
+
+    if (emailInput && emailFeedback) {
+      emailInput.addEventListener('input', validateEmail);
+      emailInput.addEventListener('blur', validateEmail);
+    }
+
+    // GW_APPLICATION: patternStatus/patternReference conditional logic
+    const patternRadios = document.querySelectorAll('input[name="patternStatus"]');
+    const patternField = document.getElementById('pattern-name-field');
+    const patternInput = document.getElementById('patternReference');
+
+    function updatePatternFieldVisibility() {
+      const selected = document.querySelector('input[name="patternStatus"]:checked');
+      
+      if (selected && (selected.value === 'haveOne' || selected.value === 'fewOptions')) {
+        patternField.hidden = false;
+        patternField.setAttribute('aria-hidden', 'false');
+      } else {
+        patternField.hidden = true;
+        patternField.setAttribute('aria-hidden', 'true');
+        if (patternInput) {
+          patternInput.value = '';
+        }
+      }
+    }
+
+    if (patternField && patternRadios.length > 0) {
+      patternRadios.forEach(radio => {
+        radio.addEventListener('change', updatePatternFieldVisibility);
+      });
+      updatePatternFieldVisibility();
+    }
+  });
+</script>

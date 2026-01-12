@@ -1,0 +1,664 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const priceByKey: Record<string, number> = {
+  hand: 199,
+  standard: 330,
+  professional: 450,
+  complete: 500
+};
+---
+
+<BaseLayout 
+  title="DesignaKnit (DAK) | Knit by Machine"
+  description="DesignaKnit is a design-to-knitting system for machine knitters. It helps you work out ideas, then turns those decisions into clear, knit-ready instructions."
+>
+  <article class="designaknit-page">
+    
+ <!-- Hero Section -->
+<section class="hero-section">
+  <div class="hero-text">
+    <h1>DesignaKnit (DAK)</h1>
+    <p class="intro-definition">
+      DesignaKnit is a design-to-knitting system for machine knitters. 
+      It helps you work out ideas, then turns those decisions into clear, knit-ready instructions — bridging the gap between ideas and knitting.
+    </p>
+    <p class="intro-support">
+      Whether you're planning your first shaped garment or designing something entirely your own, DesignaKnit gives you tools to think through the details before you start knitting.
+    </p>
+  </div>
+
+  <div class="hero-image">
+    <img 
+      src="/images/designaknit1.webp" 
+      alt="DesignaKnit software showing stitch design, garment shaping, pattern layout, and knit-ready instructions"
+    />
+  </div>
+</section>
+
+    
+    <!-- Side-by-side bullet sections with soft panels -->
+    <div class="two-column-sections">
+      <!-- What Changes Section -->
+      <div class="soft-panel">
+        <section class="content-section">
+          <h2>What changes when you use DesignaKnit</h2>
+          <ul>
+            <li>You stop guessing and start knowing exactly what to do at each row</li>
+            <li>Shaping decisions are worked out ahead of time, not on the fly</li>
+            <li>You can resize patterns to fit any gauge or measurement</li>
+            <li>Colorwork and stitch patterns become easier to visualize and edit</li>
+            <li>Your notes, charts, and instructions live in one place</li>
+            <li>Mistakes get caught on screen, not in the knitting</li>
+          </ul>
+        </section>
+      </div>
+      
+      <!-- What It Helps You Do Section -->
+      <div class="soft-panel">
+        <section class="content-section">
+          <h2>What DesignaKnit helps you do</h2>
+          <ul>
+            <li>Design garments from scratch using built-in shaping tools</li>
+            <li>Create and edit stitch patterns, colorwork, and charts</li>
+            <li>Adjust existing patterns to match your gauge and sizing</li>
+            <li>Print row-by-row instructions, templates, and charts</li>
+            <li>Send patterns directly to compatible electronic knitting machines</li>
+            <li>Keep track of your projects and revisit past work easily</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+    
+    <!-- Reassurance Section -->
+    <section class="content-section reassurance-section">
+      <h2>You don't have to use everything at once</h2>
+      <p>
+        DesignaKnit has a lot of features, and that can feel overwhelming at first. 
+        But you don't need to learn it all before you start. Many knitters begin with just one part — 
+        like charting a stitch pattern or adjusting a neckline — and explore the rest over time.
+      </p>
+      <p>
+        There's no pressure to master everything. Use what helps you now, and grow into the rest when you're ready.
+      </p>
+    </section>
+    
+    <!-- Who It's For Section -->
+    <section class="content-section">
+      <h2>Who DesignaKnit is for</h2>
+      <p>
+        DesignaKnit is for machine knitters who want more control over their projects. 
+        It's especially helpful if you:
+      </p>
+      <ul>
+        <li>Want to design your own garments or modify existing patterns</li>
+        <li>Prefer to plan and visualize before you knit</li>
+        <li>Use an electronic knitting machine and want to send patterns directly</li>
+        <li>Like having clear, printed instructions to follow at your machine</li>
+        <li>Enjoy experimenting with stitch patterns, colorwork, or shaping</li>
+      </ul>
+      <p class="closing-note">
+        You don't need to be an expert. DesignaKnit is a thinking tool — it helps you work through decisions at your own pace.
+      </p>
+    </section>
+    
+    <!-- Decision-Path Cards Section -->
+    <section class="dak-choice-section">
+      <h2>Choose your DesignaKnit option</h2>
+      <p class="dak-choice-intro">
+        All DesignaKnit options use the same core system. The difference is how far you want to take it today. You don't have to choose for your entire future — just where you are now.
+      </p>
+      
+      <p class="dak-starting-point">These aren't lifetime decisions — they're starting points based on how you knit today.</p>
+      
+      <p class="dak-compatibility">DesignaKnit works with compatible electronic knitting machines.</p>
+      
+      <div class="dak-choice-grid">
+        <!-- Standard Card -->
+        <div class="dak-choice-card">
+          <p class="dak-card-label">Stitch Design</p>
+          <p class="dak-statement">"I'm only interested in stitch designs. I won't be creating garment designs."</p>
+          <p class="dak-capability">Stitch patterns only</p>
+          <div class="dak-version-row">
+            <span class="dak-version-label">Standard</span>
+            <span class="dak-price">${priceByKey.standard}</span>
+          </div>
+          <ul>
+            <li>You want to create and edit stitch patterns</li>
+            <li>You're focused on stitch work, charts, and repeats</li>
+            <li>You don't need garment shaping tools</li>
+          </ul>
+          <div id="dak-standard-btn" class="dak-buy-button"></div>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
+        </div>
+        
+        <!-- Pro Card -->
+        <div class="dak-choice-card">
+          <p class="dak-card-label">Garment Design</p>
+          <p class="dak-statement">"I will be designing stitch patterns and garments, but I'm not interested in hand knitting instructions or complicated cable instructions."</p>
+          <p class="dak-capability">Garments + basic cables</p>
+          <div class="dak-version-row">
+            <span class="dak-version-label">Pro</span>
+            <span class="dak-price">${priceByKey.professional}</span>
+            <span class="dak-badge">Sue's Recommendation</span>
+          </div>
+          <ul>
+            <li>You want stitch patterns + garment design</li>
+            <li>You care about structure, shaping, and fit</li>
+            <li>You don't need hand-knitting outputs or advanced cable complexity</li>
+          </ul>
+          <div id="dak-professional-btn" class="dak-buy-button"></div>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
+        </div>
+        
+        <!-- Complete Card -->
+        <div class="dak-choice-card">
+          <p class="dak-card-label">Complete Suite</p>
+          <p class="dak-statement">"I want all of the functionality of DesignaKnit."</p>
+          <p class="dak-capability">Advanced garments + complex cables</p>
+          <div class="dak-version-row">
+            <span class="dak-version-label">Complete</span>
+            <span class="dak-price">${priceByKey.complete}</span>
+            <span class="dak-badge">Sue's Recommendation</span>
+          </div>
+          <ul>
+            <li>You want the complete DesignaKnit system</li>
+            <li>You want maximum flexibility now and later</li>
+            <li>You don't want to wonder if something is missing</li>
+          </ul>
+          <div id="dak-complete-btn" class="dak-buy-button"></div>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
+        </div>
+        
+        <!-- Hand Knit Card -->
+        <div class="dak-choice-card">
+          <p class="dak-card-label">Hand Knit</p>
+          <p class="dak-statement">"I'm a hand knitter and I want to write hand-knitting patterns only."</p>
+          <p class="dak-capability">Hand knitting patterns only</p>
+          <div class="dak-version-row">
+            <span class="dak-version-label">Hand Knit</span>
+            <span class="dak-price">${priceByKey.hand}</span>
+          </div>
+          <ul>
+            <li>You design or write hand-knitting patterns</li>
+            <li>You want charts and written hand-knitting instructions</li>
+            <li>You're not using a knitting machine</li>
+          </ul>
+          <div id="dak-hand-btn" class="dak-buy-button"></div>
+          <p class="dak-shipping-note">U.S. addresses only.</p>
+        </div>
+      </div>
+      
+      <p class="dak-post-choice">You're not locked in — you can upgrade later if your needs change.
+     <br>A machine-specific cable may be required to connect DesignaKnit to your knitting machine. If you’re not sure which cable you need, I can help</p>
+      
+
+    </section>
+    
+    <!-- Final CTA Section - converted to support style -->
+    <section class="cta-section">
+      <h2>Not sure which version you need?</h2>
+      <p>I'll help you choose — no pressure, no upsell.</p>
+      <div class="cta-buttons">
+        <a href="/contact" class="btn-primary">Contact us</a>
+      </div>
+    </section>
+    
+  </article>
+</BaseLayout>
+
+<style>
+  .designaknit-page {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 3rem;
+  }
+
+  /* Hero: two-column on desktop, stacked on mobile (text first) */
+  .hero-section {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .hero-text {
+    order: 1;
+  }
+
+  .hero-image {
+    order: 2;
+  }
+
+  @media (min-width: 768px) {
+    .hero-section {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+
+    .hero-text {
+      order: 2;
+    }
+
+    .hero-image {
+      order: 1;
+    }
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  h1 {
+    font-size: 2rem;
+    color: var(--kbm-green);
+    margin-bottom: 1rem;
+  }
+
+  .intro-definition {
+    font-size: 1.125rem;
+    color: #333;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .intro-support {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  /* Soft Panel styling - lightened */
+  .soft-panel {
+    background: #eef2ea;
+    border: 1px solid #dce3d4;
+    border-radius: 10px;
+    padding: 1.25rem;
+  }
+
+  .soft-panel .content-section {
+    margin-bottom: 0;
+  }
+
+  /* Two-column bullet sections */
+  .two-column-sections {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.75rem;
+    margin-bottom: 2.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .two-column-sections {
+      grid-template-columns: 1fr 1fr;
+      gap: 2.25rem;
+    }
+  }
+
+  .content-section {
+    margin-bottom: 2.5rem;
+  }
+
+  h2 {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 0.75rem;
+  }
+
+  .content-section p {
+    color: #444;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .content-section ul {
+    list-style: disc;
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+
+  .content-section li {
+    color: #444;
+    line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
+  .reassurance-section {
+    background: #f9fafb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    border-left: 3px solid var(--kbm-green);
+  }
+
+  .reassurance-section p:last-child {
+    margin-bottom: 0;
+  }
+
+  .closing-note {
+    font-style: italic;
+    color: #666;
+    margin-top: 1rem;
+    margin-bottom: 0;
+  }
+
+  /* Decision-Path Cards Section */
+  .dak-choice-section {
+    margin-bottom: 2.5rem;
+  }
+
+  .dak-choice-section > h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .dak-choice-intro {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    max-width: 700px;
+  }
+
+  /* Orienting escape-hatch block (now positioned below grid) */
+  .dak-orienting {
+    background: #f6f8f4;
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-top: 1rem;
+    text-align: center;
+  }
+
+  .dak-orienting-heading {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #444;
+    margin: 0 0 0.25rem 0;
+  }
+
+  .dak-orienting-line {
+    font-size: 0.95rem;
+    color: #666;
+    margin: 0;
+  }
+
+  .dak-starting-point {
+    font-size: 0.95rem;
+    color: #777;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .dak-compatibility {
+    font-size: 0.875rem;
+    color: #888;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .dak-choice-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 640px) {
+    .dak-choice-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .dak-choice-card {
+    background: #fafbf9;
+    border: 1px solid #e8ebe4;
+    border-radius: 10px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Card label - primary scannable headline */
+  .dak-card-label {
+    font-size: 1.125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: #333;
+    margin: 0 0 0.5rem 0;
+  }
+
+  /* Statement - demoted to supporting text */
+  .dak-statement {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #666;
+    font-style: italic;
+    line-height: 1.5;
+    margin: 0 0 0.5rem 0;
+  }
+
+  /* Capability line - emphasized short summary */
+  .dak-capability {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.75rem 0;
+  }
+
+  /* Version name row with optional badge */
+  .dak-version-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .dak-version-label {
+    font-size: 0.875rem;
+    color: #777;
+    font-weight: 500;
+  }
+
+  .dak-price {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .dak-badge {
+    display: inline-block;
+    background: #e8f0dc;
+    color: #4a5d31;
+    font-size: 0.7rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+  }
+
+  .dak-choice-card ul {
+    list-style: disc;
+    padding-left: 1.25rem;
+    margin: 0 0 1.25rem 0;
+    flex-grow: 1;
+  }
+
+  .dak-choice-card li {
+    color: #444;
+    line-height: 1.5;
+    margin-bottom: 0.375rem;
+    font-size: 0.9rem;
+  }
+
+  .dak-choice-card .btn-primary {
+    align-self: flex-start;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+  }
+
+  .dak-post-choice {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+    margin: 0 0 1rem 0;
+  }
+
+  .dak-still-not-sure {
+    text-align: center;
+    color: #666;
+    font-size: 0.95rem;
+  }
+
+  .dak-still-not-sure a {
+    color: var(--kbm-green);
+    text-decoration: underline;
+  }
+
+  .dak-still-not-sure a:hover {
+    text-decoration: none;
+  }
+
+  /* Final CTA */
+  .cta-section {
+    background: var(--kbm-bg);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .cta-section h2 {
+    margin-bottom: 0.5rem;
+  }
+
+  .cta-section p {
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+
+  .cta-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+  }
+
+  .btn-primary {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    background: var(--kbm-green);
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: var(--kbm-green-2);
+  }
+
+  .btn-secondary {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    border: 2px solid var(--kbm-green);
+    color: var(--kbm-green);
+    font-weight: 500;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: rgba(82, 104, 45, 0.08);
+  }
+
+  .dak-buy-button {
+    min-height: 50px;
+    margin-bottom: 0.25rem;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+  }
+
+  .dak-shipping-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.5rem 0 0 0;
+    text-align: center;
+    align-self: center;
+    width: 100%;
+  }
+</style>
+
+<!-- Shopify Buy Button Script for DAK Products -->
+<script is:inline>
+  (function () {
+    var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+    
+    var dakProducts = [
+      { id: '7899666382917', node: 'dak-standard-btn' },
+      { id: '7899668316229', node: 'dak-professional-btn' },
+      { id: '7899665825861', node: 'dak-complete-btn' },
+      { id: '7899667628101', node: 'dak-hand-btn' }
+    ];
+    
+    if (window.ShopifyBuy) { 
+      if (window.ShopifyBuy.UI) { ShopifyBuyInit(); } else { loadScript(); } 
+    } else { 
+      loadScript(); 
+    }
+    
+    function loadScript() {
+      var script = document.createElement('script');
+      script.async = true;
+      script.src = scriptURL;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+      script.onload = ShopifyBuyInit;
+    }
+    
+    function ShopifyBuyInit() {
+      var client = ShopifyBuy.buildClient({
+        domain: 'ku0uaq-tv.myshopify.com',
+        storefrontAccessToken: '66fba9d9b42bfea416c8e0af7987dc94'
+      });
+      
+      ShopifyBuy.UI.onReady(client).then(function (ui) {
+        dakProducts.forEach(function (product) {
+          var nodeElement = document.getElementById(product.node);
+          if (nodeElement) {
+            ui.createComponent('product', {
+              id: product.id,
+              node: nodeElement,
+              options: {
+                product: {
+                  styles: {
+                    button: {
+                      'background-color': '#52682d',
+                      ':hover': { 'background-color': '#4a5e29' },
+                      ':focus': { 'background-color': '#4a5e29' },
+                      'border-radius': '11px',
+                      'font-weight': '600',
+                      'padding': '12px 24px'
+                    }
+                  },
+                  text: { button: 'Choose this option' },
+                  contents: {
+                    img: false,
+                    title: false,
+                    price: false,
+                    description: false
+                  }
+                },
+                cart: {
+                  text: {
+                    button: 'Checkout'
+                  }
+                }
+              }
+            });
+          }
+        });
+      });
+    }
+  })();
+</script>

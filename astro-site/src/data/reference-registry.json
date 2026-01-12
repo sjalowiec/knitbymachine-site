@@ -1,0 +1,36 @@
+[
+  {
+    "id": "ref_mj5wp21pk71f",
+    "title": "intarsia - bobbin weaving",
+    "slug": "/reference/bobbin-intarsia-knitting",
+    "topic": "intarsia",
+    "status": "published",
+    "pushed": "2025-12-14",
+    "linkedFrom": [],
+    "notes": "proof of concept from pdf - jodi demo book"
+  },
+  {
+    "id": "ref_mj92c05v7h0u",
+    "title": "Choosing a Knitting Machine",
+    "slug": "/reference/choosing-knitting-machine",
+    "topic": "machines",
+    "status": "published",
+    "pushed": "2025-12-15",
+    "linkedFrom": [
+      "reference/choosing-knitting-machine"
+    ],
+    "notes": ""
+  },
+  {
+    "id": "ref_mja7v3v9tkhu",
+    "title": "DesignaKnit Upgrades",
+    "slug": "/reference/dak-upgrades",
+    "topic": "Designaknit",
+    "status": "published",
+    "pushed": "2025-12-17",
+    "linkedFrom": [
+      "reference/DesignaKnit-Upgrades"
+    ],
+    "notes": ""
+  }
+]

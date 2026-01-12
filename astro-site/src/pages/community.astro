@@ -1,0 +1,836 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout 
+  title="Machine Knitting Talk | Knit by Machine" 
+  description="Ask questions, share progress, and connect with other machine knitters in our MK Talk forum."
+>
+  <section class="community-page">
+    <div class="community-content">
+      <!-- Cards section (visible pre-unlock and post-unlock with no topic) -->
+      <section id="community-cards">
+        <h2 id="choose-topic-heading" class="choose-topic-heading" hidden>Choose a topic</h2>
+        <div class="features-grid">
+          <div class="feature-card community-card" data-topic="introductions" data-testid="card-introductions">
+            <img src="/images/community_talk.svg" alt="" class="feature-icon" />
+            <h3>Introductions</h3>
+            <p>Say hi and tell us what you're knitting.</p>
+          </div>
+          <div class="feature-card community-card" data-topic="help" data-testid="card-help">
+            <img src="/images/community_talk.svg" alt="" class="feature-icon" />
+            <h3>Ask for help</h3>
+            <p>Post your question and get practical replies.</p>
+          </div>
+          <div class="feature-card community-card" data-topic="show-and-tell" data-testid="card-show-and-tell">
+            <img src="/images/community_talk.svg" alt="" class="feature-icon" />
+            <h3>Show & Tell</h3>
+            <p>Share a photo, a swatch, or a finished piece.</p>
+          </div>
+          <div class="feature-card community-card" data-topic="wins" data-testid="card-wins">
+            <img src="/images/community_talk.svg" alt="" class="feature-icon" />
+            <h3>Small wins</h3>
+            <p>First cast-on counts. Really.</p>
+          </div>
+        </div>
+
+        <!-- Gate form (shown when not unlocked) -->
+        <div id="gate-block" hidden>
+        <div class="gate-form-container">
+          <h2>Join the conversation</h2>
+          <p class="gate-description">We just need your name and email to get you started.</p>
+          
+          <form id="community-gate-form" class="gate-form kbm-gate-form">
+            <div class="form-group">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="firstName" 
+                name="firstName" 
+                required 
+                placeholder="Your first name"
+                data-testid="input-firstName"
+              />
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                placeholder="your@email.com"
+                data-testid="input-email"
+              />
+            </div>
+            
+            <p class="email-disclosure" data-testid="text-email-disclosure">You'll also receive occasional emails from Knit by Machine related to the community. You can unsubscribe at any time.</p>
+            
+            <button type="submit" class="submit-button kbm-button" data-testid="button-submit">
+              Join the conversation
+            </button>
+            
+            <p id="form-error" class="form-error" hidden></p>
+          </form>
+        </div>
+        </div>
+      </section>
+
+      <!-- Topic switcher chips (shown when topic selected, replaces cards) -->
+      <section id="topic-switcher" hidden>
+        <div class="switcher-container">
+          <div class="switcher-chips">
+            <button data-topic="introductions" data-testid="switcher-introductions">Introductions</button>
+            <button data-topic="help" data-testid="switcher-help">Ask for help</button>
+            <button data-topic="show-and-tell" data-testid="switcher-show-and-tell">Show & Tell</button>
+            <button data-topic="wins" data-testid="switcher-wins">Small wins</button>
+          </div>
+         </div>
+      </section>
+
+      <!-- Topic thread (shown after topic selection) -->
+      <section id="topic-thread" hidden>
+        <div class="well_white kbm-community-well" id="intro-well">
+          <h2 id="intro-title" class="intro-title"></h2>
+          <p id="intro-lede" class="intro-lede"></p>
+          <ul id="intro-bullets" class="intro-bullets"></ul>
+          <p id="intro-note" class="intro-note"></p>
+        </div>
+        
+        <div class="hyvor-talk-container">
+                   <div id="hyvor-talk-view" data-testid="hyvor-talk-view"></div>
+        </div>
+      </section>
+    </div>
+  </section>
+
+</BaseLayout>
+
+<!-- Hyvor Talk script is dynamically loaded when a topic is selected -->
+
+<script>
+  (function() {
+    function initCommunity() {
+      var unlocked = false;
+      var topic = null;
+      
+      try {
+        unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
+        topic = localStorage.getItem("kbm:community-topic");
+      } catch (e) {}
+
+      var cards = document.getElementById("community-cards");
+      var gate = document.getElementById("gate-block");
+      var switcher = document.getElementById("topic-switcher");
+      var thread = document.getElementById("topic-thread");
+
+      // Three states:
+      // 1. Not unlocked: cards + gate visible, switcher + thread hidden
+      // 2. Unlocked, no topic: cards visible (unlocked), gate + switcher + thread hidden
+      // 3. Unlocked with topic: cards hidden, switcher + thread visible
+
+      if (!unlocked) {
+        // State 1: Pre-unlock - show cards with gate
+        if (cards) cards.hidden = false;
+        if (gate) gate.hidden = false;
+        if (switcher) switcher.hidden = true;
+        if (thread) thread.hidden = true;
+        applyCardLockState(true);
+        setupGateForm();
+      } else if (!topic) {
+        // State 2: Unlocked, no topic - show cards with "Choose a topic" heading
+        if (cards) cards.hidden = false;
+        if (gate) gate.hidden = true;
+        if (switcher) switcher.hidden = true;
+        if (thread) thread.hidden = true;
+        applyCardLockState(false);
+        var chooseHeading = document.getElementById("choose-topic-heading");
+        if (chooseHeading) chooseHeading.hidden = false;
+      } else {
+        // State 3: Topic selected - hide cards, show switcher + thread
+        if (cards) cards.hidden = true;
+        if (gate) gate.hidden = true;
+        if (switcher) switcher.hidden = false;
+        if (thread) thread.hidden = false;
+        loadHyvor(topic);
+        highlightSelectedChip(topic);
+        
+        // Smooth scroll to thread after short delay
+        setTimeout(function() {
+          if (thread) thread.scrollIntoView({ behavior: "smooth" });
+        }, 150);
+      }
+
+      setupCardListeners(unlocked);
+      setupChangeTopic();
+    }
+
+    function applyCardLockState(locked) {
+      document.querySelectorAll(".feature-card.community-card").forEach(function(card) {
+        if (locked) {
+          card.classList.add("is-locked");
+        } else {
+          card.classList.remove("is-locked");
+        }
+      });
+    }
+
+    function setupGateForm() {
+      var form = document.getElementById("community-gate-form");
+      var errorEl = document.getElementById("form-error");
+
+      if (form) {
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          
+          var firstNameInput = document.getElementById("firstName");
+          var emailInput = document.getElementById("email");
+          var firstName = firstNameInput ? firstNameInput.value.trim() : "";
+          var email = emailInput ? emailInput.value.trim() : "";
+          
+          if (!firstName) {
+            if (errorEl) {
+              errorEl.textContent = "First name is required.";
+              errorEl.removeAttribute("hidden");
+            }
+            return;
+          }
+          
+          if (!email) {
+            if (errorEl) {
+              errorEl.textContent = "Email is required.";
+              errorEl.removeAttribute("hidden");
+            }
+            return;
+          }
+          
+          var submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+          }
+          
+          fetch("/.netlify/functions/pp-unlock", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstName: firstName,
+              email: email,
+              projectId: "community",
+            }),
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(result) {
+            if (result.ok) {
+              localStorage.setItem("kbm:community-unlocked", "1");
+              location.reload();
+            } else {
+              if (errorEl) {
+                errorEl.textContent = result.message || "Something went wrong. Please try again.";
+                errorEl.removeAttribute("hidden");
+              }
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Join the conversation";
+              }
+            }
+          })
+          .catch(function(err) {
+            if (errorEl) {
+              errorEl.textContent = "Network error. Please check your connection and try again.";
+              errorEl.removeAttribute("hidden");
+            }
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Join the conversation";
+            }
+          });
+        });
+      }
+    }
+
+    function setupCardListeners(unlocked) {
+      var elements = document.querySelectorAll("[data-topic]");
+      
+      elements.forEach(function(el) {
+        // Only set pointer cursor when unlocked
+        if (unlocked) {
+          el.style.cursor = "pointer";
+        }
+        
+        el.addEventListener("click", function() {
+          var topic = el.dataset.topic;
+          
+          if (!unlocked) {
+            var gateBlock = document.getElementById("gate-block");
+            if (gateBlock) {
+              gateBlock.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+              });
+            }
+            return;
+          }
+          
+          localStorage.setItem("kbm:community-topic", topic);
+          location.reload();
+        });
+      });
+    }
+
+    function highlightSelectedChip(topic) {
+      var introContent = {
+        "introductions": {
+          title: "Introductions",
+          lede: "Say hello and share what you're working on (or restarting).",
+          bullets: [
+            "What machine you're using",
+            "What you're knitting right now (or planning next)",
+            "One thing you'd love more confidence with"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        },
+        "help": {
+          title: "Ask for help",
+          lede: "Stuck is allowed here. Ask in plain language — we'll sort it out together.",
+          bullets: [
+            "What you're trying to do",
+            "What happened instead",
+            "Your machine + yarn (if relevant)",
+            "A photo is welcome (if it helps)"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        },
+        "show-and-tell": {
+          title: "Show & Tell",
+          lede: "Share a photo, a progress update, or a \"does this look right?\" moment.",
+          bullets: [
+            "Finished projects",
+            "In-progress knitting",
+            "Before/after fixes",
+            "Questions are welcome too"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        },
+        "wins": {
+          title: "Small wins",
+          lede: "Tiny victories count. Post the moment something clicked.",
+          bullets: [
+            "A setting that finally made sense",
+            "A smoother cast-on / bind-off",
+            "A fix that saved your knitting",
+            "A habit that made things easier"
+          ],
+          note: "Email is optional and only used for reply notifications."
+        }
+      };
+
+      // Highlight active chip in switcher
+      document.querySelectorAll("#topic-switcher [data-topic]").forEach(function(el) {
+        var isActive = el.dataset.topic === topic;
+        el.classList.toggle("is-active", isActive);
+        el.setAttribute("aria-pressed", isActive ? "true" : "false");
+      });
+
+      // Populate intro well content
+      var content = introContent[topic];
+      if (content) {
+        var titleEl = document.getElementById("intro-title");
+        var ledeEl = document.getElementById("intro-lede");
+        var bulletsEl = document.getElementById("intro-bullets");
+        var noteEl = document.getElementById("intro-note");
+
+        if (titleEl) titleEl.textContent = content.title;
+        if (ledeEl) ledeEl.textContent = content.lede;
+        if (bulletsEl) {
+          bulletsEl.innerHTML = "";
+          content.bullets.forEach(function(bullet) {
+            var li = document.createElement("li");
+            li.textContent = bullet;
+            bulletsEl.appendChild(li);
+          });
+        }
+        if (noteEl) noteEl.textContent = content.note;
+      }
+    }
+
+    function setupChangeTopic() {
+      var changeBtn = document.getElementById("change-topic");
+      if (changeBtn) {
+        changeBtn.addEventListener("click", function() {
+          localStorage.removeItem("kbm:community-topic");
+          location.reload();
+        });
+      }
+    }
+
+    function loadHyvor(topic) {
+      var topicMap = {
+        "introductions": "community-introductions",
+        "help": "community-help",
+        "show-and-tell": "community-show-and-tell",
+        "wins": "community-wins"
+      };
+
+      var pageId = topicMap[topic] || "community";
+
+      // Set global config before loading
+      window.HYVOR_TALK_WEBSITE = 14706;
+      window.HYVOR_TALK_CONFIG = {
+        url: false,
+        id: pageId
+      };
+
+      // If HyvorTalk already loaded, reload it
+      if (window.hyvorTalkReload) {
+        window.hyvorTalkReload();
+        return;
+      }
+
+      // Inject the script if not already present
+      var existingScript = document.querySelector('script[src*="talk.hyvor.com/web-api/embed"]');
+      if (!existingScript) {
+        var script = document.createElement("script");
+        script.src = "https://talk.hyvor.com/web-api/embed.js";
+        script.async = true;
+        script.type = "text/javascript";
+        document.body.appendChild(script);
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initCommunity);
+    } else {
+      initCommunity();
+    }
+  })();
+</script>
+
+<style>
+  .community-page {
+    padding: 2rem 1rem 4rem;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .community-content {
+    text-align: center;
+  }
+
+  /* White well container for guidance area */
+  .well_white {
+    background: #fff;
+    border: 1px solid #e8e8e8;
+  }
+
+  .kbm-community-well {
+    margin: 16px 0 18px;
+    padding: 18px 20px;
+    border-radius: 10px;
+    text-align: left;
+  }
+
+  .intro-title {
+    font-size: var(--text-lg, 1.125rem);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem 0;
+  }
+
+  .intro-lede {
+    font-size: var(--text-base, 1rem);
+    color: #444;
+    margin: 0 0 0.75rem 0;
+    line-height: 1.5;
+  }
+
+  .intro-bullets {
+    margin: 0 0 0.75rem 0;
+    padding-left: 1.25rem;
+    list-style-type: disc;
+  }
+
+  .intro-bullets li {
+    font-size: var(--text-sm, 0.875rem);
+    color: #555;
+    margin-bottom: 0.3rem;
+    line-height: 1.4;
+  }
+
+  .intro-bullets li:last-child {
+    margin-bottom: 0;
+  }
+
+  .intro-note {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0;
+    font-style: italic;
+  }
+
+  /* Choose a topic heading (shown after unlock, before topic selection) */
+  .choose-topic-heading {
+    font-size: var(--text-lg);
+    color: var(--kbm-green);
+    text-align: center;
+    margin-bottom: 1.25rem;
+  }
+
+  /* Feature cards grid (always visible) */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .feature-card {
+    background: #f9f9f9;
+    border: 1px solid #e8e8e8;
+    border-radius: 10px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .feature-card.community-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+  }
+
+  /* Locked state for cards when gate is active */
+  .feature-card.community-card.is-locked {
+    opacity: 0.6;
+    filter: grayscale(30%);
+    cursor: default;
+  }
+
+  .feature-card.community-card.is-locked:hover {
+    transform: none;
+    box-shadow: none;
+  }
+
+  /* Active state for cards and switcher buttons */
+  .is-active {
+    outline: 2px solid var(--kbm-green);
+    outline-offset: 2px;
+  }
+
+  .feature-card.community-card.is-active {
+    border-color: var(--kbm-green);
+    background: #f0f8f0;
+  }
+
+  /* Topic switcher (replaces cards when topic selected) */
+  #topic-switcher {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .switcher-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .switcher-chips {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  .switcher-chips button {
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    background: #f5f5f5;
+    border: 1px solid #e0e0e0;
+    color: #444;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .switcher-chips button:hover {
+    background: #e8f4e8;
+    border-color: var(--kbm-green);
+    color: var(--kbm-green);
+  }
+
+  .switcher-chips button.is-active {
+    background: var(--kbm-green);
+    border-color: var(--kbm-green);
+    color: white;
+  }
+
+  .change-topic-btn {
+    background: transparent;
+    border: none;
+    color: #888;
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+  }
+
+  .change-topic-btn:hover {
+    color: var(--kbm-green);
+  }
+
+  .feature-card .feature-icon {
+    display: block;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0 auto 0.5rem;
+  }
+
+  .feature-card h3 {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.4rem;
+  }
+
+  .feature-card p {
+    font-size: var(--text-xs, 0.8rem);
+    color: #666;
+    margin: 0;
+    line-height: 1.4;
+  }
+
+  /* Gate form container */
+  .gate-form-container {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .gate-form-container h2 {
+    font-size: var(--text-lg);
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .gate-description {
+    font-size: var(--text-sm);
+    color: #666;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Form styles */
+  .gate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .kbm-gate-form {
+    position: relative;
+    z-index: 1;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .form-group label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group .required {
+    color: #e74c3c;
+  }
+
+  .form-group input {
+    padding: 0.75rem 1rem;
+    font-size: var(--text-base);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--kbm-green);
+  }
+
+  /* Submit button */
+  .submit-button,
+  .kbm-button {
+    display: block !important;
+    position: relative;
+    z-index: 10;
+    opacity: 1 !important;
+    visibility: visible !important;
+    background: var(--kbm-green) !important;
+    color: white !important;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    margin-top: 0.5rem;
+    width: 100%;
+  }
+
+  .submit-button:hover,
+  .submit-button:focus,
+  .submit-button:focus-visible,
+  .kbm-button:hover,
+  .kbm-button:focus,
+  .kbm-button:focus-visible {
+    display: block !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    filter: none !important;
+    mix-blend-mode: normal !important;
+    background: var(--kbm-dark-green, #2a6b3a) !important;
+    color: white !important;
+    transform: translateY(-2px);
+    pointer-events: auto !important;
+  }
+
+  /* Ensure button never disappears */
+  button.submit-button,
+  button.kbm-button {
+    -webkit-appearance: none;
+    appearance: none;
+    pointer-events: auto !important;
+  }
+
+  .submit-button:active,
+  .kbm-button:active {
+    transform: translateY(0);
+  }
+
+  .submit-button:disabled,
+  .kbm-button:disabled {
+    background: #999;
+    color: white;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .email-disclosure {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.25rem 0 0.5rem;
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .form-error {
+    color: #e74c3c;
+    font-size: var(--text-sm);
+    margin: 0.5rem 0 0;
+  }
+
+  /* Thread section */
+  .thread-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .thread-header h2 {
+    font-size: var(--text-xl);
+    color: var(--kbm-green);
+    margin: 0;
+  }
+
+  .thread-hint {
+    font-size: var(--text-sm);
+    color: #888;
+    margin: 0;
+  }
+
+  .topic-label {
+    font-weight: 600;
+    font-size: var(--text-sm);
+    color: var(--kbm-green);
+    margin: 0 0 0.25rem 0;
+    text-align: center;
+  }
+
+  .topic-helper {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin: 0;
+    text-align: center;
+  }
+
+  /* Hyvor Talk container */
+  .hyvor-talk-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  .hyvor-note {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 768px) {
+    .community-page {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .features-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+
+    .kbm-community-well {
+      margin: 12px 0 14px;
+      padding: 14px;
+    }
+
+    .feature-card {
+      padding: 1rem 0.75rem;
+    }
+
+    .gate-form-container {
+      padding: 1.5rem;
+    }
+
+    #topic-switcher {
+      flex-wrap: wrap;
+      padding: 0.4rem;
+    }
+
+    #topic-switcher button {
+      font-size: 0.8rem;
+      padding: 0.3rem 0.6rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

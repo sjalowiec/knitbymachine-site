@@ -1,0 +1,709 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const pageTitle = 'Getting Started with Your Knitting Machine';
+const pageDescription = 'A simple starting point to get your knitting machine set up, moving smoothly, and ready for real knitting.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main class="kbm-getting-started">
+    <!-- HERO SECTION -->
+    <section class="kbm-section kbm-section--soft">
+      <div class="kbm-container kbm-page-layout">
+        <div class="kbm-hero-text">
+          <header class="kbm-page-header">
+            <h1 data-testid="text-page-title">Get Started with Your Knitting Machine</h1>
+            <p class="kbm-lede" data-testid="text-lede">
+              Whether this is your first session or your first session in a while, this guide helps you get oriented and choose your next step.
+            </p>
+          </header>
+
+          <p class="kbm-hero-cta-text">
+            When you're ready, scroll to the Ready ● Set ● Knit helper below. Tell it where you're starting — new, returning, or unsure — and it will guide you one simple step at a time.
+          </p>
+
+          <div class="kbm-next-step-cta">
+            <a href="#getting-started-helper" class="kbm-button kbm-button--primary" data-testid="button-go-to-helper">
+              Ready ● Set ● Knit
+            </a>
+          </div>
+        </div>
+
+        <div class="kbm-hero-media">
+          <button
+            id="open-welcome-video"
+            type="button"
+            class="kbm-video-trigger"
+            data-testid="button-open-video"
+          >
+            <img
+              src="/images/sue_intro.png"
+              alt="Sue from Knit by Machine smiling in front of a knitting machine"
+              class="kbm-headshot"
+              data-testid="img-sue-headshot"
+            />
+            <span class="kbm-video-label">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="kbm-play-icon"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                aria-hidden="true"
+              >
+                <path d="M8 5v14l11-7z" />
+              </svg>
+              <span>Watch a quick hello from Sue</span>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- GETTING STARTED HELPER SECTION (MindPal Embed) -->
+    <section id="getting-started-helper" class="kbm-section kbm-section--agent" data-testid="section-helper">
+      <div class="kbm-agent-wrapper">
+        <iframe 
+          src="https://chatbot.getmindpal.com/ready-set-knit-getting-started-25e"
+          allow="clipboard-read; clipboard-write; microphone"
+          class="kbm-mindpal-iframe"
+          data-testid="iframe-mindpal-agent"
+        ></iframe>
+      </div>
+
+      <button id="getting-started-complete-btn" class="kbm-confetti-btn" data-testid="button-next-step">I'm ready for my next step!</button>
+
+      <!-- WHAT'S NEXT SECTION (hidden until button click) -->
+      <section
+        id="whats-next"
+        class="kbm-whats-next hidden"
+        data-testid="section-whats-next"
+      >
+        <h2 class="kbm-whats-next-title">
+          What's next with your machine?
+        </h2>
+        <p class="kbm-whats-next-intro">
+          You've taken a solid first step. From here, you can get quick answers, build skills, or reach out for more help.
+        </p>
+
+        <div class="kbm-whats-next-grid">
+          <a
+            href="/skill-builders"
+            class="kbm-next-card"
+            data-testid="link-skill-builders"
+          >
+            <h3 class="kbm-next-card-title">Explore Practice Projects</h3>
+            <p class="kbm-next-card-desc">
+              Start a small practice exercise to get more confident with your machine.
+            </p>
+          </a>
+
+          <a
+            href="/ana-catalog"
+            class="kbm-next-card"
+            data-testid="link-ana"
+          >
+            <h3 class="kbm-next-card-title">Browse Answers</h3>
+            <p class="kbm-next-card-desc">
+              See clear answers to common machine knitting questions.
+            </p>
+          </a>
+
+          <a
+            href="/contact"
+            class="kbm-next-card"
+            data-testid="link-contact"
+          >
+            <h3 class="kbm-next-card-title">Contact Sue</h3>
+            <p class="kbm-next-card-desc">
+              Need something more specific? Send Sue a note on the contact page.
+            </p>
+          </a>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <!-- Video Modal -->
+  <div id="welcome-video-modal" aria-hidden="true" data-testid="modal-welcome-video">
+    <div class="modal-content">
+      <button
+        class="close-video-btn"
+        id="close-welcome-video"
+        aria-label="Close video"
+        data-testid="button-close-video"
+      >
+        ✕
+      </button>
+
+      <div class="modal-inner">
+        <div class="modal-title">
+          <span>👋 A quick hello from Sue</span>
+        </div>
+
+        <div class="video-wrapper">
+          <iframe
+            id="welcome-video-iframe"
+            src=""
+            allow="autoplay; fullscreen; picture-in-picture"
+            allowfullscreen
+            data-testid="iframe-welcome-video"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Confetti button
+      const finishBtn = document.getElementById('getting-started-complete-btn');
+      const whatsNextSection = document.getElementById('whats-next');
+      
+      if (finishBtn) {
+        finishBtn.addEventListener('click', () => {
+          // Trigger confetti
+          confetti({
+            particleCount: 120,
+            spread: 70,
+            origin: { y: 0.7 }
+          });
+          
+          // Reveal the "What's next?" section and scroll to it
+          if (whatsNextSection) {
+            whatsNextSection.classList.remove('hidden');
+            
+            // Small delay to let the confetti start, then scroll
+            setTimeout(() => {
+              whatsNextSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+          }
+        });
+      }
+
+    });
+  </script>
+
+  <script>
+    const modal = document.getElementById("welcome-video-modal");
+    const iframe = document.getElementById("welcome-video-iframe");
+    const openBtn = document.getElementById("open-welcome-video");
+    const closeBtn = document.getElementById("close-welcome-video");
+
+    const videoUrl =
+      "https://player.vimeo.com/video/1143645774?autoplay=1&title=0&byline=0&portrait=0";
+
+    function openModal() {
+      if (!modal || !iframe) return;
+      modal.style.display = "flex";
+      iframe.src = videoUrl;
+    }
+
+    function closeModal() {
+      if (!modal || !iframe) return;
+      modal.style.display = "none";
+      iframe.src = "";
+    }
+
+    if (openBtn) {
+      openBtn.addEventListener("click", openModal);
+    }
+
+    if (closeBtn) {
+      closeBtn.addEventListener("click", closeModal);
+    }
+
+    if (modal) {
+      // close when clicking the dark backdrop
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+    }
+
+    // close on ESC key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && modal && modal.style.display === "flex") {
+        closeModal();
+      }
+    });
+  </script>
+</BaseLayout>
+
+<style>
+  /* ========== GETTING STARTED PAGE STYLES ========== */
+  
+  .kbm-getting-started {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem 3rem;
+  }
+
+  /* ========== SECTIONS ========== */
+  .kbm-section {
+    padding: 2rem 0;
+  }
+
+  .kbm-section--soft {
+    background: linear-gradient(180deg, #f1f6ec 0%, transparent 100%);
+    border-radius: 1.5rem;
+    padding: 2.5rem 0;
+    margin-bottom: 0;
+  }
+
+  .kbm-section--agent {
+    background-color: #ffffff;
+    border: 2px solid #c7d8a4;
+    border-radius: 1.25rem;
+    padding: 2rem;
+    scroll-margin-top: calc(var(--header-height, 6rem) + 1rem);
+  }
+
+  .kbm-container {
+    width: 100%;
+  }
+
+  /* ========== HERO LAYOUT ========== */
+  .kbm-page-layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-page-layout {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+  }
+
+  /* ========== HERO TEXT ========== */
+  .kbm-hero-text {
+    text-align: center;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-hero-text {
+      text-align: left;
+    }
+  }
+
+  .kbm-page-header {
+    margin: 0;
+  }
+
+  .kbm-eyebrow {
+    display: inline-block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    color: #738c52;
+    margin-bottom: 0.75rem;
+    padding: 0.35rem 1rem;
+    background: rgba(115, 140, 82, 0.12);
+    border-radius: 999px;
+  }
+
+  .kbm-page-header h1 {
+    font-size: clamp(1.5rem, 3vw, 2.25rem);
+    margin: 0 0 1rem;
+    color: #2c3a57;
+    line-height: 1.25;
+  }
+
+  .kbm-lede {
+    font-size: 1.05rem;
+    line-height: 1.65;
+    color: #4d5a48;
+    margin: 0;
+    max-width: 500px;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-lede {
+      margin: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .kbm-lede {
+      margin: 0 auto;
+    }
+  }
+
+  .kbm-hero-cta-text {
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: #4d5a48;
+    margin: 1.25rem 0 0;
+    max-width: 500px;
+  }
+
+  @media (max-width: 767px) {
+    .kbm-hero-cta-text {
+      text-align: center;
+      margin: 1.25rem auto 0;
+    }
+  }
+
+  /* ========== HERO MEDIA / VIDEO TRIGGER ========== */
+  .kbm-hero-media {
+    display: flex;
+    justify-content: center;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-hero-media {
+      justify-content: flex-end;
+    }
+  }
+
+  .kbm-video-trigger {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+
+  .kbm-video-trigger:focus {
+    outline: none;
+  }
+
+  .kbm-video-trigger:focus-visible .kbm-headshot {
+    /* Image already has built-in border/shadow */
+  }
+
+  .kbm-headshot {
+    width: 160px;
+    height: 160px;
+    transition: transform 0.2s ease;
+  }
+
+  @media (min-width: 768px) {
+    .kbm-headshot {
+      width: 224px;
+      height: 224px;
+    }
+  }
+
+  .kbm-video-trigger:hover .kbm-headshot {
+    transform: scale(1.03);
+  }
+
+  .kbm-video-label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #52682D;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease;
+  }
+
+  .kbm-video-trigger:hover .kbm-video-label {
+    background-color: #E7F0E1;
+  }
+
+  .kbm-play-icon {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  /* ========== VIDEO MODAL ========== */
+  /* Backdrop */
+  #welcome-video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none;                 /* Hidden by default */
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.55); /* Darker, but still soft */
+    backdrop-filter: blur(4px);    /* Gentle blur behind modal */
+    padding: 1rem;
+  }
+
+  /* Modal container */
+  #welcome-video-modal .modal-content {
+    position: relative;
+    width: 100%;
+    max-width: 760px;
+    border-radius: 1.5rem;
+    background: #ffffff;
+    border: 3px solid #6E8B3D;     /* KBM soft green border */
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.25);
+    animation: kbmModalIn 180ms ease-out;
+  }
+
+  /* Inner padding wrapper */
+  #welcome-video-modal .modal-inner {
+    padding: 1.25rem 1.25rem 1.5rem;
+  }
+
+  /* Title row */
+  #welcome-video-modal .modal-title {
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #2C3A57;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+  }
+
+  /* Close button */
+  #welcome-video-modal .close-video-btn {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    background: rgba(255, 255, 255, 0.95);
+    color: #2C3A57;
+    border: none;
+    border-radius: 9999px;
+    padding: 0.35rem 0.55rem;
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
+    transition: background 120ms ease-out, transform 120ms ease-out;
+  }
+
+  #welcome-video-modal .close-video-btn:hover {
+    background: #E7F0E1;           /* soft green hover */
+    transform: translateY(-1px);
+  }
+
+  /* Video aspect ratio */
+  #welcome-video-modal .video-wrapper {
+    position: relative;
+    padding-bottom: 56.25%;        /* 16:9 */
+    height: 0;
+    border-radius: 1rem;
+    overflow: hidden;
+  }
+
+  #welcome-video-modal iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 1rem;
+  }
+
+  /* Fade-in / scale animation */
+  @keyframes kbmModalIn {
+    0% {
+      opacity: 0;
+      transform: translateY(12px) scale(0.96);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* ========== SECTION HEADINGS ========== */
+  .kbm-section h2 {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    text-align: center;
+  }
+
+  .kbm-section-intro {
+    font-size: 1rem;
+    color: #4d5a48;
+    line-height: 1.6;
+    text-align: center;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  /* ========== NEXT STEP CTA ========== */
+  .kbm-next-step-cta {
+    text-align: center;
+    margin-top: 1.5rem;
+  }
+
+  .kbm-button {
+    display: inline-block;
+    padding: 0.75rem 1.75rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .kbm-button--primary {
+    background-color: #52682d;
+    color: #ffffff;
+  }
+
+  .kbm-button--primary:hover {
+    background-color: #445626;
+  }
+
+  /* ========== AGENT WRAPPER ========== */
+  .kbm-agent-wrapper {
+    margin-top: 1.5rem;
+    width: 100%;
+  }
+
+  /* ========== MINDPAL IFRAME ========== */
+  .kbm-mindpal-iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 700px;
+    border: none;
+    border-radius: 0.75rem;
+    background-color: #ffffff;
+  }
+
+  /* ========== CONFETTI BUTTON ========== */
+  .kbm-confetti-btn {
+    width: 100%;
+    margin-top: 1.5rem;
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-color: #52682d;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+  }
+
+  .kbm-confetti-btn:hover {
+    background-color: #6e8b3d;
+    transform: translateY(-2px);
+  }
+
+  .kbm-confetti-btn:active {
+    transform: translateY(0);
+  }
+
+  /* ========== WHAT'S NEXT SECTION ========== */
+  .hidden {
+    display: none !important;
+  }
+
+  .kbm-whats-next {
+    margin-top: 2.5rem;
+    padding-top: 2rem;
+    border-top: 2px solid #c7d8a4;
+  }
+
+  .kbm-whats-next-title {
+    font-size: clamp(1.35rem, 2.5vw, 1.75rem);
+    color: #52682D;
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+  }
+
+  .kbm-whats-next-intro {
+    font-size: 1rem;
+    color: #5a6b47;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+    max-width: 600px;
+  }
+
+  .kbm-whats-next-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .kbm-next-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    background-color: #ffffff;
+    color: #52682D;
+    border: 2px solid #c7d8a4;
+    padding: 1.5rem;
+    border-radius: 16px;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+  }
+
+  .kbm-next-card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(82, 104, 45, 0.15);
+    border-color: #52682D;
+  }
+
+  .kbm-next-card-title {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    font-weight: 600;
+    color: #52682D;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .kbm-next-card-desc {
+    font-size: 0.95rem;
+    color: #6b7280;
+    line-height: 1.5;
+    margin: 0;
+  }
+
+  @media (max-width: 480px) {
+    .kbm-whats-next-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ========== SECTION-SPECIFIC ADJUSTMENTS ========== */
+  .kbm-section--agent h2 {
+    text-align: left;
+  }
+
+  .kbm-section--agent .kbm-section-intro {
+    text-align: left;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  /* ========== MOBILE ADJUSTMENTS ========== */
+  @media (max-width: 480px) {
+    .kbm-getting-started {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    .kbm-section--soft {
+      padding: 1.5rem 1rem;
+      border-radius: 1rem;
+    }
+
+    .kbm-section--agent {
+      padding: 1.5rem 1rem;
+    }
+
+    .kbm-hero-image {
+      max-width: 100%;
+    }
+  }
+</style>

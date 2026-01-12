@@ -1,0 +1,353 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import CommunityIntro from "../../components/community/CommunityIntro.astro";
+
+const introContent = {
+  title: "Small wins",
+  lede: "Tiny victories count. Post the moment something clicked.",
+  bullets: [
+    "A setting that finally made sense",
+    "A smoother cast-on / bind-off",
+    "A fix that saved your knitting",
+    "A habit that made things easier"
+  ],
+  note: "Email is optional and only used for reply notifications."
+};
+---
+
+<BaseLayout 
+  title="Small Wins | Community | Knit by Machine" 
+  description="Celebrate your machine knitting victories, big and small. Share the moments when something finally clicked."
+>
+  <section class="community-slug-page">
+    <div class="community-slug-content">
+      <section id="gate-block" style="display: block;">
+        <div class="gate-form-container">
+          <h2>Join the conversation</h2>
+          <p class="gate-description">Enter your details to access the community.</p>
+          
+          <form id="community-gate-form" class="gate-form kbm-gate-form">
+            <div class="form-group">
+              <label for="firstName">First Name <span class="required">*</span></label>
+              <input 
+                type="text" 
+                id="firstName" 
+                name="firstName" 
+                required 
+                placeholder="Your first name"
+                data-testid="input-firstName"
+              />
+            </div>
+            
+            <div class="form-group">
+              <label for="email">Email <span class="required">*</span></label>
+              <input 
+                type="email" 
+                id="email" 
+                name="email" 
+                required 
+                placeholder="your@email.com"
+                data-testid="input-email"
+              />
+            </div>
+
+            <p class="email-disclosure" data-testid="text-email-disclosure">You'll also receive occasional emails from Knit by Machine related to the community. You can unsubscribe at any time.</p>
+            
+            <button type="submit" class="submit-button kbm-button" data-testid="button-submit">
+              Join the conversation
+            </button>
+            
+            <p id="form-error" class="form-error" hidden></p>
+          </form>
+        </div>
+      </section>
+
+      <section id="open-content" hidden>
+        <a href="/community" class="kbm-backlink" data-testid="link-back-community">
+          &#8592; Back to Community
+        </a>
+
+        <CommunityIntro 
+          title={introContent.title}
+          lede={introContent.lede}
+          bullets={introContent.bullets}
+          note={introContent.note}
+        />
+
+        <div class="hyvor-talk-container">
+          <hyvor-talk-comments 
+            website-id="14706" 
+            page-id="community-wins"
+            data-testid="hyvor-talk-comments"
+          ></hyvor-talk-comments>
+        </div>
+      </section>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  (function() {
+    function initGate() {
+      var gate = document.getElementById("gate-block");
+      var open = document.getElementById("open-content");
+
+      var unlocked = false;
+      try {
+        unlocked = localStorage.getItem("kbm:community-unlocked") === "1";
+      } catch (e) {}
+
+      if (unlocked) {
+        if (gate) gate.setAttribute("hidden", "");
+        if (open) open.removeAttribute("hidden");
+      } else {
+        if (gate) gate.removeAttribute("hidden");
+        if (open) open.setAttribute("hidden", "");
+      }
+
+      var form = document.getElementById("community-gate-form");
+      var errorEl = document.getElementById("form-error");
+
+      if (form) {
+        form.addEventListener("submit", function(e) {
+          e.preventDefault();
+          
+          var firstNameInput = document.getElementById("firstName");
+          var emailInput = document.getElementById("email");
+          var firstName = firstNameInput ? firstNameInput.value.trim() : "";
+          var email = emailInput ? emailInput.value.trim() : "";
+          
+          if (!firstName) {
+            if (errorEl) {
+              errorEl.textContent = "First name is required.";
+              errorEl.removeAttribute("hidden");
+            }
+            return;
+          }
+          
+          if (!email) {
+            if (errorEl) {
+              errorEl.textContent = "Email is required.";
+              errorEl.removeAttribute("hidden");
+            }
+            return;
+          }
+          
+          var submitBtn = form.querySelector('button[type="submit"]');
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Processing...";
+          }
+          
+          fetch("/.netlify/functions/pp-unlock", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              firstName: firstName,
+              email: email,
+              projectId: "community",
+            }),
+          })
+          .then(function(response) {
+            return response.json();
+          })
+          .then(function(result) {
+            if (result.ok) {
+              localStorage.setItem("kbm:community-unlocked", "1");
+              location.reload();
+            } else {
+              if (errorEl) {
+                errorEl.textContent = result.message || "Something went wrong. Please try again.";
+                errorEl.removeAttribute("hidden");
+              }
+              if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.textContent = "Join the conversation";
+              }
+            }
+          })
+          .catch(function(err) {
+            if (errorEl) {
+              errorEl.textContent = "Network error. Please check your connection and try again.";
+              errorEl.removeAttribute("hidden");
+            }
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Join the conversation";
+            }
+          });
+        });
+      }
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initGate);
+    } else {
+      initGate();
+    }
+  })();
+</script>
+
+<script async src="https://talk.hyvor.com/embed/embed.js" type="module"></script>
+
+<style>
+  .community-slug-page {
+    padding: 2rem 1rem 4rem;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .community-slug-content {
+    text-align: center;
+  }
+
+  .kbm-backlink {
+    display: inline-block;
+    margin-bottom: 1.5rem;
+    padding: 0.5rem 1rem;
+    color: var(--kbm-green);
+    font-weight: 600;
+    text-decoration: none;
+    border: 1px solid var(--kbm-green);
+    border-radius: 6px;
+    transition: background 0.2s ease, color 0.2s ease;
+  }
+
+  .kbm-backlink:hover {
+    background: var(--kbm-green);
+    color: white;
+  }
+
+  .gate-form-container {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2.5rem;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .gate-form-container h2 {
+    font-size: var(--text-lg);
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .gate-description {
+    font-size: var(--text-sm);
+    color: #666;
+    margin: 0 0 1.5rem;
+  }
+
+  .gate-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .kbm-gate-form {
+    position: relative;
+    z-index: 1;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+  }
+
+  .form-group label {
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+
+  .form-group .required {
+    color: #e74c3c;
+  }
+
+  .form-group input {
+    padding: 0.75rem 1rem;
+    font-size: var(--text-base);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    transition: border-color 0.2s ease;
+  }
+
+  .form-group input:focus {
+    outline: none;
+    border-color: var(--kbm-green);
+  }
+
+  .email-disclosure {
+    font-size: 0.8rem;
+    color: #888;
+    margin: 0.25rem 0 0.5rem;
+    text-align: left;
+    line-height: 1.4;
+  }
+
+  .submit-button,
+  .kbm-button {
+    position: relative;
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    background: var(--kbm-green);
+    color: white;
+    padding: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-size: var(--text-base);
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+    margin-top: 0.5rem;
+  }
+
+  .submit-button:hover,
+  .kbm-button:hover {
+    background: var(--kbm-dark-green);
+    transform: translateY(-2px);
+  }
+
+  .submit-button:active,
+  .kbm-button:active {
+    transform: translateY(0);
+  }
+
+  .submit-button:disabled,
+  .kbm-button:disabled {
+    background: #999;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .form-error {
+    color: #e74c3c;
+    font-size: var(--text-sm);
+    margin: 0.5rem 0 0;
+  }
+
+  .hyvor-talk-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: left;
+  }
+
+  @media (max-width: 768px) {
+    .community-slug-page {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .gate-form-container {
+      padding: 1.5rem;
+    }
+  }
+</style>

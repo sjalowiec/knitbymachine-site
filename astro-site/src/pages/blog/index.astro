@@ -1,0 +1,326 @@
+---
+import Header from "../../components/header.astro";
+import Footer from "../../components/footer.astro";
+import SectionHero from "../../components/SectionHero.astro";
+import "../../styles/global.css";
+
+// Fetch blog posts from GitHub content/blog directory 
+let blogPosts = [];
+let errorMessage = ''; 
+
+try {
+  const response = await fetch('https://api.github.com/repos/sjalowiec/knitbymachine-site/contents/src/content/blog');
+  
+  if (response.ok) {
+    const files = await response.json();
+    
+    // Fetch each JSON file's content
+    const postPromises = files
+      .filter(file => file.name.endsWith('.json'))
+      .map(async (file) => {
+        try {
+          const fileResponse = await fetch(file.download_url);
+          const data = await fileResponse.json();
+          
+          // Skip drafts and pending publish
+          if (data.isDraft || data.pendingPublish) {
+            return null;
+          }
+          
+          return {
+            slug: data.slug,
+            title: data.title,
+            date: data.publishedDate || data.date,
+            description: data.excerpt || data.description || '',
+            author: data.author || 'Sue Jalowiec',
+            displayOrder: data.displayOrder ?? 100,
+          };
+        } catch (error) {
+          console.error(`Error fetching blog post ${file.name}:`, error);
+          return null;
+        }
+      });
+    
+    const fetchedPosts = await Promise.all(postPromises);
+    
+    // Filter out null entries and sort by displayOrder (ascending), then by date (newest first)
+    blogPosts = fetchedPosts
+      .filter(post => post !== null)
+      .sort((a, b) => {
+        // First sort by displayOrder (lower numbers first)
+        if (a.displayOrder !== b.displayOrder) {
+          return a.displayOrder - b.displayOrder;
+        }
+        // If displayOrder is the same, sort by date (newest first)
+        return new Date(b.date) - new Date(a.date);
+      });
+  }
+} catch (error) {
+  console.error('Error fetching blog posts:', error);
+  errorMessage = error.message;
+}
+
+const pageTitle = "From Sue's desk";
+const pageDescription = "Behind-the-scenes notes, ideas, and practical tips for machine knitters";
+
+// Schema.org structured data for blog list page
+const schemaData = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  "name": pageTitle,
+  "description": pageDescription,
+  "url": "https://knitbymachine.com/blog",
+  "publisher": {
+    "@type": "Organization",
+    "name": "Knit by Machine",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "https://knitbymachine.com/images/kbm-logo.png"
+    }
+  },
+  "blogPost": blogPosts.map(post => ({
+    "@type": "BlogPosting",
+    "headline": post.title,
+    "description": post.description,
+    "author": {
+      "@type": "Person",
+      "name": post.author
+    },
+    "datePublished": post.date,
+    "url": `https://knitbymachine.com/blog/${post.slug}`
+  }))
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{pageTitle} | Knit by Machine</title>
+    <meta name="description" content={pageDescription} />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://knitbymachine.com/blog" />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:url" content="https://knitbymachine.com/blog" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    
+    <!-- Schema.org structured data -->
+    <script type="application/ld+json" set:html={JSON.stringify(schemaData)} />
+  </head>
+  <body>
+    <Header />
+    
+    <main class="blog-list">
+      <div class="blog-container">
+        <SectionHero 
+          title={pageTitle} 
+          subtitle={pageDescription}
+          iconPath="/images/blog.svg"
+          iconAlt="Blog"
+        />
+
+        {errorMessage ? (
+          <div class="error-message">
+            <p>Unable to load blog posts at this time. Please try again later.</p>
+          </div>
+        ) : blogPosts.length === 0 ? (
+          <div class="empty-state">
+            <p>No blog posts available yet. Check back soon!</p>
+          </div>
+        ) : (
+          <div class="posts-grid">
+            {blogPosts.map((post) => (
+              <article class="post-card">
+                <div class="post-content">
+                  <h2 class="post-title">
+                    <a href={`/blog/${post.slug}`}>{post.title}</a>
+                  </h2>
+                  {post.description && (
+                    <p class="post-description">{post.description}</p>
+                  )}
+                  <a href={`/blog/${post.slug}`} class="read-more">
+                    Read More →
+                  </a>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+      </div>
+    </main>
+
+    <Footer />
+  </body>
+</html>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+</style>
+
+<style>
+  .blog-list {
+    min-height: 60vh;
+    padding-top: 140px;
+    background: var(--page-bg, #f7f8f7);
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+  }
+
+  .blog-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 2rem;
+  }
+
+  .post-card {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease, transform 0.3s ease;
+  }
+
+  .post-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-2px);
+  }
+
+  .post-date {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    display: block;
+    font-size: 0.875rem;
+    color: #718355;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+  }
+
+  .post-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: var(--text-xl, 1.5rem);
+    font-weight: 700;
+    margin-bottom: 1rem;
+    line-height: 1.3;
+  }
+
+  .post-title a {
+    color: #2d3a1f;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .post-title a:hover {
+    color: var(--kbm-green, #52682d);
+  }
+
+  .post-description {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    color: #4a5a3a;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    font-size: var(--text-base, 1rem);
+  }
+
+  .read-more {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    color: var(--kbm-green, #52682d);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-size: var(--text-base, 1rem);
+  }
+
+  .read-more:hover {
+    color: var(--kbm-green-hover, #445626);
+    text-decoration: underline;
+  }
+
+  .empty-state,
+  .error-message {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    text-align: center;
+    padding: 3rem 1.5rem;
+    color: #5a6b47;
+    font-size: var(--text-lg, 1.125rem);
+  }
+
+  .error-message {
+    background: #fff3cd;
+    border-radius: 8px;
+    padding: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .blog-list {
+      padding-top: 120px;
+    }
+    
+    .blog-container {
+      padding: 2rem 1.25rem;
+    }
+    
+    .blog-header {
+      margin-bottom: 3rem;
+    }
+
+    .header-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+
+    .blog-logo {
+      width: clamp(100px, 20vw, 140px);
+      align-self: flex-end;
+    }
+    
+    .blog-title {
+      font-size: clamp(2rem, 6vw, 2.5rem);
+      margin-bottom: 1.25rem;
+    }
+    
+    .blog-subtitle {
+      font-size: var(--text-lg, 1.25rem);
+      line-height: 1.7;
+    }
+    
+    .posts-grid {
+      gap: 1.75rem;
+    }
+    
+    .post-card {
+      padding: 1.75rem;
+    }
+    
+    .post-title {
+      font-size: 1.375rem;
+      margin-bottom: 1.25rem;
+      line-height: 1.4;
+    }
+    
+    .post-description {
+      font-size: 1.125rem;
+      line-height: 1.7;
+      margin-bottom: 1.5rem;
+    }
+    
+    .read-more {
+      font-size: 1.125rem;
+      display: inline-block;
+      padding: 0.5rem 0;
+      min-height: 44px;
+      line-height: 1.5;
+    }
+  }
+</style>

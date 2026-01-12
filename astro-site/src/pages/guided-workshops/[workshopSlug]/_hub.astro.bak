@@ -1,0 +1,271 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getWorkshopSlugs, getWorkshopBySlug } from '../../../lib/workshops';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const slugs = getWorkshopSlugs();
+  return slugs.map(slug => ({
+    params: { workshopSlug: slug }
+  }));
+}
+
+const { workshopSlug } = Astro.params;
+const workshop = getWorkshopBySlug(workshopSlug as string);
+
+if (!workshop) {
+  return Astro.redirect('/404');
+}
+
+const { client, workshop: workshopInfo, outline, hub, hyvor, curriculum } = workshop;
+const title = workshopInfo.title;
+const description = hub.welcomeBody;
+
+// Build unified day list from outline (authoritative schedule), enriched with curriculum content
+const dayList = outline.days.map(od => {
+  const curriculumDay = curriculum?.days.find(cd => cd.day === od.day);
+  return {
+    day: od.day,
+    title: curriculumDay?.title || od.title,
+    released: od.released,
+    isBonus: od.isBonus || od.day === 99,
+    href: `/guided-workshops/${workshopSlug}/day/${od.day}`
+  };
+});
+
+// Total days counts only regular days (excludes bonus days like Day 99)
+const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
+---
+
+<BaseLayout {title} {description} skipGlobalHyvor={true}>
+  <div class="gw-hub" data-workshop-slug={workshopSlug}>
+
+    <!-- Mobile workshop menu (only visible on mobile) -->
+    <div class="gw-map-mobile">
+      <details class="gw-menu">
+        <summary class="gw-menu-summary">Workshop Menu</summary>
+        <div class="gw-menu-panel">
+          <ul class="ref-scan-list">
+            {dayList.map(d => (
+              <li>
+                <a href={d.href} class={d.released ? '' : 'gw-link--locked'}>
+                  {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="gw-layout">
+      <!-- Desktop sticky map (only visible on desktop) -->
+      <aside class="ref-scan gw-map">
+        <h2 class="ref-scan-title">Workshop Steps</h2>
+        <ul class="ref-scan-list">
+          {dayList.map(d => (
+            <li>
+              <a href={d.href} class={d.released ? '' : 'gw-link--locked'}>
+                {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <!-- Action column -->
+      <section class="gw-action">
+        <h2 class="gw-action-title">Workshop Conversation</h2>
+
+        <!-- Locked state: shown by default when not logged in -->
+        <div id="gw-locked" class="gw-locked-card">
+          <div class="gw-locked-icon" aria-hidden="true">🔒</div>
+          <h3 class="gw-locked-title">Log in to access your workshop hub</h3>
+          <p class="gw-locked-body">This page is private for workshop members.</p>
+          <a href="/login" class="gw-locked-btn">Log in</a>
+        </div>
+
+        <!-- Unlocked state: hidden by default, shown after auth confirmed -->
+        <div id="hyvor-talk-view" class="gw-hyvor-container" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId} hidden></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 
+    DEV TEST INSTRUCTIONS:
+    To simulate a paid user during development, open DevTools and run:
+    
+    localStorage.setItem("kbm_user", JSON.stringify({
+      id: "dev-1",
+      name: "Betty",
+      email: "betty@example.com"
+    }));
+    location.reload();
+  -->
+
+  <!-- Hyvor Talk Auth-Aware Loader -->
+  <script type="module">
+    import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/scripts/hyvorLoader.js';
+
+    const lockedCard = document.getElementById('gw-locked');
+    const mount = document.getElementById('hyvor-talk-view');
+
+    if (mount) {
+      const websiteId = mount.dataset.websiteId || '14706';
+      const pageId = mount.dataset.pageId || 'workshop-hub';
+
+      // Quick auth check (2 seconds max, no spinner)
+      const result = await waitForAuth({ timeoutMs: 2000, intervalMs: 100 });
+
+      if (result.ok && result.user) {
+        // Authenticated: hide locked card, show Hyvor
+        if (lockedCard) lockedCard.hidden = true;
+        mount.hidden = false;
+
+        setHyvorIdentity({ websiteId, user: result.user });
+        
+        // Create the Hyvor Talk element
+        const hyvorEl = document.createElement('hyvor-talk-comments');
+        hyvorEl.setAttribute('website-id', websiteId);
+        hyvorEl.setAttribute('page-id', pageId);
+        mount.appendChild(hyvorEl);
+        
+        loadHyvorScript();
+      }
+      // If no auth, do nothing - stay locked (card remains visible)
+    }
+  </script>
+
+  <style>
+    /* Hub container */
+    .gw-hub {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    /* Two-column grid layout */
+    .gw-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    /* Desktop sticky map */
+    .gw-map {
+      position: sticky;
+      top: calc(var(--header-height, 0px) + 1rem);
+    }
+
+    /* Action column */
+    .gw-action-title {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* Mobile menu hidden on desktop */
+    .gw-map-mobile { 
+      display: none; 
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .gw-layout { 
+        grid-template-columns: 1fr; 
+      }
+      .gw-map { 
+        display: none; 
+      }
+      .gw-map-mobile { 
+        display: block; 
+        margin-bottom: 1rem; 
+      }
+    }
+
+    /* Dropdown chrome only (do NOT restyle the list) */
+    .gw-menu {
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.75);
+      overflow: hidden;
+    }
+
+    .gw-menu-summary {
+      padding: 0.85rem 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .gw-menu-summary::-webkit-details-marker { 
+      display: none; 
+    }
+
+    .gw-menu-panel {
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    /* Locked link state */
+    .gw-link--locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* Locked card UI */
+    .gw-locked-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(44, 58, 87, 0.12);
+      border-radius: 14px;
+      background: rgba(44, 58, 87, 0.02);
+    }
+
+    .gw-locked-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .gw-locked-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+
+    .gw-locked-body {
+      margin: 0 0 1.25rem;
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .gw-locked-btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .gw-locked-btn:hover {
+      background: #3d4f22;
+    }
+
+    .gw-locked-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Hyvor container */
+    .gw-hyvor-container {
+      min-height: 200px;
+    }
+  </style>
+</BaseLayout>

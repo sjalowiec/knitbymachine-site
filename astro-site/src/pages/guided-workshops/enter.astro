@@ -1,0 +1,221 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const to = Astro.url.searchParams.get('to') || '';
+
+function isValidDestination(path: string): boolean {
+  if (!path) return false;
+  if (!path.startsWith('/guided-workshops/')) return false;
+  if (path.includes('http')) return false;
+  if (path.includes('https')) return false;
+  if (path.includes('//')) return false;
+  if (path.includes(':')) return false;
+  if (path.includes('\\')) return false;
+  return true;
+}
+
+if (!isValidDestination(to)) {
+  return Astro.redirect('/guided-workshops/access?reason=token');
+}
+
+const destination = to;
+const returnTo = `/guided-workshops/enter?to=${encodeURIComponent(destination)}`;
+const outsetaLoginUrl = `https://knitbymachinecom.outseta.com/auth?widgetMode=login&returnTo=${encodeURIComponent(returnTo)}`;
+---
+
+<BaseLayout title="Enter Your Workshop" description="Log in to access your guided workshop">
+  <div class="access-container">
+    <div class="access-card">
+      <div class="access-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+          <polyline points="10 17 15 12 10 7"/>
+          <line x1="15" y1="12" x2="3" y2="12"/>
+        </svg>
+      </div>
+      
+      <h1 class="access-title">Enter Your Workshop</h1>
+      
+      <p class="access-message">
+        To keep your workshop private, please log in first. After login, we'll take you straight to your hub.
+      </p>
+      
+      <div id="login-section">
+        <a href={outsetaLoginUrl} class="login-button" data-testid="button-login">
+          Log in
+        </a>
+        
+        <p class="login-note">
+          New here? You may be asked to set a password — that only happens once.
+        </p>
+      </div>
+      
+      <div id="redirect-section" style="display: none;">
+        <p class="redirect-message">Taking you to your workshop...</p>
+      </div>
+      
+      <a href="/guided-workshops" class="access-link">
+        ← Browse all workshops
+      </a>
+    </div>
+  </div>
+  
+  <script define:vars={{ destination }}>
+    (function() {
+      const loginSection = document.getElementById('login-section');
+      const redirectSection = document.getElementById('redirect-section');
+      
+      function checkLoggedIn() {
+        if (typeof window.Outseta === 'undefined') {
+          return false;
+        }
+        
+        try {
+          if (window.Outseta.auth && typeof window.Outseta.auth.getAccessToken === 'function') {
+            const token = window.Outseta.auth.getAccessToken();
+            if (token && token.length > 0) {
+              return true;
+            }
+          }
+        } catch (e) {}
+        
+        try {
+          if (window.Outseta.auth && window.Outseta.auth.user) {
+            return true;
+          }
+        } catch (e) {}
+        
+        return false;
+      }
+      
+      function handleRedirect() {
+        if (loginSection) loginSection.style.display = 'none';
+        if (redirectSection) redirectSection.style.display = 'block';
+        window.location.assign(destination);
+      }
+      
+      function checkAndRedirect() {
+        if (checkLoggedIn()) {
+          handleRedirect();
+          return true;
+        }
+        return false;
+      }
+      
+      let attempts = 0;
+      const maxAttempts = 20;
+      const interval = 100;
+      
+      function waitForOutseta() {
+        if (checkAndRedirect()) {
+          return;
+        }
+        
+        attempts++;
+        if (attempts < maxAttempts) {
+          setTimeout(waitForOutseta, interval);
+        }
+      }
+      
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForOutseta);
+      } else {
+        waitForOutseta();
+      }
+    })();
+  </script>
+  
+  <style>
+    .access-container {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    
+    .access-card {
+      max-width: 420px;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(82, 104, 45, 0.15);
+      border-radius: 16px;
+      background: rgba(248, 250, 245, 0.5);
+    }
+    
+    .access-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.5rem;
+      padding: 1rem;
+      border-radius: 50%;
+      background: rgba(82, 104, 45, 0.1);
+      color: #52682d;
+    }
+    
+    .access-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .access-title {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    
+    .access-message {
+      margin: 0 0 1.5rem;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .login-button {
+      display: inline-block;
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    
+    .login-button:hover {
+      background: #3d4e22;
+    }
+    
+    .login-note {
+      margin: 1rem 0 0;
+      font-size: 0.8125rem;
+      color: #888;
+      line-height: 1.5;
+    }
+    
+    .redirect-message {
+      margin: 0;
+      font-size: 1rem;
+      color: #52682d;
+      font-weight: 500;
+    }
+    
+    .access-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+      color: #888;
+      text-decoration: none;
+    }
+    
+    .access-link:hover {
+      color: #52682d;
+    }
+  </style>
+</BaseLayout>

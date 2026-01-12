@@ -1,0 +1,541 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import HubV2 from '../../../components/guided-workshops/HubV2.astro';
+import { getWorkshopBySlug } from '../../../lib/workshops';
+
+// SSR mode - page is rendered per-request so we can check token
+export const prerender = false;
+
+const { workshopSlug } = Astro.params;
+
+// ===== MAGIC LINK TOKEN VALIDATION =====
+// Hub access requires a valid ?t= token parameter
+// Token is validated against the admin API (database-stored tokens)
+const token = Astro.url.searchParams.get('t');
+const currentPath = Astro.url.pathname;
+
+// If no token, redirect to access page
+if (!token) {
+  return Astro.redirect(`/guided-workshops/access?reason=token&returnTo=${encodeURIComponent(currentPath)}`);
+}
+
+// Validate token via admin API
+const adminApiUrl = import.meta.env.CONTENT_API_BASE_URL || 'https://knit-content-manager-sue23.replit.app';
+// Cache-buster for dev preview - ensures fresh data on every refresh
+const cacheBuster = `_cb=${Date.now()}`;
+let tokenValid = false;
+let tokenReason = 'unknown';
+
+try {
+  const validateUrl = `${adminApiUrl}/api/public/validate-workshop-token?slug=${encodeURIComponent(workshopSlug as string)}&t=${encodeURIComponent(token)}&${cacheBuster}`;
+  const response = await fetch(validateUrl);
+  const result = await response.json();
+  
+  tokenValid = result.ok === true;
+  tokenReason = result.reason || 'unknown';
+} catch (error) {
+  console.error('Token validation failed:', error);
+  tokenReason = 'server_error';
+}
+
+// Handle invalid tokens with specific reason codes
+if (!tokenValid) {
+  // Route to access page with appropriate reason
+  if (tokenReason === 'pending') {
+    return Astro.redirect('/guided-workshops/access?reason=pending');
+  }
+  if (tokenReason === 'not_active') {
+    return Astro.redirect('/guided-workshops/access?reason=not_active');
+  }
+  if (tokenReason === 'server_error') {
+    return Astro.redirect('/guided-workshops/access?reason=error');
+  }
+  // Default: invalid_token, not_found, or unknown reasons
+  return Astro.redirect(`/guided-workshops/access?reason=token&returnTo=${encodeURIComponent(currentPath)}`);
+}
+
+// Get workshop data
+const workshop = getWorkshopBySlug(workshopSlug as string);
+
+if (!workshop) {
+  return Astro.redirect('/404');
+}
+
+const { client, workshop: workshopInfo, outline, hub, hyvor, curriculum } = workshop;
+const title = workshopInfo.title;
+const description = hub.welcomeBody;
+
+// Build unified day list from outline (authoritative schedule), enriched with curriculum content
+const dayList = outline.days.map(od => {
+  const curriculumDay = curriculum?.days.find(cd => cd.day === od.day);
+  return {
+    day: od.day,
+    title: curriculumDay?.title || od.title,
+    released: od.released,
+    isBonus: od.isBonus || od.day === 99,
+    href: `/guided-workshops/${workshopSlug}/day/${od.day}`
+  };
+});
+
+// Total days counts only regular days (excludes bonus days like Day 99)
+const totalDays = outline.days.filter(d => !d.isBonus && d.day !== 99).length;
+
+// ===== HUB V2 MOCK DATA =====
+// Temporary mock data for visual approval of HubV2 layout
+const showV2 = true; // Toggle to switch between V2 and original hub
+
+const mockSteps = [
+  { day: 1, title: 'Planning & sizing', status: 'completed' as const },
+  { day: 2, title: 'Stitch setup', status: 'current' as const },
+  { day: 3, title: 'Knitting', status: 'upcoming' as const },
+  { day: 4, title: 'Finishing', status: 'upcoming' as const },
+  { day: 'Wrap-up', title: 'Final touches', status: 'upcoming' as const },
+];
+
+const mockNextStep = {
+  day: 2,
+  title: 'Set up your stitch pattern',
+  bullets: [
+    'Review stitch pattern options for your yarn weight',
+    'Calculate your gauge swatch requirements',
+    'Prepare your machine for the pattern test'
+  ]
+};
+---
+
+<BaseLayout {title} {description} skipGlobalHyvor={true}>
+
+  <!-- Clear redirect flags on successful hub load (prevents redirect loops) -->
+  <script>
+    localStorage.removeItem('kbm:returnTo');
+    sessionStorage.removeItem('kbm:redirecting');
+  </script>
+
+  {showV2 ? (
+    <!-- ===== HUB V2 PREVIEW ===== -->
+    <HubV2
+      workshopTitle={workshopInfo.title}
+      currentDay={2}
+      totalDays={7}
+      nextStep={mockNextStep}
+      steps={mockSteps}
+      hyvor={{ websiteId: hyvor.websiteId, pageId: hyvor.pageId }}
+      workshopSlug={workshopSlug as string}
+    />
+    
+    <!-- Divider showing this is a preview -->
+    <div style="max-width: 720px; margin: 2rem auto; padding: 1rem; background: #fff3cd; border: 1px solid #ffc107; border-radius: 8px; text-align: center;">
+      <strong>Hub V2 Preview</strong> — Old hub is below for comparison. Toggle <code>showV2</code> in frontmatter to switch.
+    </div>
+  ) : null}
+
+  <div class="gw-hub" data-workshop-slug={workshopSlug}>
+
+    <!-- Dismissible Welcome section -->
+    <section class="gw-welcome" id="gw-welcome">
+      <div class="gw-welcome-inner">
+        <div class="gw-welcome-photo">
+          <img
+            src="/images/guided-workshop-intro.png"
+            alt="Sue from Knit by Machine"
+            loading="lazy"
+          />
+        </div>
+
+        <div class="gw-welcome-message">
+          <h1 class="gw-welcome-title">{hub.welcomeTitle || `Welcome to ${workshopInfo.title}`}</h1>
+          <p class="gw-welcome-body">{hub.welcomeBody}</p>
+          <button class="gw-welcome-dismiss" type="button">Hide this message</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Welcome dismiss script -->
+    <script>
+      (function () {
+        const STORAGE_KEY = 'kbm_gw_welcome_dismissed';
+        const welcome = document.getElementById('gw-welcome');
+        const dismissBtn = welcome?.querySelector('.gw-welcome-dismiss');
+
+        // Hide immediately if previously dismissed
+        if (localStorage.getItem(STORAGE_KEY) === 'true') {
+          welcome?.remove();
+          return;
+        }
+
+        // Handle dismiss click
+        dismissBtn?.addEventListener('click', () => {
+          localStorage.setItem(STORAGE_KEY, 'true');
+          welcome?.remove();
+        });
+      })();
+    </script>
+
+    <!-- Outseta name swap script (upgrades fallback name to real name when available) -->
+    <script type="module">
+      (function () {
+        const titleEl = document.querySelector('.gw-welcome-title');
+        if (!titleEl) return;
+
+        // If already dismissed, don't waste time
+        const dismissed = localStorage.getItem('kbm_gw_welcome_dismissed') === 'true';
+        if (dismissed) return;
+
+        // Try to pull a name from Outseta (non-fatal if not present)
+        const tryGetName = () => {
+          try {
+            // Common possibilities depending on Outseta setup
+            const o =
+              window.Outseta ||
+              window.outseta ||
+              window.os ||
+              null;
+
+            // Try a few plausible shapes without assuming too much
+            const fromPossibleObject =
+              o?.user?.FullName ||
+              o?.user?.fullName ||
+              o?.user?.Name ||
+              o?.user?.name ||
+              o?.auth?.user?.FullName ||
+              o?.auth?.user?.fullName ||
+              o?.auth?.user?.name ||
+              null;
+
+            if (typeof fromPossibleObject === 'string' && fromPossibleObject.trim()) {
+              return fromPossibleObject.trim();
+            }
+
+            // As a final fallback, sometimes user info is stashed in localStorage by auth layers
+            const ls =
+              localStorage.getItem('outseta_user') ||
+              localStorage.getItem('OutsetaUser') ||
+              null;
+
+            if (ls) {
+              const parsed = JSON.parse(ls);
+              const n = parsed?.FullName || parsed?.fullName || parsed?.name;
+              if (typeof n === 'string' && n.trim()) return n.trim();
+            }
+          } catch (e) {
+            // ignore
+          }
+          return null;
+        };
+
+        const name = tryGetName();
+        if (!name) return;
+
+        // Replace only if template style exists, otherwise swap the part after comma
+        const current = titleEl.textContent || '';
+        if (current.includes('{name}')) {
+          titleEl.textContent = current.replace('{name}', name);
+        } else if (current.toLowerCase().includes('welcome')) {
+          // If already rendered (server used fallback), swap the part after comma if it looks like "Welcome, X"
+          titleEl.textContent = current.replace(/^(Welcome,\s*)(.+)$/i, `$1${name}`);
+        }
+      })();
+    </script>
+
+    <!-- Mobile workshop menu (only visible on mobile) -->
+    <div class="gw-map-mobile">
+      <details class="gw-menu">
+        <summary class="gw-menu-summary">Workshop Menu</summary>
+        <div class="gw-menu-panel">
+          <ul class="ref-scan-list">
+            {dayList.map(d => (
+              <li>
+                <a href={d.href} class={d.released ? '' : 'gw-link--locked'}>
+                  {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </details>
+    </div>
+
+    <div class="gw-layout">
+      <!-- Desktop sticky map (only visible on desktop) -->
+      <aside class="ref-scan gw-map">
+        <h2 class="ref-scan-title">Workshop Steps</h2>
+        <ul class="ref-scan-list">
+          {dayList.map(d => (
+            <li>
+              <a href={d.href} class={d.released ? '' : 'gw-link--locked'}>
+                {d.isBonus ? 'Bonus' : `Day ${d.day}`}{d.title ? ` — ${d.title}` : ''}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <!-- Action column -->
+      <section class="gw-action">
+        <h2 class="gw-action-title">Workshop Conversation</h2>
+
+        <!-- Locked state: shown by default when not logged in -->
+        <div id="gw-locked" class="gw-locked-card">
+          <div class="gw-locked-icon" aria-hidden="true">🔒</div>
+          <h3 class="gw-locked-title">Log in to access your workshop hub</h3>
+          <p class="gw-locked-body">This page is private for workshop members.</p>
+          <a href="/login" class="gw-locked-btn">Log in</a>
+        </div>
+
+        <!-- Unlocked state: hidden by default, shown after auth confirmed -->
+        <div id="hyvor-talk-view" class="gw-hyvor-container" data-website-id={hyvor.websiteId} data-page-id={hyvor.pageId} hidden></div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 
+    DEV TEST INSTRUCTIONS:
+    To simulate a paid user during development, open DevTools and run:
+    
+    localStorage.setItem("kbm_user", JSON.stringify({
+      id: "dev-1",
+      name: "Betty",
+      email: "betty@example.com"
+    }));
+    location.reload();
+  -->
+
+  <!-- Hyvor Talk Auth-Aware Loader -->
+  <script type="module">
+    import { waitForAuth, setHyvorIdentity, loadHyvorScript } from '/scripts/hyvorLoader.js';
+
+    const lockedCard = document.getElementById('gw-locked');
+    const mount = document.getElementById('hyvor-talk-view');
+
+    if (mount) {
+      const websiteId = mount.dataset.websiteId || '14706';
+      const pageId = mount.dataset.pageId || 'workshop-hub';
+
+      // TODO: remove dev=1 bypass after Outseta is wired
+      const devUnlock = new URLSearchParams(window.location.search).get('dev') === '1';
+
+      // Quick auth check (2 seconds max, no spinner)
+      const result = await waitForAuth({ timeoutMs: 2000, intervalMs: 100 });
+      const authorized = (result.ok && result.user) || devUnlock;
+
+      if (authorized) {
+        // Authenticated or dev bypass: hide locked card, show Hyvor
+        if (lockedCard) lockedCard.hidden = true;
+        mount.hidden = false;
+
+        // Only set identity if we have a real user
+        if (result.ok && result.user) {
+          setHyvorIdentity({ websiteId, user: result.user });
+        }
+        
+        // Create the Hyvor Talk element
+        const hyvorEl = document.createElement('hyvor-talk-comments');
+        hyvorEl.setAttribute('website-id', websiteId);
+        hyvorEl.setAttribute('page-id', pageId);
+        mount.appendChild(hyvorEl);
+        
+        loadHyvorScript();
+      }
+      // If no auth and no dev bypass, do nothing - stay locked (card remains visible)
+    }
+  </script>
+
+  <style>
+    /* Hub container */
+    .gw-hub {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    /* Two-column grid layout */
+    .gw-layout {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 1.25rem;
+      align-items: start;
+    }
+
+    /* Desktop sticky map */
+    .gw-map {
+      position: sticky;
+      top: calc(var(--header-height, 0px) + 1rem);
+    }
+
+    /* Action column */
+    .gw-action-title {
+      margin: 0 0 0.75rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    /* Mobile menu hidden on desktop */
+    .gw-map-mobile { 
+      display: none; 
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .gw-layout { 
+        grid-template-columns: 1fr; 
+      }
+      .gw-map { 
+        display: none; 
+      }
+      .gw-map-mobile { 
+        display: block; 
+        margin-bottom: 1rem; 
+      }
+    }
+
+    /* Dropdown chrome only (do NOT restyle the list) */
+    .gw-menu {
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.75);
+      overflow: hidden;
+    }
+
+    .gw-menu-summary {
+      padding: 0.85rem 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .gw-menu-summary::-webkit-details-marker { 
+      display: none; 
+    }
+
+    .gw-menu-panel {
+      padding: 0.75rem 1rem 1rem;
+    }
+
+    /* Locked link state */
+    .gw-link--locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* Locked card UI */
+    .gw-locked-card {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border: 1px solid rgba(44, 58, 87, 0.12);
+      border-radius: 14px;
+      background: rgba(44, 58, 87, 0.02);
+    }
+
+    .gw-locked-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .gw-locked-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+
+    .gw-locked-body {
+      margin: 0 0 1.25rem;
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.65);
+    }
+
+    .gw-locked-btn {
+      display: inline-block;
+      padding: 0.65rem 1.5rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #fff;
+      background: #52682d;
+      border: none;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s ease, transform 0.1s ease;
+    }
+
+    .gw-locked-btn:hover {
+      background: #3d4f22;
+    }
+
+    .gw-locked-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Hyvor container */
+    .gw-hyvor-container {
+      min-height: 200px;
+    }
+
+    /* Welcome section */
+    .gw-welcome {
+      margin-bottom: 1.5rem;
+    }
+
+    .gw-welcome-inner {
+      display: grid;
+      grid-template-columns: 140px 1fr;
+      gap: 1rem;
+      align-items: center;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid rgba(82, 104, 45, 0.15);
+      border-radius: 12px;
+      background: rgba(199, 216, 164, 0.12);
+    }
+
+    .gw-welcome-photo img {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 12px;
+    }
+
+    .gw-welcome-message {
+      /* No extra padding/border - handled by .gw-welcome-inner */
+    }
+
+    @media (max-width: 900px) {
+      .gw-welcome-inner {
+        grid-template-columns: 1fr;
+      }
+
+      .gw-welcome-photo {
+        max-width: 160px;
+      }
+    }
+
+    .gw-welcome-title {
+      margin: 0 0 0.5rem;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #2b2b2b;
+    }
+
+    .gw-welcome-body {
+      margin: 0;
+      font-size: 0.95rem;
+      color: rgba(0, 0, 0, 0.75);
+      line-height: 1.5;
+    }
+
+    .gw-welcome-dismiss {
+      margin-top: 0.75rem;
+      padding: 0;
+      background: none;
+      border: none;
+      font-size: 0.85rem;
+      color: inherit;
+      opacity: 0.55;
+      cursor: pointer;
+    }
+
+    .gw-welcome-dismiss:hover {
+      opacity: 1;
+      text-decoration: underline;
+    }
+  </style>
+</BaseLayout>

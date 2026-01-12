@@ -1,0 +1,42 @@
+{
+  "title": "Getting Started: First Time at the Machine",
+  "slug": "getting-started-orientation",
+  "description": "<p>Get organized, set up your machine, and knit your very first rows with confidence. Perfect if you just unpacked your machine and feel overwhelmed by all the parts.</p>",
+  "excerpt": "Get organized, set up your machine, and knit your very first rows with confidence.",
+  "category": "getting-started",
+  "tags": ["beginner", "getting started", "unboxing", "orientation", "first rows"],
+  "iframeUrl": "",
+  "iframeHeight": "700",
+  "provider": "",
+  "accessLevel": "free",
+  "iconUrl": "",
+  "htmlContent": "",
+  "imageUrl": "",
+  "imageAlt": "",
+  "metaTitle": "Getting Started: First Time at the Machine | Knit by Machine",
+  "metaDescription": "Get organized, set up your machine, and knit your very first rows with confidence.",
+  "schemaMarkup": null,
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "onboardingMode": true,
+  "whoThisIsFor": [
+    "Knitters who just unboxed their machine",
+    "Anyone feeling overwhelmed by all the parts",
+    "Beginners wanting a guided first experience"
+  ],
+  "whyItMatters": "Starting with the right setup and expectations makes the difference between frustration and success. This guide walks you through step by step.",
+  "benefits": [
+    "Identify the parts in your box",
+    "Set up your machine safely",
+    "Knit your very first rows with confidence"
+  ],
+  "onboardingIntroTitle": "Let's get you started at the machine",
+  "onboardingIntroBody": "You just opened the box. There are parts everywhere. Take a breath — you don't have to figure it out alone.",
+  "toolSubheading": "Your first-time machine setup guide",
+  "relatedGuides": [],
+  "showSecondaryCta": true,
+  "videoUrl": "",
+  "isDraft": true,
+  "publishedDate": "",
+  "pendingPublish": false
+}

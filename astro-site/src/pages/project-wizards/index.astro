@@ -1,0 +1,302 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHero from '../../components/SectionHero.astro';
+
+const title = "Project Wizards | Knit by Machine";
+const description = "Plan a machine-knitting project before you cast on. Clear, practical setup support for common project types.";
+
+const wizardCards = [
+  {
+    title: "Getting Started: Readiness Check",
+    description: "Confirm your setup before you begin knitting.",
+    status: "available",
+    ctaLabel: "Start →",
+    ctaUrl: "/start/just-opened-the-box",
+  },
+  {
+    title: "Ready–Set–Knit: Scarves",
+    description: "Plan size, yarn, and stitch approach.",
+    status: "coming-soon",
+    ctaLabel: "Coming soon",
+    ctaUrl: "#",
+  },
+  {
+    title: "Ready–Set–Knit: Hats",
+    description: "Plan fit, yarn, and construction.",
+    status: "coming-soon",
+    ctaLabel: "Coming soon",
+    ctaUrl: "#",
+  },
+  {
+    title: "Ready–Set–Knit: Sweaters",
+    description: "Plan measurements, yarn, and structure.",
+    status: "coming-soon",
+    ctaLabel: "Coming soon",
+    ctaUrl: "#",
+  },
+];
+---
+
+<BaseLayout {title} {description}>
+  <div class="page-container">
+    <SectionHero 
+      title="Project Wizards" 
+      iconPath="/images/guide_icon.png"
+      iconAlt="Project Wizard icon"
+    />
+
+    <h2 class="page-tagline">Want better results? Think it through.</h2>
+
+    <div class="intro-section">
+      <p class="intro-text">
+        Project Wizards are designed to help you plan a machine-knitting project before you cast on. Each wizard focuses on a specific type of project and helps you arrive at a clear, workable setup.
+      </p>
+    </div>
+
+    <div class="cards-grid" data-testid="project-wizards-grid">
+      <div class="info-card" data-testid="card-what-it-is">
+        <h2 class="card-title">What they are</h2>
+        <p class="card-body">Plan a project before you start knitting. Each wizard helps you arrive at a clear, workable setup.</p>
+      </div>
+
+      <div class="info-card" data-testid="card-how-it-works">
+        <h2 class="card-title">How they work</h2>
+        <p class="card-body">Answer only what matters. Get a plan you can knit from — not general advice.</p>
+      </div>
+
+      <div class="info-card" data-testid="card-what-to-use-now">
+        <h2 class="card-title">What they connect to</h2>
+        <p class="card-body">These planning decisions will carry through to patterns, charting tools, and Help Hub entries as they're added.</p>
+      </div>
+    </div>
+
+    <h2 class="section-heading">Project Wizards</h2>
+
+    <div class="wizard-cards-grid" data-testid="wizard-cards-grid">
+      {wizardCards.map((card, index) => (
+        <div class="wizard-card" data-testid={`card-wizard-${index}`}>
+          <h3 class="wizard-card-title">{card.title}</h3>
+          <p class="wizard-card-description">{card.description}</p>
+          <span class={`status-pill ${card.status === 'available' ? 'status-available' : 'status-coming-soon'}`}>
+            {card.status === 'available' ? 'Available' : 'Coming soon'}
+          </span>
+          {card.status === 'available' ? (
+            <a href={card.ctaUrl} class="wizard-cta" data-testid={`button-wizard-${index}`}>
+              {card.ctaLabel}
+            </a>
+          ) : (
+            <span 
+              class="wizard-cta wizard-cta-disabled" 
+              aria-disabled="true"
+              data-testid={`button-wizard-${index}`}
+            >
+              {card.ctaLabel}
+            </span>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <p class="project-types-note">
+      Each project type has its own planning path (socks, hats, blankets, sweaters).
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .page-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .page-tagline {
+    font-size: clamp(1.1rem, 2vw, 1.25rem);
+    font-weight: 500;
+    color: #5a6b47;
+    text-align: left;
+    margin: -1.5rem 0 2rem;
+    line-height: 1.4;
+  }
+
+  .intro-section {
+    max-width: 800px;
+    margin: 0 0 3rem;
+    text-align: left;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.8vw, 1.15rem);
+    color: #5a6b47;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .info-card {
+    background-color: #f9fdf5;
+    border: 1px solid #c7d8a4;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #52682D;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .card-body {
+    font-size: 1rem;
+    color: #5a6b47;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .card-body a {
+    color: #52682D;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 2px;
+    transition: color 0.2s ease;
+  }
+
+  .card-body a:hover {
+    color: #738C52;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #52682D;
+    margin: 2.5rem 0 1.5rem;
+  }
+
+  .wizard-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .wizard-card {
+    background-color: #f9fdf5;
+    border: 1px solid #c7d8a4;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: box-shadow 0.2s ease;
+  }
+
+  .wizard-card:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .wizard-card-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #52682D;
+    margin: 0;
+    line-height: 1.3;
+  }
+
+  .wizard-card-description {
+    font-size: 0.95rem;
+    color: #5a6b47;
+    line-height: 1.5;
+    margin: 0;
+    flex-grow: 1;
+  }
+
+  .status-pill {
+    display: inline-block;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    width: fit-content;
+  }
+
+  .status-available {
+    background-color: #d4edda;
+    color: #155724;
+  }
+
+  .status-coming-soon {
+    background-color: #e9ecef;
+    color: #6c757d;
+  }
+
+  .wizard-cta {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #fff;
+    background-color: #52682D;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    margin-top: auto;
+  }
+
+  .wizard-cta:hover {
+    background-color: #738C52;
+  }
+
+  .wizard-cta-disabled {
+    background-color: #d1d5db;
+    color: #6b7280;
+    cursor: not-allowed;
+  }
+
+  .wizard-cta-disabled:hover {
+    background-color: #d1d5db;
+  }
+
+  .project-types-note {
+    font-size: 0.9rem;
+    color: #6b7280;
+    text-align: center;
+    margin: 0;
+    font-style: italic;
+  }
+
+  @media (max-width: 1024px) {
+    .wizard-cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .page-container {
+      padding: 1.5rem 1rem 3rem;
+    }
+
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .wizard-cards-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .intro-section {
+      margin-bottom: 2rem;
+    }
+  }
+</style>

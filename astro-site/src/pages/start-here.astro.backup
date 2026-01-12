@@ -1,0 +1,261 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Start Here | Knit by Machine";
+const description = "Not sure what's going wrong with your knitting? Start here to find answers based on what you're experiencing.";
+
+const startCards = [
+  {
+    title: "My machine is stuck or misbehaving",
+    helper: "Something isn't moving or behaving the way it should.",
+    href: "/help-hub/while-knitting"
+  },
+  {
+    title: "My knitting doesn't look right",
+    helper: "Stitches, edges, or fabric don't match what you expected.",
+    href: "/help-hub/fabric-doesnt-look-right"
+  },
+  {
+    title: "I made a mistake (and I don't want to rip it out)",
+    helper: "Let's fix it and keep going.",
+    href: "/help-hub/fix-without-starting-over"
+  },
+  {
+    title: "I'm getting ready to start",
+    helper: "Set up your machine and project with confidence.",
+    href: "/help-hub/getting-ready-to-start"
+  },
+  {
+    title: "My project doesn't fit or isn't turning out as expected",
+    helper: "Size, shaping, or results feel off.",
+    href: "/help-hub/fit-or-results-off"
+  },
+  {
+    title: "Is this supposed to happen?",
+    helper: "Quick reassurance and what to check next.",
+    href: "/help-hub/possible-or-normal"
+  }
+];
+---
+
+<BaseLayout {title} {description}>
+  <div class="start-here-page">
+    <div class="page-container">
+      <header class="page-header">
+        <div class="title-row">
+          <img src="/images/ask-n-answer_logo.svg" alt="Ask 'n Answer" class="header-icon" />
+          <h1 class="page-title">Start Here</h1>
+        </div>
+        <p class="intro-text">
+          If something isn't working, you don't need to know where it fits or what it's called.
+          Start with the situation that sounds most like what you're seeing, and we'll help you narrow it down.
+        </p>
+      </header>
+
+      <div class="cards-grid">
+        {startCards.map((card, index) => (
+          <a 
+            href={card.href} 
+            class="start-card"
+            data-testid={`card-start-${index}`}
+          >
+            <div class="start-card__text">
+              <div class="start-card__title">{card.title}</div>
+              <div class="start-card__helper">{card.helper}</div>
+            </div>
+            <span class="start-card__icon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </span>
+          </a>
+        ))}
+      </div>
+
+      <div class="secondary-link-wrapper">
+        <a href="/ana-catalog" class="secondary-link" data-testid="link-browse-all">
+          Prefer to browse or search all questions? → Browse all Ask 'n Answer topics
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .start-here-page {
+    padding-top: 2rem;
+    padding-bottom: 4rem;
+    min-height: 100vh;
+    background: var(--page-bg, #f8f9f5);
+  }
+
+  .page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .header-icon {
+    width: clamp(56px, 8vw, 72px);
+    height: clamp(56px, 8vw, 72px);
+    flex-shrink: 0;
+  }
+
+  .page-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: clamp(2.25rem, 4vw, 3rem);
+    font-weight: 700;
+    color: var(--kbm-green, #52682d);
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .intro-text {
+    font-size: clamp(1rem, 1.8vw, 1.125rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+  }
+
+  /* Cards Grid */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Start Card - Chooser Tile Style */
+  .start-card {
+    position: relative;
+    display: block;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #d1d9c2;
+    padding: 1rem 2.5rem 1rem 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 1px 4px rgba(82, 104, 45, 0.06);
+    transition: 
+      transform 0.15s ease, 
+      box-shadow 0.15s ease, 
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+    cursor: pointer;
+  }
+
+  /* Hover state */
+  .start-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
+  }
+
+  /* Focus-visible state (keyboard navigation) */
+  .start-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.25);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
+  }
+
+  /* Active/pressed state */
+  .start-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(82, 104, 45, 0.1);
+    background-color: #f5f8f2;
+  }
+
+  /* Card text container */
+  .start-card__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  /* Card title */
+  .start-card__title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3a57;
+    line-height: 1.4;
+  }
+
+  /* Card helper text */
+  .start-card__helper {
+    font-size: 0.875rem;
+    color: #6b7a5d;
+    line-height: 1.5;
+    max-width: 280px;
+  }
+
+  /* Arrow icon - positioned top-right */
+  .start-card__icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca88f;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .start-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* Arrow animation on hover/focus */
+  .start-card:hover .start-card__icon,
+  .start-card:focus-visible .start-card__icon {
+    transform: translateX(3px);
+    color: var(--kbm-green, #52682d);
+  }
+
+  /* Secondary Link */
+  .secondary-link-wrapper {
+    text-align: center;
+    padding-top: 1rem;
+  }
+
+  .secondary-link {
+    font-size: 0.95rem;
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .secondary-link:hover {
+    color: #3e5023;
+    text-decoration: underline;
+  }
+</style>

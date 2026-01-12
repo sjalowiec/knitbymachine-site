@@ -1,0 +1,487 @@
+---
+export const prerender = false;
+
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const { slug } = Astro.params;
+
+const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN || process.env.GITHUB_TOKEN;
+const REPO_OWNER = 'sjalowiec';
+const REPO_NAME = 'knitbymachine-site';
+const ANA_CONTENT_PATH = 'src/content/ana';
+
+// Static page content mapping (fallback content for each gateway slug)
+const STATIC_PAGES: Record<string, { title: string; description: string; introText: string; helpItems: string[]; closingText: string }> = {
+  'while-knitting': {
+    title: "Something Isn't Working While I'm Knitting | Help Hub | Knit by Machine",
+    description: "Get help when something goes wrong mid-project - dropped stitches, carriage issues, or knitting not forming correctly.",
+    introText: "You're in the right place.<br>This Help Hub path is being built now so you can get to the next clear step without digging.",
+    helpItems: [
+      "Dropped stitches or stitches misbehaving",
+      "The carriage feeling hard to move",
+      "Knitting not forming the way you expect",
+      "Sudden issues that start mid-row or mid-project"
+    ],
+    closingText: "In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here."
+  },
+  'fabric-doesnt-look-right': {
+    title: "My Knitting Doesn't Look Right | Help Hub | Knit by Machine",
+    description: "Get help when your fabric, stitches, or edges don't match what you expected.",
+    introText: "You're in the right place.<br>This Help Hub path is being built now so you can get to the next clear step without digging.",
+    helpItems: [
+      "Stitches that look uneven or inconsistent",
+      "Edges that are too loose, too tight, or curling",
+      "Fabric that doesn't drape or behave as expected",
+      "Patterns or textures that aren't forming correctly"
+    ],
+    closingText: "In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here."
+  },
+  'fix-without-starting-over': {
+    title: "I Made a Mistake (And I Don't Want to Rip It Out) | Help Hub | Knit by Machine",
+    description: "Get help fixing mistakes in your machine knitting without starting over.",
+    introText: "You're in the right place.<br>This Help Hub path is being built now so you can get to the next clear step without digging.",
+    helpItems: [
+      "Dropped stitches that need picking up",
+      "Wrong stitches or pattern errors",
+      "Holes or ladders in your fabric",
+      "Fixing mistakes without unraveling"
+    ],
+    closingText: "In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here."
+  },
+  'getting-ready-to-start': {
+    title: "I'm Getting Ready to Start | Help Hub | Knit by Machine",
+    description: "Get help setting up your machine and project with confidence.",
+    introText: "You're in the right place.<br>This Help Hub path is being built now so you can get to the next clear step without digging.",
+    helpItems: [
+      "Setting up your knitting machine",
+      "Choosing the right yarn and tension",
+      "Planning your first project",
+      "Understanding the basics before you begin"
+    ],
+    closingText: "In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here."
+  },
+  'fit-or-results-off': {
+    title: "My Project Doesn't Fit or Isn't Turning Out as Expected | Help Hub | Knit by Machine",
+    description: "Get help when size, shaping, or results feel off.",
+    introText: "You're in the right place.<br>This Help Hub path is being built now so you can get to the next clear step without digging.",
+    helpItems: [
+      "Garment is too big or too small",
+      "Shaping doesn't look right",
+      "Measurements don't match your pattern",
+      "Results differ from what you expected"
+    ],
+    closingText: "In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here."
+  },
+  'possible-or-normal': {
+    title: "Is This Supposed to Happen? | Help Hub | Knit by Machine",
+    description: "Quick reassurance and what to check next.",
+    introText: "You're in the right place.<br>This Help Hub path is being built now so you can get to the next clear step without digging.",
+    helpItems: [
+      "Sounds or movements that seem unusual",
+      "Fabric behavior you're not sure about",
+      "Machine quirks that might be normal",
+      "Quick sanity checks for common concerns"
+    ],
+    closingText: "In the meantime, you can browse all Ask 'n Answer questions, or head back to Start Here."
+  }
+};
+
+interface AnaEntry {
+  type?: string;
+  title: string;
+  slug: string;
+  body?: string;
+  relatedAnas?: string[];
+  shortAnswer?: string;
+  introParagraph?: string;
+  isDraft?: boolean;
+  pendingPublish?: boolean;
+}
+
+// Fetch a single ANA entry from GitHub
+async function getANAEntry(anaSlug: string): Promise<AnaEntry | null> {
+  try {
+    // Build headers - only include Authorization if token is present
+    const headers: Record<string, string> = {
+      'Accept': 'application/vnd.github.v3+json',
+      'User-Agent': 'knitbymachine-astro'
+    };
+    
+    if (GITHUB_TOKEN) {
+      headers['Authorization'] = `token ${GITHUB_TOKEN}`;
+    }
+
+    const response = await fetch(
+      `https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/${ANA_CONTENT_PATH}/${anaSlug}.json`,
+      { headers }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    const data = await response.json();
+    const binaryString = atob(data.content);
+    const bytes = Uint8Array.from(binaryString, char => char.charCodeAt(0));
+    const content = new TextDecoder('utf-8').decode(bytes);
+    const jsonData = JSON.parse(content);
+
+    // Filter out drafts and pending publish entries
+    if (jsonData.isDraft || jsonData.pendingPublish) {
+      return null;
+    }
+
+    return {
+      ...jsonData,
+      slug: anaSlug
+    };
+  } catch (error) {
+    console.error('Error fetching ANA entry:', error);
+    return null;
+  }
+}
+
+// Resolve an array of slugs to ANA entries, preserving order
+async function resolveLeafAnas(slugs: string[]): Promise<AnaEntry[]> {
+  const results: AnaEntry[] = [];
+  
+  for (const leafSlug of slugs) {
+    const entry = await getANAEntry(leafSlug);
+    // Only include published leaf entries (type !== 'gateway' or no type)
+    if (entry && entry.type !== 'gateway') {
+      results.push(entry);
+    }
+  }
+  
+  return results;
+}
+
+// Try to fetch the gateway ANA for this slug
+const gatewayEntry = await getANAEntry(slug || '');
+
+// Check if this is a valid gateway with relatedAnas
+let resolvedLeafs: AnaEntry[] = [];
+let shouldRenderDynamic = false;
+
+if (gatewayEntry && gatewayEntry.type === 'gateway' && gatewayEntry.relatedAnas && gatewayEntry.relatedAnas.length > 0) {
+  resolvedLeafs = await resolveLeafAnas(gatewayEntry.relatedAnas);
+  shouldRenderDynamic = resolvedLeafs.length > 0;
+}
+
+// Check if we have static fallback content for this slug
+const staticPage = STATIC_PAGES[slug || ''];
+
+// If no dynamic content AND no static fallback, show 404-like page
+const showNotFound = !shouldRenderDynamic && !staticPage;
+
+// Page metadata
+const pageTitle = shouldRenderDynamic 
+  ? `${gatewayEntry?.title} | Help Hub | Knit by Machine`
+  : staticPage?.title || 'Page Not Found | Help Hub | Knit by Machine';
+
+const pageDescription = shouldRenderDynamic
+  ? gatewayEntry?.introParagraph || `Find answers about ${gatewayEntry?.title}`
+  : staticPage?.description || 'This page could not be found.';
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <div class="gateway-page">
+    <div class="page-container">
+      {showNotFound ? (
+        <Fragment>
+        {/* 404-like Not Found */}
+        <h1 class="page-title" data-testid="gateway-title">Page Not Found</h1>
+        <p class="intro-text">
+          We couldn't find a help hub page at this location.
+        </p>
+        <div class="nav-links">
+          <a href="/start-here" class="nav-link nav-link--back" data-testid="link-back-start-here">
+            &larr; Back to Start Here
+          </a>
+          <a href="/ana-catalog" class="nav-link nav-link--browse" data-testid="link-browse-ana">
+            Browse all Ask 'n Answer questions &rarr;
+          </a>
+        </div>
+        </Fragment>
+      ) : shouldRenderDynamic ? (
+        <Fragment>
+        {/* DYNAMIC GATEWAY: Cards linking to resolved leaf ANAs */}
+        <h1 class="page-title" data-testid="gateway-title">{gatewayEntry?.title}</h1>
+        
+        {gatewayEntry?.body && (
+          <div class="intro-text" set:html={gatewayEntry.body}></div>
+        )}
+        
+        <div class="cards-grid" data-testid="gateway-cards">
+          {resolvedLeafs.map((leaf, index) => (
+            <a 
+              href={`/ana/${leaf.slug}`} 
+              class="start-card"
+              data-testid={`card-leaf-${index}`}
+            >
+              <div class="start-card__text">
+                <div class="start-card__title">{leaf.title}</div>
+                {(leaf.shortAnswer || leaf.introParagraph) && (
+                  <div class="start-card__helper">
+                    {leaf.shortAnswer || leaf.introParagraph}
+                  </div>
+                )}
+              </div>
+              <span class="start-card__icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <div class="nav-links">
+          <a href="/start-here" class="nav-link nav-link--back" data-testid="link-back-start-here">
+            &larr; Back to Start Here
+          </a>
+          <a href="/ana-catalog" class="nav-link nav-link--browse" data-testid="link-browse-ana">
+            Browse all Ask 'n Answer questions &rarr;
+          </a>
+        </div>
+        </Fragment>
+      ) : (
+        <Fragment>
+        {/* STATIC FALLBACK: Original static page content */}
+        <h1 class="page-title" data-testid="gateway-title">{staticPage?.title?.split(' | ')[0]}</h1>
+        
+        <p class="intro-text" set:html={staticPage?.introText}></p>
+
+        <div class="help-list">
+          <p class="list-label">This page will help with:</p>
+          <ul data-testid="help-list">
+            {staticPage?.helpItems.map((item) => (
+              <li>{item}</li>
+            ))}
+          </ul>
+        </div>
+
+        <p class="closing-text">{staticPage?.closingText}</p>
+
+        <div class="nav-links">
+          <a href="/start-here" class="nav-link nav-link--back" data-testid="link-back-start-here">
+            &larr; Back to Start Here
+          </a>
+          <a href="/ana-catalog" class="nav-link nav-link--browse" data-testid="link-browse-ana">
+            Browse all Ask 'n Answer questions &rarr;
+          </a>
+        </div>
+        </Fragment>
+      )}
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .gateway-page {
+    padding: 2rem 0 4rem;
+    min-height: 60vh;
+    background: var(--page-bg, #f8f9f5);
+  }
+
+  .page-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .page-title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kbm-green, #52682d);
+    margin: 0 0 1.5rem;
+    line-height: 1.3;
+  }
+
+  .intro-text {
+    font-size: 1.125rem;
+    color: #5a6b47;
+    line-height: 1.7;
+    margin: 0 0 2rem;
+  }
+
+  .intro-text :global(p) {
+    margin: 0 0 1rem;
+  }
+
+  .intro-text :global(p:last-child) {
+    margin-bottom: 0;
+  }
+
+  /* Static fallback styles */
+  .help-list {
+    background: #ffffff;
+    border: 1px solid #d1d9c2;
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .list-label {
+    font-weight: 600;
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    font-size: 1rem;
+  }
+
+  .help-list ul {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: #5a6b47;
+  }
+
+  .help-list li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+
+  .help-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .closing-text {
+    font-size: 1rem;
+    color: #6b7a5d;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Cards Grid - matches start-here styling */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 3rem;
+  }
+
+  @media (max-width: 900px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 600px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Start Card - Chooser Tile Style (from start-here) */
+  .start-card {
+    position: relative;
+    display: block;
+    background-color: #ffffff;
+    border-radius: 10px;
+    border: 1px solid #d1d9c2;
+    padding: 1rem 2.5rem 1rem 1.25rem;
+    text-decoration: none;
+    color: inherit;
+    box-shadow: 0 1px 4px rgba(82, 104, 45, 0.06);
+    transition: 
+      transform 0.15s ease, 
+      box-shadow 0.15s ease, 
+      border-color 0.15s ease,
+      background-color 0.15s ease;
+    cursor: pointer;
+  }
+
+  .start-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
+  }
+
+  .start-card:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(82, 104, 45, 0.25);
+    border-color: var(--kbm-green, #52682d);
+    background-color: #fafcf8;
+  }
+
+  .start-card:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 3px rgba(82, 104, 45, 0.1);
+    background-color: #f5f8f2;
+  }
+
+  .start-card__text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+  }
+
+  .start-card__title {
+    font-family: var(--font, "Poppins", system-ui, Arial, sans-serif);
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2c3a57;
+    line-height: 1.4;
+  }
+
+  .start-card__helper {
+    font-size: 0.875rem;
+    color: #6b7a5d;
+    line-height: 1.5;
+    max-width: 280px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .start-card__icon {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca88f;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .start-card__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .start-card:hover .start-card__icon,
+  .start-card:focus-visible .start-card__icon {
+    transform: translateX(3px);
+    color: var(--kbm-green, #52682d);
+  }
+
+  /* Nav Links */
+  .nav-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+  }
+
+  .nav-link {
+    font-size: 0.95rem;
+    color: var(--kbm-green, #52682d);
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link:hover {
+    color: #3e5023;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 600px) {
+    .nav-links {
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+  }
+</style>

@@ -1,0 +1,21 @@
+{
+  "title": "test 4",
+  "slug": "test4",
+  "category": "Ask 'n Answer (ANA)",
+  "tags": [
+    "Brother"
+  ],
+  "isMemberOnly": false,
+  "videoUrl": "",
+  "imageUrl": "https://example.com/images/dropped-stitch.jpg",
+  "imageAlt": "",
+  "wizardUrl": "",
+  "metaTitle": "",
+  "metaDescription": "",
+  "relatedAnas": [],
+  "relatedWorkshops": [],
+  "body": "this is  the answer - keep it fairly short",
+  "isDraft": false,
+  "publishedDate": "2025-11-03",
+  "pendingPublish": false
+}

@@ -1,0 +1,880 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = "Machine Knitting Made Clear, Calm, and Doable | Knit by Machine";
+const description = "You can knit beautiful things on your machine. Knit by Machine gives you the tools, guidance, and confidence to make it happen.";
+---
+
+<BaseLayout {title} {description}>
+  <main>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="hero-inner">
+        <div class="hero-text">
+          <p class="hero-eyebrow">Knit by Machine</p>
+          <h1 class="hero-heading">Machine Knitting Made Clear, Calm, and Doable</h1>
+          <p class="hero-subhead">
+            You can knit beautiful things on your machine.<br />
+            Knit by Machine gives you the tools, guidance, and confidence to make it happen.
+          </p>
+          <div class="hero-buttons">
+            <a href="#confidence-path" class="btn btn-primary">Start Your Confidence Path</a>
+            <a href="/charting-tools" class="btn btn-secondary">Explore Charting Tools</a>
+          </div>
+        </div>
+
+        <div class="hero-image">
+          <img
+            src="https://knitbymachine.com/images/machine-knitting-cast-on.webp"
+            alt="Machine knitting cast on"
+          />
+        </div>
+      </div>
+    </section>
+
+    <!-- What You'll Find Here -->
+    <section class="section">
+      <div class="container">
+        <h2>What You'll Find Here</h2>
+        <ul class="feature-list">
+          <li>Practical tools that take the guesswork out of machine knitting.</li>
+          <li>Skill Builders that strengthen your foundation step by step.</li>
+          <li>Project Planners that help you choose and plan your projects.</li>
+          <li>Guided Workshops for personalized, project-focused progress.</li>
+          <li>Clear answers you can trust without overwhelm.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- The Confidence Path (Interactive Pills) -->
+    <section id="confidence-path" class="confidence-path">
+      <div class="confidence-inner">
+        <h2 class="confidence-heading">Your Confidence Path</h2>
+        <p class="confidence-intro">
+          You don't have to do everything at once — you're simply choosing your best next step.
+        </p>
+
+        <ol class="confidence-path-list">
+          <li>
+            <button
+              type="button"
+              class="confidence-pill"
+              data-description="Get your bearings so you know exactly where you are and what support is available."
+            >
+              <img src="/images/hex1.svg" alt="Step 1" class="confidence-pill-icon" />
+              <span class="confidence-pill-label">Orientation</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="confidence-pill"
+              data-description="Build the essential skills and setup that make everything else easier and more enjoyable."
+            >
+              <img src="/images/hex2.svg" alt="Step 2" class="confidence-pill-icon" />
+              <span class="confidence-pill-label">Foundations</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="confidence-pill"
+              data-description="Pick the path that matches your goals, your machine, and your current comfort level."
+            >
+              <img src="/images/hex3.svg" alt="Step 3" class="confidence-pill-icon" />
+              <span class="confidence-pill-label">Choose Your Entry Track</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="confidence-pill"
+              data-description="Complete a small, finishable project that builds trust in yourself and momentum at the machine."
+            >
+              <img src="/images/hex4.svg" alt="Step 4" class="confidence-pill-icon" />
+              <span class="confidence-pill-label">First Win</span>
+            </button>
+          </li>
+          <li>
+            <button
+              type="button"
+              class="confidence-pill"
+              data-description="Grow your skills with new tools, techniques, and projects at your own pace."
+            >
+              <img src="/images/hex5.svg" alt="Step 5" class="confidence-pill-icon" />
+              <span class="confidence-pill-label">Explore &amp; Expand</span>
+            </button>
+          </li>
+        </ol>
+
+        <p id="confidence-description" class="confidence-description">
+          Get your bearings so you know exactly where you are and what support is available.
+        </p>
+      </div>
+    </section>
+
+    <script>
+      const section = document.getElementById('confidence-path');
+      if (section) {
+        const pills = section.querySelectorAll('[data-description]');
+        const desc = section.querySelector('#confidence-description');
+
+        pills.forEach((pill) => {
+          const update = () => {
+            if (!desc) return;
+
+            desc.textContent = pill.dataset.description || '';
+
+            desc.classList.remove('confidence-description-animate');
+            void desc.offsetWidth;
+            desc.classList.add('confidence-description-animate');
+          };
+
+          pill.addEventListener('mouseenter', update);
+          pill.addEventListener('focus', update);
+          pill.addEventListener('click', update);
+        });
+      }
+    </script>
+
+    <!-- Choose Your Entry Track -->
+    <section class="section kbm-where-section">
+      <div class="container kbm-where-inner">
+        <div class="kbm-section-header">
+          <h2>Choose Your Entry Track</h2>
+          <p class="kbm-section-subtitle">Pick the path that fits you best.</p>
+        </div>
+
+        <div class="kbm-hex-grid">
+          <!-- Card 1: Start Phase -->
+          <div class="pulse-once">
+            <a href="/getting-started" class="kbm-hex-card kbm-hex-card--link" data-testid="card-start-phase">
+              <div class="kbm-hex-icon">
+                <img src="/images/knit.svg" alt="Start phase icon" />
+              </div>
+              <h3>I just opened the box… where do I start?</h3>
+              <p>You're in the <strong>Start</strong> phase. All you need right now is one simple win.</p>
+              <p class="kbm-highlight">Next step: Make your first swatch.</p>
+              <span class="btn primary" data-testid="button-getting-started">Get Started</span>
+            </a>
+          </div>
+
+          <!-- Card 2: Build Skills Phase -->
+          <a href="/practice-projects" class="kbm-hex-card kbm-hex-card--link" data-testid="card-skills-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/practice-icon.svg" alt="Build skills icon" />
+            </div>
+            <h3>I know the basics. I want to build skills.</h3>
+            <p>You're in the <strong>Build Skills</strong> phase.</p>
+            <p class="kbm-highlight">Next step: Visit Practice Projects.</p>
+            <span class="btn primary" data-testid="button-skill-builders">Explore Practice Projects</span>
+          </a>
+
+          <!-- Card 3: Make Projects Phase -->
+          <a href="/agents/ready-set-knit-projects/" class="kbm-hex-card kbm-hex-card--link" data-testid="card-projects-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/guide-icon.svg" alt="Make projects icon" />
+            </div>
+            <h3>I want to knit an actual project.</h3>
+            <p>You're in the <strong>Make Projects</strong> phase.</p>
+            <p class="kbm-highlight">Next step: choose one easy win.</p>
+            <span class="btn primary" data-testid="button-rsk">Ready Set Knit</span>
+          </a>
+
+          <!-- Card 4: Troubleshoot Phase -->
+          <a href="/agents/ready-set-knit-troubleshooting/" class="kbm-hex-card kbm-hex-card--link" data-testid="card-troubleshoot-phase">
+            <div class="kbm-hex-icon">
+              <img src="/images/troubleshoot.svg" alt="Troubleshoot icon" />
+            </div>
+            <h3>Something went wrong.</h3>
+            <p>You're in the <strong>Troubleshoot</strong> phase.</p>
+            <p class="kbm-highlight">Next step: get a quick answer.</p>
+            <span class="btn primary" data-testid="button-troubleshoot">Troubleshoot</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</BaseLayout>
+
+<style>
+  /* Container */
+  .container {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  /* Section Spacing */
+  .section {
+    padding: 3rem 0;
+  }
+
+  .section--highlight {
+    background: linear-gradient(135deg, #f9fdf5 0%, #e9ece7 100%);
+    padding: 3rem 0;
+  }
+
+  .section--alt {
+    background: #f5f7f2;
+    padding: 3rem 0;
+  }
+
+  .section h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 1rem;
+  }
+
+  .section p {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #4a5a3d;
+    max-width: 700px;
+  }
+
+  .section-subhead {
+    margin-bottom: 2rem;
+  }
+
+  .section-cta {
+    margin-top: 2rem;
+  }
+
+  .section-link {
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .section-link a {
+    color: var(--kbm-green);
+    text-decoration: underline;
+    font-weight: 500;
+  }
+
+  /* Hero Section */
+  .hero-section {
+    padding: 3rem 0 2.5rem;
+    background-color: #f5f7ee;
+  }
+
+  .hero-inner {
+    max-width: 80rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    .hero-inner {
+      flex-direction: row;
+      align-items: center;
+    }
+  }
+
+  .hero-text {
+    flex: 1 1 0;
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #52682d;
+  }
+
+  .hero-heading {
+    font-size: 2.1rem;
+    line-height: 1.2;
+    font-weight: 700;
+    margin: 0 0 1rem;
+    color: #2c3a57;
+  }
+
+  .hero-subhead {
+    font-size: 1rem;
+    line-height: 1.6;
+    color: #455040;
+    margin: 0 0 1.5rem;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.75rem 1.5rem;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid transparent;
+  }
+
+  .btn-primary {
+    background-color: #6e8b3d;
+    color: #ffffff;
+    border-color: #6e8b3d;
+  }
+
+  .btn-primary:hover {
+    background-color: #52682d;
+    border-color: #52682d;
+  }
+
+  .btn-secondary {
+    background-color: #ffffff;
+    color: #2c3a57;
+    border-color: #c5cfb0;
+  }
+
+  .btn-secondary:hover {
+    background-color: #f5f7ee;
+  }
+
+  .hero-image {
+    flex: 1 1 0;
+    border-radius: 1.5rem;
+    overflow: hidden;
+    min-height: 12rem;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Confidence Path */
+  .confidence-path {
+    padding: 2.5rem 0;
+    background-color: #f5f7ee;
+    border-top: 1px solid #e1e5d8;
+    border-bottom: 1px solid #e1e5d8;
+  }
+
+  .confidence-inner {
+    max-width: 64rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .confidence-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.5rem;
+    color: #2c3a57;
+  }
+
+  .confidence-intro {
+    font-size: 0.9rem;
+    color: #555f4a;
+    margin: 0 0 0.75rem;
+  }
+
+  .confidence-path-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.25rem 0 0.75rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    position: relative;
+  }
+
+  .confidence-path-list::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 5%;
+    right: 5%;
+    height: 3px;
+    background-color: #c5cfb0;
+    z-index: 0;
+  }
+
+  @media (min-width: 900px) {
+    .confidence-path-list {
+      justify-content: space-between;
+      gap: 1.75rem;
+    }
+  }
+
+  .confidence-pill {
+    position: relative;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    background-color: #ffffff;
+    border: 1px solid #d6dec6;
+    font-size: 0.9rem;
+    color: #2c3a57;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  }
+
+  .confidence-pill:hover,
+  .confidence-pill:focus {
+    border-color: #6e8b3d;
+    box-shadow: 0 0 0 2px rgba(110, 139, 61, 0.18);
+    outline: none;
+  }
+
+  .confidence-pill-icon {
+    width: 1.6rem;
+    height: 1.6rem;
+    display: block;
+  }
+
+  .confidence-pill-label {
+    white-space: nowrap;
+  }
+
+  .confidence-description {
+    margin-top: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #2c3a57;
+    background-color: #ffffff;
+    border-left: 4px solid #6e8b3d;
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .confidence-description-animate {
+    animation: confidenceDescriptionIn 280ms ease-out;
+  }
+
+  @keyframes confidenceDescriptionIn {
+    from {
+      opacity: 0;
+      transform: translateY(3px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* Legacy Hero Content Styles (for compatibility) */
+  .hero-content .eyebrow {
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--kbm-green-2);
+    margin: 0 0 0.75rem;
+  }
+
+  .hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--kbm-green);
+    line-height: 1.15;
+    margin: 0 0 1.25rem;
+  }
+
+  .hero-content .subhead {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #4a5a3d;
+    margin: 0 0 2rem;
+  }
+
+  .hero-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .hero-image {
+    display: flex;
+    justify-content: center;
+  }
+
+  .image-placeholder {
+    width: 100%;
+    max-width: 400px;
+    aspect-ratio: 4/3;
+    background: #f5f7f2;
+    border: 2px dashed var(--kbm-green-2);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--kbm-green-2);
+    font-weight: 500;
+  }
+
+  /* Buttons */
+  .button {
+    display: inline-block;
+    padding: 0.875rem 1.75rem;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    cursor: pointer;
+  }
+
+  .button--primary {
+    background: var(--kbm-green);
+    color: white;
+    border: 2px solid var(--kbm-green);
+  }
+
+  .button--primary:hover {
+    background: var(--kbm-green-2);
+    border-color: var(--kbm-green-2);
+  }
+
+  .button--secondary {
+    background: transparent;
+    color: var(--kbm-green);
+    border: 2px solid var(--kbm-green);
+  }
+
+  .button--secondary:hover {
+    background: var(--kbm-green);
+    color: white;
+  }
+
+  /* Feature List */
+  .feature-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0 0;
+  }
+
+  .feature-list li {
+    position: relative;
+    padding-left: 1.75rem;
+    margin-bottom: 0.875rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    color: #4a5a3d;
+  }
+
+  .feature-list li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--kbm-green);
+    font-weight: 700;
+  }
+
+  /* Path Grid (Confidence Path) */
+  .path-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 2rem;
+  }
+
+  @media (min-width: 640px) {
+    .path-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 900px) {
+    .path-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .path-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #d4dbc8;
+    position: relative;
+  }
+
+  .path-step {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    background: var(--kbm-green);
+    color: white;
+    font-weight: 700;
+    font-size: 0.875rem;
+    border-radius: 50%;
+    margin-bottom: 0.75rem;
+  }
+
+  .path-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .path-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #5a6b47;
+    margin: 0;
+  }
+
+  /* Track Grid (Entry Tracks) */
+  .track-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .track-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .track-card {
+    display: block;
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 2px solid #d4dbc8;
+    text-decoration: none;
+    transition: all 0.2s ease;
+  }
+
+  .track-card:hover {
+    border-color: var(--kbm-green);
+    box-shadow: 0 4px 12px rgba(82, 104, 45, 0.1);
+  }
+
+  .track-card h3 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .track-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #5a6b47;
+    margin: 0;
+  }
+
+  /* Tools Grid */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .tools-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  .tool-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid #d4dbc8;
+  }
+
+  .tool-card h3 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 0 0 0.375rem;
+  }
+
+  .tool-card p {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #5a6b47;
+    margin: 0;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 640px) {
+    .section {
+      padding: 2rem 0;
+    }
+
+    .hero-section {
+      padding: 2.5rem 0;
+    }
+
+    .section h2 {
+      font-size: 1.5rem;
+    }
+  }
+
+  /* ========== WHERE ARE YOU SECTION (4-Card Entry Tracks) ========== */
+  .kbm-where-section {
+    background-color: #ffffff;
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+  }
+
+  .kbm-where-inner {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  .kbm-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .kbm-section-header h2 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-section-subtitle {
+    color: #4d5a48;
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .kbm-hex-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 600px) {
+    .kbm-hex-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1000px) {
+    .kbm-hex-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .kbm-hex-card {
+    background-color: #ffffff;
+    border-radius: 1.25rem;
+    padding: 1.5rem 1.25rem;
+    border: 2px solid #c7d8a4;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+  }
+
+  .kbm-hex-card:hover {
+    background-color: #f6f8f2;
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(82, 104, 45, 0.12);
+    border-color: var(--kbm-green);
+  }
+
+  .kbm-hex-card--link {
+    text-decoration: none;
+    cursor: pointer;
+    color: inherit;
+  }
+
+  .kbm-hex-icon {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .kbm-hex-icon img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .kbm-hex-card h3 {
+    font-size: 1rem;
+    color: #2c3a57;
+    margin: 0 0 0.75rem;
+    line-height: 1.35;
+  }
+
+  .kbm-hex-card p {
+    font-size: 0.9rem;
+    color: #4f5a4b;
+    line-height: 1.5;
+    margin: 0 0 0.5rem;
+  }
+
+  .kbm-highlight {
+    font-weight: 600;
+    color: var(--kbm-green);
+    font-style: italic;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.95rem;
+    text-decoration: none;
+    font-weight: 500;
+    border: 1px solid transparent;
+    transition: background-color 0.2s ease;
+  }
+
+  .btn.primary {
+    background-color: var(--kbm-green);
+    color: #fff;
+  }
+
+  .btn.primary:hover {
+    background-color: #445626;
+  }
+
+  .kbm-hex-card .btn {
+    margin-top: auto;
+    text-align: center;
+    font-size: 0.85rem;
+    padding: 0.55rem 1rem;
+  }
+
+  .pulse-once {
+    display: contents;
+  }
+</style>

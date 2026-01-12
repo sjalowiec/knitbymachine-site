@@ -1,0 +1,143 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const title = "Application received | Guided Workshop | Knit by Machine";
+const description =
+  "Your Guided Workshop application has been received. Here's what happens next.";
+
+const firstName = Astro.url.searchParams.get('name') || '';
+---
+
+<BaseLayout {title} {description}>
+  <main class="page page--guided-workshop page--guided-workshop-thanks">
+    <section class="section">
+      <div class="section-inner" data-testid="container-thanks">
+
+        <img
+          src="/images/knit-by-machine-sue.png"
+          alt="Sue, founder of Knit by Machine"
+          class="sue-photo"
+          data-testid="img-sue"
+        />
+
+        <h1 data-testid="text-page-title">Your application has been received</h1>
+
+        <p data-testid="text-intro">
+          {firstName ? `${firstName}, thanks` : 'Thanks'} for applying for a Guided Workshop.
+        </p>
+
+        <p>
+          I personally review every application to make sure the workshop is a good fit for both you and your project.
+        </p>
+
+        <h2 class="next-steps-heading" data-testid="text-next-steps-heading">What happens next</h2>
+
+        <ul class="next-steps-list" data-testid="list-next-steps">
+          <li>I'll review your application within <strong>1–2 business days</strong>.</li>
+          <li>I may reply with a quick follow-up question or clarification.</li>
+          <li>If it's a good fit, you'll receive an approval email with next steps and pricing.</li>
+          <li>No payment is required until your project is approved.</li>
+        </ul>
+
+        <p class="closing-text">
+          There's nothing you need to do right now. I’ll be in touch soon.
+        </p>
+        <p class="closing-text">
+          Please don't start knitting yet — we'll begin once your materials are ready and you've confirmed you're ready to start.
+        </p>
+
+        <p class="signature" data-testid="text-signature">
+          — Sue
+        </p>
+
+        <p class="spam-note" data-testid="text-spam-note">
+          If you don't see a reply within two business days, check your spam folder.
+        </p>
+
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .page--guided-workshop-thanks {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .section-inner {
+    max-width: 820px;
+    text-align: center;
+  }
+
+  .sue-photo {
+    width: 120px;
+    height: auto;
+    border-radius: 999px;
+    margin: 0 auto 1.25rem;
+    display: block;
+  }
+
+  h1 {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    color: var(--kbm-green);
+    margin: 0 0 1.25rem;
+    line-height: 1.2;
+  }
+
+  p {
+    font-size: clamp(1rem, 1.5vw, 1.1rem);
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 1rem;
+  }
+
+  .next-steps-heading {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--kbm-green);
+    margin: 1.25rem 0 1rem;
+  }
+
+  .next-steps-list {
+    text-align: left;
+    margin: 0 auto 1.5rem;
+    max-width: 520px;
+    list-style: disc;
+    padding-left: 1.5rem;
+  }
+
+  .next-steps-list li {
+    font-size: 1rem;
+    color: #5a6b47;
+    line-height: 1.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .next-steps-list li:last-child {
+    margin-bottom: 0;
+  }
+
+  .closing-text {
+    margin-top: 1.25rem;
+  }
+
+  .signature {
+    margin-top: 1.25rem;
+    font-weight: 500;
+  }
+
+  .spam-note {
+    margin-top: 2rem;
+    font-size: 0.95rem;
+    opacity: 0.85;
+  }
+
+  @media (max-width: 768px) {
+    .page--guided-workshop-thanks {
+      padding: 1.5rem 1rem 3rem;
+    }
+  }
+</style>

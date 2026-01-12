@@ -1,0 +1,64 @@
+{
+  "term": "Ease",
+  "slug": "ease",
+  "abbreviation": "",
+  "description": "<p>Ease is the <strong>difference between the actual body measurement and the finished garment size</strong>.</p><p>Ease determines how a garment fits — whether it sits close to the body, skims comfortably, or hangs loosely. It is not right or wrong; it is a design and comfort choice made by the knitter.</p>",
+  "tooltip": "the difference between body measurements and finished garment measurements.",
+  "example": "If your bust measurement is 40\":\n\n-A 40\" finished sweater has zero ease\n-A 42\" finished sweater has 2\" of positive ease\n-A 38\" finished sweater has 2\" of negative ease\n\nThe difference between your body size and the finished size is the ease.",
+  "categories": [
+    "Measurements & Fit"
+  ],
+  "letter": "E",
+  "imageFilename": "/images/glossary/ease-silhouette.webp",
+  "imageAlt": "Illustration comparing body size and finished garment size to show ease in a knitted sweater.",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "url": "https://knitbymachine.com/glossary/ease",
+    "name": "Ease",
+    "@type": "DefinedTerm",
+    "author": {
+      "name": "Knit by Machine",
+      "@type": "Organization"
+    },
+    "@context": "https://schema.org",
+    "keywords": [
+      "ease in knitting",
+      "knitting fit",
+      "finished garment size",
+      "machine knitting measurements",
+      "positive ease",
+      "negative ease"
+    ],
+    "publisher": {
+      "logo": {
+        "url": "https://knitbymachine.com/images/kbm-logo.png",
+        "@type": "ImageObject"
+      },
+      "name": "Knit by Machine",
+      "@type": "Organization"
+    },
+    "description": "Ease is the difference between the actual body measurement and the finished garment size. It determines how a knitted garment fits and is a personal design choice.",
+    "datePublished": "2026-01-01",
+    "inDefinedTermSet": {
+      "url": "https://knitbymachine.com/glossary",
+      "name": "Machine Knitting Glossary",
+      "@type": "DefinedTermSet"
+    }
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "negative-ease"
+  ],
+  "tags": [
+    "gauge",
+    "fit"
+  ],
+  "isDraft": false,
+  "publishedDate": "2026-01-01T00:00:00.000Z",
+  "pendingPublish": false
+}

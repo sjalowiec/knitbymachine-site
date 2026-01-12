@@ -1,0 +1,31 @@
+{
+  "term": "Every Other Needle",
+  "slug": "every-other-needle",
+  "abbreviation": "EON",
+  "description": "<p><strong>Every other needle</strong> means setting the machine so only alternating needles are in work, with one empty needle between each working needle across the bed.</p>\n\n<p>This setup is used when you want:</p>\n\n<ul>\n  <li>A specific needle arrangement for techniques like tuck, lace, or decorative stitches</li>\n  <li>Less resistance on the carriage</li>\n  <li>A transition between full-needle and specialty knitting</li>\n</ul>\n\n<p>Working on every other needle naturally produces a fabric that’s more open and flexible, but the term itself simply describes the needle arrangement—not the finished look. Patterns often abbreviate this as <strong>EON</strong>.</p>\n",
+  "tooltip": "A needle setup where only alternating needles are in work, with one empty needle between each working needle.",
+  "example": "Cast on 40 stitches over EON.",
+  "categories": [
+    "Abbreviations"
+  ],
+  "letter": "E",
+  "imageFilename": "every-other-needle.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [
+    "every-needle"
+  ],
+  "tags": [
+    "beginner"
+  ],
+  "isDraft": false,
+  "publishedDate": "2025-11-19T00:00:00.000Z",
+  "pendingPublish": false
+}

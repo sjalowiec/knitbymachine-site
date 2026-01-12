@@ -1,0 +1,404 @@
+---
+/**
+ * Foundation Detail Page
+ * Displays a single foundation with scannable layout:
+ * Hero -> Quick Scan -> Sections -> Videos -> Images -> Next Steps
+ * 
+ * IMAGE UPLOAD NOTE:
+ * Put foundation images in `public/images/foundations/<slug>/...`
+ * and store the path in the admin field as `/images/foundations/<slug>/<file>`.
+ */
+export const prerender = false;
+
+import Layout from "../../layouts/layout.astro";
+import QuickScan from "../../components/foundations/QuickScan.astro";
+import GatedVimeo from "../../components/foundations/GatedVimeo.astro";
+import SectionBlock from "../../components/foundations/SectionBlock.astro";
+import { getFoundationBySlug } from "../../lib/foundations";
+import "../../styles/global.css";
+
+const { slug } = Astro.params;
+
+const foundation = await getFoundationBySlug(slug as string);
+
+if (!foundation) {
+  return Astro.redirect('/404');
+}
+
+const hasQuickScan = (foundation.whatYoullBeAbleToDo?.length ?? 0) > 0 || 
+                     (foundation.youNeed?.length ?? 0) > 0 || 
+                     (foundation.commonSnags?.length ?? 0) > 0;
+
+const hasSections = (foundation.sections?.length ?? 0) > 0;
+const hasVideos = (foundation.videos?.length ?? 0) > 0;
+const hasImages = (foundation.images?.length ?? 0) > 0;
+const hasNextSteps = (foundation.nextSteps?.length ?? 0) > 0;
+
+function formatDate(dateString: string): string {
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', { 
+    year: 'numeric', 
+    month: 'long', 
+    day: 'numeric' 
+  });
+}
+---
+
+<Layout>
+  <div class="foundation-container">
+    <a href="/foundations" class="back-link" data-testid="link-back-foundations">
+      ← Back to Foundations
+    </a>
+
+    <!-- ========================================
+         SECTION A: HERO
+         ======================================== -->
+    <header class="foundation-hero" data-testid="section-hero">
+      <h1 class="foundation-title" data-testid="text-title">{foundation.title}</h1>
+      
+      {foundation.subtitle && (
+        <p class="foundation-subtitle" data-testid="text-subtitle">{foundation.subtitle}</p>
+      )}
+      
+      {foundation.intro && (
+        <p class="foundation-intro" data-testid="text-intro">{foundation.intro}</p>
+      )}
+
+      {/* 
+        IMAGE UPLOAD NOTE:
+        Put foundation images in `public/images/foundations/<slug>/...`
+        and store the path in the admin field as `/images/foundations/<slug>/<file>`.
+      */}
+      {foundation.heroImageSrc && (
+        <div class="hero-image-container">
+          <img 
+            src={foundation.heroImageSrc} 
+            alt={foundation.heroImageAlt || foundation.title}
+            class="hero-image"
+            data-testid="img-hero"
+          />
+        </div>
+      )}
+
+      <p class="last-updated" data-testid="text-updated">
+        Last updated: {formatDate(foundation.updatedAt)}
+      </p>
+    </header>
+
+    <div class="foundation-content-card">
+      <!-- ========================================
+           SECTION B: QUICK SCAN PANEL
+           ======================================== -->
+      {hasQuickScan && (
+        <QuickScan 
+          whatYoullBeAbleToDo={foundation.whatYoullBeAbleToDo || []}
+          youNeed={foundation.youNeed || []}
+          commonSnags={foundation.commonSnags || []}
+        />
+      )}
+
+      <!-- ========================================
+           SECTION C: CONTENT SECTIONS
+           ======================================== -->
+      {hasSections && (
+        <div class="sections-container" data-testid="section-content">
+          {foundation.sections?.map((section) => (
+            <SectionBlock 
+              heading={section.heading}
+              body={section.body}
+              bullets={section.bullets}
+              callout={section.callout}
+            />
+          ))}
+        </div>
+      )}
+
+      <!-- ========================================
+           SECTION D: VIDEOS (Multiple)
+           ======================================== -->
+      {hasVideos && (
+        <section class="videos-section" data-testid="section-videos">
+          <h2 class="section-main-heading">Watch</h2>
+          <div class="videos-grid">
+            {foundation.videos?.map((video) => (
+              <GatedVimeo 
+                vimeoId={video.vimeoId}
+                access={video.access}
+                title={video.title}
+                description={video.description}
+                posterSrc={video.posterSrc}
+                runtime={video.runtime}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- ========================================
+           SECTION E: IMAGE GALLERY
+           ======================================== -->
+      {hasImages && (
+        <section class="gallery-section" data-testid="section-gallery">
+          <h2 class="section-main-heading">Gallery</h2>
+          <div class="gallery-grid">
+            {foundation.images?.map((image, index) => (
+              <figure class="gallery-item" data-testid={`gallery-item-${index}`}>
+                <img 
+                  src={image.src} 
+                  alt={image.alt}
+                  loading="lazy"
+                  class="gallery-image"
+                />
+                {image.caption && (
+                  <figcaption class="gallery-caption">{image.caption}</figcaption>
+                )}
+              </figure>
+            ))}
+          </div>
+        </section>
+      )}
+
+      <!-- ========================================
+           SECTION F: NEXT STEPS
+           ======================================== -->
+      {hasNextSteps && (
+        <section class="next-steps-section" data-testid="section-next-steps">
+          <h2 class="section-main-heading">Try this next</h2>
+          <ul class="next-steps-list">
+            {foundation.nextSteps?.map((step) => (
+              <li class="next-step-item">
+                <a href={step.href} class="next-step-link" data-testid={`link-next-step-${step.label.toLowerCase().replace(/\s+/g, '-')}`}>
+                  <span class="next-step-arrow">→</span>
+                  <span class="next-step-label">{step.label}</span>
+                </a>
+                {step.note && (
+                  <span class="next-step-note">{step.note}</span>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+    </div>
+  </div>
+</Layout>
+
+<style>
+  .foundation-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .back-link {
+    display: inline-block;
+    color: #52682D;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    margin-bottom: 1.5rem;
+  }
+
+  .back-link:hover {
+    color: #3E5524;
+    text-decoration: underline;
+  }
+
+  /* =========================================
+     SECTION A: HERO
+     ========================================= */
+  .foundation-hero {
+    margin-bottom: 2rem;
+  }
+
+  .foundation-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2c3a57;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .foundation-subtitle {
+    font-size: 1.25rem;
+    color: #52682d;
+    margin: 0 0 1rem 0;
+    font-weight: 500;
+  }
+
+  .foundation-intro {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    color: #5a6c7d;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .hero-image-container {
+    max-width: 600px;
+    margin: 1.5rem auto;
+    text-align: center;
+  }
+
+  .hero-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(82, 104, 45, 0.15);
+  }
+
+  .last-updated {
+    font-size: 0.85rem;
+    color: #8b9aa8;
+    margin: 1rem 0 0 0;
+    font-style: italic;
+  }
+
+  /* =========================================
+     CONTENT CARD
+     ========================================= */
+  .foundation-content-card {
+    background-color: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(82, 104, 45, 0.1);
+    padding: 2.5rem;
+  }
+
+  /* =========================================
+     SECTIONS
+     ========================================= */
+  .sections-container {
+    margin-bottom: 2rem;
+  }
+
+  .section-main-heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #2c3a57;
+    margin: 2rem 0 1.5rem 0;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e5e7eb;
+  }
+
+  .section-main-heading:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  /* =========================================
+     VIDEOS SECTION
+     ========================================= */
+  .videos-section {
+    margin-top: 2rem;
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+
+  /* =========================================
+     GALLERY SECTION
+     ========================================= */
+  .gallery-section {
+    margin-top: 2rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+  }
+
+  .gallery-item {
+    margin: 0;
+  }
+
+  .gallery-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+
+  .gallery-image:hover {
+    transform: scale(1.02);
+  }
+
+  .gallery-caption {
+    font-size: 0.85rem;
+    color: #5a6c7d;
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  /* =========================================
+     NEXT STEPS SECTION
+     ========================================= */
+  .next-steps-section {
+    margin-top: 2rem;
+  }
+
+  .next-steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .next-step-item {
+    margin-bottom: 1rem;
+  }
+
+  .next-step-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.1rem;
+    color: #52682d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+  }
+
+  .next-step-link:hover {
+    color: #3e5524;
+    text-decoration: underline;
+  }
+
+  .next-step-arrow {
+    font-size: 1.2em;
+  }
+
+  .next-step-note {
+    display: block;
+    margin-left: 1.5rem;
+    font-size: 0.9rem;
+    color: #5a6c7d;
+    margin-top: 0.25rem;
+  }
+
+  /* =========================================
+     RESPONSIVE
+     ========================================= */
+  @media (max-width: 768px) {
+    .foundation-content-card {
+      padding: 1.5rem;
+    }
+
+    .foundation-title {
+      font-size: 1.75rem;
+    }
+
+    .videos-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

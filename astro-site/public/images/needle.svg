@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="c" data-name="Layer 3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 983.35 901.41">
+  <defs>
+    <style>
+      .f {
+        fill: #52682d;
+      }
+
+      .f, .g {
+        stroke-width: 50.75px;
+      }
+
+      .f, .g, .h {
+        stroke: #52682d;
+      }
+
+      .g, .h {
+        fill: none;
+      }
+
+      .h {
+        stroke-linecap: round;
+        stroke-width: 57.23px;
+      }
+    </style>
+  </defs>
+  <g>
+    <path class="f" d="M846.77,621.51l-29.39,68.94-549.8-234.3s127.71,37.04,164.64-11.29c130.65,55.69,414.52,176.65,414.52,176.65h.03Z"/>
+    <g>
+      <path class="g" d="M158.63,409.7c-49.33-21.03-75.93-69.33-59.44-107.98,16.46-38.62,69.76-52.96,119.09-31.93"/>
+      <line class="g" x1="158.63" y1="409.7" x2="292.37" y2="466.68"/>
+    </g>
+  </g>
+  <line class="h" x1="524.98" y1="503.6" x2="312.19" y2="239.43"/>
+</svg>

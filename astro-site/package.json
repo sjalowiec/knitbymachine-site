@@ -1,0 +1,27 @@
+{
+  "name": "knitbymachine-website",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "dev:replit": "astro dev --host 0.0.0.0 --port ${PORT:-5000}",
+    "prebuild": "rm -rf .netlify .astro dist node_modules/.astro node_modules/.vite",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@astrojs/netlify": "^6.0.0",
+    "@neondatabase/serverless": "^1.0.2",
+    "@octokit/rest": "^21.0.2",
+    "astro": "^5.0.5",
+    "drizzle-orm": "^0.36.0",
+    "marked": "^15.0.4",
+    "nodemailer": "^6.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.49",
+    "tailwindcss": "^3.4.17"
+  }
+}

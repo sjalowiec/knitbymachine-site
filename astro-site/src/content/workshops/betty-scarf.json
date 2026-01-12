@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "slug": "betty-scarf",
+  "client": {
+    "firstName": "Betty"
+  },
+  "workshop": {
+    "title": "Guided Workshop: Scarf",
+    "subtitle": "A focused 10-day finish plan for one real scarf project.",
+    "startDay": 1,
+    "status": "active"
+  },
+  "outline": {
+    "id": "finish-flow-scarf-v1",
+    "days": [
+      { "day": 1, "title": "Define the scarf", "goal": "Choose stitch, width, and finish line.", "released": true },
+      { "day": 2, "title": "Swatch for fabric", "goal": "Confirm tension and drape.", "released": false },
+      { "day": 3, "title": "Lock stitch + width", "goal": "Needle count and edges.", "released": false },
+      { "day": 4, "title": "Cast-on + setup", "goal": "Start cleanly.", "released": false },
+      { "day": 5, "title": "Establish rhythm", "goal": "Make steady progress.", "released": false },
+      { "day": 6, "title": "Midpoint check", "goal": "Catch issues early.", "released": false },
+      { "day": 7, "title": "Length decisions", "goal": "Finish intentionally.", "released": false },
+      { "day": 8, "title": "Bind-off plan", "goal": "Pick the right finish.", "released": false },
+      { "day": 9, "title": "Finishing + blocking", "goal": "Make it look done.", "released": false },
+      { "day": 10, "title": "Final review + next steps", "goal": "Wrap it up and set up what's next.", "released": false }
+    ]
+  },
+  "hub": {
+    "welcomeTitle": "Welcome, Betty",
+    "welcomeBody": "This is your private workshop hub. Use it to follow your 10-day plan and post updates so I can guide you step-by-step.",
+    "todayLabel": "You're on Day 1 right now.",
+    "showVideoReplyPlaceholder": true
+  },
+  "hyvor": {
+    "enabled": true,
+    "websiteId": "14706",
+    "pageId": "workshop-betty-scarf-hub"
+  },
+  "curriculum": {
+    "version": 1,
+    "days": [
+      {
+        "day": 1,
+        "title": "Define the scarf",
+        "shortDescription": "Choose stitch, width, and finish line.",
+        "estimatedTime": "15 min",
+        "release": { "mode": "relative", "dayOffset": 0 },
+        "blocks": [
+          {
+            "type": "richText",
+            "content": "Welcome to Day 1! Today we're making the decisions that set up your entire scarf.\n\n## What you'll decide today\n\n- **Stitch pattern** – What texture do you want? Garter stitch (ridged, same on both sides) or stockinette (smooth on one side, bumpy on the other)?\n- **Width** – How wide should your scarf be? Measure a scarf you love wearing.\n- **Finish line** – What's your target length? Most scarves range from 50\" to 72\"."
+          },
+          {
+            "type": "callout",
+            "style": "tip",
+            "title": "Pro tip",
+            "content": "Don't overthink it. A simple garter stitch scarf can be stunning, and it lies flat without curling."
+          },
+          {
+            "type": "checklist",
+            "title": "Today's tasks",
+            "items": [
+              { "text": "Choose your stitch pattern (garter or stockinette)", "isOptional": false },
+              { "text": "Decide on width (measure a scarf you love)", "isOptional": false },
+              { "text": "Set a target length", "isOptional": false },
+              { "text": "Post your decisions on the hub", "isOptional": true }
+            ]
+          },
+          {
+            "type": "richText",
+            "content": "## What to post\n\nHead to the hub and share:\n1. Your stitch choice\n2. Your target width and length\n3. Any questions you have\n\nI'll reply with feedback before Day 2 unlocks."
+          }
+        ]
+      },
+      {
+        "day": 2,
+        "title": "Swatch for fabric",
+        "shortDescription": "Confirm tension and drape.",
+        "estimatedTime": "30 min",
+        "release": { "mode": "relative", "dayOffset": 1 },
+        "blocks": [
+          {
+            "type": "richText",
+            "content": "Today is all about swatching. I know, I know – but trust me, this saves time later.\n\n## Why swatch?\n\nSwatching tells you:\n- How many stitches you need for your target width\n- Whether you like how the fabric feels\n- If your yarn and needles are a good match"
+          },
+          {
+            "type": "callout",
+            "style": "important",
+            "title": "Important",
+            "content": "Cast on at least 20 stitches and knit at least 20 rows. Smaller swatches lie about gauge."
+          },
+          {
+            "type": "richText",
+            "content": "## How to measure\n\n1. Lay your swatch flat (don't stretch it)\n2. Use a ruler to measure 4 inches across the middle\n3. Count how many stitches are in that 4 inches\n4. Divide by 4 to get your stitches per inch"
+          },
+          {
+            "type": "checklist",
+            "title": "Today's tasks",
+            "items": [
+              { "text": "Cast on 20+ stitches in your chosen stitch pattern", "isOptional": false },
+              { "text": "Knit 20+ rows", "isOptional": false },
+              { "text": "Bind off loosely and measure your gauge", "isOptional": false },
+              { "text": "Feel the fabric – do you like the drape?", "isOptional": false },
+              { "text": "Post a photo of your swatch on the hub", "isOptional": true }
+            ]
+          },
+          {
+            "type": "callout",
+            "style": "note",
+            "title": "If the fabric feels too stiff or too loose",
+            "content": "Go up a needle size for looser fabric, or down a size for tighter fabric. It's worth reswatching to get fabric you'll love wearing."
+          }
+        ]
+      }
+    ]
+  }
+}

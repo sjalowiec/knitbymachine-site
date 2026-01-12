@@ -1,0 +1,172 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export const prerender = false;
+
+const reason = Astro.url.searchParams.get('reason') || '';
+const returnTo = Astro.url.searchParams.get('returnTo') || '';
+
+type ReasonConfig = {
+  title: string;
+  message: string;
+  showContactHelp: boolean;
+};
+
+const reasonMessages: Record<string, ReasonConfig> = {
+  token: {
+    title: 'Access Link Required',
+    message: 'This workshop requires a private access link. Please use the link provided in your welcome email to access your workshop.',
+    showContactHelp: true,
+  },
+  pending: {
+    title: 'Workshop Coming Soon',
+    message: 'Your workshop is being prepared and will be available soon. You\'ll receive an email with your access link when it\'s ready.',
+    showContactHelp: true,
+  },
+  not_active: {
+    title: 'Workshop Unavailable',
+    message: 'This workshop is not currently available. Please contact us if you believe this is an error.',
+    showContactHelp: true,
+  },
+  error: {
+    title: 'Something Went Wrong',
+    message: 'We couldn\'t verify your access right now. Please try again in a moment, or contact us if the problem persists.',
+    showContactHelp: true,
+  },
+  default: {
+    title: 'Workshop Access',
+    message: 'Please use the access link from your welcome email to view this workshop.',
+    showContactHelp: true,
+  },
+};
+
+const config = reasonMessages[reason] || reasonMessages.default;
+---
+
+<BaseLayout title={config.title} description="Access your guided workshop">
+  <div class="access-container">
+    <div class="access-card">
+      <div class="access-icon">
+        {reason === 'pending' ? (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <polyline points="12 6 12 12 16 14"/>
+          </svg>
+        ) : reason === 'not_active' ? (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+        ) : (
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        )}
+      </div>
+      
+      <h1 class="access-title">{config.title}</h1>
+      
+      <p class="access-message">{config.message}</p>
+      
+      {config.showContactHelp && (
+        <div class="access-help">
+          <p>Need help?</p>
+          <a href="mailto:sue@knitbymachine.com" class="access-email">
+            sue@knitbymachine.com
+          </a>
+        </div>
+      )}
+      
+      <a href="/guided-workshops" class="access-link">
+        ← Browse all workshops
+      </a>
+    </div>
+  </div>
+  
+  <style>
+    .access-container {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+    
+    .access-card {
+      max-width: 420px;
+      text-align: center;
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(82, 104, 45, 0.15);
+      border-radius: 16px;
+      background: rgba(248, 250, 245, 0.5);
+    }
+    
+    .access-icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 1.5rem;
+      padding: 1rem;
+      border-radius: 50%;
+      background: rgba(82, 104, 45, 0.1);
+      color: #52682d;
+    }
+    
+    .access-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .access-title {
+      margin: 0 0 1rem;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+    
+    .access-message {
+      margin: 0 0 1.5rem;
+      font-size: 1rem;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    .access-help {
+      margin: 1.5rem 0;
+      padding: 1rem;
+      background: rgba(82, 104, 45, 0.05);
+      border-radius: 8px;
+    }
+    
+    .access-help p {
+      margin: 0 0 0.5rem;
+      font-size: 0.875rem;
+      color: #666;
+    }
+    
+    .access-email {
+      display: inline-block;
+      font-size: 1rem;
+      font-weight: 600;
+      color: #52682d;
+      text-decoration: none;
+    }
+    
+    .access-email:hover {
+      text-decoration: underline;
+    }
+    
+    .access-link {
+      display: inline-block;
+      margin-top: 1rem;
+      font-size: 0.875rem;
+      color: #888;
+      text-decoration: none;
+    }
+    
+    .access-link:hover {
+      color: #52682d;
+    }
+  </style>
+</BaseLayout>

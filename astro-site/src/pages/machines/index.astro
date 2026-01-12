@@ -1,0 +1,214 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import MachineCard from '../../components/machines/MachineCard.astro';
+import { getVisibleMachines, getUniqueGauges, getUniqueProductTypes } from '../../lib/machines/getMachineById';
+import { getAvailabilityInfo } from '../../lib/machines/availability';
+
+const machines = getVisibleMachines();
+const gauges = getUniqueGauges();
+const productTypes = getUniqueProductTypes();
+
+const productTypeLabels: Record<string, string> = {
+  'machine': 'Machines',
+  'bundle': 'Bundles',
+  'ribber': 'Ribbers'
+};
+---
+
+<BaseLayout 
+  title="Knitting Machines | Knit by Machine" 
+  description="Browse our selection of knitting machines. Find the perfect gauge for your projects."
+>
+  <div class="machines-page">
+    <header class="page-header">
+      <h1>Knitting Machines</h1>
+      <p>Find the right machine for your knitting journey. Filter by gauge or type to narrow your search.</p>
+    </header>
+
+    <div class="filters-section">
+      <div class="filters-row">
+        <div class="filter-group">
+          <label for="gauge-filter">Gauge</label>
+          <select id="gauge-filter">
+            <option value="">All Gauges</option>
+            {gauges.map((gauge) => (
+              <option value={gauge}>{gauge}</option>
+            ))}
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label for="type-filter">Type</label>
+          <select id="type-filter">
+            <option value="">All Types</option>
+            {productTypes.map((type) => (
+              <option value={type}>{productTypeLabels[type] || type}</option>
+            ))}
+          </select>
+        </div>
+
+        <button id="clear-filters" type="button">
+          Clear filters
+        </button>
+      </div>
+    </div>
+
+    <div id="machines-grid" class="machines-grid">
+      {machines.map((machine) => (
+        <MachineCard machine={machine} />
+      ))}
+    </div>
+
+    <p id="no-results" class="no-results" style="display: none;">
+      No machines match your filters. Try adjusting your selection.
+    </p>
+  </div>
+</BaseLayout>
+
+<style>
+  .machines-page {
+    padding: 2rem 0;
+  }
+
+  .page-header {
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1 {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .page-header p {
+    color: #6b7280;
+    font-size: 1.125rem;
+  }
+
+  .filters-section {
+    background: var(--kbm-bg);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .filters-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: 1rem;
+  }
+
+  .filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .filter-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+  }
+
+  .filter-group select {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    background: white;
+    min-width: 150px;
+  }
+
+  .filter-group select:focus {
+    outline: none;
+    border-color: var(--kbm-green);
+    box-shadow: 0 0 0 2px rgba(82, 104, 45, 0.2);
+  }
+
+  #clear-filters {
+    background: none;
+    border: none;
+    color: var(--kbm-green);
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 0.5rem 0;
+  }
+
+  #clear-filters:hover {
+    text-decoration: underline;
+  }
+
+  .machines-grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 640px) {
+    .machines-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .machines-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .no-results {
+    text-align: center;
+    color: #6b7280;
+    padding: 3rem 0;
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    var gaugeFilter = document.getElementById('gauge-filter');
+    var typeFilter = document.getElementById('type-filter');
+    var clearFiltersBtn = document.getElementById('clear-filters');
+    var machinesGrid = document.getElementById('machines-grid');
+    var noResults = document.getElementById('no-results');
+    
+    function filterMachines() {
+      var gaugeValue = gaugeFilter ? gaugeFilter.value : '';
+      var typeValue = typeFilter ? typeFilter.value : '';
+      
+      var cards = machinesGrid ? machinesGrid.querySelectorAll('.machine-card') : [];
+      var visibleCount = 0;
+      
+      cards.forEach(function(card) {
+        var cardGauge = card.dataset.gauge || '';
+        var cardType = card.dataset.type || '';
+        
+        var matchesGauge = !gaugeValue || cardGauge === gaugeValue;
+        var matchesType = !typeValue || cardType === typeValue;
+        
+        if (matchesGauge && matchesType) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+      
+      if (noResults) {
+        noResults.style.display = visibleCount > 0 ? 'none' : 'block';
+      }
+      if (machinesGrid) {
+        machinesGrid.style.display = visibleCount === 0 ? 'none' : '';
+      }
+    }
+    
+    function clearFilters() {
+      if (gaugeFilter) gaugeFilter.value = '';
+      if (typeFilter) typeFilter.value = '';
+      filterMachines();
+    }
+    
+    if (gaugeFilter) gaugeFilter.addEventListener('change', filterMachines);
+    if (typeFilter) typeFilter.addEventListener('change', filterMachines);
+    if (clearFiltersBtn) clearFiltersBtn.addEventListener('click', clearFilters);
+  });
+</script>

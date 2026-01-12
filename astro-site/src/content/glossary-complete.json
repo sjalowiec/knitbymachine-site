@@ -1,0 +1,56 @@
+[
+  {
+    "term": "Ease",
+    "abbreviation": "",
+    "description": "The extra room added to a garment beyond body measurements to allow for comfort and movement. Positive ease means the garment is larger than body measurements; negative ease means it's smaller, creating a fitted look.",
+    "tooltip": "Ease is the extra room added to a garment for comfort or style.",
+    "example": "A sweater with 2-4 inches of positive ease at the bust will fit comfortably with room to move, while a sweater with negative ease will hug the body closely.",
+    "categories": [
+      "Techniques",
+      "Measurements"
+    ],
+    "letter": "E",
+    "tags": [
+      "fit",
+      "sizing",
+      "comfort"
+    ],
+    "imageFilename": "gauge-swatch.webp",
+    "gifFilename": "",
+    "imageAlt": "Diagram showing positive and negative ease on a sweater",
+    "schemaMarkup": "{\"@context\":\"https://schema.org\",\"@type\":\"DefinedTerm\",\"name\":\"Ease\",\"description\":\"The extra room added to a garment beyond body measurements to allow for comfort and movement. Positive ease means the garment is larger than body measurements; negative ease means it's smaller, creating a fitted look.\"}",
+    "slug": "ease",
+    "anaId": "",
+    "workshopId": "",
+    "promoText": "",
+    "isDraft": false,
+    "publishedDate": "2024-11-07"
+  },
+  {
+    "term": "Gauge",
+    "abbreviation": "",
+    "description": "The number of stitches and rows per inch in your knitting, determined by your needle size, yarn weight, and knitting tension. Gauge must match the pattern's specifications for the finished garment to fit properly.",
+    "tooltip": "Gauge is the number of stitches and rows per inch in knitting.",
+    "example": "If a pattern calls for 20 stitches and 28 rows to equal 4 inches in stockinette stitch, you must knit a gauge swatch to ensure your knitting matches these measurements.",
+    "categories": [
+      "Techniques",
+      "Measurements"
+    ],
+    "letter": "G",
+    "tags": [
+      "swatch",
+      "tension",
+      "sizing"
+    ],
+    "imageFilename": "gauge-swatch.webp",
+    "gifFilename": "",
+    "imageAlt": "Close-up of a knitted gauge swatch with measuring tape",
+    "schemaMarkup": "{\"@context\":\"https://schema.org\",\"@type\":\"DefinedTerm\",\"name\":\"Gauge\",\"description\":\"The number of stitches and rows per inch in your knitting, determined by your needle size, yarn weight, and knitting tension. Gauge must match the pattern's specifications for the finished garment to fit properly.\"}",
+    "slug": "gauge",
+    "anaId": "",
+    "workshopId": "",
+    "promoText": "",
+    "isDraft": false,
+    "publishedDate": "2024-11-07"
+  }
+]

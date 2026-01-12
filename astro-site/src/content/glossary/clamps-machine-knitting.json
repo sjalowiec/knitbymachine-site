@@ -1,0 +1,57 @@
+{
+  "term": "Clamp",
+  "slug": "clamps-machine-knitting",
+  "abbreviation": "",
+  "description": "<p><strong>Knitting machine clamps</strong> are hardware attachments used to secure a flat bed knitting machine to a sturdy table or work surface. They help hold the machine steady during knitting.<br>If your machine shifts while knitting, <strong>knitting machine clamps</strong> can help stabilize it on the table. </p>",
+  "tooltip": " used to secure a flat bed knitting machine to a sturdy table or work surface",
+  "example": "<p><strong>Knitting machine clamps:</strong> Hardware used to secure a flat bed knitting machine to a sturdy table.</p>",
+  "categories": [
+    "Machine Parts & Accessories",
+    "General Terms"
+  ],
+  "letter": "C",
+  "imageFilename": "/images/glossary/knitting-machine-clamps.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": {
+    "@graph": [
+      {
+        "name": "Knitting Machine Clamps",
+        "@type": "DefinedTerm",
+        "description": "Hardware used to secure a flat bed knitting machine to a sturdy table or work surface, helping keep the machine stable during knitting.",
+        "inDefinedTermSet": {
+          "url": "https://knitbymachine.com/glossary",
+          "name": "Machine Knitting Glossary",
+          "@type": "DefinedTermSet"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "name": "What are knitting machine clamps?",
+            "@type": "Question",
+            "acceptedAnswer": {
+              "text": "Knitting machine clamps are hardware attachments used to secure a flat bed knitting machine to a sturdy table so it stays stable during knitting.",
+              "@type": "Answer"
+            }
+          }
+        ]
+      }
+    ],
+    "@context": "https://schema.org"
+  },
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [
+    "machine-basics"
+  ],
+  "isDraft": false,
+  "publishedDate": "2026-01-06T00:00:00.000Z",
+  "pendingPublish": false
+}

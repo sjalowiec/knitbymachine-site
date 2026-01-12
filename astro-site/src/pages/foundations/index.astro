@@ -1,0 +1,179 @@
+---
+/**
+ * Foundations List Page
+ * Displays a grid of published foundations
+ */
+export const prerender = false;
+
+import Layout from "../../layouts/layout.astro";
+import { getPublishedFoundations } from "../../lib/foundations";
+import "../../styles/global.css";
+
+const foundations = await getPublishedFoundations();
+---
+
+<Layout>
+  <div class="foundations-container">
+    <header class="foundations-header">
+      <h1 class="foundations-title" data-testid="heading-foundations">Foundations</h1>
+      <p class="foundations-intro">
+        Short, focused building blocks you can reference anytime.
+      </p>
+    </header>
+
+    {foundations.length === 0 ? (
+      <div class="foundations-empty" data-testid="empty-state">
+        <p>No foundations published yet. Check back soon!</p>
+      </div>
+    ) : (
+      <div class="foundations-grid" data-testid="foundations-grid">
+        {foundations.map((foundation) => (
+          <a 
+            href={`/foundations/${foundation.slug}`} 
+            class="foundation-card hover-elevate"
+            data-testid={`card-foundation-${foundation.slug}`}
+          >
+            {/* 
+              IMAGE UPLOAD NOTE:
+              Put foundation images in `public/images/foundations/<slug>/...`
+              and store the path in the admin field as `/images/foundations/<slug>/<file>`.
+            */}
+            {foundation.heroImageSrc && (
+              <div class="foundation-image">
+                <img 
+                  src={foundation.heroImageSrc} 
+                  alt={foundation.title}
+                  loading="lazy"
+                />
+              </div>
+            )}
+            <div class="foundation-content">
+              <h2 class="foundation-title">{foundation.title}</h2>
+              {foundation.subtitle && (
+                <p class="foundation-subtitle">{foundation.subtitle}</p>
+              )}
+              {foundation.summary && (
+                <p class="foundation-summary">{foundation.summary}</p>
+              )}
+            </div>
+          </a>
+        ))}
+      </div>
+    )}
+  </div>
+</Layout>
+
+<style>
+  .foundations-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+
+  .foundations-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .foundations-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #2c3a57;
+    margin: 0 0 0.75rem 0;
+  }
+
+  .foundations-intro {
+    font-size: 1.25rem;
+    color: #5a6c7d;
+    margin: 0;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .foundations-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: #f8f9fa;
+    border-radius: 16px;
+    color: #5a6c7d;
+  }
+
+  .foundations-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .foundation-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(82, 104, 45, 0.08);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .foundation-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(82, 104, 45, 0.15);
+  }
+
+  .foundation-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+  }
+
+  .foundation-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .foundation-card:hover .foundation-image img {
+    transform: scale(1.05);
+  }
+
+  .foundation-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .foundation-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2c3a57;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .foundation-subtitle {
+    font-size: 1rem;
+    color: #52682d;
+    margin: 0 0 0.75rem 0;
+    font-weight: 500;
+  }
+
+  .foundation-summary {
+    font-size: 0.95rem;
+    color: #5a6c7d;
+    margin: 0;
+    line-height: 1.6;
+    flex: 1;
+  }
+
+  @media (max-width: 768px) {
+    .foundations-title {
+      font-size: 2rem;
+    }
+
+    .foundations-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
