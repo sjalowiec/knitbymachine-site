@@ -2,14 +2,14 @@
   "term": "Working position",
   "slug": "working-position",
   "abbreviation": "WP",
-  "description": "<p><strong>Working position</strong> refers to the needle position that allows stitches to be formed during knitting. Needles in working position are actively engaged by the carriage so yarn is laid into the hooks and loops are created.</p>\n<p>This is the opposite of an out-of-work needle, which is positioned so it does not knit.</p>",
+  "description": "<p><strong>Working position</strong> refers to the needle position that allows stitches to be formed during knitting. Needles in working position are actively engaged by the carriage so yarn is laid into the hooks and loops are created.</p><p>This is the opposite of an out-of-work needle, which is positioned so it does not knit.</p>",
   "tooltip": "Needle position that allows stitches to be formed. Opposite of out-of-work needle",
   "example": "<p>Put every other needle in working position, leaving the remaining needles out of work.</p>",
   "categories": [
     "Machine Parts & Accessories"
   ],
   "letter": "W",
-  "imageFilename": "/images/glossary/knitting-machine-needle-position.webp",
+  "imageFilename": "knitting-machine-needle-position.webp",
   "imageAlt": "",
   "gifFilename": "",
   "videoUrl": "",

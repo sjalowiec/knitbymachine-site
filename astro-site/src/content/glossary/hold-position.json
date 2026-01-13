@@ -4,13 +4,13 @@
   "abbreviation": "HP",
   "description": "<p><strong>Hold position</strong> refers to needles that are pulled fully forward so they do not knit, even though they remain engaged with the yarn. Depending on the machine brand, this is typically <strong>Position E or D</strong>.</p><p>With the correct carriage setting, needles in hold position retain existing stitches but do not form new ones until they are returned to a working position.</p>",
   "tooltip": "A needle position where needles are pulled fully forward",
-  "example": "<p>Put into hold position the first 5 needles on the armhole side</p>",
+  "example": "Put into hold position the first 5 needles on the armhole side",
   "categories": [
     "Machine Parts & Accessories",
     "General Terms"
   ],
   "letter": "H",
-  "imageFilename": "/images/glossary/knitting-machine-needle-position-3.webp",
+  "imageFilename": "knitting-machine-needle-position-3.webp",
   "imageAlt": "",
   "gifFilename": "",
   "videoUrl": "",

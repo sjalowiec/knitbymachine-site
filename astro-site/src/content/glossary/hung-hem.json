@@ -1,0 +1,27 @@
+{
+  "term": "Hung Hem",
+  "slug": "hung-hem",
+  "abbreviation": "",
+  "description": "<p>A <strong>hung hem</strong> is a machine knitting finishing technique where the initial rows of knitting are folded up and re-hung onto the needles, creating a clean, double-layered hem.</p><p>The fold is formed at a designated <em>turning row</em>, producing a crisp edge without sewing. Once re-hung, knitting continues as a single fabric layer, permanently enclosing the raw cast-on edge.</p><p>Hung hems are commonly used on garments, cuffs, waistbands, and necklines, especially on standard gauge machines. They provide structure, durability, and a professional appearance while remaining highly adaptable through variations in depth, tension, and stitch pattern.</p>",
+  "tooltip": "A folded, double-layer hem made by re-hanging earlier stitches onto the needles.",
+  "example": "<p>A hung hem is often used at the bottom of a sweater to create a neat, stable edge without sewing. By adjusting the number of rows before the turning row, you can control the hem depth.</p>",
+  "categories": [
+    "Techniques"
+  ],
+  "letter": "H",
+  "imageFilename": "hung-hem.webp",
+  "imageAlt": "",
+  "gifFilename": "",
+  "videoUrl": "",
+  "isMemberOnly": false,
+  "schemaMarkup": null,
+  "active": true,
+  "anaId": "",
+  "workshopId": "",
+  "promoText": "",
+  "relatedTerms": [],
+  "tags": [],
+  "isDraft": false,
+  "publishedDate": "2026-01-13T00:00:00.000Z",
+  "pendingPublish": false
+}
