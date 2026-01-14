@@ -160,6 +160,15 @@ if (!entry) {
       color: #1f2937;
       margin: 0 0 0.75rem;
       line-height: 1.2;
+      display: flex;
+      align-items: baseline;
+      gap: 0.5rem;
+    }
+
+    .term-title .abbreviation {
+      font-size: 0.6em;
+      opacity: 0.75;
+      white-space: nowrap;
     }
 
     .term-tooltip {
@@ -432,7 +441,12 @@ if (!entry) {
       )}
 
       <div class="content-column">
-        <h1 class="term-title">{entry.term}</h1>
+        <h1 class="term-title">
+          {entry.term}
+          {entry.abbreviation && (
+            <span class="abbreviation">({entry.abbreviation})</span>
+          )}
+        </h1>
         {entry.tooltip && <p class="term-tooltip"><em>{entry.tooltip}</em></p>}
 
         <div class="term-description" set:html={entry.description} />
