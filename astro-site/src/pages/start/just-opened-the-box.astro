@@ -33,9 +33,21 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
       <p class="jotb-promise" data-testid="text-promise">
         You're about to take your first real step with your knitting machine — no overwhelm, just clear next moves.
       </p>
-      <p class="jotb-start-here" data-testid="text-start-here">
-        <strong>Start here:</strong> Set up and yarn
-      </p>
+      <div class="jotb-header-cta" data-testid="section-primary-cta">
+        <a
+          class="jotb-btn-primary jotb-btn-block"
+          href="#wizard-wf-5ihf4x"
+          data-testid="button-start-setup-check"
+        >
+          Start the Setup Check
+        </a>
+        <p class="jotb-helper-text jotb-helper-text--small" data-testid="text-cta-helper">
+          5 quick questions · about 2 minutes
+        </p>
+        <p class="jotb-supporting-text" data-testid="text-supporting">
+          Answer 5 quick questions to confirm your setup before you begin knitting.
+        </p>
+      </div>
     </header>
 <div id="wizard-wf-5ihf4x"></div>
 <script type="module" src="/scripts/wizards/wf-5ihf4x.js"></script>
@@ -76,6 +88,14 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     margin-bottom: 0.75rem;
   }
 
+  .jotb-header-cta {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
   .jotb-promise {
     font-size: 1.1rem;
     color: #5a6b40;
@@ -84,16 +104,12 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     max-width: 700px;
   }
 
-  .jotb-start-here {
-    margin-top: 0.5rem;
-    font-size: 0.98rem;
-    line-height: 1.35;
-    opacity: 0.95;
-    color: #5a6b40;
-  }
-
-  .jotb-start-here strong {
-    font-weight: 700;
+  .jotb-supporting-text {
+    margin: 0.1rem 0 0;
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: #4a5739;
+    text-align: center;
   }
 
   .jotb-first-step {
@@ -399,6 +415,12 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   }
 
+  .jotb-btn-block {
+    width: 100%;
+    max-width: 260px;
+    text-align: center;
+  }
+
   .jotb-btn-primary:hover {
     background-color: #52682d;
     transform: translateY(-2px);
@@ -410,6 +432,11 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
     color: #6b7a58;
     margin-top: 0.75rem;
     font-style: italic;
+  }
+
+  .jotb-helper-text--small {
+    font-size: 0.85rem;
+    margin-top: 0.15rem;
   }
 
   /* Text Section (Section 4) */
@@ -769,11 +796,6 @@ const castonTranscript = eWrapVideo?.body ? await marked.parse(eWrapVideo.body) 
 
     .jotb-header h1 {
       font-size: 1.75rem;
-    }
-
-    .jotb-start-here {
-      margin-top: 0.4rem;
-      font-size: 0.95rem;
     }
 
     .jotb-first-step {
