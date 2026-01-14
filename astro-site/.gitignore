@@ -28,4 +28,4 @@ Thumbs.db
 # Local Netlify folder
 .netlify
 .config/
-.local/
+.local/ 
