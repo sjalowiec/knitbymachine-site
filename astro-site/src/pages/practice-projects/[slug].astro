@@ -5,6 +5,12 @@ import { toVimeoPlayerUrl, getVimeoThumbnailUrl } from '../../lib/vimeo';
 export const prerender = false;
 
 const { slug } = Astro.params;
+// TEMP paywall (preview): only gate the Gauge Swatch skill builder
+const isGaugeSwatch = slug === 'Gauge-swatch';
+
+// TEMP: force paywall on so you can preview it
+// Next step: replace with Outseta tag check
+const hasAccess = false;
 
 let contentPage = null;
 let errorMessage = '';
@@ -182,13 +188,34 @@ if (videoUrl) {
           </div>
         </div>
 
-        {htmlContent ? (
-          <div class="project-body" data-testid="content-body" set:html={htmlContent} />
-        ) : (
-          <div class="project-body-empty">
-            <p>Content is being prepared. Check back soon!</p>
+        {/* Paywall block (only for Gauge-swatch when no access) */}
+        {isGaugeSwatch && !hasAccess && !!htmlContent ? (
+          <div class="paywall no-print" data-testid="paywall">
+            <h2 class="paywall__title">Unlock this Skill Builder</h2>
+            <p class="paywall__price">$12 • Pay once • Reuse anytime</p>
+              <a href="#"class="paywall__button" onclick="alert('Preview only: connect this button to Outseta checkout.'); return false;"data-testid="button-unlock">
+                Unlock now
+              </a>
+            <p class="paywall__note">
+              Already purchased? Sign in to access this Skill Builder.
+              </p>
           </div>
-        )}
+) : null}
+
+{/* Main content (hidden when gated) */}
+{htmlContent ? (
+  <div
+    class="project-body"
+    data-testid="content-body"
+    set:html={htmlContent}
+    style={isGaugeSwatch && !hasAccess ? 'display:none' : undefined}
+  />
+) : (
+  <div class="project-body-empty">
+    <p>Content is being prepared. Check back soon!</p>
+  </div>
+)}
+
       </article>
 
       <footer class="project-footer no-print">
@@ -529,6 +556,50 @@ if (videoUrl) {
     height: auto;
     border-radius: 12px;
     margin: 1.5rem 0;
+  }
+  .paywall {
+    margin: 1.25rem 0 0;
+    padding: 1.25rem 1.25rem;
+    border: 1px solid var(--ring, #e5e8e0);
+    border-radius: 14px;
+    background: #f7faf2;
+  }
+
+  .paywall__title {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--kbm-green, #52682D);
+  }
+
+  .paywall__price {
+    margin: 0 0 1rem 0;
+    color: #4b5b4b;
+    font-weight: 600;
+  }
+
+  .paywall__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--kbm-green, #52682D);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    padding: 0.75rem 1.1rem;
+    border-radius: 10px;
+    transition: background 0.2s ease, transform 0.15s ease;
+  }
+
+  .paywall__button:hover {
+    background: var(--kbm-green-hover, #445626);
+    transform: translateY(-1px);
+  }
+
+  .paywall__note {
+    margin: 0.85rem 0 0 0;
+    color: #556;
+    font-size: 0.95rem;
   }
 
   .project-body :global(a) {
