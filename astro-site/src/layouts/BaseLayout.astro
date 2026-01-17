@@ -68,13 +68,12 @@ const { title = "Knit by Machine", description = "Machine knitting tools and pat
     />
 
     <!-- Outseta Quickstart -->
-    <script is:inline>
-    var o_options = {
-        domain: 'knitbymachinecom.outseta.com',
-        load: 'auth,customForm,emailList,leadCapture,nocode,profile,support'
-    };
-    </script>
-    <script src="https://cdn.outseta.com/outseta.min.js" data-options="o_options"></script>
+    <script
+  src="https://cdn.outseta.com/outseta.min.js"
+  data-options='{"domain":"knitbymachinecom"}'
+  defer>
+</script>
+
     
     <slot name="head" />
   </head>
