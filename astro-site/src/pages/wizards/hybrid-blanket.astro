@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 
 export const prerender = true;
 
-const STRIPE_URL = "PASTE_STRIPE_PAYMENT_LINK_HERE";
+const STRIPE_URL = "https://buy.stripe.com/cNidR85hQcCL5Hg9Oq0oM00";
 
 const title = "Hybrid Blanket Pattern | Knit by Machine";
 const description =
@@ -21,17 +21,23 @@ const description =
       --border:#e5e7eb;
       --shadow:0 10px 30px rgba(0,0,0,.08);
       --radius:18px;
-      --max:860px;
+      --max:980px;
       --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      --tab-bg:#fbfbf9;
+      --hint-bg: rgba(82,104,45,.08);
+      --hint-border: rgba(82,104,45,.22);
     }
     *{box-sizing:border-box}
 
     .page-wrap{
       max-width:var(--max);
       margin:0 auto;
-      padding:34px 18px 60px;
+      padding:34px 18px 90px;
+      font-family: var(--font);
+      color: var(--text);
     }
 
+    /* --- HERO (keep what you have) --- */
     .hero{
       background:var(--surface);
       border:1px solid var(--border);
@@ -39,16 +45,12 @@ const description =
       box-shadow:var(--shadow);
       padding:28px;
     }
-
     .hero-image{
       margin:-28px -28px 20px;
       border-radius:var(--radius) var(--radius) 0 0;
       overflow:hidden;
     }
-    .hero-image img{
-      width:100%;
-      display:block;
-    }
+    .hero-image img{ width:100%; display:block; }
     .hero-image figcaption{
       background:#111827;
       color:#fff;
@@ -66,6 +68,8 @@ const description =
       color:var(--muted);
       margin:0 0 20px;
     }
+    .lead p{margin:8px 0;}
+    .muted{color:var(--muted);}
 
     .btn{
       display:inline-flex;
@@ -86,39 +90,400 @@ const description =
       margin:24px 0;
     }
 
-    .lead p{margin:8px 0;}
-    .muted{color:var(--muted);}
-
-    .grid{
-      display:grid;
-      gap:18px;
-      margin-top:24px;
-    }
-    @media(min-width:860px){
-      .grid{grid-template-columns:1fr 1fr;}
+    /* --- TABS SHELL --- */
+    .tabs-shell{
+      margin-top: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow: hidden;
     }
 
+    .tabbar{
+      display:flex;
+      gap:6px;
+      padding: 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--tab-bg);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .tabbtn{
+      appearance:none;
+      border:1px solid var(--border);
+      background:#fff;
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 750;
+      font-size: 14px;
+      cursor: pointer;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      transition: transform .04s ease, border-color .15s ease, background .15s ease;
+    }
+    .tabbtn:active{ transform: translateY(1px); }
+    .tabbtn[aria-selected="true"]{
+      border-color: rgba(82,104,45,.45);
+      background: rgba(82,104,45,.10);
+      color: #0f1408;
+    }
+    .tabbtn:focus-visible{
+      outline: 3px solid rgba(82,104,45,.35);
+      outline-offset: 2px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:50%;
+      background: rgba(82,104,45,.35);
+      display:inline-block;
+    }
+    .tabbtn[aria-selected="true"] .dot{ background: var(--kbm-green); }
+
+    .panels{ padding: 16px; }
+    .panel{ display:none; }
+    .panel[data-active="true"]{ display:block; }
+
+    /* --- CARDS / CONTENT --- */
     .card{
       background:var(--surface);
       border:1px solid var(--border);
       border-radius:var(--radius);
       padding:20px;
     }
-    ul{padding-left:18px;margin:10px 0;}
-    li{margin:8px 0;}
 
-    .note{
-      font-size:13px;
-      color:var(--muted);
+    /* --- PATTERN TAB LAYOUT --- */
+    .pattern-grid{
+      display:grid;
+      grid-template-columns: 1.35fr .65fr;
+      gap: 14px;
+      align-items:start;
+    }
+    @media (max-width: 960px){
+      .pattern-grid{ grid-template-columns: 1fr; }
+    }
+
+    .pattern-title-row{
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .status{
+      font-size: 12px;
+      color: var(--muted);
+      white-space:nowrap;
+    }
+
+    .pattern-block{
+      background:#fbfbf9;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+    }
+    .section{
+      padding: 10px 0;
+      border-top: 1px dashed #ecece7;
+    }
+    .section:first-of-type{ border-top: none; padding-top: 0; }
+    .section h3{
+      margin: 0 0 8px;
+      font-size: 15px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap: wrap;
+    }
+    .section ul{ padding-left:18px; margin:0; }
+    .section li{ margin: 6px 0; }
+    .kv{ font-weight: 800; }
+
+    /* --- INPUTS PANEL (DESKTOP/TABLET) --- */
+    .inputs{
+      position: sticky;
+      top: 72px; /* below sticky tabbar */
+    }
+    @media (max-width: 960px){
+      .inputs{ display:none; }
+    }
+
+    .formgrid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    label{
+      display:block;
+      font-size: 13px;
+      font-weight: 750;
+      margin: 0 0 6px;
+    }
+    input, select{
+      width:100%;
+      padding: 11px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background:#fff;
+      font-size: 14px;
+    }
+    .help{
+      font-size: 12px;
+      color: var(--muted);
+      margin: 6px 0 0;
+    }
+
+    /* --- Resources pills + tooltip --- */
+    .resource-link{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 12px;
+      font-weight: 750;
+      color: #0f1408;
+      background: var(--hint-bg);
+      border: 1px solid var(--hint-border);
+      border-radius: 999px;
+      padding: 6px 10px;
+      cursor: pointer;
+      text-decoration:none;
+      user-select:none;
+    }
+    .ico{
+      width:18px;height:18px;
+      display:inline-grid;
+      place-items:center;
+      border-radius: 6px;
+      background: rgba(82,104,45,.14);
+      color: var(--kbm-green);
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .tip{
+      position: relative;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+    }
+    .tip[data-tip]:hover::after,
+    .tip[data-tip]:focus-visible::after{
+      content: attr(data-tip);
+      position:absolute;
+      right: 0;
+      top: calc(100% + 8px);
+      width: min(340px, 80vw);
+      background: #111;
+      color: #fff;
+      font-size: 12px;
+      line-height: 1.35;
+      padding: 10px 12px;
+      border-radius: 12px;
+      box-shadow: 0 14px 30px rgba(0,0,0,.18);
+      z-index: 20;
+    }
+    .tip[data-tip]:hover::before,
+    .tip[data-tip]:focus-visible::before{
+      content:"";
+      position:absolute;
+      right: 18px;
+      top: calc(100% + 2px);
+      border: 7px solid transparent;
+      border-bottom-color: #111;
+      z-index: 21;
+    }
+
+    /* --- MOBILE: bottom bar + drawer --- */
+    .mobile-controls{ display:none; }
+    @media (max-width: 960px){
+      .mobile-controls{
+        display:flex;
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 10px 12px;
+        background: rgba(247,246,242,.92);
+        backdrop-filter: blur(10px);
+        border-top: 1px solid var(--border);
+        z-index: 50;
+      }
+      .mobile-controls .bar{
+        width: 100%;
+        max-width: var(--max);
+        margin: 0 auto;
+        display:flex;
+        gap: 10px;
+        align-items:center;
+      }
+      .btn2{
+        appearance:none;
+        border: 1px solid var(--border);
+        background:#fff;
+        padding: 12px 14px;
+        border-radius: 999px;
+        font-weight: 800;
+        cursor:pointer;
+        flex: 1;
+      }
+      .btn2.primary{
+        border-color: rgba(82,104,45,.35);
+        background: rgba(82,104,45,.10);
+      }
+    }
+
+    .drawer-backdrop{
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.35);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .18s ease;
+      z-index: 60;
+    }
+    .drawer-backdrop[data-open="true"]{
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .drawer{
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: #fff;
+      border-top-left-radius: 22px;
+      border-top-right-radius: 22px;
+      border-top: 1px solid var(--border);
+      box-shadow: 0 -18px 40px rgba(0,0,0,.18);
+      z-index: 70;
+      max-height: 78vh;
+      display:flex;
+      flex-direction: column;
+      transform: translateY(100%);
+      transition: transform .22s ease;
+    }
+    .drawer[data-open="true"]{ transform: translateY(0%); }
+    .drawer-header{
+      padding: 10px 14px 8px;
+      border-bottom: 1px solid var(--border);
+      display:flex;
+      align-items:center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .grab{
+      width: 44px;
+      height: 5px;
+      border-radius: 999px;
+      background: #ddd;
+      margin: 8px auto 0;
+    }
+    .drawer-header h3{
+      margin:0;
+      font-size: 14px;
+      letter-spacing: -0.01em;
+    }
+    .drawer-close{
+      appearance:none;
+      border:1px solid var(--border);
+      background:#fff;
+      padding: 8px 12px;
+      border-radius: 999px;
+      cursor:pointer;
+      font-weight: 800;
+    }
+    .drawer-body{
+      padding: 12px 14px 18px;
+      overflow:auto;
+    }
+
+    /* --- RESOURCES PANEL BASIC GRID (optional) --- */
+    .res-grid{
+      display:grid;
+      gap: 14px;
+    }
+    @media(min-width: 960px){
+      .res-grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    /* --- PRINT (premium) --- */
+    .print-only{ display:none; }
+
+    @media print {
+      .tabbar,
+      .inputs,
+      .mobile-controls,
+      .drawer,
+      .drawer-backdrop,
+      .resource-link,
+      .tip::before,
+      .tip::after{
+        display:none !important;
+      }
+
+      html, body{
+        background:#fff !important;
+        color:#000 !important;
+      }
+
+      /* If your site header/footer have classes, hide them */
+      header.site-header,
+      footer.site-footer,
+      .site-header,
+      .site-footer{
+        display:none !important;
+      }
+
+      .page-wrap{ padding:0 !important; max-width:none !important; margin:0 !important; }
+      .hero, .tabs-shell, .card{
+        box-shadow:none !important;
+        border:none !important;
+        background:transparent !important;
+      }
+      .panels{ padding:0 !important; }
+
+      #panel-pattern{ display:block !important; }
+      #panel-resources, #panel-discussion, #panel-inspiration{ display:none !important; }
+
+      .pattern-grid{ display:block !important; }
+      .pattern-block{ border:none !important; padding:0 !important; background:transparent !important; }
+
+      .print-only{
+        display:block !important;
+        margin: 0 0 12pt !important;
+      }
+      .print-meta{
+        font-size:10pt !important;
+        line-height:1.35 !important;
+        padding-bottom:8pt !important;
+        border-bottom:1px solid #ddd !important;
+      }
+
+      h1{ font-size: 20pt !important; margin:0 0 10pt !important; }
+      .subhead{ font-size: 11pt !important; margin:0 0 14pt !important; color:#000 !important; }
+
+      .section{
+        border-top: 1px solid #ddd !important;
+        padding: 10pt 0 !important;
+        page-break-inside: avoid;
+      }
+      .section h3{ font-size:12pt !important; margin:0 0 6pt !important; }
+      .section li{ margin:4pt 0 !important; }
+
+      a{ color:#000 !important; text-decoration:none !important; }
     }
   </style>
 
   <main class="page-wrap">
+    <!-- SALES / INTRO HERO -->
     <article class="hero">
       <figure class="hero-image">
         <img src="/images/blanket.webp" alt="Ruffled blanket edge caused by incorrect stitch math" />
         <figcaption>
-          <strong>The "Ruffle" Problem:</strong> This happens when the math is wrong. My pattern fixes this.
+          <strong>The “Ruffle” Problem:</strong> This happens when the math is wrong. My pattern fixes this.
         </figcaption>
       </figure>
 
@@ -138,63 +503,621 @@ const description =
       </div>
     </article>
 
-    <section class="grid">
-      <div class="card">
-        <h2>What this pattern lets you do</h2>
-        <ul>
-          <li>Combine <strong>hand-knit borders</strong> with a <strong>machine-knit body</strong></li>
-          <li>Use <strong>different stitch patterns</strong> for top/bottom borders and center</li>
-          <li>Keep blanket edges <strong>straight and stable</strong></li>
-          <li>Skip stitch-count recalculations</li>
-          <li>Focus on knitting, not math</li>
-        </ul>
+    <!-- NEW: TABS + PATTERN TOOL -->
+    <section class="tabs-shell" aria-label="Hybrid Blanket pattern tabs">
+      <div class="tabbar" role="tablist" aria-label="Pattern tabs">
+        <button class="tabbtn" role="tab" id="tab-pattern" aria-controls="panel-pattern" aria-selected="true" type="button">
+          <span class="dot" aria-hidden="true"></span> Pattern
+        </button>
+        <button class="tabbtn" role="tab" id="tab-resources" aria-controls="panel-resources" aria-selected="false" type="button">
+          <span class="dot" aria-hidden="true"></span> Resources
+        </button>
+        <button class="tabbtn" role="tab" id="tab-discussion" aria-controls="panel-discussion" aria-selected="false" type="button">
+          <span class="dot" aria-hidden="true"></span> Discussion
+        </button>
+        <button class="tabbtn" role="tab" id="tab-inspiration" aria-controls="panel-inspiration" aria-selected="false" type="button">
+          <span class="dot" aria-hidden="true"></span> Inspiration
+        </button>
       </div>
 
-      <div class="card">
-        <h2>Why this works</h2>
-        <p>
-          The pattern handles the stitch and row transitions that normally cause distortion.
-          You follow the structure. The edges behave.
-        </p>
-        <ul>
-          <li>No spreadsheets</li>
-          <li>No re-engineering</li>
-          <li>No trial-and-error</li>
-        </ul>
-      </div>
+      <div class="panels">
+        <!-- PATTERN TAB -->
+        <section class="panel" id="panel-pattern" role="tabpanel" aria-labelledby="tab-pattern" data-active="true">
+          <div class="pattern-grid">
 
-      <div class="card" style="border-left:4px solid var(--kbm-green);">
-        <h2>What you get</h2>
-        <ul>
-          <li><strong>The Ratio:</strong> The exact numbers for hand-to-machine transitions.</li>
-          <li><strong>The Layout:</strong> A stable structure for any size blanket.</li>
-          <li><strong>The Result:</strong> Straight edges, even with different stitch patterns.</li>
-        </ul>
-      </div>
+            <!-- LEFT: PREVIEW -->
+            <div class="card">
+              <div class="pattern-title-row">
+                <h2 style="margin:0;">Your pattern (preview)</h2>
+                <div class="status" id="statusText">Using default settings</div>
+              </div>
 
-      <div class="card" style="background:#f9fafb;">
-        <h2>What it isn't</h2>
-        <ul style="opacity:0.8;">
-          <li>No 2-hour video courses.</li>
-          <li>No complex spreadsheets.</li>
-          <li>No "theory" — just the pattern.</li>
-        </ul>
-      </div>
-    </section>
+              <!-- print-only header/meta -->
+              <div class="print-only">
+                <div class="print-meta">
+                  <strong>Hybrid Blanket Pattern</strong><br />
+                  Width: <span id="pmWidth">40</span> in • Length: <span id="pmLength">60</span> in •
+                  Gauge 1: <span id="pmG1">5</span> sts/in • Gauge 2: <span id="pmG2">6</span> sts/in
+                </div>
+              </div>
 
-    <section class="section" aria-label="Bottom call to action">
-      <div class="card" style="text-align: center; padding: 40px 20px;">
-        <h2 style="font-size: 24px;">Start knitting in 60 seconds</h2>
-        <p style="margin: 10px 0 20px; color: var(--muted);">
-          Get the PDF pattern immediately after checkout.
-        </p>
-        <a class="btn" href={STRIPE_URL} style="font-size: 18px; padding: 16px 32px;">
-          Get the Pattern — $9
-        </a>
-        <p class="note" style="margin-top: 15px;">
-          Secure checkout via Stripe
-        </p>
+              <div class="pattern-block" aria-label="Generated pattern preview">
+
+                <div class="section">
+                  <h3>
+                    Summary
+                    <span class="tip" tabindex="0" data-tip="This preview updates instantly as you change inputs.">
+                      <span class="ico" aria-hidden="true">i</span>
+                    </span>
+                    <a class="resource-link" href="#" data-open-tab="resources" data-scroll="res-overview">
+                      <span class="ico" aria-hidden="true">?</span> How this works
+                    </a>
+                  </h3>
+                  <ul>
+                    <li>Blanket width: <span class="kv" id="outWidth">40 in</span></li>
+                    <li>Total length: <span class="kv" id="outLength">60 in</span></li>
+                    <li>Border depth (each end): <span class="kv" id="outBorderDepth">3 in</span></li>
+                    <li>Body length: <span class="kv" id="outBodyLength">54 in</span></li>
+                    <li>Border stitch count (Gauge 1): <span class="kv" id="outCastOn">200 sts</span></li>
+                    <li>Body stitch count (Gauge 2): <span class="kv" id="outBodySts">240 sts</span></li>
+                  </ul>
+                </div>
+
+                <div class="section">
+                  <h3>
+                    Border (Gauge 1)
+                    <span class="tip" tabindex="0" data-tip="Use your border stitch pattern here. Border depth controls border rows.">
+                      <span class="ico" aria-hidden="true">?</span>
+                    </span>
+                    <a class="resource-link" href="#" data-open-tab="resources" data-scroll="res-border">
+                      <span class="ico" aria-hidden="true">▶</span> Border tips
+                    </a>
+                  </h3>
+                  <ul>
+                    <li>Cast on: <span class="kv" id="outCastOn2">200 sts</span></li>
+                    <li>Work border for: <span class="kv" id="outBorderRows">18 rows</span> (<span id="outBorderDepth2">3 in</span>)</li>
+                  </ul>
+                </div>
+
+                <div class="section">
+                  <h3>
+                    Transition to Body
+                    <span class="tip" tabindex="0" data-tip="Adjust stitch count to match Gauge 2 across the same width (this prevents ruffles).">
+                      <span class="ico" aria-hidden="true">↔</span>
+                    </span>
+                    <a class="resource-link" href="#" data-open-tab="resources" data-scroll="res-transition">
+                      <span class="ico" aria-hidden="true">!</span> Avoid ruffles
+                    </a>
+                  </h3>
+                  <ul>
+                    <li>Target stitch count: <span class="kv" id="outBodySts2">240 sts</span></li>
+                    <li>Adjustment needed: <span class="kv" id="outDelta">+40 sts</span> evenly across the row</li>
+                  </ul>
+                </div>
+
+                <div class="section">
+                  <h3>
+                    Body (Gauge 2)
+                    <span class="tip" tabindex="0" data-tip="Changing length changes body rows. This is the most common tweak.">
+                      <span class="ico" aria-hidden="true">✎</span>
+                    </span>
+                    <a class="resource-link" href="#" data-open-tab="resources" data-scroll="res-length">
+                      <span class="ico" aria-hidden="true">↧</span> Length → rows
+                    </a>
+                  </h3>
+                  <ul>
+                    <li>Work body for: <span class="kv" id="outBodyRows">324 rows</span> (<span id="outBodyLength2">54 in</span>)</li>
+                    <li>Body stitch pattern (label): <span class="kv" id="outBodyPattern">Stockinette (example)</span></li>
+                  </ul>
+                </div>
+
+                <div class="section">
+                  <h3>
+                    Transition to Final Border
+                    <span class="tip" tabindex="0" data-tip="Reverse the stitch adjustment so the final border matches the starting border width.">
+                      <span class="ico" aria-hidden="true">↔</span>
+                    </span>
+                    <a class="resource-link" href="#" data-open-tab="resources" data-scroll="res-transition2">
+                      <span class="ico" aria-hidden="true">↩</span> Transition back
+                    </a>
+                  </h3>
+                  <ul>
+                    <li>Return to stitch count: <span class="kv" id="outCastOn3">200 sts</span></li>
+                    <li>Adjustment needed: <span class="kv" id="outDelta2">-40 sts</span> evenly across the row</li>
+                  </ul>
+                </div>
+
+                <div class="section">
+                  <h3>Final Border (Gauge 1)</h3>
+                  <ul>
+                    <li>Work border for: <span class="kv" id="outBorderRows2">18 rows</span> (<span id="outBorderDepth3">3 in</span>)</li>
+                    <li>Bind off.</li>
+                  </ul>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- RIGHT: INPUTS (DESKTOP/TABLET) -->
+            <aside class="card inputs" aria-label="Pattern inputs (desktop)">
+              <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
+                <h2 style="margin:0;">Adjust inputs</h2>
+                <p class="muted" style="margin:0; font-size:13px;">Saved on this device</p>
+              </div>
+
+              <div class="formgrid" id="inputsDesktop">
+                <div>
+                  <label for="inWidth">Blanket width (in)</label>
+                  <input id="inWidth" type="number" min="12" step="1" value="40" />
+                  <div class="help">Used to calculate stitch counts for both gauges.</div>
+                </div>
+
+                <div>
+                  <label for="inLength">Total length (in)</label>
+                  <input id="inLength" type="number" min="12" step="1" value="60" />
+                  <div class="help">Total length includes both borders.</div>
+                </div>
+
+                <div>
+                  <label for="inBorderDepth">Border depth (each end) (in)</label>
+                  <input id="inBorderDepth" type="number" min="1" step="0.5" value="3" />
+                </div>
+
+                <div>
+                  <label for="inGauge1">Gauge 1 (border) stitches per inch</label>
+                  <input id="inGauge1" type="number" min="1" step="0.25" value="5" />
+                  <div class="help">Example: 20 sts / 4" = 5 sts/in.</div>
+                </div>
+
+                <div>
+                  <label for="inGauge2">Gauge 2 (body) stitches per inch</label>
+                  <input id="inGauge2" type="number" min="1" step="0.25" value="6" />
+                </div>
+
+                <div>
+                  <label for="inRowsPerIn1">Gauge 1 rows per inch</label>
+                  <input id="inRowsPerIn1" type="number" min="1" step="0.25" value="6" />
+                </div>
+
+                <div>
+                  <label for="inRowsPerIn2">Gauge 2 rows per inch</label>
+                  <input id="inRowsPerIn2" type="number" min="1" step="0.25" value="6" />
+                </div>
+
+                <div>
+                  <label for="inBodyPattern">Body stitch pattern (label only)</label>
+                  <input id="inBodyPattern" type="text" value="Stockinette (example)" />
+                </div>
+
+                <div style="margin-top:6px;">
+                  <button class="btn2" type="button" id="resetSavedBtn" style="width:100%;">Reset saved settings</button>
+                  <div class="help">Clears saved numbers on this device.</div>
+                </div>
+              </div>
+            </aside>
+
+          </div>
+        </section>
+
+        <!-- RESOURCES TAB -->
+        <section class="panel" id="panel-resources" role="tabpanel" aria-labelledby="tab-resources" data-active="false">
+          <div class="res-grid">
+            <div class="card" id="res-overview">
+              <h2 style="margin-top:0;">Resources</h2>
+              <p class="muted" style="margin-top:0;">
+                These notes support the pattern without cluttering the Pattern tab.
+              </p>
+              <ul>
+                <li><strong>Transitions:</strong> stitch count changes keep width consistent.</li>
+                <li><strong>Length changes:</strong> length updates body rows automatically.</li>
+              </ul>
+            </div>
+
+            <div class="card" id="res-transition">
+              <h2 style="margin-top:0;">Avoid the “Ruffle” at transitions</h2>
+              <p class="muted" style="margin-top:0;">
+                Border and body gauges differ, so stitch counts must change at the switch to keep edges straight.
+              </p>
+              <div style="border:1px solid var(--border); border-radius:14px; padding:12px; background:#fbfbf9;">
+                <em class="muted">Embed your video / steps here (placeholder)</em>
+              </div>
+            </div>
+
+            <div class="card" id="res-length">
+              <h2 style="margin-top:0;">Length → rows</h2>
+              <p class="muted" style="margin-top:0;">
+                Changing total length changes body length and body rows. Borders stay the same depth at each end.
+              </p>
+            </div>
+
+            <div class="card" id="res-border">
+              <h2 style="margin-top:0;">Border options</h2>
+              <ul>
+                <li>Garter, rib, tuck edge, hand-manipulated edge patterns</li>
+                <li>Keep border depth consistent at both ends</li>
+              </ul>
+            </div>
+
+            <div class="card" id="res-transition2">
+              <h2 style="margin-top:0;">Transition back to Gauge 1</h2>
+              <p class="muted" style="margin-top:0;">
+                Reverse the stitch adjustment so the final border matches the starting border width.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- DISCUSSION TAB -->
+        <section class="panel" id="panel-discussion" role="tabpanel" aria-labelledby="tab-discussion" data-active="false">
+          <div class="card">
+            <h2 style="margin-top:0;">Discussion</h2>
+            <p class="muted" style="margin-top:0;">
+              Hyvor Talk embed goes here (placeholder).
+            </p>
+            <div style="border:1px solid var(--border); border-radius:14px; padding:14px; background:#fbfbf9;">
+              <em class="muted">Hyvor Talk embed placeholder</em>
+            </div>
+          </div>
+        </section>
+
+        <!-- INSPIRATION TAB -->
+        <section class="panel" id="panel-inspiration" role="tabpanel" aria-labelledby="tab-inspiration" data-active="false">
+          <div class="card">
+            <h2 style="margin-top:0;">Inspiration</h2>
+            <p class="muted" style="margin-top:0;">
+              Pinterest board embed goes here (placeholder).
+            </p>
+            <div style="border:1px solid var(--border); border-radius:14px; padding:14px; background:#fbfbf9;">
+              <em class="muted">Pinterest embed placeholder</em>
+            </div>
+          </div>
+        </section>
       </div>
     </section>
   </main>
+
+  <!-- MOBILE BOTTOM BAR -->
+  <div class="mobile-controls" aria-hidden="false">
+    <div class="bar">
+      <button class="btn2 primary" type="button" id="openDrawerBtn">Adjust pattern</button>
+      <button class="btn2" type="button" id="jumpResourcesBtn">Resources</button>
+    </div>
+  </div>
+
+  <!-- MOBILE DRAWER -->
+  <div class="drawer-backdrop" id="drawerBackdrop" data-open="false" aria-hidden="true"></div>
+  <section class="drawer" id="drawer" data-open="false" aria-label="Pattern inputs (mobile)">
+    <div class="grab" aria-hidden="true"></div>
+    <div class="drawer-header">
+      <h3>Adjust inputs</h3>
+      <button class="drawer-close" type="button" id="closeDrawerBtn">Done</button>
+    </div>
+    <div class="drawer-body">
+      <div class="formgrid" id="inputsMobile"></div>
+      <p class="muted" style="margin:12px 0 0; font-size:12px;">
+        Saved on this device. Changes apply instantly.
+      </p>
+      <button class="btn2" type="button" id="resetSavedBtnMobile" style="width:100%; margin-top:10px;">Reset saved settings</button>
+    </div>
+  </section>
+
+  <script>
+    // ---------- Tabs ----------
+    (function(){
+      const tabButtons = Array.from(document.querySelectorAll('[role="tab"]'));
+      const panels = Array.from(document.querySelectorAll('[role="tabpanel"]'));
+
+      function activateTab(btn){
+        tabButtons.forEach(b => b.setAttribute('aria-selected', String(b === btn)));
+        panels.forEach(p => p.dataset.active = String(p.id === btn.getAttribute('aria-controls')));
+        btn.focus({ preventScroll: true });
+      }
+
+      tabButtons.forEach((btn, idx) => {
+        btn.addEventListener('click', () => activateTab(btn));
+        btn.addEventListener('keydown', (e) => {
+          const key = e.key;
+          if (!['ArrowLeft','ArrowRight','Home','End'].includes(key)) return;
+          e.preventDefault();
+          let nextIdx = idx;
+          if (key === 'ArrowLeft') nextIdx = (idx - 1 + tabButtons.length) % tabButtons.length;
+          if (key === 'ArrowRight') nextIdx = (idx + 1) % tabButtons.length;
+          if (key === 'Home') nextIdx = 0;
+          if (key === 'End') nextIdx = tabButtons.length - 1;
+          activateTab(tabButtons[nextIdx]);
+        });
+      });
+
+      // In-pattern "Resources" pills open the Resources tab and scroll
+      document.querySelectorAll('[data-open-tab="resources"]').forEach(a => {
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          const resourcesTab = document.getElementById('tab-resources');
+          activateTab(resourcesTab);
+          const targetId = a.getAttribute('data-scroll');
+          if (targetId) {
+            const el = document.getElementById(targetId);
+            if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        });
+      });
+
+      // Mobile bottom bar jump to resources
+      document.getElementById('jumpResourcesBtn')?.addEventListener('click', () => {
+        const resourcesTab = document.getElementById('tab-resources');
+        activateTab(resourcesTab);
+      });
+    })();
+
+    // ---------- Drawer (mobile inputs) ----------
+    (function(){
+      const drawer = document.getElementById('drawer');
+      const backdrop = document.getElementById('drawerBackdrop');
+      const openBtn = document.getElementById('openDrawerBtn');
+      const closeBtn = document.getElementById('closeDrawerBtn');
+
+      function openDrawer(){
+        drawer.dataset.open = "true";
+        backdrop.dataset.open = "true";
+        backdrop.setAttribute('aria-hidden', 'false');
+        const firstInput = drawer.querySelector('input, select, textarea, button');
+        if (firstInput) firstInput.focus({ preventScroll: true });
+      }
+      function closeDrawer(){
+        drawer.dataset.open = "false";
+        backdrop.dataset.open = "false";
+        backdrop.setAttribute('aria-hidden', 'true');
+        openBtn?.focus({ preventScroll: true });
+      }
+
+      openBtn?.addEventListener('click', openDrawer);
+      closeBtn?.addEventListener('click', closeDrawer);
+      backdrop?.addEventListener('click', closeDrawer);
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.dataset.open === "true") closeDrawer();
+      });
+
+      window.__kbmDrawer = { openDrawer, closeDrawer };
+    })();
+
+    // ---------- Save My Place (device-only) ----------
+    const KBM_STORAGE_KEY = "kbm:pattern:hybrid-blanket:v1";
+    const PERSIST_INPUT_IDS = [
+      "inWidth",
+      "inLength",
+      "inBorderDepth",
+      "inGauge1",
+      "inGauge2",
+      "inRowsPerIn1",
+      "inRowsPerIn2",
+      "inBodyPattern"
+    ];
+
+    function getEl(id){ return document.getElementById(id); }
+
+    function readSnapshot(){
+      const snap = {};
+      PERSIST_INPUT_IDS.forEach(id => {
+        const el = getEl(id);
+        if (el) snap[id] = el.value;
+      });
+      return snap;
+    }
+
+    function applySnapshot(snap){
+      if (!snap || typeof snap !== "object") return;
+      PERSIST_INPUT_IDS.forEach(id => {
+        const el = getEl(id);
+        if (el && snap[id] != null) el.value = snap[id];
+      });
+    }
+
+    function saveToDevice(){
+      try { localStorage.setItem(KBM_STORAGE_KEY, JSON.stringify(readSnapshot())); }
+      catch(e) {}
+    }
+
+    function loadFromDevice(){
+      try {
+        const raw = localStorage.getItem(KBM_STORAGE_KEY);
+        if (!raw) return false;
+        applySnapshot(JSON.parse(raw));
+        return true;
+      } catch(e) {
+        return false;
+      }
+    }
+
+    function debounce(fn, wait=250){
+      let t;
+      return (...args) => {
+        clearTimeout(t);
+        t = setTimeout(() => fn(...args), wait);
+      };
+    }
+    const saveDebounced = debounce(saveToDevice, 250);
+
+    function resetSavedPlace(){
+      try { localStorage.removeItem(KBM_STORAGE_KEY); } catch(e) {}
+      // reset to defaults (optional; keeps it predictable)
+      const defaults = {
+        inWidth: "40",
+        inLength: "60",
+        inBorderDepth: "3",
+        inGauge1: "5",
+        inGauge2: "6",
+        inRowsPerIn1: "6",
+        inRowsPerIn2: "6",
+        inBodyPattern: "Stockinette (example)"
+      };
+      applySnapshot(defaults);
+      updatePatternAndPersist();
+    }
+
+    // ---------- Live preview (inputs -> pattern) ----------
+    (function(){
+      const statusText = document.getElementById('statusText');
+
+      const inputsDesktop = document.getElementById('inputsDesktop');
+      const inputsMobile = document.getElementById('inputsMobile');
+
+      const state = {};
+
+      function numVal(id, fallback){
+        const el = getEl(id);
+        const v = el ? Number(el.value) : fallback;
+        return Number.isFinite(v) ? v : fallback;
+      }
+      function strVal(id, fallback){
+        const el = getEl(id);
+        const v = el ? String(el.value || '').trim() : fallback;
+        return v || fallback;
+      }
+      function fmtInt(n){ return String(Math.max(0, Math.round(n))); }
+      function fmtIn(n){
+        const r = Math.round(n * 10) / 10;
+        return (r % 1 === 0) ? String(r.toFixed(0)) : String(r.toFixed(1));
+      }
+      function setText(id, text){
+        const el = getEl(id);
+        if (el) el.textContent = text;
+      }
+
+      // Replace this math later with your real Hybrid Blanket logic
+      function recompute(){
+        state.width = numVal('inWidth', 40);
+        state.length = numVal('inLength', 60);
+        state.borderDepth = numVal('inBorderDepth', 3);
+        state.g1 = numVal('inGauge1', 5); // sts/in
+        state.g2 = numVal('inGauge2', 6); // sts/in
+        state.r1 = numVal('inRowsPerIn1', 6); // rows/in
+        state.r2 = numVal('inRowsPerIn2', 6); // rows/in
+        state.bodyPattern = strVal('inBodyPattern', 'Stockinette (example)');
+
+        const bodyLen = Math.max(0, state.length - (state.borderDepth * 2));
+        const castOn = Math.max(1, Math.round(state.width * state.g1));
+        const bodySts = Math.max(1, Math.round(state.width * state.g2));
+        const borderRows = Math.max(1, Math.round(state.borderDepth * state.r1));
+        const bodyRows = Math.max(1, Math.round(bodyLen * state.r2));
+        const delta = bodySts - castOn;
+
+        setText('outWidth', `${fmtIn(state.width)} in`);
+        setText('outLength', `${fmtIn(state.length)} in`);
+        setText('outBorderDepth', `${fmtIn(state.borderDepth)} in`);
+        setText('outBodyLength', `${fmtIn(bodyLen)} in`);
+        setText('outCastOn', `${fmtInt(castOn)} sts`);
+        setText('outBodySts', `${fmtInt(bodySts)} sts`);
+
+        setText('outCastOn2', `${fmtInt(castOn)} sts`);
+        setText('outBorderRows', `${fmtInt(borderRows)} rows`);
+        setText('outBorderDepth2', `${fmtIn(state.borderDepth)} in`);
+
+        setText('outBodySts2', `${fmtInt(bodySts)} sts`);
+        setText('outDelta', `${delta >= 0 ? '+' : ''}${fmtInt(delta)} sts`);
+
+        setText('outBodyRows', `${fmtInt(bodyRows)} rows`);
+        setText('outBodyLength2', `${fmtIn(bodyLen)} in`);
+        setText('outBodyPattern', state.bodyPattern);
+
+        setText('outCastOn3', `${fmtInt(castOn)} sts`);
+        setText('outDelta2', `${delta <= 0 ? '-' : '+'}${fmtInt(Math.abs(delta))} sts`);
+
+        setText('outBorderRows2', `${fmtInt(borderRows)} rows`);
+        setText('outBorderDepth3', `${fmtIn(state.borderDepth)} in`);
+
+        // Print meta
+        setText("pmWidth", fmtIn(state.width));
+        setText("pmLength", fmtIn(state.length));
+        setText("pmG1", String(state.g1));
+        setText("pmG2", String(state.g2));
+
+        const isDefault =
+          state.width === 40 &&
+          state.length === 60 &&
+          state.borderDepth === 3 &&
+          state.g1 === 5 &&
+          state.g2 === 6 &&
+          state.r1 === 6 &&
+          state.r2 === 6 &&
+          state.bodyPattern === 'Stockinette (example)';
+
+        if (statusText) statusText.textContent = isDefault ? 'Using default settings' : 'Updated from your inputs';
+      }
+
+      function updatePatternAndPersist(){
+        recompute();
+        saveDebounced();
+      }
+
+      // Build mobile inputs by cloning desktop inputs; keep synced
+      function buildMobileInputs(){
+        const clone = inputsDesktop.cloneNode(true);
+        clone.id = 'inputsDesktopClone';
+
+        const fields = Array.from(clone.querySelectorAll('input, select, textarea'));
+        fields.forEach(f => {
+          const oldId = f.id;
+          const newId = oldId + '__m';
+          f.id = newId;
+
+          const lbl = clone.querySelector(`label[for="${oldId}"]`);
+          if (lbl) lbl.setAttribute('for', newId);
+
+          const desktopField = getEl(oldId);
+          if (desktopField) f.value = desktopField.value;
+
+          f.addEventListener('input', () => {
+            if (desktopField) desktopField.value = f.value;
+            updatePatternAndPersist();
+          });
+
+          if (desktopField) {
+            desktopField.addEventListener('input', () => {
+              f.value = desktopField.value;
+            });
+          }
+        });
+
+        // remove the reset button block inside the clone (we have separate reset button on mobile)
+        const resetBtnInClone = clone.querySelector('#resetSavedBtn');
+        if (resetBtnInClone) {
+          // remove its parent container (the whole block)
+          resetBtnInClone.closest('div')?.remove();
+        }
+
+        inputsMobile.innerHTML = '';
+        Array.from(clone.children).forEach(ch => inputsMobile.appendChild(ch));
+      }
+
+      // Attach listeners to desktop canonical inputs
+      function attachInputListeners(){
+        PERSIST_INPUT_IDS.forEach(id => {
+          const el = getEl(id);
+          if (!el) return;
+          el.addEventListener('input', updatePatternAndPersist);
+          el.addEventListener('change', updatePatternAndPersist);
+        });
+      }
+
+      window.addEventListener("DOMContentLoaded", () => {
+        const restored = loadFromDevice();
+
+        attachInputListeners();
+        buildMobileInputs();
+
+        // Reset buttons
+        getEl('resetSavedBtn')?.addEventListener('click', (e) => { e.preventDefault(); resetSavedPlace(); });
+        getEl('resetSavedBtnMobile')?.addEventListener('click', (e) => { e.preventDefault(); resetSavedPlace(); });
+
+        updatePatternAndPersist();
+
+        // Optional: if restored, you could tweak status text here
+        // if (restored && statusText) statusText.textContent = "Restored your last settings on this device";
+      });
+
+      // expose for SaveMyPlace wrapper if you want later
+      window.recompute = recompute;
+    })();
+  </script>
 </BaseLayout>
