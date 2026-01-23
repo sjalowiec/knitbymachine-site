@@ -1,6 +1,8 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 
+export const prerender = true;
+
 const STRIPE_URL = "PASTE_STRIPE_PAYMENT_LINK_HERE";
 
 const title = "Hybrid Blanket Pattern | Knit by Machine";
@@ -24,7 +26,6 @@ const description =
     }
     *{box-sizing:border-box}
 
-    /* Page wrapper spacing (plays nicely with your existing header) */
     .page-wrap{
       max-width:var(--max);
       margin:0 auto;
@@ -117,7 +118,7 @@ const description =
       <figure class="hero-image">
         <img src="/images/blanket.webp" alt="Ruffled blanket edge caused by incorrect stitch math" />
         <figcaption>
-          <strong>The “Ruffle” Problem:</strong> This happens when the math is wrong. My pattern fixes this.
+          <strong>The "Ruffle" Problem:</strong> This happens when the math is wrong. My pattern fixes this.
         </figcaption>
       </figure>
 
@@ -172,11 +173,11 @@ const description =
       </div>
 
       <div class="card" style="background:#f9fafb;">
-        <h2>What it isn’t</h2>
+        <h2>What it isn't</h2>
         <ul style="opacity:0.8;">
           <li>No 2-hour video courses.</li>
           <li>No complex spreadsheets.</li>
-          <li>No “theory” — just the pattern.</li>
+          <li>No "theory" — just the pattern.</li>
         </ul>
       </div>
     </section>
