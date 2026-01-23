@@ -9,8 +9,8 @@ export const prerender = true;
 
 export async function getStaticPaths() {
   const wizards = await getCollection('wizards');
-  // Filter out entries that have their own static page files
-  const dynamicWizards = wizards.filter((wizard) => !wizard.data.useStaticPage);
+  // Filter out entries that have useStaticPage: true (they have dedicated .astro files)
+  const dynamicWizards = wizards.filter((w) => !w.data.useStaticPage);
   return dynamicWizards.map((wizard) => ({
     params: { slug: wizard.data.slug },
     props: { wizard },
