@@ -16,5 +16,6 @@
   "metaDescription": "Create a blanket that combines two stitch patterns or knitting methods with different gauges. The pattern handles stitch counts and transitions for you.",
   "isDraft": false,
   "publishedDate": "2026-01-23",
-  "pendingPublish": false
+  "pendingPublish": false,
+  "useStaticPage": true
 }
