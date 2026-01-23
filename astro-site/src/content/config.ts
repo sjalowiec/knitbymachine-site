@@ -76,6 +76,9 @@ const wizards = defineCollection({
     publishedDate: z.string().optional(),
     createdAt: z.string().optional(),
     updatedAt: z.string().optional(),
+    
+    // Flag for self-contained static pages (bypasses dynamic [slug] route)
+    useStaticPage: z.boolean().optional(),
 
     // Landing page fields (shared with ai-agents)
     onboardingMode: z.boolean().optional(),
